@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.ui.home.fragment
+package com.mx.liftechnology.registroeducativo.main.ui.home.fragment
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -10,7 +10,9 @@ import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
-import com.mx.liftechnology.registroeducativo.ui.home.viewmodel.MenuViewModel
+import com.mx.liftechnology.registroeducativo.main.dialogs.CustomAddDialog
+import com.mx.liftechnology.registroeducativo.main.ui.home.viewmodel.MenuViewModel
+import com.mx.liftechnology.registroeducativo.model.dataclass.ModelSelectorDialog
 
 class MenuFragment : Fragment() {
 
@@ -47,7 +49,16 @@ class MenuFragment : Fragment() {
 
     private fun initListeners(){
         binding.includeEmptyHome.btnAdd.setOnClickListener {
+            showDialog()
+        }
+    }
 
+    private fun showDialog() {
+        val a = ModelSelectorDialog("hola")
+        val dialogFragment = CustomAddDialog.newInstance("title", a)
+
+        childFragmentManager.let {
+            dialogFragment.show(it, "customDialog")
         }
     }
 }

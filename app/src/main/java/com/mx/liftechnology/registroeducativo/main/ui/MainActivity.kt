@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.ui
+package com.mx.liftechnology.registroeducativo.main.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

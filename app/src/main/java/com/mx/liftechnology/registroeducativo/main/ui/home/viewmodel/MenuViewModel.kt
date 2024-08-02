@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.ui.home.viewmodel
+package com.mx.liftechnology.registroeducativo.main.ui.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 
