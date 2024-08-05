@@ -5,10 +5,6 @@ D
 app/build.gradle.kts,d/2/d2a4383452aad84a18429a5844d31330a012a9e6
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
-{
-Kapp/src/main/java/com/mx/liftechnology/registroeducativo/ui/MainActivity.kt,a/c/acb4b5cdc0587486476458e7da10124ce52c81c4
-‰
-Yapp/src/main/java/com/mx/liftechnology/registroeducativo/ui/home/fragment/MenuFragment.kt,3/e/3e1b158d962fffce2a2fcccc50571995b705188d
 ‹
 [app/src/main/java/com/mx/liftechnology/registroeducativo/framework/CoroutineScopeManager.kt,2/5/25c3d7ed2c1e050c9f2b2709df4742e0ab210c66
 I
