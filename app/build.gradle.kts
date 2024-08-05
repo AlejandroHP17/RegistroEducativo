@@ -41,6 +41,12 @@ android {
 }
 
 dependencies {
+    // Koin para inyección de dependencias
+
+    implementation(libs.koin.core)           // Añadir Koin core
+    implementation(libs.koin.android)        // Añadir Koin Android
+    implementation(libs.koin.android.compat) // Añadir Koin Android compat
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

@@ -21,3 +21,7 @@ _app/src/main/java/com/mx/liftechnology/registroeducativo/model/dataclass/ModelS
 Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/dialogs/CustomAddDialog.kt,2/c/2c79090fd8c54bf70660b843a1c586ad16614135
 é
 ^app/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/home/fragment/MenuFragment.kt,a/9/a93ae9750cc02d5f7bbd06fe41a3b48547ab761e
+ê
+`app/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/home/viewmodel/MenuViewModel.kt,1/3/13fed71e62f07138e8d1d7445b801888eb32cbe7
+~
+Napp/src/main/java/com/mx/liftechnology/registroeducativo/model/di/appModule.kt,1/1/1198aa7e4baa0b835ef637c585f1684b6ce520df

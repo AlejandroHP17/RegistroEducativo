@@ -4,5 +4,9 @@
     <string name="empty_ops">¡Oooops!</string>
     <string name="empty_message">No hemos encontrado un curso asignado, /n Por favor crea uno para poder llevarte al menu del curso.</string>
     <string name="empty_button">Agregar</string>
+    <string name="empty_dialog_title">Ingresa el nombre de tu curso</string>
+
+    <string name="save">Guardar</string>
+
 
 </resources>

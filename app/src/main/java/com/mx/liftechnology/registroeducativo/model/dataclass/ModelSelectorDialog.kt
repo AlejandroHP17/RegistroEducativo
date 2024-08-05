@@ -4,6 +4,6 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ModelSelectorDialog(
-    val add :String
-):Parcelable
+enum class ModelSelectorDialog(val value: Int) : Parcelable {
+   ADD (0)
+}

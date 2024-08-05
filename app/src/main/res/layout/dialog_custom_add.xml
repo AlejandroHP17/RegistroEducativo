@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/margin_16dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,10 +14,19 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/et_insert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/tools_custom_insert" />
+        android:hint="@string/tools_custom_insert"
+        android:layout_marginTop="@dimen/margin_8dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_8dp"/>
 
 </LinearLayout>

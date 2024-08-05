@@ -6,21 +6,22 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.DialogCustomAddBinding
+import com.mx.liftechnology.registroeducativo.main.ui.home.viewmodel.MenuViewModel
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelSelectorDialog
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CustomAddDialog : DialogFragment() {
 
     /* Variables de argumentos*/
-    private var argTitle: String? = null
     private var argSelector: ModelSelectorDialog? = null
 
     private var bindingDialog : DialogCustomAddBinding? = null
+    private val menuViewModel: MenuViewModel by sharedViewModel()
 
     companion object {
-        fun newInstance(title: String, selector:ModelSelectorDialog): CustomAddDialog {
+        fun newInstance( selector:ModelSelectorDialog): CustomAddDialog {
             val fragment = CustomAddDialog()
             val args = Bundle()
-            args.putString("title", title)
             args.putParcelable("selector", selector)
             fragment.arguments = args
             return fragment
@@ -51,24 +52,31 @@ class CustomAddDialog : DialogFragment() {
     }
 
     private fun initListeners() {
-        /*bindingDialog.btnClose.setOnClickListener { dismiss() }
-        builder.setPositiveButton("CERRAR") { _, _ ->
-            // Realizar la acción de cierre aquí
-            dismiss() // Cierra el cuadro de diálogo
-        }*/
+        bindingDialog?.btnAdd?.setOnClickListener {
+            val text: String = bindingDialog?.etInsert?.text.toString()
+            menuViewModel.saveNameCourse(text)
+            dismiss()
+        }
     }
 
     private fun initView(dialog: AlertDialog) {
         // Configura la vista personalizada en el cuadro de diálogo
         dialog.setView(bindingDialog?.root)
         bindingDialog?.apply {
-            tvTitle.text = argTitle
+            when(argSelector){
+                ModelSelectorDialog.ADD -> {
+                    tvTitle.text = getString(R.string.empty_dialog_title)
+                }
+                else -> {
+
+                }
+            }
+
         }
     }
 
     private fun getArgumentsNav() {
         // Recuperar los argumentos
-        argTitle = arguments?.getString("title")
         argSelector = arguments?.getParcelable("selector")
     }
 }
