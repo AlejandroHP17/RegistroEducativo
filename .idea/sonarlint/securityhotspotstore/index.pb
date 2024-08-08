@@ -1,0 +1,23 @@
+
+@
+build.gradle.kts,d/b/dbcff70658daf80b53ce624f6adcaa529df5ed8d
+D
+app/build.gradle.kts,d/2/d2a4383452aad84a18429a5844d31330a012a9e6
+P
+ app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
+ã
+[app/src/main/java/com/mx/liftechnology/registroeducativo/framework/CoroutineScopeManager.kt,2/5/25c3d7ed2c1e050c9f2b2709df4742e0ab210c66
+I
+gradle/libs.versions.toml,d/7/d7595319a0658be6f1ed500ad590d42e4b28bc4f
+Ä
+Papp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/MainActivity.kt,f/c/fc537ced6fae909704829974cfd6879a22f68f13
+è
+_app/src/main/java/com/mx/liftechnology/registroeducativo/model/dataclass/ModelSelectorDialog.kt,7/8/7849079b5ab27fda265eb90c521615530f1122d9
+é
+^app/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/home/fragment/MenuFragment.kt,a/9/a93ae9750cc02d5f7bbd06fe41a3b48547ab761e
+à
+Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/dialogs/CustomAddDialog.kt,2/c/2c79090fd8c54bf70660b843a1c586ad16614135
+ê
+`app/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/home/viewmodel/MenuViewModel.kt,1/3/13fed71e62f07138e8d1d7445b801888eb32cbe7
+~
+Napp/src/main/java/com/mx/liftechnology/registroeducativo/model/di/appModule.kt,1/1/1198aa7e4baa0b835ef637c585f1684b6ce520df
