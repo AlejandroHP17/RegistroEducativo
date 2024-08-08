@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -42,10 +43,15 @@ android {
 
 dependencies {
     // Koin para inyección de dependencias
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compat)
 
-    implementation(libs.koin.core)           // Añadir Koin core
-    implementation(libs.koin.android)        // Añadir Koin Android
-    implementation(libs.koin.android.compat) // Añadir Koin Android compat
+    // Room para base de datos
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
