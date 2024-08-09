@@ -7,5 +7,6 @@ class StudentLocalRepository(
     private val studentDao: StudentDao
 ) {
     fun getAllStudent(): List<StudentEntity> = studentDao.getAllStudent()
-    fun postStudent(student : StudentEntity) = studentDao.insertStudent(student)
+
+    fun insertStudent(student : StudentEntity) = studentDao.insertStudent(student)
 }

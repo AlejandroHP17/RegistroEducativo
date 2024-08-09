@@ -1,22 +1,23 @@
-package com.mx.liftechnology.registroeducativo.main.ui.home.fragment
+package com.mx.liftechnology.registroeducativo.main.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.dialogs.CustomAddDialog
-import com.mx.liftechnology.registroeducativo.main.ui.home.viewmodel.MenuViewModel
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
-import com.mx.liftechnology.registroeducativo.model.dataclass.EmptyState
-import com.mx.liftechnology.registroeducativo.model.dataclass.ErrorState
+import com.mx.liftechnology.registroeducativo.model.util.EmptyState
+import com.mx.liftechnology.registroeducativo.model.util.ErrorState
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelSelectorDialog
-import com.mx.liftechnology.registroeducativo.model.dataclass.SuccessState
+import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorDialog
+import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorMenu
+import com.mx.liftechnology.registroeducativo.model.util.SuccessState
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class MenuFragment : Fragment() {
@@ -82,6 +83,17 @@ class MenuFragment : Fragment() {
     }
     private fun inflateAdapter(items: List<ModelAdapterMenu>){
         val clickListener = MenuClickListener { item ->
+            when(item.id){
+                ModelSelectorMenu.CALENDAR.value -> {}
+                ModelSelectorMenu.STUDENT.value -> {
+                    val direction = MenuFragmentDirections.actionMenuFragmentToStudentFragment()
+                    findNavController().navigate(direction)
+                }
+                ModelSelectorMenu.SCHOOL.value -> {}
+                ModelSelectorMenu.EXPORT.value -> {}
+                ModelSelectorMenu.PERIOD.value -> {}
+                ModelSelectorMenu.CONFIG.value -> {}
+            }
             // Manejar el clic aquí
             toastFragment("Clicked on: ${item.titleCard}")
         }

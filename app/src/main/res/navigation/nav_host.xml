@@ -7,7 +7,25 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.home.fragment.MenuFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.home.MenuFragment"
         android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" />
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_studentFragment"
+            app:destination="@id/studentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/studentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.student.StudentFragment"
+        android:label="fragment_student"
+        tools:layout="@layout/fragment_student" >
+        <action
+            android:id="@+id/action_studentFragment_to_formStudenFragment"
+            app:destination="@id/formStudenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/formStudenFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.student.FormStudenFragment"
+        android:label="fragment_form_studen"
+        tools:layout="@layout/fragment_form_studen" />
 </navigation>

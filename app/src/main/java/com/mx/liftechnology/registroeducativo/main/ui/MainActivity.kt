@@ -1,13 +1,10 @@
 package com.mx.liftechnology.registroeducativo.main.ui
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mx.liftechnology.registroeducativo.databinding.ActivityMainBinding
-import com.mx.liftechnology.registroeducativo.model.di.appModule
+import com.mx.liftechnology.registroeducativo.model.di.menuModule
+import com.mx.liftechnology.registroeducativo.model.di.studentModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -22,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         startKoin {
             androidLogger()
             androidContext(this@MainActivity)
-            modules(appModule)
+            modules(menuModule, studentModule)
         }
     }
 

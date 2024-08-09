@@ -1,13 +1,13 @@
-package com.mx.liftechnology.registroeducativo.main.ui.home.viewmodel
+package com.mx.liftechnology.registroeducativo.main.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
-import com.mx.liftechnology.registroeducativo.model.dataclass.ErrorState
+import com.mx.liftechnology.registroeducativo.model.util.ErrorState
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelCodeError
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelState
+import com.mx.liftechnology.registroeducativo.model.util.ModelCodeError
+import com.mx.liftechnology.registroeducativo.model.util.ModelState
 import com.mx.liftechnology.registroeducativo.model.usecase.MenuUseCase
 import kotlinx.coroutines.launch
 

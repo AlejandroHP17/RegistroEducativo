@@ -29,4 +29,19 @@
         <item name="android:windowExitAnimation">@anim/from_center</item>
     </style>
 
+    <style name="editext_form" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/bg_input_box</item>
+        <item name="boxStrokeColor">@color/bg_input_box</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextColor">@color/red</item>
+    </style>
+
+
 </resources>

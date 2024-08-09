@@ -14,13 +14,11 @@ data class StudentEntity(
     @PrimaryKey(autoGenerate = true)
     var id:Int = 0,
     @ColumnInfo(name = "idCurp")  val idCurp : String?,
-    val firstName : String?,
-    val secondName : String?,
+    val name : String?,
     val lastName : String?,
     val secondLastName : String?,
-    val dateBirthday : Date?,
+    val dateBirthday : String?,
     val age : Int?,
     val listNumber : Int?,
-    val phoneNumber : Int?,
-    //val address : ModelAddress?
+    val phoneNumber : Long?,
 ):Parcelable

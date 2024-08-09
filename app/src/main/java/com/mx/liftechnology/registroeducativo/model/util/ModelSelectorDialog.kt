@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.model.dataclass
+package com.mx.liftechnology.registroeducativo.model.util
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

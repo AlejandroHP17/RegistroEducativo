@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.model.dataclass
+package com.mx.liftechnology.registroeducativo.model.util
 
 /** Sealed class, a generic result
  * @author Pelkidev
