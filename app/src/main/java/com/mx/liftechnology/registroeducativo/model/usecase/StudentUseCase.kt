@@ -18,4 +18,14 @@ class StudentUseCase( private val localStudentRepository: StudentLocalRepository
             localStudentRepository.insertStudent(studentData)
         }
     }
+
+    /** Obtiene el listado de categorias y procesa la informacion para el viewmodel
+     * @author pelkidev
+     * @date 28/08/2023
+     * */
+    suspend fun getAllStudents() : List<StudentEntity>{
+        return withContext(dispatcher) {
+            localStudentRepository.getAllStudent()
+        }
+    }
 }

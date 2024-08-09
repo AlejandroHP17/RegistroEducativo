@@ -21,23 +21,11 @@ class StudentViewModel (
 ) : ViewModel() {
     private val coroutine = CoroutineScopeManager()
 
-    private val _studentName = MutableLiveData<String>()
-    val studentName: LiveData<String> get() = _studentName
+    private val _insertData = MutableLiveData<Boolean>()
+    val insertData: LiveData<Boolean> get() = _insertData
 
-    private val _studentLastName = MutableLiveData<String>()
-    val studentLastName: LiveData<String> get() = _studentLastName
-
-    private val _studentSecondLastName = MutableLiveData<String>()
-    val studentSecondLastName: LiveData<String> get() = _studentSecondLastName
-
-    private val _studentPhone = MutableLiveData<String>()
-    val studentPhone: LiveData<String> get() = _studentPhone
-
-    private val _studentCurp = MutableLiveData<String>()
-    val studentCurp: LiveData<String> get() = _studentCurp
-
-    private val _studentBirthday = MutableLiveData<String>()
-    val studentBirthday: LiveData<String> get() = _studentBirthday
+    private val _listStudents = MutableLiveData<List<StudentEntity>>()
+    val listStudents: LiveData<List<StudentEntity>> get() = _listStudents
 
 
     // Función para limpiar el texto basado en un patrón Regex
@@ -59,7 +47,7 @@ class StudentViewModel (
             .filter { patron.matches(it.toString()) } // Filtra caracteres no válidos
     }
 
-     fun saveData(data: ModelStudentForm) {
+    fun saveData(data: ModelStudentForm) {
          coroutine.scopeIO.launch {
              data.birthday?.takeIf { it.size >= 3 }?.let { birthday ->
                  val age = restarFechas(birthday[0], birthday[1], birthday[2])
@@ -73,22 +61,35 @@ class StudentViewModel (
                      listNumber = 0,
                      phoneNumber = data.phoneNumber,
                  )
-                 studentUseCase.insertStudent(studentData)
-                 _studentBirthday.postValue(age.toString())
+                 try{
+                     studentUseCase.insertStudent(studentData)
+                     _insertData.postValue(true)
+                 }catch (e:Exception){
+                     _insertData.postValue(false)
+                 }
+
              } ?: run {
                  // Manejar el caso en que `birthday` es `null` o no tiene al menos 3 elementos
-                 println("Fecha de cumpleaños no válida")
+                 _insertData.postValue(false)
              }
          }
 
     }
 
-    fun restarFechas(day1: Int, month1: Int, year1: Int): Long {
+    private fun restarFechas(day1: Int, month1: Int, year1: Int): Long {
         // Convertir las fechas de DatePicker a LocalDate
         val fecha1 = LocalDate.of(year1, month1 + 1, day1) // +1 porque el mes en DatePicker es 0-based
         val fecha2 = LocalDate.of(2024, 9, 1)
 
         // Calcular la diferencia en días
         return ChronoUnit.DAYS.between(fecha1, fecha2)
+    }
+
+    fun getData(){
+        coroutine.scopeIO.launch {
+            studentUseCase.getAllStudents().also {
+                _listStudents.postValue(it)
+            }
+        }
     }
 }

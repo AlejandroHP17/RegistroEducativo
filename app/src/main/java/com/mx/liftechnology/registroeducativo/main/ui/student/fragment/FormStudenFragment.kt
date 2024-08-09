@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.student
+package com.mx.liftechnology.registroeducativo.main.ui.student.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -8,12 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentFormStudenBinding
+import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
+import com.mx.liftechnology.registroeducativo.main.ui.student.DatePickerDialog
+import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
+import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import com.mx.liftechnology.registroeducativo.main.viewextensions.verify
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelStudentForm
 import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorForm
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FormStudenFragment : Fragment() {
@@ -26,6 +37,8 @@ class FormStudenFragment : Fragment() {
     private var datePicker: DatePickerDialog? = null
     private var dates: MutableList<Int>? = null
     private var flagAfterAdd = false
+
+    private var coroutineScopeManager = CoroutineScopeManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,36 +79,51 @@ class FormStudenFragment : Fragment() {
             }
 
             btnAdd.setOnClickListener {
-                if(validateData()){
-                    val data = ModelStudentForm(
-                        name = etName.text.toString(),
-                        lastName = etLastName.text.toString(),
-                        secondLastName = etSecondLastName.text.toString(),
-                        curp = etCurp.text.toString(),
-                        phoneNumber = etPhone.text.toString().toLongOrNull(),
-                        birthday = dates
-                    )
-                    studentViewModel.saveData(data)
+                coroutineScopeManager.scopeIO.launch {
+                    val isValid = validateData()
+                    if (isValid) {
+                        withContext(Dispatchers.Main) {
+                            val data = ModelStudentForm(
+                                name = binding.etName.text.toString(),
+                                lastName = binding.etLastName.text.toString(),
+                                secondLastName = binding.etSecondLastName.text.toString(),
+                                curp = binding.etCurp.text.toString(),
+                                phoneNumber = binding.etPhone.text.toString().toLongOrNull(),
+                                birthday = dates
+                            )
+                            studentViewModel.saveData(data)
+                        }
+                    }
                 }
             }
         }
     }
 
-    private fun validateData(): Boolean{
-        binding.apply {
-            etName.verify(inputName,requireContext(),ModelSelectorForm.NAME)
-            etLastName.verify(inputLastName,requireContext(),ModelSelectorForm.LASTNAME)
-            etSecondLastName.verify(inputSecondLastName,requireContext(),ModelSelectorForm.SECONDLASTNAME)
-            etPhone.verify(inputPhone,requireContext(),ModelSelectorForm.PHONE)
-            etCurp.verify(inputCurp,requireContext(),ModelSelectorForm.CURP)
-            etBirthday.verify(inputBirthday,requireContext(),ModelSelectorForm.BIRTHDAY)
+    private suspend fun validateData(): Boolean = withContext(Dispatchers.IO) {
+        coroutineScope {
+            val results = listOf(
+                async { withContext(Dispatchers.Main) { binding.etName.verify(binding.inputName, requireContext(), ModelSelectorForm.NAME) } },
+                async { withContext(Dispatchers.Main) { binding.etLastName.verify(binding.inputLastName, requireContext(), ModelSelectorForm.LASTNAME) } },
+                async { withContext(Dispatchers.Main) { binding.etSecondLastName.verify(binding.inputSecondLastName, requireContext(), ModelSelectorForm.SECONDLASTNAME) } },
+                async { withContext(Dispatchers.Main) { binding.etPhone.verify(binding.inputPhone, requireContext(), ModelSelectorForm.PHONE) } },
+                async { withContext(Dispatchers.Main) { binding.etCurp.verify(binding.inputCurp, requireContext(), ModelSelectorForm.CURP) } },
+                async { withContext(Dispatchers.Main) { binding.etBirthday.verify(binding.inputBirthday, requireContext(), ModelSelectorForm.BIRTHDAY) } }
+            ).awaitAll()
+
+            flagAfterAdd = true
+            return@coroutineScope results.all { it }
         }
-        flagAfterAdd = true
-        return false
     }
 
     private fun initObservers(){
-        studentViewModel.studentBirthday.observe(viewLifecycleOwner){ text ->
+        studentViewModel.insertData.observe(viewLifecycleOwner){ flag ->
+            if (flag){
+                toastFragment("El alumno se guardo correctamente")
+                val navigation = FormStudenFragmentDirections.actionFormStudenFragmentToStudentFragment()
+                findNavController().navigate(navigation)
+            }else{
+                toastFragment("Ha ocurrido en error al guardar al alumno")
+            }
         }
     }
 
@@ -107,7 +135,8 @@ class FormStudenFragment : Fragment() {
         dates?.add(month)
         dates?.add(year)
         binding.etBirthday.setText(date)
-        binding.etBirthday.verify(binding.inputBirthday,requireContext(),ModelSelectorForm.BIRTHDAY)
+        coroutineScopeManager.scopeIO.launch { withContext(Dispatchers.Main){ binding.etBirthday.verify(binding.inputBirthday,requireContext(),ModelSelectorForm.BIRTHDAY) }}
+
     }
 
 
@@ -146,14 +175,17 @@ class FormStudenFragment : Fragment() {
                 }
             }
             if(flagAfterAdd){
-                binding.apply { when(position){
-                    0 -> {etName.verify(inputName,requireContext(),ModelSelectorForm.NAME)}
-                    1 -> {etLastName.verify(inputLastName,requireContext(),ModelSelectorForm.LASTNAME)}
-                    2 -> {etSecondLastName.verify(inputSecondLastName,requireContext(),ModelSelectorForm.SECONDLASTNAME)}
-                    3 -> {etPhone.verify(inputPhone,requireContext(),ModelSelectorForm.PHONE)}
-                    4 -> {etCurp.verify(inputCurp,requireContext(),ModelSelectorForm.CURP)}
-                    else -> { }
-                } }
+                    coroutineScopeManager.scopeIO.launch {
+                        when(position){
+                            0 -> { withContext(Dispatchers.Main){ binding.etName.verify(binding.inputName,requireContext(),ModelSelectorForm.NAME)} }
+                            1 -> { withContext(Dispatchers.Main){ binding.etLastName.verify(binding.inputLastName,requireContext(),ModelSelectorForm.LASTNAME)}}
+                            2 -> { withContext(Dispatchers.Main){ binding.etSecondLastName.verify(binding.inputSecondLastName,requireContext(),ModelSelectorForm.SECONDLASTNAME)}}
+                            3 -> { withContext(Dispatchers.Main){ binding.etPhone.verify(binding.inputPhone,requireContext(),ModelSelectorForm.PHONE)}}
+                            4 -> { withContext(Dispatchers.Main){ binding.etCurp.verify(binding.inputCurp,requireContext(),ModelSelectorForm.CURP)}}
+                            else -> { }
+                        }
+                    }
+                
             }
 
         }

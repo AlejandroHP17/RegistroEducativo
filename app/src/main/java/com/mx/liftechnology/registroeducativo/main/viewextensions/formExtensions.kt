@@ -7,14 +7,14 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorForm
 
 /** Toast generic to Fragments */
-fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelSelectorForm): Boolean {
+suspend fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelSelectorForm): Boolean {
     when{
         this.text.isNullOrEmpty()->{
             inputLayout.isErrorEnabled = true
             inputLayout.error = context.getString(R.string.form_error_generic)
         }
         option == ModelSelectorForm.CURP -> {
-            if(this.text.length == 13){
+            if(this.text.length == 18){
                 inputLayout.isErrorEnabled = false
                 inputLayout.error = ""
             }else{
@@ -36,5 +36,5 @@ fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelS
             inputLayout.error = ""
         }
     }
-    return this.text.isNullOrEmpty()
+    return !this.text.isNullOrEmpty()
 }

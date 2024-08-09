@@ -4,4 +4,7 @@
     <string name="tools_custom_title">Título Personalizado</string>
     <string name="tools_custom_insert">Ingresa algo</string>
 
+    <string name="tools_custom_list_number">#List</string>
+    <string name="tools_custom_name">Nombre del alumno</string>
+
 </resources>
