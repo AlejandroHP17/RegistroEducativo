@@ -1,23 +1,21 @@
 package com.mx.liftechnology.registroeducativo.main.ui.student.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
 import com.mx.liftechnology.registroeducativo.databinding.FragmentStudentBinding
-import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
-import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
-import com.mx.liftechnology.registroeducativo.main.ui.home.MenuFragmentDirections
 import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
-import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
-import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorMenu
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class StudentFragment : Fragment() {
@@ -27,16 +25,12 @@ class StudentFragment : Fragment() {
     private val studentViewModel: StudentViewModel by sharedViewModel()
     private var adapterStudent: StudentAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        studentViewModel.getData()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentStudentBinding.inflate(inflater, container, false)
+        studentViewModel.getData()
         initListeners()
         initObservers()
         return binding.root
@@ -44,7 +38,7 @@ class StudentFragment : Fragment() {
 
     private fun initListeners(){
         binding.btnAdd.setOnClickListener {
-            val direction = StudentFragmentDirections.actionStudentFragmentToFormStudenFragment()
+            val direction = StudentFragmentDirections.actionStudentFragmentToFormStudenFragment(null)
             findNavController().navigate(direction)
         }
     }
@@ -56,10 +50,14 @@ class StudentFragment : Fragment() {
     }
 
     private fun inflateAdapter(items: List<StudentEntity>){
-        val clickListener = StudentClickListener { item ->
-
-            // Manejar el clic aquí
-        }
+        val clickListener = StudentClickListener(
+            onItemClick = { item ->
+                // Manejar el clic en la vista completa
+            },
+            onMenuClick = { item , position ->
+                performOptionsMenuClick(item, position)
+            }
+        )
 
         adapterStudent = StudentAdapter(items, clickListener)
         binding.rvCardStudent.layoutManager = LinearLayoutManager(this.context)
@@ -67,5 +65,36 @@ class StudentFragment : Fragment() {
             rvCardStudent.adapter = adapterStudent
         }
 
+    }
+
+    private fun performOptionsMenuClick(
+        items: StudentEntity,
+        position: Int
+    ) {
+        val popupMenu = PopupMenu(
+            requireActivity(),
+            binding?.rvCardStudent?.get(position)?.findViewById(R.id.iv_image)
+        )
+
+        popupMenu.menu.add(Menu.NONE, 1, 1, "Editar")
+        popupMenu.menu.add(Menu.NONE, 2, 2, "Eliminar")
+
+
+        popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+            when (item?.itemId) {
+                1 -> {
+                    val direction = StudentFragmentDirections.actionStudentFragmentToFormStudenFragment(items)
+                    findNavController().navigate(direction)
+                    return@OnMenuItemClickListener true
+                }
+                2 -> {
+
+                    return@OnMenuItemClickListener true
+                }
+            }
+            false
+        })
+
+        popupMenu.show()
     }
 }

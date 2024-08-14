@@ -49,12 +49,12 @@ class DatePickerDialog(val listener: (day: Int, month: Int, year: Int) -> Unit) 
         //return picker as DatePickerDialog
 
         // Crea una nueva instancia de DatePickerDialog y la retorna
-        return DatePickerDialog(requireContext(), this, year, month+1, day)
+        return DatePickerDialog(requireContext(), this, year, month, day)
     }
 
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
-        listener(day, month , year)
+        listener(day, month+1 , year)
     }
 
 

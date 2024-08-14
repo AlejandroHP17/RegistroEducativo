@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
+import com.mx.liftechnology.registroeducativo.framework.MyApp
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.dialogs.CustomAddDialog
@@ -26,21 +28,25 @@ class MenuFragment : Fragment() {
     private val binding get() = _binding!!
     private val menuViewModel: MenuViewModel by sharedViewModel()
     private var adapterMenu: MenuAdapter? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private var valueInitial:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
-        initialView(false)
+        initData()
+        initialView(valueInitial)
         initObservers()
         initListeners()
         return binding.root
+    }
+
+    private fun initData(){
+        // Ejemplo de cómo recuperar un valor
+        val value = MyApp.securePrefs.getString("Ciclo", "")
+        menuViewModel.saveNameCourse(value!!)
+        valueInitial = !value.isNullOrEmpty()
     }
 
     private fun initialView(flag : Boolean){
@@ -56,6 +62,7 @@ class MenuFragment : Fragment() {
     private fun initObservers() {
         menuViewModel.nameCourse.observe(viewLifecycleOwner){ text ->
             if(!text.isNullOrEmpty()){
+                MyApp.securePrefs.edit().putString("Ciclo", text).apply()
                 binding.tvTitleCard.text = text
                 initialView(true)
             }
@@ -83,18 +90,27 @@ class MenuFragment : Fragment() {
     }
     private fun inflateAdapter(items: List<ModelAdapterMenu>){
         val clickListener = MenuClickListener { item ->
-            when(item.id){
-                ModelSelectorMenu.CALENDAR.value -> {}
-                ModelSelectorMenu.STUDENT.value -> {
-                    val direction = MenuFragmentDirections.actionMenuFragmentToStudentFragment()
-                    findNavController().navigate(direction)
+            val direction: NavDirections? = when (item.id){
+                ModelSelectorMenu.CALENDAR.value -> {
+                    MenuFragmentDirections.actionMenuFragmentToCalendarFragment()
                 }
-                ModelSelectorMenu.SCHOOL.value -> {}
-                ModelSelectorMenu.EXPORT.value -> {}
-                ModelSelectorMenu.PERIOD.value -> {}
-                ModelSelectorMenu.CONFIG.value -> {}
+                ModelSelectorMenu.STUDENT.value -> {
+                    MenuFragmentDirections.actionMenuFragmentToStudentFragment()
+                }
+                ModelSelectorMenu.SUBJECT.value -> {
+                    MenuFragmentDirections.actionMenuFragmentToSubjectFragment()
+                }
+                ModelSelectorMenu.SCHOOL.value -> {null}
+                ModelSelectorMenu.EXPORT.value -> {null}
+                ModelSelectorMenu.PERIOD.value -> {null}
+                ModelSelectorMenu.CONFIG.value -> {null}
+                else -> {null}
             }
             // Manejar el clic aquí
+            if(direction != null){
+                findNavController().navigate(direction)
+            }
+
             toastFragment("Clicked on: ${item.titleCard}")
         }
 

@@ -8,7 +8,7 @@ import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
 @Dao
 interface StudentDao {
 
-    @Query("SELECT * FROM student_table ORDER BY id ASC")
+    @Query("SELECT * FROM student_table ORDER BY idCurp ASC")
     fun getAllStudent(): List<StudentEntity>
 
     @Insert

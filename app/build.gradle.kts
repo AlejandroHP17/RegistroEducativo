@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
 
+    implementation(libs.androidx.security.crypto.masterkeys)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

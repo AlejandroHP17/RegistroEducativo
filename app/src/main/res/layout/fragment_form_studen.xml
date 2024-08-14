@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.ui.student.fragment.FormStudenFragment">
+    tools:context=".main.ui.student.fragment.FormStudentFragment">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsvContainer"
@@ -164,7 +164,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16dp"
-                android:text="@string/empty_button"
+                android:text="@string/add_button"
                 style="@style/button_generic"
                 android:layout_gravity="bottom"/>
 

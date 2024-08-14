@@ -7,8 +7,9 @@ import kotlinx.parcelize.Parcelize
 enum class ModelSelectorMenu(val value: Int) : Parcelable {
    CALENDAR(1),
    STUDENT(2),
-   SCHOOL(3),
-   EXPORT(4),
+   SUBJECT(3),
+   SCHOOL(4),
    PERIOD(5),
-   CONFIG(6)
+   EXPORT(6),
+   CONFIG(7)
 }

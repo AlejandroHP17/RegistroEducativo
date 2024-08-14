@@ -4,9 +4,10 @@
     <string-array name="menu_items">
         <item>Calendario</item>
         <item>Alumnos</item>
+        <item>Asignaturas</item>
         <item>Escuela</item>
-        <item>Exportar</item>
         <item>Periodo</item>
+        <item>Exportar</item>
         <item>Configuraciones</item>
     </string-array>
     

@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
 import com.mx.liftechnology.registroeducativo.databinding.FragmentFormStudenBinding
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.main.ui.student.DatePickerDialog
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class FormStudenFragment : Fragment() {
+class FormStudentFragment : Fragment() {
 
     private var _binding: FragmentFormStudenBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +41,8 @@ class FormStudenFragment : Fragment() {
 
     private var coroutineScopeManager = CoroutineScopeManager()
 
+    private var itemArg : StudentEntity? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dates = mutableListOf()
@@ -48,8 +51,9 @@ class FormStudenFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentFormStudenBinding.inflate(inflater, container, false)
+        initArguments()
         initView()
         initListeners()
         initInputText()
@@ -57,8 +61,13 @@ class FormStudenFragment : Fragment() {
         return binding.root
     }
 
+    private fun initArguments(){
+        itemArg = arguments?.let { FormStudentFragmentArgs.fromBundle(it).itemStudent }?:run { null }
+    }
+
     private fun initView(){
         imageCalendar()
+        checkMode()
     }
 
     private fun imageCalendar(){
@@ -69,6 +78,20 @@ class FormStudenFragment : Fragment() {
             val resizedDrawable = it.mutate()
             etBirthday.setCompoundDrawables(resizedDrawable, null, null, null)
         }
+    }
+
+    private fun checkMode(){
+        binding.btnAdd.text = itemArg?.let {
+            binding.apply {
+                etName.setText(it.name)
+                etLastName.setText(it.lastName)
+                etSecondLastName.setText(it.secondLastName)
+                etCurp.setText(it.idCurp)
+                etBirthday.setText(it.dateBirthday)
+                etPhone.setText(it.phoneNumber.toString())
+            }
+            getString(R.string.edit_button)
+        } ?: run {getString(R.string.add_button)}
     }
 
     private fun initListeners(){
@@ -91,7 +114,11 @@ class FormStudenFragment : Fragment() {
                                 phoneNumber = binding.etPhone.text.toString().toLongOrNull(),
                                 birthday = dates
                             )
+                            itemArg?.let { studentViewModel.editData(data) } ?: run{
                             studentViewModel.saveData(data)
+                            }
+
+
                         }
                     }
                 }
@@ -119,7 +146,7 @@ class FormStudenFragment : Fragment() {
         studentViewModel.insertData.observe(viewLifecycleOwner){ flag ->
             if (flag){
                 toastFragment("El alumno se guardo correctamente")
-                val navigation = FormStudenFragmentDirections.actionFormStudenFragmentToStudentFragment()
+                val navigation = FormStudentFragmentDirections.actionFormStudenFragmentToStudentFragment()
                 findNavController().navigate(navigation)
             }else{
                 toastFragment("Ha ocurrido en error al guardar al alumno")
@@ -136,7 +163,6 @@ class FormStudenFragment : Fragment() {
         dates?.add(year)
         binding.etBirthday.setText(date)
         coroutineScopeManager.scopeIO.launch { withContext(Dispatchers.Main){ binding.etBirthday.verify(binding.inputBirthday,requireContext(),ModelSelectorForm.BIRTHDAY) }}
-
     }
 
 
@@ -196,6 +222,6 @@ class FormStudenFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        studentViewModel.insertData.removeObservers(viewLifecycleOwner)
     }
 }

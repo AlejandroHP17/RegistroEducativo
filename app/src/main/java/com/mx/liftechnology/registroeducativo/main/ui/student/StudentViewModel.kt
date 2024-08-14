@@ -1,17 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.ui.student
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.room.ColumnInfo
 import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
+import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelStudentForm
 import com.mx.liftechnology.registroeducativo.model.usecase.StudentUseCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -21,10 +16,10 @@ class StudentViewModel (
 ) : ViewModel() {
     private val coroutine = CoroutineScopeManager()
 
-    private val _insertData = MutableLiveData<Boolean>()
+    private val _insertData = SingleLiveEvent<Boolean>()
     val insertData: LiveData<Boolean> get() = _insertData
 
-    private val _listStudents = MutableLiveData<List<StudentEntity>>()
+    private val _listStudents = SingleLiveEvent<List<StudentEntity>>()
     val listStudents: LiveData<List<StudentEntity>> get() = _listStudents
 
 
@@ -73,6 +68,35 @@ class StudentViewModel (
                  _insertData.postValue(false)
              }
          }
+
+    }
+
+    fun editData(data: ModelStudentForm) {
+        coroutine.scopeIO.launch {
+            data.birthday?.takeIf { it.size >= 3 }?.let { birthday ->
+                val age = restarFechas(birthday[0], birthday[1], birthday[2])
+                val studentData = StudentEntity(
+                    idCurp = data.curp,
+                    name = data.name,
+                    lastName = data.lastName,
+                    secondLastName = data.secondLastName,
+                    dateBirthday = ("${data.birthday[0]}/${data.birthday[1]}/${data.birthday[2]}"),
+                    age = age.toInt(),
+                    listNumber = 0,
+                    phoneNumber = data.phoneNumber,
+                )
+                try{
+                    studentUseCase.insertStudent(studentData)
+                    _insertData.postValue(true)
+                }catch (e:Exception){
+                    _insertData.postValue(false)
+                }
+
+            } ?: run {
+                // Manejar el caso en que `birthday` es `null` o no tiene al menos 3 elementos
+                _insertData.postValue(false)
+            }
+        }
 
     }
 

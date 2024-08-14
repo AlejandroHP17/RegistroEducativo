@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
+import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.model.util.ErrorState
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
 import com.mx.liftechnology.registroeducativo.model.util.ModelCodeError
@@ -18,7 +19,7 @@ class MenuViewModel(
     // Corrutina controlada
     private val coroutine = CoroutineScopeManager()
 
-    private val _nameCourse = MutableLiveData<String>("")
+    private val _nameCourse = SingleLiveEvent<String>()
     val nameCourse: LiveData<String> = _nameCourse
 
     private val _nameMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>>>()
@@ -28,7 +29,7 @@ class MenuViewModel(
         _nameCourse.value = value
     }
 
-    fun getMenu(){
+    fun getMenu() {
         coroutine.scopeIO.launch {
             runCatching {
                 useCase.getMenu()

@@ -6,15 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
-import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardStudentBinding
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
 
 class StudentAdapter(
     private val items: List<StudentEntity>,
     private val listener : StudentClickListener
 ):
 ListAdapter<StudentEntity, StudentAdapter.ViewHolder>(ItemsDiffCallBack){
+
 
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
     companion object ItemsDiffCallBack : DiffUtil.ItemCallback<StudentEntity>() {
@@ -25,6 +24,8 @@ ListAdapter<StudentEntity, StudentAdapter.ViewHolder>(ItemsDiffCallBack){
             oldItem == newItem
     }
 
+
+
     class ViewHolder(private val binding : RecyclerCardStudentBinding): RecyclerView.ViewHolder(binding.root){
         // Method like a listener; bring the item and the action of click
         fun bind(item: StudentEntity, action:StudentClickListener){
@@ -32,6 +33,7 @@ ListAdapter<StudentEntity, StudentAdapter.ViewHolder>(ItemsDiffCallBack){
             binding.apply {
                 tvListNumber.text =  item.listNumber.toString()
                 tvName.text =  ("${item.name} ${item.lastName} ${item.secondLastName}")
+                ivImage.setOnClickListener {  action.onClickMenu(item, position)}
                 root.setOnClickListener { action.onClick(item) }
             }
         }
@@ -50,6 +52,10 @@ ListAdapter<StudentEntity, StudentAdapter.ViewHolder>(ItemsDiffCallBack){
     override fun getItemCount(): Int = items.size
 }
 
-class StudentClickListener(val listener: (item: StudentEntity) -> Unit){
-    fun onClick(item: StudentEntity) = listener(item)
+class StudentClickListener(
+    val onItemClick: (item: StudentEntity) -> Unit,
+    val onMenuClick: (item: StudentEntity, position: Int) -> Unit
+) {
+    fun onClick(item: StudentEntity) = onItemClick(item)
+    fun onClickMenu(item: StudentEntity, position: Int) = onMenuClick(item, position)
 }
