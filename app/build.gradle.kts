@@ -20,15 +20,47 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+    flavorDimensions += "version"
+
     buildTypes {
+        debug {
+            isMinifyEnabled = false
+            buildConfigField("boolean", "LOG_TAG", "true")
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("boolean", "LOG_TAG", "false")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+
+    productFlavors {
+        create("dev")
+        {
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            dimension = "version"
+        }
+        create("qa") {
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            dimension = "version"
+        }
+        create("prod") {
+            // No se agrega applicationIdSuffix para producción
+            versionNameSuffix = "-prod"
+            dimension = "version"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

@@ -1,3 +1,4 @@
+// businessModel
 pluginManagement {
     repositories {
         google {
@@ -11,6 +12,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+//dataModel
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -19,6 +22,8 @@ dependencyResolutionManagement {
     }
 }
 
+
+//app
 rootProject.name = "Registro Educativo"
 include(":app")
  

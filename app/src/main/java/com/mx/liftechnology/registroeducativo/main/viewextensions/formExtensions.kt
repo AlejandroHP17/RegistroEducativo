@@ -10,7 +10,7 @@ import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorForm
  * @author pelkidev
  * @since 1.0.0
  */
-suspend fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelSelectorForm): Boolean {
+fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelSelectorForm): Boolean {
     when{
         this.text.isNullOrEmpty()->{
             inputLayout.isErrorEnabled = true

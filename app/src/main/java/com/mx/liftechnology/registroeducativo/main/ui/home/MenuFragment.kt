@@ -13,6 +13,7 @@ import com.mx.liftechnology.registroeducativo.framework.MyApp
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.dialogs.CustomAddDialog
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import com.mx.liftechnology.registroeducativo.model.util.EmptyState
 import com.mx.liftechnology.registroeducativo.model.util.ErrorState
@@ -72,9 +73,11 @@ class MenuFragment : Fragment() {
         binding.apply {
             if (flag) {
                 menuViewModel.getMenu()
+                "Vista con menu".log("Pelki")
             } else {
                 includeEmptyHome.viewEmptyHome.visibility = View.VISIBLE
                 contentMenu.visibility = View.GONE
+                "Vista empty state".log("Pelki")
             }
         }
     }
