@@ -12,23 +12,38 @@ import com.mx.liftechnology.registroeducativo.model.util.ModelState
 import com.mx.liftechnology.registroeducativo.model.usecase.MenuUseCase
 import kotlinx.coroutines.launch
 
+/** MenuViewModel - Control the data of the menu
+ * @author pelkidev
+ * @since 1.0.0
+ * @param useCase Access to UseCase with DI
+ */
 class MenuViewModel(
     private val useCase: MenuUseCase
 ) : ViewModel() {
 
-    // Corrutina controlada
+    // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
 
+    // Help to know the name of actual course, fill with preference
     private val _nameCourse = SingleLiveEvent<String>()
     val nameCourse: LiveData<String> = _nameCourse
 
+    // List the option from menu
     private val _nameMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>>>()
     val nameMenu: LiveData<ModelState<List<ModelAdapterMenu>>> = _nameMenu
 
-    fun saveNameCourse(value: String){
+    /** saveNameCourse - update the name of the course
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    fun saveNameCourse(value: String) {
         _nameCourse.value = value
     }
 
+    /** getMenu - Get all the options from menu, or a mistake in case
+     * @author pelkidev
+     * @since 1.0.0
+     */
     fun getMenu() {
         coroutine.scopeIO.launch {
             runCatching {

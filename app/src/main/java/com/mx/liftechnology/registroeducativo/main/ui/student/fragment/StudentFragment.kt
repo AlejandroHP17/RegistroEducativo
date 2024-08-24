@@ -18,11 +18,19 @@ import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
 import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+/** StudentFragment - Show all the students in a list, can add new, edit or delete
+ * @author pelkidev
+ * @since 1.0.0
+ */
 class StudentFragment : Fragment() {
 
     private var _binding: FragmentStudentBinding? = null
     private val binding get() = _binding!!
+
+    /* View Model variable */
     private val studentViewModel: StudentViewModel by sharedViewModel()
+
+    /* Adapter variable */
     private var adapterStudent: StudentAdapter? = null
 
     override fun onCreateView(
@@ -36,65 +44,85 @@ class StudentFragment : Fragment() {
         return binding.root
     }
 
-    private fun initListeners(){
+    /** initListeners - Build the click on the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initListeners() {
         binding.btnAdd.setOnClickListener {
-            val direction = StudentFragmentDirections.actionStudentFragmentToFormStudenFragment(null)
+            val direction =
+                StudentFragmentDirections.actionStudentFragmentToFormStudenFragment(null)
             findNavController().navigate(direction)
         }
     }
 
-    private fun initObservers(){
-        studentViewModel.listStudents.observe(viewLifecycleOwner){ listStudents ->
+    /** initObservers - Read variable from viewmodel and do something
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    private fun initObservers() {
+        studentViewModel.listStudents.observe(viewLifecycleOwner) { listStudents ->
             inflateAdapter(listStudents)
         }
     }
 
-    private fun inflateAdapter(items: List<StudentEntity>){
+    /** inflateAdapter - Build the adapter of student
+     * @author pelkidev
+     * @since 1.0.0
+     * @param items list the option from student
+     * */
+    private fun inflateAdapter(items: List<StudentEntity>) {
         val clickListener = StudentClickListener(
-            onItemClick = { item ->
-                // Manejar el clic en la vista completa
+            onItemClick = { _ ->
+                //Nothing
             },
-            onMenuClick = { item , position ->
+            onMenuClick = { item, position ->
                 performOptionsMenuClick(item, position)
             }
         )
 
+        /* Build the adapter */
         adapterStudent = StudentAdapter(items, clickListener)
         binding.rvCardStudent.layoutManager = LinearLayoutManager(this.context)
         binding.apply {
             rvCardStudent.adapter = adapterStudent
         }
-
     }
 
+    /** performOptionsMenuClick - Build the options card
+     * @author pelkidev
+     * @since 1.0.0
+     * @param items list the option from student
+     * @param position select the correct option
+     * */
     private fun performOptionsMenuClick(
         items: StudentEntity,
         position: Int
     ) {
+        /* Build the menu */
         val popupMenu = PopupMenu(
             requireActivity(),
-            binding?.rvCardStudent?.get(position)?.findViewById(R.id.iv_image)
+            binding.rvCardStudent[position].findViewById(R.id.iv_image)
         )
 
         popupMenu.menu.add(Menu.NONE, 1, 1, "Editar")
         popupMenu.menu.add(Menu.NONE, 2, 2, "Eliminar")
 
-
         popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
             when (item?.itemId) {
                 1 -> {
-                    val direction = StudentFragmentDirections.actionStudentFragmentToFormStudenFragment(items)
+                    val direction =
+                        StudentFragmentDirections.actionStudentFragmentToFormStudenFragment(items)
                     findNavController().navigate(direction)
                     return@OnMenuItemClickListener true
                 }
-                2 -> {
 
+                2 -> {
                     return@OnMenuItemClickListener true
                 }
             }
             false
         })
-
         popupMenu.show()
     }
 }

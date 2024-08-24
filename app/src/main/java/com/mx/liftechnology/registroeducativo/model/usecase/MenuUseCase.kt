@@ -11,13 +11,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MenuUseCase (private val localRepository: MenuRepository){
+/** MenuUseCase - Get the list of menu and process the information
+ * @author pelkidev
+ * @date 28/08/2023
+ * @param localRepository connect with the repository
+ * */
+class MenuUseCase(private val localRepository: MenuRepository) {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-    /** Obtiene el listado de categorias y procesa la informacion para el viewmodel
-     * @author pelkidev
-     * @date 28/08/2023
-     * */
+
     suspend fun getMenu(): ModelState<List<ModelAdapterMenu>> {
         return withContext(dispatcher) {
             try {

@@ -5,17 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import java.util.concurrent.atomic.AtomicBoolean
 
+/** SingleLiveEvent - Help the variable in viewModels
+ * @author pelkidev
+ * @since 1.0.0
+ * */
 class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     private val pending = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         // Observe the internal MutableLiveData
-        super.observe(owner, Observer { t ->
+        super.observe(owner) { t ->
             if (pending.compareAndSet(true, false)) {
                 observer.onChanged(t)
             }
-        })
+        }
     }
 
     override fun setValue(value: T?) {
@@ -27,10 +31,5 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     override fun postValue(value: T?) {
         pending.set(true)
         super.postValue(value)
-    }
-
-    // Método simple para llamar cuando no hay datos que necesites pasar
-    fun call() {
-        value = null
     }
 }

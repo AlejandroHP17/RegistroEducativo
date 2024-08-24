@@ -17,18 +17,29 @@ import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import com.mx.liftechnology.registroeducativo.model.util.EmptyState
 import com.mx.liftechnology.registroeducativo.model.util.ErrorState
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
+import com.mx.liftechnology.registroeducativo.model.util.ModelPreference
 import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorDialog
 import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.model.util.SuccessState
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
+/** MenuFragment - Show the different available option that the user has
+ * @author pelkidev
+ * @since 1.0.0
+ */
 class MenuFragment : Fragment() {
 
     private var _binding: FragmentMenuBinding? = null
     private val binding get() = _binding!!
+
+    /* View Model variable */
     private val menuViewModel: MenuViewModel by sharedViewModel()
+
+    /* Adapter variable */
     private var adapterMenu: MenuAdapter? = null
-    private var valueInitial:Boolean = false
+
+    /* Auxiliar variable*/
+    private var valueInitial: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,85 +53,138 @@ class MenuFragment : Fragment() {
         return binding.root
     }
 
-    private fun initData(){
-        // Ejemplo de cómo recuperar un valor
-        val value = MyApp.securePrefs.getString("Ciclo", "")
+    /** initData - Get the data in order to print the correct view (home)
+     * @author pelkidev
+     * @since 1.0.0
+     * @param value help to know the first view, a menu or empty state
+     */
+    private fun initData() {
+        val value = MyApp.securePrefs.getString(ModelPreference.CYCLE, "")
         menuViewModel.saveNameCourse(value!!)
-        valueInitial = !value.isNullOrEmpty()
+        valueInitial = value.isNotEmpty()
     }
 
-    private fun initialView(flag : Boolean){
+    /** initialView - Print the correct view, menu or empty state
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    private fun initialView(flag: Boolean) {
         binding.apply {
-            if(flag){
+            if (flag) {
                 menuViewModel.getMenu()
-            }else{
+            } else {
                 includeEmptyHome.viewEmptyHome.visibility = View.VISIBLE
                 contentMenu.visibility = View.GONE
             }
         }
     }
+
+    /** initObservers - Read variable from viewmodel and do something
+     * @author pelkidev
+     * @since 1.0.0
+     */
     private fun initObservers() {
-        menuViewModel.nameCourse.observe(viewLifecycleOwner){ text ->
-            if(!text.isNullOrEmpty()){
-                MyApp.securePrefs.edit().putString("Ciclo", text).apply()
+        /* If nameCourse has value, save in preference and prit the correct view */
+        menuViewModel.nameCourse.observe(viewLifecycleOwner) { text ->
+            if (!text.isNullOrEmpty()) {
+                MyApp.securePrefs.edit().putString(ModelPreference.CYCLE, text).apply()
                 binding.tvTitleCard.text = text
                 initialView(true)
             }
         }
-        menuViewModel.nameMenu.observe(viewLifecycleOwner){ state->
-            when(state){
-                is SuccessState  -> { inflateAdapter(state.result) }
-                is ErrorState  -> { toastFragment("Error code: ${state.result}")  }
-                is EmptyState  -> { toastFragment("Por el momento no podemos mostrar el menu")}
+        /* Show all the options from menu, or if any error occur, show the error */
+        menuViewModel.nameMenu.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SuccessState -> {
+                    inflateAdapter(state.result)
+                }
+
+                is ErrorState -> {
+                    toastFragment("Error code: ${state.result}")
+                }
+
+                is EmptyState -> {
+                    toastFragment("Por el momento no podemos mostrar el menu")
+                }
             }
         }
     }
-    private fun initListeners(){
+
+    /** initListeners - Build the click on the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initListeners() {
         binding.includeEmptyHome.btnAdd.setOnClickListener {
             showDialog()
         }
     }
 
+    /** showDialog - Build the dialog to add
+     * @author pelkidev
+     * @since 1.0.0
+     * */
     private fun showDialog() {
-        val dialogFragment = CustomAddDialog.newInstance( ModelSelectorDialog.ADD)
-
+        val dialogFragment = CustomAddDialog.newInstance(ModelSelectorDialog.ADD)
         childFragmentManager.let {
             dialogFragment.show(it, "customDialog")
         }
     }
-    private fun inflateAdapter(items: List<ModelAdapterMenu>){
+
+    /** inflateAdapter - Build the adapter of menu
+     * @author pelkidev
+     * @since 1.0.0
+     * @param items list the option from menu
+     * */
+    private fun inflateAdapter(items: List<ModelAdapterMenu>) {
         val clickListener = MenuClickListener { item ->
-            val direction: NavDirections? = when (item.id){
+            val direction: NavDirections? = when (item.id) {
                 ModelSelectorMenu.CALENDAR.value -> {
                     MenuFragmentDirections.actionMenuFragmentToCalendarFragment()
                 }
+
                 ModelSelectorMenu.STUDENT.value -> {
                     MenuFragmentDirections.actionMenuFragmentToStudentFragment()
                 }
+
                 ModelSelectorMenu.SUBJECT.value -> {
                     MenuFragmentDirections.actionMenuFragmentToSubjectFragment()
                 }
-                ModelSelectorMenu.SCHOOL.value -> {null}
-                ModelSelectorMenu.EXPORT.value -> {null}
-                ModelSelectorMenu.PERIOD.value -> {null}
-                ModelSelectorMenu.CONFIG.value -> {null}
-                else -> {null}
+
+                ModelSelectorMenu.SCHOOL.value -> {
+                    null
+                }
+
+                ModelSelectorMenu.EXPORT.value -> {
+                    null
+                }
+
+                ModelSelectorMenu.PERIOD.value -> {
+                    null
+                }
+
+                ModelSelectorMenu.CONFIG.value -> {
+                    null
+                }
+
+                else -> {
+                    null
+                }
             }
-            // Manejar el clic aquí
-            if(direction != null){
+            if (direction != null) {
                 findNavController().navigate(direction)
             }
 
             toastFragment("Clicked on: ${item.titleCard}")
         }
 
+        /* Build the adapter */
         adapterMenu = MenuAdapter(items, clickListener)
-        binding.rvCardMenu.layoutManager = GridLayoutManager(this.context,2)
+        binding.rvCardMenu.layoutManager = GridLayoutManager(this.context, 2)
         binding.apply {
             rvCardMenu.adapter = adapterMenu
             includeEmptyHome.viewEmptyHome.visibility = View.GONE
             contentMenu.visibility = View.VISIBLE
         }
-
     }
 }

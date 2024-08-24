@@ -5,6 +5,10 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
 
+/** Interface - Connect with the database (Students)
+ * @author pelkidev
+ * @since 1.0.0
+ * */
 @Dao
 interface StudentDao {
 
@@ -12,7 +16,6 @@ interface StudentDao {
     fun getAllStudent(): List<StudentEntity>
 
     @Insert
-    fun insertStudent(student:StudentEntity)
-
+    fun insertStudent(student: StudentEntity)
 
 }

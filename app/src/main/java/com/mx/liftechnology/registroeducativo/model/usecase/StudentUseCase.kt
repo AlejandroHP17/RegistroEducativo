@@ -6,10 +6,16 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class StudentUseCase( private val localStudentRepository: StudentLocalRepository) {
+/** MenuUseCase - Get the list of menu and process the information
+ * @author pelkidev
+ * @date 28/08/2023
+ * @param localStudentRepository connect with the repository
+ * */
+class StudentUseCase(private val localStudentRepository: StudentLocalRepository) {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-    /** Obtiene el listado de categorias y procesa la informacion para el viewmodel
+
+    /** insertStudent - Insert a student in DAO
      * @author pelkidev
      * @date 28/08/2023
      * */
@@ -19,11 +25,11 @@ class StudentUseCase( private val localStudentRepository: StudentLocalRepository
         }
     }
 
-    /** Obtiene el listado de categorias y procesa la informacion para el viewmodel
+    /** getAllStudents - get all students in DAO
      * @author pelkidev
      * @date 28/08/2023
      * */
-    suspend fun getAllStudents() : List<StudentEntity>{
+    suspend fun getAllStudents(): List<StudentEntity> {
         return withContext(dispatcher) {
             localStudentRepository.getAllStudent()
         }

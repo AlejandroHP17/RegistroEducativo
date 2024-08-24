@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.model.util
 
 /** Sealed class, a generic result
  * @author Pelkidev
- * @date 01/01/24
  * @since 1.0.0
  */
 

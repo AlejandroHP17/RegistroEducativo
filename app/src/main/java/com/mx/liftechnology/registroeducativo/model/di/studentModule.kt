@@ -1,17 +1,17 @@
 package com.mx.liftechnology.registroeducativo.model.di
 
 import androidx.room.Room
-import com.mx.liftechnology.registroeducativo.data.local.dao.StudentDao
 import com.mx.liftechnology.registroeducativo.data.local.db.StudentRoomDatabase
-import com.mx.liftechnology.registroeducativo.data.local.repository.MenuRepository
 import com.mx.liftechnology.registroeducativo.data.local.repository.StudentLocalRepository
 import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
-import com.mx.liftechnology.registroeducativo.model.usecase.MenuUseCase
 import com.mx.liftechnology.registroeducativo.model.usecase.StudentUseCase
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+/** DI
+ * @author pelkidev
+ * @since 1.0.0
+ */
 val studentModule = module {
     /* Local */
     single {

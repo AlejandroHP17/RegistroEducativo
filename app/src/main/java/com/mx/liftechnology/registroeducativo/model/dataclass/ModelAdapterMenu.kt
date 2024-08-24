@@ -1,7 +1,11 @@
 package com.mx.liftechnology.registroeducativo.model.dataclass
 
-data class ModelAdapterMenu (
-    val id : Int,
+/** Model - Include all the elements to control in the adapter
+ * @author pelkidev
+ * @since 1.0.0
+ */
+data class ModelAdapterMenu(
+    val id: Int,
     val image: Int?,
-    val titleCard : String?
+    val titleCard: String?
 )

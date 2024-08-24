@@ -6,7 +6,10 @@ import com.google.android.material.textfield.TextInputLayout
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorForm
 
-/** Toast generic to Fragments */
+/** Check the input text, and show the errors or not
+ * @author pelkidev
+ * @since 1.0.0
+ */
 suspend fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelSelectorForm): Boolean {
     when{
         this.text.isNullOrEmpty()->{

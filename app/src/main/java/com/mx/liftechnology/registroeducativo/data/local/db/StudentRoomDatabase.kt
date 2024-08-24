@@ -7,13 +7,18 @@ import androidx.room.RoomDatabase
 import com.mx.liftechnology.registroeducativo.data.local.dao.StudentDao
 import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
 
+/** StudentRoomDatabase - Create the database (Students) with the entity
+ * @author pelkidev
+ * @since 1.0.0
+ * */
 @Database(entities = [StudentEntity::class], version = 1, exportSchema = false)
 abstract class StudentRoomDatabase : RoomDatabase() {
 
     abstract fun StudentDao(): StudentDao
-    companion object{
+
+    companion object {
         @Volatile
-        private var INSTANCE : StudentRoomDatabase? = null
+        private var INSTANCE: StudentRoomDatabase? = null
         fun getDataBase(context: Context): StudentRoomDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(

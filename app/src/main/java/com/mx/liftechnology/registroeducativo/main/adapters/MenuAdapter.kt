@@ -8,6 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
 
+/** MenuAdapter - Build the adapter for menu (home)
+ * @author pelkidev
+ * @since 1.0.0
+ * @param items list to build
+ * @param listener click on item's card
+ * */
 class MenuAdapter(
     private val items: List<ModelAdapterMenu>,
     private val listener : MenuClickListener

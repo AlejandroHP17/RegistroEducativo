@@ -41,7 +41,7 @@ koin-android-compat = { group = "io.insert-koin", name = "koin-android-compat", 
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-androidx-security-crypto-masterkeys = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "crypto" }
+androidx-security-crypto-masterkeys = { group = "androidx.security", name = "security-crypto", version.ref = "crypto" }
 
 [plugins]
 androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationFragmentKtx" }
