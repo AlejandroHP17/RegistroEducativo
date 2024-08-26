@@ -6,9 +6,11 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
 }
 
+//apply(from = "../common.gradle.kts")
+
 android {
     namespace = "com.mx.liftechnology.registroeducativo"
-    compileSdk = 34
+   compileSdk = 34
 
     defaultConfig {
         applicationId = "com.mx.liftechnology.registroeducativo"
@@ -100,4 +102,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    /* Libraries */
+    implementation(project(":domain"))
+    implementation(project(":data"))
 }
