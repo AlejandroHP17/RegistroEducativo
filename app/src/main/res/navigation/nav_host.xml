@@ -30,7 +30,7 @@
             app:destination="@id/formStudenFragment" >
             <argument
                 android:name="itemStudent"
-                app:argType="com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity"
+                app:argType="com.mx.liftechnology.data.model.StudentEntity"
                 app:nullable="true" />
         </action>
     </fragment>
@@ -41,7 +41,7 @@
         tools:layout="@layout/fragment_form_studen" >
         <argument
             android:name="itemStudent"
-            app:argType="com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity"
+            app:argType="com.mx.liftechnology.data.model.StudentEntity"
             app:nullable="true"
             android:defaultValue="@null" />
         <action

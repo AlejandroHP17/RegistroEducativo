@@ -3,13 +3,13 @@ package com.mx.liftechnology.registroeducativo.main.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
-import com.mx.liftechnology.registroeducativo.model.util.ErrorState
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
-import com.mx.liftechnology.registroeducativo.model.util.ModelCodeError
-import com.mx.liftechnology.registroeducativo.model.util.ModelState
-import com.mx.liftechnology.registroeducativo.model.usecase.MenuUseCase
+import com.mx.liftechnology.core.util.ErrorState
+import com.mx.liftechnology.core.util.ModelCodeError
+import com.mx.liftechnology.core.util.ModelState
+import com.mx.liftechnology.domain.usecase.MenuUseCase
 import kotlinx.coroutines.launch
 
 /** MenuViewModel - Control the data of the menu

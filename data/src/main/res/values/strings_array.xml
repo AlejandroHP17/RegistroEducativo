@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="menu_items">
+        <item>Calendario</item>
+        <item>Alumnos</item>
+        <item>Asignaturas</item>
+        <item>Escuela</item>
+        <item>Periodo</item>
+        <item>Exportar</item>
+        <item>Configuraciones</item>
+    </string-array>
+    
+</resources>

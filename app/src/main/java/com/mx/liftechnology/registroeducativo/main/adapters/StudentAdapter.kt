@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
+import com.mx.liftechnology.data.model.StudentEntity
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardStudentBinding
 
 /** StudentAdapter - Build the adapter for students

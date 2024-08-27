@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
+import com.mx.liftechnology.core.model.ModelAdapterMenu
 
 /** MenuAdapter - Build the adapter for menu (home)
  * @author pelkidev
@@ -15,23 +15,23 @@ import com.mx.liftechnology.registroeducativo.model.dataclass.ModelAdapterMenu
  * @param listener click on item's card
  * */
 class MenuAdapter(
-    private val items: List<ModelAdapterMenu>,
+    private val items: List<com.mx.liftechnology.core.model.ModelAdapterMenu>,
     private val listener : MenuClickListener
 ):
-ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
+ListAdapter<com.mx.liftechnology.core.model.ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
 
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelAdapterMenu>() {
-        override fun areItemsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<com.mx.liftechnology.core.model.ModelAdapterMenu>() {
+        override fun areItemsTheSame(oldItem: com.mx.liftechnology.core.model.ModelAdapterMenu, newItem: com.mx.liftechnology.core.model.ModelAdapterMenu) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
+        override fun areContentsTheSame(oldItem: com.mx.liftechnology.core.model.ModelAdapterMenu, newItem: com.mx.liftechnology.core.model.ModelAdapterMenu) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding : RecyclerCardMenuBinding): RecyclerView.ViewHolder(binding.root){
         // Method like a listener; bring the item and the action of click
-        fun bind(item: ModelAdapterMenu, action:MenuClickListener){
+        fun bind(item: com.mx.liftechnology.core.model.ModelAdapterMenu, action:MenuClickListener){
             // Synchronize the item response with the view
             binding.apply {
                 ivImage.setImageResource(item.image!!)
@@ -54,6 +54,6 @@ ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
     override fun getItemCount(): Int = items.size
 }
 
-class MenuClickListener(val listener: (item: ModelAdapterMenu) -> Unit){
-    fun onClick(item: ModelAdapterMenu) = listener(item)
+class MenuClickListener(val listener: (item: com.mx.liftechnology.core.model.ModelAdapterMenu) -> Unit){
+    fun onClick(item: com.mx.liftechnology.core.model.ModelAdapterMenu) = listener(item)
 }

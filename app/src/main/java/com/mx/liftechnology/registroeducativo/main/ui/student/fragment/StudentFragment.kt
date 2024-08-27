@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
+import com.mx.liftechnology.data.model.StudentEntity
 import com.mx.liftechnology.registroeducativo.databinding.FragmentStudentBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener

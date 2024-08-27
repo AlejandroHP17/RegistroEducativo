@@ -4,13 +4,13 @@ import android.content.Context
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.model.util.ModelSelectorForm
+import com.mx.liftechnology.core.util.ModelSelectorForm
 
 /** Check the input text, and show the errors or not
  * @author pelkidev
  * @since 1.0.0
  */
-fun EditText.verify(inputLayout: TextInputLayout, context:Context, option:ModelSelectorForm): Boolean {
+fun EditText.verify(inputLayout: TextInputLayout, context:Context, option: ModelSelectorForm): Boolean {
     when{
         this.text.isNullOrEmpty()->{
             inputLayout.isErrorEnabled = true

@@ -86,6 +86,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
 
+
+
     implementation(libs.androidx.security.crypto.masterkeys)
 
     implementation(libs.androidx.core.ktx)
@@ -106,4 +108,5 @@ dependencies {
     /* Libraries */
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":core"))
 }

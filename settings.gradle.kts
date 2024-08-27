@@ -32,3 +32,4 @@ rootProject.name = "Registro Educativo"
 include(":app")
 include(":domain")
 include(":data")
+include(":core")

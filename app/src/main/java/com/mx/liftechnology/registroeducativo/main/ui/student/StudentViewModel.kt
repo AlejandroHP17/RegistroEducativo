@@ -2,12 +2,12 @@ package com.mx.liftechnology.registroeducativo.main.ui.student
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mx.liftechnology.registroeducativo.data.local.entity.StudentEntity
+import com.mx.liftechnology.data.model.StudentEntity
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
-import com.mx.liftechnology.registroeducativo.model.dataclass.ModelStudentForm
-import com.mx.liftechnology.registroeducativo.model.usecase.StudentUseCase
-import com.mx.liftechnology.registroeducativo.model.util.ModelRegex
+import com.mx.liftechnology.core.model.ModelStudentForm
+import com.mx.liftechnology.domain.usecase.StudentUseCase
+import com.mx.liftechnology.core.util.ModelRegex
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -83,7 +83,7 @@ class StudentViewModel(
                     name = data.name,
                     lastName = data.lastName,
                     secondLastName = data.secondLastName,
-                    dateBirthday = ("${data.birthday[0]}/${data.birthday[1]}/${data.birthday[2]}"),
+                    dateBirthday = ("${birthday[0]}/${birthday[1]}/${birthday[2]}"),
                     age = age.toInt(),
                     listNumber = 0,
                     phoneNumber = data.phoneNumber,
@@ -116,7 +116,7 @@ class StudentViewModel(
                     name = data.name,
                     lastName = data.lastName,
                     secondLastName = data.secondLastName,
-                    dateBirthday = ("${data.birthday[0]}/${data.birthday[1]}/${data.birthday[2]}"),
+                    dateBirthday = ("${birthday[0]}/${birthday[1]}/${birthday[2]}"),
                     age = age.toInt(),
                     listNumber = 0,
                     phoneNumber = data.phoneNumber,
