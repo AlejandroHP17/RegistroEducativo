@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,6 +23,7 @@ import com.mx.liftechnology.core.util.ModelPreference
 import com.mx.liftechnology.core.util.ModelSelectorDialog
 import com.mx.liftechnology.core.util.ModelSelectorMenu
 import com.mx.liftechnology.core.util.SuccessState
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -35,7 +37,7 @@ class MenuFragment : Fragment() {
     private val binding get() = _binding!!
 
     /* View Model variable */
-    private val menuViewModel: MenuViewModel by viewModel { parametersOf(requireContext()) }
+    private val menuViewModel: MenuViewModel by sharedViewModel()
 
     /* Adapter variable */
     private var adapterMenu: MenuAdapter? = null

@@ -25,7 +25,7 @@ val studentModule = module {
     }
 
     single {
-        StudentLocalRepository(get()) // Inyectar StudentDao en StudentLocalRepository
+        StudentLocalRepository(get())
     }
 
     single {
