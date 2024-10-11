@@ -3,62 +3,35 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
     namespace = "com.mx.liftechnology.registroeducativo"
-    compileSdk = 34
 
-    defaultConfig {
-        applicationId = "com.mx.liftechnology.registroeducativo"
-        minSdk = 28
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "1.8"  // Alinea la compatibilidad de la versión de Kotlin
     }
+
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
+
 dependencies {
-    // Koin para inyección de dependencias
+    implementation(libs.bundles.androidx.basic)
+    implementation(libs.bundles.androidx.navigation)
+    implementation(libs.bundles.androidx.lifecycle)
+    implementation(libs.bundles.androidx.security)
+    implementation(libs.bundles.androidx.room)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.androidx.ui)
+    implementation(libs.bundles.junit.test)
 
-    implementation(libs.koin.core)           // Añadir Koin core
-    implementation(libs.koin.android)        // Añadir Koin Android
-    implementation(libs.koin.android.compat) // Añadir Koin Android compat
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.legacy.support.v4)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    /* Libraries */
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":core"))
 }

@@ -18,5 +18,6 @@ local.properties
 .sonarlint/
 .sonarlint/conf
 .sonarlint/conf/*
-.idea/sonarlint/
 .idea/sonarlint/*
+/.idea/sonarlint
+

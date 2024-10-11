@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_empty_state"
-    tools:context=".main.ui.home.fragment.MenuFragment">
+    tools:context=".main.ui.home.MenuFragment">
 
     <include
         android:id="@+id/include_empty_home"

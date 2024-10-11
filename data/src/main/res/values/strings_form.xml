@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="form_title">Ingresa los datos del alumno</string>
+    <string name="form_name">Nombre(s)</string>
+    <string name="form_last_name">Primer Apellido</string>
+    <string name="form_second_last_name">Segundo Apellido</string>
+    <string name="form_birthday">Fecha de nacimiento</string>
+    <string name="form_phone_number">Número de teléfono</string>
+    <string name="form_curp">Curp</string>
+
+    <string name="form_error_generic">Campo vacío</string>
+    <string name="form_error_characters">El formato no es correcto</string>
+</resources>

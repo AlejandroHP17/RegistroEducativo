@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".framework.MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,9 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RegistroEducativo"
         tools:targetApi="31">
-        <activity
-            android:name=".main.ui.home.viewmodel.MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".main.ui.MainActivity"
             android:exported="true">
