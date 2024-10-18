@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Tema para la Splash Screen -->
     <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
         <!-- Fondo del splash screen -->
