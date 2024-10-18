@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain
 
 /**
  * Principal activity, the purpose of the app is to help in the study´s field
@@ -10,6 +10,7 @@ package com.mx.liftechnology.registroeducativo.main.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.mx.liftechnology.registroeducativo.databinding.ActivityMainBinding
 
 
@@ -22,6 +23,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
+
+        // Opción para mantener el splash screen si necesitas cargar datos en segundo plano
+        splashScreen.setKeepOnScreenCondition {
+            // Aquí podrías mantener el splash si algún proceso tarda en iniciar
+            false
+        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
     }

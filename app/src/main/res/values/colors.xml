@@ -8,6 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="color_principal_text">#1F2937</color>
+    <color name="color_action">#60A5FA</color>
+    <color name="color_success">#10B981</color>
+    <color name="color_error">#806491</color>
+    <color name="color_secondary_text">#6B7A8E</color>
+    <color name="color_bg_card">#E5E7EB</color>
+    <color name="color_bg_first">#FBCFE8</color>
+    <color name="color_bg_second">#93C5FD</color>
 
     <color name="gris">#888888</color>
     <color name="green">#6EC665</color>

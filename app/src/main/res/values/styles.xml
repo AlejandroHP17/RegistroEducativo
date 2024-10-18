@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Estilo personalizado para AppCompatButton -->
+    <style name="button_generic" parent="TextAppearance.AppCompat.Widget.Button">
+        <item name="android:background">#EC6F49</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:radius">8dp</item>
+    </style>
+
+    <style name="CustomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/to_center</item>
+        <item name="android:windowExitAnimation">@anim/from_center</item>
+    </style>
+
+    <style name="editext_form" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="hintTextColor">@color/bg_input_box</item>
+        <item name="boxStrokeColor">@color/bg_input_box</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextColor">@color/red</item>
+    </style>
+
+
+</resources>

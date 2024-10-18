@@ -10,12 +10,16 @@ android {
     namespace = "com.mx.liftechnology.registroeducativo"
 
     kotlinOptions {
-        jvmTarget = "1.8"  // Alinea la compatibilidad de la versión de Kotlin
+        jvmTarget = "11"  // Alinea la compatibilidad de la versión de Kotlin
     }
 
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_21
     }
 }
 
