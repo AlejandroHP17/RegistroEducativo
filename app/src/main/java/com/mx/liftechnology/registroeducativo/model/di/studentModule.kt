@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.model.di
 import androidx.room.Room
 import com.mx.liftechnology.data.local.db.StudentRoomDatabase
 import com.mx.liftechnology.data.repository.StudentLocalRepository
-import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.StudentViewModel
 import com.mx.liftechnology.domain.usecase.StudentUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

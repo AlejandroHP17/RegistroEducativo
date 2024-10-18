@@ -1,11 +1,10 @@
-package com.mx.liftechnology.registroeducativo.main.ui.home
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,14 +17,11 @@ import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import com.mx.liftechnology.core.util.EmptyState
 import com.mx.liftechnology.core.util.ErrorState
-import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.core.util.ModelPreference
 import com.mx.liftechnology.core.util.ModelSelectorDialog
 import com.mx.liftechnology.core.util.ModelSelectorMenu
 import com.mx.liftechnology.core.util.SuccessState
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 
 /** MenuFragment - Show the different available option that the user has
  * @author pelkidev

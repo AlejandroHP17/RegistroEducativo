@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.DialogCustomAddBinding
-import com.mx.liftechnology.registroeducativo.main.ui.home.MenuViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.home.MenuViewModel
 import com.mx.liftechnology.core.util.ModelSelectorDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

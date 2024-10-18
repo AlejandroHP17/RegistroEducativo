@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.student.fragment
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.mx.liftechnology.data.model.StudentEntity
 import com.mx.liftechnology.registroeducativo.databinding.FragmentStudentBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
-import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.StudentViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /** StudentFragment - Show all the students in a list, can add new, edit or delete

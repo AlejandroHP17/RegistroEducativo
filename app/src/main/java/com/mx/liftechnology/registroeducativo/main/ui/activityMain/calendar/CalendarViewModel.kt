@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.calendar
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.calendar
 
 import androidx.lifecycle.ViewModel
 
