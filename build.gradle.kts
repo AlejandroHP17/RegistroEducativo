@@ -1,3 +1,4 @@
+import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -16,80 +17,80 @@ subprojects {
     afterEvaluate {
 
         extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions>()?.apply {
-            jvmTarget.set(JvmTarget.JVM_1_8)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
 
         tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
             compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_1_8)
+                jvmTarget.set(JvmTarget.JVM_21)
             }
         }
 
         tasks.withType<JavaCompile> {
-            sourceCompatibility = JavaVersion.VERSION_11.toString()
-            targetCompatibility = JavaVersion.VERSION_11.toString()
+            sourceCompatibility = JavaVersion.VERSION_21.toString()
+            targetCompatibility = JavaVersion.VERSION_21.toString()
+
         }
+        extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
+            compileSdkVersion(34)
 
-            extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-                compileSdkVersion(34)
+            defaultConfig {
+                minSdk = 28
+                targetSdk = 34
+                versionCode = 1
+                versionName = "0.0.1"
 
-                defaultConfig {
-                    minSdk = 28
-                    targetSdk = 34
-                    versionCode = 1
-                    versionName = "0.0.1"
+                testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+            }
 
-                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+            if (plugins.hasPlugin("com.android.application")) {
+            buildTypes {
+                getByName("release") {
+                    isMinifyEnabled = false
+                    proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
                 }
-
-
-                if (plugins.hasPlugin("com.android.application")) {
-                buildTypes {
-                    getByName("release") {
-                        isMinifyEnabled = false
-                        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-                    }
-                    getByName("debug") {
-                        isDebuggable = true
-                    }
+                getByName("debug") {
+                    isDebuggable = true
                 }
+            }
 
-                buildTypes {
-                    getByName("debug") {
-                        isMinifyEnabled = false
-                        buildConfigField("boolean", "LOG_TAG", "true")
-                    }
-                    getByName("release") {
-                        isMinifyEnabled = false
-                        buildConfigField("boolean", "LOG_TAG", "false")
-                        proguardFiles(
-                            getDefaultProguardFile("proguard-android-optimize.txt"),
-                            "proguard-rules.pro"
-                        )
-                    }
+            buildTypes {
+                getByName("debug") {
+                    isMinifyEnabled = false
+                    buildConfigField("boolean", "LOG_TAG", "true")
                 }
+                getByName("release") {
+                    isMinifyEnabled = false
+                    buildConfigField("boolean", "LOG_TAG", "false")
+                    proguardFiles(
+                        getDefaultProguardFile("proguard-android-optimize.txt"),
+                        "proguard-rules.pro"
+                    )
+                }
+            }
 
-                // Corregir flavorDimensions
-                flavorDimensions("version")
+            // Corregir flavorDimensions
+            flavorDimensions("version")
 
-                productFlavors {
-                    create("dev") {
-                        versionCode = 5
-                        applicationIdSuffix = ".dev" // Solo aplica para módulos de aplicación
-                        versionNameSuffix = "-dev"
-                        dimension = "version"
-                    }
-                    create("qa") {
-                        applicationIdSuffix = ".qa" // Solo aplica para módulos de aplicación
-                        versionNameSuffix = "-qa"
-                        dimension = "version"
-                    }
-                    create("prod") {
-                        versionNameSuffix = "-prod"
-                        dimension = "version"
-                    }
+            productFlavors {
+                create("dev") {
+                    versionCode = 5
+                    applicationIdSuffix = ".dev" // Solo aplica para módulos de aplicación
+                    versionNameSuffix = "-dev"
+                    dimension = "version"
+                }
+                create("qa") {
+                    applicationIdSuffix = ".qa" // Solo aplica para módulos de aplicación
+                    versionNameSuffix = "-qa"
+                    dimension = "version"
+                }
+                create("prod") {
+                    versionNameSuffix = "-prod"
+                    dimension = "version"
                 }
             }
         }
+    }
     }
 }

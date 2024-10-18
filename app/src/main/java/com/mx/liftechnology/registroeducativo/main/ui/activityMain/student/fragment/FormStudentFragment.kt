@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.student.fragment
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +14,8 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.data.model.StudentEntity
 import com.mx.liftechnology.registroeducativo.databinding.FragmentFormStudenBinding
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
-import com.mx.liftechnology.registroeducativo.main.ui.student.DatePickerDialog
-import com.mx.liftechnology.registroeducativo.main.ui.student.StudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.DatePickerDialog
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.StudentViewModel
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import com.mx.liftechnology.registroeducativo.main.viewextensions.verify
 import com.mx.liftechnology.core.model.ModelStudentForm

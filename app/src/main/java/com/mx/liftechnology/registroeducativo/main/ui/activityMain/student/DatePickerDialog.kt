@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.student
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student
 
 import android.app.DatePickerDialog
 import android.app.Dialog

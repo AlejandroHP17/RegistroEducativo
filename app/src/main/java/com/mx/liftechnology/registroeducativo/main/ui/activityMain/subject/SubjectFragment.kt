@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.subject
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject
 
 import android.os.Bundle
 import android.view.LayoutInflater

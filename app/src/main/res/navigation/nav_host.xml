@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.home.MenuFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.home.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/studentFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.student.fragment.StudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.fragment.StudentFragment"
         android:label="fragment_student"
         tools:layout="@layout/fragment_student" >
         <action
@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/formStudenFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.student.fragment.FormStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.fragment.FormStudentFragment"
         android:label="fragment_form_studen"
         tools:layout="@layout/fragment_form_studen" >
         <argument
@@ -53,12 +53,12 @@
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.calendar.CalendarFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.calendar.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/subjectFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.subject.SubjectFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.SubjectFragment"
         android:label="fragment_subject"
         tools:layout="@layout/fragment_subject" />
 </navigation>

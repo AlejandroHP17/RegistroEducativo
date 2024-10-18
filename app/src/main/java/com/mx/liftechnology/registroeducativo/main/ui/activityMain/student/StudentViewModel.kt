@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.student
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
