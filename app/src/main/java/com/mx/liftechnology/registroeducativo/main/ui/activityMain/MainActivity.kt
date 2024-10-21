@@ -23,13 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashScreen = installSplashScreen()
 
-        // Opción para mantener el splash screen si necesitas cargar datos en segundo plano
-        splashScreen.setKeepOnScreenCondition {
-            // Aquí podrías mantener el splash si algún proceso tarda en iniciar
-            false
-        }
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
     }
