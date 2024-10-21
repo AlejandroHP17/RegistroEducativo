@@ -4,7 +4,9 @@ import android.app.Application
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.mx.liftechnology.registroeducativo.model.di.loginModule
 import com.mx.liftechnology.registroeducativo.model.di.menuModule
+import com.mx.liftechnology.registroeducativo.model.di.registerModule
 import com.mx.liftechnology.registroeducativo.model.di.studentModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -35,7 +37,12 @@ class MyApp : Application() {
         startKoin {
             androidLogger()  // Opcional: Log para depuración
             androidContext(this@MyApp)
-            modules(menuModule, studentModule)
+            modules(
+                loginModule,
+                registerModule,
+                menuModule,
+                studentModule
+            )
         }
     }
 

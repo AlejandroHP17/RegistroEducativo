@@ -7,7 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.mx.liftechnology.registroeducativo.databinding.ActivitySplashBinding
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
+import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
 
 /** SplashActivity
  * @author pelkidev
@@ -31,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun navigate(){
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }, 2000)
     }
