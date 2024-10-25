@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_transparent"
-    android:padding="@dimen/margin_outer"
     tools:context=".main.ui.activityLogin.register.RegisterFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/margin_outer"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/log_email"
                 android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_outer">
+                android:layout_marginTop="@dimen/margin_between">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/log_password"
                 android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_outer" >
+                android:layout_marginTop="@dimen/margin_between" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_password"
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/reg_repeat_password"
                 android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_outer" >
+                android:layout_marginTop="@dimen/margin_between" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_repeat_password"
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/log_register"
                 android:textColor="@color/color_action"
-                android:layout_marginTop="@dimen/margin_outer"/>
+                android:layout_marginTop="@dimen/margin_between"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_code"
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/reg_code"
                 android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_outer" >
+                android:layout_marginTop="@dimen/margin_between" >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_code"
@@ -139,9 +139,10 @@
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_between"
                 android:text="@string/log_logIn"
                 style="@style/button_generic" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

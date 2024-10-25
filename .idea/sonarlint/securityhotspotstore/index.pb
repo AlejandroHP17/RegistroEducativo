@@ -126,3 +126,5 @@ eapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/
 Papp/src/main/java/com/mx/liftechnology/registroeducativo/model/di/loginModule.kt,7/d/7d6c9f0f0c0c8eafa687f36d0fcfbf27ae3336b3
 ñ
 fapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/login/LoginViewModel.kt,c/d/cd810d49b4ca203d782a973b7370c0081336d534
+ê
+`app/src/main/java/com/mx/liftechnology/registroeducativo/main/funextensions/consoleExtensions.kt,4/6/4619bd5f447702e0b7c0cf9b2c443db3dd856de5

@@ -10,11 +10,14 @@ import com.mx.liftechnology.core.util.ModelCodeSuccess
 import com.mx.liftechnology.core.util.ModelRegex
 import com.mx.liftechnology.core.util.ModelState
 import com.mx.liftechnology.core.util.SuccessState
+import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel()  {
+class LoginViewModel (
+    private val loginUseCase: LoginUseCase
+): ViewModel()  {
     // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
 
@@ -45,10 +48,23 @@ class LoginViewModel : ViewModel()  {
             }
             Handler(Looper.getMainLooper()).postDelayed({
                 if(emailField.value is SuccessState && passField.value is SuccessState){
-                    _responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))
+                    login(email, pass)
+                    ///
                 }
             },10)
 
+        }
+    }
+
+    private fun login(email: String?, pass: String?){
+        coroutine.scopeIO.launch {
+            runCatching {
+                loginUseCase.login(email,pass)
+            }.onSuccess {
+                _responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))
+            }.onFailure {
+                _responseLogin.postValue(SuccessState(ModelCodeError.ERROR_FUNCTION))
+            }
         }
     }
 }
