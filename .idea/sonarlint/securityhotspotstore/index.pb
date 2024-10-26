@@ -126,3 +126,17 @@ eapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/
 Papp/src/main/java/com/mx/liftechnology/registroeducativo/model/di/loginModule.kt,7/d/7d6c9f0f0c0c8eafa687f36d0fcfbf27ae3336b3
 ñ
 fapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/login/LoginViewModel.kt,c/d/cd810d49b4ca203d782a973b7370c0081336d534
+ê
+`app/src/main/java/com/mx/liftechnology/registroeducativo/main/funextensions/consoleExtensions.kt,4/6/4619bd5f447702e0b7c0cf9b2c443db3dd856de5
+t
+Dcore/src/main/java/com/mx/liftechnology/core/util/GenericResponse.kt,e/c/ece03e46e40f34340839e3180521a1b4d1d13a80
+s
+Ccore/src/main/java/com/mx/liftechnology/core/model/ModelApi/Data.kt,8/e/8e31d4e0b276595eeea7a38e5a12cd27c113db9c
+Ç
+Rdomain/src/main/java/com/mx/liftechnology/domain/usecase/flowlogin/LoginUseCase.kt,c/3/c39579d3e2ab2268a0cc7d114216757ac4c1b22e
+}
+Mcore/src/main/java/com/mx/liftechnology/core/network/enviroment/Enviroment.kt,c/c/cc62d0f627334435258e854b3ffc3084ef7de8a8
+Ñ
+Tdata/src/main/java/com/mx/liftechnology/data/repository/flowLogin/LoginRepository.kt,5/6/563ebe2c82bf2c262c9fc3c008e8c58e4717cf14
+|
+Lcore/src/main/java/com/mx/liftechnology/core/network/callapi/LoginCallApi.kt,8/1/81640db9b11de8944ccf7a8776ec138cc008b08e

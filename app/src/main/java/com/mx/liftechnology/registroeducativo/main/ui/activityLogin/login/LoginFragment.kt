@@ -84,7 +84,8 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finish() }
                 else -> {
-                    // Mostrar un error
+                    binding.inputPassword.error = getString(R.string.text_pass_incorrect)
+                    binding.inputEmail.error = getString(R.string.text_email_incorrect)
                 }
             }
         }

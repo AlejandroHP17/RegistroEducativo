@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx.ui)
     implementation(libs.bundles.junit.test)
+    implementation(libs.bundles.retrofit)
 
     /* Libraries */
     implementation(project(":domain"))
