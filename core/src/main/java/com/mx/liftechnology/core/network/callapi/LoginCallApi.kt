@@ -19,5 +19,8 @@ interface LoginCallApi {
 // Modelo para credenciales
 data class Credentials(
     val email: String,
-    val pass: String
+    val password: String,
+    val latitude : String,
+    val longitude : String,
+    val imei : String
 )

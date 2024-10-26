@@ -61,9 +61,12 @@ class LoginViewModel (
             runCatching {
                 loginUseCase.login(email,pass)
             }.onSuccess {
-                _responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))
+                when(it){
+                    is SuccessState ->{_responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))}
+                    else -> { _responseLogin.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))}
+                }
             }.onFailure {
-                _responseLogin.postValue(SuccessState(ModelCodeError.ERROR_FUNCTION))
+                _responseLogin.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
             }
         }
     }

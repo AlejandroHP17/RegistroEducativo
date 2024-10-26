@@ -10,12 +10,12 @@ import com.mx.liftechnology.data.repository.flowLogin.LoginRepository
 class LoginUseCase(
     private val repositoryLogin : LoginRepository
 ) {
-
-
     suspend fun login(email: String?, pass: String?):ModelState<GenericResponse<Data>?>{
         return runCatching { repositoryLogin.execute(email, pass) }
             .fold(
-                onSuccess = { data -> SuccessState (data) },
+                onSuccess = { data ->
+                    if(data!=null) SuccessState (data)
+                    else ErrorState(1)},
                 onFailure = { exception ->
                     ErrorState( 1)
                 }
