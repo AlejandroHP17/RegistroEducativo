@@ -12,6 +12,8 @@ import com.mx.liftechnology.core.util.ModelCodeError
 import com.mx.liftechnology.core.util.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterBinding
+import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -27,6 +29,10 @@ class RegisterFragment : Fragment() {
     /* View Model variable */
     private val registerViewModel: RegisterViewModel by viewModel()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        registerViewModel.getCCT()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,32 +49,27 @@ class RegisterFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.reg_welcome)
             includeHeader.tvInsert.text = getString(R.string.reg_insert)
+            val stringBuilder = StringBuilder("Reglas para hacer válida tu contraseña").append("\n")
+                .append("   * Mínimo 8 caracteres").append("\n")
+                .append("   * Contener al menos una letra mayúscula").append("\n")
+                .append("   * Contener al menos una letra minúscula").append("\n")
+                .append("   * Contener al menos un número")
+            tvRegister.text = stringBuilder
         }
     }
 
     private fun initObservers() {
         registerViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    handlerSuccess(binding.inputEmail)
-                }
-
-                is ErrorState -> {
-                    handlerErrorEmail(binding.inputEmail, state.result)
-                }
-
-                else -> {
-                    handlerErrorEmail(binding.inputEmail, ModelCodeError.ET_MISTAKE)
-                }
+                is SuccessState -> { binding.inputEmail.successET() }
+                is ErrorState -> { binding.inputEmail.errorET(state.result) }
+                else -> { binding.inputEmail.errorET( ModelCodeError.ET_MISTAKE) }
             }
         }
 
         registerViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    handlerSuccess(binding.inputPassword)
-                }
-
+                is SuccessState -> {binding.inputPassword.successET() }
                 is ErrorState -> {
                     handlerErrorPass(binding.inputPassword, state.result)
                 }
@@ -81,9 +82,7 @@ class RegisterFragment : Fragment() {
 
         registerViewModel.repeatPassField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    handlerSuccess(binding.inputRepeatPassword)
-                }
+                is SuccessState -> {binding.inputRepeatPassword.successET() }
 
                 is ErrorState -> {
                     handlerErrorPass(binding.inputRepeatPassword, state.result)
@@ -97,9 +96,7 @@ class RegisterFragment : Fragment() {
 
         registerViewModel.cctField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    handlerSuccess(binding.inputCct)
-                }
+                is SuccessState -> {binding.inputCct.successET() }
 
                 is ErrorState -> {
                     handlerErrorCCT(binding.inputCct, state.result)
@@ -113,9 +110,7 @@ class RegisterFragment : Fragment() {
 
         registerViewModel.codeField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    handlerSuccess(binding.inputCode)
-                }
+                is SuccessState -> {binding.inputCode.successET() }
 
                 is ErrorState -> {
                     handlerErrorCCT(binding.inputCode, ModelCodeError.ET_EMPTY)
@@ -126,10 +121,6 @@ class RegisterFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun handlerSuccess(inputText: TextInputLayout) {
-        inputText.error = null
     }
 
     private fun handlerErrorEmail(inputText: TextInputLayout, result: Int) {

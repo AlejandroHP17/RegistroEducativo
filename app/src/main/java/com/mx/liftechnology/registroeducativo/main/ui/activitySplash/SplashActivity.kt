@@ -23,12 +23,16 @@ class SplashActivity : AppCompatActivity() {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition{false}
 
-        binding = ActivitySplashBinding.inflate(layoutInflater) // Inflar el layout con binding
-        setContentView(binding?.root) // Establecer el contenido de la vista
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
         navigate()
     }
 
+    /** Decide what activity, login or main
+     * @author pelkidev
+     * @since 1.0.0
+     * */
     private fun navigate(){
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, LoginActivity::class.java))

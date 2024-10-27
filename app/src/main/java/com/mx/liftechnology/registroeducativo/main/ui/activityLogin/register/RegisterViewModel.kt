@@ -4,19 +4,27 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import com.mx.liftechnology.core.model.ModelApi.DataCCT
 import com.mx.liftechnology.core.util.ErrorState
 import com.mx.liftechnology.core.util.ModelCodeError
 import com.mx.liftechnology.core.util.ModelCodeSuccess
 import com.mx.liftechnology.core.util.ModelRegex
 import com.mx.liftechnology.core.util.ModelState
 import com.mx.liftechnology.core.util.SuccessState
+import com.mx.liftechnology.domain.usecase.flowlogin.RegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class RegisterViewModel: ViewModel()  {
+class RegisterViewModel(
+    private val registerUseCase : RegisterUseCase
+): ViewModel()  {
     // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
+
+    // Help to know when the student was save, and post a notification
+    private val _responseCCT = SingleLiveEvent<ModelState<DataCCT?>>()
+    //val responseCCT: LiveData<ModelState<DataCCT?>> get() = _responseCCT
 
     // Help to know when the student was save, and post a notification
     private val _emailField = SingleLiveEvent<ModelState<Int>>()
@@ -43,7 +51,20 @@ class RegisterViewModel: ViewModel()  {
     private val _responseRegister = SingleLiveEvent<ModelState<Int>>()
     //val responseRegister: LiveData<ModelState<Int>> get() = _responseRegister
 
-
+    fun getCCT(){
+        coroutine.scopeIO.launch {
+            runCatching {
+                registerUseCase.getCCT()
+            }.onSuccess {
+                when(it){
+                    is SuccessState ->{_responseCCT.postValue(SuccessState(it.result?.data))}
+                    else -> { _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))}
+                }
+            }.onFailure {
+                _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+            }
+        }
+    }
 
     fun validateFields(
         email: String,

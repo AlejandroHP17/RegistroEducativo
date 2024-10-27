@@ -8,9 +8,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-interface LoginCallApi {
+interface LoginApiCall {
     /** Realiza la petición al API */
-    @POST(Environment.END_POINT)
+    @POST(Environment.END_POINT_LOGIN)
     suspend fun callApi(
         @Body credentials: Credentials
     ): Response<GenericResponse<Data>?>

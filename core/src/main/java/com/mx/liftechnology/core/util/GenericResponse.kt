@@ -8,5 +8,6 @@ class GenericResponse<T>(
 
 data class ResponseBasic(
     val code: Int,
-    val msg: String
+    val msg: String,
+    val validation: List<Any>
 )

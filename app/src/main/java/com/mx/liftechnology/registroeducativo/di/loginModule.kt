@@ -1,0 +1,31 @@
+package com.mx.liftechnology.registroeducativo.di
+
+import com.mx.liftechnology.core.network.callapi.LoginApiCall
+import com.mx.liftechnology.data.repository.flowLogin.LoginRepository
+import com.mx.liftechnology.data.repository.flowLogin.LoginRepositoryImp
+import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
+import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login.LoginViewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.dsl.module
+import retrofit2.Retrofit
+
+/** DI
+ * @author pelkidev
+ * @since 1.0.0
+ */
+val loginModule = module {
+
+    factory { get<Retrofit>().create(LoginApiCall::class.java) }
+
+    single <LoginRepository>{
+        LoginRepositoryImp(get())
+    }
+
+    single {
+        LoginUseCase(get())
+    }
+
+    viewModel {
+        LoginViewModel(get())
+    }
+}

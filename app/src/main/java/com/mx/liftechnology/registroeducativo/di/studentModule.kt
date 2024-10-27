@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.model.di
+package com.mx.liftechnology.registroeducativo.di
 
 import androidx.room.Room
 import com.mx.liftechnology.data.local.db.StudentRoomDatabase

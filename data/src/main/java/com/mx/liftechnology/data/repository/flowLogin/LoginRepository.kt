@@ -2,9 +2,8 @@ package com.mx.liftechnology.data.repository.flowLogin
 
 import com.mx.liftechnology.core.model.ModelApi.Data
 import com.mx.liftechnology.core.network.callapi.Credentials
-import com.mx.liftechnology.core.network.callapi.LoginCallApi
+import com.mx.liftechnology.core.network.callapi.LoginApiCall
 import com.mx.liftechnology.core.util.GenericResponse
-import com.mx.liftechnology.core.util.ModelState
 
 
 fun interface LoginRepository{
@@ -13,7 +12,7 @@ fun interface LoginRepository{
 
 
 class LoginRepositoryImp(
-  private val loginCallApi: LoginCallApi
+  private val loginApiCall: LoginApiCall
 ) :  LoginRepository {
 
 
@@ -22,7 +21,7 @@ class LoginRepositoryImp(
         return try {
             val request = Credentials(email!!,pass!!,"15.1112225",
             "15.11111", "1111111111" )
-            val response = loginCallApi.callApi(request )
+            val response = loginApiCall.callApi(request )
             if (response.isSuccessful) {
                 response.body()
             } else {

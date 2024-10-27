@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import com.mx.liftechnology.core.util.ErrorState
 import com.mx.liftechnology.core.util.ModelCodeError
 import com.mx.liftechnology.core.util.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentLoginBinding
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
+import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-/** MenuFragment - Show the different available option that the user has
+/** LoginFragment - User can login, or select the register or forgot password
  * @author pelkidev
  * @since 1.0.0
  */
@@ -39,6 +41,10 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    /** initView - Build the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
     private fun initView(){
         binding.apply {
             includeHeader.btnReturn.visibility = View.GONE
@@ -47,10 +53,16 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /** initObservers - focus in the variables from viewmodel
+     * @author pelkidev
+     * @since 1.0.0
+     * @param emailField check the email and set the correct view
+     * @param passField check the email and set the correct view
+     * */
     private fun initObservers(){
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { binding.inputEmail.error = null }
+                is SuccessState -> { binding.inputEmail.successET() }
                 is ErrorState -> {
                     binding.inputEmail.error = when(state.result){
                         ModelCodeError.ET_EMPTY -> { getString(R.string.text_empty)}
@@ -65,7 +77,7 @@ class LoginFragment : Fragment() {
 
         loginViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { binding.inputPassword.error = null }
+                is SuccessState -> { binding.inputPassword.successET() }
                 is ErrorState -> {
                     binding.inputPassword.error = when(state.result){
                         ModelCodeError.ET_EMPTY -> { getString(R.string.text_empty)}
@@ -90,6 +102,8 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
+
 
     /** initListeners - Build the click on the view
      * @author pelkidev
