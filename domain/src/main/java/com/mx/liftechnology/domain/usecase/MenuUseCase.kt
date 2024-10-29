@@ -1,11 +1,11 @@
 package com.mx.liftechnology.domain.usecase
 
 import com.mx.liftechnology.core.model.ModelAdapterMenu
-import com.mx.liftechnology.core.util.EmptyState
-import com.mx.liftechnology.core.util.ErrorState
-import com.mx.liftechnology.core.util.ModelCodeError
-import com.mx.liftechnology.core.util.ModelState
-import com.mx.liftechnology.core.util.SuccessState
+import com.mx.liftechnology.core.model.modelBase.EmptyState
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.data.repository.MenuRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

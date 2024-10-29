@@ -27,7 +27,7 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
         super.setValue(value)
     }
 
-    // Solo en caso de que necesites llamarlo desde un hilo secundario
+    // only in case invoke a secondary thread
     override fun postValue(value: T?) {
         pending.set(true)
         super.postValue(value)

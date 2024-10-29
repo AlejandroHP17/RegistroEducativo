@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.mx.liftechnology.core.network.networkModule
+import com.mx.liftechnology.core.util.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.registerModule
@@ -39,6 +40,7 @@ class MyApp : Application() {
             androidLogger()  // Opcional: Log para depuración
             androidContext(this@MyApp)
             modules(
+                locationModule,
                 networkModule,
                 loginModule,
                 registerModule,

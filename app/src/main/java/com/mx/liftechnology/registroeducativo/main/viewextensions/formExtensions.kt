@@ -4,7 +4,7 @@ import android.content.Context
 import android.widget.EditText
 import androidx.core.content.ContextCompat.getString
 import com.google.android.material.textfield.TextInputLayout
-import com.mx.liftechnology.core.util.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.core.util.ModelSelectorForm
 
@@ -58,12 +58,28 @@ fun TextInputLayout.errorET(codeError: Int){
             getString(context, R.string.text_email_format_incorrect)
         }
 
-        ModelCodeError.ET_MISTAKE -> {
+        ModelCodeError.ET_DIFFERENT -> {
+            getString(context ,R.string.text_pass_not_match)
+        }
+
+        ModelCodeError.ET_NOT_FOUND -> {
+            getString(context ,R.string.text_cct_not_found)
+        }
+
+        ModelCodeError.ET_INCORRECT_FORMAT -> {
+            getString(context ,R.string.text_incorrect_format)
+        }
+
+
+        ModelCodeError.ET_MISTAKE_EMAIL -> {
             getString(context, R.string.text_email_incorrect)
+        }
+        ModelCodeError.ET_MISTAKE_PASS -> {
+            getString(context, R.string.text_pass_incorrect)
         }
 
         else -> {
-            getString(context, R.string.text_email_incorrect)
+            getString(context, R.string.text_incorrect_data)
         }
     }
 }

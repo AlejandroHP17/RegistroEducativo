@@ -7,7 +7,7 @@ import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.core.model.ModelStudentForm
 import com.mx.liftechnology.domain.usecase.StudentUseCase
-import com.mx.liftechnology.core.util.ModelRegex
+import com.mx.liftechnology.core.model.modelBase.ModelRegex
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit

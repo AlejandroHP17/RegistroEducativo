@@ -10,4 +10,5 @@ object Environment {
     const val URL_BASE = "http://10.0.2.2:8000/api/"
     const val END_POINT_LOGIN = "auth/login"
     const val END_POINT_CCT = "obtenCCTEscuelasCicloActivo"
+    const val END_POINT_REGISTER= "obtenRegistroEscolar"
 }
