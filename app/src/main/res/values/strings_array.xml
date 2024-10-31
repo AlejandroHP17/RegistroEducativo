@@ -10,5 +10,13 @@
         <item>Exportar</item>
         <item>Configuraciones</item>
     </string-array>
+
+    <string-array name="rules_pass">
+        <item>Reglas para hacer válida tu contraseña</item>
+        <item>   * Mínimo 8 caracteres</item>
+        <item>   * Contener al menos una letra mayúscula</item>
+        <item>   * Contener al menos una letra minúscula</item>
+        <item>   * Contener al menos un número</item>
+    </string-array>
     
 </resources>

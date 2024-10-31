@@ -45,64 +45,121 @@ class RegisterFragment : Fragment() {
         return binding.root
     }
 
+    /** initView - Build the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
     private fun initView() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.reg_welcome)
             includeHeader.tvInsert.text = getString(R.string.reg_insert)
-            val stringBuilder = StringBuilder("Reglas para hacer válida tu contraseña").append("\n")
-                .append("   * Mínimo 8 caracteres").append("\n")
-                .append("   * Contener al menos una letra mayúscula").append("\n")
-                .append("   * Contener al menos una letra minúscula").append("\n")
-                .append("   * Contener al menos un número")
+
+            val listRules = context?.resources?.getStringArray(R.array.rules_pass)
+            val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
             tvRegister.text = stringBuilder
         }
     }
 
+    /** initObservers - focus in the variables from viewmodel
+     * @author pelkidev
+     * @since 1.0.0
+     * @param emailField check the email and set the correct view
+     * @param passField check the password and set the correct view
+     * @param repeatPassField check the password and set the correct view
+     * @param cctField check the cct and set the correct view
+     * @param codeField check the code and set the correct view
+     * @param responseLogin check the response of service, do actions
+     * */
     private fun initObservers() {
         registerViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { binding.inputEmail.successET() }
-                is ErrorState -> { binding.inputEmail.errorET(state.result) }
-                else -> { binding.inputEmail.errorET( ModelCodeError.ET_MISTAKE_EMAIL) }
+                is SuccessState -> {
+                    binding.inputEmail.successET()
+                }
+
+                is ErrorState -> {
+                    binding.inputEmail.errorET(state.result)
+                }
+
+                else -> {
+                    binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                }
             }
         }
 
         registerViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {binding.inputPassword.successET() }
-                is ErrorState -> {binding.inputPassword.errorET(state.result) }
-                else -> { binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS) }
+                is SuccessState -> {
+                    binding.inputPassword.successET()
+                }
+
+                is ErrorState -> {
+                    binding.inputPassword.errorET(state.result)
+                }
+
+                else -> {
+                    binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
+                }
             }
         }
 
         registerViewModel.repeatPassField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {binding.inputRepeatPassword.successET()}
-                is ErrorState -> {binding.inputRepeatPassword.errorET(state.result) }
-                else -> {binding.inputRepeatPassword.errorET( ModelCodeError.ET_DIFFERENT)}
+                is SuccessState -> {
+                    binding.inputRepeatPassword.successET()
+                }
+
+                is ErrorState -> {
+                    binding.inputRepeatPassword.errorET(state.result)
+                }
+
+                else -> {
+                    binding.inputRepeatPassword.errorET(ModelCodeError.ET_DIFFERENT)
+                }
             }
         }
 
         registerViewModel.cctField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {binding.inputCct.successET() }
-                is ErrorState -> {binding.inputCct.errorET(state.result) }
-                else -> {binding.inputCct.errorET( ModelCodeError.ET_EMPTY) }
+                is SuccessState -> {
+                    binding.inputCct.successET()
+                }
+
+                is ErrorState -> {
+                    binding.inputCct.errorET(state.result)
+                }
+
+                else -> {
+                    binding.inputCct.errorET(ModelCodeError.ET_EMPTY)
+                }
             }
         }
 
         registerViewModel.codeField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {binding.inputCode.successET() }
-                is ErrorState -> {binding.inputCode.errorET( ModelCodeError.ET_NOT_FOUND) }
-                else -> {binding.inputCode.errorET( ModelCodeError.ET_EMPTY) }
+                is SuccessState -> {
+                    binding.inputCode.successET()
+                }
+
+                is ErrorState -> {
+                    binding.inputCode.errorET(ModelCodeError.ET_NOT_FOUND)
+                }
+
+                else -> {
+                    binding.inputCode.errorET(ModelCodeError.ET_EMPTY)
+                }
             }
         }
 
-        registerViewModel.responseRegister.observe(viewLifecycleOwner){ state ->
+        registerViewModel.responseRegister.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { findNavController().popBackStack() }
-                else -> {toastFragment("No se ha podido registrar el correo. Intente mas tarde") }
+                is SuccessState -> {
+                    findNavController().popBackStack()
+                }
+
+                else -> {
+                    toastFragment(getString(R.string.toast_error_register))
+                }
             }
         }
     }

@@ -13,5 +13,6 @@
     <!-- Service -->
     <string name="toast_error_service">Por el momento la operación no puede ser realizada. Intente más tarde</string>
     <string name="toast_error_editext">Por favor, revise sus datos</string>
+    <string name="toast_error_register">No se ha podido registrar el correo. Intente mas tarde</string>
 
 </resources>

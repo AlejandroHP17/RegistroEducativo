@@ -3,7 +3,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activitySplash
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -29,28 +28,26 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // SplashScreen
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition{false}
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        // Location
         locationHelper = LocationHelper(this)
         locationHelper.requestLocation(permissionLauncher, this)
 
     }
 
-    // Implementación de la interfaz LocationCallback
+   // User accept permission, navigate
     override fun onLocationResult(location: Location?) {
-        location?.let {
-            Log.d("SplashActivity", "Lat: ${location.latitude}, Long: ${location.longitude}")
-        } ?: Log.e("SplashActivity", "No se pudo obtener la ubicación.")
-
         navigate()
     }
 
+    // User denied permission, terminate app
     override fun onPermissionDenied() {
-        Log.e("SplashActivity", "Permiso de ubicación denegado.")
         finish()
     }
 
@@ -65,7 +62,7 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding = null // Limpiar el binding al destruir la actividad
+        binding = null
     }
 
 

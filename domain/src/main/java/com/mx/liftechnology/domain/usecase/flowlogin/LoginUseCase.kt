@@ -31,7 +31,7 @@ class LoginUseCase(
             .fold(
                 onSuccess = { data ->
                     if (data != null) SuccessState(data)
-                    else ErrorState(ModelCodeError.ERROR_SERVICE)
+                    else ErrorState(ModelCodeError.ERROR_FUNCTION)
                 },
                 onFailure = { exception ->
                     ErrorState(ModelCodeError.ERROR_SERVICE)

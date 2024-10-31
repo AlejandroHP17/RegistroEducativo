@@ -12,9 +12,9 @@ import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class LoginViewModel (
+class LoginViewModel(
     private val loginUseCase: LoginUseCase
-): ViewModel()  {
+) : ViewModel() {
     // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
 
@@ -36,7 +36,7 @@ class LoginViewModel (
      * @since 1.0.0
      * */
     fun validateFields(email: String?, pass: String?) {
-        coroutine.scopeIO.launch{
+        coroutine.scopeIO.launch {
 
             val emailState = loginUseCase.validateEmail(email)
             val passState = loginUseCase.validatePass(pass)
@@ -55,14 +55,19 @@ class LoginViewModel (
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun login(email: String?, pass: String?){
+    private fun login(email: String?, pass: String?) {
         coroutine.scopeIO.launch {
             runCatching {
-                loginUseCase.login(email,pass)
+                loginUseCase.login(email, pass)
             }.onSuccess {
-                when(it){
-                    is SuccessState ->{_responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMAT))}
-                    else -> { _responseLogin.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))}
+                when (it) {
+                    is SuccessState -> {
+                        _responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMAT))
+                    }
+
+                    else -> {
+                        _responseLogin.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                    }
                 }
             }.onFailure {
                 _responseLogin.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
