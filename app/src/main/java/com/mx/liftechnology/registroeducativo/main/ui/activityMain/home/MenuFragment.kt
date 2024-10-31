@@ -15,12 +15,12 @@ import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.dialogs.CustomAddDialog
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
-import com.mx.liftechnology.core.util.EmptyState
-import com.mx.liftechnology.core.util.ErrorState
-import com.mx.liftechnology.core.util.ModelPreference
+import com.mx.liftechnology.core.model.modelBase.EmptyState
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelPreference
 import com.mx.liftechnology.core.util.ModelSelectorDialog
 import com.mx.liftechnology.core.util.ModelSelectorMenu
-import com.mx.liftechnology.core.util.SuccessState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /** MenuFragment - Show the different available option that the user has

@@ -22,4 +22,7 @@ dependencies {
     // Room para base de datos
     implementation(libs.bundles.androidx.room)
     implementation(libs.bundles.junit.test)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.location)
 }

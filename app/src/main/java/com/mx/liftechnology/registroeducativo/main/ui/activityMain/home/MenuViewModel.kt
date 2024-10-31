@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
-import com.mx.liftechnology.core.util.ErrorState
-import com.mx.liftechnology.core.util.ModelCodeError
-import com.mx.liftechnology.core.util.ModelState
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.domain.usecase.MenuUseCase
 import kotlinx.coroutines.launch
 

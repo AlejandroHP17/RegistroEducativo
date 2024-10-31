@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.model.modelBase
 
 /** Model - Include all the elements to preferences
  * @author pelkidev

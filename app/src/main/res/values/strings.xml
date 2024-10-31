@@ -1,13 +1,40 @@
 <resources>
     <string name="app_name">Registro Educativo</string>
 
+
+    <string name="save">Guardar</string>
+
     <string name="empty_ops">¡Oooops!</string>
     <string name="empty_message">No hemos encontrado un curso asignado, /n Por favor crea uno para poder llevarte al menu del curso.</string>
     <string name="add_button">Agregar</string>
     <string name="edit_button">Editar</string>
     <string name="empty_dialog_title">Ingresa el nombre de tu curso</string>
 
-    <string name="save">Guardar</string>
+
+    <!-- Generic -->
+    <string name="tools_title">Título</string>
+    <string name="tools_body">Este es un mensaje largo</string>
+
+    <!-- Login Flow -->
+    <string name="log_welcome">Bienvenido</string>
+    <string name="log_insert">Ingresa tus credenciales para acceder a tu contenido</string>
+    <string name="log_email">Correo eletrónico</string>
+    <string name="log_password">Contraseña</string>
+    <string name="log_remember">Recuérdame</string>
+    <string name="log_forgot">¿Olvidaste tu contraseña?</string>
+    <string name="log_logIn">Iniciar sesión</string>
+    <string name="log_notAccount">¿No tienes una cuenta?</string>
+    <string name="log_register">Regístrate</string>
+
+    <!-- Register Flow -->
+    <string name="reg_welcome">Regístrate</string>
+    <string name="reg_insert">Crea tu propia cuenta para poder continuar</string>
+    <string name="reg_cct">CCT</string>
+    <string name="reg_repeat_password">Repetir contraseña</string>
+    <string name="reg_code">Código</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

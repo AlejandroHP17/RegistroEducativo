@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_transparent"
+    tools:context=".main.ui.activityLogin.register.RegisterFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_outer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id = "@+id/include_header"
+                layout="@layout/include_header"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_cct"
+                style="@style/editext_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/reg_cct"
+                android:textColorHint="@color/color_secondary_text"
+                android:layout_marginTop="@dimen/margin_outer">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_cct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="@string/reg_cct"
+                    android:paddingHorizontal="16dp"
+                    android:imeOptions="actionNext" >
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_email"
+                style="@style/editext_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/log_email"
+                android:textColorHint="@color/color_secondary_text"
+                android:layout_marginTop="@dimen/margin_between">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="@string/log_email"
+                    android:paddingHorizontal="16dp"
+                    android:imeOptions="actionNext" >
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_password"
+                style="@style/editext_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/log_password"
+                app:endIconMode="password_toggle"
+                android:textColorHint="@color/color_secondary_text"
+                android:layout_marginTop="@dimen/margin_between" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="@string/log_password"
+                    android:paddingHorizontal="16dp"
+                    android:imeOptions="actionNext" >
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_repeat_password"
+                style="@style/editext_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/reg_repeat_password"
+                app:endIconMode="password_toggle"
+                android:textColorHint="@color/color_secondary_text"
+                android:layout_marginTop="@dimen/margin_between" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_repeat_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="@string/reg_repeat_password"
+                    android:paddingHorizontal="16dp"
+                    android:imeOptions="actionNext" >
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/log_register"
+                android:textColor="@color/color_principal_text"
+                android:layout_marginTop="@dimen/margin_between"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_code"
+                style="@style/editext_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/reg_code"
+                android:textColorHint="@color/color_secondary_text"
+                android:layout_marginTop="@dimen/margin_between" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
+                    android:hint="@string/reg_code"
+                    android:paddingHorizontal="16dp"
+                    android:imeOptions="actionNext" >
+                </com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between"
+                android:text="@string/log_register"
+                style="@style/button_generic" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

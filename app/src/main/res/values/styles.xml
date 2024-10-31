@@ -2,8 +2,8 @@
 <resources>
     <!-- Estilo personalizado para AppCompatButton -->
     <style name="button_generic" parent="TextAppearance.AppCompat.Widget.Button">
-        <item name="android:background">#EC6F49</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:background">@color/color_action</item>
+        <item name="android:textColor">@color/color_principal_text</item>
         <item name="android:textSize">14sp</item>
         <item name="android:padding">12dp</item>
         <item name="android:elevation">4dp</item>
@@ -16,18 +16,18 @@
     </style>
 
     <style name="editext_form" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundColor">@color/white</item>
-        <item name="boxBackgroundMode">outline</item>
-        <item name="boxCornerRadiusBottomEnd">4dp</item>
-        <item name="boxCornerRadiusBottomStart">4dp</item>
-        <item name="boxCornerRadiusTopStart">4dp</item>
-        <item name="boxCornerRadiusTopEnd">4dp</item>
-        <item name="boxStrokeWidth">1dp</item>
-        <item name="hintTextColor">@color/bg_input_box</item>
-        <item name="boxStrokeColor">@color/bg_input_box</item>
+        <item name="boxBackgroundColor">@color/color_white</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/color_secondary_text</item>
+        <item name="boxStrokeColor">@color/color_secondary_text</item>
+        <item name="boxStrokeErrorColor">@color/color_error</item>
         <item name="errorIconDrawable">@null</item>
-        <item name="errorTextColor">@color/red</item>
+        <item name="errorTextColor">@color/color_error</item>
+        <item name="errorEnabled">true</item>
     </style>
-
 
 </resources>
