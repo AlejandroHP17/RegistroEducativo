@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mx.liftechnology.registroeducativo.databinding.ActivityLoginBinding
 
-/** MainActivity
+/** LoginActivity - all the flow (login, register, forgotPassword)
  * @author pelkidev
  * @since 1.0.0
  */

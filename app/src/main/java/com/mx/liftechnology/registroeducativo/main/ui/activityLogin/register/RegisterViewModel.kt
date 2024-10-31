@@ -1,50 +1,78 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.register
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mx.liftechnology.core.util.ErrorState
-import com.mx.liftechnology.core.util.ModelCodeError
-import com.mx.liftechnology.core.util.ModelCodeSuccess
-import com.mx.liftechnology.core.util.ModelRegex
-import com.mx.liftechnology.core.util.ModelState
-import com.mx.liftechnology.core.util.SuccessState
+import com.mx.liftechnology.core.model.ModelApi.DataCCT
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
+import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.usecase.flowlogin.CCTUseCase
+import com.mx.liftechnology.domain.usecase.flowlogin.RegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class RegisterViewModel: ViewModel()  {
+class RegisterViewModel(
+    private val cctUseCase: CCTUseCase,
+    private val registerUseCase: RegisterUseCase
+) : ViewModel() {
     // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
 
-    // Help to know when the student was save, and post a notification
+    // Observer the response of service
+    private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?>>()
+    val responseCCT: LiveData<ModelState<List<DataCCT?>?>> get() = _responseCCT
+
+    private val _responseRegister = SingleLiveEvent<ModelState<Int>>()
+    val responseRegister: LiveData<ModelState<Int>> get() = _responseRegister
+
+    // Observer the email field
     private val _emailField = SingleLiveEvent<ModelState<Int>>()
     val emailField: LiveData<ModelState<Int>> get() = _emailField
 
-    // Help to know when the student was save, and post a notification
+    // Observer the pass field
     private val _passField = SingleLiveEvent<ModelState<Int>>()
     val passField: LiveData<ModelState<Int>> get() = _passField
 
-    // Help to know when the student was save, and post a notification
+    // Observer the repeatPass field
     private val _repeatPassField = SingleLiveEvent<ModelState<Int>>()
     val repeatPassField: LiveData<ModelState<Int>> get() = _repeatPassField
 
-    // Help to know when the student was save, and post a notification
+    // Observer the cct field
     private val _cctField = SingleLiveEvent<ModelState<Int>>()
     val cctField: LiveData<ModelState<Int>> get() = _cctField
 
-    // Help to know when the student was save, and post a notification
+    // Observer the code field
     private val _codeField = SingleLiveEvent<ModelState<Int>>()
     val codeField: LiveData<ModelState<Int>> get() = _codeField
 
+    fun getCCT() {
+        coroutine.scopeIO.launch {
+            runCatching {
+                cctUseCase.getCCT()
+            }.onSuccess {
+                when (it) {
+                    is SuccessState -> {
+                        _responseCCT.postValue(SuccessState(it.result.data))
+                    }
 
-    // Help to know when the student was save, and post a notification
-    private val _responseRegister = SingleLiveEvent<ModelState<Int>>()
-    //val responseRegister: LiveData<ModelState<Int>> get() = _responseRegister
+                    else -> {
+                        _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                    }
+                }
+            }.onFailure {
+                _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+            }
+        }
+    }
 
-
-
+    /** Check the inputs and post error or correct states directly on the editexts
+     * In correct case, make the request
+     * @author pelkidev
+     * @since 1.0.0
+     * */
     fun validateFields(
         email: String,
         pass: String,
@@ -53,44 +81,55 @@ class RegisterViewModel: ViewModel()  {
         code: String
     ) {
         coroutine.scopeIO.launch {
-            val patEmail = ModelRegex.EMAIL
-            when{
-                email.isEmpty() -> {_emailField.postValue(ErrorState(ModelCodeError.ET_EMPTY)) }
-                !patEmail.matches(email) -> {_emailField.postValue(ErrorState(ModelCodeError.ET_FORMAT))}
-                else -> {_emailField.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))}
-            }
-            when{
-                pass.isEmpty() -> {_passField.postValue(ErrorState(ModelCodeError.ET_EMPTY)) }
-                else -> {_passField.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))}
-            }
 
-            when{
-                repeatPass.isEmpty() -> {_repeatPassField.postValue(ErrorState(ModelCodeError.ET_EMPTY)) }
-                repeatPass !=  pass-> {_repeatPassField.postValue(ErrorState(ModelCodeError.ET_DIFFERENT)) }
-                else -> {_repeatPassField.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))}
-            }
+            val emailState = registerUseCase.validateEmail(email)
+            val passState = registerUseCase.validatePass(pass)
+            val repeatPassState = registerUseCase.validateRepeatPass(pass, repeatPass)
+            val cctState = registerUseCase.validateCCT(cct, responseCCT)
+            val codeState = registerUseCase.validateCode(code)
 
-            when{
-                cct.isEmpty() -> {_cctField.postValue(ErrorState(ModelCodeError.ET_EMPTY)) }
-                validCCT() -> {_cctField.postValue(ErrorState(ModelCodeError.ET_NOT_FOUND)) }
-                else -> {_cctField.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))}
-            }
+            _emailField.postValue(emailState)
+            _passField.postValue(passState)
+            _repeatPassField.postValue(repeatPassState)
+            _cctField.postValue(cctState)
+            _codeField.postValue(codeState)
 
-            when{
-                code.isEmpty() -> {_codeField.postValue(ErrorState(ModelCodeError.ET_EMPTY)) }
-                else -> {_codeField.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))}
+            if (emailState is SuccessState && passState is SuccessState
+                && repeatPassState is SuccessState && cctState is SuccessState
+                && codeState is SuccessState
+            ) {
+                register(email, pass, cct, code)
             }
-            Handler(Looper.getMainLooper()).postDelayed({
-                if(emailField.value is SuccessState && passField.value is SuccessState
-                    && repeatPassField.value is SuccessState && cctField.value is SuccessState
-                    && codeField.value is SuccessState){
-                    _responseRegister.postValue(SuccessState(ModelCodeSuccess.ET_FORMART))
-                }
-            },10)
         }
     }
 
-    private fun validCCT():Boolean {
-        return false
+    /** Request to register
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun register(
+        email: String,
+        pass: String,
+        cct: String,
+        code: String
+    ) {
+
+        coroutine.scopeIO.launch {
+            runCatching {
+                registerUseCase.putRegister(email, pass, cct, code)
+            }.onSuccess {
+                when (it) {
+                    is SuccessState -> {
+                        _responseRegister.postValue(SuccessState(ModelCodeSuccess.ET_FORMAT))
+                    }
+
+                    else -> {
+                        _responseRegister.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                    }
+                }
+            }.onFailure {
+                _responseRegister.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+            }
+        }
     }
 }

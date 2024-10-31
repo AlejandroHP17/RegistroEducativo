@@ -73,6 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/log_password"
+                app:endIconMode="password_toggle"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
 
@@ -93,6 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/reg_repeat_password"
+                app:endIconMode="password_toggle"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
 
@@ -112,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/log_register"
-                android:textColor="@color/color_action"
+                android:textColor="@color/color_principal_text"
                 android:layout_marginTop="@dimen/margin_between"/>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -140,7 +142,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_between"
-                android:text="@string/log_logIn"
+                android:text="@string/log_register"
                 style="@style/button_generic" />
 
         </LinearLayout>

@@ -1,4 +1,5 @@
 [versions]
+location = "21.0.1"
 loggingInterceptor = "4.9.0"
 retrofitVersion = "2.9.0"
 agp = "8.5.2"
@@ -24,6 +25,8 @@ splashScreen = "1.0.1"
 
 
 [libraries]
+play-services-location = {group = "com.google.android.gms" , name = "play-services-location" , version.ref = "location"}
+
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
 retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
 retrofit2-adapter-rxjava2 = { group = "com.squareup.retrofit2", name = "adapter-rxjava2", version.ref = "retrofitVersion" }
@@ -59,8 +62,11 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 
 
-
 [bundles]
+location = [
+    "play-services-location"
+]
+
 retrofit = [
     "retrofit2",
     "retrofit2-converter-gson",

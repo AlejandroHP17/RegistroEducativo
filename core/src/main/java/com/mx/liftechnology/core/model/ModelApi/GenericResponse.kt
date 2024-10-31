@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.model.ModelApi
 
 class GenericResponse<T>(
     val data: T?,
@@ -8,5 +8,6 @@ class GenericResponse<T>(
 
 data class ResponseBasic(
     val code: Int,
-    val msg: String
+    val msg: String,
+    val validation: List<Any>
 )

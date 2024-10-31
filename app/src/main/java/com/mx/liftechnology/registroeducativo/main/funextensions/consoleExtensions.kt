@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.funextensions
 import android.util.Log
 import com.mx.liftechnology.registroeducativo.BuildConfig
 
-/** Print logs depending of flavor
+/** Print logs depending the flavor
  * @author pelkidev
  * @since 1.0.0
  */

@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Editext -->
+    <string name="text_empty">El campo no puede estar vacío</string>
+    <string name="text_email_format_incorrect">Formato de usuario o correo incorrecto</string>
+    <string name="text_email_incorrect">Usuario o correo incorrecto</string>
+    <string name="text_pass_incorrect">Contraseña incorrecta</string>
+    <string name="text_pass_not_match">Las constraseñas no coinciden</string>
+    <string name="text_cct_not_found">No se encontró ninguna coincidencia</string>
+    <string name="text_incorrect_data">Datos incorrectos</string>
+    <string name="text_incorrect_format">El formato es incorrecto</string>
+
+    <!-- Service -->
+    <string name="toast_error_service">Por el momento la operación no puede ser realizada. Intente más tarde</string>
+    <string name="toast_error_editext">Por favor, revise sus datos</string>
+    <string name="toast_error_register">No se ha podido registrar el correo. Intente mas tarde</string>
+
+</resources>

@@ -7,16 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.core.util.ErrorState
-import com.mx.liftechnology.core.util.ModelCodeError
-import com.mx.liftechnology.core.util.SuccessState
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentLoginBinding
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
+import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-/** MenuFragment - Show the different available option that the user has
+/** LoginFragment - User can login, or select the register account or forget password
  * @author pelkidev
  * @since 1.0.0
  */
@@ -39,6 +41,10 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    /** initView - Build the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
     private fun initView(){
         binding.apply {
             includeHeader.btnReturn.visibility = View.GONE
@@ -47,45 +53,49 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /** initObservers - focus in the variables from viewmodel
+     * @author pelkidev
+     * @since 1.0.0
+     * @param emailField check the email and set the correct view
+     * @param passField check the password and set the correct view
+     * @param responseLogin check the response of service, do actions
+     * */
     private fun initObservers(){
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { binding.inputEmail.error = null }
-                is ErrorState -> {
-                    binding.inputEmail.error = when(state.result){
-                        ModelCodeError.ET_EMPTY -> { getString(R.string.text_empty)}
-                        ModelCodeError.ET_FORMAT -> { getString(R.string.text_email_format_incorrect)}
-                        ModelCodeError.ET_MISTAKE -> { getString(R.string.text_email_incorrect)}
-                        else -> { getString(R.string.text_email_incorrect)}
-                    }
-                }
-                else -> { binding.inputEmail.error = getString(R.string.text_email_incorrect) }
+                is SuccessState -> { binding.inputEmail.successET() }
+                is ErrorState -> { binding.inputEmail.errorET(state.result) }
+                else -> { binding.inputEmail.errorET( ModelCodeError.ET_MISTAKE_EMAIL) }
             }
         }
 
         loginViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { binding.inputPassword.error = null }
-                is ErrorState -> {
-                    binding.inputPassword.error = when(state.result){
-                        ModelCodeError.ET_EMPTY -> { getString(R.string.text_empty)}
-                        ModelCodeError.ET_MISTAKE -> { getString(R.string.text_pass_incorrect)}
-                        else -> { getString(R.string.text_pass_incorrect)}
-                    }
-                }
-                else -> { binding.inputPassword.error = getString(R.string.text_pass_incorrect) }
+                is SuccessState -> {binding.inputPassword.successET() }
+                is ErrorState -> {binding.inputPassword.errorET(state.result) }
+                else -> { binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS) }
             }
         }
 
+        /**
+         * SuccesState - navigate to MainActivity, enter the application
+         * ServiceError - show an error of service
+         * AnotherState - set errors on inputs
+         * */
         loginViewModel.responseLogin.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
-                    requireActivity().finish() }
+                    requireActivity().finish()
+                }
+                is ErrorState -> {
+                    toastFragment(getString(R.string.toast_error_service))
+                }
                 else -> {
-                    binding.inputPassword.error = getString(R.string.text_pass_incorrect)
-                    binding.inputEmail.error = getString(R.string.text_email_incorrect)
+                    binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
+                    binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                    toastFragment(getString(R.string.toast_error_editext))
                 }
             }
         }
@@ -112,6 +122,4 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
-
 }

@@ -1,6 +1,6 @@
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.model.modelBase
 
-/** Model - Include all the elements to errors
+/** Model - Include all the correct element
  * @author pelkidev
  * @since 1.0.0
  */
@@ -9,5 +9,5 @@ object ModelCodeSuccess {
 
 
     //  Valores de 200 - Editext
-    const val ET_FORMART: Int = 200
+    const val ET_FORMAT: Int = 200
 }

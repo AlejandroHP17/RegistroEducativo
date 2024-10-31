@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.model.di
+package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.data.repository.MenuRepository
 import com.mx.liftechnology.domain.usecase.MenuUseCase
