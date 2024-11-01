@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.framework.MyApp
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
@@ -21,6 +22,7 @@ import com.mx.liftechnology.core.model.modelBase.ModelPreference
 import com.mx.liftechnology.core.util.ModelSelectorDialog
 import com.mx.liftechnology.core.util.ModelSelectorMenu
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.registroeducativo.R
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /** MenuFragment - Show the different available option that the user has
@@ -47,7 +49,7 @@ class MenuFragment : Fragment() {
     ): View {
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
         initData()
-        initialView(valueInitial)
+        initialView()
         initObservers()
         initListeners()
         return binding.root
@@ -68,16 +70,9 @@ class MenuFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView(flag: Boolean) {
+    private fun initialView() {
         binding.apply {
-            if (flag) {
-                menuViewModel.getMenu()
-                "Vista con menu".log("Pelki")
-            } else {
-                includeEmptyHome.viewEmptyHome.visibility = View.VISIBLE
-                contentMenu.visibility = View.GONE
-                "Vista empty state".log("Pelki")
-            }
+            menuViewModel.getMenu()
         }
     }
 
@@ -91,7 +86,7 @@ class MenuFragment : Fragment() {
             if (!text.isNullOrEmpty()) {
                 MyApp.securePrefs.edit().putString(ModelPreference.CYCLE, text).apply()
                 binding.tvTitleCard.text = text
-                initialView(true)
+                initialView()
             }
         }
         /* Show all the options from menu, or if any error occur, show the error */
@@ -138,7 +133,7 @@ class MenuFragment : Fragment() {
      * @since 1.0.0
      * @param items list the option from menu
      * */
-    private fun inflateAdapter(items: List<com.mx.liftechnology.core.model.ModelAdapterMenu>) {
+    private fun inflateAdapter(items: List<ModelAdapterMenu>) {
         val clickListener = MenuClickListener { item ->
             val direction: NavDirections? = when (item.id) {
                 ModelSelectorMenu.CALENDAR.value -> {
