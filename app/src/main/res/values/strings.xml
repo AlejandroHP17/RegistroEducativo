@@ -38,6 +38,9 @@
     <string name="menu_empty">No tienes un ciclo escolar activo</string>
     <string name="menu_ciclo">Ciclo escolar 2024 - 2025</string>
 
+    <!-- SubMenu Flow -->
+    <string name="sub_menu_title">Registro</string>
+
 
 
 

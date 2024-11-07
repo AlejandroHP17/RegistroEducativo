@@ -34,9 +34,14 @@ ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
         fun bind(item: ModelAdapterMenu, action:MenuClickListener){
             // Synchronize the item response with the view
             binding.apply {
+                if (!item.isTouch) {
+                    cvComplete.alpha = 0.6F
+                    root.setOnClickListener(null)
+                } else {
+                    root.setOnClickListener { action.onClick(item) }
+                }
                 ivImage.setImageResource(item.image!!)
                 tvTitleCard.text =  item.titleCard
-                root.setOnClickListener { action.onClick(item) }
             }
         }
     }

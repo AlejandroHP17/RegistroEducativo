@@ -7,5 +7,11 @@
         <item>Perfil</item>
         <item>Configuraciones</item>
     </string-array>
+
+    <string-array name="sub_menu_items">
+        <item>Escuela</item>
+        <item>Alumnos</item>
+        <item>Campo Formativo</item>
+    </string-array>
     
 </resources>
