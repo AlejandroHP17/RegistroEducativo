@@ -1,9 +1,9 @@
-package com.mx.liftechnology.core.model.modelBase
+package com.mx.liftechnology.data.model
 
 /** Model - Include all the elements to preferences
  * @author pelkidev
  * @since 1.0.0
  */
 object ModelPreference {
-    const val CYCLE = "CYCLE"
+    const val LOGIN = "LOGIN"
 }
