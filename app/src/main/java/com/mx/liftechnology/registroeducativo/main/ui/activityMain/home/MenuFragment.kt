@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelPreference
+import com.mx.liftechnology.data.model.ModelPreference
 import com.mx.liftechnology.core.util.ModelSelectorDialog
 import com.mx.liftechnology.core.util.ModelSelectorMenu
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -46,7 +46,7 @@ class MenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
-        initData()
+
         initialView(valueInitial)
         initObservers()
         initListeners()
@@ -58,11 +58,7 @@ class MenuFragment : Fragment() {
      * @since 1.0.0
      * @param value help to know the first view, a menu or empty state
      */
-    private fun initData() {
-        val value = MyApp.securePrefs.getString(ModelPreference.CYCLE, "")
-        menuViewModel.saveNameCourse(value!!)
-        valueInitial = value.isNotEmpty()
-    }
+
 
     /** initialView - Print the correct view, menu or empty state
      * @author pelkidev
@@ -89,7 +85,7 @@ class MenuFragment : Fragment() {
         /* If nameCourse has value, save in preference and prit the correct view */
         menuViewModel.nameCourse.observe(viewLifecycleOwner) { text ->
             if (!text.isNullOrEmpty()) {
-                MyApp.securePrefs.edit().putString(ModelPreference.CYCLE, text).apply()
+
                 binding.tvTitleCard.text = text
                 initialView(true)
             }
