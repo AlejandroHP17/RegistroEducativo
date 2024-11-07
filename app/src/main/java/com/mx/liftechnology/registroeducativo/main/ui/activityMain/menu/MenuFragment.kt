@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.home
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,21 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.mx.liftechnology.core.model.ModelAdapterMenu
+import com.mx.liftechnology.core.model.modelBase.EmptyState
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.core.util.ModelSelectorDialog
+import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
-import com.mx.liftechnology.registroeducativo.framework.MyApp
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.dialogs.CustomAddDialog
-import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.util.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
-import com.mx.liftechnology.core.model.modelBase.EmptyState
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelPreference
-import com.mx.liftechnology.core.util.ModelSelectorDialog
-import com.mx.liftechnology.core.util.ModelSelectorMenu
-import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.registroeducativo.R
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /** MenuFragment - Show the different available option that the user has
@@ -43,12 +39,17 @@ class MenuFragment : Fragment() {
     /* Auxiliar variable*/
     private var valueInitial: Boolean = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
-        initData()
+
         initialView()
         initObservers()
         initListeners()
@@ -60,11 +61,7 @@ class MenuFragment : Fragment() {
      * @since 1.0.0
      * @param value help to know the first view, a menu or empty state
      */
-    private fun initData() {
-        val value = MyApp.securePrefs.getString(ModelPreference.CYCLE, "")
-        menuViewModel.saveNameCourse(value!!)
-        valueInitial = value.isNotEmpty()
-    }
+
 
     /** initialView - Print the correct view, menu or empty state
      * @author pelkidev
@@ -73,6 +70,8 @@ class MenuFragment : Fragment() {
     private fun initialView() {
         binding.apply {
             menuViewModel.getMenu()
+            tvGretting.text = getString(R.string.menu_grettins)
+            tvName.text = getString(R.string.menu_empty)
         }
     }
 
@@ -84,8 +83,7 @@ class MenuFragment : Fragment() {
         /* If nameCourse has value, save in preference and prit the correct view */
         menuViewModel.nameCourse.observe(viewLifecycleOwner) { text ->
             if (!text.isNullOrEmpty()) {
-                MyApp.securePrefs.edit().putString(ModelPreference.CYCLE, text).apply()
-                binding.tvTitleCard.text = text
+
                 initialView()
             }
         }
@@ -133,34 +131,22 @@ class MenuFragment : Fragment() {
      * @since 1.0.0
      * @param items list the option from menu
      * */
-    private fun inflateAdapter(items: List<ModelAdapterMenu>) {
+    private fun inflateAdapter(items: List<com.mx.liftechnology.core.model.ModelAdapterMenu>) {
         val clickListener = MenuClickListener { item ->
             val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.CALENDAR.value -> {
-                    MenuFragmentDirections.actionMenuFragmentToCalendarFragment()
-                }
-
-                ModelSelectorMenu.STUDENT.value -> {
-                    MenuFragmentDirections.actionMenuFragmentToStudentFragment()
-                }
-
-                ModelSelectorMenu.SUBJECT.value -> {
-                    MenuFragmentDirections.actionMenuFragmentToSubjectFragment()
-                }
-
-                ModelSelectorMenu.SCHOOL.value -> {
+                ModelSelectorMenu.EVALUATION.value -> {
                     null
                 }
 
-                ModelSelectorMenu.EXPORT.value -> {
+                ModelSelectorMenu.CONTROL.value -> {
+                    MenuFragmentDirections.actionMenuFragmentToSubMenuFragment()
+                }
+
+                ModelSelectorMenu.PROFILE.value -> {
                     null
                 }
 
-                ModelSelectorMenu.PERIOD.value -> {
-                    null
-                }
-
-                ModelSelectorMenu.CONFIG.value -> {
+                ModelSelectorMenu.CONFIGURATION.value -> {
                     null
                 }
 

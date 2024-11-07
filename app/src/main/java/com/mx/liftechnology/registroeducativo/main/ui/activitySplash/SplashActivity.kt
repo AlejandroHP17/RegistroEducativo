@@ -8,7 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.registroeducativo.databinding.ActivitySplashBinding
+import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /** SplashActivity
@@ -18,8 +22,11 @@ import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivit
 class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
 
     private var binding: ActivitySplashBinding? = null
+    private val splashViewModel: SplashViewModel by viewModel()
 
     private lateinit var locationHelper: LocationHelper
+    // Controlled coroutine
+    private val coroutine = CoroutineScopeManager()
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         locationHelper.handlePermissionResult(isGranted, this)
@@ -35,6 +42,8 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding?.root)
 
+        initObservers()
+
         // Location
         locationHelper = LocationHelper(this)
         locationHelper.requestLocation(permissionLauncher, this)
@@ -43,20 +52,13 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
 
    // User accept permission, navigate
     override fun onLocationResult(location: Location?) {
-        navigate()
+       coroutine.scopeIO.launch { splashViewModel.getNavigation() }
     }
+
+
 
     // User denied permission, terminate app
     override fun onPermissionDenied() {
-        finish()
-    }
-
-    /** Decide what activity, login or main
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    private fun navigate(){
-        startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
 
@@ -65,5 +67,15 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
         binding = null
     }
 
-
+    private fun initObservers(){
+        /** Decide what activity, login or main
+         * @author pelkidev
+         * @since 1.0.0
+         * */
+        splashViewModel.navigate.observe(this) { data ->
+            if(data) startActivity(Intent(this, MainActivity::class.java))
+            else startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
 }

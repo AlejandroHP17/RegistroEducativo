@@ -5,15 +5,18 @@ import androidx.lifecycle.ViewModel
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
+import com.mx.liftechnology.data.model.ModelPreference
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.usecase.PreferenceUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val preference: PreferenceUseCase
 ) : ViewModel() {
     // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
@@ -35,7 +38,7 @@ class LoginViewModel(
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateFields(email: String?, pass: String?) {
+    fun validateFields(email: String?, pass: String?, remember: Boolean) {
         coroutine.scopeIO.launch {
 
             val emailState = loginUseCase.validateEmail(email)
@@ -45,7 +48,7 @@ class LoginViewModel(
             _passField.postValue(passState)
 
             if (emailState is SuccessState && passState is SuccessState) {
-                login(email, pass)
+                login(email, pass, remember)
             }
 
         }
@@ -55,13 +58,14 @@ class LoginViewModel(
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun login(email: String?, pass: String?) {
+    private fun login(email: String?, pass: String?, remember: Boolean) {
         coroutine.scopeIO.launch {
             runCatching {
                 loginUseCase.login(email, pass)
             }.onSuccess {
                 when (it) {
                     is SuccessState -> {
+                        preference.savePreferenceBoolean(ModelPreference.LOGIN, remember)
                         _responseLogin.postValue(SuccessState(ModelCodeSuccess.ET_FORMAT))
                     }
 

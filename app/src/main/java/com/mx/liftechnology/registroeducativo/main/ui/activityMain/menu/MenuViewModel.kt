@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.home
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
