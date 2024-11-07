@@ -15,28 +15,33 @@ import com.mx.liftechnology.core.model.ModelAdapterMenu
  * @param listener click on item's card
  * */
 class MenuAdapter(
-    private val items: List<com.mx.liftechnology.core.model.ModelAdapterMenu>,
+    private val items: List<ModelAdapterMenu>,
     private val listener : MenuClickListener
 ):
-ListAdapter<com.mx.liftechnology.core.model.ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
+ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
 
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<com.mx.liftechnology.core.model.ModelAdapterMenu>() {
-        override fun areItemsTheSame(oldItem: com.mx.liftechnology.core.model.ModelAdapterMenu, newItem: com.mx.liftechnology.core.model.ModelAdapterMenu) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelAdapterMenu>() {
+        override fun areItemsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: com.mx.liftechnology.core.model.ModelAdapterMenu, newItem: com.mx.liftechnology.core.model.ModelAdapterMenu) =
+        override fun areContentsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding : RecyclerCardMenuBinding): RecyclerView.ViewHolder(binding.root){
         // Method like a listener; bring the item and the action of click
-        fun bind(item: com.mx.liftechnology.core.model.ModelAdapterMenu, action:MenuClickListener){
+        fun bind(item: ModelAdapterMenu, action:MenuClickListener){
             // Synchronize the item response with the view
             binding.apply {
+                if (!item.isTouch) {
+                    cvComplete.alpha = 0.6F
+                    root.setOnClickListener(null)
+                } else {
+                    root.setOnClickListener { action.onClick(item) }
+                }
                 ivImage.setImageResource(item.image!!)
                 tvTitleCard.text =  item.titleCard
-                root.setOnClickListener { action.onClick(item) }
             }
         }
     }
@@ -54,6 +59,6 @@ ListAdapter<com.mx.liftechnology.core.model.ModelAdapterMenu, MenuAdapter.ViewHo
     override fun getItemCount(): Int = items.size
 }
 
-class MenuClickListener(val listener: (item: com.mx.liftechnology.core.model.ModelAdapterMenu) -> Unit){
-    fun onClick(item: com.mx.liftechnology.core.model.ModelAdapterMenu) = listener(item)
+class MenuClickListener(val listener: (item: ModelAdapterMenu) -> Unit){
+    fun onClick(item: ModelAdapterMenu) = listener(item)
 }

@@ -66,8 +66,6 @@ v
 Fcore/src/main/java/com/mx/liftechnology/core/util/ModelSelectorForm.kt,3/c/3c6465d8057b72b8c812ee6ce747cefa9b5add29
 …
 Uapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/MenuAdapter.kt,e/9/e9d112dcdd0e1a4dbd0bace30e5e969fe93197b0
-v
-Fcore/src/main/java/com/mx/liftechnology/core/util/ModelSelectorMenu.kt,f/9/f9bc16f2e38f3444a109e4da58eedfcec1fe0901
 ˆ
 Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/StudentAdapter.kt,0/c/0cb23e682aa0fbf819ec659312de9a9f7bb62829
 G
@@ -160,3 +158,7 @@ Jcore/src/main/java/com/mx/liftechnology/core/model/modelBase/ModelState.kt,0/b
 Ncore/src/main/java/com/mx/liftechnology/core/model/modelBase/ModelCodeError.kt,4/7/47ffeb34b4eb09ef75972354cd8a15d19ecce07f
 ~
 Ncore/src/main/java/com/mx/liftechnology/core/model/ModelApi/GenericResponse.kt,b/d/bdd1204d20be9a0c25d11cdefb1ab0fcd663c4e1
+š
+japp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/calendar/CalendarFragment.kt,4/6/46d80bd7faeb4a3a02d509d3ba6360afac2be8b8
+‡
+Wapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/ModelSelectorMenu.kt,c/0/c0d0826d1e78886f1eff8c348cf69f43079684db

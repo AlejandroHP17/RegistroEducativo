@@ -10,6 +10,7 @@
     <dimen name="margin_4dp">4dp</dimen>
 
     <dimen name="text_size_title">32sp</dimen>
+    <dimen name="text_size_subtitle">24sp</dimen>
     <dimen name="text_size_body">12sp</dimen>
     <dimen name="text_size_form">16sp</dimen>
     <dimen name="text_size_error">12sp</dimen>
