@@ -1,4 +1,4 @@
-package com.mx.liftechnology.domain.usecase
+package com.mx.liftechnology.domain.usecase.flowmenu
 
 import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.core.model.modelBase.EmptyState
@@ -7,6 +7,7 @@ import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.data.repository.MenuRepository
+import com.mx.liftechnology.data.repository.SubMenuRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,10 +21,10 @@ class MenuUseCase(private val localRepository: MenuRepository) {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    suspend fun getMenu(): ModelState<List<ModelAdapterMenu>> {
+    suspend fun getMenu(schoolYear:Boolean): ModelState<List<ModelAdapterMenu>> {
         return withContext(dispatcher) {
             try {
-                val list = localRepository.getItems()
+                val list = localRepository.getItems(schoolYear)
                 if (list.isNullOrEmpty()) {
                     EmptyState()
                 } else {
