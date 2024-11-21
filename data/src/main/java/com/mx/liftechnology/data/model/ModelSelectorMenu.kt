@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.util
+package com.mx.liftechnology.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -12,5 +12,9 @@ enum class ModelSelectorMenu(val value: Int) : Parcelable {
     EVALUATION(1),
     CONTROL(2),
     PROFILE(3),
-    CONFIGURATION(4)
+    CONFIGURATION(4),
+
+    SCHOOL(5),
+    STUDENTS(6),
+    PERIODS(7)
 }

@@ -101,19 +101,19 @@
             android:text="@string/log_forgot"
             android:textColor="@color/color_action"
             android:gravity="end"/>
-
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_between"
-        android:text="@string/log_logIn"
-        style="@style/button_generic"
         app:layout_constraintTop_toBottomOf="@id/ll_check"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+        <include
+            android:id = "@+id/include_button"
+            layout="@layout/include_button"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_register"
