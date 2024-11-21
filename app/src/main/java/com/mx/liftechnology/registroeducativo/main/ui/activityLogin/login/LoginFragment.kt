@@ -50,6 +50,8 @@ class LoginFragment : Fragment() {
             includeHeader.btnReturn.visibility = View.GONE
             includeHeader.tvTitle.text = getString(R.string.log_welcome)
             includeHeader.tvInsert.text = getString(R.string.log_insert)
+            includeButton.btnAction.text = getString(R.string.log_logIn)
+            includeButton.btnRecord.visibility = View.GONE
         }
     }
 
@@ -85,7 +87,6 @@ class LoginFragment : Fragment() {
         loginViewModel.responseLogin.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
-
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
@@ -108,7 +109,7 @@ class LoginFragment : Fragment() {
      * */
     private fun initListeners() {
         binding.apply {
-            btnLogin.setOnClickListener {
+            includeButton.btnAction.setOnClickListener {
                 loginViewModel.validateFields(etEmail.text.toString(), etPassword.text.toString(), binding.cbRemember.isChecked)
             }
 

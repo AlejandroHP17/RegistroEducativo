@@ -1,8 +1,9 @@
-package com.mx.liftechnology.data.repository
+package com.mx.liftechnology.data.repository.mainFlow
 
 import android.content.Context
 import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.data.R
+import com.mx.liftechnology.data.model.ModelSelectorMenu
 
 /** SubMenuRepository - Build the element list of menu (home)
  * @author pelkidev
@@ -19,9 +20,10 @@ class SubMenuRepository(private val context: Context) {
             R.drawable.ic_students,
             R.drawable.ic_subject
         )
+        val idBase = ModelSelectorMenu.SCHOOL.value
         return listMenuItems.mapIndexed { index, description ->
-            if(description == listMenuItems[1] || description == listMenuItems[2]) ModelAdapterMenu(index + 1, imageResources[index], description, school)
-            else ModelAdapterMenu(index + 1, imageResources[index], description, true )
+            if(description == listMenuItems[1] || description == listMenuItems[2]) ModelAdapterMenu(index + idBase, imageResources[index], description, school)
+            else ModelAdapterMenu(index + idBase, imageResources[index], description, true )
         }
     }
 }

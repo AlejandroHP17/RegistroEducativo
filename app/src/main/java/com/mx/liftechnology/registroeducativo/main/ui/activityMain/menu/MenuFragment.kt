@@ -16,9 +16,9 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
-import com.mx.liftechnology.registroeducativo.main.util.ModelSelectorMenu
+import com.mx.liftechnology.data.model.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** MenuFragment - Show the different available option that the user has
  * @author pelkidev
@@ -30,7 +30,7 @@ class MenuFragment : Fragment() {
     private val binding get() = _binding!!
 
     /* View Model variable */
-    private val menuViewModel: MenuViewModel by sharedViewModel()
+    private val menuViewModel: MenuViewModel by viewModel()
 
     /* Adapter variable */
     private var adapterMenu: MenuAdapter? = null

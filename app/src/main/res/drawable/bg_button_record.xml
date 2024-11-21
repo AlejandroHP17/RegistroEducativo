@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado cuando el botón está seleccionado -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/radius_card" />
+            <solid android:color="@color/color_error" />
+        </shape>
+    </item>
+    <!-- Estado cuando el botón no está seleccionado -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/radius_card" />
+            <solid android:color="@color/color_success" />
+        </shape>
+    </item>
+</selector>

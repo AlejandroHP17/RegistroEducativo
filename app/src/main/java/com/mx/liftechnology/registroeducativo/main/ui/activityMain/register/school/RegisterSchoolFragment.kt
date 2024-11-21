@@ -1,0 +1,212 @@
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school
+
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
+import com.mx.liftechnology.registroeducativo.main.adapters.PeriodAdapter
+import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
+import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
+import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
+import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
+import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+/** RegisterSchoolFragment - Accept the data of the school
+ * @author pelkidev
+ * @since 1.0.0
+ */
+class RegisterSchoolFragment : Fragment() {
+
+    private var _binding: FragmentRegisterSchoolBinding? = null
+    private val binding get() = _binding!!
+
+    private val registerSchoolViewModel: RegisterSchoolViewModel by viewModel()
+    private var adapterPeriods : PeriodAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Bring the cct available
+        registerSchoolViewModel.getCCT()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentRegisterSchoolBinding.inflate(inflater, container, false)
+        initView()
+        initListener()
+        initObserver()
+        initWatcher()
+
+        return binding.root
+    }
+
+    /** initView - Build the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initView(){
+        binding.apply {
+            includeHeader.tvTitle.text = getString(R.string.register_school)
+            includeHeader.tvInsert.text = getString(R.string.register_school_description)
+            includeSpinnerType.spinner.fillItem(requireContext(), ModelSpinnerSelect.TYPE)
+            includeSpinnerCycle.spinner.fillItem(requireContext(), ModelSpinnerSelect.CYCLE)
+            includeSpinnerGrade.spinner.fillItem(requireContext(), ModelSpinnerSelect.GRADE)
+            includeSpinnerGroup.spinner.fillItem(requireContext(), ModelSpinnerSelect.GROUP)
+            includeSpinnerPeriod.spinner.fillItem(requireContext(), ModelSpinnerSelect.PERIOD)
+        }
+    }
+
+    /** initObservers - focus in the variables from viewmodel
+     * @author pelkidev
+     * @since 1.0.0
+     * @param [cctField] check the cct and  fill other fields
+     * @param numberPerdiod check the number of periods selected
+     * @param datePeriod check the  date and post the date in correct view
+     * */
+    private fun initObserver(){
+        registerSchoolViewModel.cctField.observe(viewLifecycleOwner) { state ->
+            binding.apply {
+                when (state) {
+                    is SuccessState -> {
+                        inputCct.successET()
+                        etSchoolName.setText("Amado Nervo")
+                        etShift.setText("Matutino")
+                        etSchoolTerm.setText("Ciclo escolar 2024 - 2025")
+                    }
+
+                    is ErrorState -> {
+                        inputCct.errorET(state.result)
+                        cleanAutoText()
+                    }
+
+                    else -> {
+                        inputCct.errorET(ModelCodeError.ET_EMPTY)
+                        cleanAutoText()
+                    }
+                }
+            }
+        }
+
+        registerSchoolViewModel.periodNumber.observe(viewLifecycleOwner) { period ->
+            initAdapterPeriod(period)
+        }
+
+        registerSchoolViewModel.datePeriod.observe(viewLifecycleOwner){data ->
+            adapterPeriods?.updateDate(data)
+        }
+    }
+
+    /** initListeners - Build the click on the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initListener(){
+        binding.apply {
+            includeHeader.btnReturn.setOnClickListener {
+                findNavController().popBackStack()
+            }
+
+            includeButton.btnAction.setOnClickListener {
+                registerSchoolViewModel.validateFields(
+                    etShift.text.toString()
+                )
+            }
+
+            /** Spinner Section*/
+            includeSpinnerGrade.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedValue = parent?.getItemAtPosition(position).toString()
+                    registerSchoolViewModel.saveGrade(selectedValue)
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //Nothing
+                }
+            }
+            includeSpinnerGroup.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedValue = parent?.getItemAtPosition(position).toString()
+                    registerSchoolViewModel.saveGroup(selectedValue)
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //Nothing
+                }
+            }
+            includeSpinnerPeriod.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectedValue = parent?.getItemAtPosition(position).toString()
+                    registerSchoolViewModel.savePeriod(selectedValue)
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    //Nothing
+                }
+            }
+        }
+    }
+
+    /** initAdapterPeriod - Adapter specialized in the number of periods of user can select
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initAdapterPeriod(period:Int){
+        val clickListener = PeriodClickListener(
+            onItemClick = { item ->
+                /* Open the calendar */
+                registerSchoolViewModel.initDatePicker(item, parentFragmentManager, context)
+            }
+        )
+        val list = MutableList(period) { index -> ModelDatePeriod(position = index , date = "Periodo ${index + 1}") }
+
+        /* Build the adapter */
+        adapterPeriods = PeriodAdapter(list, clickListener)
+        binding.rvCardPeriod.layoutManager = LinearLayoutManager(this.context)
+        binding.apply {
+            rvCardPeriod.adapter = adapterPeriods
+        }
+    }
+
+    /** initWatcher - Observe the cct field to validate if exist someone
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initWatcher(){
+        binding.etCct.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //Nothing
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                registerSchoolViewModel.validateCCT(s.toString())
+            }
+            override fun afterTextChanged(s: Editable?) {
+                //Nothing
+            }
+        })
+    }
+
+    /** cleanAutoText - In order to cct
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun cleanAutoText(){
+        binding.apply {
+            etSchoolName.setText(getString(R.string.tools_empty))
+            etShift.setText(getString(R.string.tools_empty))
+            etSchoolTerm.setText(getString(R.string.tools_empty))
+        }
+    }
+
+}

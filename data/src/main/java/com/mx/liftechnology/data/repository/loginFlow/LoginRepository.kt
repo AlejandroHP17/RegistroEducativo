@@ -1,4 +1,4 @@
-package com.mx.liftechnology.data.repository.flowLogin
+package com.mx.liftechnology.data.repository.loginFlow
 
 import com.mx.liftechnology.core.model.ModelApi.Data
 import com.mx.liftechnology.core.network.callapi.Credentials
