@@ -6,8 +6,7 @@ import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.data.repository.MenuRepository
-import com.mx.liftechnology.data.repository.SubMenuRepository
+import com.mx.liftechnology.data.repository.mainFlow.SubMenuRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

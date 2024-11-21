@@ -7,8 +7,8 @@ import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.registerModule
+import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
-import com.mx.liftechnology.registroeducativo.di.studentModule
 import com.mx.liftechnology.registroeducativo.di.subMenuModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -42,7 +42,7 @@ class MyApp : Application() {
                 registerModule,
                 menuModule,
                 subMenuModule,
-                studentModule
+                registerSchoolModule
             )
         }
     }

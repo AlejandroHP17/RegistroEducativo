@@ -29,10 +29,6 @@ class RegisterFragment : Fragment() {
     /* View Model variable */
     private val registerViewModel: RegisterViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        registerViewModel.getCCT()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +49,8 @@ class RegisterFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.reg_welcome)
             includeHeader.tvInsert.text = getString(R.string.reg_insert)
+            includeButton.btnAction.text = getString(R.string.reg_welcome)
+            includeButton.btnRecord.visibility = View.GONE
 
             val listRules = context?.resources?.getStringArray(R.array.rules_pass)
             val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
@@ -119,22 +117,6 @@ class RegisterFragment : Fragment() {
             }
         }
 
-        registerViewModel.cctField.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is SuccessState -> {
-                    binding.inputCct.successET()
-                }
-
-                is ErrorState -> {
-                    binding.inputCct.errorET(state.result)
-                }
-
-                else -> {
-                    binding.inputCct.errorET(ModelCodeError.ET_EMPTY)
-                }
-            }
-        }
-
         registerViewModel.codeField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
@@ -170,12 +152,11 @@ class RegisterFragment : Fragment() {
      * */
     private fun initListeners() {
         binding.apply {
-            btnRegister.setOnClickListener {
+            includeButton.btnAction.setOnClickListener {
                 registerViewModel.validateFields(
                     etEmail.text.toString(),
                     etPassword.text.toString(),
                     etRepeatPassword.text.toString(),
-                    etCct.text.toString(),
                     etCode.text.toString()
                 )
             }

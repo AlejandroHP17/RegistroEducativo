@@ -16,7 +16,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentSubMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
-import com.mx.liftechnology.registroeducativo.main.util.ModelSelectorMenu
+import com.mx.liftechnology.data.model.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -103,21 +103,18 @@ class SubMenuFragment : Fragment() {
     private fun inflateAdapter(items: List<ModelAdapterMenu>) {
         val clickListener = MenuClickListener { item ->
             val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.EVALUATION.value -> {
+                ModelSelectorMenu.SCHOOL.value -> {
+                    SubMenuFragmentDirections.actionSubMenuFragmentToRegisterSchoolFragment()
+                }
+
+                ModelSelectorMenu.STUDENTS.value -> {
                     null
                 }
 
-                ModelSelectorMenu.CONTROL.value -> {
+                ModelSelectorMenu.PERIODS.value -> {
                     null
                 }
 
-                ModelSelectorMenu.PROFILE.value -> {
-                    null
-                }
-
-                ModelSelectorMenu.CONFIGURATION.value -> {
-                    null
-                }
 
                 else -> {
                     null

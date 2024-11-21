@@ -9,7 +9,7 @@ import com.mx.liftechnology.core.model.modelBase.ModelRegex
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.util.LocationHelper
-import com.mx.liftechnology.data.repository.flowLogin.LoginRepository
+import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
 
 class LoginUseCase(
     private val repositoryLogin: LoginRepository,
