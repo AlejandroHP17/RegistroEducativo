@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-/** MenuFragment - Show the different available option that the user has
+/** RegisterFragment - A new user can register in the app, like teacher or student
  * @author pelkidev
  * @since 1.0.0
  */
@@ -61,12 +61,13 @@ class RegisterFragment : Fragment() {
     /** initObservers - focus in the variables from viewmodel
      * @author pelkidev
      * @since 1.0.0
-     * @param emailField check the email and set the correct view
-     * @param passField check the password and set the correct view
-     * @param repeatPassField check the password and set the correct view
-     * @param cctField check the cct and set the correct view
-     * @param codeField check the code and set the correct view
-     * @param responseLogin check the response of service, do actions
+     * ### Observed Variables:
+     * `emailField` to validate the email input and update the UI accordingly.
+     * `passField` to validate the password input and update the UI accordingly.
+     * `repeatPassField` to validate the password input and update the UI accordingly.
+     * `cctField` to validate the cct input and update the UI accordingly.
+     * `codeField` to validate the code input and update the UI accordingly.
+     * `responseLogin` to validate the response of service, do actions
      * */
     private fun initObservers() {
         registerViewModel.emailField.observe(viewLifecycleOwner) { state ->

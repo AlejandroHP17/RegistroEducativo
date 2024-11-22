@@ -9,6 +9,13 @@
         <item>   * Contener al menos un número</item>
     </string-array>
 
+    <string-array name="rules_forget_pass">
+        <item>¿Qué sigue?</item>
+        <item>   * Recibirás un correo electrónico con un código de acceso único, recuerda revisar tu bandeja de spam.</item>
+        <item>   * Una vez confirmado el correo electrónico, dirígete a la vista de login para autenticarte con     este código en el campo de contraseña.</item>
+        <item>   * Una vez ingresado al menu principal te recomendamos  ir a la sección de mis datos y cambies tu contraseña.</item>
+    </string-array>
+
     <string-array name="spinner_type">
         <item>Tipo</item>
         <item>Anual</item>

@@ -58,9 +58,10 @@ class LoginFragment : Fragment() {
     /** initObservers - focus in the variables from viewmodel
      * @author pelkidev
      * @since 1.0.0
-     * @param emailField check the email and set the correct view
-     * @param passField check the password and set the correct view
-     * @param responseLogin check the response of service, do actions
+     * ### Observed Variables:
+     * `emailField` to validate the email input and update the UI accordingly.
+     * `passField` to validate the password input and update the UI accordingly.
+     * `responseLogin` to validate the response of service, do actions
      * */
     private fun initObservers(){
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
@@ -80,7 +81,7 @@ class LoginFragment : Fragment() {
         }
 
         /**
-         * SuccesState - navigate to MainActivity, enter the application
+         * SuccessState - navigate to MainActivity, enter the application
          * ServiceError - show an error of service
          * AnotherState - set errors on inputs
          * */
