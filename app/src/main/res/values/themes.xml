@@ -23,4 +23,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <style name="Theme.AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Usa el estilo personalizado como tema por defecto para todos los diálogos de fecha -->
+        <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialog</item>
+    </style>
+
+
 </resources>

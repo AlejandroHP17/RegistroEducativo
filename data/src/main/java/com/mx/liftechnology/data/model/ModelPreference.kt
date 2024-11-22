@@ -6,4 +6,5 @@ package com.mx.liftechnology.data.model
  */
 object ModelPreference {
     const val LOGIN = "LOGIN"
+    const val ACCESS_TOKEN = "ACCESS_TOKEN"
 }

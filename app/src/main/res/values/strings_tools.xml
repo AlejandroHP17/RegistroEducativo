@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="tools_image">Name Image</string>
+    <string name="tools_empty"> </string>
+
+
     <string name="tools_title_course">Nombre del curso o periodo</string>
     <string name="tools_custom_title">Título Personalizado</string>
     <string name="tools_custom_insert">Ingresa algo</string>

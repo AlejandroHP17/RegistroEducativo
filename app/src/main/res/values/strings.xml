@@ -10,11 +10,6 @@
     <string name="edit_button">Editar</string>
     <string name="empty_dialog_title">Ingresa el nombre de tu curso</string>
 
-
-    <!-- Generic -->
-    <string name="tools_title">Título</string>
-    <string name="tools_body">Este es un mensaje largo</string>
-
     <!-- Login Flow -->
     <string name="log_welcome">Bienvenido</string>
     <string name="log_insert">Ingresa tus credenciales para acceder a tu contenido</string>
@@ -29,12 +24,37 @@
     <!-- Register Flow -->
     <string name="reg_welcome">Regístrate</string>
     <string name="reg_insert">Crea tu propia cuenta para poder continuar</string>
-    <string name="reg_cct">CCT</string>
     <string name="reg_repeat_password">Repetir contraseña</string>
     <string name="reg_code">Código</string>
 
+    <!-- ForgetPass Flow -->
+    <string name="forget_pass_welcome">¿Olvidaste tu constraseña?</string>
+    <string name="forget_pass_insert">No te preocupes, estás a un paso de recuperarla</string>
+    <string name="forget_pass_button">Enviar código</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Menu Flow -->
+    <string name="menu_grettins">Nos da gusto verte Profesor</string>
+    <string name="menu_empty">No tienes un ciclo escolar activo</string>
+    <string name="menu_ciclo">Ciclo escolar 2024 - 2025</string>
+
+    <!-- SubMenu Flow -->
+    <string name="sub_menu_title">Registro</string>
+
+    <!-- Register Flow -->
+    <string name="register_school">Registra tu escuela</string>
+    <string name="register_school_description">Ingresa los datos de tu ciclo escolar para poder continuar</string>
+    <string name="register_school_cct">CCT</string>
+    <string name="register_school_term">Ciclo escolar</string>
+    <string name="register_school_name">Nombre de la escuela</string>
+    <string name="register_school_shift">Turno</string>
+    <string name="register_school_grade">Grado</string>
+    <string name="register_school_group">Grupo</string>
+    <string name="register_school_number_period">Número de periodos en el ciclo escolar</string>
+    <string name="register_school_period">Periodos</string>
+    <string name="register_school_start">Inicial</string>
+    <string name="register_school_end">Final</string>
+    <string name="register_school_calendar">Selecciona el rango de fechas de tu periodo</string>
+
+
 
 </resources>

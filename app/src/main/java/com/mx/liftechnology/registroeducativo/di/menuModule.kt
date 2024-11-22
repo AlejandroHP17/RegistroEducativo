@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.data.repository.MenuRepository
-import com.mx.liftechnology.domain.usecase.MenuUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.home.MenuViewModel
+import com.mx.liftechnology.data.repository.mainFlow.MenuRepository
+import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -12,7 +12,7 @@ import org.koin.dsl.module
  * @since 1.0.0
  */
 val menuModule = module {
-    /* Local */
+
     single { MenuRepository(androidContext()) }
 
     single {
@@ -20,6 +20,6 @@ val menuModule = module {
     }
 
     viewModel {
-        MenuViewModel(get())
+        MenuViewModel(get(), get())
     }
 }

@@ -50,15 +50,18 @@ class LoginFragment : Fragment() {
             includeHeader.btnReturn.visibility = View.GONE
             includeHeader.tvTitle.text = getString(R.string.log_welcome)
             includeHeader.tvInsert.text = getString(R.string.log_insert)
+            includeButton.btnAction.text = getString(R.string.log_logIn)
+            includeButton.btnRecord.visibility = View.GONE
         }
     }
 
     /** initObservers - focus in the variables from viewmodel
      * @author pelkidev
      * @since 1.0.0
-     * @param emailField check the email and set the correct view
-     * @param passField check the password and set the correct view
-     * @param responseLogin check the response of service, do actions
+     * ### Observed Variables:
+     * `emailField` to validate the email input and update the UI accordingly.
+     * `passField` to validate the password input and update the UI accordingly.
+     * `responseLogin` to validate the response of service, do actions
      * */
     private fun initObservers(){
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
@@ -78,14 +81,13 @@ class LoginFragment : Fragment() {
         }
 
         /**
-         * SuccesState - navigate to MainActivity, enter the application
+         * SuccessState - navigate to MainActivity, enter the application
          * ServiceError - show an error of service
          * AnotherState - set errors on inputs
          * */
         loginViewModel.responseLogin.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
-
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
@@ -108,7 +110,7 @@ class LoginFragment : Fragment() {
      * */
     private fun initListeners() {
         binding.apply {
-            btnLogin.setOnClickListener {
+            includeButton.btnAction.setOnClickListener {
                 loginViewModel.validateFields(etEmail.text.toString(), etPassword.text.toString(), binding.cbRemember.isChecked)
             }
 

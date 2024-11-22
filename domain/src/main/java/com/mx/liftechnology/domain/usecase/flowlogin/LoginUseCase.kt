@@ -9,11 +9,14 @@ import com.mx.liftechnology.core.model.modelBase.ModelRegex
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.util.LocationHelper
-import com.mx.liftechnology.data.repository.flowLogin.LoginRepository
+import com.mx.liftechnology.data.model.ModelPreference
+import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
+import com.mx.liftechnology.domain.usecase.PreferenceUseCase
 
 class LoginUseCase(
     private val repositoryLogin: LoginRepository,
     private val locationHelper: LocationHelper,
+    private val preference: PreferenceUseCase
 ) {
 
     /** Request to Login
@@ -30,7 +33,10 @@ class LoginUseCase(
         }
             .fold(
                 onSuccess = { data ->
-                    if (data != null) SuccessState(data)
+                    if (data != null) {
+                        preference.savePreferenceString(ModelPreference.ACCESS_TOKEN,data.data?.access_token)
+                        SuccessState(data)
+                    }
                     else ErrorState(ModelCodeError.ERROR_FUNCTION)
                 },
                 onFailure = { exception ->

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_empty_state"
-    tools:context=".main.ui.activityMain.home.MenuFragment">
+    android:background="@color/color_transparent"
+    tools:context=".main.ui.activityMain.menu.MenuFragment">
 
     <include
         android:id="@+id/include_empty_home"
@@ -15,22 +16,35 @@
         android:id="@+id/content_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@color/color_transparent">
 
-        <androidx.cardview.widget.CardView
+        <LinearLayout
             android:id="@+id/cv_name_course"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title_card"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_gretting"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 tools:text="@string/tools_title_course"
-                android:layout_margin="@dimen/margin_16dp"/>
+                android:textSize="@dimen/text_size_form"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginHorizontal="@dimen/margin_16dp"/>
 
-        </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/tools_title_course"
+                android:textSize="@dimen/text_size_subtitle"
+                android:layout_margin="@dimen/margin_16dp"
+                android:layout_marginVertical="@dimen/margin_between"/>
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_card_menu"

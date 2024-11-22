@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.callapi.LoginApiCall
-import com.mx.liftechnology.data.repository.flowLogin.LoginRepository
-import com.mx.liftechnology.data.repository.flowLogin.LoginRepositoryImp
+import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
+import com.mx.liftechnology.data.repository.loginFlow.LoginRepositoryImp
 import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login.LoginViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -22,7 +22,7 @@ val loginModule = module {
     }
 
     single {
-        LoginUseCase(get(), get())
+        LoginUseCase(get(), get(), get())
     }
 
     viewModel {

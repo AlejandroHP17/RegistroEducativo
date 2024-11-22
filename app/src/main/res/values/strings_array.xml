@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <string-array name="menu_items">
-        <item>Calendario</item>
-        <item>Alumnos</item>
-        <item>Asignaturas</item>
-        <item>Escuela</item>
-        <item>Periodo</item>
-        <item>Exportar</item>
-        <item>Configuraciones</item>
-    </string-array>
 
     <string-array name="rules_pass">
         <item>Reglas para hacer válida tu contraseña</item>
@@ -17,6 +7,69 @@
         <item>   * Contener al menos una letra mayúscula</item>
         <item>   * Contener al menos una letra minúscula</item>
         <item>   * Contener al menos un número</item>
+    </string-array>
+
+    <string-array name="rules_forget_pass">
+        <item>¿Qué sigue?</item>
+        <item>   * Recibirás un correo electrónico con un código de acceso único, recuerda revisar tu bandeja de spam.</item>
+        <item>   * Una vez confirmado el correo electrónico, dirígete a la vista de login para autenticarte con     este código en el campo de contraseña.</item>
+        <item>   * Una vez ingresado al menu principal te recomendamos  ir a la sección de mis datos y cambies tu contraseña.</item>
+    </string-array>
+
+    <string-array name="spinner_type">
+        <item>Tipo</item>
+        <item>Anual</item>
+        <item>Semestral</item>
+        <item>Cuatrimestral</item>
+        <item>Trimestral</item>
+    </string-array>
+
+    <string-array name="spinner_cycle">
+        <item>Ciclo</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+<string-array name="spinner_grade">
+        <item>Grado</item>
+        <item>1°</item>
+        <item>2°</item>
+        <item>3°</item>
+        <item>4°</item>
+        <item>5°</item>
+        <item>6°</item>
+        <item>7°</item>
+        <item>8°</item>
+        <item>9°</item>
+        <item>10°</item>
+    </string-array>
+
+    <string-array name="spinner_group">
+        <item>Grupo</item>
+        <item>A</item>
+        <item>B</item>
+        <item>C</item>
+        <item>D</item>
+        <item>E</item>
+        <item>F</item>
+        <item>G</item>
+        <item>H</item>
+        <item>I</item>
+        <item>J</item>
+        <item>K</item>
+        <item>L</item>
+    </string-array>
+
+    <string-array name="spinner_period">
+        <item>Periodo</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
     </string-array>
     
 </resources>

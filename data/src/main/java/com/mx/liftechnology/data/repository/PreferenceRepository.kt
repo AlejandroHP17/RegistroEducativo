@@ -43,7 +43,7 @@ class PreferenceRepositoryImpl(
         return with(securePrefs) {
             @Suppress("UNCHECKED_CAST")
             when (default) {
-                is String -> getString(name, default) as T
+                is String? -> getString(name, default) as T
                 is Int -> getInt(name, default) as T
                 is Boolean -> getBoolean(name, default) as T
                 is Float -> getFloat(name, default) as T
@@ -56,7 +56,7 @@ class PreferenceRepositoryImpl(
     override suspend fun <T> savePreference(name: String, value: T) {
         with(securePrefs.edit()) {
             when (value) {
-                is String -> putString(name, value)
+                is String? -> putString(name, value)
                 is Int -> putInt(name, value)
                 is Boolean -> putBoolean(name, value)
                 is Float -> putFloat(name, value)

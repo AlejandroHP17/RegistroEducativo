@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_between"
+    android:background="@color/color_transparent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_action"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/touch_google"
+        android:text="@string/log_register"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_record"
+        android:background="@drawable/bg_button" />
+
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_record"
+        android:layout_width="@dimen/touch_google"
+        android:layout_height="@dimen/touch_google"
+        android:src="@drawable/ic_voice"
+        android:layout_marginStart="@dimen/margin_outer"
+        app:layout_constraintStart_toEndOf="@id/btn_action"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/bg_button_record" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

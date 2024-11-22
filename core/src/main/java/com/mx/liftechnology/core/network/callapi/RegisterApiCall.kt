@@ -19,6 +19,5 @@ interface RegisterApiCall {
 data class CredentialsRegister(
     val email: String,
     val password: String,
-    val cct  : String,
     val codigoactivacion : String
 )
