@@ -22,7 +22,7 @@ val loginModule = module {
     }
 
     single {
-        LoginUseCase(get(), get())
+        LoginUseCase(get(), get(), get())
     }
 
     viewModel {

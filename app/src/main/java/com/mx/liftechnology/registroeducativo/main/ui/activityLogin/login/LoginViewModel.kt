@@ -37,6 +37,9 @@ class LoginViewModel(
      * In correct case, make the request
      * @author pelkidev
      * @since 1.0.0
+     * @param email the user
+     * @param pass the user
+     * @param remember to enter on app automatically
      * */
     fun validateFields(email: String?, pass: String?, remember: Boolean) {
         coroutine.scopeIO.launch {
@@ -57,6 +60,9 @@ class LoginViewModel(
     /** Request to Login
      * @author pelkidev
      * @since 1.0.0
+     * @param email the user
+     * @param pass the user
+     * @param remember to enter on app automatically
      * */
     private fun login(email: String?, pass: String?, remember: Boolean) {
         coroutine.scopeIO.launch {

@@ -8,7 +8,10 @@ import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.data.model.ModelPreference
+import com.mx.liftechnology.domain.usecase.PreferenceUseCase
 import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import kotlinx.coroutines.launch
 
 /** MenuViewModel - Control the data of the menu
@@ -17,7 +20,8 @@ import kotlinx.coroutines.launch
  * @param useCase Access to UseCase with DI
  */
 class MenuViewModel(
-    private val useCase: MenuUseCase
+    private val useCase: MenuUseCase,
+    private val preference: PreferenceUseCase
 ) : ViewModel() {
 
     // Controlled coroutine
