@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.framework
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.domain.module.preferenceModule
+import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
@@ -40,6 +41,7 @@ class MyApp : Application() {
                 splashModule,
                 loginModule,
                 registerModule,
+                forgetPasswordModule,
                 menuModule,
                 subMenuModule,
                 registerSchoolModule

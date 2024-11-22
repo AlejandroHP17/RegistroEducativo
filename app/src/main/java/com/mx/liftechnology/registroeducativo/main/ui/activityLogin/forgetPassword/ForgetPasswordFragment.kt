@@ -5,9 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
+import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentForgetPasswordBinding
+import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/** MenuFragment - Show the different available option that the user has
+/** ForgetPasswordFragment - The user can recovery his password
  * @author pelkidev
  * @since 1.0.0
  */
@@ -16,11 +24,74 @@ class ForgetPasswordFragment : Fragment() {
     private var _binding: FragmentForgetPasswordBinding? = null
     private val binding get() = _binding!!
 
+    private val forgetPassViewModel : ForgetPasswordViewModel by viewModel()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentForgetPasswordBinding.inflate(inflater, container, false)
+        initView()
+        initObservers()
+        initListeners()
+        return binding.root
+    }
 
-        return binding.root}
+    /** initView - Build the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initView() {
+        binding.apply {
+            includeHeader.tvTitle.text = getString(R.string.forget_pass_welcome)
+            includeHeader.tvInsert.text = getString(R.string.forget_pass_insert)
+            includeButton.btnAction.text = getString(R.string.forget_pass_button)
+            includeButton.btnRecord.visibility = View.GONE
+
+            val listRules = context?.resources?.getStringArray(R.array.rules_forget_pass)
+            val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
+            tvRegister.text = stringBuilder
+        }
+    }
+
+    /** initObservers - focus in the variables from viewmodel
+     * @author pelkidev
+     * @since 1.0.0
+     * ### Observed Variables:
+     * `emailField` to validate the email input and update the UI accordingly.
+     *
+     * */
+    private fun initObservers() {
+        forgetPassViewModel.emailField.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SuccessState -> {
+                    binding.inputEmail.successET()
+                }
+
+                is ErrorState -> {
+                    binding.inputEmail.errorET(state.result)
+                }
+
+                else -> {
+                    binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                }
+            }
+        }
+    }
+
+    /** initListeners - Build the click on the view
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    private fun initListeners() {
+        binding.apply {
+            includeButton.btnAction.setOnClickListener {
+                forgetPassViewModel.validateFields( etEmail.text.toString())
+            }
+
+            includeHeader.btnReturn.setOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
+    }
 }

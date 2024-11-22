@@ -20,6 +20,6 @@ val menuModule = module {
     }
 
     viewModel {
-        MenuViewModel(get())
+        MenuViewModel(get(), get())
     }
 }

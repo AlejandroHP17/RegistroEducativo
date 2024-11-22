@@ -13,7 +13,15 @@ class PreferenceUseCase (private val preference: PreferenceRepository){
     }
 
     suspend fun getPreferenceBoolean(name: String): Boolean {
-        return preference.getPreference(name, false) // `false` es el valor predeterminado
+        return preference.getPreference(name, false)
+    }
+
+    suspend fun savePreferenceString(name: String, value: String?){
+        preference.savePreference(name, value)
+    }
+
+    suspend fun getPreferenceString(name: String): String? {
+        return preference.getPreference(name, null)
     }
 
 }

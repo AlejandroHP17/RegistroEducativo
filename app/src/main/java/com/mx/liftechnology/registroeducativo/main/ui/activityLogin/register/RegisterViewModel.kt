@@ -41,6 +41,10 @@ class RegisterViewModel(
      * In correct case, make the request
      * @author pelkidev
      * @since 1.0.0
+     * @param email the user
+     * @param pass the user
+     * @param repeatPass the user
+     * @param code the user
      * */
     fun validateFields(
         email: String,
@@ -71,6 +75,9 @@ class RegisterViewModel(
     /** Request to register
      * @author pelkidev
      * @since 1.0.0
+     * @param email the user
+     * @param pass the user
+     * @param code the user
      * */
     private fun register(
         email: String,

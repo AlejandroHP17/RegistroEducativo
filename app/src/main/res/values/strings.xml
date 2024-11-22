@@ -27,6 +27,11 @@
     <string name="reg_repeat_password">Repetir contraseña</string>
     <string name="reg_code">Código</string>
 
+    <!-- ForgetPass Flow -->
+    <string name="forget_pass_welcome">¿Olvidaste tu constraseña?</string>
+    <string name="forget_pass_insert">No te preocupes, estás a un paso de recuperarla</string>
+    <string name="forget_pass_button">Enviar código</string>
+
     <!-- Menu Flow -->
     <string name="menu_grettins">Nos da gusto verte Profesor</string>
     <string name="menu_empty">No tienes un ciclo escolar activo</string>
