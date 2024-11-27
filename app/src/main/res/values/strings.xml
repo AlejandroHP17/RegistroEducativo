@@ -49,11 +49,16 @@
     <string name="register_school_shift">Turno</string>
     <string name="register_school_grade">Grado</string>
     <string name="register_school_group">Grupo</string>
-    <string name="register_school_number_period">Número de periodos en el ciclo escolar</string>
-    <string name="register_school_period">Periodos</string>
-    <string name="register_school_start">Inicial</string>
-    <string name="register_school_end">Final</string>
-    <string name="register_school_calendar">Selecciona el rango de fechas de tu periodo</string>
+
+
+    <!-- Register Flow -->
+    <string name="register_partial">Registra tus parciales</string>
+    <string name="register_partial_description">Ingresa los datos de tus parciales correspondientes al ciclo escolar activo, si ya los tienes registrados, puedes actualizarlos</string>
+    <string name="register_partial_number_period">Número de parciales en el ciclo escolar</string>
+    <string name="register_partial_period">Parciales</string>
+    <string name="register_partial_start">Inicial</string>
+    <string name="register_partial_end">Final</string>
+    <string name="register_partial_calendar">Selecciona el rango de fechas de tu parcial</string>
 
 
 

@@ -111,7 +111,11 @@ class SubMenuFragment : Fragment() {
                     null
                 }
 
-                ModelSelectorMenu.PERIODS.value -> {
+                ModelSelectorMenu.PARTIALS.value -> {
+                    SubMenuFragmentDirections.actionSubMenuFragmentToRegisterPartialFragment()
+                }
+
+                ModelSelectorMenu.SUBJECTS.value -> {
                     null
                 }
 

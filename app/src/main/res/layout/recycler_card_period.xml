@@ -22,7 +22,7 @@
             android:layout_margin="@dimen/margin_between"
             android:layout_weight="8"
             android:gravity="center"
-            android:text="@string/register_school_end" />
+            android:text="@string/register_partial_end" />
 
         <ImageView
             android:id="@+id/iv_calendar"
