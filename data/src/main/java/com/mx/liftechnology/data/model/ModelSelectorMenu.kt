@@ -16,5 +16,6 @@ enum class ModelSelectorMenu(val value: Int) : Parcelable {
 
     SCHOOL(5),
     STUDENTS(6),
-    PERIODS(7)
+    SUBJECTS(7),
+    PARTIALS(8)
 }

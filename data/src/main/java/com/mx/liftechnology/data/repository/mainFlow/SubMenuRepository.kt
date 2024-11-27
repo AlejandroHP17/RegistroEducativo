@@ -18,7 +18,8 @@ class SubMenuRepository(private val context: Context) {
         val imageResources = arrayOf(
             R.drawable.ic_school,
             R.drawable.ic_students,
-            R.drawable.ic_subject
+            R.drawable.ic_subject,
+            R.drawable.ic_partial
         )
         val idBase = ModelSelectorMenu.SCHOOL.value
         return listMenuItems.mapIndexed { index, description ->
