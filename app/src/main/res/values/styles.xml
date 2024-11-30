@@ -21,6 +21,16 @@
         <item name="errorEnabled">true</item>
     </style>
 
+    <!-- dialog round corners Transparent-->
+    <style name="AlertDialogRoundBase" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
     <style name="CustomDatePickerDialog" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <!-- Color del fondo del diálogo -->
         <item name="android:background">@color/white</item>

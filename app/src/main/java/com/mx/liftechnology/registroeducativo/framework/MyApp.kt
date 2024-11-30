@@ -8,6 +8,7 @@ import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.registerModule
+import com.mx.liftechnology.registroeducativo.di.registerPartialModule
 import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
 import com.mx.liftechnology.registroeducativo.di.subMenuModule
@@ -44,7 +45,8 @@ class MyApp : Application() {
                 forgetPasswordModule,
                 menuModule,
                 subMenuModule,
-                registerSchoolModule
+                registerSchoolModule,
+                registerPartialModule
             )
         }
     }

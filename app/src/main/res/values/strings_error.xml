@@ -10,9 +10,7 @@
     <string name="text_incorrect_data">Datos incorrectos</string>
     <string name="text_incorrect_format">El formato es incorrecto</string>
 
-    <!-- Service -->
-    <string name="toast_error_service">Por el momento la operación no puede ser realizada. Intente más tarde</string>
-    <string name="toast_error_editext">Por favor, revise sus datos</string>
-    <string name="toast_error_register">No se ha podido registrar el correo. Intente mas tarde</string>
+    <string name="toast_success_login">Te has logueado correctamente, bienvenido</string>
+    <string name="toast_success_register_user">Tu usuario se registrado correctamente, puedes iniciar sesión ahora</string>
 
 </resources>

@@ -25,8 +25,8 @@ class SubMenuViewModel(
     private val coroutine = CoroutineScopeManager()
 
     // List the option from menu
-    private val _nameSubMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>>>()
-    val nameSubMenu: LiveData<ModelState<List<ModelAdapterMenu>>> = _nameSubMenu
+    private val _nameSubMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>, String>?>()
+    val nameSubMenu: LiveData<ModelState<List<ModelAdapterMenu>, String>?> = _nameSubMenu
 
     /** getMenu - Get all the options from menu, or a mistake in case
      * @author pelkidev
@@ -39,7 +39,7 @@ class SubMenuViewModel(
             }.onSuccess {
                 _nameSubMenu.postValue(it)
             }.onFailure {
-                _nameSubMenu.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                _nameSubMenu.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
             }
         }
     }

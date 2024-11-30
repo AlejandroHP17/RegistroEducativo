@@ -22,9 +22,14 @@ koin = "3.5.0"
 room = "2.6.1"
 crypto = "1.1.0-alpha06"
 splashScreen = "1.0.1"
+shimmer = "0.5.0"
+lottie = "6.1.0"
 
 
 [libraries]
+facebook-shimmer = {group = "com.facebook.shimmer" , name = "shimmer" , version.ref = "shimmer"}
+airbnb-lottie = {group = "com.airbnb.android" , name = "lottie" , version.ref = "lottie"}
+
 play-services-location = {group = "com.google.android.gms" , name = "play-services-location" , version.ref = "location"}
 
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
@@ -63,6 +68,11 @@ androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support
 
 
 [bundles]
+animation = [
+    "facebook-shimmer",
+    "airbnb-lottie"
+]
+
 location = [
     "play-services-location"
 ]

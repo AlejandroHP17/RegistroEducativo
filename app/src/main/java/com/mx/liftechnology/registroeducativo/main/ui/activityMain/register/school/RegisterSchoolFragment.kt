@@ -24,7 +24,7 @@ import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/** RegisterSchoolFragment - Accept the data of the school
+/** RegisterPartialFragment - Accept the data of the school
  * @author pelkidev
  * @since 1.0.0
  */
@@ -34,7 +34,6 @@ class RegisterSchoolFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val registerSchoolViewModel: RegisterSchoolViewModel by viewModel()
-    private var adapterPeriods : PeriodAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +66,6 @@ class RegisterSchoolFragment : Fragment() {
             includeSpinnerCycle.spinner.fillItem(requireContext(), ModelSpinnerSelect.CYCLE)
             includeSpinnerGrade.spinner.fillItem(requireContext(), ModelSpinnerSelect.GRADE)
             includeSpinnerGroup.spinner.fillItem(requireContext(), ModelSpinnerSelect.GROUP)
-            includeSpinnerPeriod.spinner.fillItem(requireContext(), ModelSpinnerSelect.PERIOD)
         }
     }
 
@@ -100,14 +98,6 @@ class RegisterSchoolFragment : Fragment() {
                     }
                 }
             }
-        }
-
-        registerSchoolViewModel.periodNumber.observe(viewLifecycleOwner) { period ->
-            initAdapterPeriod(period)
-        }
-
-        registerSchoolViewModel.datePeriod.observe(viewLifecycleOwner){data ->
-            adapterPeriods?.updateDate(data)
         }
     }
 
@@ -146,36 +136,6 @@ class RegisterSchoolFragment : Fragment() {
                     //Nothing
                 }
             }
-            includeSpinnerPeriod.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedValue = parent?.getItemAtPosition(position).toString()
-                    registerSchoolViewModel.savePeriod(selectedValue)
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    //Nothing
-                }
-            }
-        }
-    }
-
-    /** initAdapterPeriod - Adapter specialized in the number of periods of user can select
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    private fun initAdapterPeriod(period:Int){
-        val clickListener = PeriodClickListener(
-            onItemClick = { item ->
-                /* Open the calendar */
-                registerSchoolViewModel.initDatePicker(item, parentFragmentManager, context)
-            }
-        )
-        val list = MutableList(period) { index -> ModelDatePeriod(position = index , date = "Periodo ${index + 1}") }
-
-        /* Build the adapter */
-        adapterPeriods = PeriodAdapter(list, clickListener)
-        binding.rvCardPeriod.layoutManager = LinearLayoutManager(this.context)
-        binding.apply {
-            rvCardPeriod.adapter = adapterPeriods
         }
     }
 

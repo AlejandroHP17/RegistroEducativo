@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  * @param useCase Access to UseCase with DI
  */
 class MenuViewModel(
-    private val useCase: MenuUseCase,
+    private val menuUseCase: MenuUseCase,
     private val preference: PreferenceUseCase
 ) : ViewModel() {
 
@@ -28,8 +28,8 @@ class MenuViewModel(
     private val coroutine = CoroutineScopeManager()
 
     // List the option from menu
-    private val _nameMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>>>()
-    val nameMenu: LiveData<ModelState<List<ModelAdapterMenu>>> = _nameMenu
+    private val _nameMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>,String>>()
+    val nameMenu: LiveData<ModelState<List<ModelAdapterMenu>,String>> = _nameMenu
 
     /** getMenu - Get all the options from menu, or a mistake in case
      * @author pelkidev
@@ -38,11 +38,11 @@ class MenuViewModel(
     fun getMenu(schoolYear:Boolean) {
         coroutine.scopeIO.launch {
             runCatching {
-                useCase.getMenu(schoolYear)
+                menuUseCase.getMenu(schoolYear)
             }.onSuccess {
                 _nameMenu.postValue(it)
             }.onFailure {
-                _nameMenu.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                _nameMenu.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
             }
         }
     }

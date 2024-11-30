@@ -33,6 +33,7 @@ dependencies {
     implementation(libs.bundles.androidx.ui)
     implementation(libs.bundles.junit.test)
     implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.animation)
 
     /* Libraries */
     implementation(project(":domain"))
