@@ -11,9 +11,6 @@ import org.koin.dsl.module
  */
 val forgetPasswordModule = module {
 
-    single {
-        ForgetPasswordUseCase()
-    }
 
     viewModel {
         ForgetPasswordViewModel(get())

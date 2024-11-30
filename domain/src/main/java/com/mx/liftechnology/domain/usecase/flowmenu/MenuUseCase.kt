@@ -20,17 +20,17 @@ class MenuUseCase(private val localRepository: MenuRepository) {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    suspend fun getMenu(schoolYear:Boolean): ModelState<List<ModelAdapterMenu>> {
+    suspend fun getMenu(schoolYear:Boolean): ModelState<List<ModelAdapterMenu>,String> {
         return withContext(dispatcher) {
             try {
                 val list = localRepository.getItems(schoolYear)
                 if (list.isNullOrEmpty()) {
-                    EmptyState()
+                    EmptyState(ModelCodeError.ERROR_EMPTY)
                 } else {
                     SuccessState(list)
                 }
             } catch (e: Exception) {
-                ErrorState(ModelCodeError.ERROR_FUNCTION)
+                ErrorState(ModelCodeError.ERROR_CATCH)
             }
         }
     }

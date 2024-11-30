@@ -1,6 +1,7 @@
 package com.mx.liftechnology.domain.usecase.flowmenu
 
 import com.mx.liftechnology.core.model.ModelAdapterMenu
+import com.mx.liftechnology.core.model.ModelApi.User
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
@@ -11,26 +12,30 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+fun interface SubMenuUseCase {
+    suspend fun getSubMenu(school:Boolean): ModelState<List<ModelAdapterMenu>, String>?
+}
+
 /** MenuUseCase - Get the list of menu and process the information
  * @author pelkidev
  * @date 28/08/2023
  * @param localRepository connect with the repository
  * */
-class SubMenuUseCase(private val localRepository: SubMenuRepository) {
+class SubMenuUseCaseImp(private val localRepository: SubMenuRepository) : SubMenuUseCase {
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    suspend fun getSubMenu(school:Boolean): ModelState<List<ModelAdapterMenu>> {
+    override suspend fun getSubMenu(school:Boolean): ModelState<List<ModelAdapterMenu>, String>? {
         return withContext(dispatcher) {
             try {
                 val list = localRepository.getItems(school)
                 if (list.isNullOrEmpty()) {
-                    EmptyState()
+                    EmptyState(ModelCodeError.ERROR_EMPTY)
                 } else {
                     SuccessState(list)
                 }
             } catch (e: Exception) {
-                ErrorState(ModelCodeError.ERROR_FUNCTION)
+                ErrorState(ModelCodeError.ERROR_CATCH)
             }
         }
     }
