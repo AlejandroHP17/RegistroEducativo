@@ -13,62 +13,7 @@ class RegisterSchoolUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateGrade(email: String?): ModelState<Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> {
-                ErrorState(ModelCodeError.ET_EMPTY)
-            }
+    fun validatePeriod(email: String?) {
 
-            !patEmail.matches(email) -> {
-                ErrorState(ModelCodeError.ET_FORMAT)
-            }
-
-            else -> {
-                SuccessState(ModelCodeSuccess.ET_FORMAT)
-            }
-        }
-    }
-
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    fun validateGroup(email: String?): ModelState<Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> {
-                ErrorState(ModelCodeError.ET_EMPTY)
-            }
-
-            !patEmail.matches(email) -> {
-                ErrorState(ModelCodeError.ET_FORMAT)
-            }
-
-            else -> {
-                SuccessState(ModelCodeSuccess.ET_FORMAT)
-            }
-        }
-    }
-
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    fun validatePeriod(email: String?): ModelState<Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> {
-                ErrorState(ModelCodeError.ET_EMPTY)
-            }
-
-            !patEmail.matches(email) -> {
-                ErrorState(ModelCodeError.ET_FORMAT)
-            }
-
-            else -> {
-                SuccessState(ModelCodeSuccess.ET_FORMAT)
-            }
-        }
     }
 }

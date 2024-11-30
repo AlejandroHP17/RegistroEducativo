@@ -7,26 +7,29 @@ import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class RegisterSchoolViewModel (
     private val cctUseCase: CCTUseCase,
+    private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
     private val registerSchoolUseCase: RegisterSchoolUseCase
 ) : ViewModel() {
     // Controlled coroutine
     private val coroutine = CoroutineScopeManager()
 
     // Observer the response of service
-    private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?>>()
-    private val responseCCT: LiveData<ModelState<List<DataCCT?>?>> get() = _responseCCT
+    private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?,String>>()
+    private val responseCCT: LiveData<ModelState<List<DataCCT?>?,String>> get() = _responseCCT
 
     // Observer the cct field
-    private val _cctField = SingleLiveEvent<ModelState<Int>>()
-    val cctField: LiveData<ModelState<Int>> get() = _cctField
+    private val _cctField = SingleLiveEvent<ModelState<Int, Int>?>()
+    val cctField: LiveData<ModelState<Int, Int>?> get() = _cctField
 
     private var grade : String? = null
     private var group : String? = null
@@ -43,15 +46,15 @@ class RegisterSchoolViewModel (
             }.onSuccess {
                 when (it) {
                     is SuccessState -> {
-                        _responseCCT.postValue(SuccessState(it.result.data))
+                        _responseCCT.postValue(SuccessState(it.result))
                     }
 
                     else -> {
-                        _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                        _responseCCT.postValue(it)
                     }
                 }
             }.onFailure {
-                _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_FUNCTION))
+                _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
             }
         }
     }
@@ -61,8 +64,11 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun validateCCT(cct: String?){
-        val cctState = cctUseCase.validateCCT(cct, responseCCT)
-        _cctField.postValue(cctState)
+        coroutine.scopeIO.launch {
+            val cctState = cctUseCase.validateCCT(cct, responseCCT.value)
+            _cctField.postValue(cctState)
+        }
+
     }
 
     /** Save in viewModel the variable of grade
@@ -86,8 +92,8 @@ class RegisterSchoolViewModel (
         coroutine.scopeIO.launch {
 
             val cctState = cctField
-            val gradeState = registerSchoolUseCase.validateGrade(grade)
-            val groupState = registerSchoolUseCase.validateGroup(group)
+            val gradeState = validateFieldsUseCase.validateGrade(grade)
+            val groupState = validateFieldsUseCase.validateGroup(group)
 
             /*_emailField.postValue(emailState)
             _passField.postValue(passState)

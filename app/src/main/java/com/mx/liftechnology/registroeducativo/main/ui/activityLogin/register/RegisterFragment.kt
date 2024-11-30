@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.register
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterBinding
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastSuccess
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
-import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 /** RegisterFragment - A new user can register in the app, like teacher or student
  * @author pelkidev
@@ -29,6 +34,20 @@ class RegisterFragment : Fragment() {
     /* View Model variable */
     private val registerViewModel: RegisterViewModel by viewModel()
 
+    /* loader variable */
+    private var animationHandler: AnimationHandler? = null
+
+    /**
+     * block to accept the animation if the fragment is attached to the activity
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        animationHandler = context as? AnimationHandler
+    }
+    override fun onDetach() {
+        super.onDetach()
+        animationHandler = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,76 +91,61 @@ class RegisterFragment : Fragment() {
     private fun initObservers() {
         registerViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    binding.inputEmail.successET()
-                }
-
-                is ErrorState -> {
-                    binding.inputEmail.errorET(state.result)
-                }
-
-                else -> {
-                    binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
-                }
+                is SuccessState -> binding.inputEmail.successET()
+                is ErrorState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
             }
         }
 
         registerViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    binding.inputPassword.successET()
-                }
-
-                is ErrorState -> {
-                    binding.inputPassword.errorET(state.result)
-                }
-
-                else -> {
-                    binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
-                }
+                is SuccessState -> binding.inputPassword.successET()
+                is ErrorState -> binding.inputPassword.errorET(state.result)
+                else -> binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
             }
         }
 
         registerViewModel.repeatPassField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    binding.inputRepeatPassword.successET()
-                }
-
-                is ErrorState -> {
-                    binding.inputRepeatPassword.errorET(state.result)
-                }
-
-                else -> {
-                    binding.inputRepeatPassword.errorET(ModelCodeError.ET_DIFFERENT)
-                }
+                is SuccessState -> binding.inputRepeatPassword.successET()
+                is ErrorState -> binding.inputRepeatPassword.errorET(state.result)
+                else -> binding.inputRepeatPassword.errorET(ModelCodeError.ET_DIFFERENT)
             }
         }
 
         registerViewModel.codeField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    binding.inputCode.successET()
-                }
-
-                is ErrorState -> {
-                    binding.inputCode.errorET(ModelCodeError.ET_NOT_FOUND)
-                }
-
-                else -> {
-                    binding.inputCode.errorET(ModelCodeError.ET_EMPTY)
-                }
+                is SuccessState -> binding.inputCode.successET()
+                is ErrorState -> binding.inputCode.errorET(ModelCodeError.ET_NOT_FOUND)
+                else -> binding.inputCode.errorET(ModelCodeError.ET_EMPTY)
             }
         }
 
+        registerViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LoaderState -> {
+                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    else animationHandler?.hideLoadingAnimation()
+                }
+                else ->  animationHandler?.hideLoadingAnimation()
+            }
+        }
+
+        /**
+         * SuccessState - navigate to login
+         * ErrorState - log an error of service
+         * ErrorStateUser - show the error to user
+         * */
         registerViewModel.responseRegister.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
+                    showCustomToastSuccess(requireActivity(), getString(R.string.toast_success_register_user))
                     findNavController().popBackStack()
                 }
-
+                is ErrorState ->  state.result.log()
+                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result)
                 else -> {
-                    toastFragment(getString(R.string.toast_error_register))
+                    // Nothing
                 }
             }
         }

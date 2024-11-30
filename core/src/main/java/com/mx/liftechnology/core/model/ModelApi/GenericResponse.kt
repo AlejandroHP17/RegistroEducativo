@@ -5,7 +5,6 @@ class GenericResponse<T>(
     val response: ResponseBasic
 )
 
-
 data class ResponseBasic(
     val code: Int,
     val msg: String,

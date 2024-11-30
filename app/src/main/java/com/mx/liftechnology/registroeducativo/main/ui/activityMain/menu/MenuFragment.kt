@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.data.model.ModelSelectorMenu
-import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastWarning
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** MenuFragment - Show the different available option that the user has
@@ -75,12 +75,8 @@ class MenuFragment : Fragment() {
                     inflateAdapter(state.result)
                 }
 
-                is ErrorState -> {
-                    toastFragment("Error code: ${state.result}")
-                }
-
-                is EmptyState -> {
-                    toastFragment("Por el momento no podemos mostrar el menu")
+                else -> {
+                    //Nothing
                 }
             }
         }
@@ -118,7 +114,7 @@ class MenuFragment : Fragment() {
                 findNavController().navigate(direction)
             }
 
-            toastFragment("Clicked on: ${item.titleCard}")
+            showCustomToastWarning(requireActivity(), "Clicked on: ${item.titleCard}")
         }
 
         /* Build the adapter */
