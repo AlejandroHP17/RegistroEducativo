@@ -20,7 +20,7 @@ class CCTUseCaseImp(
 ) : CCTUseCase {
 
     override suspend fun getCCT(
-    ): ModelState<List<DataCCT?>?, String>? {
+    ): ModelState<List<DataCCT?>?, String> {
         return when (val result = cctRepository.executeCCT()) {
             is SuccessState -> {
                 if (result.result.isNullOrEmpty()) {
@@ -41,7 +41,7 @@ class CCTUseCaseImp(
     override suspend fun validateCCT(
         cct: String?,
         responseCCT: ModelState<List<DataCCT?>?, String>?
-    ): ModelState<Int, Int>? {
+    ): ModelState<Int, Int> {
         return when {
             cct.isNullOrEmpty() -> {
                 ErrorState(ModelCodeError.ET_EMPTY)

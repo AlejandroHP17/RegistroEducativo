@@ -2,9 +2,12 @@ package com.mx.liftechnology.registroeducativo.main.ui.activitySplash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.mx.liftechnology.data.model.ModelPreference
-import com.mx.liftechnology.domain.usecase.PreferenceUseCase
+import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SplashViewModel (
     private val preferenceUseCase: PreferenceUseCase
@@ -14,8 +17,10 @@ class SplashViewModel (
     private val _navigate = SingleLiveEvent<Boolean>()
     val navigate: LiveData<Boolean> get() = _navigate
 
-    suspend fun getNavigation(){
-        val isLoggedIn = preferenceUseCase.getPreferenceBoolean(ModelPreference.LOGIN)
-        _navigate.postValue(isLoggedIn)
+    fun getNavigation(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val isLoggedIn = preferenceUseCase.getPreferenceBoolean(ModelPreference.LOGIN)
+            _navigate.postValue(isLoggedIn)
+        }
     }
 }

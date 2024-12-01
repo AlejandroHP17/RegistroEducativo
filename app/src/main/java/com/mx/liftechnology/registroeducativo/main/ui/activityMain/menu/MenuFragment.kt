@@ -9,15 +9,12 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mx.liftechnology.core.model.ModelAdapterMenu
-import com.mx.liftechnology.core.model.modelBase.EmptyState
-import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.data.model.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
-import com.mx.liftechnology.data.model.ModelSelectorMenu
-import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastWarning
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** MenuFragment - Show the different available option that the user has
@@ -71,10 +68,7 @@ class MenuFragment : Fragment() {
         /* Show all the options from menu, or if any error occur, show the error */
         menuViewModel.nameMenu.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    inflateAdapter(state.result)
-                }
-
+                is SuccessState -> inflateAdapter(state.result)
                 else -> {
                     //Nothing
                 }
@@ -90,31 +84,13 @@ class MenuFragment : Fragment() {
     private fun inflateAdapter(items: List<ModelAdapterMenu>) {
         val clickListener = MenuClickListener { item ->
             val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.EVALUATION.value -> {
-                    null
-                }
-
-                ModelSelectorMenu.CONTROL.value -> {
-                    MenuFragmentDirections.actionMenuFragmentToSubMenuFragment()
-                }
-
-                ModelSelectorMenu.PROFILE.value -> {
-                    null
-                }
-
-                ModelSelectorMenu.CONFIGURATION.value -> {
-                    null
-                }
-
-                else -> {
-                    null
-                }
+                ModelSelectorMenu.EVALUATION.value -> null
+                ModelSelectorMenu.CONTROL.value -> MenuFragmentDirections.actionMenuFragmentToSubMenuFragment()
+                ModelSelectorMenu.PROFILE.value -> null
+                ModelSelectorMenu.CONFIGURATION.value -> null
+                else -> null
             }
-            if (direction != null) {
-                findNavController().navigate(direction)
-            }
-
-            showCustomToastWarning(requireActivity(), "Clicked on: ${item.titleCard}")
+            direction?.let { findNavController().navigate(it) }
         }
 
         /* Build the adapter */

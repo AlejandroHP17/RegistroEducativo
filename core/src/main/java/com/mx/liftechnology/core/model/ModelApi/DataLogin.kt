@@ -4,30 +4,30 @@ import com.google.gson.annotations.SerializedName
 
 data class Data(
     @SerializedName("access_token")
-    val accessToken: String,
+    val accessToken: String?,
     @SerializedName("expires_in")
     val expiresIn: Int,
     @SerializedName("token_type")
-    val tokenType: String,
+    val tokenType: String?,
     @SerializedName("user")
-    val user: User
+    val user: User?
 )
 
 data class User(
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("paterno")
-    val lastName: String,
+    val lastName: String?,
     @SerializedName("materno")
-    val secondLastName: String,
+    val secondLastName: String?,
     @SerializedName("email")
-    val email: String,
+    val email: String?,
     @SerializedName("user_id")
-    val userID: Int,
+    val userID: Int?,
     @SerializedName("profesor_id")
-    val teacherID: Int,
+    val teacherID: Int?,
     @SerializedName("alumno_id")
-    val studentID: Int,
+    val studentID: Int?,
     @SerializedName("role")
-    val role: String,
+    val role: String?,
 )

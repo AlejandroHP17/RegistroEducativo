@@ -9,15 +9,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
-import com.mx.liftechnology.registroeducativo.main.adapters.PeriodAdapter
-import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
-import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
@@ -72,9 +68,9 @@ class RegisterSchoolFragment : Fragment() {
     /** initObservers - focus in the variables from viewmodel
      * @author pelkidev
      * @since 1.0.0
-     * @param [cctField] check the cct and  fill other fields
-     * @param numberPerdiod check the number of periods selected
-     * @param datePeriod check the  date and post the date in correct view
+     * `cctField` check the cct and  fill other fields
+     * `numberPerdiod` check the number of periods selected
+     * `datePeriod` check the  date and post the date in correct view
      * */
     private fun initObserver(){
         registerSchoolViewModel.cctField.observe(viewLifecycleOwner) { state ->

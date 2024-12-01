@@ -5,15 +5,16 @@ import androidx.core.util.Pair
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -22,9 +23,6 @@ import java.time.format.DateTimeFormatter
 class RegisterPartialViewModel (
     private val registerSchoolUseCase: RegisterSchoolUseCase
 ) : ViewModel() {
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
-
     // Observer the period select by user
     private val _periodNumber = SingleLiveEvent<Int>()
     val periodNumber: LiveData<Int> get() = _periodNumber
@@ -94,7 +92,7 @@ class RegisterPartialViewModel (
     }
 
     fun validateFields(shift: String) {
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(Dispatchers.IO) {
 
             val periodState = registerSchoolUseCase.validatePeriod(periodNumber.toString())
 

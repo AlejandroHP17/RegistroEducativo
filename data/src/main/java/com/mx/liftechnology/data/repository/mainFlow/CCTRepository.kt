@@ -35,7 +35,7 @@ class CCTRepositoryImp(
     /**
      * Maneja la respuesta del servidor y retorna el estado adecuado.
      */
-    private fun handleResponse(responseBody: GenericResponse<List<DataCCT?>?>?): ModelState<List<DataCCT?>?, String>? {
+    private fun handleResponse(responseBody: GenericResponse<List<DataCCT?>?>?): ModelState<List<DataCCT?>?, String> {
         return when (responseBody?.response?.code) {
             200 -> SuccessState(responseBody.data)
             400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
