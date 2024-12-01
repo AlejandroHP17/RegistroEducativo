@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.framework
 
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
-import com.mx.liftechnology.domain.module.preferenceModule
+import com.mx.liftechnology.core.preference.preferenceModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule

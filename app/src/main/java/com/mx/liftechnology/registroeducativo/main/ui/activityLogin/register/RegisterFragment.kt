@@ -171,4 +171,10 @@ class RegisterFragment : Fragment() {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        animationHandler = null
+    }
 }

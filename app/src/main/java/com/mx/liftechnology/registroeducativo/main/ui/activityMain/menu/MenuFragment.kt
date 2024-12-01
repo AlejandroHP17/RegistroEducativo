@@ -101,4 +101,9 @@ class MenuFragment : Fragment() {
             contentMenu.visibility = View.VISIBLE
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

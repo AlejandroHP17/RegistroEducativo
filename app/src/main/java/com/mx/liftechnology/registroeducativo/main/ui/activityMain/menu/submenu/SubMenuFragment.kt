@@ -109,4 +109,9 @@ class SubMenuFragment : Fragment() {
             rvCardMenu.adapter = adapterSubMenu
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
