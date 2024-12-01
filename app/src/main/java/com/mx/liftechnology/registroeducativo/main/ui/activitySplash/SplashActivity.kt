@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.registroeducativo.databinding.ActivitySplashBinding
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
 import kotlinx.coroutines.launch
@@ -25,8 +24,6 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
     private val splashViewModel: SplashViewModel by viewModel()
 
     private lateinit var locationHelper: LocationHelper
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         locationHelper.handlePermissionResult(isGranted, this)
@@ -52,7 +49,7 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
 
    // User accept permission, navigate
     override fun onLocationResult(location: Location?) {
-       coroutine.scopeIO.launch { splashViewModel.getNavigation() }
+       splashViewModel.getNavigation()
     }
 
 

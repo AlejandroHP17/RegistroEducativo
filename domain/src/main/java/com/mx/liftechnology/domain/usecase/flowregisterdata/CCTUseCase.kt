@@ -1,39 +1,47 @@
 package com.mx.liftechnology.domain.usecase.flowregisterdata
 
-import androidx.lifecycle.LiveData
 import com.mx.liftechnology.core.model.ModelApi.DataCCT
+import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.ModelApi.GenericResponse
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepository
 
-class CCTUseCase(
+interface CCTUseCase {
+    suspend fun getCCT(): ModelState<List<DataCCT?>?, String>?
+    suspend fun validateCCT(cct: String?,
+                            responseCCT: ModelState<List<DataCCT?>?, String>?): ModelState<Int, Int>?
+}
+
+class CCTUseCaseImp(
     private val cctRepository : CCTRepository
-) {
-    suspend fun getCCT(): ModelState<GenericResponse<List<DataCCT?>?>> {
-        return runCatching { cctRepository.executeCCT() }
-            .fold(
-                onSuccess = { data ->
-                    if(data!=null) SuccessState (data)
-                    else ErrorState(1)
-                },
-                onFailure = { exception ->
-                    ErrorState( 1)
+) : CCTUseCase {
+
+    override suspend fun getCCT(
+    ): ModelState<List<DataCCT?>?, String> {
+        return when (val result = cctRepository.executeCCT()) {
+            is SuccessState -> {
+                if (result.result.isNullOrEmpty()) {
+                    EmptyState(ModelCodeError.ERROR_EMPTY)
+                } else {
+                    SuccessState(result.result)
                 }
-            )
+            }
+            is ErrorState -> ErrorState(result.result)
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        }
     }
 
     /** Validate CCT
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateCCT(
+    override suspend fun validateCCT(
         cct: String?,
-        responseCCT: LiveData<ModelState<List<DataCCT?>?>>
-    ): ModelState<Int> {
+        responseCCT: ModelState<List<DataCCT?>?, String>?
+    ): ModelState<Int, Int> {
         return when {
             cct.isNullOrEmpty() -> {
                 ErrorState(ModelCodeError.ET_EMPTY)
@@ -49,13 +57,12 @@ class CCTUseCase(
         }
     }
 
-    private fun validCCT(cct: String, responseCCT: LiveData<ModelState<List<DataCCT?>?>>): Boolean {
-        val currentState = responseCCT.value
-        return when (currentState) {
-            is SuccessState -> {
-                currentState.result?.any { cct == it?.cct } ?: false
-            }
 
+    private fun validCCT(cct: String, responseCCT: ModelState<List<DataCCT?>?, String>?): Boolean {
+        return when (responseCCT) {
+            is SuccessState -> {
+                responseCCT.result?.any { cct == it?.cct } ?: false
+            }
             else -> false
         }
     }

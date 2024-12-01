@@ -2,9 +2,9 @@ package com.mx.liftechnology.domain.module
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.mx.liftechnology.data.repository.PreferenceRepository
-import com.mx.liftechnology.data.repository.PreferenceRepositoryImpl
-import com.mx.liftechnology.domain.usecase.PreferenceUseCase
+import com.mx.liftechnology.core.preference.PreferenceRepository
+import com.mx.liftechnology.core.preference.PreferenceRepositoryImpl
+import com.mx.liftechnology.core.preference.PreferenceUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

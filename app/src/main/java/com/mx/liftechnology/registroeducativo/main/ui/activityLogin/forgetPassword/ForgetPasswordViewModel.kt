@@ -2,21 +2,20 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassw
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.domain.usecase.flowlogin.ForgetPasswordUseCase
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
+import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ForgetPasswordViewModel (
-    private val forgetPasswordUseCase: ForgetPasswordUseCase
+    private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel()  {
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
 
     // Observer the email field
-    private val _emailField = SingleLiveEvent<ModelState<Int>>()
-    val emailField: LiveData<ModelState<Int>> get() = _emailField
+    private val _emailField = SingleLiveEvent<ModelState<Int,Int>>()
+    val emailField: LiveData<ModelState<Int,Int>> get() = _emailField
 
     /** Check the inputs and post error or correct states directly on the editexts
      * In correct case, make the request
@@ -27,8 +26,8 @@ class ForgetPasswordViewModel (
     fun validateFields(
         email: String,
     ) {
-        coroutine.scopeIO.launch {
-            val emailState = forgetPasswordUseCase.validateEmail(email)
+        viewModelScope.launch(Dispatchers.IO) {
+            val emailState = validateFieldsUseCase.validateEmail(email)
             _emailField.postValue(emailState)
         }
     }

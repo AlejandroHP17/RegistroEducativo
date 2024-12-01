@@ -9,22 +9,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
-import com.mx.liftechnology.registroeducativo.main.adapters.PeriodAdapter
-import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
-import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/** RegisterSchoolFragment - Accept the data of the school
+/** RegisterPartialFragment - Accept the data of the school
  * @author pelkidev
  * @since 1.0.0
  */
@@ -34,7 +30,6 @@ class RegisterSchoolFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val registerSchoolViewModel: RegisterSchoolViewModel by viewModel()
-    private var adapterPeriods : PeriodAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,16 +62,15 @@ class RegisterSchoolFragment : Fragment() {
             includeSpinnerCycle.spinner.fillItem(requireContext(), ModelSpinnerSelect.CYCLE)
             includeSpinnerGrade.spinner.fillItem(requireContext(), ModelSpinnerSelect.GRADE)
             includeSpinnerGroup.spinner.fillItem(requireContext(), ModelSpinnerSelect.GROUP)
-            includeSpinnerPeriod.spinner.fillItem(requireContext(), ModelSpinnerSelect.PERIOD)
         }
     }
 
     /** initObservers - focus in the variables from viewmodel
      * @author pelkidev
      * @since 1.0.0
-     * @param [cctField] check the cct and  fill other fields
-     * @param numberPerdiod check the number of periods selected
-     * @param datePeriod check the  date and post the date in correct view
+     * `cctField` check the cct and  fill other fields
+     * `numberPerdiod` check the number of periods selected
+     * `datePeriod` check the  date and post the date in correct view
      * */
     private fun initObserver(){
         registerSchoolViewModel.cctField.observe(viewLifecycleOwner) { state ->
@@ -100,14 +94,6 @@ class RegisterSchoolFragment : Fragment() {
                     }
                 }
             }
-        }
-
-        registerSchoolViewModel.periodNumber.observe(viewLifecycleOwner) { period ->
-            initAdapterPeriod(period)
-        }
-
-        registerSchoolViewModel.datePeriod.observe(viewLifecycleOwner){data ->
-            adapterPeriods?.updateDate(data)
         }
     }
 
@@ -146,36 +132,6 @@ class RegisterSchoolFragment : Fragment() {
                     //Nothing
                 }
             }
-            includeSpinnerPeriod.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedValue = parent?.getItemAtPosition(position).toString()
-                    registerSchoolViewModel.savePeriod(selectedValue)
-                }
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    //Nothing
-                }
-            }
-        }
-    }
-
-    /** initAdapterPeriod - Adapter specialized in the number of periods of user can select
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    private fun initAdapterPeriod(period:Int){
-        val clickListener = PeriodClickListener(
-            onItemClick = { item ->
-                /* Open the calendar */
-                registerSchoolViewModel.initDatePicker(item, parentFragmentManager, context)
-            }
-        )
-        val list = MutableList(period) { index -> ModelDatePeriod(position = index , date = "Periodo ${index + 1}") }
-
-        /* Build the adapter */
-        adapterPeriods = PeriodAdapter(list, clickListener)
-        binding.rvCardPeriod.layoutManager = LinearLayoutManager(this.context)
-        binding.apply {
-            rvCardPeriod.adapter = adapterPeriods
         }
     }
 

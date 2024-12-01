@@ -16,7 +16,6 @@
             app:destination="@id/subMenuFragment" />
     </fragment>
 
-
     <fragment
         android:id="@+id/subMenuFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.submenu.SubMenuFragment"
@@ -25,10 +24,20 @@
         <action
             android:id="@+id/action_subMenuFragment_to_registerSchoolFragment"
             app:destination="@id/registerSchoolFragment" />
+        <action
+            android:id="@+id/action_subMenuFragment_to_registerPartialFragment"
+            app:destination="@id/registerPartialFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/registerSchoolFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school.RegisterSchoolFragment"
         android:label="fragment_register_school"
         tools:layout="@layout/fragment_register_school" />
+
+    <fragment
+        android:id="@+id/registerPartialFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.partial.RegisterPartialFragment"
+        android:label="fragment_register_partial"
+        tools:layout="@layout/fragment_register_partial" />
 </navigation>

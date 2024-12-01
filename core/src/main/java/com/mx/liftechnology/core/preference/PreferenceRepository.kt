@@ -1,4 +1,4 @@
-package com.mx.liftechnology.data.repository
+package com.mx.liftechnology.core.preference
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -7,8 +7,8 @@ import androidx.security.crypto.MasterKeys
 
 
 interface PreferenceRepository {
-    suspend fun <T> getPreference(name: String, default: T): T
-    suspend fun <T> savePreference(name: String, value: T)
+    fun <T> getPreference(name: String, default: T): T
+    fun <T> savePreference(name: String, value: T)
 }
 
 class PreferenceRepositoryImpl(
@@ -39,7 +39,7 @@ class PreferenceRepositoryImpl(
         private lateinit var securePrefs: SharedPreferences
     }
 
-    override suspend fun <T> getPreference(name: String, default: T): T {
+    override fun <T> getPreference(name: String, default: T): T {
         return with(securePrefs) {
             @Suppress("UNCHECKED_CAST")
             when (default) {
@@ -53,7 +53,7 @@ class PreferenceRepositoryImpl(
         }
     }
 
-    override suspend fun <T> savePreference(name: String, value: T) {
+    override fun <T> savePreference(name: String, value: T) {
         with(securePrefs.edit()) {
             when (value) {
                 is String? -> putString(name, value)

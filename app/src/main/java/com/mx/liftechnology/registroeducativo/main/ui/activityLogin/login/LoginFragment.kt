@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,14 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentLoginBinding
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
-import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** LoginFragment - User can login, or select the register account or forget password
@@ -29,6 +34,21 @@ class LoginFragment : Fragment() {
 
     /* View Model variable */
     private val loginViewModel: LoginViewModel by viewModel()
+
+    /* loader variable */
+    private var animationHandler: AnimationHandler? = null
+
+    /**
+     * block to accept the animation if the fragment is attached to the activity
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        animationHandler = context as? AnimationHandler
+    }
+    override fun onDetach() {
+        super.onDetach()
+        animationHandler = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,29 +81,40 @@ class LoginFragment : Fragment() {
      * ### Observed Variables:
      * `emailField` to validate the email input and update the UI accordingly.
      * `passField` to validate the password input and update the UI accordingly.
+     * `animateLoader` to validate the loader and update the UI accordingly.
      * `responseLogin` to validate the response of service, do actions
      * */
     private fun initObservers(){
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> { binding.inputEmail.successET() }
-                is ErrorState -> { binding.inputEmail.errorET(state.result) }
-                else -> { binding.inputEmail.errorET( ModelCodeError.ET_MISTAKE_EMAIL) }
+                is SuccessState ->  binding.inputEmail.successET()
+                is ErrorState ->  binding.inputEmail.errorET(state.result)
+                else ->  binding.inputEmail.errorET( ModelCodeError.ET_MISTAKE_EMAIL)
             }
         }
 
         loginViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {binding.inputPassword.successET() }
-                is ErrorState -> {binding.inputPassword.errorET(state.result) }
-                else -> { binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS) }
+                is SuccessState -> binding.inputPassword.successET()
+                is ErrorState -> binding.inputPassword.errorET(state.result)
+                else -> binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
+            }
+        }
+
+        loginViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LoaderState -> {
+                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    else animationHandler?.hideLoadingAnimation()
+                }
+                else ->  animationHandler?.hideLoadingAnimation()
             }
         }
 
         /**
          * SuccessState - navigate to MainActivity, enter the application
-         * ServiceError - show an error of service
-         * AnotherState - set errors on inputs
+         * ErrorState - log an error of service
+         * ErrorStateUser - show the error to user
          * */
         loginViewModel.responseLogin.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -92,13 +123,10 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finish()
                 }
-                is ErrorState -> {
-                    toastFragment(getString(R.string.toast_error_service))
-                }
+                is ErrorState -> state.result.toString().log()
+                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result.toString())
                 else -> {
-                    binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
-                    binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
-                    toastFragment(getString(R.string.toast_error_editext))
+                    // Nothing
                 }
             }
         }
@@ -124,5 +152,10 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(nav)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
