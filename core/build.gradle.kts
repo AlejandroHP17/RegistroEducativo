@@ -25,4 +25,5 @@ dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.location)
+    implementation(libs.bundles.androidx.security)
 }

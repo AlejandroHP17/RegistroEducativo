@@ -1,5 +1,6 @@
 package com.mx.liftechnology.data.repository.loginFlow
 
+import android.os.Build
 import com.mx.liftechnology.core.model.ModelApi.Data
 import com.mx.liftechnology.core.model.ModelApi.GenericResponse
 import com.mx.liftechnology.core.network.callapi.Credentials
@@ -39,7 +40,7 @@ class LoginRepositoryImp(
                 password = pass.orEmpty(),
                 latitude = latitude?.toString().orEmpty(),
                 longitude = longitude?.toString().orEmpty(),
-                imei = "1111111111"
+                imei = Build.SERIAL + Build.FINGERPRINT + Build.ID
             )
             val response = loginApiCall.callApi(request)
             handleResponse(response)
@@ -59,7 +60,7 @@ class LoginRepositoryImp(
     private fun handleResponse(responseBody: Response<GenericResponse<Data>?>): ModelState<Data?, String> {
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
-            400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
+            400 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
             401 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
             500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
