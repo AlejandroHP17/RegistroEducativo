@@ -2,27 +2,25 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.sch
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.model.ModelApi.DataCCT
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 class RegisterSchoolViewModel (
+    private val dispatcherProvider: DispatcherProvider,
     private val cctUseCase: CCTUseCase,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
     private val registerSchoolUseCase: RegisterSchoolUseCase
 ) : ViewModel() {
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
-
     // Observer the response of service
     private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?,String>>()
     private val responseCCT: LiveData<ModelState<List<DataCCT?>?,String>> get() = _responseCCT
@@ -40,7 +38,7 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun getCCT() {
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 cctUseCase.getCCT()
             }.onSuccess {
@@ -64,7 +62,7 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun validateCCT(cct: String?){
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(dispatcherProvider.io)  {
             val cctState = cctUseCase.validateCCT(cct, responseCCT.value)
             _cctField.postValue(cctState)
         }
@@ -89,7 +87,7 @@ class RegisterSchoolViewModel (
 
 
     fun validateFields(shift: String) {
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(dispatcherProvider.io)  {
 
             val cctState = cctField
             val gradeState = validateFieldsUseCase.validateGrade(grade)

@@ -139,7 +139,7 @@ class RegisterFragment : Fragment() {
         registerViewModel.responseRegister.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
-                    showCustomToastSuccess(requireActivity(), getString(R.string.toast_success_register_user))
+                    showCustomToastSuccess(requireActivity(), state.result.toString())
                     findNavController().popBackStack()
                 }
                 is ErrorState ->  state.result.log()

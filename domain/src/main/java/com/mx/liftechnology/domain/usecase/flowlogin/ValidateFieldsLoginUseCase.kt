@@ -34,8 +34,10 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @since 1.0.0
      * */
     override fun validatePass(pass: String?): ModelState<Int, Int> {
+        val regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$".toRegex()
         return when {
             pass.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            !regex.matches(pass) -> ErrorState(ModelCodeError.ET_MISTAKE_PASS_RULES)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }

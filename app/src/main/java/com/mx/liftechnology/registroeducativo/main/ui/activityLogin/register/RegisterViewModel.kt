@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
@@ -9,16 +10,15 @@ import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.usecase.flowlogin.RegisterUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val registerUseCase: RegisterUseCase,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase
 ) : ViewModel() {
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
 
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
@@ -58,8 +58,7 @@ class RegisterViewModel(
         repeatPass: String,
         code: String
     ) {
-        coroutine.scopeIO.launch {
-
+        viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
             val passState = validateFieldsUseCase.validatePass(pass)
             val repeatPassState = validateFieldsUseCase.validateRepeatPass(pass, repeatPass)
@@ -91,7 +90,7 @@ class RegisterViewModel(
         pass: String,
         code: String
     ) {
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 registerUseCase.putRegister(email, pass, code)
             }.onSuccess {

@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassword
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentForgetPasswordBinding
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
@@ -25,6 +28,21 @@ class ForgetPasswordFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val forgetPassViewModel : ForgetPasswordViewModel by viewModel()
+
+    /* loader variable */
+    private var animationHandler: AnimationHandler? = null
+
+    /**
+     * block to accept the animation if the fragment is attached to the activity
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        animationHandler = context as? AnimationHandler
+    }
+    override fun onDetach() {
+        super.onDetach()
+        animationHandler = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,17 +82,19 @@ class ForgetPasswordFragment : Fragment() {
     private fun initObservers() {
         forgetPassViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    binding.inputEmail.successET()
-                }
+                is SuccessState -> binding.inputEmail.successET()
+                is ErrorState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+            }
+        }
 
-                is ErrorState -> {
-                    binding.inputEmail.errorET(state.result)
+        forgetPassViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LoaderState -> {
+                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    else animationHandler?.hideLoadingAnimation()
                 }
-
-                else -> {
-                    binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
-                }
+                else ->  animationHandler?.hideLoadingAnimation()
             }
         }
     }

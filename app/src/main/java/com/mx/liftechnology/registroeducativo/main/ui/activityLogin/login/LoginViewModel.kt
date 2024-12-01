@@ -2,27 +2,28 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.model.ModelApi.User
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.data.model.ModelPreference
-import com.mx.liftechnology.domain.usecase.PreferenceUseCase
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val loginUseCase: LoginUseCase,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
     private val preference: PreferenceUseCase
 ) : ViewModel() {
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
 
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
@@ -49,8 +50,7 @@ class LoginViewModel(
      * @param remember to enter on app automatically
      * */
     fun validateFields(email: String?, pass: String?, remember: Boolean) {
-        coroutine.scopeIO.launch {
-
+        viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
             val passState = validateFieldsUseCase.validatePass(pass)
 
@@ -72,7 +72,7 @@ class LoginViewModel(
      * @param remember to enter on app automatically
      * */
     private fun login(email: String?, pass: String?, remember: Boolean) {
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 loginUseCase.login(email, pass)
             }.onSuccess {

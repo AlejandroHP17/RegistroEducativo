@@ -2,17 +2,22 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassw
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
-import com.mx.liftechnology.registroeducativo.framework.CoroutineScopeManager
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 class ForgetPasswordViewModel (
+    private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel()  {
-    // Controlled coroutine
-    private val coroutine = CoroutineScopeManager()
+    // Observer the animate loader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
+    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
 
     // Observer the email field
     private val _emailField = SingleLiveEvent<ModelState<Int,Int>>()
@@ -27,9 +32,13 @@ class ForgetPasswordViewModel (
     fun validateFields(
         email: String,
     ) {
-        coroutine.scopeIO.launch {
+        viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
             _emailField.postValue(emailState)
+            if (emailState is SuccessState ) {
+                _animateLoader.postValue(LoaderState(true))
+
+            }
         }
     }
 
