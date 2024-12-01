@@ -18,6 +18,6 @@ class RegisterUseCaseImp(
     override suspend fun putRegister(
         email: String, pass: String, activatationCode: String
     ):  ModelState<String?, String> {
-        return registerRepository.executeRegister(email, pass, activatationCode)
+        return registerRepository.executeRegister(email.lowercase(), pass, activatationCode)
     }
 }

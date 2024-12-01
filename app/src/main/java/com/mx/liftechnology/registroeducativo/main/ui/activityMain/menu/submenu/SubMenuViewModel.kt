@@ -9,7 +9,7 @@ import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.domain.usecase.flowmenu.SubMenuUseCase
-import kotlinx.coroutines.Dispatchers
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 /** MenuViewModel - Control the data of the menu
@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
  * @param useCase Access to UseCase with DI
  */
 class SubMenuViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val useCase: SubMenuUseCase
 ) : ViewModel() {
 
@@ -30,7 +31,7 @@ class SubMenuViewModel(
      * @since 1.0.0
      */
     fun getSubMenu(school:Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 useCase.getSubMenu(school)
             }.onSuccess {

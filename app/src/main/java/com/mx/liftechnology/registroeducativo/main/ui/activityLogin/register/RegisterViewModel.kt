@@ -11,10 +11,11 @@ import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.usecase.flowlogin.RegisterUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 class RegisterViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val registerUseCase: RegisterUseCase,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase
 ) : ViewModel() {
@@ -57,7 +58,7 @@ class RegisterViewModel(
         repeatPass: String,
         code: String
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
             val passState = validateFieldsUseCase.validatePass(pass)
             val repeatPassState = validateFieldsUseCase.validateRepeatPass(pass, repeatPass)
@@ -89,7 +90,7 @@ class RegisterViewModel(
         pass: String,
         code: String
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 registerUseCase.putRegister(email, pass, code)
             }.onSuccess {

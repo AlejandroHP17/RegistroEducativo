@@ -16,7 +16,7 @@ object ModelCodeError {
     // Usuario
     const val ERROR_CRITICAL: String = "Ha ocurrido un error, intente más tarde"
     const val ERROR_VALIDATION_LOGIN: String = "Usuario o contraseña incorrectos, por favor valide nuevamente su información"
-    const val ERROR_VALIDATION_REGISTER_USER: String = "No se ha podido registrar el correo. Intente mas tarde"
+    const val ERROR_VALIDATION_REGISTER_USER: String = "No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos"
 
 
     //  Valores de 200 - Editext
@@ -28,4 +28,5 @@ object ModelCodeError {
 
     const val ET_MISTAKE_EMAIL: Int = 210
     const val ET_MISTAKE_PASS: Int = 211
+    const val ET_MISTAKE_PASS_RULES: Int = 212
 }

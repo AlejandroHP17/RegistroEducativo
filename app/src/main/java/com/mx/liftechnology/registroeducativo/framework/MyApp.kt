@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.framework
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.domain.module.preferenceModule
+import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
@@ -36,6 +37,7 @@ class MyApp : Application() {
             androidLogger()  // Opcional: Log para depuración
             androidContext(this@MyApp)
             modules(
+                dispatcherModule,
                 locationModule,
                 networkModule,
                 preferenceModule,

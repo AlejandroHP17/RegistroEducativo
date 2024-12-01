@@ -12,10 +12,11 @@ import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 class RegisterSchoolViewModel (
+    private val dispatcherProvider: DispatcherProvider,
     private val cctUseCase: CCTUseCase,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
     private val registerSchoolUseCase: RegisterSchoolUseCase
@@ -37,7 +38,7 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun getCCT() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 cctUseCase.getCCT()
             }.onSuccess {
@@ -61,7 +62,7 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun validateCCT(cct: String?){
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             val cctState = cctUseCase.validateCCT(cct, responseCCT.value)
             _cctField.postValue(cctState)
         }
@@ -86,7 +87,7 @@ class RegisterSchoolViewModel (
 
 
     fun validateFields(shift: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
 
             val cctState = cctField
             val gradeState = validateFieldsUseCase.validateGrade(grade)

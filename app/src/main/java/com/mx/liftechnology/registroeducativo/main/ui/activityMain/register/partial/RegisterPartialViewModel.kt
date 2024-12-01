@@ -13,6 +13,7 @@ import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class RegisterPartialViewModel (
+    private val dispatcherProvider: DispatcherProvider,
     private val registerSchoolUseCase: RegisterSchoolUseCase
 ) : ViewModel() {
     // Observer the period select by user
@@ -92,7 +94,7 @@ class RegisterPartialViewModel (
     }
 
     fun validateFields(shift: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
 
             val periodState = registerSchoolUseCase.validatePeriod(periodNumber.toString())
 

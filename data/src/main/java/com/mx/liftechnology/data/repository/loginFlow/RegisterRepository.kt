@@ -10,7 +10,6 @@ import com.mx.liftechnology.core.network.callapi.CredentialsRegister
 import com.mx.liftechnology.core.network.callapi.RegisterApiCall
 import retrofit2.Response
 
-
 fun interface RegisterRepository{
   suspend fun executeRegister(email: String,
                               pass: String,
@@ -56,7 +55,7 @@ class RegisterRepositoryImp(
     private fun handleResponse(responseBody: Response<GenericResponse<String>?>): ModelState<String?, String> {
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
-            400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
+            400 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             401 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
