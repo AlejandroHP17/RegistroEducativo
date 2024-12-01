@@ -10,17 +10,18 @@ import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** MenuViewModel - Control the data of the menu
  * @author pelkidev
  * @since 1.0.0
- * @param useCase Access to UseCase with DI
+ * @param menuUseCase Access to UseCase with DI
  */
 class MenuViewModel(
-    private val menuUseCase: MenuUseCase,
-    private val preference: PreferenceUseCase
+    private val dispatcherProvider: DispatcherProvider,
+    private val menuUseCase: MenuUseCase
 ) : ViewModel() {
 
     // List the option from menu
@@ -32,7 +33,7 @@ class MenuViewModel(
      * @since 1.0.0
      */
     fun getMenu(schoolYear:Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 menuUseCase.getMenu(schoolYear)
             }.onSuccess {

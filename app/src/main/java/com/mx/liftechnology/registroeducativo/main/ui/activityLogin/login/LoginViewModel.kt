@@ -14,10 +14,12 @@ import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val loginUseCase: LoginUseCase,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
     private val preference: PreferenceUseCase
@@ -48,7 +50,7 @@ class LoginViewModel(
      * @param remember to enter on app automatically
      * */
     fun validateFields(email: String?, pass: String?, remember: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
             val passState = validateFieldsUseCase.validatePass(pass)
 
@@ -70,7 +72,7 @@ class LoginViewModel(
      * @param remember to enter on app automatically
      * */
     private fun login(email: String?, pass: String?, remember: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
                 loginUseCase.login(email, pass)
             }.onSuccess {

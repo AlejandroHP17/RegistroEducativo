@@ -77,6 +77,9 @@ fun TextInputLayout.errorET(codeError: Int){
         ModelCodeError.ET_MISTAKE_PASS -> {
             getString(context, R.string.text_pass_incorrect)
         }
+        ModelCodeError.ET_MISTAKE_PASS_RULES -> {
+            getString(context, R.string.text_incorrect_format)
+        }
 
         else -> {
             getString(context, R.string.text_incorrect_data)

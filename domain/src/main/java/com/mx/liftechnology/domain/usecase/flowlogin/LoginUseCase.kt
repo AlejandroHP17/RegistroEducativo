@@ -32,7 +32,7 @@ class LoginUseCaseImp(
         val latitude = location?.latitude
         val longitude = location?.longitude
 
-        return when (val result = repositoryLogin.execute(email, pass, latitude, longitude)) {
+        return when (val result = repositoryLogin.execute(email?.lowercase(), pass, latitude, longitude)) {
             is SuccessState -> {
                 result.result?.accessToken?.let {
                     if(savePreferences(result.result)) SuccessState(result.result?.user)
