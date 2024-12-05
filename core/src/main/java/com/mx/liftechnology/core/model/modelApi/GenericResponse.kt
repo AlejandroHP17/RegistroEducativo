@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.model.ModelApi
+package com.mx.liftechnology.core.model.modelApi
 
 class GenericResponse<T>(
     val data: T?,

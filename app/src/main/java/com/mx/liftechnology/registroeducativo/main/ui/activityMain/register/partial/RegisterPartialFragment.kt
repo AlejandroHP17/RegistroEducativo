@@ -67,7 +67,11 @@ class RegisterPartialFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_partial)
             includeHeader.tvInsert.text = getString(R.string.register_partial_description)
-            includeSpinnerPeriod.spinner.fillItem(requireContext(), ModelSpinnerSelect.PERIOD)
+            includeSpinnerPeriod.spinner.fillItem(
+                requireContext(),
+                ModelSpinnerSelect.PERIOD,
+                null
+            )
         }
     }
 

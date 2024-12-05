@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
-import com.mx.liftechnology.core.model.ModelApi.Data
-import com.mx.liftechnology.core.model.ModelApi.User
+import com.mx.liftechnology.core.model.modelApi.Data
+import com.mx.liftechnology.core.model.modelApi.User
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError

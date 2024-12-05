@@ -60,7 +60,7 @@ class RegisterViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
-            val passState = validateFieldsUseCase.validatePass(pass)
+            val passState = validateFieldsUseCase.validatePassRegister(pass)
             val repeatPassState = validateFieldsUseCase.validateRepeatPass(pass, repeatPass)
             val codeState = validateFieldsUseCase.validateCode(code)
 

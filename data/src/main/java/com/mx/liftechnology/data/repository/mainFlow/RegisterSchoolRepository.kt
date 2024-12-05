@@ -1,24 +1,30 @@
-package com.mx.liftechnology.data.repository.loginFlow
+package com.mx.liftechnology.data.repository.mainFlow
 
+import com.mx.liftechnology.core.model.modelApi.CctSchool
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.core.network.callapi.CredentialsRegister
-import com.mx.liftechnology.core.network.callapi.RegisterApiCall
+import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSchool
+import com.mx.liftechnology.core.network.callapi.RegisterSchoolApiCall
 import retrofit2.Response
 
-fun interface RegisterRepository{
-  suspend fun executeRegister(email: String,
-                              pass: String,
-                              activationCode: String): ModelState<String?, String>
+fun interface RegisterSchoolRepository{
+  suspend fun executeRegisterSchool(
+      request: CctSchool?,
+      grade: String,
+      group: String,
+      cycle: String,
+      userId: Int?,
+      roleId: Int?
+  ): ModelState<String?, String>
 }
 
-class RegisterRepositoryImp(
-    private val registerApiCall: RegisterApiCall
-) :  RegisterRepository {
+class RegisterSchoolRepositoryImp(
+    private val registerApiCall: RegisterSchoolApiCall
+) :  RegisterSchoolRepository {
 
     /** Execute the user register
      * @author pelkidev
@@ -27,16 +33,24 @@ class RegisterRepositoryImp(
      * @param pass the user
      * @param activationCode the user
      */
-    override suspend fun executeRegister(
-        email: String,
-        pass: String,
-        activationCode: String
+    override suspend fun executeRegisterSchool(
+        request: CctSchool?,
+        grade: String,
+        group: String,
+        cycle: String,
+        userId: Int?,
+        roleId: Int?
     ): ModelState<String?, String> {
         return try {
-            val request = CredentialsRegister(
-                email = email,
-                password = pass,
-                codigoactivacion = activationCode
+            val request = CredentialsRegisterSchool(
+                cct = request?.cct,
+                tipocicloescolar_id = request?.tipocicloescolar_id,
+                grado = grade,
+                nombregrupo = group,
+                anio = "2024",
+                periodo = cycle,
+                profesor_id = roleId,
+                user_id = userId,
             )
             val response = registerApiCall.callApi(request)
             handleResponse(response)

@@ -47,6 +47,7 @@
     <string name="register_school_term">Ciclo escolar</string>
     <string name="register_school_name">Nombre de la escuela</string>
     <string name="register_school_shift">Turno</string>
+    <string name="register_school_type">Tipo</string>
     <string name="register_school_grade">Grado</string>
     <string name="register_school_group">Grupo</string>
 

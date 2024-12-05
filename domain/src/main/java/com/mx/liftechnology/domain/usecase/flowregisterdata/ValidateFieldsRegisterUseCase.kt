@@ -9,11 +9,11 @@ import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelDatePeriod
 
 interface ValidateFieldsRegisterUseCase {
-    fun validateGrade(email: String?): ModelState<Int, Int>
-    fun validateGroup(pass: String?): ModelState<Int, Int>
+    fun validateGrade(grade: String?): ModelState<Int, Int>
+    fun validateGroup(group: String?): ModelState<Int, Int>
+    fun validateCycle(cycle: String?): ModelState<Int, Int>
     fun validatePeriod(period: Int?): ModelState<Int, String>
     fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<Int, String>
-
 }
 
 class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
@@ -21,11 +21,9 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGrade(email: String?): ModelState<Int, Int> {
-        val patEmail = ModelRegex.EMAIL
+    override fun validateGrade(grade: String?): ModelState<Int, Int> {
         return when {
-            email.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
-            !patEmail.matches(email) -> ErrorState(ModelCodeError.ET_FORMAT)
+            grade.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
@@ -35,9 +33,20 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGroup(pass: String?): ModelState<Int, Int> {
+    override fun validateGroup(group: String?): ModelState<Int, Int> {
         return when {
-            pass.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            group.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+        }
+    }
+
+    /** validatePass
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    override fun validateCycle(cycle: String?): ModelState<Int, Int> {
+        return when {
+            cycle.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }

@@ -5,7 +5,6 @@ package com.mx.liftechnology.registroeducativo.main.util
  * @since 1.0.0
  */
 enum class ModelSpinnerSelect(val value: String){
-    TYPE("type"),
     CYCLE("cycle"),
     GRADE("grade"),
     GROUP("group"),

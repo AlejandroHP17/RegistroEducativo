@@ -3,8 +3,10 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.sch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.model.ModelApi.DataCCT
+import com.mx.liftechnology.core.model.modelApi.CctSchool
+import com.mx.liftechnology.core.model.modelApi.DataCCT
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -21,52 +23,45 @@ class RegisterSchoolViewModel (
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
     private val registerSchoolUseCase: RegisterSchoolUseCase
 ) : ViewModel() {
+
+    // Observer the animate loader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
+    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
+
     // Observer the response of service
     private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?,String>>()
     private val responseCCT: LiveData<ModelState<List<DataCCT?>?,String>> get() = _responseCCT
 
     // Observer the cct field
-    private val _cctField = SingleLiveEvent<ModelState<Int, Int>?>()
-    val cctField: LiveData<ModelState<Int, Int>?> get() = _cctField
+    private val _schoolCctField = SingleLiveEvent<ModelState<CctSchool?, String>>()
+    val schoolCctField: LiveData<ModelState<CctSchool?, String>> get() = _schoolCctField
+
+    // Observer the cct field
+    private val _allField = SingleLiveEvent<Boolean>()
+    val allField: LiveData<Boolean> get() = _allField
 
     private var grade : String? = null
     private var group : String? = null
-
-    /** Get the CCT, service
-     * In correct case, make the request
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    fun getCCT() {
-        viewModelScope.launch(dispatcherProvider.io)  {
-            runCatching {
-                cctUseCase.getCCT()
-            }.onSuccess {
-                when (it) {
-                    is SuccessState -> {
-                        _responseCCT.postValue(SuccessState(it.result))
-                    }
-
-                    else -> {
-                        _responseCCT.postValue(it)
-                    }
-                }
-            }.onFailure {
-                _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
-            }
-        }
-    }
+    private var cycle : String? = null
 
     /** Go to validate  the cct
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateCCT(cct: String?){
+    fun getSchoolCCT(cct: String){
         viewModelScope.launch(dispatcherProvider.io)  {
-            val cctState = cctUseCase.validateCCT(cct, responseCCT.value)
-            _cctField.postValue(cctState)
-        }
+            _animateLoader.postValue(LoaderState(true))
 
+            runCatching {
+                cctUseCase.getSchoolCCT(cct)
+            }.onSuccess {
+                _animateLoader.postValue(LoaderState(false))
+                _schoolCctField.postValue(it)
+            }.onFailure {
+                _schoolCctField.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+                _animateLoader.postValue(LoaderState(false))
+            }
+        }
     }
 
     /** Save in viewModel the variable of grade
@@ -85,21 +80,29 @@ class RegisterSchoolViewModel (
         group = data
     }
 
+    /** Save in viewModel the variable of group
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    fun saveCycle(data:String){
+        cycle = data
+    }
 
-    fun validateFields(shift: String) {
+
+    fun validateFields(grade: String, group: String, cycle: String) {
         viewModelScope.launch(dispatcherProvider.io)  {
 
-            val cctState = cctField
             val gradeState = validateFieldsUseCase.validateGrade(grade)
             val groupState = validateFieldsUseCase.validateGroup(group)
+            val cycleState = validateFieldsUseCase.validateGroup(group)
 
-            /*_emailField.postValue(emailState)
-            _passField.postValue(passState)
-
-            if (cctState is SuccessState && passState is SuccessState) {
-                login(email, pass, remember)
-            }*/
-
+            if (schoolCctField.value is SuccessState && gradeState is SuccessState
+                && groupState is SuccessState && cycleState is SuccessState){
+                registerSchoolUseCase.putNewSchool((schoolCctField.value as SuccessState<CctSchool?, String>).result, grade, group, cycle)
+                _allField.postValue(true)
+            }else{
+                _allField.postValue(false)
+            }
         }
     }
 
