@@ -40,9 +40,9 @@ class RegisterSchoolViewModel (
     private val _allField = SingleLiveEvent<Boolean>()
     val allField: LiveData<Boolean> get() = _allField
 
-    private var grade : String? = null
+    private var grade : Int? = null
     private var group : String? = null
-    private var cycle : String? = null
+    private var cycle : Int? = null
 
     /** Go to validate  the cct
      * @author pelkidev
@@ -69,7 +69,7 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun saveGrade(data:String){
-        grade = data
+        grade = data.replace("°", "").toInt()
     }
 
     /** Save in viewModel the variable of group
@@ -84,17 +84,17 @@ class RegisterSchoolViewModel (
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun saveCycle(data:String){
-        cycle = data
+    fun saveCycle(data:String?){
+        cycle = data?.toInt()?:0
     }
 
 
-    fun validateFields(grade: String, group: String, cycle: String) {
+    fun validateFields() {
         viewModelScope.launch(dispatcherProvider.io)  {
 
             val gradeState = validateFieldsUseCase.validateGrade(grade)
             val groupState = validateFieldsUseCase.validateGroup(group)
-            val cycleState = validateFieldsUseCase.validateGroup(group)
+            val cycleState = validateFieldsUseCase.validateCycle(cycle)
 
             if (schoolCctField.value is SuccessState && gradeState is SuccessState
                 && groupState is SuccessState && cycleState is SuccessState){

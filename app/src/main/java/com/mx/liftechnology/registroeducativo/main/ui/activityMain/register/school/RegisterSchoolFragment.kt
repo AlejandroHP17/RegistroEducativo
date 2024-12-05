@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelApi.CctSchool
@@ -148,11 +147,7 @@ class RegisterSchoolFragment : Fragment() {
             }
 
             includeButton.btnAction.setOnClickListener {
-                registerSchoolViewModel.validateFields(
-                    includeSpinnerGrade.spinner.toString(),
-                    includeSpinnerGroup.spinner.toString(),
-                    includeSpinnerCycle.spinner.toString()
-                )
+                registerSchoolViewModel.validateFields()
             }
 
             /** Spinner Section*/

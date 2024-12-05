@@ -3,15 +3,14 @@ package com.mx.liftechnology.domain.usecase.flowregisterdata
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelRegex
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelDatePeriod
 
 interface ValidateFieldsRegisterUseCase {
-    fun validateGrade(grade: String?): ModelState<Int, Int>
+    fun validateGrade(grade: Int?): ModelState<Int, Int>
     fun validateGroup(group: String?): ModelState<Int, Int>
-    fun validateCycle(cycle: String?): ModelState<Int, Int>
+    fun validateCycle(cycle: Int?): ModelState<Int, Int>
     fun validatePeriod(period: Int?): ModelState<Int, String>
     fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<Int, String>
 }
@@ -21,9 +20,10 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGrade(grade: String?): ModelState<Int, Int> {
-        return when {
-            grade.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+    override fun validateGrade(grade: Int?): ModelState<Int, Int> {
+        return when (grade) {
+            null -> ErrorState(ModelCodeError.ET_EMPTY)
+            0 -> ErrorState(ModelCodeError.ET_FORMAT)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
@@ -44,9 +44,10 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateCycle(cycle: String?): ModelState<Int, Int> {
-        return when {
-            cycle.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+    override fun validateCycle(cycle: Int?): ModelState<Int, Int> {
+        return when (cycle) {
+            null -> ErrorState(ModelCodeError.ET_EMPTY)
+            0 -> ErrorState(ModelCodeError.ET_FORMAT)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }

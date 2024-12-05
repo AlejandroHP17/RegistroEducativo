@@ -7,22 +7,16 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-interface RegisterSchoolApiCall {
+interface GroupApiCall {
     /** Realiza la petición al API */
-    @POST(Environment.END_POINT_REGISTER_SCHOOL)
+    @POST(Environment.END_POINT_GET_GROUP)
     suspend fun callApi(
-        @Body credentials: CredentialsRegisterSchool
+        @Body credentials: CredentialsGroup
     ): Response<GenericResponse<String>?>
 }
 
 // Modelo para credenciales
-data class CredentialsRegisterSchool(
-    val cct: String?,
-    val tipocicloescolar_id: Int?,
-    val grado : Int?,
-    val nombregrupo : String?,
-    val anio : String?,
-    val periodo : Int?,
+data class CredentialsGroup(
     val profesor_id : Int?,
-    val user_id : Int?,
+    val user_id : Int?
 )

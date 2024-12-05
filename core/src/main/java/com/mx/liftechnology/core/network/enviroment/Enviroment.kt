@@ -11,7 +11,6 @@ object Environment {
 
     /** Login flow */
     const val END_POINT_LOGIN = "auth/login"
-    //const val END_POINT_REGISTER= "obtenRegistroEscolarProfesor"
     const val END_POINT_REGISTER= "register/teacherRegister"
 
     /** Register flow*/
@@ -20,4 +19,5 @@ object Environment {
     /** Menu flow */
     const val END_POINT_GET_CCT = "teacher/getSchoolCCT/{cct}"
     const val END_POINT_REGISTER_SCHOOL= "teacher/registerTeacherCycleGroup"
+    const val END_POINT_GET_GROUP= "teacher/getTeacherGroups"
 }

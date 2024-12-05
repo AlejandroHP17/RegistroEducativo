@@ -14,9 +14,9 @@ import retrofit2.Response
 fun interface RegisterSchoolRepository{
   suspend fun executeRegisterSchool(
       request: CctSchool?,
-      grade: String,
+      grade: Int,
       group: String,
-      cycle: String,
+      cycle: Int,
       userId: Int?,
       roleId: Int?
   ): ModelState<String?, String>
@@ -35,9 +35,9 @@ class RegisterSchoolRepositoryImp(
      */
     override suspend fun executeRegisterSchool(
         request: CctSchool?,
-        grade: String,
+        grade: Int,
         group: String,
-        cycle: String,
+        cycle: Int,
         userId: Int?,
         roleId: Int?
     ): ModelState<String?, String> {

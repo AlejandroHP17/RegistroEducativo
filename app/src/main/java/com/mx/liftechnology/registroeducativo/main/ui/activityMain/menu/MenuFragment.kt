@@ -36,6 +36,7 @@ class MenuFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         menuViewModel.getMenu(false)
+        menuViewModel.getGroup()
     }
 
     override fun onCreateView(

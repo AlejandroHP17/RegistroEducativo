@@ -7,10 +7,10 @@ import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.core.preference.ModelPreference
-import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.core.util.LocationHelper
+import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
 
 fun interface LoginUseCase {
     suspend fun login(email: String?, pass: String?): ModelState<User?, String>?
@@ -49,7 +49,7 @@ class LoginUseCaseImp(
         return result?.user?.let { data ->
             preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
             preference.savePreferenceInt(ModelPreference.ID_USER, data.userID)
-            preference.savePreferenceInt (ModelPreference.ID_ROLE,
+            preference.savePreferenceInt(ModelPreference.ID_ROLE,
                 if (data.teacherID == null) data.studentID
                 else data.teacherID
             )

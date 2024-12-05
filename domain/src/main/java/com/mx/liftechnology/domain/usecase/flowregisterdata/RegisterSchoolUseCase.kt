@@ -7,7 +7,7 @@ import com.mx.liftechnology.data.repository.mainFlow.RegisterSchoolRepository
 
 
 fun interface RegisterSchoolUseCase {
-    suspend fun putNewSchool(result: CctSchool?, grade: String, group: String, cycle: String)
+    suspend fun putNewSchool(result: CctSchool?, grade: Int?, group: String?, cycle: Int?)
 }
 
 class RegisterSchoolUseCaseImp(
@@ -21,18 +21,18 @@ class RegisterSchoolUseCaseImp(
      * */
     override suspend fun putNewSchool(
         result: CctSchool?,
-        grade: String,
-        group: String,
-        cycle: String
+        grade: Int?,
+        group: String?,
+        cycle: Int?
     ) {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
         registerSchoolRepository.executeRegisterSchool(
             result,
-            grade,
-            group,
-            cycle,
+            grade!!,
+            group!!,
+            cycle!!,
             userId ,
             roleId)
     }
