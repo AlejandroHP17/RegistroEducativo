@@ -87,7 +87,7 @@ class MenuFragment : Fragment() {
             val direction: NavDirections? = when (item.id) {
                 ModelSelectorMenu.EVALUATION.value -> null
                 ModelSelectorMenu.CONTROL.value -> MenuFragmentDirections.actionMenuFragmentToSubMenuFragment()
-                ModelSelectorMenu.PROFILE.value -> null
+                ModelSelectorMenu.PROFILE.value -> MenuFragmentDirections.actionMenuFragmentToProfileFragment()
                 ModelSelectorMenu.CONFIGURATION.value -> null
                 else -> null
             }
