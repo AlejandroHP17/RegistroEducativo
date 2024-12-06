@@ -36,6 +36,7 @@ class MenuFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         menuViewModel.getMenu(false)
+        menuViewModel.getGroup()
     }
 
     override fun onCreateView(
@@ -100,5 +101,10 @@ class MenuFragment : Fragment() {
             rvCardMenu.adapter = adapterMenu
             contentMenu.visibility = View.VISIBLE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

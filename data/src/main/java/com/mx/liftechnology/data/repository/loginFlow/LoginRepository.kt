@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.repository.loginFlow
 
 import android.os.Build
-import com.mx.liftechnology.core.model.ModelApi.Data
-import com.mx.liftechnology.core.model.ModelApi.GenericResponse
+import com.mx.liftechnology.core.model.modelApi.Data
+import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.callapi.Credentials
 import com.mx.liftechnology.core.network.callapi.LoginApiCall
 import com.mx.liftechnology.core.model.modelBase.ErrorState
@@ -61,7 +61,7 @@ class LoginRepositoryImp(
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
             400 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            401 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            404 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
             500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }

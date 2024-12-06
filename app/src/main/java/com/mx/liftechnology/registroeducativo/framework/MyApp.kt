@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.framework
 
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
-import com.mx.liftechnology.domain.module.preferenceModule
+import com.mx.liftechnology.core.preference.preferenceModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
@@ -13,6 +13,7 @@ import com.mx.liftechnology.registroeducativo.di.registerPartialModule
 import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
 import com.mx.liftechnology.registroeducativo.di.subMenuModule
+import com.mx.liftechnology.registroeducativo.di.voiceModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
@@ -37,6 +38,7 @@ class MyApp : Application() {
             androidLogger()  // Opcional: Log para depuración
             androidContext(this@MyApp)
             modules(
+                voiceModule,
                 dispatcherModule,
                 locationModule,
                 networkModule,

@@ -9,13 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
+import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
-import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
 
 class RegisterPartialViewModel (
     private val dispatcherProvider: DispatcherProvider,
-    private val registerSchoolUseCase: RegisterSchoolUseCase
+    private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
 ) : ViewModel() {
     // Observer the period select by user
     private val _periodNumber = SingleLiveEvent<Int>()
@@ -32,6 +32,14 @@ class RegisterPartialViewModel (
     // Observer the date selected by user
     private val _datePeriod = SingleLiveEvent<ModelDatePeriod>()
     val datePeriod: LiveData<ModelDatePeriod> get() = _datePeriod
+
+    // Observer the period select by user
+    private val _periodField = SingleLiveEvent<ModelState<Int, String>>()
+    val periodField: LiveData<ModelState<Int, String>> get() = _periodField
+
+    // Observer the date selected by user
+    private val _adapterField = SingleLiveEvent<ModelState<Int, String>>()
+    val adapterField: LiveData<ModelState<Int, String>> get() = _adapterField
 
     /** Save in viewModel the variable of period
      * @author pelkidev
@@ -93,17 +101,18 @@ class RegisterPartialViewModel (
         return "$startDate  /  $endDate"
     }
 
-    fun validateFields(shift: String) {
+    fun validateFields(adapterPeriods:  MutableList<ModelDatePeriod>?) {
         viewModelScope.launch(dispatcherProvider.io)  {
 
-            val periodState = registerSchoolUseCase.validatePeriod(periodNumber.toString())
+            val periodState = validateFieldsUseCase.validatePeriod(periodNumber.value)
+            val adapterState = validateFieldsUseCase.validateAdapter(adapterPeriods)
 
-            /*_emailField.postValue(emailState)
-            _passField.postValue(passState)
+            _periodField.postValue(periodState)
+            _adapterField.postValue(adapterState)
 
-            if (cctState is SuccessState && passState is SuccessState) {
-                login(email, pass, remember)
-            }*/
+            if (periodState is SuccessState && adapterState is SuccessState) {
+                //Nothing
+            }
 
         }
     }

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.loginFlow
 
-import com.mx.liftechnology.core.model.ModelApi.GenericResponse
+import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError

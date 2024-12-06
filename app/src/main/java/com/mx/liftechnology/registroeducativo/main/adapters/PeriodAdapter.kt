@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardPeriodBinding
-import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriod
 
 /** PeriodAdapter - Build the adapter for Periods (Register schoool)
  * @author pelkidev
@@ -55,6 +55,8 @@ class PeriodAdapter(
         items[item.position] = ModelDatePeriod(item.position, item.date)
         notifyItemChanged(item.position)
     }
+
+    fun getList() = items
 }
 
 class PeriodClickListener(

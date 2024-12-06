@@ -8,10 +8,8 @@ import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /** MenuViewModel - Control the data of the menu
@@ -38,6 +36,22 @@ class MenuViewModel(
                 menuUseCase.getMenu(schoolYear)
             }.onSuccess {
                 _nameMenu.postValue(it)
+            }.onFailure {
+                _nameMenu.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+            }
+        }
+    }
+
+    /** getMenu - Get all the options from menu, or a mistake in case
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    fun getGroup() {
+        viewModelScope.launch(dispatcherProvider.io)  {
+            runCatching {
+                menuUseCase.getGroup()
+            }.onSuccess {
+                //_nameMenu.postValue(it)
             }.onFailure {
                 _nameMenu.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
             }
