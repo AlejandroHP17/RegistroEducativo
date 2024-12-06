@@ -40,6 +40,10 @@ class RegisterSchoolViewModel (
     private val _allField = SingleLiveEvent<Boolean>()
     val allField: LiveData<Boolean> get() = _allField
 
+    // Observer the cct field
+    private val _cct = SingleLiveEvent<String?>()
+    val cct: LiveData<String?> get() = _cct
+
     private var grade : Int? = null
     private var group : String? = null
     private var cycle : Int? = null
@@ -91,7 +95,7 @@ class RegisterSchoolViewModel (
 
     fun validateFields() {
         viewModelScope.launch(dispatcherProvider.io)  {
-
+            _animateLoader.postValue(LoaderState(true))
             val gradeState = validateFieldsUseCase.validateGrade(grade)
             val groupState = validateFieldsUseCase.validateGroup(group)
             val cycleState = validateFieldsUseCase.validateCycle(cycle)
@@ -100,10 +104,17 @@ class RegisterSchoolViewModel (
                 && groupState is SuccessState && cycleState is SuccessState){
                 registerSchoolUseCase.putNewSchool((schoolCctField.value as SuccessState<CctSchool?, String>).result, grade, group, cycle)
                 _allField.postValue(true)
+                _animateLoader.postValue(LoaderState(false))
             }else{
                 _allField.postValue(false)
+                _animateLoader.postValue(LoaderState(false))
             }
         }
+    }
+
+    fun validateData(state: List<String>) {
+        val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
+        _cct.postValue(result)
     }
 
 }

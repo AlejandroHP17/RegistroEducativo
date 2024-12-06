@@ -19,12 +19,14 @@ import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.VoiceViewModel
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /** RegisterPartialFragment - Accept the data of the school
  * @author pelkidev
@@ -36,9 +38,15 @@ class RegisterSchoolFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val registerSchoolViewModel: RegisterSchoolViewModel by viewModel()
+    private val voiceViewModel: VoiceViewModel by viewModel { parametersOf(requireContext()) }
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
+    private var controlCCTClean = false
+
+    // Variable para controlar el estado del botón
+    private var isListening = true
+
 
     /**
      * block to accept the animation if the fragment is attached to the activity
@@ -73,6 +81,12 @@ class RegisterSchoolFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_school)
             includeHeader.tvInsert.text = getString(R.string.register_school_description)
+            includeSpinnerSchool.tvDemostration.text = getString(R.string.register_school_name)
+            includeSpinnerShift.tvDemostration.text = getString(R.string.register_school_shift)
+            includeSpinnerType.tvDemostration.text = getString(R.string.register_school_type)
+            includeSpinnerGrade.tvDemostration.text = getString(R.string.register_school_grade)
+            includeSpinnerGroup.tvDemostration.text = getString(R.string.register_school_group)
+            includeSpinnerCycle.tvDemostration.text = getString(R.string.register_school_term)
         }
     }
 
@@ -89,9 +103,9 @@ class RegisterSchoolFragment : Fragment() {
                 when (state) {
                     is SuccessState -> {
                         inputCct.successET()
-                        etSchoolName.setText(state.result?.nombreescuela)
-                        etShift.setText(state.result?.turno)
-                        etType.setText(state.result?.tipocicloescolar)
+                        includeSpinnerSchool.tvDemostration.text = state.result?.nombreescuela
+                        includeSpinnerShift.tvDemostration.text = state.result?.turno
+                        includeSpinnerType.tvDemostration.text = state.result?.tipocicloescolar
                         showLogicSpinner(state.result)
                     }
 
@@ -121,8 +135,20 @@ class RegisterSchoolFragment : Fragment() {
         registerSchoolViewModel.allField.observe(viewLifecycleOwner) { state ->
            if(!state){
            showCustomToastFailed(requireActivity(),getString(R.string.toast_error_validate_fields))
-            }
+            }else{
+                findNavController().popBackStack()
+           }
         }
+
+        voiceViewModel.results.observe(viewLifecycleOwner) { state ->
+            registerSchoolViewModel.validateData(state)
+        }
+
+        registerSchoolViewModel.cct.observe(viewLifecycleOwner) { data ->
+            binding.etCct.setText(data)
+        }
+
+
     }
 
     private fun showLogicSpinner(result: CctSchool?) {
@@ -133,6 +159,13 @@ class RegisterSchoolFragment : Fragment() {
             registerSchoolViewModel.saveGrade(grade)
             registerSchoolViewModel.saveGroup(group)
             registerSchoolViewModel.saveCycle(cycle)
+
+            includeSpinnerGrade.tvDemostration.visibility = View.GONE
+            includeSpinnerGroup.tvDemostration.visibility = View.GONE
+            includeSpinnerCycle.tvDemostration.visibility = View.GONE
+            includeSpinnerGrade.spinner.visibility = View.VISIBLE
+            includeSpinnerGroup.spinner.visibility = View.VISIBLE
+            includeSpinnerCycle.spinner.visibility = View.VISIBLE
         }
     }
 
@@ -148,6 +181,21 @@ class RegisterSchoolFragment : Fragment() {
 
             includeButton.btnAction.setOnClickListener {
                 registerSchoolViewModel.validateFields()
+            }
+
+            // Configurar el botón con el toggle
+            includeButton.btnRecord.setOnClickListener {
+                if (isListening) {
+                    // Si está escuchando, detener la escucha
+                    voiceViewModel.startListening()
+                    isListening = false
+                    includeButton.btnRecord.setBackgroundColor(resources.getColor(R.color.color_error))
+                } else {
+                    // Si no está escuchando, iniciar la escucha
+                    voiceViewModel.stopListening()
+                    isListening = true
+                    includeButton.btnRecord.setBackgroundColor(resources.getColor(R.color.color_success))
+                }
             }
 
             /** Spinner Section*/
@@ -207,7 +255,14 @@ class RegisterSchoolFragment : Fragment() {
 
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    if(s.toString().length == 10) registerSchoolViewModel.getSchoolCCT(s.toString())
+                    val input = s.toString()
+                    if (input.length == 10) {
+                        if (!controlCCTClean) controlCCTClean = true
+                        registerSchoolViewModel.getSchoolCCT(input)
+                    } else if (controlCCTClean) {
+                        controlCCTClean = false
+                        cleanAutoText()
+                    }
                 }
             })
         }
@@ -219,8 +274,19 @@ class RegisterSchoolFragment : Fragment() {
      * */
     private fun cleanAutoText(){
         binding.apply {
-            etSchoolName.setText(getString(R.string.tools_empty))
-            etShift.setText(getString(R.string.tools_empty))
+            includeSpinnerSchool.tvDemostration.text = getString(R.string.register_school_name)
+            includeSpinnerShift.tvDemostration.text = getString(R.string.register_school_shift)
+            includeSpinnerType.tvDemostration.text = getString(R.string.register_school_type)
+            includeSpinnerSchool.tvDemostration.visibility = View.VISIBLE
+            includeSpinnerShift.tvDemostration.visibility = View.VISIBLE
+            includeSpinnerType.tvDemostration.visibility = View.VISIBLE
+
+            includeSpinnerGrade.tvDemostration.visibility = View.VISIBLE
+            includeSpinnerGroup.tvDemostration.visibility = View.VISIBLE
+            includeSpinnerCycle.tvDemostration.visibility = View.VISIBLE
+            includeSpinnerGrade.spinner.visibility = View.GONE
+            includeSpinnerGroup.spinner.visibility = View.GONE
+            includeSpinnerCycle.spinner.visibility = View.GONE
         }
     }
 
@@ -228,5 +294,4 @@ class RegisterSchoolFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }
