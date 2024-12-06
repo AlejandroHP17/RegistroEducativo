@@ -16,52 +16,6 @@
         <item>   * Una vez ingresado al menu principal te recomendamos  ir a la sección de mis datos y cambies tu contraseña.</item>
     </string-array>
 
-    <string-array name="spinner_type">
-        <item>Tipo</item>
-        <item>Anual</item>
-        <item>Semestral</item>
-        <item>Cuatrimestral</item>
-        <item>Trimestral</item>
-    </string-array>
-
-    <string-array name="spinner_cycle">
-        <item>Ciclo</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
-<string-array name="spinner_grade">
-        <item>Grado</item>
-        <item>1°</item>
-        <item>2°</item>
-        <item>3°</item>
-        <item>4°</item>
-        <item>5°</item>
-        <item>6°</item>
-        <item>7°</item>
-        <item>8°</item>
-        <item>9°</item>
-        <item>10°</item>
-    </string-array>
-
-    <string-array name="spinner_group">
-        <item>Grupo</item>
-        <item>A</item>
-        <item>B</item>
-        <item>C</item>
-        <item>D</item>
-        <item>E</item>
-        <item>F</item>
-        <item>G</item>
-        <item>H</item>
-        <item>I</item>
-        <item>J</item>
-        <item>K</item>
-        <item>L</item>
-    </string-array>
-
     <string-array name="spinner_period">
         <item>Parcial</item>
         <item>1</item>

@@ -1,10 +1,9 @@
-package com.mx.liftechnology.core.model.ModelApi
+package com.mx.liftechnology.core.model.modelApi
 
 class GenericResponse<T>(
     val data: T?,
     val response: ResponseBasic
 )
-
 
 data class ResponseBasic(
     val code: Int,

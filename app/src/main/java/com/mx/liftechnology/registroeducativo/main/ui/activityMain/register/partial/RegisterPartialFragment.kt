@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.partial
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,13 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterPartialBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.PeriodAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
-import com.mx.liftechnology.registroeducativo.main.util.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,9 +32,19 @@ class RegisterPartialFragment : Fragment() {
     private val registerPartialViewModel: RegisterPartialViewModel by viewModel()
     private var adapterPeriods : PeriodAdapter? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    /* loader variable */
+    private var animationHandler: AnimationHandler? = null
 
+    /**
+     * block to accept the animation if the fragment is attached to the activity
+     */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        animationHandler = context as? AnimationHandler
+    }
+    override fun onDetach() {
+        super.onDetach()
+        animationHandler = null
     }
 
     override fun onCreateView(
@@ -54,16 +67,19 @@ class RegisterPartialFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_partial)
             includeHeader.tvInsert.text = getString(R.string.register_partial_description)
-            includeSpinnerPeriod.spinner.fillItem(requireContext(), ModelSpinnerSelect.PERIOD)
+            includeSpinnerPeriod.spinner.fillItem(
+                requireContext(),
+                ModelSpinnerSelect.PERIOD,
+                null
+            )
         }
     }
 
     /** initObservers - focus in the variables from viewmodel
      * @author pelkidev
      * @since 1.0.0
-     * @param [cctField] check the cct and  fill other fields
-     * @param numberPerdiod check the number of periods selected
-     * @param datePeriod check the  date and post the date in correct view
+     * `numberPeriod` check the number of periods selected
+     * `datePeriod` check the  date and post the date in correct view
      * */
     private fun initObserver(){
         registerPartialViewModel.periodNumber.observe(viewLifecycleOwner) { period ->
@@ -72,6 +88,14 @@ class RegisterPartialFragment : Fragment() {
 
         registerPartialViewModel.datePeriod.observe(viewLifecycleOwner){data ->
             adapterPeriods?.updateDate(data)
+        }
+
+        registerPartialViewModel.periodField.observe(viewLifecycleOwner) { period ->
+            period.log()
+        }
+
+        registerPartialViewModel.adapterField.observe(viewLifecycleOwner){adapter ->
+            adapter.log()
         }
     }
 
@@ -86,6 +110,7 @@ class RegisterPartialFragment : Fragment() {
             }
 
             includeButton.btnAction.setOnClickListener {
+                registerPartialViewModel.validateFields(adapterPeriods?.getList())
 
             }
 
@@ -121,5 +146,12 @@ class RegisterPartialFragment : Fragment() {
         binding.apply {
             rvCardPeriod.adapter = adapterPeriods
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        adapterPeriods = null
+        animationHandler = null
     }
 }

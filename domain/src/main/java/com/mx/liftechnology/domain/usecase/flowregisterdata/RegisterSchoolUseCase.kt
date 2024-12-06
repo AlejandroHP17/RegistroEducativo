@@ -1,74 +1,40 @@
 package com.mx.liftechnology.domain.usecase.flowregisterdata
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelRegex
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.core.model.modelApi.CctSchool
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.data.repository.mainFlow.RegisterSchoolRepository
 
-class RegisterSchoolUseCase {
 
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    fun validateGrade(email: String?): ModelState<Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> {
-                ErrorState(ModelCodeError.ET_EMPTY)
-            }
+fun interface RegisterSchoolUseCase {
+    suspend fun putNewSchool(result: CctSchool?, grade: Int?, group: String?, cycle: Int?)
+}
 
-            !patEmail.matches(email) -> {
-                ErrorState(ModelCodeError.ET_FORMAT)
-            }
-
-            else -> {
-                SuccessState(ModelCodeSuccess.ET_FORMAT)
-            }
-        }
-    }
+class RegisterSchoolUseCaseImp(
+    private val registerSchoolRepository: RegisterSchoolRepository,
+    private val preference: PreferenceUseCase
+): RegisterSchoolUseCase {
 
     /** Validate Email
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateGroup(email: String?): ModelState<Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> {
-                ErrorState(ModelCodeError.ET_EMPTY)
-            }
+    override suspend fun putNewSchool(
+        result: CctSchool?,
+        grade: Int?,
+        group: String?,
+        cycle: Int?
+    ) {
+        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
-            !patEmail.matches(email) -> {
-                ErrorState(ModelCodeError.ET_FORMAT)
-            }
-
-            else -> {
-                SuccessState(ModelCodeSuccess.ET_FORMAT)
-            }
-        }
-    }
-
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    fun validatePeriod(email: String?): ModelState<Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> {
-                ErrorState(ModelCodeError.ET_EMPTY)
-            }
-
-            !patEmail.matches(email) -> {
-                ErrorState(ModelCodeError.ET_FORMAT)
-            }
-
-            else -> {
-                SuccessState(ModelCodeSuccess.ET_FORMAT)
-            }
-        }
+        registerSchoolRepository.executeRegisterSchool(
+            result,
+            grade!!,
+            group!!,
+            cycle!!,
+            userId ,
+            roleId)
     }
 }
+

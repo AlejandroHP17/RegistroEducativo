@@ -9,15 +9,12 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mx.liftechnology.core.model.ModelAdapterMenu
-import com.mx.liftechnology.core.model.modelBase.EmptyState
-import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.data.model.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentSubMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
-import com.mx.liftechnology.data.model.ModelSelectorMenu
-import com.mx.liftechnology.registroeducativo.main.viewextensions.toastFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** MenuFragment - Show the different available option that the user has
@@ -80,16 +77,9 @@ class SubMenuFragment : Fragment() {
         /* Show all the options from menu, or if any error occur, show the error */
         subMenuViewModel.nameSubMenu.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    inflateAdapter(state.result)
-                }
-
-                is ErrorState -> {
-                    toastFragment("Error code: ${state.result}")
-                }
-
-                is EmptyState -> {
-                    toastFragment("Por el momento no podemos mostrar el menu")
+                is SuccessState -> inflateAdapter(state.result)
+                else -> {
+                    //Nothing
                 }
             }
         }
@@ -103,32 +93,13 @@ class SubMenuFragment : Fragment() {
     private fun inflateAdapter(items: List<ModelAdapterMenu>) {
         val clickListener = MenuClickListener { item ->
             val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.SCHOOL.value -> {
-                    SubMenuFragmentDirections.actionSubMenuFragmentToRegisterSchoolFragment()
-                }
-
-                ModelSelectorMenu.STUDENTS.value -> {
-                    null
-                }
-
-                ModelSelectorMenu.PARTIALS.value -> {
-                    SubMenuFragmentDirections.actionSubMenuFragmentToRegisterPartialFragment()
-                }
-
-                ModelSelectorMenu.SUBJECTS.value -> {
-                    null
-                }
-
-
-                else -> {
-                    null
-                }
+                ModelSelectorMenu.SCHOOL.value -> SubMenuFragmentDirections.actionSubMenuFragmentToRegisterSchoolFragment()
+                ModelSelectorMenu.STUDENTS.value -> null
+                ModelSelectorMenu.PARTIALS.value -> SubMenuFragmentDirections.actionSubMenuFragmentToRegisterPartialFragment()
+                ModelSelectorMenu.SUBJECTS.value -> null
+                else -> null
             }
-            if (direction != null) {
-                findNavController().navigate(direction)
-            }
-
-            toastFragment("Clicked on: ${item.titleCard}")
+            direction?.let { findNavController().navigate(it) }
         }
 
         /* Build the adapter */
@@ -137,5 +108,10 @@ class SubMenuFragment : Fragment() {
         binding.apply {
             rvCardMenu.adapter = adapterSubMenu
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

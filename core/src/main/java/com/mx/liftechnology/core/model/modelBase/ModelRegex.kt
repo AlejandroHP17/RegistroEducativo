@@ -10,4 +10,8 @@ object ModelRegex {
     val PHONE_NUMBER = Regex("^[0-9]$")
     val EMAIL = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$")
     val PASS = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")
+    val CCT = Regex("^[A-ZÑ0-9&]$")
 }
+
+
+

@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.domain.usecase.flowlogin.ForgetPasswordUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassword.ForgetPasswordViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -11,11 +10,8 @@ import org.koin.dsl.module
  */
 val forgetPasswordModule = module {
 
-    single {
-        ForgetPasswordUseCase()
-    }
 
     viewModel {
-        ForgetPasswordViewModel(get())
+        ForgetPasswordViewModel(get(),get())
     }
 }

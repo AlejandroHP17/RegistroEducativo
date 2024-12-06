@@ -1,8 +1,8 @@
 package com.mx.liftechnology.core.network.callapi
 
-import com.mx.liftechnology.core.model.ModelApi.Data
+import com.mx.liftechnology.core.model.modelApi.Data
 import com.mx.liftechnology.core.network.enviroment.Environment
-import com.mx.liftechnology.core.model.ModelApi.GenericResponse
+import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
