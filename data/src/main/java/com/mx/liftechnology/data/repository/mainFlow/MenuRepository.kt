@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.repository.mainFlow
 
+import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -14,20 +14,19 @@ fun interface MenuRepository{
     suspend fun executeGetGroup(
         userId: Int?,
         roleId: Int?
-    ): ModelState<String?, String>
+    ): ModelState<List<DataGroupTeacher?>?, String>
 }
 
-/** MenuLocalRepository - Build the element list of menu (home)
+/** MenuRepository - Build the element list of menu (home)
  * @author pelkidev
  * @since 1.0.0
- * @param context use for read strings
  * @return listMenuItems contains the list of menu
  * */
 class MenuRepositoryImp(
     private val groupApiCall: GroupApiCall
 ): MenuRepository {
 
-    override suspend fun executeGetGroup(userId: Int?, roleId: Int?): ModelState<String?, String> {
+    override suspend fun executeGetGroup(userId: Int?, roleId: Int?): ModelState<List<DataGroupTeacher?>?, String> {
         return try {
             val request = CredentialsGroup(
                 profesor_id = roleId,
@@ -47,11 +46,12 @@ class MenuRepositoryImp(
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(responseBody: Response<GenericResponse<String>?>): ModelState<String?, String> {
+    private fun handleResponse(responseBody: Response<GenericResponse<List<DataGroupTeacher?>?>>): ModelState<List<DataGroupTeacher?>?, String> {
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
-            400 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            401 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
+            401 -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
+            404 -> ErrorState(ModelCodeError.ERROR_DATA)
             500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }

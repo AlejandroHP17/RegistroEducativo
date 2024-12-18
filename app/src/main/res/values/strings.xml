@@ -33,7 +33,7 @@
     <string name="forget_pass_button">Enviar código</string>
 
     <!-- Menu Flow -->
-    <string name="menu_grettins">Nos da gusto verte Profesor</string>
+    <string name="menu_grettins">Nos da gusto verte %s</string>
     <string name="menu_empty">No tienes un ciclo escolar activo</string>
     <string name="menu_ciclo">Ciclo escolar 2024 - 2025</string>
 

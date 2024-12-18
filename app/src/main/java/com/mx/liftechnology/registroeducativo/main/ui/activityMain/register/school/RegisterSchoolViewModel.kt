@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.model.modelApi.CctSchool
-import com.mx.liftechnology.core.model.modelApi.DataCCT
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
@@ -27,10 +26,6 @@ class RegisterSchoolViewModel (
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
     val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
-
-    // Observer the response of service
-    private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?,String>>()
-    private val responseCCT: LiveData<ModelState<List<DataCCT?>?,String>> get() = _responseCCT
 
     // Observer the cct field
     private val _schoolCctField = SingleLiveEvent<ModelState<CctSchool?, String>>()

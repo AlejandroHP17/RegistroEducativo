@@ -1,8 +1,10 @@
 package com.mx.liftechnology.domain.usecase.flowmenu
 
 import com.mx.liftechnology.core.model.ModelAdapterMenu
+import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -16,7 +18,7 @@ import kotlinx.coroutines.withContext
 
 interface MenuUseCase {
     suspend fun getMenu(schoolYear:Boolean):ModelState<List<ModelAdapterMenu>,String>
-    suspend fun getGroup()
+    suspend fun getGroup(): ModelState<List<DataGroupTeacher?>?, String>
 }
 
 /** MenuUseCase - Get the list of menu and process the information
@@ -47,11 +49,22 @@ class MenuUseCaseImp(
         }
     }
 
-    override suspend fun getGroup() {
+    override suspend fun getGroup() : ModelState<List<DataGroupTeacher?>?, String>{
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
-        menuRepository.executeGetGroup(userId, roleId)
 
+        return when (val result = menuRepository.executeGetGroup(userId, roleId)) {
+            is SuccessState -> {
+                if(result.result?.size!=0){
+                    SuccessState(result.result)
+                }else{
+                    ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
+                }
+            }
+            is ErrorState -> ErrorState(result.result)
+            is ErrorStateUser -> ErrorStateUser(result.result)
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        }
     }
 }
