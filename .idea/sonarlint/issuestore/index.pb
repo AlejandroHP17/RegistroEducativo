@@ -36,8 +36,6 @@ v
 Fcore/src/main/java/com/mx/liftechnology/core/model/ModelAdapterMenu.kt,4/b/4b94985dc6f85c0b4f907076e4fea53cf6278daa
 v
 Fcore/src/main/java/com/mx/liftechnology/core/model/ModelStudentForm.kt,9/8/985ee27ae7c672d1818bdc9259264ccc70171a08
-x
-Hcore/src/main/java/com/mx/liftechnology/core/util/ModelSelectorDialog.kt,3/5/35969f665fdb420711af681bc55fa40ffc81a65d
 E
 core/build.gradle.kts,d/7/d72846b7b418aa17de692d1ccf924c738cf8dbe5
 G
@@ -92,8 +90,6 @@ u
 Ecore/src/main/java/com/mx/liftechnology/core/network/NetworkModule.kt,4/a/4af3b96dfa62f37678a3b5879864c8ad70e51494
 x
 Hcore/src/main/java/com/mx/liftechnology/core/model/ModelApi/DataLogin.kt,4/7/479289b3942c842dfc53a972b17e4d2fe27fa3c0
-v
-Fcore/src/main/java/com/mx/liftechnology/core/model/ModelApi/DataCCT.kt,f/c/fc5be93a705857dc764e8da8bb94ee9445669c72
 Ö
 Udomain/src/main/java/com/mx/liftechnology/domain/usecase/flowlogin/RegisterUseCase.kt,8/9/89ede4bd66fdf37be969339e2bb2723bf6aa2deb
 
@@ -184,8 +180,6 @@ Idomain/src/main/java/com/mx/liftechnology/domain/model/ModelDatePeriod.kt,3/7/
 jdomain/src/main/java/com/mx/liftechnology/domain/usecase/flowregisterdata/ValidateFieldsRegisterUseCase.kt,7/8/7884124edb624318d4b52bd53c8b065fdebd25a5
 ê
 `domain/src/main/java/com/mx/liftechnology/domain/usecase/flowlogin/ValidateFieldsLoginUseCase.kt,4/0/4002eaf17a959806a5730accf91292c9922ae938
-v
-Fcore/src/main/java/com/mx/liftechnology/core/model/modelApi/DataCCT.kt,8/1/81189699597b2e8ad4f76a7e2a395df8873c0ea5
 x
 Hcore/src/main/java/com/mx/liftechnology/core/model/modelApi/CctSchool.kt,c/3/c3b78d8e60fddc6147bfd08a462c6501ae395bef
 u
@@ -204,3 +198,19 @@ Hcore/src/main/java/com/mx/liftechnology/core/model/modelApi/DataLogin.kt,4/f/4
 \data/src/main/java/com/mx/liftechnology/data/repository/mainFlow/RegisterSchoolRepository.kt,6/3/636cbc0d6487da9f5d861c3709d2be503625ca54
 z
 Jcore/src/main/java/com/mx/liftechnology/core/preference/ModelPreference.kt,e/c/ec3699b72bbc87a5ca6510f886b8d7f2cc43ed42
+~
+Ncore/src/main/java/com/mx/liftechnology/core/model/modelApi/GenericResponse.kt,6/2/62c7f605cb8540e667a0e662a2d14379ac55c0c0
+|
+Lcore/src/main/java/com/mx/liftechnology/core/network/callapi/GroupApiCall.kt,0/e/0ed9df8fba667f9591a863413a0f1c6817f09828
+
+Odomain/src/main/java/com/mx/liftechnology/domain/interfaces/AnimationHandler.kt,f/8/f8389f9cc0fdcacacd225ba23ba7c48cfd4f4f84
+à
+Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/DispatcherProvider.kt,e/3/e383a0e7bbc7ea6fd40e3ecec1866fa814bb39b4
+
+Ocore/src/main/java/com/mx/liftechnology/core/model/modelApi/DataGroupTeacher.kt,0/1/01d408f83b9b5a89c2c2d530ea0c8e4dee23ba92
+}
+Mcore/src/main/java/com/mx/liftechnology/core/model/ModelDialogStudentGroup.kt,e/a/ea09449e1e6aa7a3d2e6d3c9ac7521661214a5bf
+å
+\app/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/DialogGroupAdapter.kt,1/5/15e6ffe63c3e2ef739774eb2a0a4b2e67aaace42
+á
+Wapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/DialogSelectGroup.kt,5/2/524e4b2970110609fbd0c9afb9045997edb681f2

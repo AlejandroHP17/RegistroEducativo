@@ -9,7 +9,8 @@ object ModelCodeError {
     const val ERROR_CATCH: String = "Error que entra al catch"
     const val ERROR_INCOMPLETE_DATA: String = "Datos incompletos"
     const val ERROR_TIMEOUT: String = "TiemOut"
-    const val ERROR_NETWORK: String = "Error de red"
+    const val ERROR_UNAUTHORIZED: String = "Token expirado"
+    const val ERROR_DATA: String = "Error CRUD"
     const val ERROR_UNKNOWN: String = "Error inesperado"
     const val ERROR_EMPTY: String = "Lista vacia"
 
