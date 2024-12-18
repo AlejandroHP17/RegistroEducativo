@@ -9,16 +9,16 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain
  * */
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.databinding.ActivityMainBinding
-
 
 /** MainActivity
  * @author pelkidev
  * @since 1.0.0
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AnimationHandler {
     private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +26,30 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding?.root)
+    }
+
+    /** Start a loading animation and get untouchable the screen to another touch
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    override fun showLoadingAnimation() {
+        binding?.animationLottie?.apply {
+            visibility = View.VISIBLE
+            isClickable = true
+        }
+        binding?.lottieLogo?.playAnimation()
+    }
+
+    /** End a loading animation and touchable the screen
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    override fun hideLoadingAnimation() {
+        binding?.animationLottie?.apply {
+            visibility = View.GONE
+            isClickable = false
+        }
+        binding?.lottieLogo?.cancelAnimation()
     }
 
 }

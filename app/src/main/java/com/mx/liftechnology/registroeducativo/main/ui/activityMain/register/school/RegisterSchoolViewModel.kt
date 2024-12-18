@@ -3,8 +3,9 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.sch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.model.ModelApi.DataCCT
+import com.mx.liftechnology.core.model.modelApi.CctSchool
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -12,60 +13,54 @@ import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
 class RegisterSchoolViewModel (
+    private val dispatcherProvider: DispatcherProvider,
     private val cctUseCase: CCTUseCase,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
     private val registerSchoolUseCase: RegisterSchoolUseCase
 ) : ViewModel() {
-    // Observer the response of service
-    private val _responseCCT = SingleLiveEvent<ModelState<List<DataCCT?>?,String>>()
-    private val responseCCT: LiveData<ModelState<List<DataCCT?>?,String>> get() = _responseCCT
+
+    // Observer the animate loader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
+    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
 
     // Observer the cct field
-    private val _cctField = SingleLiveEvent<ModelState<Int, Int>?>()
-    val cctField: LiveData<ModelState<Int, Int>?> get() = _cctField
+    private val _schoolCctField = SingleLiveEvent<ModelState<CctSchool?, String>>()
+    val schoolCctField: LiveData<ModelState<CctSchool?, String>> get() = _schoolCctField
 
-    private var grade : String? = null
+    // Observer the cct field
+    private val _allField = SingleLiveEvent<Boolean>()
+    val allField: LiveData<Boolean> get() = _allField
+
+    // Observer the cct field
+    private val _cct = SingleLiveEvent<String?>()
+    val cct: LiveData<String?> get() = _cct
+
+    private var grade : Int? = null
     private var group : String? = null
-
-    /** Get the CCT, service
-     * In correct case, make the request
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    fun getCCT() {
-        viewModelScope.launch(Dispatchers.IO) {
-            runCatching {
-                cctUseCase.getCCT()
-            }.onSuccess {
-                when (it) {
-                    is SuccessState -> {
-                        _responseCCT.postValue(SuccessState(it.result))
-                    }
-
-                    else -> {
-                        _responseCCT.postValue(it)
-                    }
-                }
-            }.onFailure {
-                _responseCCT.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
-            }
-        }
-    }
+    private var cycle : Int? = null
 
     /** Go to validate  the cct
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateCCT(cct: String?){
-        viewModelScope.launch(Dispatchers.IO) {
-            val cctState = cctUseCase.validateCCT(cct, responseCCT.value)
-            _cctField.postValue(cctState)
-        }
+    fun getSchoolCCT(cct: String){
+        viewModelScope.launch(dispatcherProvider.io)  {
+            _animateLoader.postValue(LoaderState(true))
 
+            runCatching {
+                cctUseCase.getSchoolCCT(cct)
+            }.onSuccess {
+                _animateLoader.postValue(LoaderState(false))
+                _schoolCctField.postValue(it)
+            }.onFailure {
+                _schoolCctField.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+                _animateLoader.postValue(LoaderState(false))
+            }
+        }
     }
 
     /** Save in viewModel the variable of grade
@@ -73,7 +68,7 @@ class RegisterSchoolViewModel (
      * @since 1.0.0
      * */
     fun saveGrade(data:String){
-        grade = data
+        grade = data.replace("°", "").toInt()
     }
 
     /** Save in viewModel the variable of group
@@ -84,22 +79,37 @@ class RegisterSchoolViewModel (
         group = data
     }
 
+    /** Save in viewModel the variable of group
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    fun saveCycle(data:String?){
+        cycle = data?.toInt()?:0
+    }
 
-    fun validateFields(shift: String) {
-        viewModelScope.launch(Dispatchers.IO) {
 
-            val cctState = cctField
+    fun validateFields() {
+        viewModelScope.launch(dispatcherProvider.io)  {
+            _animateLoader.postValue(LoaderState(true))
             val gradeState = validateFieldsUseCase.validateGrade(grade)
             val groupState = validateFieldsUseCase.validateGroup(group)
+            val cycleState = validateFieldsUseCase.validateCycle(cycle)
 
-            /*_emailField.postValue(emailState)
-            _passField.postValue(passState)
-
-            if (cctState is SuccessState && passState is SuccessState) {
-                login(email, pass, remember)
-            }*/
-
+            if (schoolCctField.value is SuccessState && gradeState is SuccessState
+                && groupState is SuccessState && cycleState is SuccessState){
+                registerSchoolUseCase.putNewSchool((schoolCctField.value as SuccessState<CctSchool?, String>).result, grade, group, cycle)
+                _allField.postValue(true)
+                _animateLoader.postValue(LoaderState(false))
+            }else{
+                _allField.postValue(false)
+                _animateLoader.postValue(LoaderState(false))
+            }
         }
+    }
+
+    fun validateData(state: List<String>) {
+        val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
+        _cct.postValue(result)
     }
 
 }

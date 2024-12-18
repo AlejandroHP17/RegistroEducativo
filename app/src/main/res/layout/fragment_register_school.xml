@@ -48,78 +48,28 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- School Term -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_school_term"
-                style="@style/editext_form"
+             <!-- School Name -->
+            <include
+                android:id = "@+id/include_spinner_school"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_school_term"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_school_term"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/register_school_term"
-                    android:textColor="@color/color_principal_text"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext"
-                    android:enabled="false">
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- School Name -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_school_name"
-                style="@style/editext_form"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_school_name"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between" >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_school_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/register_school_name"
-                    android:textColor="@color/color_principal_text"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext"
-                    android:enabled="false">
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="@dimen/margin_8dp"
+                layout="@layout/card_spinner" />
 
             <!-- Shift -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_shift"
-                style="@style/editext_form"
+            <include
+                android:id = "@+id/include_spinner_shift"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_school_shift"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between" >
+                android:layout_marginTop="@dimen/margin_extra_outer"
+                layout="@layout/card_spinner" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_shift"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/register_school_shift"
-                    android:textColor="@color/color_principal_text"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext"
-                    android:enabled="false">
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Type -->
+            <!-- Group -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/margin_between"
+                android:layout_marginTop="@dimen/margin_extra_outer"
                 android:baselineAligned="false">
 
                 <include
@@ -169,6 +119,9 @@
             <!-- Button -->
             <include
                 android:id = "@+id/include_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_extra_outer"
                 layout="@layout/include_button"/>
 
         </LinearLayout>

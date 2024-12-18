@@ -139,8 +139,8 @@ class RegisterFragment : Fragment() {
         registerViewModel.responseRegister.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
-                    showCustomToastSuccess(requireActivity(), getString(R.string.toast_success_register_user))
                     findNavController().popBackStack()
+                    showCustomToastSuccess(requireActivity(), state.result.toString())
                 }
                 is ErrorState ->  state.result.log()
                 is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result)
@@ -170,5 +170,11 @@ class RegisterFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        animationHandler = null
     }
 }

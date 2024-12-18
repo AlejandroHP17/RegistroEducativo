@@ -11,6 +11,6 @@ import org.koin.dsl.module
 val registerPartialModule = module {
 
     viewModel {
-        RegisterPartialViewModel(get())
+        RegisterPartialViewModel(get(), get())
     }
 }

@@ -3,14 +3,16 @@ package com.mx.liftechnology.domain.usecase.flowregisterdata
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelRegex
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.ModelDatePeriod
 
 interface ValidateFieldsRegisterUseCase {
-    fun validateGrade(email: String?): ModelState<Int, Int>
-    fun validateGroup(pass: String?): ModelState<Int, Int>
-    fun validatePeriod(pass: String?): ModelState<Int, Int>
+    fun validateGrade(grade: Int?): ModelState<Int, Int>
+    fun validateGroup(group: String?): ModelState<Int, Int>
+    fun validateCycle(cycle: Int?): ModelState<Int, Int>
+    fun validatePeriod(period: Int?): ModelState<Int, String>
+    fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<Int, String>
 }
 
 class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
@@ -18,11 +20,10 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGrade(email: String?): ModelState<Int, Int> {
-        val patEmail = ModelRegex.EMAIL
-        return when {
-            email.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
-            !patEmail.matches(email) -> ErrorState(ModelCodeError.ET_FORMAT)
+    override fun validateGrade(grade: Int?): ModelState<Int, Int> {
+        return when (grade) {
+            null -> ErrorState(ModelCodeError.ET_EMPTY)
+            0 -> ErrorState(ModelCodeError.ET_FORMAT)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
@@ -32,9 +33,21 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGroup(pass: String?): ModelState<Int, Int> {
+    override fun validateGroup(group: String?): ModelState<Int, Int> {
         return when {
-            pass.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            group.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+        }
+    }
+
+    /** validatePass
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    override fun validateCycle(cycle: Int?): ModelState<Int, Int> {
+        return when (cycle) {
+            null -> ErrorState(ModelCodeError.ET_EMPTY)
+            0 -> ErrorState(ModelCodeError.ET_FORMAT)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
@@ -43,11 +56,25 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validatePeriod(pass: String?): ModelState<Int, Int> {
+    override fun validatePeriod(period: Int?): ModelState<Int, String> {
         return when {
-            pass.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            (period ?: 0) <= 0 -> ErrorState(ModelCodeError.SP_NOT_OPTION)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
+
+    /** Validate Pass
+     * @author pelkidev
+     * @since 1.0.0
+     * */
+    override fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<Int, String> {
+        return when{
+            adapterPeriods?.size == 0 -> ErrorState(ModelCodeError.SP_NOT_OPTION)
+            adapterPeriods?.any { it.date?.contains("Parcial", ignoreCase = true) == true }?: true
+                -> ErrorState(ModelCodeError.SP_NOT_OPTION)
+            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+        }
+    }
+
 }
 

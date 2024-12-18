@@ -1,11 +1,15 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.callapi.CCTApiCall
+import com.mx.liftechnology.core.network.callapi.RegisterSchoolApiCall
+import com.mx.liftechnology.core.network.callapi.SchoolCCTApiCall
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepository
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepositoryImp
+import com.mx.liftechnology.data.repository.mainFlow.RegisterSchoolRepository
+import com.mx.liftechnology.data.repository.mainFlow.RegisterSchoolRepositoryImp
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCaseImp
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCaseImp
 import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school.RegisterSchoolViewModel
@@ -19,23 +23,29 @@ import retrofit2.Retrofit
  */
 val registerSchoolModule = module {
 
-    factory { get<Retrofit>().create(CCTApiCall::class.java) }
+    factory { get<Retrofit>().create(SchoolCCTApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterSchoolApiCall::class.java) }
 
     single <CCTRepository>{
         CCTRepositoryImp(get())
     }
-
     single<CCTUseCase>{
         CCTUseCaseImp(get())
     }
+
+
+    single <RegisterSchoolRepository>{
+        RegisterSchoolRepositoryImp(get())
+    }
+    single <RegisterSchoolUseCase>{
+        RegisterSchoolUseCaseImp(get(), get())
+    }
+
     single <ValidateFieldsRegisterUseCase>{
         ValidateFieldsRegisterUseCaseImp()
     }
-    single {
-        RegisterSchoolUseCase()
-    }
 
     viewModel {
-        RegisterSchoolViewModel(get(), get(), get())
+        RegisterSchoolViewModel(get(), get(), get(), get())
     }
 }

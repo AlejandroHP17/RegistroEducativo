@@ -21,6 +21,6 @@ val subMenuModule = module {
     }
 
     viewModel {
-       SubMenuViewModel(get())
+       SubMenuViewModel(get(), get())
     }
 }

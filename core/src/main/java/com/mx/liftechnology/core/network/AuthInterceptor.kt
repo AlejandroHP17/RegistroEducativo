@@ -27,7 +27,7 @@ class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
     private fun requiresAuth(request: Request): Boolean {
         return when (request.url.toString()) {
             Environment.URL_BASE + Environment.END_POINT_LOGIN,
-            Environment.URL_BASE + Environment.END_POINT_REGISTER,
+            Environment.URL_BASE + Environment.END_POINT_REGISTER
             -> false
             else -> true
         }

@@ -47,7 +47,7 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
     override fun validatePassRegister(pass: String?): ModelState<Int, Int> {
         return when {
             pass.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
-            !validPass(pass) -> ErrorState(ModelCodeError.ET_INCORRECT_FORMAT)
+            !validPass(pass) -> ErrorState(ModelCodeError.ET_MISTAKE_PASS_RULES)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }

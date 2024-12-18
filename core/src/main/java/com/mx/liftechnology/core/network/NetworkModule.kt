@@ -14,8 +14,13 @@ val networkModule = module {
 
     // Configura el interceptor de logging de OkHttp
     single {
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+        val logging = HttpLoggingInterceptor { message ->
+            // Filtra mensajes que contienen el cuerpo HTML
+            if (!message.startsWith("<!DOCTYPE html>")) {
+                println(message)
+            }
+        }.apply {
+            level = HttpLoggingInterceptor.Level.BODY // Nivel de detalle de los logs
         }
         logging
     }
