@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.model.ModelApi.User
+import com.mx.liftechnology.core.model.modelApi.User
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
@@ -15,7 +15,6 @@ import com.mx.liftechnology.domain.usecase.flowlogin.LoginUseCase
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LoginViewModel(

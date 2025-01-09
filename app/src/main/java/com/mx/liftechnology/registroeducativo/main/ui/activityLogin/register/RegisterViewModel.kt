@@ -24,8 +24,8 @@ class RegisterViewModel(
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
     val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
 
-    private val _responseRegister = SingleLiveEvent<ModelState<String?,String>>()
-    val responseRegister: LiveData<ModelState<String?,String>> get() = _responseRegister
+    private val _responseRegister = SingleLiveEvent<ModelState<List<String>?,String>>()
+    val responseRegister: LiveData<ModelState<List<String>?,String>> get() = _responseRegister
 
     // Observer the email field
     private val _emailField = SingleLiveEvent<ModelState<Int,Int>>()
@@ -60,7 +60,7 @@ class RegisterViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io)  {
             val emailState = validateFieldsUseCase.validateEmail(email)
-            val passState = validateFieldsUseCase.validatePass(pass)
+            val passState = validateFieldsUseCase.validatePassRegister(pass)
             val repeatPassState = validateFieldsUseCase.validateRepeatPass(pass, repeatPass)
             val codeState = validateFieldsUseCase.validateCode(code)
 

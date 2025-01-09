@@ -9,7 +9,8 @@ object ModelCodeError {
     const val ERROR_CATCH: String = "Error que entra al catch"
     const val ERROR_INCOMPLETE_DATA: String = "Datos incompletos"
     const val ERROR_TIMEOUT: String = "TiemOut"
-    const val ERROR_NETWORK: String = "Error de red"
+    const val ERROR_UNAUTHORIZED: String = "Token expirado"
+    const val ERROR_DATA: String = "Error CRUD"
     const val ERROR_UNKNOWN: String = "Error inesperado"
     const val ERROR_EMPTY: String = "Lista vacia"
 
@@ -17,6 +18,7 @@ object ModelCodeError {
     const val ERROR_CRITICAL: String = "Ha ocurrido un error, intente más tarde"
     const val ERROR_VALIDATION_LOGIN: String = "Usuario o contraseña incorrectos, por favor valide nuevamente su información"
     const val ERROR_VALIDATION_REGISTER_USER: String = "No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos"
+    const val ERROR_VALIDATION_REGISTER_INFO: String = "Correo o código incorrectos, verifique su información"
 
 
     //  Valores de 200 - Editext
@@ -29,4 +31,7 @@ object ModelCodeError {
     const val ET_MISTAKE_EMAIL: Int = 210
     const val ET_MISTAKE_PASS: Int = 211
     const val ET_MISTAKE_PASS_RULES: Int = 212
+
+    // Spinners
+    const val SP_NOT_OPTION: String = "No ha seleccionado un valor válido del spinner"
 }

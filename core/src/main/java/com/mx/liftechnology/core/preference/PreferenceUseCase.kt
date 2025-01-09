@@ -27,7 +27,6 @@ class PreferenceUseCase (private val preference: PreferenceRepository){
     }
 
     fun getPreferenceInt(name: String): Int? {
-        return preference.getPreference(name, null)
+        return preference.getPreference(name, -1)
     }
-
 }

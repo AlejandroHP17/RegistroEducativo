@@ -1,26 +1,40 @@
 package com.mx.liftechnology.domain.usecase.flowmenu
 
 import com.mx.liftechnology.core.model.ModelAdapterMenu
+import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.data.repository.mainFlow.MenuLocalRepository
 import com.mx.liftechnology.data.repository.mainFlow.MenuRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+
+interface MenuUseCase {
+    suspend fun getMenu(schoolYear:Boolean):ModelState<List<ModelAdapterMenu>,String>
+    suspend fun getGroup(): ModelState<List<DataGroupTeacher?>?, String>
+}
 
 /** MenuUseCase - Get the list of menu and process the information
  * @author pelkidev
  * @date 28/08/2023
  * @param localRepository connect with the repository
  * */
-class MenuUseCase(private val localRepository: MenuRepository) {
+class MenuUseCaseImp(
+    private val localRepository: MenuLocalRepository,
+    private val menuRepository: MenuRepository,
+    private val preference: PreferenceUseCase
+) : MenuUseCase{
 
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 
-    suspend fun getMenu(schoolYear:Boolean): ModelState<List<ModelAdapterMenu>,String> {
+    override suspend fun getMenu(schoolYear:Boolean): ModelState<List<ModelAdapterMenu>,String> {
         return withContext(dispatcher) {
             try {
                 val list = localRepository.getItems(schoolYear)
@@ -32,6 +46,25 @@ class MenuUseCase(private val localRepository: MenuRepository) {
             } catch (e: Exception) {
                 ErrorState(ModelCodeError.ERROR_CATCH)
             }
+        }
+    }
+
+    override suspend fun getGroup() : ModelState<List<DataGroupTeacher?>?, String>{
+        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+
+
+        return when (val result = menuRepository.executeGetGroup(userId, roleId)) {
+            is SuccessState -> {
+                if(result.result?.size!=0){
+                    SuccessState(result.result)
+                }else{
+                    ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
+                }
+            }
+            is ErrorState -> ErrorState(result.result)
+            is ErrorStateUser -> ErrorStateUser(result.result)
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

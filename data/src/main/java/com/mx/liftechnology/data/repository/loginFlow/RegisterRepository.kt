@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.loginFlow
 
-import com.mx.liftechnology.core.model.ModelApi.GenericResponse
+import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
@@ -13,7 +13,7 @@ import retrofit2.Response
 fun interface RegisterRepository{
   suspend fun executeRegister(email: String,
                               pass: String,
-                              activationCode: String): ModelState<String?, String>
+                              activationCode: String): ModelState<List<String>?, String>
 }
 
 class RegisterRepositoryImp(
@@ -31,7 +31,7 @@ class RegisterRepositoryImp(
         email: String,
         pass: String,
         activationCode: String
-    ): ModelState<String?, String> {
+    ): ModelState<List<String>?, String> {
         return try {
             val request = CredentialsRegister(
                 email = email,
@@ -52,11 +52,11 @@ class RegisterRepositoryImp(
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(responseBody: Response<GenericResponse<String>?>): ModelState<String?, String> {
+    private fun handleResponse(responseBody: Response<GenericResponse<List<String>?>?>): ModelState<List<String>?, String> {
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
-            400 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            401 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            400, 401 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            404 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
             500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }

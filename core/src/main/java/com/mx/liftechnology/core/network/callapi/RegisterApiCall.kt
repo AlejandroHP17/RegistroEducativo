@@ -1,7 +1,7 @@
 package com.mx.liftechnology.core.network.callapi
 
+import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.enviroment.Environment
-import com.mx.liftechnology.core.model.ModelApi.GenericResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -12,7 +12,7 @@ interface RegisterApiCall {
     @POST(Environment.END_POINT_REGISTER)
     suspend fun callApi(
         @Body credentials: CredentialsRegister
-    ): Response<GenericResponse<String>?>
+    ): Response<GenericResponse<List<String>?>?>
 }
 
 // Modelo para credenciales

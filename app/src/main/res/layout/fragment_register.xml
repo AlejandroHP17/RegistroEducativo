@@ -60,7 +60,7 @@
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
+                    android:inputType="textPassword"
                     android:hint="@string/log_password"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
@@ -81,8 +81,8 @@
                     android:id="@+id/et_repeat_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
                     android:hint="@string/reg_repeat_password"
+                    android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>

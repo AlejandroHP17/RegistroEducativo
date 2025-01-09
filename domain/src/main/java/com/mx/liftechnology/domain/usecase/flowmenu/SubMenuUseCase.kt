@@ -1,7 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowmenu
 
 import com.mx.liftechnology.core.model.ModelAdapterMenu
-import com.mx.liftechnology.core.model.ModelApi.User
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError

@@ -21,5 +21,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/nav_host"/>
 
+    <!-- Superposición para la animación -->
+    <FrameLayout
+        android:id="@+id/animationLottie"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- Animación Lottie -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieLogo"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            app:lottie_rawRes="@raw/first_logo"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="false" />
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
