@@ -24,9 +24,11 @@ crypto = "1.1.0-alpha06"
 splashScreen = "1.0.1"
 shimmer = "0.5.0"
 lottie = "6.1.0"
-
+timber = "5.0.1"
 
 [libraries]
+timber = {group = "com.jakewharton.timber" , name = "timber" , version.ref = "timber"}
+
 facebook-shimmer = {group = "com.facebook.shimmer" , name = "shimmer" , version.ref = "shimmer"}
 airbnb-lottie = {group = "com.airbnb.android" , name = "lottie" , version.ref = "lottie"}
 
@@ -88,10 +90,7 @@ androidx-navigation = [
     "androidx-navigation-fragment-ktx",
     "androidx-navigation-ui-ktx"
 ]
-androidx-room = [
-    "androidx-room-ktx",
-    "androidx-room-runtime"
-]
+
 androidx-lifecycle = [
     "androidx-lifecycle-livedata-ktx",
     "androidx-lifecycle-viewmodel-ktx"
@@ -120,6 +119,10 @@ junit-test = [
 androidx-basic= [
     "androidx-core-ktx",
     "androidx-legacy-support-v4"
+]
+
+timber = [
+    "timber"
 ]
 
 

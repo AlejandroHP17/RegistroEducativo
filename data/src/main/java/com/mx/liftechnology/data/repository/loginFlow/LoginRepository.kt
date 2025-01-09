@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.loginFlow
 
 import android.os.Build
-import com.mx.liftechnology.core.model.modelApi.Data
+import com.mx.liftechnology.core.model.modelApi.ResponseDataLogin
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.callapi.Credentials
 import com.mx.liftechnology.core.network.callapi.LoginApiCall
@@ -13,7 +13,7 @@ import com.mx.liftechnology.core.model.modelBase.SuccessState
 import retrofit2.Response
 
 fun interface LoginRepository{
-  suspend fun execute(email: String?, pass: String?, latitude: Double?, longitude: Double?): ModelState<Data?, String>?
+  suspend fun execute(email: String?, pass: String?, latitude: Double?, longitude: Double?): ModelState<ResponseDataLogin?, String>?
 }
 
 class LoginRepositoryImp(
@@ -33,7 +33,7 @@ class LoginRepositoryImp(
         pass: String?,
         latitude: Double?,
         longitude: Double?
-    ): ModelState<Data?, String> {
+    ): ModelState<ResponseDataLogin?, String> {
         return try {
             val request = Credentials(
                 email = email.orEmpty(),
@@ -57,7 +57,7 @@ class LoginRepositoryImp(
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(responseBody: Response<GenericResponse<Data>?>): ModelState<Data?, String> {
+    private fun handleResponse(responseBody: Response<GenericResponse<ResponseDataLogin>?>): ModelState<ResponseDataLogin?, String> {
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
             400 -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)

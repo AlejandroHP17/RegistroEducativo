@@ -28,7 +28,7 @@ dependencies {
     implementation(libs.bundles.androidx.basic)
     implementation(libs.bundles.androidx.navigation)
     implementation(libs.bundles.androidx.lifecycle)
-    implementation(libs.bundles.androidx.room)
+    implementation(libs.bundles.timber)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx.ui)
     implementation(libs.bundles.junit.test)

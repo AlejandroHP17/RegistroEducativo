@@ -2,7 +2,7 @@ package com.mx.liftechnology.core.model.modelApi
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class ResponseDataLogin(
     @SerializedName("access_token")
     val accessToken: String?,
     @SerializedName("expires_in")

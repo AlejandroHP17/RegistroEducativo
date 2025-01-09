@@ -108,7 +108,7 @@ class MenuFragment : Fragment() {
                     binding.tvName.text = "${result?.cct} - ${result?.group}${result?.name} - ${result?.shift}"
                     showDialog(state.result)
                 }
-                is ErrorState -> state.result.log()
+                is ErrorState -> log(state.result)
                 is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result.toString())
                 else -> {
                     //Nothing

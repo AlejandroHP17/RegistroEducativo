@@ -4,7 +4,7 @@ import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.data.repository.loginFlow.RegisterRepository
 
 fun interface RegisterUseCase {
-    suspend fun putRegister(email: String, pass: String, activatationCode: String): ModelState<String?, String>?
+    suspend fun putRegister(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String>?
 }
 
 class RegisterUseCaseImp(
@@ -17,7 +17,7 @@ class RegisterUseCaseImp(
      * */
     override suspend fun putRegister(
         email: String, pass: String, activatationCode: String
-    ):  ModelState<String?, String> {
+    ):  ModelState<List<String>?, String> {
         return registerRepository.executeRegister(email.lowercase(), pass, activatationCode)
     }
 }
