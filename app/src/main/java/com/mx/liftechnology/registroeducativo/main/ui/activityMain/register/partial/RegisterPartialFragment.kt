@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterPartialBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.PeriodAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
-import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
@@ -91,11 +91,11 @@ class RegisterPartialFragment : Fragment() {
         }
 
         registerPartialViewModel.periodField.observe(viewLifecycleOwner) { period ->
-            period.log()
+            log(period.toString())
         }
 
         registerPartialViewModel.adapterField.observe(viewLifecycleOwner){adapter ->
-            adapter.log()
+            log(adapter.toString())
         }
     }
 

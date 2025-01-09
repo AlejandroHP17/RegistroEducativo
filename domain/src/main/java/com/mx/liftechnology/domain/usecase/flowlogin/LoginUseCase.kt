@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
-import com.mx.liftechnology.core.model.modelApi.Data
+import com.mx.liftechnology.core.model.modelApi.ResponseDataLogin
 import com.mx.liftechnology.core.model.modelApi.User
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
@@ -45,7 +45,7 @@ class LoginUseCaseImp(
         }
     }
 
-    private fun savePreferences(result: Data?): Boolean {
+    private fun savePreferences(result: ResponseDataLogin?): Boolean {
         return result?.user?.let { data ->
             preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
             preference.savePreferenceInt(ModelPreference.ID_USER, data.userID)

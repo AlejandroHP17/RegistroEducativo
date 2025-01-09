@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassword
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,27 +31,30 @@ class ForgetPasswordFragment : Fragment() {
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
 
-    /**
-     * block to accept the animation if the fragment is attached to the activity
-     */
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        animationHandler = context as? AnimationHandler
-    }
-    override fun onDetach() {
-        super.onDetach()
-        animationHandler = null
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentForgetPasswordBinding.inflate(inflater, container, false)
-        initView()
-        initObservers()
-        initListeners()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        animationHandler = context as? AnimationHandler
+        initView()
+        initListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initObservers()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        animationHandler = null
+        _binding = null
     }
 
     /** initView - Build the view
@@ -113,11 +115,5 @@ class ForgetPasswordFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-        animationHandler = null
     }
 }
