@@ -30,6 +30,7 @@ class DialogSelectGroup(
         adapter = DialogGroupAdapter(items, object : DialogGroupClickListener {
             override fun onClick(item: ModelDialogStudentGroup) {
                 // Llamamos al listener con el ítem seleccionado
+                item.copy(nameItem = "${item.item?.cct} - ${item.item?.group}${item.item?.name} - ${item.item?.shift}")
                 listener(item)
                 dialog.dismiss()
             }

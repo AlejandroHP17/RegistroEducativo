@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.model
+package com.mx.liftechnology.data.model
 
 /** Model - Include all the elements to control in the adapter
  * @author pelkidev

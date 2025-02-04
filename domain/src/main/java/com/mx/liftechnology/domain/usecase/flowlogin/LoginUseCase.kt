@@ -1,5 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
+import android.os.Build
 import com.mx.liftechnology.core.model.modelApi.ResponseDataLogin
 import com.mx.liftechnology.core.model.modelApi.User
 import com.mx.liftechnology.core.model.modelBase.ErrorState
@@ -7,6 +8,10 @@ import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.core.network.callapi.Credentials
+import com.mx.liftechnology.core.network.util.FailureService
+import com.mx.liftechnology.core.network.util.ResultError
+import com.mx.liftechnology.core.network.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
@@ -32,15 +37,24 @@ class LoginUseCaseImp(
         val latitude = location?.latitude
         val longitude = location?.longitude
 
-        return when (val result = repositoryLogin.execute(email?.lowercase(), pass, latitude, longitude)) {
-            is SuccessState -> {
-                result.result?.accessToken?.let {
-                    if(savePreferences(result.result)) SuccessState(result.result?.user)
+        val request = Credentials(
+            email = email.orEmpty(),
+            password = pass.orEmpty(),
+            latitude = latitude?.toString().orEmpty(),
+            longitude = longitude?.toString().orEmpty(),
+            imei = Build.SERIAL + Build.FINGERPRINT + Build.ID// caso de uso
+        )
+
+        return when (val result = repositoryLogin.executeLogin(request)) {
+            is ResultSuccess -> {
+                result.data?.accessToken?.let {
+                    if(savePreferences(result.data)) SuccessState(result.data?.user)
                     else ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
                 }?: ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
             }
-            is ErrorState -> ErrorState(result.result)
-            is ErrorStateUser -> ErrorStateUser(result.result)
+            is ResultError -> {
+                handleResponse(result.error)
+            }
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
@@ -56,6 +70,23 @@ class LoginUseCaseImp(
             preference.savePreferenceString(ModelPreference.USER_ROLE, data.role)
             true
         }?: false
-
     }
+
+    /** handleResponse - Validate the code response, and assign the correct function of that
+     * @author pelkidev
+     * @since 1.0.0
+     * @param error in order to validate the code and if is success, return the body
+     * if not return the correct error
+     * @return ModelState
+     */
+    private fun handleResponse(error: FailureService): ModelState<User?, String> {
+        return when(error) {
+            is FailureService.BadRequest -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        }
+    }
+
 }

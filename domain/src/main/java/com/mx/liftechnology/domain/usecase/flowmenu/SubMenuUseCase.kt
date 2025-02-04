@@ -1,13 +1,12 @@
 package com.mx.liftechnology.domain.usecase.flowmenu
 
-import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.data.repository.mainFlow.SubMenuRepository
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,13 +21,11 @@ fun interface SubMenuUseCase {
  * */
 class SubMenuUseCaseImp(private val localRepository: SubMenuRepository) : SubMenuUseCase {
 
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-
     override suspend fun getSubMenu(school:Boolean): ModelState<List<ModelAdapterMenu>, String>? {
-        return withContext(dispatcher) {
+        return withContext(Dispatchers.IO) {
             try {
                 val list = localRepository.getItems(school)
-                if (list.isNullOrEmpty()) {
+                if (list.isEmpty()) {
                     EmptyState(ModelCodeError.ERROR_EMPTY)
                 } else {
                     SuccessState(list)

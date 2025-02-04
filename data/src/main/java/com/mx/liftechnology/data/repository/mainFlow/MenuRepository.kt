@@ -1,20 +1,19 @@
 package com.mx.liftechnology.data.repository.mainFlow
 
 import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
-import com.mx.liftechnology.core.model.modelApi.GenericResponse
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsGroup
 import com.mx.liftechnology.core.network.callapi.GroupApiCall
-import retrofit2.Response
+import com.mx.liftechnology.core.network.util.ExceptionHandler
+import com.mx.liftechnology.core.network.util.FailureService
+import com.mx.liftechnology.core.network.util.ResultError
+import com.mx.liftechnology.core.network.util.ResultService
+import com.mx.liftechnology.core.network.util.ResultSuccess
+import retrofit2.HttpException
 
 fun interface MenuRepository{
     suspend fun executeGetGroup(
-        userId: Int?,
-        roleId: Int?
-    ): ModelState<List<DataGroupTeacher?>?, String>
+        request: CredentialsGroup
+    ): ResultService<List<DataGroupTeacher?>?, FailureService>
 }
 
 /** MenuRepository - Build the element list of menu (home)
@@ -26,34 +25,13 @@ class MenuRepositoryImp(
     private val groupApiCall: GroupApiCall
 ): MenuRepository {
 
-    override suspend fun executeGetGroup(userId: Int?, roleId: Int?): ModelState<List<DataGroupTeacher?>?, String> {
+    override suspend fun executeGetGroup(request: CredentialsGroup):ResultService<List<DataGroupTeacher?>?, FailureService> {
         return try {
-            val request = CredentialsGroup(
-                profesor_id = roleId,
-                user_id = userId,
-            )
             val response = groupApiCall.callApi(request)
-            handleResponse(response)
+            if (response.isSuccessful) ResultSuccess(response.body()?.data)
+            else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
-            ErrorState(ModelCodeError.ERROR_CATCH )
-        }
-    }
-
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param responseBody in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
-     */
-    private fun handleResponse(responseBody: Response<GenericResponse<List<DataGroupTeacher?>?>>): ModelState<List<DataGroupTeacher?>?, String> {
-        return when (responseBody.code()) {
-            200 -> SuccessState(responseBody.body()?.data)
-            400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            401 -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
-            404 -> ErrorState(ModelCodeError.ERROR_DATA)
-            500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            ResultError(ExceptionHandler.handleException(e))
         }
     }
 }

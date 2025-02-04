@@ -1,6 +1,5 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.menu
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.core.model.ModelDialogStudentGroup
-import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.data.model.ModelSelectorMenu
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
@@ -45,33 +43,31 @@ class MenuFragment : Fragment() {
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
 
-    /**
-     * block to accept the animation if the fragment is attached to the activity
-     */
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        animationHandler = context as? AnimationHandler
-    }
-    override fun onDetach() {
-        super.onDetach()
-        animationHandler = null
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        menuViewModel.getMenu(false)
-        menuViewModel.getGroup()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMenuBinding.inflate(inflater, container, false)
-
-        initialView()
-        initObservers()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        animationHandler = context as? AnimationHandler
+        initialView()
+        initListeners()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        menuViewModel.getGroup()
+        initObservers()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        animationHandler = null
+        _binding = null
     }
 
     /** initialView - Print the correct view
@@ -104,12 +100,17 @@ class MenuFragment : Fragment() {
         menuViewModel.listGroup.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState ->{
-                    val result = state.result?.firstOrNull()
-                    binding.tvName.text = "${result?.cct} - ${result?.group}${result?.name} - ${result?.shift}"
-                    showDialog(state.result)
+                    menuViewModel.getMenu(true)
+                    binding.tvName.text = state.result.infoShowSchool
                 }
-                is ErrorState -> log(state.result)
-                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result.toString())
+                is ErrorState -> {
+                    menuViewModel.getMenu(false)
+                    log(state.result)
+                }
+                is ErrorStateUser -> {
+                    menuViewModel.getMenu(false)
+                    showCustomToastFailed(requireActivity(), state.result)
+                }
                 else -> {
                     //Nothing
                 }
@@ -124,6 +125,12 @@ class MenuFragment : Fragment() {
                 }
                 else ->  animationHandler?.hideLoadingAnimation()
             }
+        }
+    }
+
+    private fun initListeners(){
+        binding.cvNameCourse.setOnClickListener {
+            showDialog()
         }
     }
 
@@ -153,23 +160,28 @@ class MenuFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    private fun showDialog() {
+        val result = menuViewModel.listGroup.value
+
+        if (result is SuccessState) {  // Aseguramos que el estado es SuccessState
+            result.result.listSchool?.let { listSchool ->
+                // Convertimos la lista de DataGroupTeacher a ModelDialogStudentGroup
+                val modelDialogStudentGroups: List<ModelDialogStudentGroup> = listSchool.map { teacher ->
+                    ModelDialogStudentGroup(
+                        selected = false,  // Inicializamos 'selected' como false
+                        item = teacher,    // Asignamos el objeto DataGroupTeacher
+                        nameItem = result.result.infoShowSchool
+                    )
+                }
+
+                val dialogManager = DialogSelectGroup(requireContext(), modelDialogStudentGroups) { selectedItem ->
+                    binding.tvName.text = selectedItem.nameItem
+                }
+
+                dialogManager.showDialog()
+            }
+        }
     }
 
-    private fun showDialog(result: List<DataGroupTeacher?>?) {
-        // Convertimos la lista de DataGroupTeacher a una lista de ModelDialogStudentGroup
-        val modelDialogStudentGroups: List<ModelDialogStudentGroup> = result!!.map { teacher ->
-            ModelDialogStudentGroup(
-                selected = false,  // Inicializamos el valor de selected como false
-                item = teacher     // Asignamos el objeto DataGroupTeacher a la propiedad 'item'
-            )
-        }
-        val dialogManager = DialogSelectGroup(requireContext(), modelDialogStudentGroups) { selectedItem ->
-            binding.tvName.text = "${selectedItem?.item?.cct} - ${selectedItem?.item?.group}${selectedItem?.item?.name} - ${selectedItem?.item?.shift}"
-        }
-        dialogManager.showDialog()
-    }
 
 }

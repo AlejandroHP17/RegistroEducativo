@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.data.model.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentSubMenuBinding
@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/** MenuFragment - Show the different available option that the user has
+/** SubMenuFragment - Show the different available option that the user has
  * @author pelkidev
  * @since 1.0.0
  */
@@ -43,11 +43,23 @@ class SubMenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSubMenuBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initialView()
         initListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
         initObservers()
-        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initListener(){
@@ -108,10 +120,5 @@ class SubMenuFragment : Fragment() {
         binding.apply {
             rvCardMenu.adapter = adapterSubMenu
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

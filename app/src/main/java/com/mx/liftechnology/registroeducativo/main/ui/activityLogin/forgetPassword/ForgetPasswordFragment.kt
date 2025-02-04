@@ -26,6 +26,7 @@ class ForgetPasswordFragment : Fragment() {
     private var _binding: FragmentForgetPasswordBinding? = null
     private val binding get() = _binding!!
 
+    /* View Model variable */
     private val forgetPassViewModel : ForgetPasswordViewModel by viewModel()
 
     /* loader variable */

@@ -88,8 +88,6 @@ Mcore/src/main/java/com/mx/liftechnology/core/network/enviroment/Enviroment.kt,
 Lcore/src/main/java/com/mx/liftechnology/core/network/callapi/LoginApiCall.kt,7/b/7b18773885f1eecc46656000459193b39afd4d55
 u
 Ecore/src/main/java/com/mx/liftechnology/core/network/NetworkModule.kt,4/a/4af3b96dfa62f37678a3b5879864c8ad70e51494
-x
-Hcore/src/main/java/com/mx/liftechnology/core/model/ModelApi/DataLogin.kt,4/7/479289b3942c842dfc53a972b17e4d2fe27fa3c0
 …
 Udomain/src/main/java/com/mx/liftechnology/domain/usecase/flowlogin/RegisterUseCase.kt,8/9/89ede4bd66fdf37be969339e2bb2723bf6aa2deb
 
@@ -192,8 +190,6 @@ u
 Ecore/src/main/java/com/mx/liftechnology/core/network/TokenProvider.kt,9/8/9882e5a87c2fc5406e742ac1b37fc71faa85b436
 …
 Ucore/src/main/java/com/mx/liftechnology/core/network/callapi/RegisterSchoolApiCall.kt,4/6/4667752be6898ee1c8f7a5fc78abc2b2160c5cf9
-x
-Hcore/src/main/java/com/mx/liftechnology/core/model/modelApi/DataLogin.kt,4/f/4ff094b0c571319cc6e05dc3983d7efb3606d4a5
 z
 Jcore/src/main/java/com/mx/liftechnology/core/preference/ModelPreference.kt,e/c/ec3699b72bbc87a5ca6510f886b8d7f2cc43ed42
 Œ

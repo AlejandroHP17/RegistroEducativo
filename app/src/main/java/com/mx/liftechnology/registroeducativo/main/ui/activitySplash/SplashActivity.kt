@@ -10,7 +10,6 @@ import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.registroeducativo.databinding.ActivitySplashBinding
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

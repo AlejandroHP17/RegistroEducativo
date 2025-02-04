@@ -7,8 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-
-interface GroupApiCall {
+fun interface GroupApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_GET_GROUP)
     suspend fun callApi(

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
-import com.mx.liftechnology.core.model.ModelAdapterMenu
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 
 /** MenuAdapter - Build the adapter for menu (home)
  * @author pelkidev

@@ -37,9 +37,7 @@ class ForgetPasswordViewModel (
             _emailField.postValue(emailState)
             if (emailState is SuccessState ) {
                 _animateLoader.postValue(LoaderState(true))
-
             }
         }
     }
-
 }

@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.repository.mainFlow
 
 import android.content.Context
-import com.mx.liftechnology.core.model.ModelAdapterMenu
 import com.mx.liftechnology.data.R
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.data.model.ModelSelectorMenu
 
 /** MenuLocalRepository - Build the element list of menu (home)
@@ -23,8 +23,18 @@ class MenuLocalRepository(private val context: Context) {
         )
         val idBase = ModelSelectorMenu.EVALUATION.value
         return listMenuItems.mapIndexed { index, description ->
-            if(description == listMenuItems[0]) ModelAdapterMenu(index + idBase, imageResources[index], description, schoolYear)
-            else ModelAdapterMenu(index + idBase, imageResources[index], description, true )
+            if(description == listMenuItems[0]) ModelAdapterMenu(
+                index + idBase,
+                imageResources[index],
+                description,
+                schoolYear
+            )
+            else ModelAdapterMenu(
+                index + idBase,
+                imageResources[index],
+                description,
+                true
+            )
         }
     }
 }

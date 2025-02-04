@@ -24,14 +24,32 @@ class PreferenceRepositoryImpl(
      * @since 1.0.0
      * */
     private fun initPreferences() {
-        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-        securePrefs = EncryptedSharedPreferences.create(
-            PREFS_FILENAME,
-            masterKeyAlias,
-            applicationContext,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
+        try {
+            val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+            securePrefs = EncryptedSharedPreferences.create(
+                PREFS_FILENAME,
+                masterKeyAlias,
+                applicationContext,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: Exception) {
+            // Si hay un error al desencriptar, eliminar las preferencias corruptas
+            applicationContext.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
+                .edit()
+                .clear()
+                .apply()
+
+            // Intentar de nuevo después de borrar las preferencias corruptas
+            val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+            securePrefs = EncryptedSharedPreferences.create(
+                PREFS_FILENAME,
+                masterKeyAlias,
+                applicationContext,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        }
     }
 
     companion object {

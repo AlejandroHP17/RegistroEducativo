@@ -36,6 +36,10 @@ class RegisterSchoolViewModel (
     val allField: LiveData<Boolean> get() = _allField
 
     // Observer the cct field
+    private val _responseRegisterSchool = SingleLiveEvent<ModelState<List<String?>?, String>>()
+    val responseRegisterSchool: LiveData<ModelState<List<String?>?, String>> get() = _responseRegisterSchool
+
+    // Observer the cct field
     private val _cct = SingleLiveEvent<String?>()
     val cct: LiveData<String?> get() = _cct
 
@@ -97,14 +101,29 @@ class RegisterSchoolViewModel (
 
             if (schoolCctField.value is SuccessState && gradeState is SuccessState
                 && groupState is SuccessState && cycleState is SuccessState){
-                registerSchoolUseCase.putNewSchool((schoolCctField.value as SuccessState<CctSchool?, String>).result, grade, group, cycle)
+                registerSchool()
                 _allField.postValue(true)
-                _animateLoader.postValue(LoaderState(false))
             }else{
                 _allField.postValue(false)
                 _animateLoader.postValue(LoaderState(false))
             }
         }
+    }
+
+    private fun registerSchool(){
+        viewModelScope.launch(dispatcherProvider.io)  {
+            runCatching {
+                registerSchoolUseCase.putNewSchool((schoolCctField.value as SuccessState<CctSchool?, String>).result, grade, group, cycle)
+            }.onSuccess {
+                _animateLoader.postValue(LoaderState(false))
+                _responseRegisterSchool.postValue(it)
+            }.onFailure {
+                _animateLoader.postValue(LoaderState(false))
+                _responseRegisterSchool.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+            }
+        }
+
+
     }
 
     fun validateData(state: List<String>) {

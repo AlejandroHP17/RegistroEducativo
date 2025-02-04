@@ -25,7 +25,7 @@ class DialogGroupAdapter(
         fun bind(item: ModelDialogStudentGroup) {
             binding.apply {
                 // Concatenar la información del ítem
-                val stringBuilder = StringBuilder(item.item?.cct).append(" ")
+                val stringBuilder = StringBuilder(item.item?.cct?:"").append(" ")
                     .append(item.item?.name).append(" ").append(item.item?.group)
                 tv.text = stringBuilder
 
@@ -62,6 +62,6 @@ class DialogGroupAdapter(
     override fun getItemCount(): Int = items.size
 }
 
-interface DialogGroupClickListener {
+fun interface DialogGroupClickListener {
     fun onClick(item: ModelDialogStudentGroup)
 }

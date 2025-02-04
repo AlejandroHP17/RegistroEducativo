@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelApi.CctSchool
 import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelRegex
@@ -19,11 +19,13 @@ import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.VoiceViewModel
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastSuccess
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -37,6 +39,7 @@ class RegisterSchoolFragment : Fragment() {
     private var _binding: FragmentRegisterSchoolBinding? = null
     private val binding get() = _binding!!
 
+    /* View Model variable */
     private val registerSchoolViewModel: RegisterSchoolViewModel by viewModel()
     private val voiceViewModel: VoiceViewModel by viewModel { parametersOf(requireContext()) }
 
@@ -44,33 +47,31 @@ class RegisterSchoolFragment : Fragment() {
     private var animationHandler: AnimationHandler? = null
     private var controlCCTClean = false
 
-    // Variable para controlar el estado del botón
-    private var isListening = true
-
-
-    /**
-     * block to accept the animation if the fragment is attached to the activity
-     */
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        animationHandler = context as? AnimationHandler
-    }
-    override fun onDetach() {
-        super.onDetach()
-        animationHandler = null
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterSchoolBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        animationHandler = context as? AnimationHandler
         initView()
         initListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
         initObserver()
         initWatcher()
+    }
 
-        return binding.root
+    override fun onDestroyView() {
+        super.onDestroyView()
+        animationHandler = null
+        _binding = null
     }
 
     /** initView - Build the view
@@ -110,7 +111,6 @@ class RegisterSchoolFragment : Fragment() {
                     }
 
                     is ErrorState -> {
-                        //inputCct.errorET(state.result)
                         cleanAutoText()
                     }
 
@@ -134,9 +134,27 @@ class RegisterSchoolFragment : Fragment() {
 
         registerSchoolViewModel.allField.observe(viewLifecycleOwner) { state ->
            if(!state){
-           showCustomToastFailed(requireActivity(),getString(R.string.toast_error_validate_fields))
-            }else{
-                findNavController().popBackStack()
+               showCustomToastFailed(requireActivity(),getString(R.string.toast_error_validate_fields))
+           }
+        }
+
+        registerSchoolViewModel.cct.observe(viewLifecycleOwner) { data ->
+            binding.etCct.setText(data)
+        }
+
+        registerSchoolViewModel.responseRegisterSchool.observe(viewLifecycleOwner) { state ->
+           when (state){
+               is SuccessState -> {
+                   showCustomToastSuccess(requireActivity(), state.result.toString())
+                   findNavController().popBackStack()
+                   findNavController().popBackStack()
+               }
+               is ErrorStateUser -> {
+                   showCustomToastFailed(requireActivity(),state.result)
+               }
+               else -> {
+                   log(state.toString())
+               }
            }
         }
 
@@ -144,11 +162,9 @@ class RegisterSchoolFragment : Fragment() {
             registerSchoolViewModel.validateData(state)
         }
 
-        registerSchoolViewModel.cct.observe(viewLifecycleOwner) { data ->
-            binding.etCct.setText(data)
+        voiceViewModel.changeButtonVoice.observe(viewLifecycleOwner){ color ->
+            binding.includeButton.btnRecord.setBackgroundColor(color)
         }
-
-
     }
 
     private fun showLogicSpinner(result: CctSchool?) {
@@ -185,17 +201,7 @@ class RegisterSchoolFragment : Fragment() {
 
             // Configurar el botón con el toggle
             includeButton.btnRecord.setOnClickListener {
-                if (isListening) {
-                    // Si está escuchando, detener la escucha
-                    voiceViewModel.startListening()
-                    isListening = false
-                    includeButton.btnRecord.setBackgroundColor(resources.getColor(R.color.color_error))
-                } else {
-                    // Si no está escuchando, iniciar la escucha
-                    voiceViewModel.stopListening()
-                    isListening = true
-                    includeButton.btnRecord.setBackgroundColor(resources.getColor(R.color.color_success))
-                }
+                voiceViewModel.change(requireContext())
             }
 
             /** Spinner Section*/
@@ -288,10 +294,5 @@ class RegisterSchoolFragment : Fragment() {
             includeSpinnerGroup.spinner.visibility = View.GONE
             includeSpinnerCycle.spinner.visibility = View.GONE
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }
