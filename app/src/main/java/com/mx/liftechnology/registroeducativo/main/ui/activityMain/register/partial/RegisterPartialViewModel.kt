@@ -9,9 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.LoaderState
+import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterPartialUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
@@ -24,7 +28,17 @@ import java.time.format.DateTimeFormatter
 class RegisterPartialViewModel (
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
+    private val registerPartialsUseCase: RegisterPartialUseCase,
 ) : ViewModel() {
+    // Observer the animate loader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
+    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
+
+    // Observer the cct field
+    private val _responseRegisterPartial = SingleLiveEvent<ModelState<List<String?>?, String>>()
+    val responseRegisterPartial: LiveData<ModelState<List<String?>?, String>> get() = _responseRegisterPartial
+
+
     // Observer the period select by user
     private val _periodNumber = SingleLiveEvent<Int>()
     val periodNumber: LiveData<Int> get() = _periodNumber
@@ -84,7 +98,7 @@ class RegisterPartialViewModel (
      */
     private fun converterTime(dateRange: Pair<Long, Long>):String {
         // Format od the date
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
         /** Convert both dates, start and end*/
         val startDate = Instant.ofEpochMilli(dateRange.first)
@@ -111,9 +125,25 @@ class RegisterPartialViewModel (
             _adapterField.postValue(adapterState)
 
             if (periodState is SuccessState && adapterState is SuccessState) {
-                //Nothing
+                registerPartial(adapterPeriods)
             }
+        }
+    }
 
+    private fun registerPartial(
+        adapterPeriods: MutableList<ModelDatePeriod>?
+    ) {
+        viewModelScope.launch (dispatcherProvider.io) {
+            runCatching {
+                registerPartialsUseCase.putPartials(periodNumber.value, adapterPeriods)
+            }.onSuccess {
+                _animateLoader.postValue(LoaderState(false))
+                _responseRegisterPartial.postValue(it)
+            }.onFailure {
+                _animateLoader.postValue(LoaderState(false))
+                _responseRegisterPartial.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+
+            }
         }
     }
 

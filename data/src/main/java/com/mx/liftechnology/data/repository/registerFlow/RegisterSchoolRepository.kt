@@ -1,4 +1,4 @@
-package com.mx.liftechnology.data.repository.mainFlow
+package com.mx.liftechnology.data.repository.registerFlow
 
 import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSchool
 import com.mx.liftechnology.core.network.callapi.RegisterSchoolApiCall
@@ -17,7 +17,7 @@ fun interface RegisterSchoolRepository{
 
 class RegisterSchoolRepositoryImp(
     private val registerApiCall: RegisterSchoolApiCall
-) :  RegisterSchoolRepository {
+) : RegisterSchoolRepository {
 
     /** Execute the user register
      * @author pelkidev
@@ -34,7 +34,4 @@ class RegisterSchoolRepositoryImp(
             ResultError(ExceptionHandler.handleException(e))
         }
     }
-
-
-
 }

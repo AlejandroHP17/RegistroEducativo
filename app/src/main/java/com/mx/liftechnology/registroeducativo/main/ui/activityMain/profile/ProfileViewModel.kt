@@ -14,7 +14,7 @@ class ProfileViewModel(
         preference.savePreferenceInt(ModelPreference.ID_USER, null)
         preference.savePreferenceInt(ModelPreference.ID_ROLE, null)
         preference.savePreferenceString(ModelPreference.USER_ROLE,null)
-        preference.savePreferenceString(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,null)
+        preference.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,null)
         return true
     }
 }

@@ -27,15 +27,12 @@ class RegisterSchoolViewModel (
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
     val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
 
-    // Observer the cct field
     private val _schoolCctField = SingleLiveEvent<ModelState<CctSchool?, String>>()
     val schoolCctField: LiveData<ModelState<CctSchool?, String>> get() = _schoolCctField
 
-    // Observer the cct field
     private val _allField = SingleLiveEvent<Boolean>()
     val allField: LiveData<Boolean> get() = _allField
 
-    // Observer the cct field
     private val _responseRegisterSchool = SingleLiveEvent<ModelState<List<String?>?, String>>()
     val responseRegisterSchool: LiveData<ModelState<List<String?>?, String>> get() = _responseRegisterSchool
 

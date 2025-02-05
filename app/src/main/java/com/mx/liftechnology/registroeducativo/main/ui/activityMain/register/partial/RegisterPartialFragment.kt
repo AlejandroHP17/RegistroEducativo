@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.partial
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,8 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.registroeducativo.R
@@ -18,6 +19,8 @@ import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastSuccess
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /** RegisterPartialFragment - Accept the data of the school
@@ -35,28 +38,44 @@ class RegisterPartialFragment : Fragment() {
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
 
-    /**
-     * block to accept the animation if the fragment is attached to the activity
-     */
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        animationHandler = context as? AnimationHandler
-    }
-    override fun onDetach() {
-        super.onDetach()
-        animationHandler = null
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterPartialBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        animationHandler = context as? AnimationHandler
         initView()
         initListener()
-        initObserver()
+        showLogicSpinner()
+    }
 
-        return binding.root
+    override fun onStart() {
+        super.onStart()
+        initObserver()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        adapterPeriods = null
+        animationHandler = null
+    }
+
+    private fun showLogicSpinner(){
+        binding.apply {
+            includeSpinnerPeriod.spinner.fillItem(
+                requireContext(),
+                ModelSpinnerSelect.PERIOD,
+                null
+            )
+            includeSpinnerPeriod.tvDemostration.visibility = View.GONE
+            includeSpinnerPeriod.spinner.visibility = View.VISIBLE
+        }
     }
 
     /** initView - Build the view
@@ -67,11 +86,8 @@ class RegisterPartialFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_partial)
             includeHeader.tvInsert.text = getString(R.string.register_partial_description)
-            includeSpinnerPeriod.spinner.fillItem(
-                requireContext(),
-                ModelSpinnerSelect.PERIOD,
-                null
-            )
+            includeSpinnerPeriod.tvDemostration.text = getString(R.string.register_partial_period)
+
         }
     }
 
@@ -97,6 +113,22 @@ class RegisterPartialFragment : Fragment() {
         registerPartialViewModel.adapterField.observe(viewLifecycleOwner){adapter ->
             log(adapter.toString())
         }
+
+        registerPartialViewModel.responseRegisterPartial.observe(viewLifecycleOwner){state->
+            when(state){
+                is SuccessState -> {
+                    showCustomToastSuccess(requireActivity(), state.result.toString())
+                    findNavController().popBackStack()
+                    findNavController().popBackStack()
+                }
+                is ErrorStateUser -> {
+                    showCustomToastFailed(requireActivity(),state.result)
+                }
+                else -> {
+                    log(state.toString())
+                }
+            }
+        }
     }
 
     /** initListeners - Build the click on the view
@@ -111,7 +143,6 @@ class RegisterPartialFragment : Fragment() {
 
             includeButton.btnAction.setOnClickListener {
                 registerPartialViewModel.validateFields(adapterPeriods?.getList())
-
             }
 
             /** Spinner Section*/
@@ -148,10 +179,4 @@ class RegisterPartialFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-        adapterPeriods = null
-        animationHandler = null
-    }
 }

@@ -4,8 +4,8 @@ import com.mx.liftechnology.core.network.callapi.RegisterSchoolApiCall
 import com.mx.liftechnology.core.network.callapi.SchoolCCTApiCall
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepository
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepositoryImp
-import com.mx.liftechnology.data.repository.mainFlow.RegisterSchoolRepository
-import com.mx.liftechnology.data.repository.mainFlow.RegisterSchoolRepositoryImp
+import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepository
+import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepositoryImp
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCaseImp
 import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase

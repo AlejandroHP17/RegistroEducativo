@@ -54,7 +54,7 @@ class MenuUseCaseImp(
 
     private fun validateCycleGroup(data: DataGroupTeacher?) {
         data?.teacherSchoolCycleGroupId.let {
-            if(preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == null)
+            if(preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1 )
             preference.savePreferenceInt( ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP, it)
         }
     }
