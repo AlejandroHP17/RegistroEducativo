@@ -34,7 +34,7 @@ class SubMenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        subMenuViewModel.getSubMenu(false)
+        subMenuViewModel.getSubMenu()
     }
 
 
@@ -106,9 +106,9 @@ class SubMenuFragment : Fragment() {
         val clickListener = MenuClickListener { item ->
             val direction: NavDirections? = when (item.id) {
                 ModelSelectorMenu.SCHOOL.value -> SubMenuFragmentDirections.actionSubMenuFragmentToRegisterSchoolFragment()
-                ModelSelectorMenu.STUDENTS.value -> null
+                ModelSelectorMenu.STUDENTS.value -> SubMenuFragmentDirections.actionSubMenuFragmentToListStudentFragment()
                 ModelSelectorMenu.PARTIALS.value -> SubMenuFragmentDirections.actionSubMenuFragmentToRegisterPartialFragment()
-                ModelSelectorMenu.SUBJECTS.value -> null
+                ModelSelectorMenu.SUBJECTS.value -> SubMenuFragmentDirections.actionSubMenuFragmentToListSubjectFragment()
                 else -> null
             }
             direction?.let { findNavController().navigate(it) }

@@ -33,8 +33,6 @@ A
 {
 Kapp/src/main/java/com/mx/liftechnology/registroeducativo/framework/MyApp.kt,2/b/2b04628e2c2e5cf97af22e9f9b94e68b33982101
 v
-Fcore/src/main/java/com/mx/liftechnology/core/model/ModelAdapterMenu.kt,4/b/4b94985dc6f85c0b4f907076e4fea53cf6278daa
-v
 Fcore/src/main/java/com/mx/liftechnology/core/model/ModelStudentForm.kt,9/8/985ee27ae7c672d1818bdc9259264ccc70171a08
 E
 core/build.gradle.kts,d/7/d72846b7b418aa17de692d1ccf924c738cf8dbe5
@@ -130,8 +128,6 @@ Wdata/src/main/java/com/mx/liftechnology/data/repository/loginFlow/RegisterRepos
 Qdata/src/main/java/com/mx/liftechnology/data/repository/mainFlow/CCTRepository.kt,4/6/46fac885e488e1b13b34cbd4512a9e1377ce44cb
 w
 Gdata/src/main/java/com/mx/liftechnology/data/model/ModelSelectorMenu.kt,b/e/be28a7d35d56ad769b5bd54fb2819a820c5bb461
-’
-bapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/menu/MenuFragment.kt,8/8/8892f7737958a8014300ba1fe1761b0b60ffbaaf
 }
 Mapp/src/main/java/com/mx/liftechnology/registroeducativo/di/LocationModule.kt,a/2/a21e4068b50c2a8ab60659b1ca96d96683f12162
 {
@@ -160,8 +156,6 @@ wapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/r
 Pdomain/src/main/java/com/mx/liftechnology/domain/usecase/flowmenu/MenuUseCase.kt,d/3/d3bf1acf7e7693e043229012f49dbebc5e52bdf7
 ƒ
 Sapp/src/main/java/com/mx/liftechnology/registroeducativo/di/forgetPasswordModule.kt,7/7/7724c73cd7fa1dede2a8800554f098e81070e7e0
-“
-capp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/menu/MenuViewModel.kt,7/4/749dbb490142041a75c42d63dc94ea232b8c7c1b
 „
 Tapp/src/main/java/com/mx/liftechnology/registroeducativo/di/registerPartialModule.kt,0/9/09086575d198deb57dff18086f62816db391060c
 ’
@@ -190,8 +184,6 @@ Ocore/src/main/java/com/mx/liftechnology/core/preference/PreferenceRepository.kt
 Lcore/src/main/java/com/mx/liftechnology/core/preference/PreferenceUseCase.kt,5/6/5641e796cbbdade7f29814bb317afd2cdb845426
 …
 Ucore/src/main/java/com/mx/liftechnology/core/network/callapi/RegisterSchoolApiCall.kt,4/6/4667752be6898ee1c8f7a5fc78abc2b2160c5cf9
-Œ
-\data/src/main/java/com/mx/liftechnology/data/repository/mainFlow/RegisterSchoolRepository.kt,6/3/636cbc0d6487da9f5d861c3709d2be503625ca54
 z
 Jcore/src/main/java/com/mx/liftechnology/core/preference/ModelPreference.kt,e/c/ec3699b72bbc87a5ca6510f886b8d7f2cc43ed42
 ~

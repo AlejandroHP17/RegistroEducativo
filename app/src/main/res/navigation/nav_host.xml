@@ -30,6 +30,12 @@
         <action
             android:id="@+id/action_subMenuFragment_to_registerPartialFragment"
             app:destination="@id/registerPartialFragment" />
+        <action
+            android:id="@+id/action_subMenuFragment_to_listStudentFragment"
+            app:destination="@id/listStudentFragment" />
+        <action
+            android:id="@+id/action_subMenuFragment_to_listSubjectFragment"
+            app:destination="@id/listSubjectFragment" />
     </fragment>
 
     <fragment
@@ -48,4 +54,35 @@
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/registerStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.RegisterStudentFragment"
+        android:label="fragment_register_student"
+        tools:layout="@layout/fragment_register_student" />
+    <fragment
+        android:id="@+id/registerSubjectFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.RegisterSubjectFragment"
+        android:label="fragment_register_subject"
+        tools:layout="@layout/fragment_register_subject" />
+
+
+    <fragment
+        android:id="@+id/listStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentFragment"
+        android:label="fragment_list_student"
+        tools:layout="@layout/fragment_list_student" >
+
+        <action
+            android:id="@+id/action_listStudentFragment_to_registerStudentFragment"
+            app:destination="@id/registerStudentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listSubjectFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.ListSubjectFragment"
+        android:label="fragment_list_subject"
+        tools:layout="@layout/fragment_list_subject" >
+        <action
+            android:id="@+id/action_listSubjectFragment_to_registerSubjectFragment"
+            app:destination="@id/registerSubjectFragment" />
+    </fragment>
 </navigation>

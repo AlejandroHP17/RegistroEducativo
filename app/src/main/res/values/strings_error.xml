@@ -9,6 +9,8 @@
     <string name="text_cct_not_found">No se encontró ninguna coincidencia</string>
     <string name="text_incorrect_data">Datos incorrectos</string>
     <string name="text_incorrect_format">El formato es incorrecto</string>
+    <string name="text_curp_incorrect">El formato de CURP es incorrecto</string>
+    <string name="text_phone_number_incorrect">El formato de Numero telefónico es incorrecto</string>
 
     <string name="toast_success_login">Te has logueado correctamente, bienvenido</string>
     <string name="toast_success_register_user">Tu usuario se registrado correctamente, puedes iniciar sesión ahora</string>

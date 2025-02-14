@@ -17,7 +17,7 @@ val subMenuModule = module {
     single { SubMenuRepository(androidContext()) }
 
     single<SubMenuUseCase> {
-        SubMenuUseCaseImp(get())
+        SubMenuUseCaseImp(get(), get())
     }
 
     viewModel {

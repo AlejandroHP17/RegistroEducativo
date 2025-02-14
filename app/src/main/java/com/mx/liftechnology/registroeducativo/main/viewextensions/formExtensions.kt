@@ -5,8 +5,8 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat.getString
 import com.google.android.material.textfield.TextInputLayout
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.core.util.ModelSelectorForm
+import com.mx.liftechnology.registroeducativo.R
 
 /** Check the input text, and show the errors or not
  * @author pelkidev
@@ -79,6 +79,12 @@ fun TextInputLayout.errorET(codeError: Int){
         }
         ModelCodeError.ET_MISTAKE_PASS_RULES -> {
             getString(context, R.string.text_incorrect_format)
+        }
+        ModelCodeError.ET_MISTAKE_CURP -> {
+            getString(context, R.string.text_curp_incorrect)
+        }
+        ModelCodeError.ET_MISTAKE_PHONE_NUMBER -> {
+            getString(context, R.string.text_phone_number_incorrect)
         }
 
         else -> {

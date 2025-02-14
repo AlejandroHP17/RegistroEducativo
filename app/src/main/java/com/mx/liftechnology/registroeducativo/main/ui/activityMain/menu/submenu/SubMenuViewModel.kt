@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.domain.usecase.flowmenu.SubMenuUseCase
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -30,10 +30,10 @@ class SubMenuViewModel(
      * @author pelkidev
      * @since 1.0.0
      */
-    fun getSubMenu(school:Boolean) {
+    fun getSubMenu() {
         viewModelScope.launch(dispatcherProvider.io)  {
             runCatching {
-                useCase.getSubMenu(school)
+                useCase.getSubMenu()
             }.onSuccess {
                 _nameSubMenu.postValue(it)
             }.onFailure {

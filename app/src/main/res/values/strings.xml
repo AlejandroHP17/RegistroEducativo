@@ -4,6 +4,11 @@
 
     <string name="save">Guardar</string>
 
+    <string name="empty_subject_1">Sin Campos Formativos</string>
+    <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
+    <string name="empty_student_1">Sin Alumnos</string>
+    <string name="empty_student_2">No encontramos algún alumno vinculado al ciclo escolar actual, por favor agregue uno</string>
+
     <string name="empty_ops">¡Oooops!</string>
     <string name="empty_message">No hemos encontrado un curso asignado, /n Por favor crea uno para poder llevarte al menu del curso.</string>
     <string name="add_button">Agregar</string>
@@ -60,6 +65,19 @@
     <string name="register_partial_start">Inicial</string>
     <string name="register_partial_end">Final</string>
     <string name="register_partial_calendar">Selecciona el rango de fechas de tu parcial</string>
+
+    <!-- Register Flow -->
+    <string name="register_student_name">Registra a un alumno</string>
+    <string name="register_student_name_description">Ingresa los datos del alumno</string>
+    <string name="register_student_name_name">Nombre (s)</string>
+    <string name="register_student_name_last">Apellido paterno</string>
+    <string name="register_student_name_second_last">Apellido materno</string>
+    <string name="register_student_curp">CURP</string>
+    <string name="register_student_birthday">Fecha de nacimiento</string>
+    <string name="register_student_number">Número de contacto</string>
+    <string name="register_student_register">REGISTRAR</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
