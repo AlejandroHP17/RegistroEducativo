@@ -53,14 +53,9 @@ class RegisterStudentViewModel (
     val fillFields: LiveData<MutableMap<String, String>?> get() = _fillFields
 
     // Observer the response of service
-    private val _responseRegisterStudent = SingleLiveEvent< ModelState<String?, *>>()
-    val responseRegisterStudent: LiveData< ModelState<String?, *>> get() = _responseRegisterStudent
+    private val _responseRegisterStudent = SingleLiveEvent< ModelState<List<String?>?, String>>()
+    val responseRegisterStudent: LiveData< ModelState<List<String?>?, String>> get() = _responseRegisterStudent
 
-    fun getStudents(){}
-
-    fun hideLoader(){
-        _animateLoader.postValue(LoaderState(false))
-    }
 
     fun validateFields(name: String, lastName: String, secondLastName: String, curp: String, birthday: String, phoneNumber: String) {
         viewModelScope.launch {

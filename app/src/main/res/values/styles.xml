@@ -46,4 +46,10 @@
         <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
     </style>
 
+
+    <style name="CustomCardShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+    </style>
 </resources>

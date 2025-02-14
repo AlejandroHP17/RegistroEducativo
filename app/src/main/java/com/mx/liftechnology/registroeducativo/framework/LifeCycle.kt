@@ -32,6 +32,8 @@ class LifeCycle : FragmentManager.FragmentLifecycleCallbacks() {
             fragment.log("onFragmentSaveInstanceState" , NAME_CYCLE_FRAGMENT)
     }
 
+
+
     override fun onFragmentResumed(fm: FragmentManager, fragment: Fragment) {
         if (!fragment.toString().contains("NavHostFragment"))
             fragment.log("onFragmentResumed" , NAME_CYCLE_FRAGMENT)

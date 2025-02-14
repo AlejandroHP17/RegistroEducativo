@@ -13,6 +13,26 @@
         android:id = "@+id/include_header"
         layout="@layout/include_header"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_list_Student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:orientation="vertical"
+        android:background="@color/color_transparent"
+        app:layout_constraintTop_toBottomOf="@id/include_header"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/recycler_card_student" />
+
+    <!-- Button -->
+    <include
+        android:id = "@+id/include_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_extra_outer"
+        android:layout_marginHorizontal="@dimen/margin_extra_outer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        layout="@layout/include_button"/>
 
     <ViewStub
         android:id="@+id/emptyStateStub"

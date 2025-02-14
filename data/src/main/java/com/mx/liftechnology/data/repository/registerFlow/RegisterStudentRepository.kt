@@ -10,7 +10,7 @@ import com.mx.liftechnology.core.network.util.ResultSuccess
 import retrofit2.HttpException
 
 fun interface RegisterStudentRepository{
-  suspend fun executeRegisterStudent(request: CredentialsRegisterStudent): ResultService<String?, FailureService>
+  suspend fun executeRegisterStudent(request: CredentialsRegisterStudent): ResultService<List<String?>?, FailureService>
 }
 
 class RegisterStudentRepositoryImp(
@@ -19,7 +19,7 @@ class RegisterStudentRepositoryImp(
 
     override suspend fun executeRegisterStudent(
         request: CredentialsRegisterStudent
-    ): ResultService<String?, FailureService> {
+    ): ResultService<List<String?>?, FailureService> {
         return try {
             val response = registerStudentApiCall.callApi(request)
             if (response.isSuccessful) ResultSuccess(response.body()?.data)

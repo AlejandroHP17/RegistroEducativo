@@ -8,7 +8,7 @@ import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
-import com.mx.liftechnology.registroeducativo.di.listStudentModule
+import com.mx.liftechnology.registroeducativo.di.getListStudentModule
 import com.mx.liftechnology.registroeducativo.di.listSubjectModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
@@ -65,12 +65,12 @@ class MyApp : Application() {
                 forgetPasswordModule,
                 menuModule,
                 subMenuModule,
-                listStudentModule,
                 listSubjectModule,
                 registerSchoolModule,
                 registerPartialModule,
                 registerStudentModule,
                 registerSubjectModule,
+                getListStudentModule,
                 profileModule
             )
         }

@@ -12,7 +12,7 @@ interface RegisterStudentApiCall {
     @POST(Environment.END_POINT_REGISTER_STUDENT)
     suspend fun callApi(
         @Body credentials: CredentialsRegisterStudent
-    ): Response<GenericResponse<String?>?>
+    ): Response<GenericResponse<List<String?>?>>
 }
 
 // Modelo para credenciales

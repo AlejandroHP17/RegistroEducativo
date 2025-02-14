@@ -77,6 +77,10 @@
     <string name="register_student_number">Número de contacto</string>
     <string name="register_student_register">REGISTRAR</string>
 
+    <!-- Gets Flow -->
+    <string name="get_student_name">Lista de alumnos</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

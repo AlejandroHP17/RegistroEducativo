@@ -30,6 +30,10 @@ object Environment {
     const val END_POINT_REGISTER_PARTIAL= "teacher/registerPartialCycleGroup"
     const val END_POINT_REGISTER_STUDENT= "teacher/registerStudentCycleGroup"
 
+    const val END_POINT_GET_STUDENT= "teacher/getTeacherGroupStudents"
+
+
+
     /** Menu flow */
     const val END_POINT_GET_CCT = "teacher/getSchoolCCT/{cct}"
     const val END_POINT_GET_GROUP= "teacher/getTeacherGroups"

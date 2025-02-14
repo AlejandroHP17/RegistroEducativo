@@ -150,7 +150,10 @@ class RegisterStudentFragment : Fragment() {
 
         registerStudentViewModel.responseRegisterStudent.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> log("state $state")
+                is SuccessState -> {
+                    val direction = RegisterStudentFragmentDirections.actionRegisterStudentFragmentToListStudentFragment()
+                    findNavController().navigate(direction)
+                }
                 is ErrorState -> log("state $state")
                 else -> log("state $state")
             }

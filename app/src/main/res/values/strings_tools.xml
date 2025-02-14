@@ -9,7 +9,7 @@
     <string name="tools_custom_insert">Ingresa algo</string>
     <string name="tools_custom_spinner">Texto demostrativo</string>
 
-    <string name="tools_custom_list_number">#List</string>
+    <string name="tools_custom_list_number">#</string>
     <string name="tools_custom_name">Nombre del alumno</string>
 
 </resources>

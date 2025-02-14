@@ -6,11 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.LoaderState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentEmptyStateBinding
 import com.mx.liftechnology.registroeducativo.databinding.FragmentListStudentBinding
+import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
+import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -20,16 +28,22 @@ class ListStudentFragment : Fragment() {
     private val binding get() = _binding!!
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
 
+    private var studentAdapter : StudentAdapter? = null
+    private var listStudent: MutableList<ModelStudent?>? = null
+
     /* View Model variable */
     private val listStudentViewModel: ListStudentViewModel by viewModel()
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
 
+    companion object {
+        private const val LIST_STUDENT = "LIST_STUDENT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        listStudentViewModel.getStudents()
+        listStudentViewModel.getListStudent()
     }
 
     override fun onCreateView(
@@ -44,15 +58,14 @@ class ListStudentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
         animationHandler?.showLoadingAnimation()
-        initialView()
+        initView()
         initListener()
     }
 
     override fun onStart() {
         super.onStart()
         initObserver()
-
-        listStudentViewModel.hideLoader()
+        listStudentViewModel.getLocalListStudent()
     }
 
     override fun onDestroyView() {
@@ -60,13 +73,22 @@ class ListStudentFragment : Fragment() {
         animationHandler = null
         _binding = null
         emptyStateBinding = null
+        studentAdapter = null
+    }
+
+    private fun initView(){
+        binding.apply {
+            includeHeader.tvTitle.text = getString(R.string.get_student_name)
+            includeButton.btnAction.text = getString(R.string.add_button)
+            includeButton.btnRecord.visibility = View.GONE
+        }
     }
 
     /** initialView - Print the correct view, menu or empty state
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView() {
+    private fun emptyView() {
         binding.apply {
             val inflatedView = binding.emptyStateStub.inflate()
 
@@ -84,6 +106,10 @@ class ListStudentFragment : Fragment() {
                 tvEsDescription.text = getString(R.string.empty_student_2)
                 ivEsImage.setImageResource(R.drawable.ic_empty_student)
             }
+
+            includeHeader.tvTitle.visibility = View.GONE
+            rvListStudent.visibility = View.GONE
+
             // Acceder al botón después de inflar
             emptyStateStub.visibility = View.VISIBLE
         }
@@ -92,6 +118,10 @@ class ListStudentFragment : Fragment() {
 
     private fun initListener(){
         binding.includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
+        binding.includeButton.btnAction.setOnClickListener {
+            val nav =  ListStudentFragmentDirections.actionListStudentFragmentToRegisterStudentFragment()
+            findNavController().navigate(nav)
+        }
     }
 
     private fun initObserver(){
@@ -104,5 +134,32 @@ class ListStudentFragment : Fragment() {
                 else ->  animationHandler?.hideLoadingAnimation()
             }
         }
+
+        listStudentViewModel.responseListStudent.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SuccessState -> {
+                    listStudent = state.result?.toMutableList()
+                    showAdapter()
+
+                }
+                is ErrorState ->  log(state.result)
+                is ErrorStateUser ->  log(state.result)
+                else -> {
+                    emptyView()
+                }
+            }
+        }
+    }
+
+    private fun showAdapter(){
+        studentAdapter = StudentAdapter(listStudent, StudentClickListener { item ->
+            // Aquí manejas el click del estudiante
+
+            // Puedes navegar a otro fragment o ejecutar otra acción aquí
+        })
+        binding.rvListStudent.layoutManager = LinearLayoutManager(context)
+        binding.rvListStudent.adapter = studentAdapter
+
+        log(listStudent.toString())
     }
 }

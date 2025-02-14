@@ -58,7 +58,13 @@
         android:id="@+id/registerStudentFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.RegisterStudentFragment"
         android:label="fragment_register_student"
-        tools:layout="@layout/fragment_register_student" />
+        tools:layout="@layout/fragment_register_student" >
+        <action
+            android:id="@+id/action_registerStudentFragment_to_listStudentFragment"
+            app:destination="@id/listStudentFragment"
+            app:popUpTo="@id/listStudentFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/registerSubjectFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.RegisterSubjectFragment"
