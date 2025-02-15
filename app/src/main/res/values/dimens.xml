@@ -3,12 +3,20 @@
 
     <dimen name="margin_empty_top">120dp</dimen>
     <dimen name="margin_empty_horizontal">48dp</dimen>
+    <dimen name="margin_extra_outer">32dp</dimen>
+    <dimen name="margin_outer">24dp</dimen>
+    <dimen name="margin_between">16dp</dimen>
     <dimen name="margin_16dp">16dp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
 
-    <dimen name="text_size_title">24sp</dimen>
-    <dimen name="text_size_body">14sp</dimen>
+    <dimen name="radius_card">8dp</dimen>
+    <dimen name="touch_google">48dp</dimen>
+
+    <dimen name="text_size_title">32sp</dimen>
+    <dimen name="text_size_subtitle">24sp</dimen>
+    <dimen name="text_size_body">12sp</dimen>
     <dimen name="text_size_form">16sp</dimen>
+    <dimen name="text_size_error">12sp</dimen>
 
 </resources>

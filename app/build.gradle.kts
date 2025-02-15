@@ -10,12 +10,16 @@ android {
     namespace = "com.mx.liftechnology.registroeducativo"
 
     kotlinOptions {
-        jvmTarget = "1.8"  // Alinea la compatibilidad de la versión de Kotlin
+        jvmTarget = "11"  // Alinea la compatibilidad de la versión de Kotlin
     }
 
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_21
     }
 }
 
@@ -24,11 +28,12 @@ dependencies {
     implementation(libs.bundles.androidx.basic)
     implementation(libs.bundles.androidx.navigation)
     implementation(libs.bundles.androidx.lifecycle)
-    implementation(libs.bundles.androidx.security)
-    implementation(libs.bundles.androidx.room)
+    implementation(libs.bundles.timber)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx.ui)
     implementation(libs.bundles.junit.test)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.animation)
 
     /* Libraries */
     implementation(project(":domain"))

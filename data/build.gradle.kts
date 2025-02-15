@@ -11,12 +11,18 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_21
+    }
 }
 
 
 dependencies {
     implementation(libs.bundles.junit.test)
-    implementation(libs.bundles.androidx.room)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.koin)
+
 
     implementation(project(":core"))
 }

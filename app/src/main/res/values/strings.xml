@@ -1,13 +1,98 @@
 <resources>
     <string name="app_name">Registro Educativo</string>
 
+
+    <string name="save">Guardar</string>
+
+    <string name="empty_subject_1">Sin Campos Formativos</string>
+    <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
+    <string name="empty_student_1">Sin Alumnos</string>
+    <string name="empty_student_2">No encontramos algún alumno vinculado al ciclo escolar actual, por favor agregue uno</string>
+
     <string name="empty_ops">¡Oooops!</string>
     <string name="empty_message">No hemos encontrado un curso asignado, /n Por favor crea uno para poder llevarte al menu del curso.</string>
     <string name="add_button">Agregar</string>
     <string name="edit_button">Editar</string>
     <string name="empty_dialog_title">Ingresa el nombre de tu curso</string>
 
-    <string name="save">Guardar</string>
+    <!-- Login Flow -->
+    <string name="log_welcome">Bienvenido</string>
+    <string name="log_insert">Ingresa tus credenciales para acceder a tu contenido</string>
+    <string name="log_email">Correo eletrónico</string>
+    <string name="log_password">Contraseña</string>
+    <string name="log_remember">Recuérdame</string>
+    <string name="log_forgot">¿Olvidaste tu contraseña?</string>
+    <string name="log_logIn">Iniciar sesión</string>
+    <string name="log_notAccount">¿No tienes una cuenta?</string>
+    <string name="log_register">Regístrate</string>
+
+    <!-- Register Flow -->
+    <string name="reg_welcome">Regístrate</string>
+    <string name="reg_insert">Crea tu propia cuenta para poder continuar</string>
+    <string name="reg_repeat_password">Repetir contraseña</string>
+    <string name="reg_code">Código</string>
+
+    <!-- ForgetPass Flow -->
+    <string name="forget_pass_welcome">¿Olvidaste tu constraseña?</string>
+    <string name="forget_pass_insert">No te preocupes, estás a un paso de recuperarla</string>
+    <string name="forget_pass_button">Enviar código</string>
+
+    <!-- Menu Flow -->
+    <string name="menu_grettins">Nos da gusto verte %s</string>
+    <string name="menu_empty">No tienes un ciclo escolar activo</string>
+    <string name="menu_ciclo">Ciclo escolar 2024 - 2025</string>
+
+    <!-- SubMenu Flow -->
+    <string name="sub_menu_title">Registro</string>
+
+    <!-- Register Flow -->
+    <string name="register_school">Registra tu escuela</string>
+    <string name="register_school_description">Ingresa los datos de tu ciclo escolar para poder continuar</string>
+    <string name="register_school_cct">CCT</string>
+    <string name="register_school_term">Ciclo</string>
+    <string name="register_school_name">Nombre de la escuela</string>
+    <string name="register_school_shift">Turno</string>
+    <string name="register_school_type">Tipo</string>
+    <string name="register_school_grade">Grado</string>
+    <string name="register_school_group">Grupo</string>
+
+    <!-- Register Flow -->
+    <string name="register_partial">Registra tus parciales</string>
+    <string name="register_partial_description">Ingresa los datos de tus parciales correspondientes al ciclo escolar activo, si ya los tienes registrados, puedes actualizarlos</string>
+    <string name="register_partial_number_period">Número de parciales en el ciclo escolar</string>
+    <string name="register_partial_period">Parciales</string>
+    <string name="register_partial_start">Inicial</string>
+    <string name="register_partial_end">Final</string>
+    <string name="register_partial_calendar">Selecciona el rango de fechas de tu parcial</string>
+
+    <!-- Register Flow -->
+    <string name="register_student_name">Registra a un alumno</string>
+    <string name="register_student_name_description">Ingresa los datos del alumno</string>
+    <string name="register_student_name_name">Nombre (s)</string>
+    <string name="register_student_name_last">Apellido paterno</string>
+    <string name="register_student_name_second_last">Apellido materno</string>
+    <string name="register_student_curp">CURP</string>
+    <string name="register_student_birthday">Fecha de nacimiento</string>
+    <string name="register_student_number">Número de contacto</string>
+    <string name="register_student_register">REGISTRAR</string>
+
+    <!-- Register Flow -->
+    <string name="register_subject_name">Registra tu campo formativo</string>
+    <string name="register_subject_name_description">Ingresa los datos del campo formativo</string>
+    <string name="register_subject_name_description_2">Ingresa los tipos de trabajo que se evaluaran en dicho campo formativo y su porcentaje correspondiente a la calificación final, el porcentaje total debe ser 100%</string>
+    <string name="register_subject_name_description_3">Opciones de evaluación por campo formativo</string>
+    <string name="register_subject_field">Campo formativo</string>
+    <string name="register_subject_evaluation">Tipo de evaluación</string>
+    <string name="register_subject_percent">%</string>
+
+    <!-- Gets Flow -->
+    <string name="get_student_name">Lista de alumnos</string>
+
+
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

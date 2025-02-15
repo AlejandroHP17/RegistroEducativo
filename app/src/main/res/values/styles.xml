@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/to_center</item>
+        <item name="android:windowExitAnimation">@anim/from_center</item>
+    </style>
+
+    <style name="editext_form" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/color_white</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/color_secondary_text</item>
+        <item name="boxStrokeColor">@color/color_secondary_text</item>
+        <item name="boxStrokeErrorColor">@color/color_error</item>
+        <item name="errorIconDrawable">@null</item>
+        <item name="errorTextColor">@color/color_error</item>
+        <item name="errorEnabled">true</item>
+    </style>
+
+    <!-- dialog round corners Transparent-->
+    <style name="AlertDialogRoundBase" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="CustomDatePickerDialog" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <!-- Color del fondo del diálogo -->
+        <item name="android:background">@color/white</item>
+
+        <!-- Color del texto del título del selector de fecha -->
+        <item name="android:textColorPrimary">@color/black</item>
+
+        <!-- Color de los botones Aceptar y Cancelar -->
+        <item name="android:colorAccent">@color/color_principal_text</item>
+
+
+        <!-- Otros colores del calendario -->
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
+    </style>
+
+
+    <style name="CustomCardShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+    </style>
+</resources>

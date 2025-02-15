@@ -9,6 +9,10 @@ android {
     buildFeatures {
         buildConfig = true
     }
+    compileOptions {
+        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_21
+    }
 }
 
 dependencies {

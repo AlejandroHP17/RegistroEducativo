@@ -1,13 +1,16 @@
 package com.mx.liftechnology.registroeducativo.main.funextensions
 
-import android.util.Log
 import com.mx.liftechnology.registroeducativo.BuildConfig
+import timber.log.Timber
 
-/** Print logs depending of flavor
+/** Print logs depending the flavor
  * @author pelkidev
  * @since 1.0.0
  */
-fun Any.log(tag: String = "DEBUG_LOG") {
-    if (BuildConfig.LOG_TAG)
-        Log.d(tag, this.toString())
+// Función de extensión mejorada para registrar logs
+inline fun <reified T : Any> T.log(message: String, name: String = "Desarrollo: ") {
+    if (BuildConfig.LOG_TAG) {
+        val tag = this::class.java.simpleName  // Obtiene el nombre real de la clase
+        Timber.tag(tag).i(name + message)
+    }
 }
