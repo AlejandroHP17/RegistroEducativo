@@ -9,6 +9,7 @@ import androidx.security.crypto.MasterKeys
 interface PreferenceRepository {
     fun <T> getPreference(name: String, default: T): T
     fun <T> savePreference(name: String, value: T)
+    fun cleanPreference() : Boolean
 }
 
 class PreferenceRepositoryImpl(
@@ -83,5 +84,11 @@ class PreferenceRepositoryImpl(
             }
             apply()  // Save the changes asynchronously
         }
+    }
+
+    override fun cleanPreference() : Boolean {
+        val prefs = applicationContext.getSharedPreferences("secure_prefs", Context.MODE_PRIVATE)
+        prefs.edit().clear().apply()
+        return true
     }
 }

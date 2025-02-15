@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
@@ -144,7 +144,7 @@ class ListSubjectFragment : Fragment() {
                 }
 
                 is ErrorState -> emptyView()
-                is ErrorStateUser -> emptyView()
+                is ErrorUserState -> emptyView()
                 else -> emptyView()
             }
         }

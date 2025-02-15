@@ -1,7 +1,8 @@
 package com.mx.liftechnology.domain.usecase.flowregisterdata
 
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -79,9 +80,9 @@ class RegisterPartialUseCaseImp(
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
             is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }

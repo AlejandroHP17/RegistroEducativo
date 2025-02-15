@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mx.liftechnology.core.model.ModelDialogStudentGroup
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.data.model.ModelAdapterMenu
@@ -21,6 +23,7 @@ import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuClickListener
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
 import com.mx.liftechnology.registroeducativo.main.util.DialogSelectGroup
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -107,9 +110,13 @@ class MenuFragment : Fragment() {
                     menuViewModel.getMenu(false)
                     log(state.result)
                 }
-                is ErrorStateUser -> {
+                is ErrorUserState -> {
                     menuViewModel.getMenu(false)
                     showCustomToastFailed(requireActivity(), state.result)
+                }
+                is ErrorUnauthorizedState -> {
+                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    startActivity(intent)
                 }
                 else -> {
                     //Nothing

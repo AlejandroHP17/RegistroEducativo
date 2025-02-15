@@ -34,12 +34,11 @@ class ProfileFragment : Fragment() {
 
     private fun initListeners() {
         binding.includeButton.btnAction.setOnClickListener {
-            val finish = profileViewModel.closeSession()
-            if (finish) {
-                val intent = Intent(requireContext(), LoginActivity::class.java)
+            if(profileViewModel.closeSession()){
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
                 startActivity(intent)
-                requireActivity().finish()
             }
+
         }
     }
 

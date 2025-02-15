@@ -19,6 +19,7 @@ import com.mx.liftechnology.registroeducativo.databinding.ActivityMainBinding
  * @since 1.0.0
  */
 class MainActivity : AppCompatActivity(), AnimationHandler {
+
     private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +29,9 @@ class MainActivity : AppCompatActivity(), AnimationHandler {
         setContentView(binding?.root)
     }
 
-    /** Start a loading animation and get untouchable the screen to another touch
-     * @author pelkidev
-     * @since 1.0.0
-     */
+    // Métodos para manejar la animación de carga
+
+    /** Muestra la animación de carga y bloquea la pantalla */
     override fun showLoadingAnimation() {
         binding?.animationLottie?.apply {
             visibility = View.VISIBLE
@@ -40,10 +40,7 @@ class MainActivity : AppCompatActivity(), AnimationHandler {
         binding?.lottieLogo?.playAnimation()
     }
 
-    /** End a loading animation and touchable the screen
-     * @author pelkidev
-     * @since 1.0.0
-     */
+    /** Oculta la animación de carga y desbloquea la pantalla */
     override fun hideLoadingAnimation() {
         binding?.animationLottie?.apply {
             visibility = View.GONE
@@ -51,5 +48,4 @@ class MainActivity : AppCompatActivity(), AnimationHandler {
         }
         binding?.lottieLogo?.cancelAnimation()
     }
-
 }

@@ -10,7 +10,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelRegex
@@ -151,7 +151,7 @@ class RegisterSchoolFragment : Fragment() {
                     findNavController().popBackStack()
                     findNavController().popBackStack()
                 }
-                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result)
+                is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
                 else -> log(state.toString())
             }
         }

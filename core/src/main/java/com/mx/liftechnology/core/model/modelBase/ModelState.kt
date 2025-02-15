@@ -9,6 +9,7 @@ package com.mx.liftechnology.core.model.modelBase
 sealed class ModelState<S, E>
 class SuccessState<S, E>(val result: S) : ModelState<S, E>()
 class ErrorState<S, E>(val result: E) : ModelState<S, E>()
-class ErrorStateUser<S, E>(val result: E) : ModelState<S, E>()
+class ErrorUserState<S, E>(val result: E) : ModelState<S, E>()
+class ErrorUnauthorizedState<S, E>(val result: E) : ModelState<S, E>()
 class EmptyState<S, E>(val result: E) : ModelState<S, E>()
 class LoaderState<S, E>(val result: S?) : ModelState<S, E>()

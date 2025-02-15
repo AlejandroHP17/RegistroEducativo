@@ -2,7 +2,8 @@ package com.mx.liftechnology.domain.usecase.flowmenu
 
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -35,6 +36,7 @@ class MenuUseCaseImp(
     private val menuRepository: MenuRepository,
     private val preference: PreferenceUseCase
 ) : MenuUseCase{
+
 
     override suspend fun getMenu(schoolYear:Boolean): ModelState<List<ModelAdapterMenu>,String> {
         return withContext(Dispatchers.IO) {
@@ -74,7 +76,7 @@ class MenuUseCaseImp(
                     validateCycleGroup(result.data?.firstOrNull())
                     SuccessState(buildInformation(result.data))
                 }else{
-                    ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
+                    ErrorUserState(ModelCodeError.ERROR_CRITICAL)
                 }
             }
             is ResultError -> handleResponse(result.error)
@@ -100,7 +102,9 @@ class MenuUseCaseImp(
     private fun handleResponse(error: FailureService): ModelState<ModelInfoMenu, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.Unauthorized -> {
+                preference.cleanPreference()
+                ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)}
             is FailureService.NotFound -> ErrorState(ModelCodeError.ERROR_DATA)
             is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)

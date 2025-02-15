@@ -2,7 +2,8 @@ package com.mx.liftechnology.domain.usecase.flowlogin
 
 import android.os.Build
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -49,8 +50,8 @@ class LoginUseCaseImp(
             is ResultSuccess -> {
                 result.data?.accessToken?.let {
                     if(savePreferences(result.data)) SuccessState(result.data?.user)
-                    else ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
-                }?: ErrorStateUser(ModelCodeError.ERROR_CRITICAL)
+                    else ErrorUserState(ModelCodeError.ERROR_CRITICAL)
+                }?: ErrorUserState(ModelCodeError.ERROR_CRITICAL)
             }
             is ResultError -> {
                 handleResponse(result.error)
@@ -81,9 +82,9 @@ class LoginUseCaseImp(
      */
     private fun handleResponse(error: FailureService): ModelState<User?, String> {
         return when(error) {
-            is FailureService.BadRequest -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorStateUser(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
             is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }

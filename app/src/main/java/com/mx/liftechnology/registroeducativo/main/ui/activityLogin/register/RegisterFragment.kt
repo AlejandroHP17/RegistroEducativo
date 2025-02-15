@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
+import com.mx.liftechnology.core.model.modelBase.ErrorUserState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.SuccessState
@@ -136,7 +136,7 @@ class RegisterFragment : Fragment() {
         /**
          * SuccessState - navigate to login
          * ErrorState - log an error of service
-         * ErrorStateUser - show the error to user
+         * ErrorUserState - show the error to user
          * */
         registerViewModel.responseRegister.observe(viewLifecycleOwner) { state ->
             log(state.toString())
@@ -146,7 +146,7 @@ class RegisterFragment : Fragment() {
                     showCustomToastSuccess(requireActivity(), state.result.toString())
                 }
                 is ErrorState -> log(state.result)
-                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result)
+                is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
                 else -> {
                     // Nothing
                 }
