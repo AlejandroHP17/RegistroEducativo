@@ -18,7 +18,7 @@ val registerModule = module {
 
     factory { get<Retrofit>().create(RegisterApiCall::class.java) }
 
-    single <RegisterRepository>{
+    single<RegisterRepository> {
         RegisterRepositoryImp(get())
     }
 

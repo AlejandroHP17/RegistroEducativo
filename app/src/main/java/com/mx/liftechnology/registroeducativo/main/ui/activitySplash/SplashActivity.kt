@@ -24,16 +24,17 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
 
     private lateinit var locationHelper: LocationHelper
 
-    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        locationHelper.handlePermissionResult(isGranted, this)
-    }
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            locationHelper.handlePermissionResult(isGranted, this)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // SplashScreen
         val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition{false}
+        splashScreen.setKeepOnScreenCondition { false }
 
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding?.root)
@@ -46,11 +47,10 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
 
     }
 
-   // User accept permission, navigate
+    // User accept permission, navigate
     override fun onLocationResult(location: Location?) {
-       splashViewModel.getNavigation()
+        splashViewModel.getNavigation()
     }
-
 
 
     // User denied permission, terminate app
@@ -63,13 +63,13 @@ class SplashActivity : AppCompatActivity(), LocationHelper.LocationCallback {
         binding = null
     }
 
-    private fun initObservers(){
+    private fun initObservers() {
         /** Decide what activity, login or main
          * @author pelkidev
          * @since 1.0.0
          * */
         splashViewModel.navigate.observe(this) { data ->
-            if(data) startActivity(Intent(this, MainActivity::class.java))
+            if (data) startActivity(Intent(this, MainActivity::class.java))
             else startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }

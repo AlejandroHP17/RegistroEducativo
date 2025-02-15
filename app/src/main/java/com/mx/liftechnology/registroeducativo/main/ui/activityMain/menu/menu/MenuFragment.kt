@@ -54,7 +54,7 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
-        initialView()
+        initView()
         initListeners()
     }
 
@@ -74,7 +74,7 @@ class MenuFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView() {
+    private fun initView() {
         binding.apply {
             tvGretting.text = getString(R.string.menu_grettins, "Profesor")
             tvName.text = getString(R.string.menu_empty)
@@ -99,7 +99,7 @@ class MenuFragment : Fragment() {
         /* Show all the options from menu, or if any error occur, show the error */
         menuViewModel.listGroup.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState ->{
+                is SuccessState -> {
                     menuViewModel.getMenu(true)
                     binding.tvName.text = state.result.infoShowSchool
                 }
@@ -120,15 +120,15 @@ class MenuFragment : Fragment() {
         menuViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
         binding.cvNameCourse.setOnClickListener {
             showDialog()
         }
@@ -165,23 +165,23 @@ class MenuFragment : Fragment() {
 
         if (result is SuccessState) {  // Aseguramos que el estado es SuccessState
             result.result.listSchool?.let { listSchool ->
-                // Convertimos la lista de DataGroupTeacher a ModelDialogStudentGroup
-                val modelDialogStudentGroups: List<ModelDialogStudentGroup> = listSchool.map { teacher ->
-                    ModelDialogStudentGroup(
-                        selected = false,  // Inicializamos 'selected' como false
-                        item = teacher,    // Asignamos el objeto DataGroupTeacher
-                        nameItem = result.result.infoShowSchool
-                    )
-                }
+                // Convertimos la lista de ResponseGroupTeacher a ModelDialogStudentGroup
+                val modelDialogStudentGroups: List<ModelDialogStudentGroup> =
+                    listSchool.map { teacher ->
+                        ModelDialogStudentGroup(
+                            selected = false,  // Inicializamos 'selected' como false
+                            item = teacher,    // Asignamos el objeto ResponseGroupTeacher
+                            nameItem = result.result.infoShowSchool
+                        )
+                    }
 
-                val dialogManager = DialogSelectGroup(requireContext(), modelDialogStudentGroups) { selectedItem ->
-                    binding.tvName.text = selectedItem.nameItem
-                }
+                val dialogManager =
+                    DialogSelectGroup(requireContext(), modelDialogStudentGroups) { selectedItem ->
+                        binding.tvName.text = selectedItem.nameItem
+                    }
 
                 dialogManager.showDialog()
             }
         }
     }
-
-
 }

@@ -1,14 +1,14 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
 import android.os.Build
-import com.mx.liftechnology.core.model.modelApi.ResponseDataLogin
-import com.mx.liftechnology.core.model.modelApi.User
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.Credentials
+import com.mx.liftechnology.core.network.callapi.ResponseDataLogin
+import com.mx.liftechnology.core.network.callapi.User
 import com.mx.liftechnology.core.network.util.FailureService
 import com.mx.liftechnology.core.network.util.ResultError
 import com.mx.liftechnology.core.network.util.ResultSuccess

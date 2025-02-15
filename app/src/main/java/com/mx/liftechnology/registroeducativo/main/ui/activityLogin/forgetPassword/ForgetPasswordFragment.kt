@@ -27,7 +27,7 @@ class ForgetPasswordFragment : Fragment() {
     private val binding get() = _binding!!
 
     /* View Model variable */
-    private val forgetPassViewModel : ForgetPasswordViewModel by viewModel()
+    private val forgetPassViewModel: ForgetPasswordViewModel by viewModel()
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
@@ -94,10 +94,10 @@ class ForgetPasswordFragment : Fragment() {
         forgetPassViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
     }
@@ -109,7 +109,7 @@ class ForgetPasswordFragment : Fragment() {
     private fun initListeners() {
         binding.apply {
             includeButton.btnAction.setOnClickListener {
-                forgetPassViewModel.validateFields( etEmail.text.toString())
+                forgetPassViewModel.validateFields(etEmail.text.toString())
             }
 
             includeHeader.btnReturn.setOnClickListener {

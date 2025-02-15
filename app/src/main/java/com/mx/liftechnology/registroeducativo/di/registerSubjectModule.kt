@@ -20,14 +20,14 @@ val registerSubjectModule = module {
 
     factory { get<Retrofit>().create(RegisterSubjectApiCall::class.java) }
 
-    single <RegisterSubjectRepository> {
+    single<RegisterSubjectRepository> {
         RegisterSubjectRepositoryImp(get())
     }
 
-    single <RegisterSubjectUseCase> {
-        RegisterSubjectUseCaseImp(get(),get())
+    single<RegisterSubjectUseCase> {
+        RegisterSubjectUseCaseImp(get(), get())
     }
-    single <ValidateFieldsSubjectUseCase> {
+    single<ValidateFieldsSubjectUseCase> {
         ValidateFieldsSubjectUseCaseImp()
     }
 

@@ -33,7 +33,7 @@ class RegisterPartialFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val registerPartialViewModel: RegisterPartialViewModel by viewModel()
-    private var adapterPeriods : PeriodAdapter? = null
+    private var adapterPeriods: PeriodAdapter? = null
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
@@ -50,23 +50,22 @@ class RegisterPartialFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
         initView()
-        initListener()
+        initListeners()
         showLogicSpinner()
     }
 
     override fun onStart() {
         super.onStart()
-        initObserver()
+        initObservers()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        adapterPeriods = null
         animationHandler = null
     }
 
-    private fun showLogicSpinner(){
+    private fun showLogicSpinner() {
         binding.apply {
             includeSpinnerPeriod.spinner.fillItem(
                 requireContext(),
@@ -82,12 +81,11 @@ class RegisterPartialFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun initView(){
+    private fun initView() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_partial)
             includeHeader.tvInsert.text = getString(R.string.register_partial_description)
             includeSpinnerPeriod.tvDemostration.text = getString(R.string.register_partial_period)
-
         }
     }
 
@@ -97,12 +95,12 @@ class RegisterPartialFragment : Fragment() {
      * `numberPeriod` check the number of periods selected
      * `datePeriod` check the  date and post the date in correct view
      * */
-    private fun initObserver(){
+    private fun initObservers() {
         registerPartialViewModel.periodNumber.observe(viewLifecycleOwner) { period ->
             initAdapterPeriod(period)
         }
 
-        registerPartialViewModel.datePeriod.observe(viewLifecycleOwner){data ->
+        registerPartialViewModel.datePeriod.observe(viewLifecycleOwner) { data ->
             adapterPeriods?.updateDate(data)
         }
 
@@ -110,23 +108,19 @@ class RegisterPartialFragment : Fragment() {
             log(period.toString())
         }
 
-        registerPartialViewModel.adapterField.observe(viewLifecycleOwner){adapter ->
+        registerPartialViewModel.adapterField.observe(viewLifecycleOwner) { adapter ->
             log(adapter.toString())
         }
 
-        registerPartialViewModel.responseRegisterPartial.observe(viewLifecycleOwner){state->
-            when(state){
+        registerPartialViewModel.responseRegisterPartial.observe(viewLifecycleOwner) { state ->
+            when (state) {
                 is SuccessState -> {
                     showCustomToastSuccess(requireActivity(), state.result.toString())
                     findNavController().popBackStack()
                     findNavController().popBackStack()
                 }
-                is ErrorStateUser -> {
-                    showCustomToastFailed(requireActivity(),state.result)
-                }
-                else -> {
-                    log(state.toString())
-                }
+                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result)
+                else -> log(state.toString())
             }
         }
     }
@@ -135,7 +129,7 @@ class RegisterPartialFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun initListener(){
+    private fun initListeners() {
         binding.apply {
             includeHeader.btnReturn.setOnClickListener {
                 findNavController().popBackStack()
@@ -146,15 +140,21 @@ class RegisterPartialFragment : Fragment() {
             }
 
             /** Spinner Section*/
-            includeSpinnerPeriod.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedValue = parent?.getItemAtPosition(position).toString()
-                    registerPartialViewModel.savePeriod(selectedValue)
+            includeSpinnerPeriod.spinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedValue = parent?.getItemAtPosition(position).toString()
+                        registerPartialViewModel.savePeriod(selectedValue)
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //Nothing
+                    }
                 }
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    //Nothing
-                }
-            }
         }
     }
 
@@ -162,14 +162,19 @@ class RegisterPartialFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun initAdapterPeriod(period:Int){
+    private fun initAdapterPeriod(period: Int) {
         val clickListener = PeriodClickListener(
             onItemClick = { item ->
                 /* Open the calendar */
                 registerPartialViewModel.initDatePicker(item, parentFragmentManager, context)
             }
         )
-        val list = MutableList(period) { index -> ModelDatePeriod(position = index , date = "Parcial ${index + 1}") }
+        val list = MutableList(period) { index ->
+            ModelDatePeriod(
+                position = index,
+                date = "Parcial ${index + 1}"
+            )
+        }
 
         /* Build the adapter */
         adapterPeriods = PeriodAdapter(list, clickListener)
@@ -178,5 +183,4 @@ class RegisterPartialFragment : Fragment() {
             rvCardPeriod.adapter = adapterPeriods
         }
     }
-
 }

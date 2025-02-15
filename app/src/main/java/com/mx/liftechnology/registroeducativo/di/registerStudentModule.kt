@@ -22,21 +22,21 @@ val registerStudentModule = module {
 
     factory { get<Retrofit>().create(RegisterStudentApiCall::class.java) }
 
-    single <RegisterStudentRepository>{
+    single<RegisterStudentRepository> {
         RegisterStudentRepositoryImp(get())
     }
-    single <RegisterStudentUseCase>{
+    single<RegisterStudentUseCase> {
         RegisterStudentUseCaseImp(get(), get())
     }
-    single <ValidateVoiceStudentUseCase>{
+    single<ValidateVoiceStudentUseCase> {
         ValidateVoiceStudentUseCaseImp()
     }
 
-    single <ValidateFieldsStudentUseCase>{
+    single<ValidateFieldsStudentUseCase> {
         ValidateFieldsStudentUseCaseImp()
     }
 
     viewModel {
-        RegisterStudentViewModel(get(),get(),get(),get())
+        RegisterStudentViewModel(get(), get(), get(), get())
     }
 }

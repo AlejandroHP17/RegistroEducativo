@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.callapi.RegisterSchoolApiCall
-import com.mx.liftechnology.core.network.callapi.SchoolCCTApiCall
+import com.mx.liftechnology.core.network.callapi.GetCctApiCall
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepository
 import com.mx.liftechnology.data.repository.mainFlow.CCTRepositoryImp
 import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepository
@@ -23,25 +23,24 @@ import retrofit2.Retrofit
  */
 val registerSchoolModule = module {
 
-    factory { get<Retrofit>().create(SchoolCCTApiCall::class.java) }
+    factory { get<Retrofit>().create(GetCctApiCall::class.java) }
     factory { get<Retrofit>().create(RegisterSchoolApiCall::class.java) }
 
-    single <CCTRepository>{
+    single<CCTRepository> {
         CCTRepositoryImp(get())
     }
-    single<CCTUseCase>{
+    single<CCTUseCase> {
         CCTUseCaseImp(get())
     }
 
-
-    single <RegisterSchoolRepository>{
+    single<RegisterSchoolRepository> {
         RegisterSchoolRepositoryImp(get())
     }
-    single <RegisterSchoolUseCase>{
+    single<RegisterSchoolUseCase> {
         RegisterSchoolUseCaseImp(get(), get())
     }
 
-    single <ValidateFieldsRegisterUseCase>{
+    single<ValidateFieldsRegisterUseCase> {
         ValidateFieldsRegisterUseCaseImp()
     }
 

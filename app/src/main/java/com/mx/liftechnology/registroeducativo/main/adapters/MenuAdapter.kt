@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 import com.mx.liftechnology.data.model.ModelAdapterMenu
+import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 
 /** MenuAdapter - Build the adapter for menu (home)
  * @author pelkidev
@@ -16,9 +16,9 @@ import com.mx.liftechnology.data.model.ModelAdapterMenu
  * */
 class MenuAdapter(
     private val items: List<ModelAdapterMenu>,
-    private val listener : MenuClickListener
-):
-ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
+    private val listener: MenuClickListener
+) :
+    ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack) {
 
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
     companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelAdapterMenu>() {
@@ -29,9 +29,10 @@ ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
             oldItem == newItem
     }
 
-    class ViewHolder(private val binding : RecyclerCardMenuBinding): RecyclerView.ViewHolder(binding.root){
+    class ViewHolder(private val binding: RecyclerCardMenuBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         // Method like a listener; bring the item and the action of click
-        fun bind(item: ModelAdapterMenu, action:MenuClickListener){
+        fun bind(item: ModelAdapterMenu, action: MenuClickListener) {
             // Synchronize the item response with the view
             binding.apply {
                 if (!item.isTouch) {
@@ -41,13 +42,14 @@ ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
                     root.setOnClickListener { action.onClick(item) }
                 }
                 ivImage.setImageResource(item.image!!)
-                tvTitleCard.text =  item.titleCard
+                tvTitleCard.text = item.titleCard
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RecyclerCardMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            RecyclerCardMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -59,6 +61,6 @@ ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack){
     override fun getItemCount(): Int = items.size
 }
 
-class MenuClickListener(val listener: (item: ModelAdapterMenu) -> Unit){
+class MenuClickListener(val listener: (item: ModelAdapterMenu) -> Unit) {
     fun onClick(item: ModelAdapterMenu) = listener(item)
 }

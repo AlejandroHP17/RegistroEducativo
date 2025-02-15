@@ -25,7 +25,7 @@ class RegisterSubjectFragment : Fragment() {
 
     /* View Model variable */
     private val registerSubjectViewModel: RegisterSubjectViewModel by viewModel()
-    private var adapterSubject : FormatSubjectAdapter? = null
+    private var adapterSubject: FormatSubjectAdapter? = null
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
@@ -35,19 +35,20 @@ class RegisterSubjectFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterSubjectBinding.inflate(inflater, container, false)
-        return binding.root}
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
-        initialView()
-        initListener()
+        initView()
+        initListeners()
         showLogicSpinner()
     }
 
     override fun onStart() {
         super.onStart()
-        initObserver()
+        initObservers()
     }
 
     override fun onDestroyView() {
@@ -60,7 +61,7 @@ class RegisterSubjectFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView() {
+    private fun initView() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_subject_name)
             includeHeader.tvInsert.text = getString(R.string.register_subject_name_description)
@@ -69,19 +70,26 @@ class RegisterSubjectFragment : Fragment() {
         }
     }
 
-    private fun initListener(){
+    private fun initListeners() {
         binding.apply {
             includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
             /** Spinner Section*/
-            includeSpinnerSubject.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    val selectedValue = parent?.getItemAtPosition(position).toString()
-                    registerSubjectViewModel.saveSubject(selectedValue)
+            includeSpinnerSubject.spinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedValue = parent?.getItemAtPosition(position).toString()
+                        registerSubjectViewModel.saveSubject(selectedValue)
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //Nothing
+                    }
                 }
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    //Nothing
-                }
-            }
 
             includeButton.btnAction.setOnClickListener {
                 val updatedList = adapterSubject?.getList()
@@ -90,14 +98,15 @@ class RegisterSubjectFragment : Fragment() {
         }
     }
 
-    private fun initObserver(){
+    private fun initObservers() {
         registerSubjectViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 
@@ -106,7 +115,7 @@ class RegisterSubjectFragment : Fragment() {
         }
     }
 
-    private fun showLogicSpinner(){
+    private fun showLogicSpinner() {
         binding.apply {
             includeSpinnerSubject.spinner.fillItem(
                 requireContext(),
@@ -122,19 +131,21 @@ class RegisterSubjectFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun initAdapterSubject(period:Int){
-        val list = MutableList(period) { index -> ModelFormatSubject(
-            position = index,
-            name = getString(R.string.register_subject_evaluation),
-            percent = "0%"
-        ) }
+    private fun initAdapterSubject(period: Int) {
+        val list = MutableList(period) { index ->
+            ModelFormatSubject(
+                position = index,
+                name = getString(R.string.register_subject_evaluation),
+                percent = "0%"
+            )
+        }
 
         /* Build the adapter */
         adapterSubject = FormatSubjectAdapter(list)
-/*, SubjectClickListener{ item ->
-            /* Open the calendar */
-            // registerPartialViewModel.initDatePicker(item, parentFragmentManager, context)
-        })*/
+        /*, SubjectClickListener{ item ->
+                    /* Open the calendar */
+                    // registerPartialViewModel.initDatePicker(item, parentFragmentManager, context)
+                })*/
         binding.apply {
             rvCardSubject.layoutManager = LinearLayoutManager(context)
             rvCardSubject.adapter = adapterSubject

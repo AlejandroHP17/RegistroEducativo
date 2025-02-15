@@ -1,5 +1,6 @@
 package com.mx.liftechnology.core.network.callapi
 
+import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.enviroment.Environment
 import retrofit2.Response
@@ -17,23 +18,23 @@ interface RegisterSubjectApiCall {
 
 // Modelo para credenciales
 data class CredentialsRegisterSubject(
+    @SerializedName("campoformativo")
     val campoformativo: String?,
+    @SerializedName("opciones")
     val opciones: Int?,
+    @SerializedName("profesorescuelaciclogrupo_id")
     val profesorescuelaciclogrupo_id: Int?,
-    val user_id : Int?,
-    val profesor_id : Int?,
-    val porcentajes : List<Percent?>
+    @SerializedName("user_id")
+    val user_id: Int?,
+    @SerializedName("profesor_id")
+    val profesor_id: Int?,
+    @SerializedName("porcentajes")
+    val porcentajes: List<Percent?>
 )
 
 data class Percent(
+    @SerializedName("trabajo_id")
     val trabajo_id: Int?,
-    val porcentaje : Int?
-)
-
-
-
-data class Subjectls(
-    val descripcion : String?,
-    val fechainicio : String?,
-    val fechafinal : String?
+    @SerializedName("porcentaje")
+    val porcentaje: Int?
 )

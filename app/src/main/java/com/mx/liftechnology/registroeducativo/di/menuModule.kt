@@ -17,16 +17,16 @@ import retrofit2.Retrofit
  * @since 1.0.0
  */
 val menuModule = module {
+
     factory { get<Retrofit>().create(GroupApiCall::class.java) }
 
+    single { MenuLocalRepository(androidContext()) }
 
-    single{ MenuLocalRepository(androidContext()) }
-
-    single <MenuRepository>{
+    single<MenuRepository> {
         MenuRepositoryImp(get())
     }
 
-    single <MenuUseCase>{
+    single<MenuUseCase> {
         MenuUseCaseImp(get(), get(), get())
     }
 

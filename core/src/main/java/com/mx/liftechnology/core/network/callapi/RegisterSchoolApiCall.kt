@@ -1,5 +1,6 @@
 package com.mx.liftechnology.core.network.callapi
 
+import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.enviroment.Environment
 import retrofit2.Response
@@ -17,12 +18,20 @@ interface RegisterSchoolApiCall {
 
 // Modelo para credenciales
 data class CredentialsRegisterSchool(
+    @SerializedName("cct")
     val cct: String?,
+    @SerializedName("tipocicloescolar_id")
     val tipocicloescolar_id: Int?,
-    val grado : Int?,
-    val nombregrupo : String?,
-    val anio : String?,
-    val periodo : Int?,
-    val profesor_id : Int?,
-    val user_id : Int?,
+    @SerializedName("grado")
+    val grado: Int?,
+    @SerializedName("nombregrupo")
+    val nombregrupo: String?,
+    @SerializedName("anio")
+    val anio: String?,
+    @SerializedName("periodo")
+    val periodo: Int?,
+    @SerializedName("profesor_id")
+    val profesor_id: Int?,
+    @SerializedName("user_id")
+    val user_id: Int?
 )

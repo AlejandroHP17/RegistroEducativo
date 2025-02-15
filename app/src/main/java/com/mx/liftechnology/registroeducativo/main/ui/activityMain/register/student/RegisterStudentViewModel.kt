@@ -17,13 +17,13 @@ import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
-class RegisterStudentViewModel (
+class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
     private val registerStudentUseCase: RegisterStudentUseCase,
     private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
 
-    ): ViewModel(){
+    ) : ViewModel() {
 
     // Campos observables
     private val _nameField = MutableLiveData<ModelState<Int, Int>>()
@@ -45,7 +45,7 @@ class RegisterStudentViewModel (
     val phoneNumberField: LiveData<ModelState<Int, Int>> get() = _phoneNumberField
 
     // Observer the animate loader
-    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // Observer the animate loader
@@ -53,15 +53,22 @@ class RegisterStudentViewModel (
     val fillFields: LiveData<MutableMap<String, String>?> get() = _fillFields
 
     // Observer the response of service
-    private val _responseRegisterStudent = SingleLiveEvent< ModelState<List<String?>?, String>>()
-    val responseRegisterStudent: LiveData< ModelState<List<String?>?, String>> get() = _responseRegisterStudent
+    private val _responseRegisterStudent = SingleLiveEvent<ModelState<List<String?>?, String>>()
+    val responseRegisterStudent: LiveData<ModelState<List<String?>?, String>> get() = _responseRegisterStudent
 
-
-    fun validateFields(name: String, lastName: String, secondLastName: String, curp: String, birthday: String, phoneNumber: String) {
+    fun validateFields(
+        name: String,
+        lastName: String,
+        secondLastName: String,
+        curp: String,
+        birthday: String,
+        phoneNumber: String
+    ) {
         viewModelScope.launch {
             val nameState = validateFieldsStudentUseCase.validateName(name)
             val lastNameState = validateFieldsStudentUseCase.validateLastName(lastName)
-            val secondLastNameState = validateFieldsStudentUseCase.validateSecondLastName(secondLastName)
+            val secondLastNameState =
+                validateFieldsStudentUseCase.validateSecondLastName(secondLastName)
             val curpState = validateFieldsStudentUseCase.validateCurp(curp)
             val birthdayState = validateFieldsStudentUseCase.validateBirthday(birthday)
             val phoneNumberState = validateFieldsStudentUseCase.validatePhoneNumber(phoneNumber)
@@ -74,17 +81,32 @@ class RegisterStudentViewModel (
             _phoneNumberField.postValue(phoneNumberState)
 
             if (nameState is SuccessState && lastNameState is SuccessState && secondLastNameState is SuccessState && curpState is SuccessState
-                && birthdayState is SuccessState && phoneNumberState is SuccessState) {
+                && birthdayState is SuccessState && phoneNumberState is SuccessState
+            ) {
                 _animateLoader.postValue(LoaderState(true))
                 registerStudent(name, lastName, secondLastName, curp, birthday, phoneNumber)
             }
         }
     }
 
-    private fun registerStudent(name: String, lastName: String, secondLastName: String, curp: String, birthday: String, phoneNumber: String) {
-        viewModelScope.launch (dispatcherProvider.io){
+    private fun registerStudent(
+        name: String,
+        lastName: String,
+        secondLastName: String,
+        curp: String,
+        birthday: String,
+        phoneNumber: String
+    ) {
+        viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerStudentUseCase.putNewStudent(name, lastName, secondLastName, curp, birthday, phoneNumber)
+                registerStudentUseCase.putNewStudent(
+                    name,
+                    lastName,
+                    secondLastName,
+                    curp,
+                    birthday,
+                    phoneNumber
+                )
             }.onSuccess {
                 _responseRegisterStudent.postValue(it)
                 _animateLoader.postValue(LoaderState(false))
@@ -95,8 +117,8 @@ class RegisterStudentViewModel (
         }
     }
 
-    fun validateDataRecord(data: List<String>){
-        viewModelScope.launch (dispatcherProvider.io){
+    fun validateDataRecord(data: List<String>) {
+        viewModelScope.launch(dispatcherProvider.io) {
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
             result?.let {
                 log(it.toString())
@@ -104,5 +126,4 @@ class RegisterStudentViewModel (
             }
         }
     }
-
 }

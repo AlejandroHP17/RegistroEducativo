@@ -1,12 +1,12 @@
 package com.mx.liftechnology.domain.usecase.flowregisterdata
 
-import com.mx.liftechnology.core.model.modelApi.CctSchool
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSchool
+import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
 import com.mx.liftechnology.core.network.util.FailureService
 import com.mx.liftechnology.core.network.util.ResultError
 import com.mx.liftechnology.core.network.util.ResultSuccess
@@ -16,7 +16,7 @@ import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepositor
 
 
 fun interface RegisterSchoolUseCase {
-    suspend fun putNewSchool(result: CctSchool?, grade: Int?, group: String?, cycle: Int?): ModelState<List<String?>?, String>?
+    suspend fun putNewSchool(result: ResponseCctSchool?, grade: Int?, group: String?, cycle: Int?): ModelState<List<String?>?, String>?
 }
 
 class RegisterSchoolUseCaseImp(
@@ -29,7 +29,7 @@ class RegisterSchoolUseCaseImp(
      * @since 1.0.0
      * */
     override suspend fun putNewSchool(
-        result: CctSchool?,
+        result: ResponseCctSchool?,
         grade: Int?,
         group: String?,
         cycle: Int?

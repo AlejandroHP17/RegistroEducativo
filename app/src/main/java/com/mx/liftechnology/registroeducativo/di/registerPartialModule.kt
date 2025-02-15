@@ -18,13 +18,12 @@ val registerPartialModule = module {
 
     factory { get<Retrofit>().create(RegisterPartialApiCall::class.java) }
 
-
-    single <RegisterPartialRepository>{
+    single<RegisterPartialRepository> {
         RegisterPartialRepositoryImp(get())
     }
 
-    single <RegisterPartialUseCase>{
-        RegisterPartialUseCaseImp(get(),get())
+    single<RegisterPartialUseCase> {
+        RegisterPartialUseCaseImp(get(), get())
     }
 
     viewModel {

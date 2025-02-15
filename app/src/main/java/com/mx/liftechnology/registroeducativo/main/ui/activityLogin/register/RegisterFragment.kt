@@ -126,10 +126,10 @@ class RegisterFragment : Fragment() {
         registerViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 
@@ -145,7 +145,7 @@ class RegisterFragment : Fragment() {
                     findNavController().popBackStack()
                     showCustomToastSuccess(requireActivity(), state.result.toString())
                 }
-                is ErrorState ->  log(state.result)
+                is ErrorState -> log(state.result)
                 is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result)
                 else -> {
                     // Nothing

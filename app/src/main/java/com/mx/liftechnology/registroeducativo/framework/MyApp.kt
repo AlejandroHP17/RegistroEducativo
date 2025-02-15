@@ -41,7 +41,7 @@ class MyApp : Application() {
         initLifeCyclesActivity()
     }
 
-    companion object{
+    companion object {
         const val NAME_CYCLE = "LifeCyclePersonalize Activity: "
     }
 
@@ -76,10 +76,10 @@ class MyApp : Application() {
         }
     }
 
-    private fun initLifeCyclesActivity(){
+    private fun initLifeCyclesActivity() {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-                activity.log("onActivityCreated" , NAME_CYCLE)
+                activity.log("onActivityCreated", NAME_CYCLE)
 
                 // Registrar fragment lifecycle en cada actividad
                 if (activity is FragmentActivity) {
@@ -90,27 +90,27 @@ class MyApp : Application() {
             }
 
             override fun onActivityStarted(activity: Activity) {
-                activity.log("onActivityStarted" , NAME_CYCLE)
+                activity.log("onActivityStarted", NAME_CYCLE)
             }
 
             override fun onActivityResumed(activity: Activity) {
-                activity.log("onActivityResumed" , NAME_CYCLE)
+                activity.log("onActivityResumed", NAME_CYCLE)
             }
 
             override fun onActivityPaused(activity: Activity) {
-                activity.log("onActivityPaused" , NAME_CYCLE)
+                activity.log("onActivityPaused", NAME_CYCLE)
             }
 
             override fun onActivityStopped(activity: Activity) {
-                activity.log("onActivityStopped" , NAME_CYCLE)
+                activity.log("onActivityStopped", NAME_CYCLE)
             }
 
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-                activity.log("onActivitySaveInstanceState" , NAME_CYCLE)
+                activity.log("onActivitySaveInstanceState", NAME_CYCLE)
             }
 
             override fun onActivityDestroyed(activity: Activity) {
-                activity.log("onActivityDestroyed" , NAME_CYCLE)
+                activity.log("onActivityDestroyed", NAME_CYCLE)
             }
         })
     }

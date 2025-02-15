@@ -9,17 +9,17 @@ import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
-class SplashViewModel (
+class SplashViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val preferenceUseCase: PreferenceUseCase
-): ViewModel() {
+) : ViewModel() {
 
     // Observer the email field
     private val _navigate = SingleLiveEvent<Boolean>()
     val navigate: LiveData<Boolean> get() = _navigate
 
-    fun getNavigation(){
-        viewModelScope.launch(dispatcherProvider.io)  {
+    fun getNavigation() {
+        viewModelScope.launch(dispatcherProvider.io) {
             val isLoggedIn = preferenceUseCase.getPreferenceBoolean(ModelPreference.LOGIN)
             _navigate.postValue(isLoggedIn)
         }

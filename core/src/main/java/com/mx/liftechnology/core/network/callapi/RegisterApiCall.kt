@@ -1,5 +1,6 @@
 package com.mx.liftechnology.core.network.callapi
 
+import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.enviroment.Environment
 import retrofit2.Response
@@ -17,7 +18,10 @@ interface RegisterApiCall {
 
 // Modelo para credenciales
 data class CredentialsRegister(
+    @SerializedName("email")
     val email: String,
+    @SerializedName("password")
     val password: String,
-    val codigoactivacion : String
+    @SerializedName("codigoactivacion")
+    val codigoactivacion: String
 )

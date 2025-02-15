@@ -25,19 +25,18 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class RegisterPartialViewModel (
+class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
     private val registerPartialsUseCase: RegisterPartialUseCase,
 ) : ViewModel() {
     // Observer the animate loader
-    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
-    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
+    val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // Observer the cct field
     private val _responseRegisterPartial = SingleLiveEvent<ModelState<List<String?>?, String>>()
     val responseRegisterPartial: LiveData<ModelState<List<String?>?, String>> get() = _responseRegisterPartial
-
 
     // Observer the period select by user
     private val _periodNumber = SingleLiveEvent<Int>()
@@ -59,7 +58,7 @@ class RegisterPartialViewModel (
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun savePeriod(data:String?){
+    fun savePeriod(data: String?) {
         val periodNumber = data?.toIntOrNull() ?: 0
         _periodNumber.postValue(periodNumber)
     }
@@ -86,7 +85,7 @@ class RegisterPartialViewModel (
         dateRangePicker.addOnPositiveButtonClickListener { dateRange ->
             converterTime(dateRange)
             _datePeriod.postValue(ModelDatePeriod(item.position, converterTime(dateRange)))
-             }
+        }
 
         dateRangePicker.show(parentFragmentManager, "dateRangePicker")
     }
@@ -96,7 +95,7 @@ class RegisterPartialViewModel (
      * @since 1.0.0
      * @return String
      */
-    private fun converterTime(dateRange: Pair<Long, Long>):String {
+    private fun converterTime(dateRange: Pair<Long, Long>): String {
         // Format od the date
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
@@ -115,8 +114,8 @@ class RegisterPartialViewModel (
         return "$startDate  /  $endDate"
     }
 
-    fun validateFields(adapterPeriods:  MutableList<ModelDatePeriod>?) {
-        viewModelScope.launch(dispatcherProvider.io)  {
+    fun validateFields(adapterPeriods: MutableList<ModelDatePeriod>?) {
+        viewModelScope.launch(dispatcherProvider.io) {
 
             val periodState = validateFieldsUseCase.validatePeriod(periodNumber.value)
             val adapterState = validateFieldsUseCase.validateAdapter(adapterPeriods)
@@ -133,7 +132,7 @@ class RegisterPartialViewModel (
     private fun registerPartial(
         adapterPeriods: MutableList<ModelDatePeriod>?
     ) {
-        viewModelScope.launch (dispatcherProvider.io) {
+        viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 registerPartialsUseCase.putPartials(periodNumber.value, adapterPeriods)
             }.onSuccess {
@@ -142,9 +141,7 @@ class RegisterPartialViewModel (
             }.onFailure {
                 _animateLoader.postValue(LoaderState(false))
                 _responseRegisterPartial.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
-
             }
         }
     }
-
 }

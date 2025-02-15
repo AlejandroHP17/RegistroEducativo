@@ -22,21 +22,20 @@ class ProfileFragment : Fragment() {
     /* View Model variable */
     private val profileViewModel: ProfileViewModel by viewModel()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        initListener()
+        initListeners()
         return binding.root
     }
 
-    private fun initListener(){
+    private fun initListeners() {
         binding.includeButton.btnAction.setOnClickListener {
             val finish = profileViewModel.closeSession()
-            if (finish){
+            if (finish) {
                 val intent = Intent(requireContext(), LoginActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()

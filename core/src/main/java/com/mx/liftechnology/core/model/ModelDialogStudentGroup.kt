@@ -1,9 +1,9 @@
 package com.mx.liftechnology.core.model
 
-import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
+import com.mx.liftechnology.core.network.callapi.ResponseGroupTeacher
 
 data class ModelDialogStudentGroup (
     val selected : Boolean,
-    val item : DataGroupTeacher?,
+    val item : ResponseGroupTeacher?,
     val nameItem : String?
 )

@@ -26,12 +26,12 @@ class MenuViewModel(
 ) : ViewModel() {
 
     // Observer the animate loader
-    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
-    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
+    val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // List the option from menu
-    private val _nameMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>,String>>()
-    val nameMenu: LiveData<ModelState<List<ModelAdapterMenu>,String>> = _nameMenu
+    private val _nameMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>, String>>()
+    val nameMenu: LiveData<ModelState<List<ModelAdapterMenu>, String>> = _nameMenu
 
     // List the option from menu
     private val _listGroup = MutableLiveData<ModelState<ModelInfoMenu, String>>()
@@ -41,8 +41,8 @@ class MenuViewModel(
      * @author pelkidev
      * @since 1.0.0
      */
-    fun getMenu(schoolYear:Boolean) {
-        viewModelScope.launch(dispatcherProvider.io)  {
+    fun getMenu(schoolYear: Boolean) {
+        viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 menuUseCase.getMenu(schoolYear)
             }.onSuccess {
@@ -59,7 +59,7 @@ class MenuViewModel(
      */
     fun getGroup() {
         _animateLoader.postValue(LoaderState(true))
-        viewModelScope.launch(dispatcherProvider.io)  {
+        viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 menuUseCase.getGroup()
             }.onSuccess {

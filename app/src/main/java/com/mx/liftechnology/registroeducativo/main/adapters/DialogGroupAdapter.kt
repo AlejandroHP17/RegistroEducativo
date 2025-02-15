@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.core.model.ModelDialogStudentGroup
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardGroupBinding
 
-/** MenuAdapter - Build the adapter for menu (home)
+/** DialogGroupAdapter - Build the adapter for menu (home)
  * @author pelkidev
  * @since 1.0.0
  * @param items list to build
@@ -20,12 +20,13 @@ class DialogGroupAdapter(
     private var selectedPosition = -1
 
     // ViewHolder que maneja cada ítem
-    inner class ViewHolder(private val binding: RecyclerCardGroupBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: RecyclerCardGroupBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: ModelDialogStudentGroup) {
             binding.apply {
                 // Concatenar la información del ítem
-                val stringBuilder = StringBuilder(item.item?.cct?:"").append(" ")
+                val stringBuilder = StringBuilder(item.item?.cct ?: "").append(" ")
                     .append(item.item?.name).append(" ").append(item.item?.group)
                 tv.text = stringBuilder
 
@@ -47,18 +48,16 @@ class DialogGroupAdapter(
         }
     }
 
-    // Crear el ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RecyclerCardGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            RecyclerCardGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    // Enlazar los datos al ViewHolder
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }
 
-    // Retornar el tamaño de la lista
     override fun getItemCount(): Int = items.size
 }
 

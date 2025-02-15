@@ -1,24 +1,24 @@
 package com.mx.liftechnology.data.repository.mainFlow
 
-import com.mx.liftechnology.core.model.modelApi.CctSchool
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.core.network.callapi.SchoolCCTApiCall
+import com.mx.liftechnology.core.network.callapi.GetCctApiCall
+import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
 import retrofit2.Response
 
 
 fun interface CCTRepository{
-  suspend fun executeSchoolCCT(cct:String): ModelState<CctSchool?, String>
+  suspend fun executeSchoolCCT(cct:String): ModelState<ResponseCctSchool?, String>
 }
 
 class CCTRepositoryImp(
-    private val cctApiCall: SchoolCCTApiCall
+    private val cctApiCall: GetCctApiCall
 ) :  CCTRepository {
 
-    override suspend fun executeSchoolCCT(cct:String): ModelState<CctSchool?, String>  {
+    override suspend fun executeSchoolCCT(cct:String): ModelState<ResponseCctSchool?, String>  {
         return try {
             val response = cctApiCall.callApi(cct)
             handleResponse(response)
@@ -32,7 +32,7 @@ class CCTRepositoryImp(
     /**
      * Maneja la respuesta del servidor y retorna el estado adecuado.
      */
-    private fun handleResponse(responseBody: Response<GenericResponse<CctSchool?>>): ModelState<CctSchool?, String> {
+    private fun handleResponse(responseBody: Response<GenericResponse<ResponseCctSchool?>>): ModelState<ResponseCctSchool?, String> {
         return when (responseBody.code()) {
             200 -> SuccessState(responseBody.body()?.data)
             400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)

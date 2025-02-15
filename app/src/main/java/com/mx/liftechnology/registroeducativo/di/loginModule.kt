@@ -20,15 +20,15 @@ val loginModule = module {
 
     factory { get<Retrofit>().create(LoginApiCall::class.java) }
 
-    single <LoginRepository>{
+    single<LoginRepository> {
         LoginRepositoryImp(get())
     }
 
-    single <LoginUseCase>{
+    single<LoginUseCase> {
         LoginUseCaseImp(get(), get(), get())
     }
 
-    single <ValidateFieldsLoginUseCase>{
+    single<ValidateFieldsLoginUseCase> {
         ValidateFieldsLoginUseCaseImp()
     }
 

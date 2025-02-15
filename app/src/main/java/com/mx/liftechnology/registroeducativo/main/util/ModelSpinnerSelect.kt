@@ -4,7 +4,7 @@ package com.mx.liftechnology.registroeducativo.main.util
  * @author pelkidev
  * @since 1.0.0
  */
-enum class ModelSpinnerSelect(val value: String){
+enum class ModelSpinnerSelect(val value: String) {
     CYCLE("cycle"),
     GRADE("grade"),
     GROUP("group"),

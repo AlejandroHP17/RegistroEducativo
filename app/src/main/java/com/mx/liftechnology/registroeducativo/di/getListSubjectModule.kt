@@ -18,12 +18,12 @@ val listSubjectModule = module {
 
     factory { get<Retrofit>().create(GetListSubjectApiCall::class.java) }
 
-    single<GetListSubjectRepository>{
+    single<GetListSubjectRepository> {
         GetListSubjectRepositoryImp(get())
     }
 
-    single <GetListSubjectUseCase>{
-        GetListSubjectUseCaseImp(get(),get())
+    single<GetListSubjectUseCase> {
+        GetListSubjectUseCaseImp(get(), get())
     }
 
     viewModel {

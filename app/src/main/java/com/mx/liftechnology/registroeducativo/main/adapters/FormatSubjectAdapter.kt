@@ -14,7 +14,6 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBin
  * @author pelkidev
  * @since 1.0.0
  * @param items list to build
- * @param listener click on item's card
  * */
 class FormatSubjectAdapter(
     private var items: MutableList<ModelFormatSubject>
@@ -43,8 +42,23 @@ class FormatSubjectAdapter(
                         item.name = s.toString()
                     }
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                        //Nothing
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        //Nothing
+                    }
                 })
 
                 etFieldPercent.addTextChangedListener(object : TextWatcher {
@@ -52,15 +66,31 @@ class FormatSubjectAdapter(
                         item.percent = s.toString()
                     }
 
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    override fun beforeTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        count: Int,
+                        after: Int
+                    ) {
+                        //Nothing
+                    }
+
+                    override fun onTextChanged(
+                        s: CharSequence?,
+                        start: Int,
+                        before: Int,
+                        count: Int
+                    ) {
+                        //Nothing
+                    }
                 })
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RecyclerCardSubjectBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            RecyclerCardSubjectBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

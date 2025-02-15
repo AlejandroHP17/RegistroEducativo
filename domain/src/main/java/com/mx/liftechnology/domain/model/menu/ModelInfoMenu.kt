@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.model.menu
 
-import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
+import com.mx.liftechnology.core.network.callapi.ResponseGroupTeacher
 
 data class ModelInfoMenu(
-   val listSchool: List<DataGroupTeacher?>?,
-   val infoSchoolSelected: DataGroupTeacher,
+   val listSchool: List<ResponseGroupTeacher?>?,
+   val infoSchoolSelected: ResponseGroupTeacher,
    val infoShowSchool : String
 )

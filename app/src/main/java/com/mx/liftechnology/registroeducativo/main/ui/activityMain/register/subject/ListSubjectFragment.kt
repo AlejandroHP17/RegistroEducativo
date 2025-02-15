@@ -26,7 +26,7 @@ class ListSubjectFragment : Fragment() {
     private val binding get() = _binding!!
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
 
-    private var subjectAdapter : SubjectAdapter? = null
+    private var subjectAdapter: SubjectAdapter? = null
     private var listSubject: MutableList<ModelSubject?>? = null
     private var inflatedView: View? = null
 
@@ -54,12 +54,12 @@ class ListSubjectFragment : Fragment() {
         animationHandler = context as? AnimationHandler
         animationHandler?.showLoadingAnimation()
         initView()
-        initListener()
+        initListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        initObserver()
+        initObservers()
         listSubjectViewModel.getLocalListSubject()
     }
 
@@ -75,7 +75,7 @@ class ListSubjectFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initView(){
+    private fun initView() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.empty_subject_1)
             includeButton.btnAction.text = getString(R.string.add_button)
@@ -86,7 +86,7 @@ class ListSubjectFragment : Fragment() {
     private fun emptyView() {
         binding.apply {
 
-            if(inflatedView == null){
+            if (inflatedView == null) {
                 inflatedView = binding.emptyStateStub.inflate()
 
                 // Obtener el binding de la vista inflada
@@ -94,7 +94,8 @@ class ListSubjectFragment : Fragment() {
 
                 emptyStateBinding?.apply {
                     includeButton.btnAction.setOnClickListener {
-                        val nav = ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
+                        val nav =
+                            ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
                         findNavController().navigate(nav)
                     }
                     includeButton.btnAction.text = getString(R.string.add_button)
@@ -114,22 +115,24 @@ class ListSubjectFragment : Fragment() {
         }
     }
 
-    private fun initListener(){
+    private fun initListeners() {
         binding.includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
         binding.includeButton.btnAction.setOnClickListener {
-            val nav =  ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
+            val nav =
+                ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
             findNavController().navigate(nav)
         }
     }
 
-    private fun initObserver(){
+    private fun initObservers() {
         listSubjectViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 
@@ -139,17 +142,15 @@ class ListSubjectFragment : Fragment() {
                     listSubject = mutableListOf()
                     initAdapterStudent()
                 }
-                is ErrorState ->  emptyView()
-                is ErrorStateUser ->  emptyView()
-                else -> {
-                    emptyView()
-                }
+
+                is ErrorState -> emptyView()
+                is ErrorStateUser -> emptyView()
+                else -> emptyView()
             }
         }
     }
 
-    private fun initAdapterStudent(){
-
+    private fun initAdapterStudent() {
         /* Build the adapter */
         subjectAdapter = SubjectAdapter(listSubject, SubjectClickListener { item ->
             // Aquí manejas el click del estudiante``

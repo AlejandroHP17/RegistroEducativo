@@ -29,6 +29,7 @@ class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
             Environment.URL_BASE + Environment.END_POINT_LOGIN,
             Environment.URL_BASE + Environment.END_POINT_REGISTER
             -> false
+
             else -> true
         }
     }

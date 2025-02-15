@@ -21,27 +21,27 @@ class RegisterViewModel(
 ) : ViewModel() {
 
     // Observer the animate loader
-    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
-    val animateLoader: LiveData< ModelState<Boolean,Int>> get() = _animateLoader
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
+    val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
-    private val _responseRegister = SingleLiveEvent<ModelState<List<String>?,String>>()
-    val responseRegister: LiveData<ModelState<List<String>?,String>> get() = _responseRegister
+    private val _responseRegister = SingleLiveEvent<ModelState<List<String>?, String>>()
+    val responseRegister: LiveData<ModelState<List<String>?, String>> get() = _responseRegister
 
     // Observer the email field
-    private val _emailField = SingleLiveEvent<ModelState<Int,Int>>()
-    val emailField: LiveData<ModelState<Int,Int>> get() = _emailField
+    private val _emailField = SingleLiveEvent<ModelState<Int, Int>>()
+    val emailField: LiveData<ModelState<Int, Int>> get() = _emailField
 
     // Observer the pass field
-    private val _passField = SingleLiveEvent<ModelState<Int,Int>>()
-    val passField: LiveData<ModelState<Int,Int>> get() = _passField
+    private val _passField = SingleLiveEvent<ModelState<Int, Int>>()
+    val passField: LiveData<ModelState<Int, Int>> get() = _passField
 
     // Observer the repeatPass field
-    private val _repeatPassField = SingleLiveEvent<ModelState<Int,Int>>()
-    val repeatPassField: LiveData<ModelState<Int,Int>> get() = _repeatPassField
+    private val _repeatPassField = SingleLiveEvent<ModelState<Int, Int>>()
+    val repeatPassField: LiveData<ModelState<Int, Int>> get() = _repeatPassField
 
     // Observer the code field
-    private val _codeField = SingleLiveEvent<ModelState<Int,Int>>()
-    val codeField: LiveData<ModelState<Int,Int>> get() = _codeField
+    private val _codeField = SingleLiveEvent<ModelState<Int, Int>>()
+    val codeField: LiveData<ModelState<Int, Int>> get() = _codeField
 
     /** Check the inputs and post error or correct states directly on the editexts
      * In correct case, make the request
@@ -58,7 +58,7 @@ class RegisterViewModel(
         repeatPass: String,
         code: String
     ) {
-        viewModelScope.launch(dispatcherProvider.io)  {
+        viewModelScope.launch(dispatcherProvider.io) {
             val emailState = validateFieldsUseCase.validateEmail(email)
             val passState = validateFieldsUseCase.validatePassRegister(pass)
             val repeatPassState = validateFieldsUseCase.validateRepeatPass(pass, repeatPass)
@@ -90,7 +90,7 @@ class RegisterViewModel(
         pass: String,
         code: String
     ) {
-        viewModelScope.launch(dispatcherProvider.io)  {
+        viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 registerUseCase.putRegister(email, pass, code)
             }.onSuccess {

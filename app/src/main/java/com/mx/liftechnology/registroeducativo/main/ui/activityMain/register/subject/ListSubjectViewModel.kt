@@ -11,20 +11,19 @@ import com.mx.liftechnology.domain.usecase.flowgetdata.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
-class ListSubjectViewModel (
-    private val getListSubjectUseCase : GetListSubjectUseCase
-): ViewModel(){
+class ListSubjectViewModel(
+    private val getListSubjectUseCase: GetListSubjectUseCase
+) : ViewModel() {
 
     // Observer the animate loader
-    private val _animateLoader = SingleLiveEvent<ModelState<Boolean,Int>>()
+    private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // Observer the animate loader
     private val _responseListSubject = SingleLiveEvent<ModelState<List<String?>?, String>?>()
     val responseListSubject: LiveData<ModelState<List<String?>?, String>?> get() = _responseListSubject
 
-
-    fun getSubject(){
+    fun getSubject() {
         viewModelScope.launch {
             runCatching {
                 _animateLoader.postValue(LoaderState(true))
@@ -45,6 +44,4 @@ class ListSubjectViewModel (
             _responseListSubject.postValue(_responseListSubject.value)
         }
     }
-
-
 }

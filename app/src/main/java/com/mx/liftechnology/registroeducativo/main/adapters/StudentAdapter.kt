@@ -8,32 +8,38 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardStudentBinding
 
-class StudentAdapter (
-    private var items : MutableList<ModelStudent?>?,
+class StudentAdapter(
+    private var items: MutableList<ModelStudent?>?,
     private val listener: StudentClickListener
-) : ListAdapter<ModelStudent, StudentAdapter.ViewHolder>(ItemsDiffCallBack){
+) : ListAdapter<ModelStudent, StudentAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
     companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelStudent>() {
         override fun areItemsTheSame(oldItem: ModelStudent, newItem: ModelStudent) =
-            oldItem.alumno_id== newItem.alumno_id
+            oldItem.alumno_id == newItem.alumno_id
 
         override fun areContentsTheSame(oldItem: ModelStudent, newItem: ModelStudent) =
             oldItem == newItem
     }
 
-    class ViewHolder(private val binding: RecyclerCardStudentBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: RecyclerCardStudentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelStudent, action: StudentClickListener) {
             // Synchronize the item response with the view
             binding.apply {
                 tvNumberList.text = item.alumno_id
-                tvNameList.text = "${item.paterno} ${item.materno} ${item.name}"
+                val textBuilder =
+                    StringBuilder(item.paterno).append(" ")
+                        .append(item.materno).append(" ")
+                        .append(item.name)
+                tvNameList.text = textBuilder
                 ivImage.setOnClickListener { action.onClick(item) }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapter.ViewHolder {
-        val binding = RecyclerCardStudentBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            RecyclerCardStudentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -48,7 +54,7 @@ class StudentAdapter (
 }
 
 class StudentClickListener(
-    val onItemClick : (item: ModelStudent) -> Unit
-){
+    val onItemClick: (item: ModelStudent) -> Unit
+) {
     fun onClick(item: ModelStudent) = onItemClick(item)
 }

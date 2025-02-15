@@ -1,5 +1,6 @@
 package com.mx.liftechnology.core.network.callapi
 
+import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.modelApi.GenericResponse
 import com.mx.liftechnology.core.network.enviroment.Environment
 import retrofit2.Response
@@ -17,15 +18,23 @@ interface RegisterPartialApiCall {
 
 // Modelo para credenciales
 data class CredentialsRegisterPartial(
+    @SerializedName("numparciales")
     val numparciales: Int?,
+    @SerializedName("profesorescuelaciclogrupo_id")
     val profesorescuelaciclogrupo_id: Int?,
-    val user_id : Int?,
-    val profesor_id : Int?,
-    val parciales : List<Partials?>
+    @SerializedName("user_id")
+    val user_id: Int?,
+    @SerializedName("profesor_id")
+    val profesor_id: Int?,
+    @SerializedName("parciales")
+    val parciales: List<Partials?>
 )
 
 data class Partials(
-    val descripcion : String?,
-    val fechainicio : String?,
-    val fechafinal : String?
+    @SerializedName("descripcion")
+    val descripcion: String?,
+    @SerializedName("fechainicio")
+    val fechainicio: String?,
+    @SerializedName("fechafinal")
+    val fechafinal: String?
 )

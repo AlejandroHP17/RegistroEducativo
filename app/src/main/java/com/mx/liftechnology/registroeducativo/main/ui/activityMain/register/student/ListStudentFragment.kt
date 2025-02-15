@@ -26,7 +26,7 @@ class ListStudentFragment : Fragment() {
     private val binding get() = _binding!!
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
 
-    private var studentAdapter : StudentAdapter? = null
+    private var studentAdapter: StudentAdapter? = null
     private var listStudent: MutableList<ModelStudent?>? = null
     private var inflatedView: View? = null
 
@@ -54,12 +54,12 @@ class ListStudentFragment : Fragment() {
         animationHandler = context as? AnimationHandler
         animationHandler?.showLoadingAnimation()
         initView()
-        initListener()
+        initListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        initObserver()
+        initObservers()
         listStudentViewModel.getLocalListStudent()
     }
 
@@ -68,10 +68,9 @@ class ListStudentFragment : Fragment() {
         animationHandler = null
         _binding = null
         emptyStateBinding = null
-        studentAdapter = null
     }
 
-    private fun initView(){
+    private fun initView() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.get_student_name)
             includeButton.btnAction.text = getString(R.string.add_button)
@@ -85,7 +84,7 @@ class ListStudentFragment : Fragment() {
      */
     private fun emptyView() {
         binding.apply {
-            if(inflatedView == null){
+            if (inflatedView == null) {
                 inflatedView = binding.emptyStateStub.inflate()
 
                 // Obtener el binding de la vista inflada
@@ -115,22 +114,24 @@ class ListStudentFragment : Fragment() {
 
     }
 
-    private fun initListener(){
+    private fun initListeners() {
         binding.includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
         binding.includeButton.btnAction.setOnClickListener {
-            val nav =  ListStudentFragmentDirections.actionListStudentFragmentToRegisterStudentFragment()
+            val nav =
+                ListStudentFragmentDirections.actionListStudentFragmentToRegisterStudentFragment()
             findNavController().navigate(nav)
         }
     }
 
-    private fun initObserver(){
+    private fun initObservers() {
         listStudentViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 
@@ -140,16 +141,15 @@ class ListStudentFragment : Fragment() {
                     listStudent = state.result?.toMutableList()
                     initAdapterStudent()
                 }
+
                 is ErrorState -> emptyView()
-                is ErrorStateUser ->  emptyView()
-                else -> {
-                    emptyView()
-                }
+                is ErrorStateUser -> emptyView()
+                else -> emptyView()
             }
         }
     }
 
-    private fun initAdapterStudent(){
+    private fun initAdapterStudent() {
 
         /* Build the adapter */
         studentAdapter = StudentAdapter(listStudent, StudentClickListener { item ->

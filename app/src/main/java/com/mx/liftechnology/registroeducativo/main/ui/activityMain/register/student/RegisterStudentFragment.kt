@@ -46,13 +46,13 @@ class RegisterStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
-        initialView()
-        initListener()
+        initView()
+        initListeners()
     }
 
     override fun onStart() {
         super.onStart()
-        initObserver()
+        initObservers()
     }
 
     override fun onDestroyView() {
@@ -65,7 +65,7 @@ class RegisterStudentFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView() {
+    private fun initView() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_student_name)
             includeHeader.tvInsert.text = getString(R.string.register_student_name_description)
@@ -74,7 +74,7 @@ class RegisterStudentFragment : Fragment() {
         }
     }
 
-    private fun initListener(){
+    private fun initListeners() {
         binding.apply {
             includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
             includeButton.btnAction.setOnClickListener {
@@ -92,14 +92,14 @@ class RegisterStudentFragment : Fragment() {
         }
     }
 
-    private fun initObserver(){
+    private fun initObservers() {
         registerStudentViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 
@@ -132,7 +132,7 @@ class RegisterStudentFragment : Fragment() {
                 else -> binding.inputCurp.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
             }
         }
-        registerStudentViewModel.birthdayField.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.birthdayField.observe(viewLifecycleOwner) { _ ->
             /*when (state) {
                 is SuccessState -> binding.inp.successET()
                 is ErrorState -> binding.inputCurp.errorET(state.result)
@@ -151,7 +151,8 @@ class RegisterStudentFragment : Fragment() {
         registerStudentViewModel.responseRegisterStudent.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
-                    val direction = RegisterStudentFragmentDirections.actionRegisterStudentFragmentToListStudentFragment()
+                    val direction =
+                        RegisterStudentFragmentDirections.actionRegisterStudentFragmentToListStudentFragment()
                     findNavController().navigate(direction)
                 }
                 is ErrorState -> log("state $state")
@@ -163,20 +164,20 @@ class RegisterStudentFragment : Fragment() {
             registerStudentViewModel.validateDataRecord(data)
         }
 
-        registerStudentViewModel.fillFields.observe(viewLifecycleOwner){ data ->
+        registerStudentViewModel.fillFields.observe(viewLifecycleOwner) { data ->
             data?.forEach {
-                when(it.key){
-                    "nombre"-> binding.etName.setText(it.value)
-                    "apellido paterno"-> binding.etLastName.setText(it.value)
-                    "apellido materno"-> binding.etSecondLastName.setText(it.value)
-                    "curp"-> binding.etCurp.setText(it.value)
-                    "fecha de nacimiento"-> binding.tvBirthday.text = it.value
-                    "número de contacto"-> binding.etPhoneNumber.setText(it.value)
+                when (it.key) {
+                    "nombre" -> binding.etName.setText(it.value)
+                    "apellido paterno" -> binding.etLastName.setText(it.value)
+                    "apellido materno" -> binding.etSecondLastName.setText(it.value)
+                    "curp" -> binding.etCurp.setText(it.value)
+                    "fecha de nacimiento" -> binding.tvBirthday.text = it.value
+                    "número de contacto" -> binding.etPhoneNumber.setText(it.value)
                 }
             }
         }
 
-        voiceViewModel.changeButtonVoice.observe(viewLifecycleOwner){ color ->
+        voiceViewModel.changeButtonVoice.observe(viewLifecycleOwner) { color ->
             binding.includeButton.btnRecord.setBackgroundColor(color)
         }
     }
@@ -204,7 +205,6 @@ class RegisterStudentFragment : Fragment() {
             },
             year, month, day
         )
-
         datePickerDialog.show()
     }
 }

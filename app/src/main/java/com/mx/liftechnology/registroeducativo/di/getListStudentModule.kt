@@ -18,11 +18,11 @@ val getListStudentModule = module {
 
     factory { get<Retrofit>().create(GetListStudentApiCall::class.java) }
 
-    single <GetListStudentRepository>{
+    single<GetListStudentRepository> {
         GetListStudentRepositoryImp(get())
     }
 
-    single <GetListStudentUseCase>{
+    single<GetListStudentUseCase> {
         GetListStudentUseCaseImp(get(), get())
     }
 

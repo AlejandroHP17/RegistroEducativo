@@ -14,6 +14,7 @@ object ExceptionHandler {
                     else -> FailureService.UnknownError("Código de error: ${exception.code()}")
                 }
             }
+
             else -> FailureService.UnknownError(exception.localizedMessage ?: "Error desconocido")
         }
     }

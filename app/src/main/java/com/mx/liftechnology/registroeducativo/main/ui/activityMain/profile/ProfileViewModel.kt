@@ -6,15 +6,15 @@ import com.mx.liftechnology.core.preference.PreferenceUseCase
 
 class ProfileViewModel(
     private val preference: PreferenceUseCase
-): ViewModel() {
+) : ViewModel() {
 
-    fun closeSession() : Boolean{
+    fun closeSession(): Boolean {
         preference.savePreferenceBoolean(ModelPreference.LOGIN, false)
         preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, null)
         preference.savePreferenceInt(ModelPreference.ID_USER, null)
         preference.savePreferenceInt(ModelPreference.ID_ROLE, null)
-        preference.savePreferenceString(ModelPreference.USER_ROLE,null)
-        preference.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,null)
+        preference.savePreferenceString(ModelPreference.USER_ROLE, null)
+        preference.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP, null)
         return true
     }
 }

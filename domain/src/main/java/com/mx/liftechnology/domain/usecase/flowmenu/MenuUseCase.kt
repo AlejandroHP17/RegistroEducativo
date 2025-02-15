@@ -1,6 +1,5 @@
 package com.mx.liftechnology.domain.usecase.flowmenu
 
-import com.mx.liftechnology.core.model.modelApi.DataGroupTeacher
 import com.mx.liftechnology.core.model.modelBase.EmptyState
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
@@ -8,6 +7,7 @@ import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsGroup
+import com.mx.liftechnology.core.network.callapi.ResponseGroupTeacher
 import com.mx.liftechnology.core.network.util.FailureService
 import com.mx.liftechnology.core.network.util.ResultError
 import com.mx.liftechnology.core.network.util.ResultSuccess
@@ -52,7 +52,7 @@ class MenuUseCaseImp(
         }
     }
 
-    private fun validateCycleGroup(data: DataGroupTeacher?) {
+    private fun validateCycleGroup(data: ResponseGroupTeacher?) {
         data?.teacherSchoolCycleGroupId.let {
             if(preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1 )
             preference.savePreferenceInt( ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP, it)
@@ -82,7 +82,7 @@ class MenuUseCaseImp(
         }
     }
 
-    private fun buildInformation(data: List<DataGroupTeacher?>?): ModelInfoMenu{
+    private fun buildInformation(data: List<ResponseGroupTeacher?>?): ModelInfoMenu{
         val modelResponse = ModelInfoMenu(
             listSchool = data,
             infoSchoolSelected = data?.firstOrNull()!!,

@@ -13,7 +13,7 @@ import com.mx.liftechnology.registroeducativo.databinding.ActivityLoginBinding
  * @author pelkidev
  * @since 1.0.0
  */
-class LoginActivity : AppCompatActivity() , AnimationHandler {
+class LoginActivity : AppCompatActivity(), AnimationHandler {
 
     private var binding: ActivityLoginBinding? = null
 
@@ -23,8 +23,6 @@ class LoginActivity : AppCompatActivity() , AnimationHandler {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding?.root)
     }
-
-
 
     /** Start a loading animation and get untouchable the screen to another touch
      * @author pelkidev

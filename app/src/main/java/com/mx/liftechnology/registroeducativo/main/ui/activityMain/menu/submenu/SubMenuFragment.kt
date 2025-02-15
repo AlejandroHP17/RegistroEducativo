@@ -37,7 +37,6 @@ class SubMenuFragment : Fragment() {
         subMenuViewModel.getSubMenu()
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,8 +47,8 @@ class SubMenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialView()
-        initListener()
+        initView()
+        initListeners()
     }
 
     override fun onStart() {
@@ -62,7 +61,7 @@ class SubMenuFragment : Fragment() {
         _binding = null
     }
 
-    private fun initListener(){
+    private fun initListeners() {
         binding.apply {
             includeHeader.btnReturn.setOnClickListener {
                 findNavController().popBackStack()
@@ -70,12 +69,11 @@ class SubMenuFragment : Fragment() {
         }
     }
 
-
     /** initialView - Print the correct view, menu or empty state
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView() {
+    private fun initView() {
         binding.includeHeader.apply {
             tvTitle.text = getString(R.string.sub_menu_title)
         }

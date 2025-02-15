@@ -4,9 +4,9 @@ package com.mx.liftechnology.core.preference
  * @author pelkidev
  * @date 28/08/2023
  * */
-class PreferenceUseCase (private val preference: PreferenceRepository){
+class PreferenceUseCase(private val preference: PreferenceRepository) {
 
-    fun savePreferenceBoolean(name: String, value: Boolean){
+    fun savePreferenceBoolean(name: String, value: Boolean) {
         preference.savePreference(name, value)
     }
 
@@ -14,7 +14,7 @@ class PreferenceUseCase (private val preference: PreferenceRepository){
         return preference.getPreference(name, false)
     }
 
-     fun savePreferenceString(name: String, value: String?){
+    fun savePreferenceString(name: String, value: String?) {
         preference.savePreference(name, value)
     }
 
@@ -22,7 +22,7 @@ class PreferenceUseCase (private val preference: PreferenceRepository){
         return preference.getPreference(name, null)
     }
 
-     fun savePreferenceInt(name: String, value: Int?){
+    fun savePreferenceInt(name: String, value: Int?) {
         preference.savePreference(name, value)
     }
 

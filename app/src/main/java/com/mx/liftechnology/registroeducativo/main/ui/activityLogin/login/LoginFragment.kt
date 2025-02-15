@@ -67,7 +67,7 @@ class LoginFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun initView(){
+    private fun initView() {
         binding.apply {
             includeHeader.btnReturn.visibility = View.GONE
             includeHeader.tvTitle.text = getString(R.string.log_welcome)
@@ -86,12 +86,12 @@ class LoginFragment : Fragment() {
      * `animateLoader` to validate the loader and update the UI accordingly.
      * `responseLogin` to validate the response of service, do actions
      * */
-    private fun initObservers(){
+    private fun initObservers() {
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState ->  binding.inputEmail.successET()
-                is ErrorState ->  binding.inputEmail.errorET(state.result)
-                else ->  binding.inputEmail.errorET( ModelCodeError.ET_MISTAKE_EMAIL)
+                is SuccessState -> binding.inputEmail.successET()
+                is ErrorState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
             }
         }
 
@@ -106,10 +106,11 @@ class LoginFragment : Fragment() {
         loginViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
-                    if(state.result == true) animationHandler?.showLoadingAnimation()
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
-                else ->  animationHandler?.hideLoadingAnimation()
+
+                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 
@@ -127,7 +128,10 @@ class LoginFragment : Fragment() {
                     requireActivity().finish()
                 }
                 is ErrorState -> log(state.result.toString())
-                is ErrorStateUser -> showCustomToastFailed(requireActivity(), state.result.toString())
+                is ErrorStateUser -> showCustomToastFailed(
+                    requireActivity(),
+                    state.result.toString()
+                )
                 else -> {
                     // Nothing
                 }
@@ -142,7 +146,11 @@ class LoginFragment : Fragment() {
     private fun initListeners() {
         binding.apply {
             includeButton.btnAction.setOnClickListener {
-                loginViewModel.validateFields(etEmail.text.toString(), etPassword.text.toString(), binding.cbRemember.isChecked)
+                loginViewModel.validateFields(
+                    etEmail.text.toString(),
+                    etPassword.text.toString(),
+                    binding.cbRemember.isChecked
+                )
             }
 
             tvForgot.setOnClickListener {

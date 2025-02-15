@@ -6,11 +6,15 @@ import android.widget.Spinner
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 
-fun Spinner.fillItem(requireContext: Context, model: ModelSpinnerSelect, validateString: String?) : String {
+fun Spinner.fillItem(
+    requireContext: Context,
+    model: ModelSpinnerSelect,
+    validateString: String?
+): String {
     val spinner: Spinner = this
 
     /** Validate the origin*/
-    val options: Array<String> = when(model) {
+    val options: Array<String> = when (model) {
         ModelSpinnerSelect.CYCLE -> selectCycle(validateString)
         ModelSpinnerSelect.GRADE -> selectGrade(validateString)
         ModelSpinnerSelect.GROUP -> selectGroup(validateString)

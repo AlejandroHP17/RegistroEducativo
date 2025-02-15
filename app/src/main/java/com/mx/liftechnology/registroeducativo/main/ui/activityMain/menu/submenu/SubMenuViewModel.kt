@@ -31,7 +31,7 @@ class SubMenuViewModel(
      * @since 1.0.0
      */
     fun getSubMenu() {
-        viewModelScope.launch(dispatcherProvider.io)  {
+        viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 useCase.getSubMenu()
             }.onSuccess {

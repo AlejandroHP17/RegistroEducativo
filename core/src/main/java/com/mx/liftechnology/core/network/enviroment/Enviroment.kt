@@ -21,22 +21,22 @@ object Environment {
                 Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") ||
                 "google_sdk" == Build.PRODUCT)
     }
+
     /** Login flow */
     const val END_POINT_LOGIN = "auth/login"
-    const val END_POINT_REGISTER= "register/teacherRegister"
+    const val END_POINT_REGISTER = "register/teacherRegister"
 
     /** Register flow*/
-    const val END_POINT_REGISTER_SCHOOL= "teacher/registerTeacherCycleGroup"
-    const val END_POINT_REGISTER_PARTIAL= "teacher/registerPartialCycleGroup"
-    const val END_POINT_REGISTER_STUDENT= "teacher/registerStudentCycleGroup"
-    const val END_POINT_REGISTER_SUBJECT= "teacher/registerTeacherSubjectSchool"
+    const val END_POINT_REGISTER_SCHOOL = "teacher/registerTeacherCycleGroup"
+    const val END_POINT_REGISTER_PARTIAL = "teacher/registerPartialCycleGroup"
+    const val END_POINT_REGISTER_STUDENT = "teacher/registerStudentCycleGroup"
+    const val END_POINT_REGISTER_SUBJECT = "teacher/registerTeacherSubjectSchool"
 
-    const val END_POINT_GET_STUDENT= "teacher/getTeacherGroupStudents"
-    const val END_POINT_GET_SUBJECT= "teacher/getTeacherGroupSubject"
-
+    const val END_POINT_GET_STUDENT = "teacher/getTeacherGroupStudents"
+    const val END_POINT_GET_SUBJECT = "teacher/getTeacherGroupSubject"
 
 
     /** Menu flow */
     const val END_POINT_GET_CCT = "teacher/getSchoolCCT/{cct}"
-    const val END_POINT_GET_GROUP= "teacher/getTeacherGroups"
+    const val END_POINT_GET_GROUP = "teacher/getTeacherGroups"
 }

@@ -20,16 +20,18 @@ class DialogSelectGroup(
     fun showDialog() {
         // Inicializamos el diálogo
         dialog = Dialog(context)
-        val binding: DialogSelectGroupBinding = DialogSelectGroupBinding.inflate(LayoutInflater.from(context))
+        val binding: DialogSelectGroupBinding =
+            DialogSelectGroupBinding.inflate(LayoutInflater.from(context))
 
         // Establecemos el diseño del diálogo
         dialog.setContentView(binding.root)
 
         // Configuración del RecyclerView con el adaptador
-        adapter = DialogGroupAdapter(items
+        adapter = DialogGroupAdapter(
+            items
         ) { item -> // Llamamos al listener con el ítem seleccionado
-            item.copy(nameItem = "${item.item?.cct} - ${item.item?.group}${item.item?.name} - ${item.item?.shift}")
-            listener(item)
+            val copyItem = item.copy(nameItem = "${item.item?.cct} - ${item.item?.group}${item.item?.name} - ${item.item?.shift}")
+            listener(copyItem)
             dialog.dismiss()
         }
         binding.recyclerViewDialog.layoutManager = LinearLayoutManager(context)
