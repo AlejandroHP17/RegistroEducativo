@@ -37,4 +37,5 @@ object ModelCodeError {
 
     // Spinners
     const val SP_NOT_OPTION: String = "No ha seleccionado un valor válido del spinner"
+    const val SP_NOT_JOB: String = "No ha seleccionado un valor válido del spinner"
 }

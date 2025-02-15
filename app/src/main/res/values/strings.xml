@@ -56,7 +56,6 @@
     <string name="register_school_grade">Grado</string>
     <string name="register_school_group">Grupo</string>
 
-
     <!-- Register Flow -->
     <string name="register_partial">Registra tus parciales</string>
     <string name="register_partial_description">Ingresa los datos de tus parciales correspondientes al ciclo escolar activo, si ya los tienes registrados, puedes actualizarlos</string>
@@ -77,8 +76,18 @@
     <string name="register_student_number">Número de contacto</string>
     <string name="register_student_register">REGISTRAR</string>
 
+    <!-- Register Flow -->
+    <string name="register_subject_name">Registra tu campo formativo</string>
+    <string name="register_subject_name_description">Ingresa los datos del campo formativo</string>
+    <string name="register_subject_name_description_2">Ingresa los tipos de trabajo que se evaluaran en dicho campo formativo y su porcentaje correspondiente a la calificación final, el porcentaje total debe ser 100%</string>
+    <string name="register_subject_name_description_3">Opciones de evaluación por campo formativo</string>
+    <string name="register_subject_field">Campo formativo</string>
+    <string name="register_subject_evaluation">Tipo de evaluación</string>
+    <string name="register_subject_percent">%</string>
+
     <!-- Gets Flow -->
     <string name="get_student_name">Lista de alumnos</string>
+
 
 
 

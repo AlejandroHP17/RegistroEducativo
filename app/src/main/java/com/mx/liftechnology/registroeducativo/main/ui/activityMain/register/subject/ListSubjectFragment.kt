@@ -6,18 +6,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.core.model.modelBase.ErrorState
+import com.mx.liftechnology.core.model.modelBase.ErrorStateUser
 import com.mx.liftechnology.core.model.modelBase.LoaderState
+import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.domain.model.ModelSubject
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentEmptyStateBinding
-import com.mx.liftechnology.registroeducativo.databinding.FragmentListSubjectBinding
+import com.mx.liftechnology.registroeducativo.databinding.FragmentListStudentSubjectBinding
+import com.mx.liftechnology.registroeducativo.main.adapters.SubjectAdapter
+import com.mx.liftechnology.registroeducativo.main.adapters.SubjectClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListSubjectFragment : Fragment() {
 
-    private var _binding: FragmentListSubjectBinding? = null
+    private var _binding: FragmentListStudentSubjectBinding? = null
     private val binding get() = _binding!!
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
+
+    private var subjectAdapter : SubjectAdapter? = null
+    private var listSubject: MutableList<ModelSubject?>? = null
+    private var inflatedView: View? = null
 
     /* View Model variable */
     private val listSubjectViewModel: ListSubjectViewModel by viewModel()
@@ -33,8 +44,8 @@ class ListSubjectFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentListSubjectBinding.inflate(inflater, container, false)
+    ): View {
+        _binding = FragmentListStudentSubjectBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -42,15 +53,14 @@ class ListSubjectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
         animationHandler?.showLoadingAnimation()
-        initialView()
+        initView()
         initListener()
     }
 
     override fun onStart() {
         super.onStart()
         initObserver()
-
-        listSubjectViewModel.hideLoader()
+        listSubjectViewModel.getLocalListSubject()
     }
 
     override fun onDestroyView() {
@@ -58,30 +68,47 @@ class ListSubjectFragment : Fragment() {
         animationHandler = null
         _binding = null
         emptyStateBinding = null
+        subjectAdapter = null
     }
 
     /** initialView - Print the correct view, menu or empty state
      * @author pelkidev
      * @since 1.0.0
      */
-    private fun initialView() {
+    private fun initView(){
         binding.apply {
-            val inflatedView = binding.emptyStateStub.inflate()
+            includeHeader.tvTitle.text = getString(R.string.empty_subject_1)
+            includeButton.btnAction.text = getString(R.string.add_button)
+            includeButton.btnRecord.visibility = View.GONE
+        }
+    }
 
-            // Obtener el binding de la vista inflada
-            emptyStateBinding = FragmentEmptyStateBinding.bind(inflatedView)
+    private fun emptyView() {
+        binding.apply {
 
-            emptyStateBinding?.apply {
-                includeButton.btnAction.setOnClickListener {
-                    val nav = ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
-                    findNavController().navigate(nav)
+            if(inflatedView == null){
+                inflatedView = binding.emptyStateStub.inflate()
+
+                // Obtener el binding de la vista inflada
+                emptyStateBinding = FragmentEmptyStateBinding.bind(inflatedView!!)
+
+                emptyStateBinding?.apply {
+                    includeButton.btnAction.setOnClickListener {
+                        val nav = ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
+                        findNavController().navigate(nav)
+                    }
+                    includeButton.btnAction.text = getString(R.string.add_button)
+                    includeButton.btnRecord.visibility = View.GONE
+                    tvEsTitle.text = getString(R.string.empty_subject_1)
+                    tvEsDescription.text = getString(R.string.empty_subject_2)
+                    ivEsImage.setImageResource(R.drawable.ic_empty_subject)
                 }
-                includeButton.btnAction.text = getString(R.string.add_button)
-                includeButton.btnRecord.visibility = View.GONE
-                tvEsTitle.text = getString(R.string.empty_subject_1)
-                tvEsDescription.text = getString(R.string.empty_subject_2)
-                ivEsImage.setImageResource(R.drawable.ic_empty_subject)
             }
+
+            includeButton.llButtons.visibility = View.GONE
+            includeHeader.tvTitle.visibility = View.GONE
+            rvListStudent.visibility = View.GONE
+
             // Acceder al botón después de inflar
             emptyStateStub.visibility = View.VISIBLE
         }
@@ -89,6 +116,10 @@ class ListSubjectFragment : Fragment() {
 
     private fun initListener(){
         binding.includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
+        binding.includeButton.btnAction.setOnClickListener {
+            val nav =  ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
+            findNavController().navigate(nav)
+        }
     }
 
     private fun initObserver(){
@@ -100,6 +131,33 @@ class ListSubjectFragment : Fragment() {
                 }
                 else ->  animationHandler?.hideLoadingAnimation()
             }
+        }
+
+        listSubjectViewModel.responseListSubject.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SuccessState -> {
+                    listSubject = mutableListOf()
+                    initAdapterStudent()
+                }
+                is ErrorState ->  emptyView()
+                is ErrorStateUser ->  emptyView()
+                else -> {
+                    emptyView()
+                }
+            }
+        }
+    }
+
+    private fun initAdapterStudent(){
+
+        /* Build the adapter */
+        subjectAdapter = SubjectAdapter(listSubject, SubjectClickListener { item ->
+            // Aquí manejas el click del estudiante``
+            // Puedes navegar a otro fragment o ejecutar otra acción aquí
+        })
+        binding.apply {
+            rvListStudent.layoutManager = LinearLayoutManager(context)
+            rvListStudent.adapter = subjectAdapter
         }
     }
 }

@@ -7,7 +7,6 @@ import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.domain.usecase.flowgetdata.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
@@ -41,7 +40,7 @@ class ListStudentViewModel (
     }
 
     fun getLocalListStudent() {
-        if(responseListStudent.value is SuccessState){
+        responseListStudent.value?.let {
             _animateLoader.postValue(LoaderState(false))
             _responseListStudent.postValue(_responseListStudent.value)
         }

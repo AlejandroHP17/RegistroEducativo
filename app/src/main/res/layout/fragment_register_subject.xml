@@ -27,125 +27,67 @@
                 layout="@layout/include_header"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_name"
+                android:id="@+id/input_field"
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_name_name"
+                android:hint="@string/register_subject_field"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_name"
+                    android:id="@+id/et_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:hint="@string/register_student_name_name"
+                    android:hint="@string/register_subject_field"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_last_name"
-                style="@style/editext_form"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_name_last"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between" >
+                android:text="@string/register_subject_name_description_2"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/register_student_name_last"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext" >
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_secondd_last_name"
-                style="@style/editext_form"
+            <!-- Period -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_name_second_last"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between">
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/margin_extra_outer"
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_secondd_last_name"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_subject"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:hint="@string/register_student_name_second_last"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext" >
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_weight="2"
+                    android:text="@string/register_subject_name_description_3"
+                    android:textColor="@color/color_principal_text"
+                    android:layout_gravity="clip_vertical"
+                    android:layout_marginTop="@dimen/margin_between"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_curp"
-                style="@style/editext_form"
+                <include
+                    android:id = "@+id/include_spinner_subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/margin_8dp"
+                    layout="@layout/card_spinner"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_card_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_curp"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between" >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_curp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:hint="@string/register_student_curp"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext" >
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_birthday"
-                style="@style/editext_form"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_student_birthday"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between"
-                app:endIconDrawable="@drawable/ic_calendar">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:hint="@string/register_student_birthday"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext"
-                    app:endIconDrawable="@drawable/ic_calendar" >
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_phone_number"
-                style="@style/editext_form"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/register_student_number"
-                android:textColorHint="@color/color_secondary_text"
-                android:layout_marginTop="@dimen/margin_between" >
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
-                    android:hint="@string/register_student_number"
-                    android:paddingHorizontal="16dp"
-                    android:imeOptions="actionNext" >
-                </com.google.android.material.textfield.TextInputEditText>
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:orientation="vertical"
+                android:background="@color/color_transparent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/recycler_card_subject" />
 
             <include
                 android:id = "@+id/include_button"

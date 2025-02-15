@@ -69,14 +69,20 @@
         android:id="@+id/registerSubjectFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.RegisterSubjectFragment"
         android:label="fragment_register_subject"
-        tools:layout="@layout/fragment_register_subject" />
+        tools:layout="@layout/fragment_register_subject" >
+        <action
+            android:id="@+id/action_registerSubjectFragment_to_listSubjectFragment"
+            app:destination="@id/listSubjectFragment"
+            app:popUpTo="@id/listSubjectFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 
 
     <fragment
         android:id="@+id/listStudentFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentFragment"
         android:label="fragment_list_student"
-        tools:layout="@layout/fragment_list_student" >
+        tools:layout="@layout/fragment_list_student_subject" >
 
         <action
             android:id="@+id/action_listStudentFragment_to_registerStudentFragment"
@@ -86,7 +92,7 @@
         android:id="@+id/listSubjectFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.ListSubjectFragment"
         android:label="fragment_list_subject"
-        tools:layout="@layout/fragment_list_subject" >
+        tools:layout="@layout/fragment_list_student_subject" >
         <action
             android:id="@+id/action_listSubjectFragment_to_registerSubjectFragment"
             app:destination="@id/registerSubjectFragment" />

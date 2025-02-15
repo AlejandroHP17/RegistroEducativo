@@ -8,5 +8,6 @@ enum class ModelSpinnerSelect(val value: String){
     CYCLE("cycle"),
     GRADE("grade"),
     GROUP("group"),
-    PERIOD("period")
+    PERIOD("period"),
+    SUBJECT("subject")
 }

@@ -15,6 +15,7 @@ fun Spinner.fillItem(requireContext: Context, model: ModelSpinnerSelect, validat
         ModelSpinnerSelect.GRADE -> selectGrade(validateString)
         ModelSpinnerSelect.GROUP -> selectGroup(validateString)
         ModelSpinnerSelect.PERIOD -> requireContext.resources.getStringArray(R.array.spinner_period)
+        ModelSpinnerSelect.SUBJECT -> requireContext.resources.getStringArray(R.array.spinner_subject)
     }
 
     /** Create the adapter */

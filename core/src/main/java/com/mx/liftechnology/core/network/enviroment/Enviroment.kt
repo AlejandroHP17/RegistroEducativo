@@ -29,8 +29,10 @@ object Environment {
     const val END_POINT_REGISTER_SCHOOL= "teacher/registerTeacherCycleGroup"
     const val END_POINT_REGISTER_PARTIAL= "teacher/registerPartialCycleGroup"
     const val END_POINT_REGISTER_STUDENT= "teacher/registerStudentCycleGroup"
+    const val END_POINT_REGISTER_SUBJECT= "teacher/registerTeacherSubjectSchool"
 
     const val END_POINT_GET_STUDENT= "teacher/getTeacherGroupStudents"
+    const val END_POINT_GET_SUBJECT= "teacher/getTeacherGroupSubject"
 
 
 
