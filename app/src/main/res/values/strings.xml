@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Registro Educativo</string>
 
-
     <string name="save">Guardar</string>
+    <string name="select">Seleccionar</string>
 
     <string name="empty_subject_1">Sin Campos Formativos</string>
     <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
@@ -88,6 +88,20 @@
     <!-- Gets Flow -->
     <string name="get_student_name">Lista de alumnos</string>
 
+
+    <!-- Dialogs Flow -->
+    <string name="dialog_select_cycle">Selecciona tu ciclo escolar</string>
+
+    <!-- Edit Flow -->
+    <string name="edit_student_name">Edita los datos</string>
+    <string name="edit_student_name_description">Ingresa los datos del alumno</string>
+    <string name="edit_student_name_name">Nombre (s)</string>
+    <string name="edit_student_name_last">Apellido paterno</string>
+    <string name="edit_student_name_second_last">Apellido materno</string>
+    <string name="edit_student_curp">CURP</string>
+    <string name="edit_student_birthday">Fecha de nacimiento</string>
+    <string name="edit_student_number">Número de contacto</string>
+    <string name="edit_student_edit">REGISTRAR</string>
 
 
 

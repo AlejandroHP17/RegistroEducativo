@@ -9,10 +9,11 @@
 
     <ImageView
         android:id="@+id/btn_return"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/touch_google"
+        android:layout_height="@dimen/touch_google"
         android:layout_marginTop="@dimen/margin_outer"
         android:src="@drawable/ic_return"
+        android:padding="@dimen/padding_6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

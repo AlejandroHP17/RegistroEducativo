@@ -28,16 +28,16 @@ class StudentAdapter(
             binding.apply {
                 tvNumberList.text = item.alumno_id
                 val textBuilder =
-                    StringBuilder(item.paterno).append(" ")
-                        .append(item.materno).append(" ")
-                        .append(item.name)
+                    StringBuilder(item.paterno ?: "No name").append(" ")
+                        .append(item.materno ?: "").append(" ")
+                        .append(item.name ?: "")
                 tvNameList.text = textBuilder
-                ivImage.setOnClickListener { action.onClick(item) }
+                cvTouch.setOnClickListener { action.onClick(item) }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             RecyclerCardStudentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)

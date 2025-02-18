@@ -20,14 +20,15 @@ fun interface GetListStudentUseCase {
     suspend fun getListStudent(): ModelState<List<ModelStudent?>?, String>?
 }
 
-class GetListStudentUseCaseImp (
-    private val getListStudentRepository : GetListStudentRepository,
+class GetListStudentUseCaseImp(
+    private val getListStudentRepository: GetListStudentRepository,
     private val preference: PreferenceUseCase
-) : GetListStudentUseCase{
-    override suspend fun getListStudent(): ModelState<List<ModelStudent?>?, String>? {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
-        val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+) : GetListStudentUseCase {
+    override suspend fun getListStudent(): ModelState<List<ModelStudent?>?, String> {
+        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val pecg =
+            preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val request = CredentialGetListStudent(
             profesor_id = roleId,
@@ -35,14 +36,16 @@ class GetListStudentUseCaseImp (
             profesorescuelaciclogrupo_id = pecg
         )
 
-        return when (val result =  getListStudentRepository.executeGetListStudent(request)) {
+        return when (val result = getListStudentRepository.executeGetListStudent(request)) {
             is ResultSuccess -> {
-
-                SuccessState(result.data?.toModelStudentList())
+                if (result.data.isNullOrEmpty()) ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+                else SuccessState(result.data?.toModelStudentList())
             }
+
             is ResultError -> {
                 handleResponse(result.error)
             }
+
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
@@ -78,6 +81,4 @@ class GetListStudentUseCaseImp (
             )
         }
     }
-
-
 }

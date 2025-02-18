@@ -3,41 +3,55 @@ package com.mx.liftechnology.registroeducativo.main.util
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.core.model.ModelDialogStudentGroup
+import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.DialogSelectGroupBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.DialogGroupAdapter
 
 class DialogSelectGroup(
     private val context: Context,
     private val items: List<ModelDialogStudentGroup>,
-    private val listener: (ModelDialogStudentGroup) -> Unit
+    private val listener: (ModelDialogStudentGroup?) -> Unit
 ) {
-
     private lateinit var dialog: Dialog
     private lateinit var adapter: DialogGroupAdapter
+    private lateinit var binding: DialogSelectGroupBinding
+
+    private var selectedItem: ModelDialogStudentGroup? = null
 
     fun showDialog() {
         // Inicializamos el diálogo
         dialog = Dialog(context)
-        val binding: DialogSelectGroupBinding =
-            DialogSelectGroupBinding.inflate(LayoutInflater.from(context))
 
         // Establecemos el diseño del diálogo
+        binding = DialogSelectGroupBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(binding.root)
 
-        // Configuración del RecyclerView con el adaptador
-        adapter = DialogGroupAdapter(
-            items
-        ) { item -> // Llamamos al listener con el ítem seleccionado
-            val copyItem = item.copy(nameItem = "${item.item?.cct} - ${item.item?.group}${item.item?.name} - ${item.item?.shift}")
-            listener(copyItem)
-            dialog.dismiss()
+        initConfigsViews()
+        initAdapter()
+
+        // Botón Guardar enviará la selección al fragmento
+        binding.includeButton.btnAction.setOnClickListener {
+            selectedItem?.let { item ->
+                listener(item)
+                dialog.dismiss()
+            }
         }
-        binding.recyclerViewDialog.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewDialog.adapter = adapter
 
         // Mostramos el diálogo
         dialog.show()
+    }
+
+    private fun initConfigsViews() {
+        binding.includeButton.btnRecord.visibility = View.GONE
+        binding.includeButton.btnAction.text = context.getString(R.string.select)
+    }
+
+    private fun initAdapter() {
+        adapter = DialogGroupAdapter(items) { selectedItem = it }
+        binding.rvDialog.layoutManager = LinearLayoutManager(context)
+        binding.rvDialog.adapter = adapter
     }
 }

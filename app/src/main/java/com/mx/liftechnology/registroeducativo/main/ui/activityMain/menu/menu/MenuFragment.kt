@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.mx.liftechnology.core.model.ModelDialogStudentGroup
 import com.mx.liftechnology.core.model.modelBase.ErrorState
 import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
 import com.mx.liftechnology.core.model.modelBase.ErrorUserState
@@ -100,24 +99,24 @@ class MenuFragment : Fragment() {
         }
 
         /* Show all the options from menu, or if any error occur, show the error */
-        menuViewModel.listGroup.observe(viewLifecycleOwner) { state ->
+        menuViewModel.selectedGroup.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    menuViewModel.getMenu(true)
-                    binding.tvName.text = state.result.infoShowSchool
-                }
+                is SuccessState -> binding.tvName.text = state.result.nameItem
                 is ErrorState -> {
                     menuViewModel.getMenu(false)
                     log(state.result)
                 }
+
                 is ErrorUserState -> {
                     menuViewModel.getMenu(false)
                     showCustomToastFailed(requireActivity(), state.result)
                 }
+
                 is ErrorUnauthorizedState -> {
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(intent)
                 }
+
                 else -> {
                     //Nothing
                 }
@@ -130,6 +129,7 @@ class MenuFragment : Fragment() {
                     if (state.result == true) animationHandler?.showLoadingAnimation()
                     else animationHandler?.hideLoadingAnimation()
                 }
+
                 else -> animationHandler?.hideLoadingAnimation()
             }
         }
@@ -169,26 +169,14 @@ class MenuFragment : Fragment() {
 
     private fun showDialog() {
         val result = menuViewModel.listGroup.value
+        if (result is SuccessState) {
+            val dialogManager =
+                DialogSelectGroup(requireContext(), result.result) { selectedItem ->
+                    menuViewModel.getMenu(true)
+                    menuViewModel.updateGroup(selectedItem)
+                }
+            dialogManager.showDialog()
 
-        if (result is SuccessState) {  // Aseguramos que el estado es SuccessState
-            result.result.listSchool?.let { listSchool ->
-                // Convertimos la lista de ResponseGroupTeacher a ModelDialogStudentGroup
-                val modelDialogStudentGroups: List<ModelDialogStudentGroup> =
-                    listSchool.map { teacher ->
-                        ModelDialogStudentGroup(
-                            selected = false,  // Inicializamos 'selected' como false
-                            item = teacher,    // Asignamos el objeto ResponseGroupTeacher
-                            nameItem = result.result.infoShowSchool
-                        )
-                    }
-
-                val dialogManager =
-                    DialogSelectGroup(requireContext(), modelDialogStudentGroups) { selectedItem ->
-                        binding.tvName.text = selectedItem.nameItem
-                    }
-
-                dialogManager.showDialog()
-            }
         }
     }
 }

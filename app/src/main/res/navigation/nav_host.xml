@@ -87,6 +87,9 @@
         <action
             android:id="@+id/action_listStudentFragment_to_registerStudentFragment"
             app:destination="@id/registerStudentFragment" />
+        <action
+            android:id="@+id/action_listStudentFragment_to_editStudentFragment"
+            app:destination="@id/editStudentFragment" />
     </fragment>
     <fragment
         android:id="@+id/listSubjectFragment"
@@ -96,5 +99,17 @@
         <action
             android:id="@+id/action_listSubjectFragment_to_registerSubjectFragment"
             app:destination="@id/registerSubjectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.EditStudentFragment"
+        android:label="EditStudentFragment" >
+
+        <action
+            android:id="@+id/action_editStudentFragment_to_listStudentFragment"
+            app:destination="@id/listStudentFragment" />
+        <argument
+            android:name="infoStudent"
+            app:argType="com.mx.liftechnology.domain.model.ModelStudent" />
     </fragment>
 </navigation>

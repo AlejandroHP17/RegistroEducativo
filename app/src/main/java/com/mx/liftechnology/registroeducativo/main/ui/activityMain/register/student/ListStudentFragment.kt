@@ -153,8 +153,8 @@ class ListStudentFragment : Fragment() {
 
         /* Build the adapter */
         studentAdapter = StudentAdapter(listStudent, StudentClickListener { item ->
-            // Aquí manejas el click del estudiante``
-            // Puedes navegar a otro fragment o ejecutar otra acción aquí
+            val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
+            findNavController().navigate(navigate)
         })
         binding.apply {
             rvListStudent.layoutManager = LinearLayoutManager(context)

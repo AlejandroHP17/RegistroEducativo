@@ -16,11 +16,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list_Student"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/margin_between"
         android:orientation="vertical"
         android:background="@color/color_transparent"
         app:layout_constraintTop_toBottomOf="@id/include_header"
+        app:layout_constraintBottom_toTopOf="@id/include_button"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/recycler_card_student" />
 
@@ -29,7 +30,6 @@
         android:id = "@+id/include_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_extra_outer"
         android:layout_marginHorizontal="@dimen/margin_extra_outer"
         app:layout_constraintBottom_toBottomOf="parent"
         layout="@layout/include_button"/>

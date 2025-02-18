@@ -14,7 +14,7 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardGroupBindi
  * */
 class DialogGroupAdapter(
     private val items: List<ModelDialogStudentGroup>,
-    private val listener: DialogGroupClickListener
+    private val listener: (ModelDialogStudentGroup) -> Unit
 ) : RecyclerView.Adapter<DialogGroupAdapter.ViewHolder>() {
 
     private var selectedPosition = -1
@@ -27,7 +27,7 @@ class DialogGroupAdapter(
             binding.apply {
                 // Concatenar la información del ítem
                 val stringBuilder = StringBuilder(item.item?.cct ?: "").append(" ")
-                    .append(item.item?.name).append(" ").append(item.item?.group)
+                    .append(item.item?.group).append(" ").append(item.item?.name)
                 tv.text = stringBuilder
 
                 // Verificar si el ítem está seleccionado
@@ -41,7 +41,13 @@ class DialogGroupAdapter(
                         notifyItemChanged(previousSelectedPosition) // Actualizar el ítem previamente seleccionado
                         notifyItemChanged(selectedPosition) // Actualizar el ítem actual
 
-                        listener.onClick(item)
+                        listener(
+                            ModelDialogStudentGroup(
+                                selected = true,
+                                item = item.item,
+                                nameItem = item.nameItem
+                            )
+                        )
                     }
                 }
             }
@@ -59,8 +65,5 @@ class DialogGroupAdapter(
     }
 
     override fun getItemCount(): Int = items.size
-}
 
-fun interface DialogGroupClickListener {
-    fun onClick(item: ModelDialogStudentGroup)
 }

@@ -14,8 +14,17 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.RegisterStudentRepository
 
-fun interface RegisterStudentUseCase {
+interface CrudStudentUseCase {
     suspend fun putNewStudent(
+        name: String,
+        lastName: String,
+        secondLastName: String,
+        curp: String,
+        birthday: String,
+        phoneNumber: String
+    ): ModelState<List<String?>?, String>?
+
+    suspend fun editStudent(
         name: String,
         lastName: String,
         secondLastName: String,
@@ -25,10 +34,10 @@ fun interface RegisterStudentUseCase {
     ): ModelState<List<String?>?, String>?
 }
 
-class RegisterStudentUseCaseImp(
+class CrudStudentUseCaseImp(
     private val registerStudentRepository: RegisterStudentRepository,
     private val preference: PreferenceUseCase
-): RegisterStudentUseCase {
+): CrudStudentUseCase {
 
     /** Validate Email
      * @author pelkidev
@@ -66,6 +75,17 @@ class RegisterStudentUseCaseImp(
             }
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
+    }
+
+    override suspend fun editStudent(
+        name: String,
+        lastName: String,
+        secondLastName: String,
+        curp: String,
+        birthday: String,
+        phoneNumber: String
+    ): ModelState<List<String?>?, String>? {
+        TODO("Not yet implemented")
     }
 
     /** handleResponse - Validate the code response, and assign the correct function of that
