@@ -34,6 +34,7 @@ object Environment {
 
     const val END_POINT_GET_STUDENT = "teacher/getTeacherGroupStudents"
     const val END_POINT_GET_SUBJECT = "teacher/getTeacherGroupSubject"
+    const val END_POINT_GET_PARTIAL = "teacher/getTeacherGroupPartials"
 
 
     /** Menu flow */

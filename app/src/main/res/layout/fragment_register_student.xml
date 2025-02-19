@@ -146,7 +146,7 @@
                     android:id="@+id/et_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:hint="@string/register_student_number"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >

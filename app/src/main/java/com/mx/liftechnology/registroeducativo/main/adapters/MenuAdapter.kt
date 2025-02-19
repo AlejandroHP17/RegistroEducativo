@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.data.model.ModelAdapterMenu
+import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 
 /** MenuAdapter - Build the adapter for menu (home)
@@ -15,12 +16,9 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBindin
  * @param listener click on item's card
  * */
 class MenuAdapter(
-    private val items: List<ModelAdapterMenu>,
-    private val listener: MenuClickListener
-) :
-    ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack) {
+    private val listener: (ModelAdapterMenu) -> Unit
+) : ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack) {
 
-    /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
     companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelAdapterMenu>() {
         override fun areItemsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
             oldItem.id == newItem.id
@@ -31,36 +29,30 @@ class MenuAdapter(
 
     class ViewHolder(private val binding: RecyclerCardMenuBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        // Method like a listener; bring the item and the action of click
-        fun bind(item: ModelAdapterMenu, action: MenuClickListener) {
-            // Synchronize the item response with the view
+
+        fun bind(item: ModelAdapterMenu, listener: (ModelAdapterMenu) -> Unit) {
             binding.apply {
                 if (!item.isTouch) {
                     cvComplete.alpha = 0.6F
                     root.setOnClickListener(null)
                 } else {
-                    root.setOnClickListener { action.onClick(item) }
+                    root.setOnClickListener { listener(item) }
                 }
-                ivImage.setImageResource(item.image!!)
+                item.image?.let {
+                    ivImage.setImageResource(it)
+                } ?: ivImage.setImageResource(R.drawable.ic_logo)
                 tvTitleCard.text = item.titleCard
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding =
-            RecyclerCardMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = RecyclerCardMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = items[position]
+        val currentItem = getItem(position)
         holder.bind(currentItem, listener)
     }
-
-    override fun getItemCount(): Int = items.size
-}
-
-class MenuClickListener(val listener: (item: ModelAdapterMenu) -> Unit) {
-    fun onClick(item: ModelAdapterMenu) = listener(item)
 }

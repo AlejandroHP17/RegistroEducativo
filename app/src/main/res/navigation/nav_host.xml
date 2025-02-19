@@ -7,35 +7,24 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.menu.MenuFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuFragment"
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
-
-        <action
-            android:id="@+id/action_menuFragment_to_subMenuFragment"
-            app:destination="@id/subMenuFragment" />
         <action
             android:id="@+id/action_menuFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/subMenuFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.submenu.SubMenuFragment"
-        android:label="SubMenuFragment"
-        tools:layout="@layout/fragment_menu">
         <action
-            android:id="@+id/action_subMenuFragment_to_registerSchoolFragment"
+            android:id="@+id/action_menuFragment_to_registerSchoolFragment"
             app:destination="@id/registerSchoolFragment" />
         <action
-            android:id="@+id/action_subMenuFragment_to_registerPartialFragment"
+            android:id="@+id/action_menuFragment_to_registerPartialFragment"
             app:destination="@id/registerPartialFragment" />
         <action
-            android:id="@+id/action_subMenuFragment_to_listStudentFragment"
-            app:destination="@id/listStudentFragment" />
-        <action
-            android:id="@+id/action_subMenuFragment_to_listSubjectFragment"
+            android:id="@+id/action_menuFragment_to_listSubjectFragment"
             app:destination="@id/listSubjectFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_listStudentFragment"
+            app:destination="@id/listStudentFragment" />
     </fragment>
 
     <fragment

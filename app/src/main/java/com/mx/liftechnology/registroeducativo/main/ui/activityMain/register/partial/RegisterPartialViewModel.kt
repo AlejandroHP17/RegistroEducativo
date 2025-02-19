@@ -15,8 +15,9 @@ import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelDatePeriod
-import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterPartialUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.partial.CreatePartialUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.partial.ReadPartialUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -28,7 +29,8 @@ import java.time.format.DateTimeFormatter
 class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
-    private val registerPartialsUseCase: RegisterPartialUseCase,
+    private val createPartialUseCase: CreatePartialUseCase,
+    private val readPartialUseCase: ReadPartialUseCase,
 ) : ViewModel() {
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
@@ -40,7 +42,7 @@ class RegisterPartialViewModel(
 
     // Observer the period select by user
     private val _periodNumber = SingleLiveEvent<Int>()
-    val periodNumber: LiveData<Int> get() = _periodNumber
+    private val periodNumber: LiveData<Int> get() = _periodNumber
 
     // Observer the date selected by user
     private val _datePeriod = SingleLiveEvent<ModelDatePeriod>()
@@ -53,6 +55,9 @@ class RegisterPartialViewModel(
     // Observer the date selected by user
     private val _adapterField = SingleLiveEvent<ModelState<Int, String>>()
     val adapterField: LiveData<ModelState<Int, String>> get() = _adapterField
+
+    private val _getPartialField = SingleLiveEvent<ModelState<MutableList<ModelDatePeriod>?, String>?>()
+    val getPartialField: LiveData<ModelState<MutableList<ModelDatePeriod>?, String>?> get() = _getPartialField
 
     /** Save in viewModel the variable of period
      * @author pelkidev
@@ -134,7 +139,7 @@ class RegisterPartialViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerPartialsUseCase.putPartials(periodNumber.value, adapterPeriods)
+                createPartialUseCase.createPartials(periodNumber.value, adapterPeriods)
             }.onSuccess {
                 _animateLoader.postValue(LoaderState(false))
                 _responseRegisterPartial.postValue(it)
@@ -143,5 +148,23 @@ class RegisterPartialViewModel(
                 _responseRegisterPartial.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
             }
         }
+    }
+
+    /** Read */
+    fun getPartial(){
+        viewModelScope.launch (dispatcherProvider.io) {
+            runCatching {
+                readPartialUseCase.readPartials()
+            }.onSuccess {
+                _getPartialField.postValue(it)
+            }.onFailure {
+                _animateLoader.postValue(LoaderState(false))
+                _getPartialField.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+            }
+        }
+    }
+
+    fun loaderState(visible: Boolean){
+        _animateLoader.postValue(LoaderState(visible))
     }
 }

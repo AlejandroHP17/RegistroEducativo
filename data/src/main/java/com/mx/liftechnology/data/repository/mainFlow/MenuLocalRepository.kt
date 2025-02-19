@@ -3,7 +3,6 @@ package com.mx.liftechnology.data.repository.mainFlow
 import android.content.Context
 import com.mx.liftechnology.data.R
 import com.mx.liftechnology.data.model.ModelAdapterMenu
-import com.mx.liftechnology.data.model.ModelSelectorMenu
 
 /** MenuLocalRepository - Build the element list of menu (home)
  * @author pelkidev
@@ -12,25 +11,52 @@ import com.mx.liftechnology.data.model.ModelSelectorMenu
  * @return listMenuItems contains the list of menu
  * */
 class MenuLocalRepository(private val context: Context) {
-    fun getItems(schoolYear:Boolean): List<ModelAdapterMenu> {
+    fun getControlMenu(): List<ModelAdapterMenu> {
 
-        val listMenuItems = context.resources.getStringArray(R.array.menu_items)
+        val listMenuItems = context.resources.getStringArray(R.array.menu_items_control)
         val imageResources = arrayOf(
-            R.drawable.ic_assessment,
             R.drawable.ic_control,
-            R.drawable.ic_perfil,
-            R.drawable.ic_config
+            R.drawable.ic_perfil
         )
-        val idBase = ModelSelectorMenu.EVALUATION.value
         return listMenuItems.mapIndexed { index, description ->
-            if(description == listMenuItems[0]) ModelAdapterMenu(
-                index + idBase,
+            ModelAdapterMenu(
+                description,
                 imageResources[index],
                 description,
-                schoolYear
+                true
             )
-            else ModelAdapterMenu(
-                index + idBase,
+        }
+    }
+
+    fun getControlRegister(): List<ModelAdapterMenu> {
+        val listMenuItems = context.resources.getStringArray(R.array.menu_items_register)
+        val imageResources = arrayOf(
+            R.drawable.ic_school,
+            R.drawable.ic_students,
+            R.drawable.ic_subject,
+            R.drawable.ic_partial
+        )
+        return listMenuItems.mapIndexed { index, description ->
+             ModelAdapterMenu(
+                description,
+                imageResources[index],
+                description,
+                true
+            )
+        }
+    }
+
+    fun getControlEvaluation(): List<ModelAdapterMenu> {
+        val listMenuItems = context.resources.getStringArray(R.array.menu_items_evaluate)
+        val imageResources = arrayOf(
+            R.drawable.ic_calendars,
+            R.drawable.ic_students,
+            R.drawable.ic_subject,
+            R.drawable.ic_export
+        )
+        return listMenuItems.mapIndexed { index, description ->
+             ModelAdapterMenu(
+                description,
                 imageResources[index],
                 description,
                 true

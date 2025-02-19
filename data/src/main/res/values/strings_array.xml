@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string-array name="menu_items">
-        <item>Evaluación</item>
+    <string-array name="menu_items_control">
         <item>Control</item>
         <item>Perfil</item>
-        <item>Configuraciones</item>
     </string-array>
 
-    <string-array name="sub_menu_items">
+    <string-array name="menu_items_register">
         <item>Escuela</item>
         <item>Alumnos</item>
         <item>Campo Formativo</item>
         <item>Parciales</item>
+    </string-array>
+
+
+    <string-array name="menu_items_evaluate">
+        <item>Calendario</item>
+        <item>Alumnos</item>
+        <item>Campo Formativo</item>
+        <item>Exportar</item>
     </string-array>
     
 </resources>

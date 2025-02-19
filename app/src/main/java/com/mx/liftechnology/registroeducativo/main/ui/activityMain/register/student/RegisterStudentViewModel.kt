@@ -9,9 +9,9 @@ import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.domain.usecase.flowregisterdata.CrudStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.CreateStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
-    private val crudStudentUseCase: CrudStudentUseCase,
+    private val createStudentUseCase: CreateStudentUseCase,
     private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
 
     ) : ViewModel() {
@@ -99,7 +99,7 @@ class RegisterStudentViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                crudStudentUseCase.putNewStudent(
+                createStudentUseCase.putNewStudent(
                     name,
                     lastName,
                     secondLastName,

@@ -8,12 +8,12 @@ import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.domain.model.ModelStudent
-import com.mx.liftechnology.domain.usecase.flowgetdata.GetListStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class ListStudentViewModel(
-    private val getListStudentUseCase: GetListStudentUseCase
+    private val readStudentUseCase: ReadStudentUseCase
 ) : ViewModel() {
 
     // Observer the animate loader
@@ -28,7 +28,7 @@ class ListStudentViewModel(
         viewModelScope.launch {
             runCatching {
                 _animateLoader.postValue(LoaderState(true))
-                getListStudentUseCase.getListStudent()
+                readStudentUseCase.getListStudent()
             }.onSuccess {
                 _responseListStudent.postValue(it)
                 _animateLoader.postValue(LoaderState(false))

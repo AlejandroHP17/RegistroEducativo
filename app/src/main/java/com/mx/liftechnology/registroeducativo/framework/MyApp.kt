@@ -6,21 +6,18 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
+import com.mx.liftechnology.registroeducativo.di.crudPartialModule
 import com.mx.liftechnology.registroeducativo.di.crudStudentModule
+import com.mx.liftechnology.registroeducativo.di.crudSubjectModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
-import com.mx.liftechnology.registroeducativo.di.getListStudentModule
-import com.mx.liftechnology.registroeducativo.di.listSubjectModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.profileModule
 import com.mx.liftechnology.registroeducativo.di.registerModule
-import com.mx.liftechnology.registroeducativo.di.registerPartialModule
 import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
-import com.mx.liftechnology.registroeducativo.di.registerSubjectModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
-import com.mx.liftechnology.registroeducativo.di.subMenuModule
 import com.mx.liftechnology.registroeducativo.di.voiceModule
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import org.koin.android.ext.koin.androidContext
@@ -64,13 +61,10 @@ class MyApp : Application() {
                 registerModule,
                 forgetPasswordModule,
                 menuModule,
-                subMenuModule,
-                listSubjectModule,
                 registerSchoolModule,
-                registerPartialModule,
+                crudPartialModule,
                 crudStudentModule,
-                registerSubjectModule,
-                getListStudentModule,
+                crudSubjectModule,
                 profileModule
             )
         }

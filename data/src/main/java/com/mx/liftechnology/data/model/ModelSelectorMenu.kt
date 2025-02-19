@@ -8,14 +8,17 @@ import kotlinx.parcelize.Parcelize
  * @since 1.0.0
  */
 @Parcelize
-enum class ModelSelectorMenu(val value: Int) : Parcelable {
-    EVALUATION(1),
-    CONTROL(2),
-    PROFILE(3),
-    CONFIGURATION(4),
+enum class ModelSelectorMenu(val value: String) : Parcelable {
+    CONTROL("Control"),
+    PROFILE("Perfil"),
 
-    SCHOOL(5),
-    STUDENTS(6),
-    SUBJECTS(7),
-    PARTIALS(8)
+    SCHOOL("Escuela"),
+    STUDENTS("Alumnos"),
+    SUBJECTS("Campo Formativo"),
+    PARTIALS("Parciales"),
+
+    ESTUDENTS("Alumnos"),
+    CALENDAR("Calendario"),
+    EXPORT("Exportar"),
+    ESUBJECTS("Campo Formativo")
 }

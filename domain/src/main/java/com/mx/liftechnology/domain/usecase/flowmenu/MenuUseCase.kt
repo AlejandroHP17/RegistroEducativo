@@ -25,7 +25,9 @@ import kotlinx.coroutines.withContext
 
 interface MenuUseCase {
     suspend fun getGroup(): ModelState<ModelInfoMenu, String>
-    suspend fun getMenu(schoolYear: Boolean): ModelState<List<ModelAdapterMenu>, String>
+    suspend fun getControlMenu(): ModelState<List<ModelAdapterMenu>, String>
+    suspend fun getControlRegister(): ModelState<List<ModelAdapterMenu>, String>
+    suspend fun getControlEvaluation(): ModelState<List<ModelAdapterMenu>, String>
     suspend fun updateGroup(nameItem: ModelDialogStudentGroup)
 }
 
@@ -103,10 +105,40 @@ class MenuUseCaseImp(
     }
 
 
-    override suspend fun getMenu(schoolYear: Boolean): ModelState<List<ModelAdapterMenu>, String> {
+    override suspend fun getControlMenu(): ModelState<List<ModelAdapterMenu>, String> {
         return withContext(Dispatchers.IO) {
             try {
-                val list = localRepository.getItems(schoolYear)
+                val list = localRepository.getControlMenu()
+                if (list.isEmpty()) {
+                    EmptyState(ModelCodeError.ERROR_EMPTY)
+                } else {
+                    SuccessState(list)
+                }
+            } catch (e: Exception) {
+                ErrorState(ModelCodeError.ERROR_CATCH)
+            }
+        }
+    }
+
+    override suspend fun getControlRegister(): ModelState<List<ModelAdapterMenu>, String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val list = localRepository.getControlRegister()
+                if (list.isEmpty()) {
+                    EmptyState(ModelCodeError.ERROR_EMPTY)
+                } else {
+                    SuccessState(list)
+                }
+            } catch (e: Exception) {
+                ErrorState(ModelCodeError.ERROR_CATCH)
+            }
+        }
+    }
+
+    override suspend fun getControlEvaluation(): ModelState<List<ModelAdapterMenu>, String> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val list = localRepository.getControlEvaluation()
                 if (list.isEmpty()) {
                     EmptyState(ModelCodeError.ERROR_EMPTY)
                 } else {

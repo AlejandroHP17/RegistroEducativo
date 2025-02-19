@@ -6,7 +6,7 @@ import com.mx.liftechnology.data.repository.mainFlow.MenuRepository
 import com.mx.liftechnology.data.repository.mainFlow.MenuRepositoryImp
 import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
 import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.menu.MenuViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module

@@ -9,9 +9,9 @@ import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
-import com.mx.liftechnology.domain.usecase.flowregisterdata.CCTUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSchoolUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsRegisterUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.CCTUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.school.RegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch

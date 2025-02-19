@@ -1,15 +1,21 @@
 package com.mx.liftechnology.registroeducativo.di
 
+import com.mx.liftechnology.core.network.callapi.GetListStudentApiCall
 import com.mx.liftechnology.core.network.callapi.RegisterStudentApiCall
-import com.mx.liftechnology.data.repository.registerFlow.RegisterStudentRepository
-import com.mx.liftechnology.data.repository.registerFlow.RegisterStudentRepositoryImp
-import com.mx.liftechnology.domain.usecase.flowregisterdata.CrudStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.CrudStudentUseCaseImp
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsStudentUseCaseImp
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateVoiceStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateVoiceStudentUseCaseImp
+import com.mx.liftechnology.data.repository.registerFlow.CrudStudentRepository
+import com.mx.liftechnology.data.repository.registerFlow.CrudStudentRepositoryImp
+import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.flowdata.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.ValidateVoiceStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.flowdata.student.CreateStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.CreateStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.EditStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.RegisterStudentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -22,13 +28,22 @@ import retrofit2.Retrofit
 val crudStudentModule = module {
 
     factory { get<Retrofit>().create(RegisterStudentApiCall::class.java) }
+    factory { get<Retrofit>().create(GetListStudentApiCall::class.java) }
 
-    single<RegisterStudentRepository> {
-        RegisterStudentRepositoryImp(get())
+    single<CrudStudentRepository> {
+        CrudStudentRepositoryImp(get(), get())
     }
-    single<CrudStudentUseCase> {
-        CrudStudentUseCaseImp(get(), get())
+
+    single<CreateStudentUseCase> {
+        CreateStudentUseCaseImp(get(), get())
     }
+    single<ReadStudentUseCase> {
+        ReadStudentUseCaseImp(get(), get())
+    }
+    single<UpdateStudentUseCase> {
+        UpdateStudentUseCaseImp(get(), get())
+    }
+
     single<ValidateVoiceStudentUseCase> {
         ValidateVoiceStudentUseCaseImp()
     }
@@ -40,8 +55,10 @@ val crudStudentModule = module {
     viewModel {
         RegisterStudentViewModel(get(), get(), get(), get())
     }
-
     viewModel {
         EditStudentViewModel(get(), get(), get())
+    }
+    viewModel {
+        ListStudentViewModel(get())
     }
 }

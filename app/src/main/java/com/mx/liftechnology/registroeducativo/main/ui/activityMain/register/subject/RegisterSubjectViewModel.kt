@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelFormatSubject
-import com.mx.liftechnology.domain.usecase.flowregisterdata.RegisterSubjectUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsSubjectUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.subject.ValidateFieldsSubjectUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.subject.CreateSubjectUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class RegisterSubjectViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsSubjectUseCase: ValidateFieldsSubjectUseCase,
-    private val registerSubjectUseCase: RegisterSubjectUseCase
+    private val createSubjectUseCase: CreateSubjectUseCase
 ) : ViewModel() {
 
     // Observer the animate loader
@@ -56,7 +56,7 @@ class RegisterSubjectViewModel(
     private fun registerSubject(updatedList: MutableList<ModelFormatSubject>?, name: String?) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerSubjectUseCase.putSubjects(updatedList, name)
+                createSubjectUseCase.putSubjects(updatedList, name)
             }.onSuccess {
 
             }.onFailure {

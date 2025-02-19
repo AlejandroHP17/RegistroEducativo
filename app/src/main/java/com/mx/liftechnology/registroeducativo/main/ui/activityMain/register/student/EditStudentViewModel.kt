@@ -9,8 +9,8 @@ import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.ModelCodeError
 import com.mx.liftechnology.core.model.modelBase.ModelState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.domain.usecase.flowregisterdata.CrudStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowregisterdata.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class EditStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
-    private val crudStudentUseCase: CrudStudentUseCase,
+    private val updateStudentUseCase: UpdateStudentUseCase
 
     ) : ViewModel() {
 
@@ -96,7 +96,7 @@ class EditStudentViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                crudStudentUseCase.editStudent(
+                updateStudentUseCase.editStudent(
                     name,
                     lastName,
                     secondLastName,

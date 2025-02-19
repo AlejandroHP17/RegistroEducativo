@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mx.liftechnology.core.model.modelBase.ErrorUserState
+import com.mx.liftechnology.core.model.modelBase.LoaderState
 import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.interfaces.AnimationHandler
 import com.mx.liftechnology.domain.model.ModelDatePeriod
@@ -35,6 +36,8 @@ class RegisterPartialFragment : Fragment() {
     private val registerPartialViewModel: RegisterPartialViewModel by viewModel()
     private var adapterPeriods: PeriodAdapter? = null
 
+    private var listPeriods : MutableList<ModelDatePeriod>? = null
+
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
 
@@ -57,6 +60,8 @@ class RegisterPartialFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         initObservers()
+        registerPartialViewModel.loaderState(true)
+        registerPartialViewModel.getPartial()
     }
 
     override fun onDestroyView() {
@@ -96,20 +101,18 @@ class RegisterPartialFragment : Fragment() {
      * `datePeriod` check the  date and post the date in correct view
      * */
     private fun initObservers() {
-        registerPartialViewModel.periodNumber.observe(viewLifecycleOwner) { period ->
-            initAdapterPeriod(period)
-        }
-
         registerPartialViewModel.datePeriod.observe(viewLifecycleOwner) { data ->
             adapterPeriods?.updateDate(data)
         }
 
-        registerPartialViewModel.periodField.observe(viewLifecycleOwner) { period ->
-            log(period.toString())
-        }
-
-        registerPartialViewModel.adapterField.observe(viewLifecycleOwner) { adapter ->
-            log(adapter.toString())
+        registerPartialViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LoaderState -> {
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
+                    else animationHandler?.hideLoadingAnimation()
+                }
+                else -> animationHandler?.hideLoadingAnimation()
+            }
         }
 
         registerPartialViewModel.responseRegisterPartial.observe(viewLifecycleOwner) { state ->
@@ -117,7 +120,19 @@ class RegisterPartialFragment : Fragment() {
                 is SuccessState -> {
                     showCustomToastSuccess(requireActivity(), state.result.toString())
                     findNavController().popBackStack()
-                    findNavController().popBackStack()
+                }
+                is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
+                else -> log(state.toString())
+            }
+        }
+
+        registerPartialViewModel.getPartialField.observe(viewLifecycleOwner){state ->
+            initSpinner()
+            when(state) {
+                is SuccessState -> {
+                    binding.includeSpinnerPeriod.spinner.setSelection(state.result?.size!!)
+                    listPeriods = state.result
+                    initAdapterPeriod(state.result?.size!!)
                 }
                 is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
                 else -> log(state.toString())
@@ -138,23 +153,6 @@ class RegisterPartialFragment : Fragment() {
             includeButton.btnAction.setOnClickListener {
                 registerPartialViewModel.validateFields(adapterPeriods?.getList())
             }
-
-            /** Spinner Section*/
-            includeSpinnerPeriod.spinner.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val selectedValue = parent?.getItemAtPosition(position).toString()
-                        registerPartialViewModel.savePeriod(selectedValue)
-                    }
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        //Nothing
-                    }
-                }
         }
     }
 
@@ -169,18 +167,46 @@ class RegisterPartialFragment : Fragment() {
                 registerPartialViewModel.initDatePicker(item, parentFragmentManager, context)
             }
         )
-        val list = MutableList(period) { index ->
-            ModelDatePeriod(
-                position = index,
-                date = "Parcial ${index + 1}"
-            )
-        }
+        listPeriods = if(listPeriods.isNullOrEmpty()){
+
+            MutableList(period) { index ->
+                ModelDatePeriod(
+                    position = index,
+                    date = "Parcial ${index + 1}"
+                )
+            }
+        }else listPeriods
+
 
         /* Build the adapter */
-        adapterPeriods = PeriodAdapter(list, clickListener)
+        adapterPeriods = PeriodAdapter(listPeriods!!, clickListener)
         binding.rvCardPeriod.layoutManager = LinearLayoutManager(this.context)
         binding.apply {
             rvCardPeriod.adapter = adapterPeriods
         }
+        registerPartialViewModel.loaderState(false)
+    }
+
+    private fun initSpinner(){
+        /** Spinner Section*/
+        binding.apply {
+            includeSpinnerPeriod.spinner.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedValue = parent?.getItemAtPosition(position).toString()
+                        initAdapterPeriod(selectedValue.toInt())
+                        registerPartialViewModel.savePeriod(selectedValue)
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        //Nothing
+                    }
+                }
+        }
+
     }
 }
