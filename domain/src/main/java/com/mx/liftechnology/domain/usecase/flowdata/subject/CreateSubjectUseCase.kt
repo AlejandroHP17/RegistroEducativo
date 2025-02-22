@@ -1,16 +1,16 @@
 package com.mx.liftechnology.domain.usecase.flowdata.subject
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSubject
 import com.mx.liftechnology.core.network.callapi.Percent
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultSuccess
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudSubjectRepository
@@ -45,19 +45,19 @@ class CreateSubjectUseCaseImp(
         updatedList?.forEach { data ->
             listAdapter.add(
                 Percent(
-                    trabajo_id = data.position,
-                    porcentaje = data.percent?.toInt()
+                    jobId = data.position,
+                    percent = data.percent?.toInt()
                 )
             )
         }
 
         val request = CredentialsRegisterSubject(
-            campoformativo = name,
-            opciones = updatedList?.size,
-            profesorescuelaciclogrupo_id = profSchoolCycleGroupId,
-            user_id = userId,
-            profesor_id = roleId,
-            porcentajes = listAdapter
+            subject = name,
+            options = updatedList?.size,
+            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
+            userId = userId,
+            teacherId = roleId,
+            percents = listAdapter
         )
 
         return when (val result =  crudSubjectRepository.executeRegisterSubject(request)) {

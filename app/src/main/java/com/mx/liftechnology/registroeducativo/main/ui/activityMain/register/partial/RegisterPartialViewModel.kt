@@ -9,11 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.LoaderState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.LoaderState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.domain.usecase.flowdata.partial.CreatePartialUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.partial.ReadPartialUseCase

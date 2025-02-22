@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface GetCctApiCall {
+fun interface GetCctApiCall {
     /** Realiza la petición al API */
     @GET(Environment.END_POINT_GET_CCT)
     suspend fun callApi(
@@ -21,13 +21,13 @@ data class ResponseCctSchool(
     @SerializedName("id")
     val id: Int,
     @SerializedName("nombreescuela")
-    val nombreescuela: String,
+    val schoolName: String,
     @SerializedName("tipocicloescolar")
-    val tipocicloescolar: String,
+    val schoolCycleType: String,
     @SerializedName("tipocicloescolar_id")
-    val tipocicloescolar_id: Int,
+    val schoolCycleTypeId: Int,
     @SerializedName("tipoescuela")
-    val tipoescuela: String,
+    val schoolType: String,
     @SerializedName("turno")
-    val turno: String
+    val shift: String
 )

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.domain.model
+package com.mx.liftechnology.registroeducativo.main.model
 
 /** Model - to select the dates
  * @author pelkidev

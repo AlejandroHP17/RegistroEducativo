@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.LoaderState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.LoaderState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.flowdata.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.student.CreateStudentUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase

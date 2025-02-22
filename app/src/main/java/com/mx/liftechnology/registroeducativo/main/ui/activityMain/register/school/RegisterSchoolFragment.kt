@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.LoaderState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelRegex
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.LoaderState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelRegex
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
-import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
@@ -104,9 +104,9 @@ class RegisterSchoolFragment : Fragment() {
                 when (state) {
                     is SuccessState -> {
                         inputCct.successET()
-                        includeSpinnerSchool.tvDemostration.text = state.result?.nombreescuela
-                        includeSpinnerShift.tvDemostration.text = state.result?.turno
-                        includeSpinnerType.tvDemostration.text = state.result?.tipocicloescolar
+                        includeSpinnerSchool.tvDemostration.text = state.result?.schoolName
+                        includeSpinnerShift.tvDemostration.text = state.result?.shift
+                        includeSpinnerType.tvDemostration.text = state.result?.schoolCycleType
                         showLogicSpinner(state.result)
                     }
                     is ErrorState -> {
@@ -149,7 +149,6 @@ class RegisterSchoolFragment : Fragment() {
                 is SuccessState -> {
                     showCustomToastSuccess(requireActivity(), state.result.toString())
                     findNavController().popBackStack()
-                    findNavController().popBackStack()
                 }
                 is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
                 else -> log(state.toString())
@@ -170,17 +169,17 @@ class RegisterSchoolFragment : Fragment() {
             val grade = includeSpinnerGrade.spinner.fillItem(
                 requireContext(),
                 ModelSpinnerSelect.GRADE,
-                result?.tipoescuela
+                result?.schoolType
             )
             val group = includeSpinnerGroup.spinner.fillItem(
                 requireContext(),
                 ModelSpinnerSelect.GROUP,
-                result?.tipoescuela
+                result?.schoolType
             )
             val cycle = includeSpinnerCycle.spinner.fillItem(
                 requireContext(),
                 ModelSpinnerSelect.CYCLE,
-                result?.tipocicloescolar
+                result?.schoolCycleType
             )
             registerSchoolViewModel.saveGrade(grade)
             registerSchoolViewModel.saveGroup(group)

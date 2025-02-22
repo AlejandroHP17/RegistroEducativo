@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.LoaderState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.SuccessState
-import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.LoaderState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentForgetPasswordBinding
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET

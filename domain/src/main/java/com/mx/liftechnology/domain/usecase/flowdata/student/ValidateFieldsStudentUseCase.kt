@@ -1,10 +1,11 @@
 package com.mx.liftechnology.domain.usecase.flowdata.student
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeSuccess
+import com.mx.liftechnology.domain.model.generic.ModelRegex
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 
 interface ValidateFieldsStudentUseCase {
     fun validateName(name: String?): ModelState<Int, Int>
@@ -64,21 +65,21 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
     }
 
     private fun String.valid():Boolean{
-        val regex = """^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z\d]\d$""".toRegex()
+        val regex = ModelRegex.CURP
         return !regex.matches(this)
     }
 
 
-    override fun validatePhoneNumber(phoneNumber: String?): ModelState<Int, Int> {
+    override fun validatePhoneNumber(number: String?): ModelState<Int, Int> {
         return when {
-            phoneNumber.isNullOrEmpty()-> ErrorState(ModelCodeError.ET_EMPTY)
-            phoneNumber.validPhoneNumber() -> ErrorState(ModelCodeError.ET_MISTAKE_PHONE_NUMBER)
+            number.isNullOrEmpty()-> ErrorState(ModelCodeError.ET_EMPTY)
+            number.validPhoneNumber() -> ErrorState(ModelCodeError.ET_MISTAKE_PHONE_NUMBER)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
 
     private fun String.validPhoneNumber():Boolean{
-        val regex = """^\d{10}$""".toRegex()
+        val regex = ModelRegex.PHONE_NUMBER
         return !regex.matches(this)
     }
 

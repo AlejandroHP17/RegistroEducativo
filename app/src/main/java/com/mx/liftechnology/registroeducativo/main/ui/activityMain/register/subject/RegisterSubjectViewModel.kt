@@ -3,8 +3,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.sub
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.ModelFormatSubject
 import com.mx.liftechnology.domain.usecase.flowdata.subject.ValidateFieldsSubjectUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.subject.CreateSubjectUseCase

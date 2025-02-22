@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-interface GetPartialApiCall {
+fun interface GetPartialApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_GET_PARTIAL)
     suspend fun callApi(
@@ -19,22 +19,22 @@ interface GetPartialApiCall {
 // Modelo para credenciales
 data class CredentialsGetPartial(
     @SerializedName("profesorescuelaciclogrupo_id")
-    val profesorescuelaciclogrupo_id: Int?,
+    val teacherSchoolCycleGroupId: Int?,
     @SerializedName("user_id")
-    val user_id: Int?,
+    val userId: Int?,
     @SerializedName("profesor_id")
-    val profesor_id: Int?,
+    val teacherId: Int?,
 )
 
 data class ResponseGetPartial(
     @SerializedName("parcialciclogrupo_id")
-    val parcialciclogrupo_id: Int,
+    val partialCycleGroup: Int,
     @SerializedName("descripcion")
-    val descripcion: String,
+    val description: String,
     @SerializedName("fechainicio")
-    val fechainicio: String,
+    val startDate: String,
     @SerializedName("fechafinal")
-    val fechafinal: String,
+    val endDate: String,
     @SerializedName("profesorescuelaciclogrupo_id")
-    val profesorescuelaciclogrupo_id: Int,
+    val teacherSchoolCycleGroupId: Int,
 )

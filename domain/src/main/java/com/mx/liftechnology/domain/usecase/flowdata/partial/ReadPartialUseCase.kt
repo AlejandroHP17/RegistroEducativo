@@ -1,19 +1,19 @@
 package com.mx.liftechnology.domain.usecase.flowdata.partial
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsGetPartial
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface ReadPartialUseCase {
     suspend fun readPartials(): ModelState<MutableList<ModelDatePeriod>?, String>?
@@ -23,27 +23,27 @@ class ReadPartialUseCaseImp (
     private val crudPartialRepository: CrudPartialRepository,
     private val preference: PreferenceUseCase
 ) : ReadPartialUseCase {
-    override suspend fun readPartials(): ModelState<MutableList<ModelDatePeriod>?, String>? {
+    override suspend fun readPartials(): ModelState<MutableList<ModelDatePeriod>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val request = CredentialsGetPartial(
-            profesorescuelaciclogrupo_id = profSchoolCycleGroupId,
-            user_id = userId,
-            profesor_id = roleId
+            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
+            userId = userId,
+            teacherId = roleId
         )
 
         return when (val result =  crudPartialRepository.executeGetPartial(request)) {
             is ResultSuccess -> {
-                val result = result.data?.mapIndexed { index, item ->
+                val listDate = result.data?.mapIndexed { index, item ->
                     ModelDatePeriod(
                         position = index,
-                        date = "${item?.fechainicio} / ${item?.fechafinal}" // Reemplaza con los campos que necesites
+                        date = "${item?.startDate} / ${item?.endDate}" // Reemplaza con los campos que necesites
                     )
                 } ?.toMutableList()
-                if (result?.size!! > 0)
-                SuccessState(result)
+                if (listDate?.size!! > 0)
+                SuccessState(listDate)
                 else
                     ErrorState(ModelCodeError.ERROR_UNKNOWN)
             }

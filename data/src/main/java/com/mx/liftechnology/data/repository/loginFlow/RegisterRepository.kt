@@ -2,11 +2,11 @@ package com.mx.liftechnology.data.repository.loginFlow
 
 import com.mx.liftechnology.core.network.callapi.CredentialsRegister
 import com.mx.liftechnology.core.network.callapi.RegisterApiCall
-import com.mx.liftechnology.core.network.util.ExceptionHandler
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultService
-import com.mx.liftechnology.core.network.util.ResultSuccess
+import com.mx.liftechnology.data.util.ExceptionHandler
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultService
+import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 fun interface RegisterRepository{

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowdata.student
 
-import com.mx.liftechnology.core.model.modelBase.ModelState
+import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudStudentRepository
 

@@ -1,11 +1,11 @@
 package com.mx.liftechnology.domain.usecase.flowdata.school
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.generic.ModelCodeSuccess
 
 interface ValidateFieldsRegisterUseCase {
     fun validateGrade(grade: Int?): ModelState<Int, Int>

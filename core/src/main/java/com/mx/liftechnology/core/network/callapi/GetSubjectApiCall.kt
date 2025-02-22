@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface GetListSubjectApiCall {
+fun interface GetListSubjectApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_GET_SUBJECT)
     suspend fun callApi(
@@ -17,14 +17,9 @@ interface GetListSubjectApiCall {
 
 data class CredentialGetListSubject(
     @SerializedName("profesor_id")
-    val profesor_id: Int?,
+    val teacherId: Int?,
     @SerializedName("user_id")
-    val user_id: Int?,
+    val userId: Int?,
     @SerializedName("profesorescuelaciclogrupo_id")
-    val profesorescuelaciclogrupo_id: Int?
+    val teacherSchoolCycleGroupId: Int?
 )
-
-data class ResponseGetSubject(
-    val id: String?,
-
-    )

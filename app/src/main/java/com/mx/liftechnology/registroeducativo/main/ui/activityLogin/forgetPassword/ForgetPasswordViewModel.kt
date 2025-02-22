@@ -3,9 +3,9 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassw
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.model.modelBase.LoaderState
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.LoaderState
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.flowlogin.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.databinding.ActivityLoginBinding
 
 /** LoginActivity - all the flow (login, register, forgotPassword)

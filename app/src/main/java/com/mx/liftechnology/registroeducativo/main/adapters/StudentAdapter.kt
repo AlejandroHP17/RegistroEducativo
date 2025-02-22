@@ -15,7 +15,7 @@ class StudentAdapter(
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
     companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelStudent>() {
         override fun areItemsTheSame(oldItem: ModelStudent, newItem: ModelStudent) =
-            oldItem.alumno_id == newItem.alumno_id
+            oldItem.studentId == newItem.studentId
 
         override fun areContentsTheSame(oldItem: ModelStudent, newItem: ModelStudent) =
             oldItem == newItem
@@ -26,10 +26,10 @@ class StudentAdapter(
         fun bind(item: ModelStudent, action: StudentClickListener) {
             // Synchronize the item response with the view
             binding.apply {
-                tvNumberList.text = item.alumno_id
+                tvNumberList.text = (adapterPosition + 1).toString()
                 val textBuilder =
-                    StringBuilder(item.paterno ?: "No name").append(" ")
-                        .append(item.materno ?: "").append(" ")
+                    StringBuilder(item.lastName ?: "No name").append(" ")
+                        .append(item.secondLastName ?: "").append(" ")
                         .append(item.name ?: "")
                 tvNameList.text = textBuilder
                 cvTouch.setOnClickListener { action.onClick(item) }

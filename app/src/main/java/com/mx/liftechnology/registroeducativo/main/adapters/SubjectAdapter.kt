@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.domain.model.ModelSubject
+import com.mx.liftechnology.registroeducativo.main.model.ModelSubject
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBinding
 
 class SubjectAdapter(

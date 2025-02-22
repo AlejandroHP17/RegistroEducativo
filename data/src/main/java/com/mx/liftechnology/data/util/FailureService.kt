@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.network.util
+package com.mx.liftechnology.data.util
 
 sealed class FailureService(val message: String) {
     data object NetworkError : FailureService("Error de conexión a Internet")

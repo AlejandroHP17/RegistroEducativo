@@ -1,4 +1,4 @@
-package com.mx.liftechnology.domain.interfaces
+package com.mx.liftechnology.registroeducativo.main.util
 
 interface AnimationHandler {
     fun showLoadingAnimation()

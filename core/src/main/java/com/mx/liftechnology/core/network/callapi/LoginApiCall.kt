@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface LoginApiCall {
+fun interface LoginApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_LOGIN)
     suspend fun callApi(
@@ -33,9 +33,9 @@ data class ResponseDataLogin(
     @SerializedName("access_token")
     val accessToken: String?,
     @SerializedName("expires_in")
-    val expiresIn: Int,
+    val expiresToken: Int,
     @SerializedName("token_type")
-    val tokenType: String?,
+    val typeToken: String?,
     @SerializedName("user")
     val user: User?
 )

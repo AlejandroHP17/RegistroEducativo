@@ -1,16 +1,16 @@
 package com.mx.liftechnology.domain.usecase.flowdata.school
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSchool
 import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultSuccess
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepository
@@ -40,13 +40,13 @@ class RegisterSchoolUseCaseImp(
 
         val request = CredentialsRegisterSchool(
             cct = result?.cct,
-            tipocicloescolar_id = result?.tipocicloescolar_id,
-            grado = grade,
-            nombregrupo = group,
-            anio = "2024",
-            periodo = cycle,
-            profesor_id = roleId,
-            user_id = userId,
+            typeCycleSchoolId = result?.schoolCycleTypeId,
+            grade = grade,
+            nameGroup = group,
+            year = "2024",
+            period = cycle,
+            teacherId = roleId,
+            userId = userId,
         )
         return when (val result =  registerSchoolRepository.executeRegisterSchool(request)) {
             is ResultSuccess -> {

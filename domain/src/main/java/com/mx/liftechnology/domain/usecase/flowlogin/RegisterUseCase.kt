@@ -1,15 +1,15 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialsRegister
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultSuccess
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.data.repository.loginFlow.RegisterRepository
 
 fun interface RegisterUseCase {
@@ -26,11 +26,11 @@ class RegisterUseCaseImp(
      * */
     override suspend fun putRegister(
         email: String, pass: String, activatationCode: String
-    ):  ModelState<List<String>?, String> {
+    ): ModelState<List<String>?, String> {
         val request = CredentialsRegister(
             email = email,
             password = pass,
-            codigoactivacion = activatationCode
+            activationCode = activatationCode
         )
         return when (val result =  registerRepository.executeRegister(request)) {
             is ResultSuccess -> {

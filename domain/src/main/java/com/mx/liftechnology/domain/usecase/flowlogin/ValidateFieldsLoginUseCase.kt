@@ -1,11 +1,11 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelRegex
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeSuccess
+import com.mx.liftechnology.domain.model.generic.ModelRegex
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 
 interface ValidateFieldsLoginUseCase {
     fun validateEmail(email: String?): ModelState<Int, Int>
@@ -61,7 +61,7 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateRepeatPass(pass: String?, repeatPass: String?):  ModelState<Int,Int> {
+    override fun validateRepeatPass(pass: String?, repeatPass: String?): ModelState<Int, Int> {
         return when {
             repeatPass.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
             repeatPass != pass -> ErrorState(ModelCodeError.ET_DIFFERENT)
@@ -73,7 +73,7 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateCode(code: String?):  ModelState<Int,Int> {
+    override fun validateCode(code: String?): ModelState<Int, Int> {
         return when {
             code.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)

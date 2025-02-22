@@ -11,7 +11,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.mx.liftechnology.domain.interfaces.AnimationHandler
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.databinding.ActivityMainBinding
 
 /** MainActivity

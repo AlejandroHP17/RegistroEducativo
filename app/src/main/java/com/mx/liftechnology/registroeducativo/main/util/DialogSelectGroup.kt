@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.core.model.ModelDialogStudentGroup
+import com.mx.liftechnology.domain.model.ModelDialogStudentGroup
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.DialogSelectGroupBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.DialogGroupAdapter

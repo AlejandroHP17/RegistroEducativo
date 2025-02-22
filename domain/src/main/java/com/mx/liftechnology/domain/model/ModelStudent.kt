@@ -4,14 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 
 data class ModelStudent (
-    val alumno_id : String?,
+    val studentId : String?,
     val curp : String?,
-    val fechanacimiento : String?,
-    val celular : String?,
-    val user_id : String?,
+    val birthday : String?,
+    val phoneNumber : String?,
+    val userId : String?,
     val name : String?,
-    val paterno : String?,
-    val materno : String?
+    val lastName : String?,
+    val secondLastName : String?
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -26,14 +26,14 @@ data class ModelStudent (
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(alumno_id)
+        parcel.writeString(studentId)
         parcel.writeString(curp)
-        parcel.writeString(fechanacimiento)
-        parcel.writeString(celular)
-        parcel.writeString(user_id)
+        parcel.writeString(birthday)
+        parcel.writeString(phoneNumber)
+        parcel.writeString(userId)
         parcel.writeString(name)
-        parcel.writeString(paterno)
-        parcel.writeString(materno)
+        parcel.writeString(lastName)
+        parcel.writeString(secondLastName)
     }
 
     override fun describeContents(): Int {

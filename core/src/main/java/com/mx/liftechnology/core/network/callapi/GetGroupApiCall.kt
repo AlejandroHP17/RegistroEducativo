@@ -18,9 +18,9 @@ fun interface GroupApiCall {
 // Modelo para credenciales
 data class CredentialsGroup(
     @SerializedName("profesor_id")
-    val profesor_id: Int?,
+    val teacherId: Int?,
     @SerializedName("user_id")
-    val user_id: Int?
+    val userId: Int?
 )
 
 data class ResponseGroupTeacher(

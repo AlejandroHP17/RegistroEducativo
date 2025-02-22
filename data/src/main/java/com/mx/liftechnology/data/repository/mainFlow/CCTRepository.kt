@@ -1,45 +1,30 @@
 package com.mx.liftechnology.data.repository.mainFlow
 
-import com.mx.liftechnology.core.model.modelApi.GenericResponse
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.GetCctApiCall
 import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
-import retrofit2.Response
+import com.mx.liftechnology.data.util.ExceptionHandler
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultService
+import com.mx.liftechnology.data.util.ResultSuccess
+import retrofit2.HttpException
 
 
 fun interface CCTRepository{
-  suspend fun executeSchoolCCT(cct:String): ModelState<ResponseCctSchool?, String>
+  suspend fun executeSchoolCCT(cct:String): ResultService<ResponseCctSchool?, FailureService>
 }
 
 class CCTRepositoryImp(
     private val cctApiCall: GetCctApiCall
 ) :  CCTRepository {
 
-    override suspend fun executeSchoolCCT(cct:String): ModelState<ResponseCctSchool?, String>  {
+    override suspend fun executeSchoolCCT(cct:String): ResultService<ResponseCctSchool?, FailureService> {
         return try {
             val response = cctApiCall.callApi(cct)
-            handleResponse(response)
-
+            if (response.isSuccessful) ResultSuccess(response.body()?.data)
+            else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
-            // Manejo de excepciones
-            ErrorState(e.message?:ModelCodeError.ERROR_CATCH )
-        }
-    }
-
-    /**
-     * Maneja la respuesta del servidor y retorna el estado adecuado.
-     */
-    private fun handleResponse(responseBody: Response<GenericResponse<ResponseCctSchool?>>): ModelState<ResponseCctSchool?, String> {
-        return when (responseBody.code()) {
-            200 -> SuccessState(responseBody.body()?.data)
-            400 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            401 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            404 -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            500 -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            ResultError(ExceptionHandler.handleException(e))
         }
     }
 }

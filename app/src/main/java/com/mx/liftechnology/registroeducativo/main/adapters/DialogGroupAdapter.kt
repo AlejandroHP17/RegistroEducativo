@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.core.model.ModelDialogStudentGroup
+import com.mx.liftechnology.domain.model.ModelDialogStudentGroup
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardGroupBinding
 
 /** DialogGroupAdapter - Build the adapter for menu (home)

@@ -7,7 +7,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface GetListStudentApiCall {
+fun interface GetListStudentApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_GET_STUDENT)
     suspend fun callApi(
@@ -17,32 +17,32 @@ interface GetListStudentApiCall {
 
 data class CredentialGetListStudent(
     @SerializedName("profesor_id")
-    val profesor_id: Int?,
+    val teacherId: Int?,
     @SerializedName("user_id")
-    val user_id: Int?,
+    val userId: Int?,
     @SerializedName("profesorescuelaciclogrupo_id")
-    val profesorescuelaciclogrupo_id: Int?
+    val teacherSchoolCycleGroupId: Int?
 )
 
 data class ResponseGetStudent(
     @SerializedName("id")
     val id: String?,
     @SerializedName("alumno_id")
-    val alumno_id: String?,
+    val studentId: String?,
     @SerializedName("profesorescuelaciclogrupo_id")
-    val profesorescuelaciclogrupo_id: String?,
+    val teacherSchoolCycleGroupId: String?,
     @SerializedName("curp")
     val curp: String?,
     @SerializedName("fechanacimiento")
-    val fechanacimiento: String?,
+    val birthday: String?,
     @SerializedName("celular")
-    val celular: String?,
+    val phoneNumber: String?,
     @SerializedName("user_id")
-    val user_id: String?,
+    val userId: String?,
     @SerializedName("name")
     val name: String?,
     @SerializedName("paterno")
-    val paterno: String?,
+    val lastName: String?,
     @SerializedName("materno")
-    val materno: String?
+    val secondLastName: String?
 )

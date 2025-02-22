@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-interface RegisterStudentApiCall {
+fun interface RegisterStudentApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_REGISTER_STUDENT)
     suspend fun callApi(
@@ -18,22 +18,22 @@ interface RegisterStudentApiCall {
 
 // Modelo para credenciales
 data class CredentialsRegisterStudent(
-    @SerializedName("name")
+    @SerializedName("nombres")
     val name: String,
-    @SerializedName("lastName")
+    @SerializedName("paterno")
     val lastName: String,
-    @SerializedName("secondLastName")
+    @SerializedName("materno")
     val secondLastName: String,
     @SerializedName("curp")
     val curp: String,
     @SerializedName("fechanacimiento")
-    val fechanacimiento: String,
+    val birthday: String,
     @SerializedName("celular")
-    val celular: String,
+    val phoneNumber: String,
     @SerializedName("profesorescuelaciclogrupo_id")
-    val profesorescuelaciclogrupo_id: Int?,
+    val teacherSchoolCycleGroupId: Int?,
     @SerializedName("user_id")
-    val user_id: Int?,
+    val userId: Int?,
     @SerializedName("profesor_id")
-    val profesor_id: Int?,
+    val teacherId: Int?,
 )

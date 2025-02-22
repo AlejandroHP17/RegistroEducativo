@@ -1,20 +1,20 @@
 package com.mx.liftechnology.domain.usecase.flowdata.student
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialGetListStudent
 import com.mx.liftechnology.core.network.callapi.ResponseGetStudent
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudStudentRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.ModelStudent
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface ReadStudentUseCase {
     suspend fun getListStudent(): ModelState<List<ModelStudent?>?, String>?
@@ -31,9 +31,9 @@ class ReadStudentUseCaseImp(
             preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val request = CredentialGetListStudent(
-            profesor_id = roleId,
-            user_id = userId,
-            profesorescuelaciclogrupo_id = pecg
+            teacherId = roleId,
+            userId = userId,
+            teacherSchoolCycleGroupId = pecg
         )
 
         return when (val result = crudStudentRepository.executeGetListStudent(request)) {
@@ -70,14 +70,14 @@ class ReadStudentUseCaseImp(
     private fun List<ResponseGetStudent?>.toModelStudentList(): List<ModelStudent> {
         return this.map { response ->
             ModelStudent(
-                alumno_id = response?.alumno_id,
+                studentId = response?.studentId,
                 curp = response?.curp,
-                fechanacimiento = response?.fechanacimiento,
-                celular = response?.celular,
-                user_id = response?.user_id,
+                birthday = response?.birthday,
+                phoneNumber = response?.phoneNumber,
+                userId = response?.userId,
                 name = response?.name,
-                paterno = response?.paterno,
-                materno = response?.materno
+                lastName = response?.lastName,
+                secondLastName = response?.secondLastName
             )
         }
     }

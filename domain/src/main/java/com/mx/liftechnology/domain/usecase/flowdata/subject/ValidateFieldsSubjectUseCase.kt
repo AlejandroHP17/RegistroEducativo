@@ -1,15 +1,15 @@
 package com.mx.liftechnology.domain.usecase.flowdata.subject
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelCodeSuccess
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeSuccess
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 
 interface ValidateFieldsSubjectUseCase {
-    fun validateName(group: String?): ModelState<Int, Int>
-    fun validateListJobs(list: MutableList<ModelFormatSubject>?): ModelState<Int, String>
+    fun validateName(nameStudent: String?): ModelState<Int, Int>
+    fun validateListJobs(listJobs: MutableList<ModelFormatSubject>?): ModelState<Int, String>
 }
 
 class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
@@ -17,9 +17,9 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateName(name: String?): ModelState<Int, Int> {
+    override fun validateName(nameStudent: String?): ModelState<Int, Int> {
         return when {
-            name.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
+            nameStudent.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }
     }
@@ -31,8 +31,7 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
     override fun validateListJobs(listJobs: MutableList<ModelFormatSubject>?): ModelState<Int, String> {
         return when{
             listJobs?.size == 0 -> ErrorState(ModelCodeError.SP_NOT_JOB)
-            listJobs?.any { it.name.isNullOrEmpty() } == true &&
-            listJobs?.any { it.percent.isNullOrEmpty() } == true
+            listJobs?.any { it.name.isNullOrEmpty() } == true && listJobs.any { it.percent.isNullOrEmpty() }
                 -> ErrorState(ModelCodeError.SP_NOT_OPTION)
             else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
         }

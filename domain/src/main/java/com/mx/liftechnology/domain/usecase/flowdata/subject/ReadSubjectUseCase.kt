@@ -1,18 +1,18 @@
 package com.mx.liftechnology.domain.usecase.flowdata.subject
 
-import com.mx.liftechnology.core.model.modelBase.ErrorState
-import com.mx.liftechnology.core.model.modelBase.ErrorUnauthorizedState
-import com.mx.liftechnology.core.model.modelBase.ErrorUserState
-import com.mx.liftechnology.core.model.modelBase.ModelCodeError
-import com.mx.liftechnology.core.model.modelBase.ModelState
-import com.mx.liftechnology.core.model.modelBase.SuccessState
 import com.mx.liftechnology.core.network.callapi.CredentialGetListSubject
-import com.mx.liftechnology.core.network.util.FailureService
-import com.mx.liftechnology.core.network.util.ResultError
-import com.mx.liftechnology.core.network.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudSubjectRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface ReadSubjectUseCase {
     suspend fun getListSubject(): ModelState<List<String?>?, String>?
@@ -22,15 +22,15 @@ class ReadSubjectUseCaseImp (
     private val crudSubjectRepository : CrudSubjectRepository,
     private val preference: PreferenceUseCase
 ) : ReadSubjectUseCase {
-    override suspend fun getListSubject(): ModelState<List<String?>?, String>? {
+    override suspend fun getListSubject(): ModelState<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val request = CredentialGetListSubject(
-            profesor_id = roleId,
-            user_id = userId,
-            profesorescuelaciclogrupo_id = pecg
+            teacherId = roleId,
+            userId = userId,
+            teacherSchoolCycleGroupId = pecg
         )
 
         return when (val result =  crudSubjectRepository.executeGetListSubject(request)) {

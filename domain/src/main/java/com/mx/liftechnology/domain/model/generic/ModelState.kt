@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.model.modelBase
+package com.mx.liftechnology.domain.model.generic
 
 /** Sealed class, a generic result
  * @author Pelkidev

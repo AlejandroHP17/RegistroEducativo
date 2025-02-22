@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.network.util
+package com.mx.liftechnology.data.util
 
 object ExceptionHandler {
     fun handleException(exception: Throwable): FailureService {
