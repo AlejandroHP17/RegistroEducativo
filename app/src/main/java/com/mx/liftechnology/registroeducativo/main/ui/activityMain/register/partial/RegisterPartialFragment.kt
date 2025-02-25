@@ -8,16 +8,16 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
-import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterPartialBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.PeriodAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.PeriodClickListener
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
@@ -134,8 +134,15 @@ class RegisterPartialFragment : Fragment() {
                     listPeriods = state.result
                     initAdapterPeriod(state.result?.size!!)
                 }
-                is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
-                else -> log(state.toString())
+                is ErrorUserState ->{
+                    registerPartialViewModel.loaderState(false)
+                    showCustomToastFailed(requireActivity(), state.result)
+                }
+
+                else -> {
+                    registerPartialViewModel.loaderState(false)
+                    log(state.toString())
+                }
             }
         }
     }

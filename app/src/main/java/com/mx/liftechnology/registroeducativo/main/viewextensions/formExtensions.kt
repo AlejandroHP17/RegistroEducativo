@@ -4,8 +4,8 @@ import android.content.Context
 import android.widget.EditText
 import androidx.core.content.ContextCompat.getString
 import com.google.android.material.textfield.TextInputLayout
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.core.util.ModelSelectorForm
+import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.registroeducativo.R
 
 /** Check the input text, and show the errors or not

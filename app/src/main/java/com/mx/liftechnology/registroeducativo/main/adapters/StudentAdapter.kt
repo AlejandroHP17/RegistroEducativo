@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.ModelStudent
-import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardStudentBinding
+import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 
 class StudentAdapter(
     private var items: MutableList<ModelStudent?>?,
@@ -21,7 +21,7 @@ class StudentAdapter(
             oldItem == newItem
     }
 
-    class ViewHolder(private val binding: RecyclerCardStudentBinding) :
+    class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelStudent, action: StudentClickListener) {
             // Synchronize the item response with the view
@@ -39,7 +39,7 @@ class StudentAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            RecyclerCardStudentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            RecyclerCardListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

@@ -119,6 +119,7 @@ class RegisterStudentViewModel(
 
     fun validateDataRecord(data: List<String>) {
         viewModelScope.launch(dispatcherProvider.io) {
+            log(data.toString())
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
             result?.let {
                 log(it.toString())

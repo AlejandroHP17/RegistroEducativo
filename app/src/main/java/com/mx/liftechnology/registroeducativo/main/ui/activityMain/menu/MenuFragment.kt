@@ -8,19 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.mx.liftechnology.data.model.ModelAdapterMenu
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.data.model.ModelAdapterMenu
-import com.mx.liftechnology.registroeducativo.main.model.ModelSelectorMenu
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.model.ModelSelectorMenu
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.util.DialogSelectGroup
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -206,7 +206,7 @@ class MenuFragment : Fragment() {
     private fun initControlEvaluationAdapter(items: List<ModelAdapterMenu>) {
         val adapter = MenuAdapter { item ->
             val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.CALENDAR.value -> MenuFragmentDirections.actionMenuFragmentToRegisterSchoolFragment()
+                ModelSelectorMenu.CALENDAR.value -> MenuFragmentDirections.actionMenuFragmentToCalendarFragment()
                 ModelSelectorMenu.ESTUDENTS.value -> MenuFragmentDirections.actionMenuFragmentToListStudentFragment()
                 ModelSelectorMenu.ESUBJECTS.value -> MenuFragmentDirections.actionMenuFragmentToListSubjectFragment()
                 ModelSelectorMenu.EXPORT.value -> MenuFragmentDirections.actionMenuFragmentToRegisterPartialFragment()

@@ -26,6 +26,7 @@ shimmer = "0.5.0"
 lottie = "6.1.0"
 timber = "5.0.1"
 
+
 [libraries]
 timber = {group = "com.jakewharton.timber" , name = "timber" , version.ref = "timber"}
 

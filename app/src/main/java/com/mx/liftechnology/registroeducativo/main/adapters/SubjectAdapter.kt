@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 import com.mx.liftechnology.registroeducativo.main.model.ModelSubject
-import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBinding
 
 class SubjectAdapter(
     private var items: MutableList<ModelSubject?>?,
@@ -21,18 +21,20 @@ class SubjectAdapter(
             oldItem == newItem
     }
 
-    class ViewHolder(private val binding: RecyclerCardSubjectBinding) :
+    class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelSubject, action: SubjectClickListener) {
             // Synchronize the item response with the view
             binding.apply {
+                tvNameList.text = item.name
+                cvTouch.setOnClickListener { action.onClick(item) }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectAdapter.ViewHolder {
         val binding =
-            RecyclerCardSubjectBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            RecyclerCardListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 

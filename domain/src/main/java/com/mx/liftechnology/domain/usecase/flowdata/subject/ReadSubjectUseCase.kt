@@ -1,6 +1,7 @@
 package com.mx.liftechnology.domain.usecase.flowdata.subject
 
 import com.mx.liftechnology.core.network.callapi.CredentialGetListSubject
+import com.mx.liftechnology.core.network.callapi.ResponseGetListSubject
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudSubjectRepository
@@ -15,14 +16,14 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface ReadSubjectUseCase {
-    suspend fun getListSubject(): ModelState<List<String?>?, String>?
+    suspend fun getListSubject(): ModelState<List<ResponseGetListSubject?>?, String>?
 }
 
 class ReadSubjectUseCaseImp (
     private val crudSubjectRepository : CrudSubjectRepository,
     private val preference: PreferenceUseCase
 ) : ReadSubjectUseCase {
-    override suspend fun getListSubject(): ModelState<List<String?>?, String> {
+    override suspend fun getListSubject(): ModelState<List<ResponseGetListSubject?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -35,8 +36,9 @@ class ReadSubjectUseCaseImp (
 
         return when (val result =  crudSubjectRepository.executeGetListSubject(request)) {
             is ResultSuccess -> {
-
-                SuccessState(result.data)
+                if (result.data?.isEmpty() == true)
+                    ErrorState(ModelCodeError.ERROR_DATA)
+                    else SuccessState(result.data)
             }
             is ResultError -> {
                 handleResponse(result.error)
@@ -51,7 +53,7 @@ class ReadSubjectUseCaseImp (
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<ResponseGetListSubject?>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)

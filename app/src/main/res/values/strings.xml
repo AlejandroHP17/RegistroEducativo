@@ -87,10 +87,14 @@
 
     <!-- Gets Flow -->
     <string name="get_student_name">Lista de alumnos</string>
+    <string name="get_subject_name">Lista de campos formativos</string>
 
 
     <!-- Dialogs Flow -->
     <string name="dialog_select_cycle">Selecciona tu ciclo escolar</string>
+
+    <!-- Dialogs Flow -->
+    <string name="calendar">Calendario</string>
 
     <!-- Edit Flow -->
     <string name="edit_student_name">Edita los datos</string>
@@ -102,7 +106,6 @@
     <string name="edit_student_birthday">Fecha de nacimiento</string>
     <string name="edit_student_number">Número de contacto</string>
     <string name="edit_student_edit">REGISTRAR</string>
-
 
 
     <!-- TODO: Remove or change this placeholder text -->

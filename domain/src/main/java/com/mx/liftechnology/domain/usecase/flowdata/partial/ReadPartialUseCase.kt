@@ -43,7 +43,7 @@ class ReadPartialUseCaseImp (
                     )
                 } ?.toMutableList()
                 if (listDate?.size!! > 0)
-                SuccessState(listDate)
+                    SuccessState(listDate)
                 else
                     ErrorState(ModelCodeError.ERROR_UNKNOWN)
             }

@@ -11,13 +11,13 @@ import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
-import com.mx.liftechnology.registroeducativo.main.model.ModelSubject
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentEmptyStateBinding
 import com.mx.liftechnology.registroeducativo.databinding.FragmentListStudentSubjectBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.SubjectAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.SubjectClickListener
+import com.mx.liftechnology.registroeducativo.main.model.ModelSubject
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListSubjectFragment : Fragment() {
@@ -68,7 +68,6 @@ class ListSubjectFragment : Fragment() {
         animationHandler = null
         _binding = null
         emptyStateBinding = null
-        subjectAdapter = null
     }
 
     /** initialView - Print the correct view, menu or empty state
@@ -77,7 +76,7 @@ class ListSubjectFragment : Fragment() {
      */
     private fun initView() {
         binding.apply {
-            includeHeader.tvTitle.text = getString(R.string.empty_subject_1)
+            includeHeader.tvTitle.text = getString(R.string.get_subject_name)
             includeButton.btnAction.text = getString(R.string.add_button)
             includeButton.btnRecord.visibility = View.GONE
         }
@@ -139,10 +138,9 @@ class ListSubjectFragment : Fragment() {
         listSubjectViewModel.responseListSubject.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> {
-                    listSubject = mutableListOf()
+                    listSubject = state.result?.toMutableList()
                     initAdapterStudent()
                 }
-
                 is ErrorState -> emptyView()
                 is ErrorUserState -> emptyView()
                 else -> emptyView()
@@ -153,8 +151,8 @@ class ListSubjectFragment : Fragment() {
     private fun initAdapterStudent() {
         /* Build the adapter */
         subjectAdapter = SubjectAdapter(listSubject, SubjectClickListener { item ->
-            // Aquí manejas el click del estudiante``
-            // Puedes navegar a otro fragment o ejecutar otra acción aquí
+            val navigate = ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
+            findNavController().navigate(navigate)
         })
         binding.apply {
             rvListStudent.layoutManager = LinearLayoutManager(context)

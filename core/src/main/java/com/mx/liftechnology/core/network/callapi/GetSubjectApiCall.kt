@@ -12,7 +12,7 @@ fun interface GetListSubjectApiCall {
     @POST(Environment.END_POINT_GET_SUBJECT)
     suspend fun callApi(
         @Body credentials: CredentialGetListSubject
-    ): Response<GenericResponse<List<String?>?>>
+    ): Response<GenericResponse<List<ResponseGetListSubject?>?>>
 }
 
 data class CredentialGetListSubject(
@@ -22,4 +22,12 @@ data class CredentialGetListSubject(
     val userId: Int?,
     @SerializedName("profesorescuelaciclogrupo_id")
     val teacherSchoolCycleGroupId: Int?
+)
+
+
+data class ResponseGetListSubject(
+    @SerializedName("campoformativopecg_id")
+    val subjectTeacherSchoolCycleGroupId: Int?,
+    @SerializedName("cf_descripcion")
+    val subjectDescription: String?
 )

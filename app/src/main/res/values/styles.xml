@@ -52,4 +52,19 @@
         <item name="boxCornerRadiusBottomStart">16dp</item>
         <item name="boxCornerRadiusTopEnd">16dp</item>
     </style>
+
+    <style name="CalendarStyle" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:dateTextAppearance">@style/CustomDateText</item>
+
+        <item name="android:weekDayTextAppearance">@style/CustomDateText</item>
+        <!-- Cambia el color del encabezado (mes/año) -->
+        <item name="android:headerDayOfMonthTextAppearance">@style/CustomDateText</item>
+    </style>
+
+    <style name="CustomDateText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/color_secondary_text</item>
+        <item name="android:colorActivatedHighlight"> @color/color_error</item>
+    </style>
+
 </resources>

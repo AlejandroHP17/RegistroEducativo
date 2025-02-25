@@ -35,6 +35,9 @@ object ModelCodeError {
     const val ET_MISTAKE_CURP: Int = 213
     const val ET_MISTAKE_PHONE_NUMBER: Int = 214
 
+
+    const val ET_MISTAKE_GENERIC: Int = 215
+
     // Spinners
     const val SP_NOT_OPTION: String = "No ha seleccionado un valor válido del spinner"
     const val SP_NOT_JOB: String = "No ha seleccionado un valor válido del spinner"

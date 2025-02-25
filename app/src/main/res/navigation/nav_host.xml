@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_menuFragment_to_listStudentFragment"
             app:destination="@id/listStudentFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
 
     <fragment
@@ -101,4 +104,9 @@
             android:name="infoStudent"
             app:argType="com.mx.liftechnology.domain.model.ModelStudent" />
     </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.evaluation.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" />
 </navigation>

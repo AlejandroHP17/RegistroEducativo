@@ -9,18 +9,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSchoolBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.VoiceViewModel
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
@@ -111,6 +111,11 @@ class RegisterSchoolFragment : Fragment() {
                     }
                     is ErrorState -> {
                         cleanAutoText()
+                        inputCct.errorET(ModelCodeError.ET_MISTAKE_GENERIC)
+                    }
+                    is ErrorUserState -> {
+                        cleanAutoText()
+                        inputCct.errorET(ModelCodeError.ET_NOT_FOUND)
                     }
                     else -> {
                         inputCct.errorET(ModelCodeError.ET_EMPTY)

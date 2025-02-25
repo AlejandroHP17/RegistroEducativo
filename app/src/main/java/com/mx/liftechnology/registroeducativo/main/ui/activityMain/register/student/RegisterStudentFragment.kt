@@ -11,11 +11,11 @@ import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterStudentBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.VoiceViewModel
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -170,7 +170,7 @@ class RegisterStudentFragment : Fragment() {
                     "nombre" -> binding.etName.setText(it.value)
                     "apellido paterno" -> binding.etLastName.setText(it.value)
                     "apellido materno" -> binding.etSecondLastName.setText(it.value)
-                    "curp" -> binding.etCurp.setText(it.value)
+                    "CURP" -> binding.etCurp.setText(it.value)
                     "fecha de nacimiento" -> binding.tvBirthday.text = it.value
                     "número de contacto" -> binding.etPhoneNumber.setText(it.value)
                 }
