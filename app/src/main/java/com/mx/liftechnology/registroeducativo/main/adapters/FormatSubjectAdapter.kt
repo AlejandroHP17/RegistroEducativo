@@ -16,7 +16,6 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBin
  * @param items list to build
  * */
 class FormatSubjectAdapter(
-    private var items: MutableList<ModelFormatSubject>
 ) : ListAdapter<ModelFormatSubject, FormatSubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
     companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelFormatSubject>() {
@@ -34,7 +33,7 @@ class FormatSubjectAdapter(
             // Synchronize the item response with the view
             binding.apply {
                 etFieldName.setText(item.name)
-                etFieldPercent.setText(item.percent)
+                //etFieldPercent.setText(item.percent)
 
                 // Detectar cambios en los EditTexts
                 etFieldName.addTextChangedListener(object : TextWatcher {
@@ -95,11 +94,14 @@ class FormatSubjectAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = items[position]
+        val currentItem = getItem(position)
         holder.bind(currentItem)
     }
 
-    override fun getItemCount(): Int = items.size
+    fun getList(): MutableList<ModelFormatSubject> = currentList
 
-    fun getList() = items
+    /** Método para actualizar la lista de manera eficiente */
+    fun updateList(newList: List<ModelFormatSubject>) {
+        submitList(newList)
+    }
 }

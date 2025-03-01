@@ -29,7 +29,7 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var studentAdapter: StudentAdapter? = null
-    private var listStudent: MutableList<ModelStudent?>? = null
+    private var listStudent: MutableList<ModelStudent>? = null
 
     /* View Model variable */
     private val listStudentViewModel: ListStudentViewModel by viewModel()
@@ -116,15 +116,18 @@ class CalendarFragment : Fragment() {
     private fun initAdapterStudent() {
 
         /* Build the adapter */
-        studentAdapter = StudentAdapter(listStudent, StudentClickListener { item ->
-            val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
-            findNavController().navigate(navigate)
-        })
+        studentAdapter = StudentAdapter(StudentClickListener (
+            onItemClick = { item ->
+                val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
+                findNavController().navigate(navigate)
+            },
+            onItemDelete = {}
+
+        ))
+        listStudent?.let { studentAdapter?.updateList(it.toList()) }
         binding.apply {
             rvListCalendar.layoutManager = LinearLayoutManager(context)
             rvListCalendar.adapter = studentAdapter
         }
     }
-
-
 }

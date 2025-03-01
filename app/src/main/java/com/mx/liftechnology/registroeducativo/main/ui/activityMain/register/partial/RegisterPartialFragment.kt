@@ -105,6 +105,16 @@ class RegisterPartialFragment : Fragment() {
             adapterPeriods?.updateDate(data)
         }
 
+        registerPartialViewModel.adapterField.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SuccessState -> {}
+                is ErrorUserState -> {
+                    showCustomToastFailed(requireActivity(),state.result)
+                }
+                else-> {}
+            }
+        }
+
         registerPartialViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {

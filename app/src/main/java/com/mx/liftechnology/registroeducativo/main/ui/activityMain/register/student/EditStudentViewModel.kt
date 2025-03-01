@@ -9,8 +9,8 @@ import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -23,23 +23,23 @@ class EditStudentViewModel(
     ) : ViewModel() {
 
     // Campos observables
-    private val _nameField = MutableLiveData<ModelState<Int, Int>>()
-    val nameField: LiveData<ModelState<Int, Int>> get() = _nameField
+    private val _nameField = MutableLiveData<ModelState<String, String>>()
+    val nameField: LiveData<ModelState<String, String>> get() = _nameField
 
-    private val _lastNameField = MutableLiveData<ModelState<Int, Int>>()
-    val lastNameField: LiveData<ModelState<Int, Int>> get() = _lastNameField
+    private val _lastNameField = MutableLiveData<ModelState<String, String>>()
+    val lastNameField: LiveData<ModelState<String, String>> get() = _lastNameField
 
-    private val _secondLastNameField = MutableLiveData<ModelState<Int, Int>>()
-    val secondLastNameField: LiveData<ModelState<Int, Int>> get() = _secondLastNameField
+    private val _secondLastNameField = MutableLiveData<ModelState<String, String>>()
+    val secondLastNameField: LiveData<ModelState<String, String>> get() = _secondLastNameField
 
-    private val _curpField = MutableLiveData<ModelState<Int, Int>>()
-    val curpField: LiveData<ModelState<Int, Int>> get() = _curpField
+    private val _curpField = MutableLiveData<ModelState<String, String>>()
+    val curpField: LiveData<ModelState<String, String>> get() = _curpField
 
-    private val _birthdayField = MutableLiveData<ModelState<Int, Int>>()
-    val birthdayField: LiveData<ModelState<Int, Int>> get() = _birthdayField
+    private val _birthdayField = MutableLiveData<ModelState<String, String>>()
+    val birthdayField: LiveData<ModelState<String, String>> get() = _birthdayField
 
-    private val _phoneNumberField = MutableLiveData<ModelState<Int, Int>>()
-    val phoneNumberField: LiveData<ModelState<Int, Int>> get() = _phoneNumberField
+    private val _phoneNumberField = MutableLiveData<ModelState<String, String>>()
+    val phoneNumberField: LiveData<ModelState<String, String>> get() = _phoneNumberField
 
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()

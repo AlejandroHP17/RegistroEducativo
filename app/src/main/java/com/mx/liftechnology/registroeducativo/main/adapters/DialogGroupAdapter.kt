@@ -27,7 +27,7 @@ class DialogGroupAdapter(
             binding.apply {
                 // Concatenar la información del ítem
                 val stringBuilder = StringBuilder(item.item?.cct ?: "").append(" ")
-                    .append(item.item?.group).append(" ").append(item.item?.name)
+                    .append(item.item?.group).append(item.item?.name)
                 tv.text = stringBuilder
 
                 // Verificar si el ítem está seleccionado

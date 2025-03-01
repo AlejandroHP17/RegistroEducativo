@@ -14,7 +14,7 @@ val List<ResponseGroupTeacher?>?.RGTtoConvertModelDialogStudentGroup: List<Model
             ModelDialogStudentGroup(
                 selected = false,
                 item = teacher,
-                nameItem = "${it.cct} - ${it.group} ${it.name} - ${it.shift}"
+                nameItem = "${it.cct} - ${it.group}${it.name} - ${it.shift}"
             )
         }
     } ?: emptyList()

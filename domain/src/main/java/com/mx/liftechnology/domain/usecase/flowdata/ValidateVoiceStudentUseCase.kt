@@ -1,5 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowdata
 
+import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -9,7 +10,7 @@ fun interface ValidateVoiceStudentUseCase {
 
 class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
 
-    object RegexPatterns {
+    companion object RegexPatterns {
         const val NAME_REGEX = "Nombre\\s+([A-Za-zÁÉÍÓÚáéíóúüÜñÑ]+)"
         const val LAST_NAME_REGEX = "Apellido paterno\\s+([A-Za-zÁÉÍÓÚáéíóúüÜñÑ]+)"
         const val SECOND_LAST_NAME_REGEX = "Apellido Materno\\s+([A-Za-zÁÉÍÓÚáéíóúüÜñÑ]+)"
@@ -18,28 +19,27 @@ class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
         const val PHONE_NUMBER_REGEX = "Número de contacto\\s+([0-9 ]+)"
     }
 
+
     override suspend fun buildModelStudent(data: String?): MutableMap<String, String>? {
         return data?.let {
             val regexPatterns = mapOf(
-                "nombre" to RegexPatterns.NAME_REGEX,
-                "apellido paterno" to RegexPatterns.LAST_NAME_REGEX,
-                "apellido materno" to RegexPatterns.SECOND_LAST_NAME_REGEX,
-                "fecha de nacimiento" to RegexPatterns.BIRTHDAY_REGEX,
-                "número de contacto" to RegexPatterns.PHONE_NUMBER_REGEX
+                ModelVoiceConstants.NAME to NAME_REGEX,
+                ModelVoiceConstants.LAST_NAME to LAST_NAME_REGEX,
+                ModelVoiceConstants.SECOND_LAST_NAME to SECOND_LAST_NAME_REGEX,
+                ModelVoiceConstants.BIRTHDAY to BIRTHDAY_REGEX,
+                ModelVoiceConstants.PHONE_NUMBER to PHONE_NUMBER_REGEX
             )
 
             val resultMap = mutableMapOf<String, String>()
 
             val cleanCurpData = data.replace(" ", "") // Elimina todos los espacios
-            val curpMatch = Regex(RegexPatterns.CURP_REGEX, RegexOption.IGNORE_CASE).find(cleanCurpData)
+            val curpMatch = Regex(CURP_REGEX, RegexOption.IGNORE_CASE).find(cleanCurpData)
 
             curpMatch?.let {
-                resultMap["CURP"] = it.value.uppercase()
+                resultMap[ModelVoiceConstants.CURP] = it.value.uppercase()
             }
 
-// 🔹 Eliminamos la CURP del string original para que no interfiera con otros datos
             val cleanData = curpMatch?.let { data.replace(it.value.toRegex(), " ") } ?: data
-
 
             regexPatterns.forEach { (key, pattern) ->
                 val regex = Regex(pattern, RegexOption.IGNORE_CASE)
@@ -48,9 +48,9 @@ class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
 
                 if (!value.isNullOrEmpty()) {
                     resultMap[key] = when (key) {
-                        "nombre", "apellido paterno", "apellido materno" -> capitalizeWords(value)
-                        "número de contacto" -> formatPhoneNumber(value) ?: "Número inválido"
-                        "fecha de nacimiento" -> convertDate(value) ?: "Fecha inválida"
+                        ModelVoiceConstants.NAME, ModelVoiceConstants.LAST_NAME,ModelVoiceConstants.SECOND_LAST_NAME -> capitalizeWords(value)
+                        ModelVoiceConstants.PHONE_NUMBER -> formatPhoneNumber(value)
+                        ModelVoiceConstants.BIRTHDAY -> convertDate(value) ?: "Fecha inválida"
                         else -> value
                     }
                 }

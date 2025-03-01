@@ -1,25 +1,25 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
 import android.os.Build
+import com.mx.liftechnology.core.network.callapi.Credentials
+import com.mx.liftechnology.core.network.callapi.ResponseDataLogin
+import com.mx.liftechnology.core.network.callapi.User
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.core.util.LocationHelper
+import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.core.network.callapi.Credentials
-import com.mx.liftechnology.core.network.callapi.ResponseDataLogin
-import com.mx.liftechnology.core.network.callapi.User
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.core.preference.ModelPreference
-import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.core.util.LocationHelper
-import com.mx.liftechnology.data.repository.loginFlow.LoginRepository
 
 fun interface LoginUseCase {
-    suspend fun login(email: String?, pass: String?): ModelState<User?, String>?
+    suspend fun login(email: String?, pass: String?, remember: Boolean): ModelState<User?, String>?
 }
 
 class LoginUseCaseImp(
@@ -33,23 +33,23 @@ class LoginUseCaseImp(
      * @author pelkidev
      * @since 1.0.0
      */
-    override suspend fun login(email: String?, pass: String?): ModelState<User?, String> {
+    override suspend fun login(email: String?, pass: String?, remember: Boolean): ModelState<User?, String> {
         val location = locationHelper.getCurrentLocation()
         val latitude = location?.latitude
         val longitude = location?.longitude
 
         val request = Credentials(
-            email = email.orEmpty(),
+            email = email?.lowercase().orEmpty(),
             password = pass.orEmpty(),
             latitude = latitude?.toString().orEmpty(),
             longitude = longitude?.toString().orEmpty(),
-            imei = Build.SERIAL + Build.FINGERPRINT + Build.ID// caso de uso
+            imei = Build.SERIAL + Build.FINGERPRINT + Build.ID
         )
 
         return when (val result = repositoryLogin.executeLogin(request)) {
             is ResultSuccess -> {
                 result.data?.accessToken?.let {
-                    if(savePreferences(result.data)) SuccessState(result.data?.user)
+                    if(savePreferences(result.data, remember)) SuccessState(result.data?.user)
                     else ErrorUserState(ModelCodeError.ERROR_CRITICAL)
                 }?: ErrorUserState(ModelCodeError.ERROR_CRITICAL)
             }
@@ -60,7 +60,7 @@ class LoginUseCaseImp(
         }
     }
 
-    private fun savePreferences(result: ResponseDataLogin?): Boolean {
+    private fun savePreferences(result: ResponseDataLogin?, remember:Boolean): Boolean {
         return result?.user?.let { data ->
             preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
             preference.savePreferenceInt(ModelPreference.ID_USER, data.userID)
@@ -69,6 +69,7 @@ class LoginUseCaseImp(
                 else data.teacherID
             )
             preference.savePreferenceString(ModelPreference.USER_ROLE, data.role)
+            preference.savePreferenceBoolean(ModelPreference.LOGIN, remember)
             true
         }?: false
     }

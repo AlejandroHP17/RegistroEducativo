@@ -3,11 +3,11 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.stu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
@@ -21,8 +21,8 @@ class ListStudentViewModel(
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // Observer the animate loader
-    private val _responseListStudent = SingleLiveEvent<ModelState<List<ModelStudent?>?, String>?>()
-    val responseListStudent: LiveData<ModelState<List<ModelStudent?>?, String>?> get() = _responseListStudent
+    private val _responseListStudent = SingleLiveEvent<ModelState<List<ModelStudent>?, String>?>()
+    val responseListStudent: LiveData<ModelState<List<ModelStudent>?, String>?> get() = _responseListStudent
 
     fun getListStudent() {
         viewModelScope.launch {

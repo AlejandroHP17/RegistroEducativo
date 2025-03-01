@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastSuccess
@@ -94,32 +93,32 @@ class RegisterFragment : Fragment() {
         registerViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputEmail.successET()
-                is ErrorState -> binding.inputEmail.errorET(state.result)
-                else -> binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                is ErrorUserState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeInputs.ET_PASS_FORMAT_MISTAKE)
             }
         }
 
         registerViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputPassword.successET()
-                is ErrorState -> binding.inputPassword.errorET(state.result)
-                else -> binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
+                is ErrorUserState -> binding.inputPassword.errorET(state.result)
+                else -> binding.inputPassword.errorET(ModelCodeInputs.ET_PASS_FORMAT_MISTAKE)
             }
         }
 
         registerViewModel.repeatPassField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputRepeatPassword.successET()
-                is ErrorState -> binding.inputRepeatPassword.errorET(state.result)
-                else -> binding.inputRepeatPassword.errorET(ModelCodeError.ET_DIFFERENT)
+                is ErrorUserState -> binding.inputRepeatPassword.errorET(state.result)
+                else -> binding.inputRepeatPassword.errorET(ModelCodeInputs.ET_PASS_DIFFERENT_MISTAKE)
             }
         }
 
         registerViewModel.codeField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputCode.successET()
-                is ErrorState -> binding.inputCode.errorET(ModelCodeError.ET_NOT_FOUND)
-                else -> binding.inputCode.errorET(ModelCodeError.ET_EMPTY)
+                is ErrorUserState -> binding.inputCode.errorET(state.result)
+                else -> binding.inputCode.errorET(ModelCodeInputs.ET_EMPTY)
             }
         }
 
@@ -145,7 +144,6 @@ class RegisterFragment : Fragment() {
                     findNavController().popBackStack()
                     showCustomToastSuccess(requireActivity(), state.result.toString())
                 }
-                is ErrorState -> log(state.result)
                 is ErrorUserState -> showCustomToastFailed(requireActivity(), state.result)
                 else -> {
                     // Nothing

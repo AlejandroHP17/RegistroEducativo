@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
-import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentEmptyStateBinding
 import com.mx.liftechnology.registroeducativo.databinding.FragmentListStudentSubjectBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListStudentFragment : Fragment() {
@@ -27,7 +28,7 @@ class ListStudentFragment : Fragment() {
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
 
     private var studentAdapter: StudentAdapter? = null
-    private var listStudent: MutableList<ModelStudent?>? = null
+    private var listStudent: MutableList<ModelStudent>? = null
     private var inflatedView: View? = null
 
     /* View Model variable */
@@ -152,13 +153,31 @@ class ListStudentFragment : Fragment() {
     private fun initAdapterStudent() {
 
         /* Build the adapter */
-        studentAdapter = StudentAdapter(listStudent, StudentClickListener { item ->
-            val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
-            findNavController().navigate(navigate)
-        })
+        studentAdapter = StudentAdapter(StudentClickListener (
+            onItemClick = { item ->
+                val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
+                findNavController().navigate(navigate)
+            },
+            onItemDelete = { item ->
+                showDeleteConfirmationDialog(item)
+            }
+        ))
+
+        listStudent?.let { studentAdapter!!.updateList(it.toList()) }
         binding.apply {
             rvListStudent.layoutManager = LinearLayoutManager(context)
             rvListStudent.adapter = studentAdapter
         }
+    }
+
+    private fun showDeleteConfirmationDialog(student: ModelStudent) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Eliminar Estudiante")
+            .setMessage("¿Seguro que quieres eliminar a ${student.name}?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                //deleteStudent(student) // Llamar al método de eliminación
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }

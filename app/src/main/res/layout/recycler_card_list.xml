@@ -17,7 +17,7 @@
         android:textSize="@dimen/text_size_form"
         tools:text="@string/tools_custom_list_number"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/margin_4dp" />
+        android:layout_marginStart="@dimen/margin_8dp" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -39,9 +39,10 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_image"
             android:layout_width="@dimen/touch_google"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/touch_google"
             android:layout_weight="1"
-            android:src="@drawable/ic_more_vert"
+            android:padding="@dimen/margin_12dp"
+            android:src="@drawable/ic_delete"
             android:layout_gravity="end|center_vertical" />
     </com.google.android.material.card.MaterialCardView>
 

@@ -17,7 +17,7 @@ class VoiceViewModel(
     private val _changeButtonVoice = SingleLiveEvent<Int>()
     val changeButtonVoice: LiveData<Int> get() = _changeButtonVoice
 
-    private var isListening = false
+    private var isListening = true
 
     private fun startListening() {
         voiceRecognitionManager.startListening()

@@ -9,12 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.model.ModelDatePeriod
 import com.mx.liftechnology.domain.usecase.flowdata.partial.CreatePartialUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.partial.ReadPartialUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
@@ -49,12 +49,12 @@ class RegisterPartialViewModel(
     val datePeriod: LiveData<ModelDatePeriod> get() = _datePeriod
 
     // Observer the period select by user
-    private val _periodField = SingleLiveEvent<ModelState<Int, String>>()
-    val periodField: LiveData<ModelState<Int, String>> get() = _periodField
+    private val _periodField = SingleLiveEvent<ModelState<String, String>>()
+    val periodField: LiveData<ModelState<String, String>> get() = _periodField
 
     // Observer the date selected by user
-    private val _adapterField = SingleLiveEvent<ModelState<Int, String>>()
-    val adapterField: LiveData<ModelState<Int, String>> get() = _adapterField
+    private val _adapterField = SingleLiveEvent<ModelState<String, String>>()
+    val adapterField: LiveData<ModelState<String, String>> get() = _adapterField
 
     private val _getPartialField = SingleLiveEvent<ModelState<MutableList<ModelDatePeriod>?, String>?>()
     val getPartialField: LiveData<ModelState<MutableList<ModelDatePeriod>?, String>?> get() = _getPartialField

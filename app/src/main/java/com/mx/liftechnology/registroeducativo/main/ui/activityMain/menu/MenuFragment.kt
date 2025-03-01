@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.mx.liftechnology.data.model.ModelAdapterMenu
-import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
@@ -126,21 +125,15 @@ class MenuFragment : Fragment() {
 
         /* Show all the options from menu, or if any error occur, show the error */
         menuViewModel.selectedGroup.observe(viewLifecycleOwner) { state ->
+            log(state.toString())
             when (state) {
                 is SuccessState -> binding.tvName.text = state.result.nameItem
-                is ErrorState -> {
-                    log(state.result)
-                }
-
-                is ErrorUserState -> {
-                    showCustomToastFailed(requireActivity(), state.result)
-                }
-
+                is ErrorUserState -> { showCustomToastFailed(requireActivity(), state.result) }
                 is ErrorUnauthorizedState -> {
                     val intent = Intent(requireActivity(), LoginActivity::class.java)
                     startActivity(intent)
+                    requireActivity().finish()
                 }
-
                 else -> {
                     //Nothing
                 }

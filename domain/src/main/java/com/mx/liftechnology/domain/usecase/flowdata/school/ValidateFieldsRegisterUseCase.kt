@@ -1,78 +1,77 @@
 package com.mx.liftechnology.domain.usecase.flowdata.school
 
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.model.ModelDatePeriod
-import com.mx.liftechnology.domain.model.generic.ModelCodeSuccess
 
 interface ValidateFieldsRegisterUseCase {
-    fun validateGrade(grade: Int?): ModelState<Int, Int>
-    fun validateGroup(group: String?): ModelState<Int, Int>
-    fun validateCycle(cycle: Int?): ModelState<Int, Int>
-    fun validatePeriod(period: Int?): ModelState<Int, String>
-    fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<Int, String>
+    fun validateGrade(grade: Int?): ModelState<String, String>
+    fun validateGroup(group: String?): ModelState<String, String>
+    fun validateCycle(cycle: Int?): ModelState<String, String>
+    fun validatePeriod(period: Int?): ModelState<String, String>
+    fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<String, String>
 }
 
 class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
-    /** validateEmail
+
+    /** validateGrade
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGrade(grade: Int?): ModelState<Int, Int> {
+    override fun validateGrade(grade: Int?): ModelState<String, String> {
         return when (grade) {
-            null -> ErrorState(ModelCodeError.ET_EMPTY)
-            0 -> ErrorState(ModelCodeError.ET_FORMAT)
-            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+            null -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
+            0 -> ErrorUserState(ModelCodeInputs.ET_MISTAKE_FORMAT)
+            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
-
-    /** validatePass
+    /** validateGroup
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateGroup(group: String?): ModelState<Int, Int> {
+    override fun validateGroup(group: String?): ModelState<String, String> {
         return when {
-            group.isNullOrEmpty() -> ErrorState(ModelCodeError.ET_EMPTY)
-            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+            group.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
+            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
-    /** validatePass
+    /** validateCycle
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateCycle(cycle: Int?): ModelState<Int, Int> {
+    override fun validateCycle(cycle: Int?): ModelState<String, String> {
         return when (cycle) {
-            null -> ErrorState(ModelCodeError.ET_EMPTY)
-            0 -> ErrorState(ModelCodeError.ET_FORMAT)
-            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+            null -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
+            0 -> ErrorUserState(ModelCodeInputs.ET_MISTAKE_FORMAT)
+            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
-    /** Validate Pass
+    /** validatePeriod
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validatePeriod(period: Int?): ModelState<Int, String> {
+    override fun validatePeriod(period: Int?): ModelState<String, String> {
         return when {
-            (period ?: 0) <= 0 -> ErrorState(ModelCodeError.SP_NOT_OPTION)
-            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+            (period ?: 0) <= 0 -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
+            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
-    /** Validate Pass
+    /** validateAdapter
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<Int, String> {
+    override fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<String, String> {
         return when{
-            adapterPeriods?.size == 0 -> ErrorState(ModelCodeError.SP_NOT_OPTION)
+            adapterPeriods?.size == 0 -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
             adapterPeriods?.any { it.date?.contains("Parcial", ignoreCase = true) == true }?: true
-                -> ErrorState(ModelCodeError.SP_NOT_OPTION)
-            else -> SuccessState(ModelCodeSuccess.ET_FORMAT)
+                -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
+            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

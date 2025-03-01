@@ -13,7 +13,7 @@ import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.registroeducativo.R
@@ -111,14 +111,14 @@ class RegisterSchoolFragment : Fragment() {
                     }
                     is ErrorState -> {
                         cleanAutoText()
-                        inputCct.errorET(ModelCodeError.ET_MISTAKE_GENERIC)
+                        inputCct.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)
                     }
                     is ErrorUserState -> {
                         cleanAutoText()
-                        inputCct.errorET(ModelCodeError.ET_NOT_FOUND)
+                        inputCct.errorET(ModelCodeInputs.ET_NOT_FOUND)
                     }
                     else -> {
-                        inputCct.errorET(ModelCodeError.ET_EMPTY)
+                        inputCct.errorET(ModelCodeInputs.ET_EMPTY)
                         cleanAutoText()
                     }
                 }

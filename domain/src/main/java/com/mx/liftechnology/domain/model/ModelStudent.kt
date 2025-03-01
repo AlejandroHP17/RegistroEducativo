@@ -2,6 +2,7 @@ package com.mx.liftechnology.domain.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.mx.liftechnology.core.network.callapi.ResponseGetStudent
 
 data class ModelStudent (
     val studentId : String?,
@@ -49,4 +50,20 @@ data class ModelStudent (
             return arrayOfNulls(size)
         }
     }
+}
+
+// Función para convertir una lista de ResponseGetStudent a ModelStudent
+fun List<ResponseGetStudent?>?.toModelStudentList(): List<ModelStudent> {
+    return this?.map { response ->
+        ModelStudent(
+            studentId = response?.studentId,
+            curp = response?.curp,
+            birthday = response?.birthday,
+            phoneNumber = response?.phoneNumber,
+            userId = response?.userId,
+            name = response?.name,
+            lastName = response?.lastName,
+            secondLastName = response?.secondLastName
+        )
+    }?: emptyList()
 }

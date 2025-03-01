@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mx.liftechnology.domain.model.ModelFormatSubject
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
@@ -16,7 +18,6 @@ import com.mx.liftechnology.registroeducativo.databinding.FragmentEmptyStateBind
 import com.mx.liftechnology.registroeducativo.databinding.FragmentListStudentSubjectBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.SubjectAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.SubjectClickListener
-import com.mx.liftechnology.registroeducativo.main.model.ModelSubject
 import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,7 +28,7 @@ class ListSubjectFragment : Fragment() {
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
 
     private var subjectAdapter: SubjectAdapter? = null
-    private var listSubject: MutableList<ModelSubject?>? = null
+    private var listSubject: MutableList<ModelFormatSubject>? = null
     private var inflatedView: View? = null
 
     /* View Model variable */
@@ -150,13 +151,31 @@ class ListSubjectFragment : Fragment() {
 
     private fun initAdapterStudent() {
         /* Build the adapter */
-        subjectAdapter = SubjectAdapter(listSubject, SubjectClickListener { item ->
-            val navigate = ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
-            findNavController().navigate(navigate)
-        })
+        subjectAdapter = SubjectAdapter(SubjectClickListener (
+            onItemClick = { _ ->
+                val navigate = ListSubjectFragmentDirections.actionListSubjectFragmentToRegisterSubjectFragment()
+                findNavController().navigate(navigate)
+            },
+            onItemDelete = { item ->
+                showDeleteConfirmationDialog(item)
+            }
+        ))
+
+        listSubject?.let { subjectAdapter!!.updateList(it.toList()) }
         binding.apply {
             rvListStudent.layoutManager = LinearLayoutManager(context)
             rvListStudent.adapter = subjectAdapter
         }
+    }
+
+    private fun showDeleteConfirmationDialog(student: ModelFormatSubject) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Eliminar Estudiante")
+            .setMessage("¿Seguro que quieres eliminar a ${student.name}?")
+            .setPositiveButton("Eliminar") { _, _ ->
+                //deleteStudent(student) // Llamar al método de eliminación
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 }

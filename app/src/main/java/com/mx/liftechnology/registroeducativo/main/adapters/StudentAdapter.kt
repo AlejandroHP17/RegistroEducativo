@@ -9,7 +9,6 @@ import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 
 class StudentAdapter(
-    private var items: MutableList<ModelStudent?>?,
     private val listener: StudentClickListener
 ) : ListAdapter<ModelStudent, StudentAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
@@ -32,7 +31,9 @@ class StudentAdapter(
                         .append(item.secondLastName ?: "").append(" ")
                         .append(item.name ?: "")
                 tvNameList.text = textBuilder
+                ivImage.setOnClickListener { action.onClickDelete(item) }
                 cvTouch.setOnClickListener { action.onClick(item) }
+
             }
         }
     }
@@ -44,17 +45,23 @@ class StudentAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = items?.get(position)
+        val currentItem = getItem(position)
         if (currentItem != null) {
             holder.bind(currentItem, listener)
         }
     }
 
-    override fun getItemCount(): Int = items?.size!!
+    /** Método para actualizar la lista de manera eficiente */
+    fun updateList(newList: List<ModelStudent>) {
+        submitList(newList)
+    }
+
 }
 
 class StudentClickListener(
-    val onItemClick: (item: ModelStudent) -> Unit
+    val onItemClick: (item: ModelStudent) -> Unit,
+    val onItemDelete: (item: ModelStudent) -> Unit
 ) {
     fun onClick(item: ModelStudent) = onItemClick(item)
+    fun onClickDelete(item: ModelStudent) = onItemDelete(item)
 }

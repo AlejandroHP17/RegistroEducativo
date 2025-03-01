@@ -3,12 +3,12 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.sch
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
 import com.mx.liftechnology.domain.usecase.flowdata.CCTUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.school.RegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
@@ -51,7 +51,6 @@ class RegisterSchoolViewModel(
     fun getSchoolCCT(cct: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _animateLoader.postValue(LoaderState(true))
-
             runCatching {
                 cctUseCase.getSchoolCCT(cct)
             }.onSuccess {

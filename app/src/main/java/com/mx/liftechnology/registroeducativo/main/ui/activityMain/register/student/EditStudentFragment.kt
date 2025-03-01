@@ -10,12 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterStudentBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -120,7 +120,7 @@ class EditStudentFragment : Fragment() {
             when (state) {
                 is SuccessState -> binding.inputName.successET()
                 is ErrorState -> binding.inputName.errorET(state.result)
-                else -> binding.inputName.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                else -> binding.inputName.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)
             }
         }
 
@@ -128,28 +128,28 @@ class EditStudentFragment : Fragment() {
             when (state) {
                 is SuccessState -> binding.inputLastName.successET()
                 is ErrorState -> binding.inputLastName.errorET(state.result)
-                else -> binding.inputLastName.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                else -> binding.inputLastName.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)
             }
         }
         editStudentViewModel.secondLastNameField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputSecondLastName.successET()
                 is ErrorState -> binding.inputSecondLastName.errorET(state.result)
-                else -> binding.inputSecondLastName.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                else -> binding.inputSecondLastName.errorET(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
             }
         }
         editStudentViewModel.curpField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputCurp.successET()
                 is ErrorState -> binding.inputCurp.errorET(state.result)
-                else -> binding.inputCurp.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                else -> binding.inputCurp.errorET(ModelCodeInputs.ET_CURP_FORMAT_MISTAKE)
             }
         }
         editStudentViewModel.birthdayField.observe(viewLifecycleOwner) { _ ->
             /*when (state) {
                 is SuccessState -> binding.inp.successET()
                 is ErrorState -> binding.inputCurp.errorET(state.result)
-                else -> binding.inputCurp.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                else -> binding.inputCurp.errorET(ModelCodeInputs.ET_MISTAKE_EMAIL)
             }
 */
         }
@@ -157,7 +157,7 @@ class EditStudentFragment : Fragment() {
             when (state) {
                 is SuccessState -> binding.inputPhoneNumber.successET()
                 is ErrorState -> binding.inputPhoneNumber.errorET(state.result)
-                else -> binding.inputPhoneNumber.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                else -> binding.inputPhoneNumber.errorET(ModelCodeInputs.ET_PHONE_NUMBER_FORMAT_MISTAKE)
             }
         }
 

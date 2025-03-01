@@ -8,14 +8,23 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.LoaderState
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSubjectBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.FormatSubjectAdapter
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
+import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.fillItem
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastSuccess
+import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterSubjectFragment : Fragment() {
@@ -25,7 +34,7 @@ class RegisterSubjectFragment : Fragment() {
 
     /* View Model variable */
     private val registerSubjectViewModel: RegisterSubjectViewModel by viewModel()
-    private var adapterSubject: FormatSubjectAdapter? = null
+    private var subjectAdapter: FormatSubjectAdapter? = null
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
@@ -66,6 +75,7 @@ class RegisterSubjectFragment : Fragment() {
             includeHeader.tvTitle.text = getString(R.string.register_subject_name)
             includeHeader.tvInsert.text = getString(R.string.register_subject_name_description)
             includeHeader.btnReturn.visibility = View.VISIBLE
+            includeButton.btnRecord.visibility = View.GONE
             includeButton.btnAction.text = getString(R.string.register_student_register)
         }
     }
@@ -92,7 +102,7 @@ class RegisterSubjectFragment : Fragment() {
                 }
 
             includeButton.btnAction.setOnClickListener {
-                val updatedList = adapterSubject?.getList()
+                val updatedList = subjectAdapter?.getList()
                 registerSubjectViewModel.validateFields(updatedList, etField.text.toString())
             }
         }
@@ -110,8 +120,46 @@ class RegisterSubjectFragment : Fragment() {
             }
         }
 
+        registerSubjectViewModel.nameField.observe(viewLifecycleOwner){state ->
+            when (state) {
+                is SuccessState -> binding.inputField.successET()
+                is ErrorState -> binding.inputField.errorET(state.result)
+                else -> {binding.inputField.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)}
+            }
+        }
+
+        registerSubjectViewModel.adapterField.observe(viewLifecycleOwner){state ->
+            when (state) {
+                is ErrorUserState ->{
+                    registerSubjectViewModel.loaderState(false)
+                    showCustomToastFailed(requireActivity(), state.result)
+                }
+
+                else -> {
+                    registerSubjectViewModel.loaderState(false)
+                    log(state.toString())
+                }
+            }
+        }
+
         registerSubjectViewModel.subjectNumber.observe(viewLifecycleOwner) { period ->
             initAdapterSubject(period)
+        }
+
+        registerSubjectViewModel.responseSubjectRegister.observe(viewLifecycleOwner) { state ->
+            log(state.toString())
+            when (state) {
+                is SuccessState ->{
+                    showCustomToastSuccess(requireActivity(), state.toString())
+                    findNavController().popBackStack()
+                }
+
+                is ErrorUserState -> showCustomToastFailed(requireActivity(), state.toString())
+
+                else -> {
+
+                }
+            }
         }
     }
 
@@ -135,20 +183,21 @@ class RegisterSubjectFragment : Fragment() {
         val list = MutableList(period) { index ->
             ModelFormatSubject(
                 position = index,
-                name = getString(R.string.register_subject_evaluation),
-                percent = "0%"
+                name = "",
+                percent = ""
             )
         }
 
         /* Build the adapter */
-        adapterSubject = FormatSubjectAdapter(list)
+        subjectAdapter = FormatSubjectAdapter()
         /*, SubjectClickListener{ item ->
                     /* Open the calendar */
                     // registerPartialViewModel.initDatePicker(item, parentFragmentManager, context)
                 })*/
+        list.let { subjectAdapter!!.updateList(it.toList()) }
         binding.apply {
             rvCardSubject.layoutManager = LinearLayoutManager(context)
-            rvCardSubject.adapter = adapterSubject
+            rvCardSubject.adapter = subjectAdapter
         }
     }
 }

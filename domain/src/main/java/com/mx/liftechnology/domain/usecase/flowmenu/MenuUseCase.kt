@@ -42,6 +42,10 @@ class MenuUseCaseImp(
     private val preference: PreferenceUseCase
 ) : MenuUseCase {
 
+    /** getGroup - Get the list of groups, select a default and process the information
+     * @author pelkidev
+     * @return ModelState
+     * */
     override suspend fun getGroup(): ModelState<ModelInfoMenu, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -71,6 +75,11 @@ class MenuUseCaseImp(
         }
     }
 
+    /** selectOneGroup - Select a group, if the user is new the first one,
+     *  if the user is old, select group with help of the preference
+     * @author pelkidev
+     * @return ModelState
+     * */
     private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroup>): ModelDialogStudentGroup {
         return convertedResult.let {
             if (preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1) {

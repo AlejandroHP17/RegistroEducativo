@@ -5,28 +5,28 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.mx.liftechnology.domain.model.ModelFormatSubject
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
-import com.mx.liftechnology.registroeducativo.main.model.ModelSubject
 
 class SubjectAdapter(
-    private var items: MutableList<ModelSubject?>?,
     private val listener: SubjectClickListener
-) : ListAdapter<ModelSubject, SubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
+) : ListAdapter<ModelFormatSubject, SubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelSubject>() {
-        override fun areItemsTheSame(oldItem: ModelSubject, newItem: ModelSubject) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelFormatSubject>() {
+        override fun areItemsTheSame(oldItem: ModelFormatSubject, newItem: ModelFormatSubject) =
             oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: ModelSubject, newItem: ModelSubject) =
+        override fun areContentsTheSame(oldItem: ModelFormatSubject, newItem: ModelFormatSubject) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ModelSubject, action: SubjectClickListener) {
+        fun bind(item: ModelFormatSubject, action: SubjectClickListener) {
             // Synchronize the item response with the view
             binding.apply {
                 tvNameList.text = item.name
+                ivImage.setOnClickListener { action.onClickDelete(item) }
                 cvTouch.setOnClickListener { action.onClick(item) }
             }
         }
@@ -39,17 +39,22 @@ class SubjectAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = items?.get(position)
+        val currentItem = getItem(position)
         if (currentItem != null) {
             holder.bind(currentItem, listener)
         }
     }
 
-    override fun getItemCount(): Int = items?.size!!
+    fun updateList(newList: List<ModelFormatSubject>) {
+        submitList(newList)
+    }
+
 }
 
 class SubjectClickListener(
-    val onItemClick: (item: ModelSubject) -> Unit
+    val onItemClick: (item: ModelFormatSubject) -> Unit,
+    val onItemDelete: (item: ModelFormatSubject) -> Unit
 ) {
-    fun onClick(item: ModelSubject) = onItemClick(item)
+    fun onClick(item: ModelFormatSubject) = onItemClick(item)
+    fun onClickDelete(item: ModelFormatSubject) = onItemDelete(item)
 }

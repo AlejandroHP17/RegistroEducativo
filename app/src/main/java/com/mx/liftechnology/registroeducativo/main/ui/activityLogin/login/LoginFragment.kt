@@ -7,16 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentLoginBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.MainActivity
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastFailed
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
@@ -90,16 +89,16 @@ class LoginFragment : Fragment() {
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputEmail.successET()
-                is ErrorState -> binding.inputEmail.errorET(state.result)
-                else -> binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                is ErrorUserState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
             }
         }
 
         loginViewModel.passField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputPassword.successET()
-                is ErrorState -> binding.inputPassword.errorET(state.result)
-                else -> binding.inputPassword.errorET(ModelCodeError.ET_MISTAKE_PASS)
+                is ErrorUserState -> binding.inputPassword.errorET(state.result)
+                else -> binding.inputPassword.errorET(ModelCodeInputs.ET_PASS_FORMAT_MISTAKE)
             }
         }
 
@@ -127,13 +126,12 @@ class LoginFragment : Fragment() {
                     startActivity(intent)
                     requireActivity().finish()
                 }
-                is ErrorState -> log(state.result.toString())
                 is ErrorUserState -> showCustomToastFailed(
                     requireActivity(),
                     state.result.toString()
                 )
                 else -> {
-                    // Nothing
+                    //Nothing
                 }
             }
         }

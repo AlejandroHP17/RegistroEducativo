@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentForgetPasswordBinding
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -86,8 +86,8 @@ class ForgetPasswordFragment : Fragment() {
         forgetPassViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputEmail.successET()
-                is ErrorState -> binding.inputEmail.errorET(state.result)
-                else -> binding.inputEmail.errorET(ModelCodeError.ET_MISTAKE_EMAIL)
+                is ErrorUserState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
             }
         }
 

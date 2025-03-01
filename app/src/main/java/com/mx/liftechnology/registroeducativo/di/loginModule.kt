@@ -33,6 +33,6 @@ val loginModule = module {
     }
 
     viewModel {
-        LoginViewModel(get(), get(), get(), get())
+        LoginViewModel(get(), get(), get())
     }
 }

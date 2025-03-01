@@ -20,8 +20,8 @@ class ForgetPasswordViewModel(
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // Observer the email field
-    private val _emailField = SingleLiveEvent<ModelState<Int, Int>>()
-    val emailField: LiveData<ModelState<Int, Int>> get() = _emailField
+    private val _emailField = SingleLiveEvent<ModelState<String, String>>()
+    val emailField: LiveData<ModelState<String, String>> get() = _emailField
 
     /** Check the inputs and post error or correct states directly on the editexts
      * In correct case, make the request

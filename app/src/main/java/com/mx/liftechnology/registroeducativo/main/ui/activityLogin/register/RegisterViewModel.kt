@@ -28,20 +28,20 @@ class RegisterViewModel(
     val responseRegister: LiveData<ModelState<List<String>?, String>> get() = _responseRegister
 
     // Observer the email field
-    private val _emailField = SingleLiveEvent<ModelState<Int, Int>>()
-    val emailField: LiveData<ModelState<Int, Int>> get() = _emailField
+    private val _emailField = SingleLiveEvent<ModelState<String, String>>()
+    val emailField: LiveData<ModelState<String, String>> get() = _emailField
 
     // Observer the pass field
-    private val _passField = SingleLiveEvent<ModelState<Int, Int>>()
-    val passField: LiveData<ModelState<Int, Int>> get() = _passField
+    private val _passField = SingleLiveEvent<ModelState<String, String>>()
+    val passField: LiveData<ModelState<String, String>> get() = _passField
 
     // Observer the repeatPass field
-    private val _repeatPassField = SingleLiveEvent<ModelState<Int, Int>>()
-    val repeatPassField: LiveData<ModelState<Int, Int>> get() = _repeatPassField
+    private val _repeatPassField = SingleLiveEvent<ModelState<String, String>>()
+    val repeatPassField: LiveData<ModelState<String, String>> get() = _repeatPassField
 
     // Observer the code field
-    private val _codeField = SingleLiveEvent<ModelState<Int, Int>>()
-    val codeField: LiveData<ModelState<Int, Int>> get() = _codeField
+    private val _codeField = SingleLiveEvent<ModelState<String, String>>()
+    val codeField: LiveData<ModelState<String, String>> get() = _codeField
 
     /** Check the inputs and post error or correct states directly on the editexts
      * In correct case, make the request

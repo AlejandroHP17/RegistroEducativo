@@ -1,7 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowdata.student
 
 import com.mx.liftechnology.core.network.callapi.CredentialGetListStudent
-import com.mx.liftechnology.core.network.callapi.ResponseGetStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudStudentRepository
@@ -15,16 +14,17 @@ import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.toModelStudentList
 
 fun interface ReadStudentUseCase {
-    suspend fun getListStudent(): ModelState<List<ModelStudent?>?, String>?
+    suspend fun getListStudent(): ModelState<List<ModelStudent>?, String>?
 }
 
 class ReadStudentUseCaseImp(
     private val crudStudentRepository: CrudStudentRepository,
     private val preference: PreferenceUseCase
 ) : ReadStudentUseCase {
-    override suspend fun getListStudent(): ModelState<List<ModelStudent?>?, String> {
+    override suspend fun getListStudent(): ModelState<List<ModelStudent>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg =
@@ -56,29 +56,13 @@ class ReadStudentUseCaseImp(
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<List<ModelStudent?>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<ModelStudent>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
             is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-
-    // Función para convertir una lista de ResponseGetStudent a ModelStudent
-    private fun List<ResponseGetStudent?>.toModelStudentList(): List<ModelStudent> {
-        return this.map { response ->
-            ModelStudent(
-                studentId = response?.studentId,
-                curp = response?.curp,
-                birthday = response?.birthday,
-                phoneNumber = response?.phoneNumber,
-                userId = response?.userId,
-                name = response?.name,
-                lastName = response?.lastName,
-                secondLastName = response?.secondLastName
-            )
         }
     }
 }

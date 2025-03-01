@@ -1,16 +1,16 @@
 package com.mx.liftechnology.domain.usecase.flowlogin
 
+import com.mx.liftechnology.core.network.callapi.CredentialsRegister
+import com.mx.liftechnology.data.repository.loginFlow.RegisterRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.core.network.callapi.CredentialsRegister
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.data.repository.loginFlow.RegisterRepository
 
 fun interface RegisterUseCase {
     suspend fun putRegister(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String>?
@@ -28,7 +28,7 @@ class RegisterUseCaseImp(
         email: String, pass: String, activatationCode: String
     ): ModelState<List<String>?, String> {
         val request = CredentialsRegister(
-            email = email,
+            email = email.lowercase(),
             password = pass,
             activationCode = activatationCode
         )
