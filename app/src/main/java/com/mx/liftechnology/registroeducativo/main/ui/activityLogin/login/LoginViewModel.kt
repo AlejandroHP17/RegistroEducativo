@@ -25,11 +25,10 @@ class LoginViewModel(
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
-    // Observer the email field
+    // Observer fields
     private val _emailField = SingleLiveEvent<ModelState<String, String>>()
     val emailField: LiveData<ModelState<String, String>> get() = _emailField
 
-    // Observer the password field
     private val _passField = SingleLiveEvent<ModelState<String, String>>()
     val passField: LiveData<ModelState<String, String>> get() = _passField
 

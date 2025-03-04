@@ -6,6 +6,10 @@ import android.widget.Spinner
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.util.ModelSpinnerSelect
 
+/** fillItem - inflate the spinners
+ * @author pelkidev
+ * @since 1.0.0
+ */
 fun Spinner.fillItem(
     requireContext: Context,
     model: ModelSpinnerSelect,
@@ -50,7 +54,7 @@ private fun selectGrade(validateString: String?): Array<String> {
         "Primaria" to 6,
         "Secundaria" to 3,
         "Bachillerato" to 6,
-        "Univesidad" to 12
+        "Universidad" to 12
     )
     val gradeCount = gradeMapping[validateString] ?: return emptyArray()
     return (1..gradeCount).map { "$it°" }.toTypedArray()
@@ -61,7 +65,7 @@ private fun selectGroup(validateString: String?): Array<String> {
         "Primaria" to 4,
         "Secundaria" to 12,
         "Bachillerato" to 10,
-        "Univesidad" to 10
+        "Universidad" to 10
     )
 
     val groupCount = groupMapping[validateString] ?: return emptyArray()

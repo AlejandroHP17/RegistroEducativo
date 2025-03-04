@@ -27,7 +27,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
 import timber.log.Timber
 
-/** MyApp - Start the first and unics elements of the app
+/** MyApp - Start the first and unics elements of the app, plus detect lifecycle from activities
  * @author pelkidev
  * @since 1.0.0
  * */

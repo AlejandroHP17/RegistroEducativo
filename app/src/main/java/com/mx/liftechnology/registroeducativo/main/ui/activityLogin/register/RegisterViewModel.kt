@@ -24,24 +24,22 @@ class RegisterViewModel(
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
-    private val _responseRegister = SingleLiveEvent<ModelState<List<String>?, String>>()
-    val responseRegister: LiveData<ModelState<List<String>?, String>> get() = _responseRegister
-
-    // Observer the email field
+    // Observer fields
     private val _emailField = SingleLiveEvent<ModelState<String, String>>()
     val emailField: LiveData<ModelState<String, String>> get() = _emailField
 
-    // Observer the pass field
     private val _passField = SingleLiveEvent<ModelState<String, String>>()
     val passField: LiveData<ModelState<String, String>> get() = _passField
 
-    // Observer the repeatPass field
     private val _repeatPassField = SingleLiveEvent<ModelState<String, String>>()
     val repeatPassField: LiveData<ModelState<String, String>> get() = _repeatPassField
 
-    // Observer the code field
     private val _codeField = SingleLiveEvent<ModelState<String, String>>()
     val codeField: LiveData<ModelState<String, String>> get() = _codeField
+
+    // Observer response
+    private val _responseRegister = SingleLiveEvent<ModelState<List<String>?, String>>()
+    val responseRegister: LiveData<ModelState<List<String>?, String>> get() = _responseRegister
 
     /** Check the inputs and post error or correct states directly on the editexts
      * In correct case, make the request

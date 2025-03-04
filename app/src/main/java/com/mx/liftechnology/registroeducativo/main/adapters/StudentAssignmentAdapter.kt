@@ -8,6 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.student.ModelStudentRegisterAssignmentDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardStudentAssignmentBinding
 
+/** StudentAssignmentAdapter - Build the adapter to assignment (Register subject)
+ * @author pelkidev
+ * @since 1.0.0
+ * @param listener click on item's card
+ * */
 class StudentAssignmentAdapter (
     private val listener: StudentAssignmentClickListener
 ) : ListAdapter<ModelStudentRegisterAssignmentDomain, StudentAssignmentAdapter.ViewHolder>(StudentAssignmentAdapter){
@@ -24,7 +29,6 @@ class StudentAssignmentAdapter (
     class ViewHolder(private val binding: RecyclerCardStudentAssignmentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelStudentRegisterAssignmentDomain, action: StudentAssignmentClickListener) {
-            // Synchronize the item response with the view
             binding.apply {
                 tvAssignmentDate.text = item.completeName
             }
@@ -47,13 +51,13 @@ class StudentAssignmentAdapter (
         }
     }
 
-    /** Método para actualizar la lista de manera eficiente */
     fun updateList(newList: List<ModelStudentRegisterAssignmentDomain>) {
         submitList(newList)
     }
 
 }
 
+/** Click listener for StudentAssignmentAdapter */
 class StudentAssignmentClickListener(
     val onItemClick: (item: ModelStudentRegisterAssignmentDomain) -> Unit
 ) {

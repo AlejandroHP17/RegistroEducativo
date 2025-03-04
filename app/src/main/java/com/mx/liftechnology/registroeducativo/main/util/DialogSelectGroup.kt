@@ -10,6 +10,10 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.DialogSelectGroupBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.DialogGroupAdapter
 
+/** DialogSelectGroup - Show the dialog with registers groups from teacher
+ * @author pelkidev
+ * @since 1.0.0
+ */
 class DialogSelectGroup(
     private val context: Context,
     private val items: List<ModelDialogStudentGroupDomain>,

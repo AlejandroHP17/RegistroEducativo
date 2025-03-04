@@ -49,10 +49,6 @@ class LoginFragment : Fragment() {
         animationHandler = context as? AnimationHandler
         initView()
         initListeners()
-    }
-
-    override fun onStart() {
-        super.onStart()
         initObservers()
     }
 
@@ -80,12 +76,23 @@ class LoginFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * ### Observed Variables:
+     * `animateLoader` to validate the loader and update the UI accordingly.
      * `emailField` to validate the email input and update the UI accordingly.
      * `passField` to validate the password input and update the UI accordingly.
-     * `animateLoader` to validate the loader and update the UI accordingly.
      * `responseLogin` to validate the response of service, do actions
      * */
     private fun initObservers() {
+        loginViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is LoaderState -> {
+                    if (state.result == true) animationHandler?.showLoadingAnimation()
+                    else animationHandler?.hideLoadingAnimation()
+                }
+
+                else -> animationHandler?.hideLoadingAnimation()
+            }
+        }
+
         loginViewModel.emailField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputEmail.successET()
@@ -99,17 +106,6 @@ class LoginFragment : Fragment() {
                 is SuccessState -> binding.inputPassword.successET()
                 is ErrorUserState -> binding.inputPassword.errorET(state.result)
                 else -> binding.inputPassword.errorET(ModelCodeInputs.ET_PASS_FORMAT_MISTAKE)
-            }
-        }
-
-        loginViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is LoaderState -> {
-                    if (state.result == true) animationHandler?.showLoadingAnimation()
-                    else animationHandler?.hideLoadingAnimation()
-                }
-
-                else -> animationHandler?.hideLoadingAnimation()
             }
         }
 

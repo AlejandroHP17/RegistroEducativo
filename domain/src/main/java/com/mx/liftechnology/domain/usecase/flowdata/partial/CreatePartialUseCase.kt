@@ -1,26 +1,26 @@
 package com.mx.liftechnology.domain.usecase.flowdata.partial
 
+import com.mx.liftechnology.core.network.callapi.CredentialsRegisterPartial
+import com.mx.liftechnology.core.network.callapi.Partials
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterPartial
-import com.mx.liftechnology.core.network.callapi.Partials
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.core.preference.ModelPreference
-import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepository
-import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 
 
 fun interface CreatePartialUseCase {
     suspend fun createPartials(
         periodNumber: Int?,
-        adapterPeriods: MutableList<ModelDatePeriodDomain>?
+        adapterPeriods:List<ModelDatePeriodDomain>
     ): ModelState<List<String?>?, String>?
 }
 
@@ -35,14 +35,14 @@ class CreatePartialUseCaseImp(
      * */
     override suspend fun createPartials(
         periodNumber: Int?,
-        adapterPeriods: MutableList<ModelDatePeriodDomain>?
+        adapterPeriods: List<ModelDatePeriodDomain>
     ): ModelState<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val listAdapter: MutableList<Partials> = mutableListOf()
-        adapterPeriods?.forEach { data ->
+        adapterPeriods.forEach { data ->
             val part = data.date?.split("/")
             listAdapter.add(
                 Partials(

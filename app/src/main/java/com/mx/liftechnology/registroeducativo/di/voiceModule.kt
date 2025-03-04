@@ -7,6 +7,10 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
 
+/** DI
+ * @author pelkidev
+ * @since 1.0.0
+ */
 val voiceModule = module {
 
     factory { (context: Context) -> VoiceRecognitionManager(context) }

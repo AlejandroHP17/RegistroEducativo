@@ -6,6 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 
+/** LifeCycle - Detect any change from fragments by lifecycle
+ *  * Use this section only by logs, detect any issue or leak memory, actually
+ * @author pelkidev
+ * @since 1.0.0
+ */
 class LifeCycle : FragmentManager.FragmentLifecycleCallbacks() {
 
     companion object {

@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.mx.liftechnology.registroeducativo.databinding.IncludeMiniMenuBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.MenuAdapter
 
+/** IncludeMiniMenu - Module o widget from mini menu (home)
+ * @author pelkidev
+ * @since 1.0.0
+ */
 class IncludeMiniMenu @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

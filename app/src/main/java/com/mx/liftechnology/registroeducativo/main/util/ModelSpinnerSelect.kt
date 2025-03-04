@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.util
 
-/** Model - Include all the elements to control the spinners
+/** ModelSpinnerSelect - Include all the elements to control the spinners
  * @author pelkidev
  * @since 1.0.0
  */

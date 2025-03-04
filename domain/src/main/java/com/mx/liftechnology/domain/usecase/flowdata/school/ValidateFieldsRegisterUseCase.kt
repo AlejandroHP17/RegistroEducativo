@@ -11,7 +11,7 @@ interface ValidateFieldsRegisterUseCase {
     fun validateGroup(group: String?): ModelState<String, String>
     fun validateCycle(cycle: Int?): ModelState<String, String>
     fun validatePeriod(period: Int?): ModelState<String, String>
-    fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriodDomain>?): ModelState<String, String>
+    fun validateAdapter(adapterPeriods: List<ModelDatePeriodDomain>): ModelState<String, String>
 }
 
 class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
@@ -66,10 +66,10 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriodDomain>?): ModelState<String, String> {
+    override fun validateAdapter(adapterPeriods: List<ModelDatePeriodDomain>): ModelState<String, String> {
         return when{
-            adapterPeriods?.size == 0 -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
-            adapterPeriods?.any { it.date?.contains("Parcial", ignoreCase = true) == true }?: true
+            adapterPeriods.isEmpty() -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
+            adapterPeriods.any { it.date?.contains("Parcial", ignoreCase = true) == true }?: true
                 -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
             else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }

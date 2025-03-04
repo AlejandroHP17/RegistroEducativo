@@ -9,10 +9,9 @@ import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 
-/** MenuAdapter - Build the adapter for menu (home)
+/** MenuAdapter - Build the adapter to menu (home)
  * @author pelkidev
  * @since 1.0.0
- * @param items list to build
  * @param listener click on item's card
  * */
 class MenuAdapter(

@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 
+/** SubjectAdapter - Build the adapter to subject (Register subject)
+ * @author pelkidev
+ * @since 1.0.0
+ * @param listener click on item's card
+ * */
 class SubjectAdapter(
     private val listener: SubjectClickListener
 ) : ListAdapter<ModelFormatSubjectDomain, SubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
@@ -24,7 +29,6 @@ class SubjectAdapter(
     class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelFormatSubjectDomain, action: SubjectClickListener) {
-            // Synchronize the item response with the view
             binding.apply {
                 tvNameList.text = item.name
                 ivImage.setOnClickListener { action.onClickMore(it, item) }
@@ -52,6 +56,7 @@ class SubjectAdapter(
 
 }
 
+/** Click listener for SubjectAdapter */
 class SubjectClickListener(
     val onItemClick: (item: ModelFormatSubjectDomain) -> Unit,
     val onItemMore: (view: View, item: ModelFormatSubjectDomain) -> Unit

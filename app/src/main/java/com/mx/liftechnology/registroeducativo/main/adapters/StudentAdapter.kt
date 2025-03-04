@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 
+/** StudentAdapter - Build the adapter to student (Register student)
+ * @author pelkidev
+ * @since 1.0.0
+ * @param listener click on item's card
+ * */
 class StudentAdapter(
     private val listener: StudentClickListener
 ) : ListAdapter<ModelStudentDomain, StudentAdapter.ViewHolder>(ItemsDiffCallBack) {
@@ -24,7 +29,6 @@ class StudentAdapter(
     class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ModelStudentDomain, action: StudentClickListener) {
-            // Synchronize the item response with the view
             binding.apply {
                 tvNumberList.text = (adapterPosition + 1).toString()
                 val textBuilder =
@@ -52,13 +56,13 @@ class StudentAdapter(
         }
     }
 
-    /** Método para actualizar la lista de manera eficiente */
     fun updateList(newList: List<ModelStudentDomain>) {
         submitList(newList)
     }
 
 }
 
+/** Click listener to StudentAdapter */
 class StudentClickListener(
     val onItemClick: (item: ModelStudentDomain) -> Unit,
     val onItemMore: (view: View, item: ModelStudentDomain) -> Unit

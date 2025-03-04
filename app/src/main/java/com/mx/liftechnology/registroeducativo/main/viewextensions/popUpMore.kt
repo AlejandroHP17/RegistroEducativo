@@ -8,7 +8,10 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 
-// Función de extensión para mostrar el PopupMenu
+/** showPopUpMore - show the popUpMenu
+ * @author pelkidev
+ * @since 1.0.0
+ */
 fun <T> Fragment.showPopUpMore(
     view: View,
     item: T,
@@ -34,7 +37,10 @@ fun <T> Fragment.showPopUpMore(
     popupMenu.show()
 }
 
-// Función genérica para mostrar el diálogo de confirmación de eliminación
+/** showDeleteConfirmationDialog - show a dialog to confirm deletes
+ * @author pelkidev
+ * @since 1.0.0
+ */
 fun <T> Fragment.showDeleteConfirmationDialog(item: T, onDelete: (T) -> Unit) {
     val title = when (item) {
         is ModelStudentDomain -> "Eliminar Estudiante"

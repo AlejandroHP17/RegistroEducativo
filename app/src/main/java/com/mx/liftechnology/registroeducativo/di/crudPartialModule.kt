@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-/** DI to register user and get CCT
+/** DI
  * @author pelkidev
  * @since 1.0.0
  */

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardGroupBinding
 
-/** DialogGroupAdapter - Build the adapter for menu (home)
+/** DialogGroupAdapter - Build the adapter to menu (home)
  * @author pelkidev
  * @since 1.0.0
  * @param items list to build
@@ -19,7 +19,6 @@ class DialogGroupAdapter(
 
     private var selectedPosition = -1
 
-    // ViewHolder que maneja cada ítem
     inner class ViewHolder(private val binding: RecyclerCardGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

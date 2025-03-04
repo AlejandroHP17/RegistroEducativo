@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.R
 
 const val getTime = 4000L
 
-/** Toast generic to success
+/** showCustomToastSuccess - Toast generic to success
  * @author pelkidev
  * @since 1.0.0
  */
@@ -25,7 +25,7 @@ fun showCustomToastSuccess(activity: Activity, message: String) {
     showCustomToast(activity, message, R.color.color_success)
 }
 
-/** Toast generic to error
+/** showCustomToastFailed - Toast generic to error
  * @author pelkidev
  * @since 1.0.0
  */
@@ -33,7 +33,7 @@ fun showCustomToastFailed(activity: Activity, message: String) {
     showCustomToast(activity, message, R.color.color_error_toast)
 }
 
-/** Toast generic to warnings
+/** showCustomToastWarning - Toast generic to warnings
  * @author pelkidev
  * @since 1.0.0
  */
@@ -44,25 +44,25 @@ fun showCustomToastWarning(activity: Activity, message: String) {
 
 @SuppressLint("InflateParams")
 private fun showCustomToast(activity: Activity, message: String, @ColorRes backgroundColor: Int) {
-    /** Views */
+    //vistas
     val inflater = activity.layoutInflater
     val layout = inflater.inflate(R.layout.custom_toast, null)
     val tvMessage: TextView = layout.findViewById(R.id.tv_mensaje)
     val rootLayout: ConstraintLayout = layout.findViewById(R.id.custom_toast)
     val ivClose: ImageView = layout.findViewById(R.id.iv_close)
 
-    /** Assign data */
+    // Asigna datos
     tvMessage.text = message
     rootLayout.setBackgroundColor(ContextCompat.getColor(activity, backgroundColor))
 
-    /** Create the dialog */
+    // Crea el dialogo
     val dialog = Dialog(activity)
     dialog.setContentView(layout)
     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     dialog.window?.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL)
     dialog.setCancelable(false)
 
-    /** Configrute the close, by time or click */
+    // Configura el click
     val handler = Handler(Looper.getMainLooper())
     val runnable = Runnable { dialog.dismiss() }
     handler.postDelayed(runnable, getTime)

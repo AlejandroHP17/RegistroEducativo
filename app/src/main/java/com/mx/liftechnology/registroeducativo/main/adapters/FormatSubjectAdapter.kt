@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBinding
 
-/**  - Build the adapter for Periods (Register schoool)
+/** FormatSubjectAdapter - Build the adapter to subjects (Register subject)
  * @author pelkidev
  * @since 1.0.0
- * @param items list to build
  * */
 class FormatSubjectAdapter(
 ) : ListAdapter<ModelFormatSubjectDomain, FormatSubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
@@ -28,9 +27,7 @@ class FormatSubjectAdapter(
 
     class ViewHolder(private val binding: RecyclerCardSubjectBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        // Method like a listener; bring the item and the action of click
         fun bind(item: ModelFormatSubjectDomain) {
-            // Synchronize the item response with the view
             binding.apply {
                 etFieldName.setText(item.name)
                 //etFieldPercent.setText(item.percent)
@@ -100,7 +97,6 @@ class FormatSubjectAdapter(
 
     fun getList(): MutableList<ModelFormatSubjectDomain> = currentList
 
-    /** Método para actualizar la lista de manera eficiente */
     fun updateList(newList: List<ModelFormatSubjectDomain>) {
         submitList(newList)
     }

@@ -119,7 +119,7 @@ class RegisterPartialViewModel(
         return "$startDate  /  $endDate"
     }
 
-    fun validateFields(adapterPeriods: MutableList<ModelDatePeriodDomain>?) {
+    fun validateFields(adapterPeriods: List<ModelDatePeriodDomain>) {
         viewModelScope.launch(dispatcherProvider.io) {
 
             val periodState = validateFieldsUseCase.validatePeriod(periodNumber.value)
@@ -135,7 +135,7 @@ class RegisterPartialViewModel(
     }
 
     private fun registerPartial(
-        adapterPeriods: MutableList<ModelDatePeriodDomain>?
+        adapterPeriods: List<ModelDatePeriodDomain>
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {

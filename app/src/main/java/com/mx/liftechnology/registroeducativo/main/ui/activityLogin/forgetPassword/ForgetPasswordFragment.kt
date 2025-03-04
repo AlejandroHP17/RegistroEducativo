@@ -45,10 +45,6 @@ class ForgetPasswordFragment : Fragment() {
         animationHandler = context as? AnimationHandler
         initView()
         initListeners()
-    }
-
-    override fun onStart() {
-        super.onStart()
         initObservers()
     }
 
@@ -79,18 +75,10 @@ class ForgetPasswordFragment : Fragment() {
      * @author pelkidev
      * @since 1.0.0
      * ### Observed Variables:
+     * `animateLoader` to validate the loader and update the UI accordingly.
      * `emailField` to validate the email input and update the UI accordingly.
-     *
      * */
     private fun initObservers() {
-        forgetPassViewModel.emailField.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is SuccessState -> binding.inputEmail.successET()
-                is ErrorUserState -> binding.inputEmail.errorET(state.result)
-                else -> binding.inputEmail.errorET(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
-            }
-        }
-
         forgetPassViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
@@ -98,6 +86,14 @@ class ForgetPasswordFragment : Fragment() {
                     else animationHandler?.hideLoadingAnimation()
                 }
                 else -> animationHandler?.hideLoadingAnimation()
+            }
+        }
+
+        forgetPassViewModel.emailField.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SuccessState -> binding.inputEmail.successET()
+                is ErrorUserState -> binding.inputEmail.errorET(state.result)
+                else -> binding.inputEmail.errorET(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
             }
         }
     }
