@@ -14,9 +14,9 @@ import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.EditStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.RegisterStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.edit.EditStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register.RegisterStudentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit

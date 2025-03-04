@@ -1,24 +1,22 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.ModelStudent
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentEmptyStateBinding
 import com.mx.liftechnology.registroeducativo.databinding.FragmentListStudentSubjectBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
 import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showPopUpMore
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListStudentFragment : Fragment() {
@@ -27,8 +25,7 @@ class ListStudentFragment : Fragment() {
     private val binding get() = _binding!!
     private var emptyStateBinding: FragmentEmptyStateBinding? = null
 
-    private var studentAdapter: StudentAdapter? = null
-    private var listStudent: MutableList<ModelStudent>? = null
+    private lateinit var studentAdapter: StudentAdapter
     private var inflatedView: View? = null
 
     /* View Model variable */
@@ -54,6 +51,7 @@ class ListStudentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
         animationHandler?.showLoadingAnimation()
+        initAdapterStudent()
         initView()
         initListeners()
     }
@@ -138,13 +136,7 @@ class ListStudentFragment : Fragment() {
 
         listStudentViewModel.responseListStudent.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> {
-                    listStudent = state.result?.toMutableList()
-                    initAdapterStudent()
-                }
-
-                is ErrorState -> emptyView()
-                is ErrorUserState -> emptyView()
+                is SuccessState -> studentAdapter.updateList(state.result?: emptyList())
                 else -> emptyView()
             }
         }
@@ -158,26 +150,28 @@ class ListStudentFragment : Fragment() {
                 val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
                 findNavController().navigate(navigate)
             },
-            onItemDelete = { item ->
-                showDeleteConfirmationDialog(item)
+            onItemMore = { view,  item ->
+                this.showPopUpMore(
+                    view,
+                    item,
+                    onDelete = { studentToDelete -> deleteStudent(studentToDelete) },
+                    onEditNavigate = {
+                        val nav = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
+                        findNavController().navigate(nav)
+                    }
+                )
             }
         ))
 
-        listStudent?.let { studentAdapter!!.updateList(it.toList()) }
         binding.apply {
             rvListStudent.layoutManager = LinearLayoutManager(context)
             rvListStudent.adapter = studentAdapter
         }
     }
 
-    private fun showDeleteConfirmationDialog(student: ModelStudent) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Eliminar Estudiante")
-            .setMessage("¿Seguro que quieres eliminar a ${student.name}?")
-            .setPositiveButton("Eliminar") { _, _ ->
-                //deleteStudent(student) // Llamar al método de eliminación
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
+    private fun deleteStudent(student: ModelStudentDomain) {
+        // Lógica para eliminar estudiante
     }
+
+
 }

@@ -7,7 +7,7 @@ import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
@@ -16,14 +16,14 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface ReadPartialUseCase {
-    suspend fun readPartials(): ModelState<MutableList<ModelDatePeriod>?, String>?
+    suspend fun readPartials(): ModelState<MutableList<ModelDatePeriodDomain>?, String>?
 
 }
 class ReadPartialUseCaseImp (
     private val crudPartialRepository: CrudPartialRepository,
     private val preference: PreferenceUseCase
 ) : ReadPartialUseCase {
-    override suspend fun readPartials(): ModelState<MutableList<ModelDatePeriod>?, String> {
+    override suspend fun readPartials(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -37,7 +37,7 @@ class ReadPartialUseCaseImp (
         return when (val result =  crudPartialRepository.executeGetPartial(request)) {
             is ResultSuccess -> {
                 val listDate = result.data?.mapIndexed { index, item ->
-                    ModelDatePeriod(
+                    ModelDatePeriodDomain(
                         position = index,
                         date = "${item?.startDate} / ${item?.endDate}" // Reemplaza con los campos que necesites
                     )
@@ -54,7 +54,7 @@ class ReadPartialUseCaseImp (
         }
     }
 
-    private fun handleResponse(error: FailureService): ModelState<MutableList<ModelDatePeriod>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)

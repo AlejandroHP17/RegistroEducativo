@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.model.ModelAdapterMenu
-import com.mx.liftechnology.domain.model.ModelDialogStudentGroup
+import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -31,23 +31,19 @@ class MenuViewModel(
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
     // List the option from menu
-    private val _controlMenu = MutableLiveData<ModelState<List<ModelAdapterMenu>, String>>()
-    val controlMenu: LiveData<ModelState<List<ModelAdapterMenu>, String>> = _controlMenu
+    private val _controlMenu = MutableLiveData<ModelState<List<ModelPrincipalMenuData>, String>>()
+    val controlMenu: LiveData<ModelState<List<ModelPrincipalMenuData>, String>> = _controlMenu
 
     // List the option from menu
-    private val _controlMenuRegister = MutableLiveData<ModelState<List<ModelAdapterMenu>, String>>()
-    val controlMenuRegister: LiveData<ModelState<List<ModelAdapterMenu>, String>> = _controlMenuRegister
+    private val _controlMenuRegister = MutableLiveData<ModelState<List<ModelPrincipalMenuData>, String>>()
+    val controlMenuRegister: LiveData<ModelState<List<ModelPrincipalMenuData>, String>> = _controlMenuRegister
 
     // List the option from menu
-    private val _controlMenuEvaluation = MutableLiveData<ModelState<List<ModelAdapterMenu>, String>>()
-    val controlMenuEvaluation: LiveData<ModelState<List<ModelAdapterMenu>, String>> = _controlMenuEvaluation
+    private val _listGroup = MutableLiveData<ModelState<List<ModelDialogStudentGroupDomain>, String>>()
+    val listGroup: LiveData<ModelState<List<ModelDialogStudentGroupDomain>, String>> = _listGroup
 
-    // List the option from menu
-    private val _listGroup = MutableLiveData<ModelState<List<ModelDialogStudentGroup>, String>>()
-    val listGroup: LiveData<ModelState<List<ModelDialogStudentGroup>, String>> = _listGroup
-
-    private val _selectedGroup = MutableLiveData<ModelState<ModelDialogStudentGroup, String>>()
-    val selectedGroup: LiveData<ModelState<ModelDialogStudentGroup, String>> = _selectedGroup
+    private val _selectedGroup = MutableLiveData<ModelState<ModelDialogStudentGroupDomain, String>>()
+    val selectedGroup: LiveData<ModelState<ModelDialogStudentGroupDomain, String>> = _selectedGroup
 
     /** getGroup - Get all the options from menu, or a mistake in case
      * @author pelkidev
@@ -59,10 +55,8 @@ class MenuViewModel(
             runCatching {
                 menuUseCase.getGroup()
             }.onSuccess {
-                // Falta data
                 if (it is SuccessState) {
                     showGetControlRegister()
-                    showGetEvaluationRegister()
                     _listGroup.postValue(SuccessState(it.result.listSchool))
                     _selectedGroup.postValue(SuccessState(it.result.infoSchoolSelected))
                 }
@@ -90,7 +84,7 @@ class MenuViewModel(
         }
     }
 
-    fun updateGroup(nameItem: ModelDialogStudentGroup?) {
+    fun updateGroup(nameItem: ModelDialogStudentGroupDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             nameItem?.let {
                 menuUseCase.updateGroup(it)
@@ -107,18 +101,6 @@ class MenuViewModel(
                 _controlMenuRegister.postValue(it)
             }.onFailure {
                 _controlMenuRegister.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
-            }
-        }
-    }
-
-    private fun showGetEvaluationRegister(){
-        viewModelScope.launch (dispatcherProvider.io){
-            runCatching {
-                menuUseCase.getControlEvaluation()
-            }.onSuccess {
-                _controlMenuEvaluation.postValue(it)
-            }.onFailure {
-                _controlMenuEvaluation.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
             }
         }
     }

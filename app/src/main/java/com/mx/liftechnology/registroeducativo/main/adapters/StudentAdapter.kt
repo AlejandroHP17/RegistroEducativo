@@ -1,28 +1,29 @@
 package com.mx.liftechnology.registroeducativo.main.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.domain.model.ModelStudent
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 
 class StudentAdapter(
     private val listener: StudentClickListener
-) : ListAdapter<ModelStudent, StudentAdapter.ViewHolder>(ItemsDiffCallBack) {
+) : ListAdapter<ModelStudentDomain, StudentAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelStudent>() {
-        override fun areItemsTheSame(oldItem: ModelStudent, newItem: ModelStudent) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelStudentDomain>() {
+        override fun areItemsTheSame(oldItem: ModelStudentDomain, newItem: ModelStudentDomain) =
             oldItem.studentId == newItem.studentId
 
-        override fun areContentsTheSame(oldItem: ModelStudent, newItem: ModelStudent) =
+        override fun areContentsTheSame(oldItem: ModelStudentDomain, newItem: ModelStudentDomain) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ModelStudent, action: StudentClickListener) {
+        fun bind(item: ModelStudentDomain, action: StudentClickListener) {
             // Synchronize the item response with the view
             binding.apply {
                 tvNumberList.text = (adapterPosition + 1).toString()
@@ -31,7 +32,7 @@ class StudentAdapter(
                         .append(item.secondLastName ?: "").append(" ")
                         .append(item.name ?: "")
                 tvNameList.text = textBuilder
-                ivImage.setOnClickListener { action.onClickDelete(item) }
+                ivImage.setOnClickListener { action.onClickMore(it, item) }
                 cvTouch.setOnClickListener { action.onClick(item) }
 
             }
@@ -52,16 +53,16 @@ class StudentAdapter(
     }
 
     /** Método para actualizar la lista de manera eficiente */
-    fun updateList(newList: List<ModelStudent>) {
+    fun updateList(newList: List<ModelStudentDomain>) {
         submitList(newList)
     }
 
 }
 
 class StudentClickListener(
-    val onItemClick: (item: ModelStudent) -> Unit,
-    val onItemDelete: (item: ModelStudent) -> Unit
+    val onItemClick: (item: ModelStudentDomain) -> Unit,
+    val onItemMore: (view: View, item: ModelStudentDomain) -> Unit
 ) {
-    fun onClick(item: ModelStudent) = onItemClick(item)
-    fun onClickDelete(item: ModelStudent) = onItemDelete(item)
+    fun onClick(item: ModelStudentDomain) = onItemClick(item)
+    fun onClickMore(view: View, item: ModelStudentDomain) = onItemMore(view, item)
 }

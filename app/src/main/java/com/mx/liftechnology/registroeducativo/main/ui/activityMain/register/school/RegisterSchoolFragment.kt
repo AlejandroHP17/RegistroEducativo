@@ -82,12 +82,12 @@ class RegisterSchoolFragment : Fragment() {
         binding.apply {
             includeHeader.tvTitle.text = getString(R.string.register_school)
             includeHeader.tvInsert.text = getString(R.string.register_school_description)
-            includeSpinnerSchool.tvDemostration.text = getString(R.string.register_school_name)
-            includeSpinnerShift.tvDemostration.text = getString(R.string.register_school_shift)
-            includeSpinnerType.tvDemostration.text = getString(R.string.register_school_type)
-            includeSpinnerGrade.tvDemostration.text = getString(R.string.register_school_grade)
-            includeSpinnerGroup.tvDemostration.text = getString(R.string.register_school_group)
-            includeSpinnerCycle.tvDemostration.text = getString(R.string.register_school_term)
+            includeSpinnerSchool.tvDemostration.text = getString(R.string.form_school_name)
+            includeSpinnerShift.tvDemostration.text = getString(R.string.form_school_shift)
+            includeSpinnerType.tvDemostration.text = getString(R.string.form_school_type)
+            includeSpinnerGrade.tvDemostration.text = getString(R.string.form_school_grade)
+            includeSpinnerGroup.tvDemostration.text = getString(R.string.form_school_group)
+            includeSpinnerCycle.tvDemostration.text = getString(R.string.form_school_term)
         }
     }
 
@@ -321,9 +321,9 @@ class RegisterSchoolFragment : Fragment() {
      * */
     private fun cleanAutoText() {
         binding.apply {
-            includeSpinnerSchool.tvDemostration.text = getString(R.string.register_school_name)
-            includeSpinnerShift.tvDemostration.text = getString(R.string.register_school_shift)
-            includeSpinnerType.tvDemostration.text = getString(R.string.register_school_type)
+            includeSpinnerSchool.tvDemostration.text = getString(R.string.form_school_name)
+            includeSpinnerShift.tvDemostration.text = getString(R.string.form_school_shift)
+            includeSpinnerType.tvDemostration.text = getString(R.string.form_school_type)
             includeSpinnerSchool.tvDemostration.visibility = View.VISIBLE
             includeSpinnerShift.tvDemostration.visibility = View.VISIBLE
             includeSpinnerType.tvDemostration.visibility = View.VISIBLE

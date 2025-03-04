@@ -18,8 +18,6 @@
     <!-- Login Flow -->
     <string name="log_welcome">Bienvenido</string>
     <string name="log_insert">Ingresa tus credenciales para acceder a tu contenido</string>
-    <string name="log_email">Correo eletrónico</string>
-    <string name="log_password">Contraseña</string>
     <string name="log_remember">Recuérdame</string>
     <string name="log_forgot">¿Olvidaste tu contraseña?</string>
     <string name="log_logIn">Iniciar sesión</string>
@@ -29,8 +27,6 @@
     <!-- Register Flow -->
     <string name="reg_welcome">Regístrate</string>
     <string name="reg_insert">Crea tu propia cuenta para poder continuar</string>
-    <string name="reg_repeat_password">Repetir contraseña</string>
-    <string name="reg_code">Código</string>
 
     <!-- ForgetPass Flow -->
     <string name="forget_pass_welcome">¿Olvidaste tu constraseña?</string>
@@ -48,13 +44,7 @@
     <!-- Register Flow -->
     <string name="register_school">Registra tu escuela</string>
     <string name="register_school_description">Ingresa los datos de tu ciclo escolar para poder continuar</string>
-    <string name="register_school_cct">CCT</string>
-    <string name="register_school_term">Ciclo</string>
-    <string name="register_school_name">Nombre de la escuela</string>
-    <string name="register_school_shift">Turno</string>
-    <string name="register_school_type">Tipo</string>
-    <string name="register_school_grade">Grado</string>
-    <string name="register_school_group">Grupo</string>
+
 
     <!-- Register Flow -->
     <string name="register_partial">Registra tus parciales</string>
@@ -65,15 +55,9 @@
     <string name="register_partial_end">Final</string>
     <string name="register_partial_calendar">Selecciona el rango de fechas de tu parcial</string>
 
-    <!-- Register Flow -->
+    <!-- Register Student Flow -->
     <string name="register_student_name">Registra a un alumno</string>
     <string name="register_student_name_description">Ingresa los datos del alumno</string>
-    <string name="register_student_name_name">Nombre (s)</string>
-    <string name="register_student_name_last">Apellido paterno</string>
-    <string name="register_student_name_second_last">Apellido materno</string>
-    <string name="register_student_curp">CURP</string>
-    <string name="register_student_birthday">Fecha de nacimiento</string>
-    <string name="register_student_number">Número de contacto</string>
     <string name="register_student_register">REGISTRAR</string>
 
     <!-- Register Flow -->
@@ -90,6 +74,12 @@
     <string name="get_subject_name">Lista de campos formativos</string>
 
 
+    <!-- Gets Flow -->
+    <string name="assignment_name">Campo formativo</string>
+    <string name="assignment_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
+    <string name="assignment_type">Tipo de trabajo</string>
+
+
     <!-- Dialogs Flow -->
     <string name="dialog_select_cycle">Selecciona tu ciclo escolar</string>
 
@@ -99,17 +89,9 @@
     <!-- Edit Flow -->
     <string name="edit_student_name">Edita los datos</string>
     <string name="edit_student_name_description">Ingresa los datos del alumno</string>
-    <string name="edit_student_name_name">Nombre (s)</string>
-    <string name="edit_student_name_last">Apellido paterno</string>
-    <string name="edit_student_name_second_last">Apellido materno</string>
-    <string name="edit_student_curp">CURP</string>
-    <string name="edit_student_birthday">Fecha de nacimiento</string>
-    <string name="edit_student_number">Número de contacto</string>
     <string name="edit_student_edit">REGISTRAR</string>
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

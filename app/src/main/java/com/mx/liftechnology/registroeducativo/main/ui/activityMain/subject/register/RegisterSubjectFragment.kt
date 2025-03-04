@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.register
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
@@ -181,7 +181,7 @@ class RegisterSubjectFragment : Fragment() {
      * */
     private fun initAdapterSubject(period: Int) {
         val list = MutableList(period) { index ->
-            ModelFormatSubject(
+            ModelFormatSubjectDomain(
                 position = index,
                 name = "",
                 percent = ""

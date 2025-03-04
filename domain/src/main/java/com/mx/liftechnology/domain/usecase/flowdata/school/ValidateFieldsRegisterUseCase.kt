@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.flowdata.school
 
-import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelState
@@ -11,7 +11,7 @@ interface ValidateFieldsRegisterUseCase {
     fun validateGroup(group: String?): ModelState<String, String>
     fun validateCycle(cycle: Int?): ModelState<String, String>
     fun validatePeriod(period: Int?): ModelState<String, String>
-    fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<String, String>
+    fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriodDomain>?): ModelState<String, String>
 }
 
 class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
@@ -66,7 +66,7 @@ class ValidateFieldsRegisterUseCaseImp : ValidateFieldsRegisterUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriod>?): ModelState<String, String> {
+    override fun validateAdapter(adapterPeriods: MutableList<ModelDatePeriodDomain>?): ModelState<String, String> {
         return when{
             adapterPeriods?.size == 0 -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
             adapterPeriods?.any { it.date?.contains("Parcial", ignoreCase = true) == true }?: true

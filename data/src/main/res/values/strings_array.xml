@@ -7,17 +7,10 @@
     </string-array>
 
     <string-array name="menu_items_register">
-        <item>Escuela</item>
         <item>Alumnos</item>
         <item>Campo Formativo</item>
         <item>Parciales</item>
-    </string-array>
-
-
-    <string-array name="menu_items_evaluate">
         <item>Calendario</item>
-        <item>Alumnos</item>
-        <item>Campo Formativo</item>
         <item>Exportar</item>
     </string-array>
     

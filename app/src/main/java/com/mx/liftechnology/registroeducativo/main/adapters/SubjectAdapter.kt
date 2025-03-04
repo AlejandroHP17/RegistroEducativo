@@ -1,38 +1,39 @@
 package com.mx.liftechnology.registroeducativo.main.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardListBinding
 
 class SubjectAdapter(
     private val listener: SubjectClickListener
-) : ListAdapter<ModelFormatSubject, SubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
+) : ListAdapter<ModelFormatSubjectDomain, SubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelFormatSubject>() {
-        override fun areItemsTheSame(oldItem: ModelFormatSubject, newItem: ModelFormatSubject) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelFormatSubjectDomain>() {
+        override fun areItemsTheSame(oldItem: ModelFormatSubjectDomain, newItem: ModelFormatSubjectDomain) =
             oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: ModelFormatSubject, newItem: ModelFormatSubject) =
+        override fun areContentsTheSame(oldItem: ModelFormatSubjectDomain, newItem: ModelFormatSubjectDomain) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding: RecyclerCardListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: ModelFormatSubject, action: SubjectClickListener) {
+        fun bind(item: ModelFormatSubjectDomain, action: SubjectClickListener) {
             // Synchronize the item response with the view
             binding.apply {
                 tvNameList.text = item.name
-                ivImage.setOnClickListener { action.onClickDelete(item) }
+                ivImage.setOnClickListener { action.onClickMore(it, item) }
                 cvTouch.setOnClickListener { action.onClick(item) }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
             RecyclerCardListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -45,16 +46,16 @@ class SubjectAdapter(
         }
     }
 
-    fun updateList(newList: List<ModelFormatSubject>) {
+    fun updateList(newList: List<ModelFormatSubjectDomain>) {
         submitList(newList)
     }
 
 }
 
 class SubjectClickListener(
-    val onItemClick: (item: ModelFormatSubject) -> Unit,
-    val onItemDelete: (item: ModelFormatSubject) -> Unit
+    val onItemClick: (item: ModelFormatSubjectDomain) -> Unit,
+    val onItemMore: (view: View, item: ModelFormatSubjectDomain) -> Unit
 ) {
-    fun onClick(item: ModelFormatSubject) = onItemClick(item)
-    fun onClickDelete(item: ModelFormatSubject) = onItemDelete(item)
+    fun onClick(item: ModelFormatSubjectDomain) = onItemClick(item)
+    fun onClickMore(view: View, item: ModelFormatSubjectDomain) = onItemMore(view, item)
 }

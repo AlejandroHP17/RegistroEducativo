@@ -41,8 +41,8 @@
             android:layout_width="@dimen/touch_google"
             android:layout_height="@dimen/touch_google"
             android:layout_weight="1"
-            android:padding="@dimen/margin_12dp"
-            android:src="@drawable/ic_delete"
+            android:padding="@dimen/margin_8dp"
+            android:src="@drawable/ic_more_vert"
             android:layout_gravity="end|center_vertical" />
     </com.google.android.material.card.MaterialCardView>
 

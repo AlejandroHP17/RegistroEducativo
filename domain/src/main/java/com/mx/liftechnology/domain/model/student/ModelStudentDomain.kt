@@ -1,10 +1,10 @@
-package com.mx.liftechnology.domain.model
+package com.mx.liftechnology.domain.model.student
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.mx.liftechnology.core.network.callapi.ResponseGetStudent
 
-data class ModelStudent (
+data class ModelStudentDomain (
     val studentId : String?,
     val curp : String?,
     val birthday : String?,
@@ -41,21 +41,21 @@ data class ModelStudent (
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<ModelStudent> {
-        override fun createFromParcel(parcel: Parcel): ModelStudent {
-            return ModelStudent(parcel)
+    companion object CREATOR : Parcelable.Creator<ModelStudentDomain> {
+        override fun createFromParcel(parcel: Parcel): ModelStudentDomain {
+            return ModelStudentDomain(parcel)
         }
 
-        override fun newArray(size: Int): Array<ModelStudent?> {
+        override fun newArray(size: Int): Array<ModelStudentDomain?> {
             return arrayOfNulls(size)
         }
     }
 }
 
-// Función para convertir una lista de ResponseGetStudent a ModelStudent
-fun List<ResponseGetStudent?>?.toModelStudentList(): List<ModelStudent> {
+// Función para convertir una lista de ResponseGetStudent a ModelStudentDomain
+fun List<ResponseGetStudent?>?.toModelStudentList(): List<ModelStudentDomain> {
     return this?.map { response ->
-        ModelStudent(
+        ModelStudentDomain(
             studentId = response?.studentId,
             curp = response?.curp,
             birthday = response?.birthday,

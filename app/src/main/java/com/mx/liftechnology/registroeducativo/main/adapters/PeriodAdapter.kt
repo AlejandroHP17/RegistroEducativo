@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardPeriodBinding
-import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 
 /** PeriodAdapter - Build the adapter for Periods (Register schoool)
  * @author pelkidev
@@ -15,22 +15,22 @@ import com.mx.liftechnology.domain.model.ModelDatePeriod
  * @param listener click on item's card
  * */
 class PeriodAdapter(
-    private var items: MutableList<ModelDatePeriod>,
+    private var items: MutableList<ModelDatePeriodDomain>,
     private val listener: PeriodClickListener
-) : ListAdapter<ModelDatePeriod, PeriodAdapter.ViewHolder>(ItemsDiffCallBack) {
+) : ListAdapter<ModelDatePeriodDomain, PeriodAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelDatePeriod>() {
-        override fun areItemsTheSame(oldItem: ModelDatePeriod, newItem: ModelDatePeriod) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelDatePeriodDomain>() {
+        override fun areItemsTheSame(oldItem: ModelDatePeriodDomain, newItem: ModelDatePeriodDomain) =
             oldItem.position == newItem.position
 
-        override fun areContentsTheSame(oldItem: ModelDatePeriod, newItem: ModelDatePeriod) =
+        override fun areContentsTheSame(oldItem: ModelDatePeriodDomain, newItem: ModelDatePeriodDomain) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding: RecyclerCardPeriodBinding) :
         RecyclerView.ViewHolder(binding.root) {
         // Method like a listener; bring the item and the action of click
-        fun bind(item: ModelDatePeriod, action: PeriodClickListener) {
+        fun bind(item: ModelDatePeriodDomain, action: PeriodClickListener) {
             // Synchronize the item response with the view
             binding.apply {
                 tvCalendar.text = item.date
@@ -52,8 +52,8 @@ class PeriodAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    fun updateDate(item: ModelDatePeriod) {
-        items[item.position] = ModelDatePeriod(item.position, item.date)
+    fun updateDate(item: ModelDatePeriodDomain) {
+        items[item.position] = ModelDatePeriodDomain(item.position, item.date)
         notifyItemChanged(item.position)
     }
 
@@ -61,7 +61,7 @@ class PeriodAdapter(
 }
 
 class PeriodClickListener(
-    val onItemClick: (item: ModelDatePeriod) -> Unit,
+    val onItemClick: (item: ModelDatePeriodDomain) -> Unit,
 ) {
-    fun onClick(item: ModelDatePeriod) = onItemClick(item)
+    fun onClick(item: ModelDatePeriodDomain) = onItemClick(item)
 }

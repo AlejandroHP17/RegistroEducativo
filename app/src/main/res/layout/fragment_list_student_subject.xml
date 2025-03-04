@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_transparent"
     android:padding="@dimen/margin_outer"
-    tools:context=".main.ui.activityMain.register.student.ListStudentFragment">
+    tools:context=".main.ui.activityMain.student.list.ListStudentFragment">
 
     <include
         android:id = "@+id/include_header"

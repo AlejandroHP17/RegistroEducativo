@@ -31,7 +31,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/log_email"
+                android:hint="@string/form_generic_email"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between">
 
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:hint="@string/log_email"
+                    android:hint="@string/form_generic_email"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
@@ -51,7 +51,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/log_password"
+                android:hint="@string/form_generic_password"
                 app:endIconMode="password_toggle"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:hint="@string/log_password"
+                    android:hint="@string/form_generic_password"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
@@ -72,7 +72,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/reg_repeat_password"
+                android:hint="@string/form_reg_repeat_password"
                 app:endIconMode="password_toggle"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
@@ -81,7 +81,7 @@
                     android:id="@+id/et_repeat_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/reg_repeat_password"
+                    android:hint="@string/form_reg_repeat_password"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
@@ -101,7 +101,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/reg_code"
+                android:hint="@string/form_reg_code"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
 
@@ -110,7 +110,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:hint="@string/reg_code"
+                    android:hint="@string/form_reg_code"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>

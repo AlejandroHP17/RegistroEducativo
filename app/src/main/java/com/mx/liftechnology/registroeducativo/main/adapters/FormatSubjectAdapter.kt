@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBinding
 
 /**  - Build the adapter for Periods (Register schoool)
@@ -16,20 +16,20 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardSubjectBin
  * @param items list to build
  * */
 class FormatSubjectAdapter(
-) : ListAdapter<ModelFormatSubject, FormatSubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
+) : ListAdapter<ModelFormatSubjectDomain, FormatSubjectAdapter.ViewHolder>(ItemsDiffCallBack) {
     /** Use the [ItemsDiffCallBack] to detect if any item is duplicated and then no return the value */
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelFormatSubject>() {
-        override fun areItemsTheSame(oldItem: ModelFormatSubject, newItem: ModelFormatSubject) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelFormatSubjectDomain>() {
+        override fun areItemsTheSame(oldItem: ModelFormatSubjectDomain, newItem: ModelFormatSubjectDomain) =
             oldItem.position == newItem.position
 
-        override fun areContentsTheSame(oldItem: ModelFormatSubject, newItem: ModelFormatSubject) =
+        override fun areContentsTheSame(oldItem: ModelFormatSubjectDomain, newItem: ModelFormatSubjectDomain) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding: RecyclerCardSubjectBinding) :
         RecyclerView.ViewHolder(binding.root) {
         // Method like a listener; bring the item and the action of click
-        fun bind(item: ModelFormatSubject) {
+        fun bind(item: ModelFormatSubjectDomain) {
             // Synchronize the item response with the view
             binding.apply {
                 etFieldName.setText(item.name)
@@ -98,10 +98,10 @@ class FormatSubjectAdapter(
         holder.bind(currentItem)
     }
 
-    fun getList(): MutableList<ModelFormatSubject> = currentList
+    fun getList(): MutableList<ModelFormatSubjectDomain> = currentList
 
     /** Método para actualizar la lista de manera eficiente */
-    fun updateList(newList: List<ModelFormatSubject>) {
+    fun updateList(newList: List<ModelFormatSubjectDomain>) {
         submitList(newList)
     }
 }

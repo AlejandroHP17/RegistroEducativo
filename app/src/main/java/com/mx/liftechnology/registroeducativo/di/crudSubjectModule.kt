@@ -10,8 +10,8 @@ import com.mx.liftechnology.domain.usecase.flowdata.subject.CreateSubjectUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.subject.CreateSubjectUseCaseImp
 import com.mx.liftechnology.domain.usecase.flowdata.subject.ReadSubjectUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.subject.ReadSubjectUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.ListSubjectViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.RegisterSubjectViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list.ListSubjectViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.register.RegisterSubjectViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit

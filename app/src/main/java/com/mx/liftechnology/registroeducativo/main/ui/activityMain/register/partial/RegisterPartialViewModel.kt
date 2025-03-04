@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
@@ -45,8 +45,8 @@ class RegisterPartialViewModel(
     private val periodNumber: LiveData<Int> get() = _periodNumber
 
     // Observer the date selected by user
-    private val _datePeriod = SingleLiveEvent<ModelDatePeriod>()
-    val datePeriod: LiveData<ModelDatePeriod> get() = _datePeriod
+    private val _datePeriod = SingleLiveEvent<ModelDatePeriodDomain>()
+    val datePeriod: LiveData<ModelDatePeriodDomain> get() = _datePeriod
 
     // Observer the period select by user
     private val _periodField = SingleLiveEvent<ModelState<String, String>>()
@@ -56,8 +56,8 @@ class RegisterPartialViewModel(
     private val _adapterField = SingleLiveEvent<ModelState<String, String>>()
     val adapterField: LiveData<ModelState<String, String>> get() = _adapterField
 
-    private val _getPartialField = SingleLiveEvent<ModelState<MutableList<ModelDatePeriod>?, String>?>()
-    val getPartialField: LiveData<ModelState<MutableList<ModelDatePeriod>?, String>?> get() = _getPartialField
+    private val _getPartialField = SingleLiveEvent<ModelState<MutableList<ModelDatePeriodDomain>?, String>?>()
+    val getPartialField: LiveData<ModelState<MutableList<ModelDatePeriodDomain>?, String>?> get() = _getPartialField
 
     /** Save in viewModel the variable of period
      * @author pelkidev
@@ -73,7 +73,7 @@ class RegisterPartialViewModel(
      * @since 1.0.0
      */
     fun initDatePicker(
-        item: ModelDatePeriod,
+        item: ModelDatePeriodDomain,
         parentFragmentManager: FragmentManager,
         context: Context?
     ) {
@@ -89,7 +89,7 @@ class RegisterPartialViewModel(
 
         dateRangePicker.addOnPositiveButtonClickListener { dateRange ->
             converterTime(dateRange)
-            _datePeriod.postValue(ModelDatePeriod(item.position, converterTime(dateRange)))
+            _datePeriod.postValue(ModelDatePeriodDomain(item.position, converterTime(dateRange)))
         }
 
         dateRangePicker.show(parentFragmentManager, "dateRangePicker")
@@ -119,7 +119,7 @@ class RegisterPartialViewModel(
         return "$startDate  /  $endDate"
     }
 
-    fun validateFields(adapterPeriods: MutableList<ModelDatePeriod>?) {
+    fun validateFields(adapterPeriods: MutableList<ModelDatePeriodDomain>?) {
         viewModelScope.launch(dispatcherProvider.io) {
 
             val periodState = validateFieldsUseCase.validatePeriod(periodNumber.value)
@@ -135,7 +135,7 @@ class RegisterPartialViewModel(
     }
 
     private fun registerPartial(
-        adapterPeriods: MutableList<ModelDatePeriod>?
+        adapterPeriods: MutableList<ModelDatePeriodDomain>?
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -7,33 +7,40 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
+import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterStudentBinding
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.VoiceViewModel
 import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.main.viewextensions.errorET
+import com.mx.liftechnology.registroeducativo.main.viewextensions.showCustomToastSuccess
 import com.mx.liftechnology.registroeducativo.main.viewextensions.successET
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.util.Calendar
 import java.util.Locale
 
-class EditStudentFragment : Fragment() {
+class RegisterStudentFragment : Fragment() {
 
     private var _binding: FragmentRegisterStudentBinding? = null
     private val binding get() = _binding!!
 
     /* View Model variable */
-    private val editStudentViewModel: EditStudentViewModel by viewModel()
-
-    private val args: EditStudentFragmentArgs by navArgs()
+    private val registerStudentViewModel: RegisterStudentViewModel by viewModel()
+    private val voiceViewModel: VoiceViewModel by viewModel { parametersOf(requireContext()) }
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
+
+    companion object {
+        const val DATE_FORMAT = "%04d-%02d-%02d"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +54,7 @@ class EditStudentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
         initView()
-        setDataToView()
         initListeners()
-
     }
 
     override fun onStart() {
@@ -69,21 +74,10 @@ class EditStudentFragment : Fragment() {
      */
     private fun initView() {
         binding.apply {
-            includeHeader.tvTitle.text = getString(R.string.edit_student_name)
+            includeHeader.tvTitle.text = getString(R.string.register_student_name)
             includeHeader.tvInsert.text = getString(R.string.register_student_name_description)
             includeHeader.btnReturn.visibility = View.VISIBLE
-            includeButton.btnAction.text = getString(R.string.save)
-        }
-    }
-
-    private fun setDataToView(){
-        binding.apply {
-            etName.setText(args.infoStudent.name)
-            etLastName.setText(args.infoStudent.lastName)
-            etSecondLastName.setText(args.infoStudent.secondLastName)
-            etCurp.setText(args.infoStudent.curp)
-            etPhoneNumber.setText(args.infoStudent.phoneNumber)
-            tvBirthday.text = args.infoStudent.birthday
+            includeButton.btnAction.text = getString(R.string.register_student_register)
         }
     }
 
@@ -91,7 +85,7 @@ class EditStudentFragment : Fragment() {
         binding.apply {
             includeHeader.btnReturn.setOnClickListener { findNavController().popBackStack() }
             includeButton.btnAction.setOnClickListener {
-                editStudentViewModel.validateFields(
+                registerStudentViewModel.validateFields(
                     etName.text.toString(),
                     etLastName.text.toString(),
                     etSecondLastName.text.toString(),
@@ -100,13 +94,13 @@ class EditStudentFragment : Fragment() {
                     etPhoneNumber.text.toString()
                 )
             }
+            includeButton.btnRecord.setOnClickListener { voiceViewModel.change(requireContext()) }
             llBirthday.setOnClickListener { showCalendar() }
         }
     }
 
-
     private fun initObservers() {
-        editStudentViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.animateLoader.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is LoaderState -> {
                     if (state.result == true) animationHandler?.showLoadingAnimation()
@@ -116,61 +110,83 @@ class EditStudentFragment : Fragment() {
             }
         }
 
-        editStudentViewModel.nameField.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.nameField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputName.successET()
-                is ErrorState -> binding.inputName.errorET(state.result)
+                is ErrorUserState -> binding.inputName.errorET(state.result)
                 else -> binding.inputName.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)
             }
         }
 
-        editStudentViewModel.lastNameField.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.lastNameField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputLastName.successET()
-                is ErrorState -> binding.inputLastName.errorET(state.result)
+                is ErrorUserState -> binding.inputLastName.errorET(state.result)
                 else -> binding.inputLastName.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)
             }
         }
-        editStudentViewModel.secondLastNameField.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.secondLastNameField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputSecondLastName.successET()
-                is ErrorState -> binding.inputSecondLastName.errorET(state.result)
-                else -> binding.inputSecondLastName.errorET(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
+                is ErrorUserState -> binding.inputSecondLastName.errorET(state.result)
+                else -> binding.inputSecondLastName.errorET(ModelCodeInputs.ET_MISTAKE_FORMAT)
             }
         }
-        editStudentViewModel.curpField.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.curpField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputCurp.successET()
-                is ErrorState -> binding.inputCurp.errorET(state.result)
+                is ErrorUserState -> binding.inputCurp.errorET(state.result)
                 else -> binding.inputCurp.errorET(ModelCodeInputs.ET_CURP_FORMAT_MISTAKE)
             }
         }
-        editStudentViewModel.birthdayField.observe(viewLifecycleOwner) { _ ->
+        registerStudentViewModel.birthdayField.observe(viewLifecycleOwner) { _ ->
             /*when (state) {
                 is SuccessState -> binding.inp.successET()
-                is ErrorState -> binding.inputCurp.errorET(state.result)
+                is ErrorUserState -> binding.inputCurp.errorET(state.result)
                 else -> binding.inputCurp.errorET(ModelCodeInputs.ET_MISTAKE_EMAIL)
             }
 */
         }
-        editStudentViewModel.phoneNumberField.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.phoneNumberField.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SuccessState -> binding.inputPhoneNumber.successET()
-                is ErrorState -> binding.inputPhoneNumber.errorET(state.result)
+                is ErrorUserState -> binding.inputPhoneNumber.errorET(state.result)
                 else -> binding.inputPhoneNumber.errorET(ModelCodeInputs.ET_PHONE_NUMBER_FORMAT_MISTAKE)
             }
         }
 
-        editStudentViewModel.responseEditStudent.observe(viewLifecycleOwner) { state ->
+        registerStudentViewModel.responseRegisterStudent.observe(viewLifecycleOwner) { state ->
+            log(state.toString())
             when (state) {
                 is SuccessState -> {
-                    val direction =
-                        RegisterStudentFragmentDirections.actionRegisterStudentFragmentToListStudentFragment()
-                    findNavController().navigate(direction)
+                    val nav = RegisterStudentFragmentDirections.actionRegisterStudentFragmentToListStudentFragment()
+                    findNavController().navigate(nav)
+                    showCustomToastSuccess(requireActivity(),state.result.toString())
                 }
-                is ErrorState -> log("state $state")
-                else -> log("state $state")
+                is ErrorState -> {}
+                else -> {}
             }
+        }
+
+        voiceViewModel.results.observe(viewLifecycleOwner) { data ->
+            registerStudentViewModel.validateDataRecord(data)
+        }
+
+        registerStudentViewModel.fillFields.observe(viewLifecycleOwner) { data ->
+            data?.forEach {
+                when (it.key) {
+                    ModelVoiceConstants.NAME -> binding.etName.setText(it.value)
+                    ModelVoiceConstants.LAST_NAME -> binding.etLastName.setText(it.value)
+                    ModelVoiceConstants.SECOND_LAST_NAME -> binding.etSecondLastName.setText(it.value)
+                    ModelVoiceConstants.CURP -> binding.etCurp.setText(it.value)
+                    ModelVoiceConstants.BIRTHDAY -> binding.tvBirthday.text = it.value
+                    ModelVoiceConstants.PHONE_NUMBER -> binding.etPhoneNumber.setText(it.value)
+                }
+            }
+        }
+
+        voiceViewModel.changeButtonVoice.observe(viewLifecycleOwner) { color ->
+            binding.includeButton.btnRecord.setBackgroundColor(color)
         }
     }
 
@@ -188,7 +204,7 @@ class EditStudentFragment : Fragment() {
                 // Formatear la fecha seleccionada en formato yyyy-MM-dd
                 val fechaSeleccionada = String.format(
                     Locale.getDefault(), // Usar el locale predeterminado
-                    "%04d-%02d-%02d",   // Formato yyyy-MM-dd
+                    DATE_FORMAT,   // Formato yyyy-MM-dd
                     selectedYear,       // Año
                     selectedMonth + 1,   // Mes (se suma 1 porque en Calendar enero es 0)
                     selectedDay          // Día

@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
+import com.mx.liftechnology.registroeducativo.di.assignmentModule
 import com.mx.liftechnology.registroeducativo.di.crudPartialModule
 import com.mx.liftechnology.registroeducativo.di.crudStudentModule
 import com.mx.liftechnology.registroeducativo.di.crudSubjectModule
@@ -15,6 +16,7 @@ import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.profileModule
+import com.mx.liftechnology.registroeducativo.di.registerAssignmentModule
 import com.mx.liftechnology.registroeducativo.di.registerModule
 import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
@@ -65,7 +67,9 @@ class MyApp : Application() {
                 crudPartialModule,
                 crudStudentModule,
                 crudSubjectModule,
-                profileModule
+                profileModule,
+                assignmentModule,
+                registerAssignmentModule
             )
         }
     }

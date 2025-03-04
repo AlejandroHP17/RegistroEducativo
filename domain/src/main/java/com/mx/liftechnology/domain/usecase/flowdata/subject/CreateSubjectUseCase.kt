@@ -14,12 +14,12 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudSubjectRepository
-import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 
 
 fun interface CreateSubjectUseCase {
     suspend fun putSubjects(
-        updatedList: MutableList<ModelFormatSubject>?,
+        updatedList: MutableList<ModelFormatSubjectDomain>?,
         name: String?
     ): ModelState<List<String?>?, String>?
 }
@@ -34,7 +34,7 @@ class CreateSubjectUseCaseImp(
      * @since 1.0.0
      * */
     override suspend fun putSubjects(
-        updatedList: MutableList<ModelFormatSubject>?,
+        updatedList: MutableList<ModelFormatSubjectDomain>?,
         name: String?
     ): ModelState<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)

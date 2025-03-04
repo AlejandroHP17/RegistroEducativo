@@ -5,21 +5,21 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.ModelDialogStudentGroup
+import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.DialogSelectGroupBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.DialogGroupAdapter
 
 class DialogSelectGroup(
     private val context: Context,
-    private val items: List<ModelDialogStudentGroup>,
-    private val listener: (ModelDialogStudentGroup?) -> Unit
+    private val items: List<ModelDialogStudentGroupDomain>,
+    private val listener: (ModelDialogStudentGroupDomain?) -> Unit
 ) {
     private lateinit var dialog: Dialog
     private lateinit var adapter: DialogGroupAdapter
     private lateinit var binding: DialogSelectGroupBinding
 
-    private var selectedItem: ModelDialogStudentGroup? = null
+    private var selectedItem: ModelDialogStudentGroupDomain? = null
 
     fun showDialog() {
         // Inicializamos el diálogo

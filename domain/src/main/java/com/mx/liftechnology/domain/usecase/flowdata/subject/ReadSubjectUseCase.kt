@@ -7,24 +7,24 @@ import com.mx.liftechnology.data.repository.registerFlow.CrudSubjectRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.model.toModelSubjectList
+import com.mx.liftechnology.domain.model.subject.toModelSubjectList
 
 fun interface ReadSubjectUseCase {
-    suspend fun getListSubject(): ModelState<List<ModelFormatSubject>?, String>?
+    suspend fun getListSubject(): ModelState<List<ModelFormatSubjectDomain>?, String>?
 }
 
 class ReadSubjectUseCaseImp (
     private val crudSubjectRepository : CrudSubjectRepository,
     private val preference: PreferenceUseCase
 ) : ReadSubjectUseCase {
-    override suspend fun getListSubject(): ModelState<List<ModelFormatSubject>?, String> {
+    override suspend fun getListSubject(): ModelState<List<ModelFormatSubjectDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -53,7 +53,7 @@ class ReadSubjectUseCaseImp (
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<List<ModelFormatSubject>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<ModelFormatSubjectDomain>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)

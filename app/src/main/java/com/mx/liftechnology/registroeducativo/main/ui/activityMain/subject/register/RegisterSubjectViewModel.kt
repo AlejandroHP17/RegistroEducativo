@@ -1,9 +1,9 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.ModelFormatSubject
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
@@ -47,7 +47,7 @@ class RegisterSubjectViewModel(
         _subjectNumber.postValue(subjectNumber)
     }
 
-    fun validateFields(updatedList: MutableList<ModelFormatSubject>?, name: String?) {
+    fun validateFields(updatedList: MutableList<ModelFormatSubjectDomain>?, name: String?) {
         viewModelScope.launch(dispatcherProvider.io) {
             _animateLoader.postValue(LoaderState(true))
             val nameState = validateFieldsSubjectUseCase.validateName(name)
@@ -62,7 +62,7 @@ class RegisterSubjectViewModel(
         }
     }
 
-    private fun registerSubject(updatedList: MutableList<ModelFormatSubject>?, name: String?) {
+    private fun registerSubject(updatedList: MutableList<ModelFormatSubjectDomain>?, name: String?) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 createSubjectUseCase.putSubjects(updatedList, name)

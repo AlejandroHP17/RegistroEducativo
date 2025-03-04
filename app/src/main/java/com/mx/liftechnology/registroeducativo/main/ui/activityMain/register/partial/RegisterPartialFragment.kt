@@ -8,7 +8,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
@@ -36,7 +36,7 @@ class RegisterPartialFragment : Fragment() {
     private val registerPartialViewModel: RegisterPartialViewModel by viewModel()
     private var adapterPeriods: PeriodAdapter? = null
 
-    private var listPeriods : MutableList<ModelDatePeriod>? = null
+    private var listPeriods : MutableList<ModelDatePeriodDomain>? = null
 
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
@@ -187,7 +187,7 @@ class RegisterPartialFragment : Fragment() {
         listPeriods = if(listPeriods.isNullOrEmpty()){
 
             MutableList(period) { index ->
-                ModelDatePeriod(
+                ModelDatePeriodDomain(
                     position = index,
                     date = "Parcial ${index + 1}"
                 )

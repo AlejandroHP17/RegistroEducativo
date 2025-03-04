@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.domain.model.ModelDialogStudentGroup
+import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardGroupBinding
 
 /** DialogGroupAdapter - Build the adapter for menu (home)
@@ -13,8 +13,8 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardGroupBindi
  * @param listener click on item's card
  * */
 class DialogGroupAdapter(
-    private val items: List<ModelDialogStudentGroup>,
-    private val listener: (ModelDialogStudentGroup) -> Unit
+    private val items: List<ModelDialogStudentGroupDomain>,
+    private val listener: (ModelDialogStudentGroupDomain) -> Unit
 ) : RecyclerView.Adapter<DialogGroupAdapter.ViewHolder>() {
 
     private var selectedPosition = -1
@@ -23,7 +23,7 @@ class DialogGroupAdapter(
     inner class ViewHolder(private val binding: RecyclerCardGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ModelDialogStudentGroup) {
+        fun bind(item: ModelDialogStudentGroupDomain) {
             binding.apply {
                 // Concatenar la información del ítem
                 val stringBuilder = StringBuilder(item.item?.cct ?: "").append(" ")
@@ -42,7 +42,7 @@ class DialogGroupAdapter(
                         notifyItemChanged(selectedPosition) // Actualizar el ítem actual
 
                         listener(
-                            ModelDialogStudentGroup(
+                            ModelDialogStudentGroupDomain(
                                 selected = true,
                                 item = item.item,
                                 nameItem = item.nameItem

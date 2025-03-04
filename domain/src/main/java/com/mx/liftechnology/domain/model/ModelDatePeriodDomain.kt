@@ -4,7 +4,7 @@ package com.mx.liftechnology.domain.model
  * @author pelkidev
  * @since 1.0.0
  */
-data class ModelDatePeriod(
+data class ModelDatePeriodDomain(
     val position:Int,
     val date: String?
 )

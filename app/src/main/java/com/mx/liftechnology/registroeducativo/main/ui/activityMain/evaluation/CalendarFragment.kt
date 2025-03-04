@@ -7,15 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.ModelStudent
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentCalendarBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentAdapter
 import com.mx.liftechnology.registroeducativo.main.adapters.StudentClickListener
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentFragmentDirections
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentViewModel
 import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,7 +28,7 @@ class CalendarFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var studentAdapter: StudentAdapter? = null
-    private var listStudent: MutableList<ModelStudent>? = null
+    private var listStudent: MutableList<ModelStudentDomain>? = null
 
     /* View Model variable */
     private val listStudentViewModel: ListStudentViewModel by viewModel()
@@ -118,10 +117,10 @@ class CalendarFragment : Fragment() {
         /* Build the adapter */
         studentAdapter = StudentAdapter(StudentClickListener (
             onItemClick = { item ->
-                val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
-                findNavController().navigate(navigate)
+                /*val navigate = ListStudentFragmentDirections.actionListStudentFragmentToEditStudentFragment(item)
+                findNavController().navigate(navigate)*/
             },
-            onItemDelete = {}
+            onItemMore = { _ , _ ->}
 
         ))
         listStudent?.let { studentAdapter?.updateList(it.toList()) }

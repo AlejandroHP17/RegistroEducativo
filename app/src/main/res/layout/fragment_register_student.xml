@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_transparent"
-    tools:context=".main.ui.activityMain.register.student.RegisterStudentFragment">
+    tools:context=".main.ui.activityMain.student.register.RegisterStudentFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_name_name"
+                android:hint="@string/form_student_name"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between">
 
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:hint="@string/register_student_name_name"
+                    android:hint="@string/form_student_name"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
@@ -51,7 +51,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_name_last"
+                android:hint="@string/form_student_last_name"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
 
@@ -59,7 +59,7 @@
                     android:id="@+id/et_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/register_student_name_last"
+                    android:hint="@string/form_student_last_name"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
@@ -70,7 +70,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_name_second_last"
+                android:hint="@string/form_student_second_last_name"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between">
 
@@ -79,7 +79,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapWords"
-                    android:hint="@string/register_student_name_second_last"
+                    android:hint="@string/form_student_second_last_name"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
@@ -90,7 +90,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_curp"
+                android:hint="@string/form_student_curp"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_between" >
 
@@ -99,7 +99,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textCapCharacters"
-                    android:hint="@string/register_student_curp"
+                    android:hint="@string/form_student_curp"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_between"
                     android:layout_weight="8"
-                    android:hint="@string/register_student_birthday" />
+                    android:hint="@string/form_student_birthday" />
 
                 <ImageView
                     android:id="@+id/iv_calendar"
@@ -138,7 +138,7 @@
                 style="@style/editext_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_student_number"
+                android:hint="@string/form_student_phone_number"
                 android:textColorHint="@color/color_secondary_text"
                 android:layout_marginTop="@dimen/margin_outer" >
 
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:hint="@string/register_student_number"
+                    android:hint="@string/form_student_phone_number"
                     android:paddingHorizontal="16dp"
                     android:imeOptions="actionNext" >
                 </com.google.android.material.textfield.TextInputEditText>

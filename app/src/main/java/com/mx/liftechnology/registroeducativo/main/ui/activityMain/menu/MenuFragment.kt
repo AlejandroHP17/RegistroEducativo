@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.mx.liftechnology.data.model.ModelAdapterMenu
+import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
@@ -36,13 +36,12 @@ class MenuFragment : Fragment() {
     /* View Model variable */
     private val menuViewModel: MenuViewModel by viewModel()
 
-    /* loader variable */
+    private lateinit var menuAdapter: MenuAdapter
     private var animationHandler: AnimationHandler? = null
 
     companion object {
         const val ADAPTER_CONTROL = "Área de Control"
-        const val ADAPTER_CONTROL_REGISTER = "Área de Registro"
-        const val ADAPTER_CONTROL_EVALUATION = "Área de evaluación"
+        const val ADAPTER_CONTROL_REGISTER = "Área de Registro y evaluación"
     }
 
     override fun onCreateView(
@@ -56,6 +55,7 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
+        initControlRegisterAdapter()
         initView()
         initListeners()
     }
@@ -92,7 +92,7 @@ class MenuFragment : Fragment() {
         /* Show all the options from menu, or if any error occur, show the error */
         menuViewModel.controlMenu.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> initBaseControlAdapter(state.result)
+                is SuccessState ->  initBaseControlAdapter(state.result)
                 else -> {
                     binding.includeControl.setTitle(ADAPTER_CONTROL)
                     binding.includeControl.setEmptyState()
@@ -104,21 +104,10 @@ class MenuFragment : Fragment() {
         /* Show all the options from menu, or if any error occur, show the error */
         menuViewModel.controlMenuRegister.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is SuccessState -> initControlRegisterAdapter(state.result)
+                is SuccessState -> menuAdapter.submitList(state.result)
                 else -> {
                     binding.includeRegister.setTitle(ADAPTER_CONTROL_REGISTER)
                     binding.includeRegister.setEmptyState()
-                }
-            }
-        }
-
-        /* Show all the options from menu, or if any error occur, show the error */
-        menuViewModel.controlMenuEvaluation.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is SuccessState -> initControlEvaluationAdapter(state.result)
-                else -> {
-                    binding.includeEvaluation.setTitle(ADAPTER_CONTROL_EVALUATION)
-                    binding.includeEvaluation.setEmptyState()
                 }
             }
         }
@@ -158,7 +147,7 @@ class MenuFragment : Fragment() {
         }
     }
 
-    private fun initBaseControlAdapter(items: List<ModelAdapterMenu>){
+    private fun initBaseControlAdapter(items: List<ModelPrincipalMenuData>){
         val adapter = MenuAdapter { item ->
             val direction: NavDirections? = when (item.id) {
                 ModelSelectorMenu.CONTROL.value -> MenuFragmentDirections.actionMenuFragmentToRegisterSchoolFragment()
@@ -179,38 +168,21 @@ class MenuFragment : Fragment() {
      * @since 1.0.0
      * @param items list the option from menu
      * */
-    private fun initControlRegisterAdapter(items: List<ModelAdapterMenu>) {
-        val adapter = MenuAdapter { item ->
+    private fun initControlRegisterAdapter() {
+        menuAdapter = MenuAdapter { item ->
             val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.SCHOOL.value -> MenuFragmentDirections.actionMenuFragmentToRegisterSchoolFragment()
                 ModelSelectorMenu.STUDENTS.value -> MenuFragmentDirections.actionMenuFragmentToListStudentFragment()
                 ModelSelectorMenu.SUBJECTS.value -> MenuFragmentDirections.actionMenuFragmentToListSubjectFragment()
                 ModelSelectorMenu.PARTIALS.value -> MenuFragmentDirections.actionMenuFragmentToRegisterPartialFragment()
+                ModelSelectorMenu.CALENDAR.value -> MenuFragmentDirections.actionMenuFragmentToCalendarFragment()
+                ModelSelectorMenu.EXPORT.value -> null
                 else -> null
             }
             direction?.let { findNavController().navigate(it) }
         }
 
         binding.includeRegister.setTitle(ADAPTER_CONTROL_REGISTER)
-        binding.includeRegister.setAdapter(adapter)
-        adapter.submitList(items)
-    }
-
-    private fun initControlEvaluationAdapter(items: List<ModelAdapterMenu>) {
-        val adapter = MenuAdapter { item ->
-            val direction: NavDirections? = when (item.id) {
-                ModelSelectorMenu.CALENDAR.value -> MenuFragmentDirections.actionMenuFragmentToCalendarFragment()
-                ModelSelectorMenu.ESTUDENTS.value -> MenuFragmentDirections.actionMenuFragmentToListStudentFragment()
-                ModelSelectorMenu.ESUBJECTS.value -> MenuFragmentDirections.actionMenuFragmentToListSubjectFragment()
-                ModelSelectorMenu.EXPORT.value -> MenuFragmentDirections.actionMenuFragmentToRegisterPartialFragment()
-                else -> null
-            }
-            direction?.let { findNavController().navigate(it) }
-        }
-
-        binding.includeEvaluation.setTitle(ADAPTER_CONTROL_EVALUATION)
-        binding.includeEvaluation.setAdapter(adapter)
-        adapter.submitList(items)
+        binding.includeRegister.setAdapter(menuAdapter)
     }
 
     private fun showDialog() {

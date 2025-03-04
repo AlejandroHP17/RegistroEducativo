@@ -4,9 +4,8 @@ package com.mx.liftechnology.data.model
  * @author pelkidev
  * @since 1.0.0
  */
-data class ModelAdapterMenu(
+data class ModelPrincipalMenuData(
     val id: String,
     val image: Int?,
-    val titleCard: String?,
-    val isTouch: Boolean = true
+    val titleCard: String?
 )

@@ -12,13 +12,9 @@ enum class ModelSelectorMenu(val value: String) : Parcelable {
     CONTROL("Control"),
     PROFILE("Perfil"),
 
-    SCHOOL("Escuela"),
     STUDENTS("Alumnos"),
     SUBJECTS("Campo Formativo"),
     PARTIALS("Parciales"),
-
-    ESTUDENTS("Alumnos"),
     CALENDAR("Calendario"),
-    EXPORT("Exportar"),
-    ESUBJECTS("Campo Formativo")
+    EXPORT("Exportar")
 }

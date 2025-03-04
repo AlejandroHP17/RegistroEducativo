@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="form_title">Ingresa los datos del alumno</string>
-    <string name="form_name">Nombre(s)</string>
-    <string name="form_last_name">Primer Apellido</string>
-    <string name="form_second_last_name">Segundo Apellido</string>
-    <string name="form_birthday">Fecha de nacimiento</string>
-    <string name="form_phone_number">Número de teléfono</string>
-    <string name="form_curp">Curp</string>
+
+    <!-- Generic Login -->
+    <string name="form_generic_email">Correo eletrónico</string>
+    <string name="form_generic_password">Contraseña</string>
+
+    <!-- Register User -->
+    <string name="form_reg_repeat_password">Repetir contraseña</string>
+    <string name="form_reg_code">Código</string>
+
+    <!-- School User -->
+    <string name="form_school_cct">CCT</string>
+    <string name="form_school_term">Ciclo</string>
+    <string name="form_school_name">Nombre de la escuela</string>
+    <string name="form_school_shift">Turno</string>
+    <string name="form_school_type">Tipo</string>
+    <string name="form_school_grade">Grado</string>
+    <string name="form_school_group">Grupo</string>
+
+    <!-- Student -->
+    <string name="form_student_name">Nombre (s)</string>
+    <string name="form_student_last_name">Apellido paterno</string>
+    <string name="form_student_second_last_name">Apellido materno</string>
+    <string name="form_student_curp">CURP</string>
+    <string name="form_student_birthday">Fecha de nacimiento</string>
+    <string name="form_student_phone_number">Número de contacto</string>
+
+    <!-- Assignment -->
+    <string name="form_assignment_name">Nombre del trabajo</string>
+    <string name="form_assignment_date">Fecha del trabajo</string>
 
     <string name="form_error_generic">Campo vacío</string>
     <string name="form_error_characters">El formato no es correcto</string>

@@ -38,3 +38,13 @@ data class Percent(
     @SerializedName("porcentaje")
     val percent: Int?
 )
+
+
+
+
+
+
+
+
+
+

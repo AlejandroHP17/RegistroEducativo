@@ -3,14 +3,14 @@ package com.mx.liftechnology.domain.usecase.flowmenu
 import com.mx.liftechnology.core.network.callapi.CredentialsGroup
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.ModelAdapterMenu
+import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.data.repository.mainFlow.MenuLocalRepository
 import com.mx.liftechnology.data.repository.mainFlow.MenuRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.ModelDialogStudentGroup
-import com.mx.liftechnology.domain.model.RGTtoConvertModelDialogStudentGroup
+import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.menu.RGTtoConvertModelDialogStudentGroupDomains
 import com.mx.liftechnology.domain.model.generic.EmptyState
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
@@ -18,17 +18,16 @@ import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.model.menu.ModelInfoMenu
+import com.mx.liftechnology.domain.model.menu.ModelInfoStudentGroupDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
 interface MenuUseCase {
-    suspend fun getGroup(): ModelState<ModelInfoMenu, String>
-    suspend fun getControlMenu(): ModelState<List<ModelAdapterMenu>, String>
-    suspend fun getControlRegister(): ModelState<List<ModelAdapterMenu>, String>
-    suspend fun getControlEvaluation(): ModelState<List<ModelAdapterMenu>, String>
-    suspend fun updateGroup(nameItem: ModelDialogStudentGroup)
+    suspend fun getGroup(): ModelState<ModelInfoStudentGroupDomain, String>
+    suspend fun getControlMenu(): ModelState<List<ModelPrincipalMenuData>, String>
+    suspend fun getControlRegister(): ModelState<List<ModelPrincipalMenuData>, String>
+    suspend fun updateGroup(nameItem: ModelDialogStudentGroupDomain)
 }
 
 /** MenuUseCase - Get the list of menu and process the information
@@ -46,7 +45,7 @@ class MenuUseCaseImp(
      * @author pelkidev
      * @return ModelState
      * */
-    override suspend fun getGroup(): ModelState<ModelInfoMenu, String> {
+    override suspend fun getGroup(): ModelState<ModelInfoStudentGroupDomain, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
@@ -57,10 +56,10 @@ class MenuUseCaseImp(
 
         return when (val result = menuRepository.executeGetGroup(request)) {
             is ResultSuccess -> {
-                val convertedResult = result.data.RGTtoConvertModelDialogStudentGroup
+                val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
                 if (convertedResult.isNotEmpty()) {
                     SuccessState(
-                        ModelInfoMenu(
+                        ModelInfoStudentGroupDomain(
                             listSchool = convertedResult,
                             infoSchoolSelected = selectOneGroup(convertedResult)
                         )
@@ -80,7 +79,7 @@ class MenuUseCaseImp(
      * @author pelkidev
      * @return ModelState
      * */
-    private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroup>): ModelDialogStudentGroup {
+    private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
         return convertedResult.let {
             if (preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1) {
                 preference.savePreferenceInt(
@@ -97,8 +96,8 @@ class MenuUseCaseImp(
         }
     }
 
-    private fun buildOneInformation(convertedResult: List<ModelDialogStudentGroup>): ModelDialogStudentGroup {
-        val modelResponse = ModelDialogStudentGroup(
+    private fun buildOneInformation(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
+        val modelResponse = ModelDialogStudentGroupDomain(
             selected = convertedResult.firstOrNull()?.selected,
             item = convertedResult.firstOrNull()?.item,
             nameItem = "${convertedResult.firstOrNull()?.item?.cct} - ${convertedResult.firstOrNull()?.item?.group}${convertedResult.firstOrNull()?.item?.name} - ${convertedResult.firstOrNull()?.item?.shift}"
@@ -106,7 +105,7 @@ class MenuUseCaseImp(
         return modelResponse
     }
 
-    override suspend fun updateGroup(nameItem: ModelDialogStudentGroup) {
+    override suspend fun updateGroup(nameItem: ModelDialogStudentGroupDomain) {
         preference.savePreferenceInt(
             ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,
             nameItem.item?.teacherSchoolCycleGroupId
@@ -114,7 +113,7 @@ class MenuUseCaseImp(
     }
 
 
-    override suspend fun getControlMenu(): ModelState<List<ModelAdapterMenu>, String> {
+    override suspend fun getControlMenu(): ModelState<List<ModelPrincipalMenuData>, String> {
         return withContext(Dispatchers.IO) {
             try {
                 val list = localRepository.getControlMenu()
@@ -129,25 +128,10 @@ class MenuUseCaseImp(
         }
     }
 
-    override suspend fun getControlRegister(): ModelState<List<ModelAdapterMenu>, String> {
+    override suspend fun getControlRegister(): ModelState<List<ModelPrincipalMenuData>, String> {
         return withContext(Dispatchers.IO) {
             try {
                 val list = localRepository.getControlRegister()
-                if (list.isEmpty()) {
-                    EmptyState(ModelCodeError.ERROR_EMPTY)
-                } else {
-                    SuccessState(list)
-                }
-            } catch (e: Exception) {
-                ErrorState(ModelCodeError.ERROR_CATCH)
-            }
-        }
-    }
-
-    override suspend fun getControlEvaluation(): ModelState<List<ModelAdapterMenu>, String> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val list = localRepository.getControlEvaluation()
                 if (list.isEmpty()) {
                     EmptyState(ModelCodeError.ERROR_EMPTY)
                 } else {
@@ -167,7 +151,7 @@ class MenuUseCaseImp(
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<ModelInfoMenu, String> {
+    private fun handleResponse(error: FailureService): ModelState<ModelInfoStudentGroupDomain, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
             is FailureService.Unauthorized -> {

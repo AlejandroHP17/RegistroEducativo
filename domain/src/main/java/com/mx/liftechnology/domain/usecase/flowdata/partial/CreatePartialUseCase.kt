@@ -14,13 +14,13 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepository
-import com.mx.liftechnology.domain.model.ModelDatePeriod
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 
 
 fun interface CreatePartialUseCase {
     suspend fun createPartials(
         periodNumber: Int?,
-        adapterPeriods: MutableList<ModelDatePeriod>?
+        adapterPeriods: MutableList<ModelDatePeriodDomain>?
     ): ModelState<List<String?>?, String>?
 }
 
@@ -35,7 +35,7 @@ class CreatePartialUseCaseImp(
      * */
     override suspend fun createPartials(
         periodNumber: Int?,
-        adapterPeriods: MutableList<ModelDatePeriod>?
+        adapterPeriods: MutableList<ModelDatePeriodDomain>?
     ): ModelState<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)

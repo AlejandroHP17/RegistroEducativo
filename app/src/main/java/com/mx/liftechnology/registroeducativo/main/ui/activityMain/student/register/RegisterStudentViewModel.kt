@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,16 +9,19 @@ import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.flowdata.student.UpdateStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.flowdata.student.CreateStudentUseCase
 import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
 
-class EditStudentViewModel(
+class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
-    private val updateStudentUseCase: UpdateStudentUseCase
+    private val createStudentUseCase: CreateStudentUseCase,
+    private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
 
     ) : ViewModel() {
 
@@ -50,8 +53,8 @@ class EditStudentViewModel(
     val fillFields: LiveData<MutableMap<String, String>?> get() = _fillFields
 
     // Observer the response of service
-    private val _responseEditStudent = SingleLiveEvent<ModelState<List<String?>?, String>>()
-    val responseEditStudent: LiveData<ModelState<List<String?>?, String>> get() = _responseEditStudent
+    private val _responseRegisterStudent = SingleLiveEvent<ModelState<List<String?>?, String>>()
+    val responseRegisterStudent: LiveData<ModelState<List<String?>?, String>> get() = _responseRegisterStudent
 
     fun validateFields(
         name: String,
@@ -81,12 +84,12 @@ class EditStudentViewModel(
                 && birthdayState is SuccessState && phoneNumberState is SuccessState
             ) {
                 _animateLoader.postValue(LoaderState(true))
-                editStudent(name, lastName, secondLastName, curp, birthday, phoneNumber)
+                registerStudent(name, lastName, secondLastName, curp, birthday, phoneNumber)
             }
         }
     }
 
-    private fun editStudent(
+    private fun registerStudent(
         name: String,
         lastName: String,
         secondLastName: String,
@@ -96,7 +99,7 @@ class EditStudentViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                updateStudentUseCase.editStudent(
+                createStudentUseCase.putNewStudent(
                     name,
                     lastName,
                     secondLastName,
@@ -105,11 +108,22 @@ class EditStudentViewModel(
                     phoneNumber
                 )
             }.onSuccess {
-                _responseEditStudent.postValue(it)
+                _responseRegisterStudent.postValue(it)
                 _animateLoader.postValue(LoaderState(false))
             }.onFailure {
-                _responseEditStudent.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+                _responseRegisterStudent.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
                 _animateLoader.postValue(LoaderState(false))
+            }
+        }
+    }
+
+    fun validateDataRecord(data: List<String>) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            log(data.toString())
+            val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
+            result?.let {
+                log(it.toString())
+                _fillFields.postValue(it)
             }
         }
     }

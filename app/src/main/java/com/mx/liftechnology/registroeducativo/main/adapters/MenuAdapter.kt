@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.mx.liftechnology.data.model.ModelAdapterMenu
+import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBinding
 
@@ -16,28 +16,23 @@ import com.mx.liftechnology.registroeducativo.databinding.RecyclerCardMenuBindin
  * @param listener click on item's card
  * */
 class MenuAdapter(
-    private val listener: (ModelAdapterMenu) -> Unit
-) : ListAdapter<ModelAdapterMenu, MenuAdapter.ViewHolder>(ItemsDiffCallBack) {
+    private val listener: (ModelPrincipalMenuData) -> Unit
+) : ListAdapter<ModelPrincipalMenuData, MenuAdapter.ViewHolder>(ItemsDiffCallBack) {
 
-    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelAdapterMenu>() {
-        override fun areItemsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
+    companion object ItemsDiffCallBack : DiffUtil.ItemCallback<ModelPrincipalMenuData>() {
+        override fun areItemsTheSame(oldItem: ModelPrincipalMenuData, newItem: ModelPrincipalMenuData) =
             oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: ModelAdapterMenu, newItem: ModelAdapterMenu) =
+        override fun areContentsTheSame(oldItem: ModelPrincipalMenuData, newItem: ModelPrincipalMenuData) =
             oldItem == newItem
     }
 
     class ViewHolder(private val binding: RecyclerCardMenuBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ModelAdapterMenu, listener: (ModelAdapterMenu) -> Unit) {
+        fun bind(item: ModelPrincipalMenuData, listener: (ModelPrincipalMenuData) -> Unit) {
             binding.apply {
-                if (!item.isTouch) {
-                    cvComplete.alpha = 0.6F
-                    root.setOnClickListener(null)
-                } else {
-                    root.setOnClickListener { listener(item) }
-                }
+                root.setOnClickListener { listener(item)}
                 item.image?.let {
                     ivImage.setImageResource(it)
                 } ?: ivImage.setImageResource(R.drawable.ic_logo)

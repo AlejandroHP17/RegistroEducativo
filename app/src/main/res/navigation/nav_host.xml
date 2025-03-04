@@ -48,7 +48,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/registerStudentFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.RegisterStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register.RegisterStudentFragment"
         android:label="fragment_register_student"
         tools:layout="@layout/fragment_register_student" >
         <action
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerSubjectFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.RegisterSubjectFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.register.RegisterSubjectFragment"
         android:label="fragment_register_subject"
         tools:layout="@layout/fragment_register_subject" >
         <action
@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/listStudentFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.ListStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentFragment"
         android:label="fragment_list_student"
         tools:layout="@layout/fragment_list_student_subject" >
 
@@ -85,16 +85,19 @@
     </fragment>
     <fragment
         android:id="@+id/listSubjectFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.subject.ListSubjectFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list.ListSubjectFragment"
         android:label="fragment_list_subject"
         tools:layout="@layout/fragment_list_student_subject" >
         <action
             android:id="@+id/action_listSubjectFragment_to_registerSubjectFragment"
             app:destination="@id/registerSubjectFragment" />
+        <action
+            android:id="@+id/action_listSubjectFragment_to_assignmentFragment"
+            app:destination="@id/assignmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/editStudentFragment"
-        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.student.EditStudentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.edit.EditStudentFragment"
         android:label="EditStudentFragment" >
 
         <action
@@ -102,11 +105,32 @@
             app:destination="@id/listStudentFragment" />
         <argument
             android:name="infoStudent"
-            app:argType="com.mx.liftechnology.domain.model.ModelStudent" />
+            app:argType="com.mx.liftechnology.domain.model.student.ModelStudentDomain" />
     </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.evaluation.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/assignmentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.assignment.AssignmentFragment"
+        android:label="fragment_assignment"
+        tools:layout="@layout/fragment_assignment" >
+        <argument
+            android:name="itemSubject"
+            app:argType="com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain" />
+        <action
+            android:id="@+id/action_assignmentFragment_to_registerAssignmentFragment"
+            app:destination="@id/registerAssignmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerAssignmentFragment"
+        android:name="com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.registerassignment.RegisterAssignmentFragment"
+        android:label="fragment_register_assignment"
+        tools:layout="@layout/fragment_register_assignment" >
+        <argument
+            android:name="itemRegisterAssignment"
+            app:argType="com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain" />
+    </fragment>
 </navigation>
