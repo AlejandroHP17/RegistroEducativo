@@ -1,17 +1,17 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.callapi.RegisterSchoolApiCall
 import com.mx.liftechnology.core.network.callapi.GetCctApiCall
-import com.mx.liftechnology.data.repository.mainFlow.CCTRepository
-import com.mx.liftechnology.data.repository.mainFlow.CCTRepositoryImp
-import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepository
-import com.mx.liftechnology.data.repository.registerFlow.RegisterSchoolRepositoryImp
-import com.mx.liftechnology.domain.usecase.flowdata.CCTUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.CCTUseCaseImp
-import com.mx.liftechnology.domain.usecase.flowdata.school.RegisterSchoolUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.school.RegisterSchoolUseCaseImp
-import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCaseImp
+import com.mx.liftechnology.core.network.callapi.RegisterOneSchoolApiCall
+import com.mx.liftechnology.data.repository.mainflowdata.CCTRepository
+import com.mx.liftechnology.data.repository.mainflowdata.CCTRepositoryImp
+import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepository
+import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepositoryImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school.RegisterSchoolViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -24,7 +24,7 @@ import retrofit2.Retrofit
 val registerSchoolModule = module {
 
     factory { get<Retrofit>().create(GetCctApiCall::class.java) }
-    factory { get<Retrofit>().create(RegisterSchoolApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterOneSchoolApiCall::class.java) }
 
     single<CCTRepository> {
         CCTRepositoryImp(get())
@@ -33,11 +33,11 @@ val registerSchoolModule = module {
         CCTUseCaseImp(get())
     }
 
-    single<RegisterSchoolRepository> {
-        RegisterSchoolRepositoryImp(get())
+    single<CrudSchoolRepository> {
+        CrudSchoolRepositoryImp(get())
     }
-    single<RegisterSchoolUseCase> {
-        RegisterSchoolUseCaseImp(get(), get())
+    single<RegisterOneSchoolUseCase> {
+        RegisterOneSchoolUseCaseImp(get(), get())
     }
 
     single<ValidateFieldsRegisterUseCase> {

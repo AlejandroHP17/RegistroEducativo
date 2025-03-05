@@ -8,12 +8,12 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.databinding.FragmentRegisterSubjectBinding
 import com.mx.liftechnology.registroeducativo.main.adapters.FormatSubjectAdapter
@@ -39,6 +39,11 @@ class RegisterSubjectFragment : Fragment() {
     /* loader variable */
     private var animationHandler: AnimationHandler? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        registerSubjectViewModel.getListEvaluationType()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,10 +58,6 @@ class RegisterSubjectFragment : Fragment() {
         initView()
         initListeners()
         showLogicSpinner()
-    }
-
-    override fun onStart() {
-        super.onStart()
         initObservers()
     }
 

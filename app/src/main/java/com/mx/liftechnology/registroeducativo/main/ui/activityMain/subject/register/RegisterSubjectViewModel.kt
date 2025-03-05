@@ -3,14 +3,15 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.flowdata.subject.CreateSubjectUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.subject.ValidateFieldsSubjectUseCase
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType.GetListEvaluationTypeUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 class RegisterSubjectViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsSubjectUseCase: ValidateFieldsSubjectUseCase,
-    private val createSubjectUseCase: CreateSubjectUseCase
+    private val registerOneSubjectUseCase: RegisterOneSubjectUseCase,
+    private val getListEvaluationTypeUseCase: GetListEvaluationTypeUseCase,
 ) : ViewModel() {
 
     // Observer the animate loader
@@ -37,9 +39,12 @@ class RegisterSubjectViewModel(
     private val _adapterField = SingleLiveEvent<ModelState<String, String>>()
     val adapterField: LiveData<ModelState<String, String>> get() = _adapterField
 
-    // Observer the animate loader
+    // Observer the response
     private val _responseSubjectRegister = SingleLiveEvent<ModelState<List<String?>?, String>?>()
     val responseSubjectRegister: LiveData<ModelState<List<String?>?, String>?> get() = _responseSubjectRegister
+
+    private val _responseEvaluationType = SingleLiveEvent<ModelState<List<String>?, String>?>()
+    val responseEvaluationType: LiveData<ModelState<List<String>?, String>?> get() = _responseEvaluationType
 
 
     fun saveSubject(data: String?) {
@@ -62,10 +67,13 @@ class RegisterSubjectViewModel(
         }
     }
 
-    private fun registerSubject(updatedList: MutableList<ModelFormatSubjectDomain>?, name: String?) {
+    private fun registerSubject(
+        updatedList: MutableList<ModelFormatSubjectDomain>?,
+        name: String?,
+    ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                createSubjectUseCase.putSubjects(updatedList, name)
+                registerOneSubjectUseCase.registerOneSubject(updatedList, name)
             }.onSuccess {
                 _animateLoader.postValue(LoaderState(false))
                 _responseSubjectRegister.postValue(it)
@@ -76,7 +84,21 @@ class RegisterSubjectViewModel(
         }
     }
 
-    fun loaderState(visible: Boolean){
+    fun getListEvaluationType() {
+        viewModelScope.launch(dispatcherProvider.io) {
+            runCatching {
+                getListEvaluationTypeUseCase.getListEvaluationType()
+            }.onSuccess {
+                _animateLoader.postValue(LoaderState(false))
+                _responseEvaluationType.postValue(it)
+            }.onFailure {
+                _animateLoader.postValue(LoaderState(false))
+                _responseEvaluationType.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+            }
+        }
+    }
+
+    fun loaderState(visible: Boolean) {
         _animateLoader.postValue(LoaderState(visible))
     }
 }

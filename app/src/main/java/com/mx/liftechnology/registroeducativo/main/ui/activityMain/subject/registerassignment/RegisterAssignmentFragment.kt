@@ -35,7 +35,6 @@ class RegisterAssignmentFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -52,12 +51,13 @@ class RegisterAssignmentFragment : Fragment() {
         animationHandler?.showLoadingAnimation()
         initView()
         initListeners()
+        initObservers()
     }
 
     override fun onStart() {
         super.onStart()
         registerAssignmentViewModel.getListStudent()
-        initObservers()
+
     }
 
     override fun onDestroyView() {

@@ -62,7 +62,7 @@ class RegisterPartialFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         registerPartialViewModel.loaderState(true)
-        registerPartialViewModel.getPartial()
+        registerPartialViewModel.getListPartial()
     }
 
     override fun onDestroyView() {

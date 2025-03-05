@@ -54,11 +54,11 @@ class ListStudentFragment : Fragment() {
         initAdapterStudent()
         initView()
         initListeners()
+        initObservers()
     }
 
     override fun onStart() {
         super.onStart()
-        initObservers()
         listStudentViewModel.getLocalListStudent()
     }
 

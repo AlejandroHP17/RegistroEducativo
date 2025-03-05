@@ -9,9 +9,9 @@ import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.flowdata.CCTUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.school.RegisterSchoolUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ class RegisterSchoolViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val cctUseCase: CCTUseCase,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
-    private val registerSchoolUseCase: RegisterSchoolUseCase
+    private val registerOneSchoolUseCase: RegisterOneSchoolUseCase
 ) : ViewModel() {
 
     // Observer the animate loader
@@ -97,7 +97,7 @@ class RegisterSchoolViewModel(
             if (schoolCctField.value is SuccessState && gradeState is SuccessState
                 && groupState is SuccessState && cycleState is SuccessState
             ) {
-                registerSchool()
+                registerOneSchool()
                 _allField.postValue(true)
             } else {
                 _allField.postValue(false)
@@ -106,10 +106,10 @@ class RegisterSchoolViewModel(
         }
     }
 
-    private fun registerSchool() {
+    private fun registerOneSchool() {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerSchoolUseCase.putNewSchool(
+                registerOneSchoolUseCase.registerOneSchool(
                     (schoolCctField.value as SuccessState<ResponseCctSchool?, String>).result,
                     grade,
                     group,

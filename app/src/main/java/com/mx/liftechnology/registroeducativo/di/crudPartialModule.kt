@@ -1,13 +1,13 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.callapi.GetPartialApiCall
-import com.mx.liftechnology.core.network.callapi.RegisterPartialApiCall
-import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepository
-import com.mx.liftechnology.data.repository.registerFlow.CrudPartialRepositoryImp
-import com.mx.liftechnology.domain.usecase.flowdata.partial.CreatePartialUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.partial.CreatePartialUseCaseImp
-import com.mx.liftechnology.domain.usecase.flowdata.partial.ReadPartialUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.partial.ReadPartialUseCaseImp
+import com.mx.liftechnology.core.network.callapi.GetListPartialApiCall
+import com.mx.liftechnology.core.network.callapi.RegisterListPartialApiCall
+import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
+import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepositoryImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.partial.RegisterPartialViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -19,18 +19,18 @@ import retrofit2.Retrofit
  */
 val crudPartialModule = module {
 
-    factory { get<Retrofit>().create(RegisterPartialApiCall::class.java) }
-    factory { get<Retrofit>().create(GetPartialApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterListPartialApiCall::class.java) }
+    factory { get<Retrofit>().create(GetListPartialApiCall::class.java) }
 
     single<CrudPartialRepository> {
         CrudPartialRepositoryImp(get(), get())
     }
 
-    single<CreatePartialUseCase> {
-        CreatePartialUseCaseImp(get(), get())
+    single<RegisterListPartialUseCase> {
+        RegisterListPartialUseCaseImp(get(), get())
     }
-    single<ReadPartialUseCase> {
-        ReadPartialUseCaseImp(get(), get())
+    single<GetListPartialUseCase> {
+        GetListPartialUseCaseImp(get(), get())
     }
 
     viewModel {

@@ -55,16 +55,17 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         animationHandler = context as? AnimationHandler
+        animationHandler?.showLoadingAnimation()
         initControlRegisterAdapter()
         initView()
         initListeners()
+        initObservers()
     }
 
     override fun onStart() {
         super.onStart()
         menuViewModel.getGroup()
         menuViewModel.getControlMenu()
-        initObservers()
     }
 
     override fun onDestroyView() {
@@ -166,7 +167,6 @@ class MenuFragment : Fragment() {
     /** inflateAdapter - Build the adapter of menu
      * @author pelkidev
      * @since 1.0.0
-     * @param items list the option from menu
      * */
     private fun initControlRegisterAdapter() {
         menuAdapter = MenuAdapter { item ->
@@ -193,7 +193,6 @@ class MenuFragment : Fragment() {
                     menuViewModel.updateGroup(selectedItem)
                 }
             dialogManager.showDialog()
-
         }
     }
 }

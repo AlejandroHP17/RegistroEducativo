@@ -20,12 +20,14 @@ data class ModelFormatSubjectDomain(
     ) {
     }
 
-    override fun describeContents(): Int {
-        TODO("Not yet implemented")
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(position)
+        parcel.writeString(name)
+        parcel.writeString(percent)
     }
 
-    override fun writeToParcel(p0: Parcel, p1: Int) {
-        TODO("Not yet implemented")
+    override fun describeContents(): Int {
+        return 0
     }
 
     companion object CREATOR : Parcelable.Creator<ModelFormatSubjectDomain> {

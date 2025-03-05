@@ -8,20 +8,21 @@ import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.student.ModelStudentRegisterAssignmentDomain
-import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class RegisterAssignmentViewModel (
-    private val readStudentUseCase: ReadStudentUseCase
+    private val getListStudentUseCase: GetListStudentUseCase
 ): ViewModel() {
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
 
-    // Observer the animate loader
+    // Observer the response
     private val _responseListStudent = SingleLiveEvent<ModelState<List<ModelStudentRegisterAssignmentDomain>?, String>?>()
     val responseListStudent: LiveData<ModelState<List<ModelStudentRegisterAssignmentDomain>?, String>?> get() = _responseListStudent
+
 
     fun loaderState(visible: Boolean){
         _animateLoader.postValue(LoaderState(visible))
@@ -31,7 +32,7 @@ class RegisterAssignmentViewModel (
         viewModelScope.launch {
             runCatching {
                 _animateLoader.postValue(LoaderState(true))
-                readStudentUseCase.getListStudentAssignment()
+                getListStudentUseCase.getListStudentAssignment()
             }.onSuccess {
                 _responseListStudent.postValue(it)
                 _animateLoader.postValue(LoaderState(false))

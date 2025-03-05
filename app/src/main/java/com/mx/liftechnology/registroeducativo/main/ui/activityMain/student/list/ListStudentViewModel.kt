@@ -3,17 +3,17 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.usecase.flowdata.student.ReadStudentUseCase
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class ListStudentViewModel(
-    private val readStudentUseCase: ReadStudentUseCase
+    private val getListStudentUseCase: GetListStudentUseCase
 ) : ViewModel() {
 
     // Observer the animate loader
@@ -28,7 +28,7 @@ class ListStudentViewModel(
         viewModelScope.launch {
             runCatching {
                 _animateLoader.postValue(LoaderState(true))
-                readStudentUseCase.getListStudent()
+                getListStudentUseCase.getListStudent()
             }.onSuccess {
                 _responseListStudent.postValue(it)
                 _animateLoader.postValue(LoaderState(false))

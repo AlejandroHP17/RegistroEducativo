@@ -15,9 +15,9 @@ import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.flowdata.partial.CreatePartialUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.partial.ReadPartialUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.school.ValidateFieldsRegisterUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -29,8 +29,8 @@ import java.time.format.DateTimeFormatter
 class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateFieldsRegisterUseCase,
-    private val createPartialUseCase: CreatePartialUseCase,
-    private val readPartialUseCase: ReadPartialUseCase,
+    private val registerListPartialUseCase: RegisterListPartialUseCase,
+    private val getListPartialUseCase: GetListPartialUseCase,
 ) : ViewModel() {
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
@@ -129,17 +129,17 @@ class RegisterPartialViewModel(
             _adapterField.postValue(adapterState)
 
             if (periodState is SuccessState && adapterState is SuccessState) {
-                registerPartial(adapterPeriods)
+                registerListPartial(adapterPeriods)
             }
         }
     }
 
-    private fun registerPartial(
+    private fun registerListPartial(
         adapterPeriods: List<ModelDatePeriodDomain>
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                createPartialUseCase.createPartials(periodNumber.value, adapterPeriods)
+                registerListPartialUseCase.registerListPartial(periodNumber.value, adapterPeriods)
             }.onSuccess {
                 _animateLoader.postValue(LoaderState(false))
                 _responseRegisterPartial.postValue(it)
@@ -151,10 +151,10 @@ class RegisterPartialViewModel(
     }
 
     /** Read */
-    fun getPartial(){
+    fun getListPartial(){
         viewModelScope.launch (dispatcherProvider.io) {
             runCatching {
-                readPartialUseCase.readPartials()
+                getListPartialUseCase.getListPartial()
             }.onSuccess {
                 _getPartialField.postValue(it)
             }.onFailure {

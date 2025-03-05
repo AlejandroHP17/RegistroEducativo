@@ -305,7 +305,7 @@ class RegisterSchoolFragment : Fragment() {
                     val input = s.toString()
                     if (input.length == 10) {
                         if (!controlCCTClean) controlCCTClean = true
-                        registerSchoolViewModel.getSchoolCCT(input)
+                        registerSchoolViewModel.getSchoolCCT(input.uppercase())
                     } else if (controlCCTClean) {
                         controlCCTClean = false
                         cleanAutoText()

@@ -9,9 +9,9 @@ import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.flowdata.ValidateVoiceStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.student.CreateStudentUseCase
-import com.mx.liftechnology.domain.usecase.flowdata.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
-    private val createStudentUseCase: CreateStudentUseCase,
+    private val registerOneStudentUseCase: RegisterOneStudentUseCase,
     private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
 
     ) : ViewModel() {
@@ -84,12 +84,12 @@ class RegisterStudentViewModel(
                 && birthdayState is SuccessState && phoneNumberState is SuccessState
             ) {
                 _animateLoader.postValue(LoaderState(true))
-                registerStudent(name, lastName, secondLastName, curp, birthday, phoneNumber)
+                registerOneStudent(name, lastName, secondLastName, curp, birthday, phoneNumber)
             }
         }
     }
 
-    private fun registerStudent(
+    private fun registerOneStudent(
         name: String,
         lastName: String,
         secondLastName: String,
@@ -99,7 +99,7 @@ class RegisterStudentViewModel(
     ) {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                createStudentUseCase.putNewStudent(
+                registerOneStudentUseCase.registerOneStudent(
                     name,
                     lastName,
                     secondLastName,

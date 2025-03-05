@@ -11,7 +11,8 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
-import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
  */
 class MenuViewModel(
     private val dispatcherProvider: DispatcherProvider,
+    private val menuGroupsUseCase: MenuGroupsUseCase,
     private val menuUseCase: MenuUseCase
 ) : ViewModel() {
 
@@ -53,7 +55,7 @@ class MenuViewModel(
         _animateLoader.postValue(LoaderState(true))
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                menuUseCase.getGroup()
+                menuGroupsUseCase.getGroup()
             }.onSuccess {
                 if (it is SuccessState) {
                     showGetControlRegister()
@@ -68,7 +70,7 @@ class MenuViewModel(
         }
     }
 
-    /** getMenu - Get all the options from menu, or a mistake in case
+    /** getControlMenu -
      * @author pelkidev
      * @since 1.0.0
      */
@@ -87,7 +89,7 @@ class MenuViewModel(
     fun updateGroup(nameItem: ModelDialogStudentGroupDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             nameItem?.let {
-                menuUseCase.updateGroup(it)
+                menuGroupsUseCase.updateGroup(it)
                 _selectedGroup.postValue(SuccessState(it))
             }
         }
