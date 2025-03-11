@@ -36,7 +36,9 @@ data class Percent(
     @SerializedName("trabajo_id")
     val jobId: Int?,
     @SerializedName("porcentaje")
-    val percent: Int?
+    val percent: Int?,
+    @SerializedName("trabajo_descripcion")
+    val assessmentType: String?
 )
 
 

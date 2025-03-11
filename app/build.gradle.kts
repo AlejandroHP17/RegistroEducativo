@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -25,6 +26,7 @@ android {
 
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.basic)
     implementation(libs.bundles.androidx.navigation)
     implementation(libs.bundles.androidx.lifecycle)
@@ -34,6 +36,10 @@ dependencies {
     implementation(libs.bundles.junit.test)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.animation)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.compose.unit)
+
+
 
     /* Libraries */
     implementation(project(":domain"))

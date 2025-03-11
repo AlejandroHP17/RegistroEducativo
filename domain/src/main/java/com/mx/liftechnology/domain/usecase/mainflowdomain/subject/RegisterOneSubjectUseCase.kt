@@ -45,8 +45,9 @@ class RegisterOneSubjectUseCaseImp(
         updatedList?.forEach { data ->
             listAdapter.add(
                 Percent(
-                    jobId = data.position,
-                    percent = data.percent?.toInt()
+                    jobId = -1,
+                    percent = data.percent?.toInt(),
+                    assessmentType = data.name
                 )
             )
         }

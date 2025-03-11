@@ -59,6 +59,7 @@ class RegisterSubjectFragment : Fragment() {
         initListeners()
         showLogicSpinner()
         initObservers()
+        registerSubjectViewModel.getListAssessmentType()
     }
 
     override fun onDestroyView() {
@@ -160,6 +161,14 @@ class RegisterSubjectFragment : Fragment() {
                 else -> {
 
                 }
+            }
+        }
+
+        registerSubjectViewModel.responseAssessmentType.observe(viewLifecycleOwner) { state ->
+            log(state.toString())
+            when (state) {
+                is SuccessState -> {}
+                else -> {}
             }
         }
     }

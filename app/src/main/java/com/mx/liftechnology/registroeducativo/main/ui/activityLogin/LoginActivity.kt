@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 import com.mx.liftechnology.registroeducativo.databinding.ActivityLoginBinding
+import com.mx.liftechnology.registroeducativo.main.util.AnimationHandler
 
 /** LoginActivity - all the flow (login, register, forgotPassword)
  * AnimationHandler - Interface helps with the loading state
@@ -48,3 +48,4 @@ class LoginActivity : AppCompatActivity(), AnimationHandler {
         binding?.lottieLogo?.cancelAnimation()
     }
 }
+

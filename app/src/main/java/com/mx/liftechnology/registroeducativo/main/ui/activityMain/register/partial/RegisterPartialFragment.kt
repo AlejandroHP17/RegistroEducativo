@@ -36,6 +36,7 @@ class RegisterPartialFragment : Fragment() {
     private val registerPartialViewModel: RegisterPartialViewModel by viewModel()
     private lateinit var adapterPeriods: PeriodAdapter
     private var listPeriods : MutableList<ModelDatePeriodDomain>? = null
+    private var response = true
 
 
     /* loader variable */
@@ -138,18 +139,20 @@ class RegisterPartialFragment : Fragment() {
         }
 
         registerPartialViewModel.getPartialField.observe(viewLifecycleOwner){state ->
-            initSpinner()
             when(state) {
                 is SuccessState -> {
                     state.result?.size?.let { size ->
                         binding.includeSpinnerPeriod.spinner.setSelection(size)
                         listPeriods = state.result
-                        initAdapterPeriod(size)
+                        response = false
+                        initAdapterPeriod(state.result?.size!!, state.result!!)
                     }
                 }
                 is ErrorUserState ->{
+                    initAdapterPeriod(0, null)
                     registerPartialViewModel.loaderState(false)
                     showCustomToastFailed(requireActivity(), state.result)
+                    adapterPeriods.submitList(emptyList())
                 }
 
                 else -> {
@@ -172,6 +175,17 @@ class RegisterPartialFragment : Fragment() {
 
             includeButton.btnAction.setOnClickListener {
                 registerPartialViewModel.validateFields(adapterPeriods.getList())
+            }
+
+            includeSpinnerPeriod.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    parent?.getItemAtPosition(position)?.toString()?.toIntOrNull()?.let { period ->
+                        if (response) initAdapterPeriod(period, null)
+                        response = true
+                        registerPartialViewModel.savePeriod(period.toString())
+                    }
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
     }
@@ -199,25 +213,13 @@ class RegisterPartialFragment : Fragment() {
     }
 
 
-    private fun initAdapterPeriod(period: Int) {
-        val newList = MutableList(period) { index ->
+    private fun initAdapterPeriod(period: Int, result: MutableList<ModelDatePeriodDomain>?) {
+        val newList = result?.let { it }?:
+            MutableList(period) { index ->
             ModelDatePeriodDomain(position = index, date = "Parcial ${index + 1}")
         }
         adapterPeriods.submitList(newList)  // Enviar lista con submitList()
         registerPartialViewModel.loaderState(false)
     }
 
-    private fun initSpinner(){
-        binding.includeSpinnerPeriod.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                parent?.getItemAtPosition(position)?.toString()?.toIntOrNull()?.let { period ->
-                    initAdapterPeriod(period)
-                    registerPartialViewModel.savePeriod(period.toString())
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-
-    }
 }

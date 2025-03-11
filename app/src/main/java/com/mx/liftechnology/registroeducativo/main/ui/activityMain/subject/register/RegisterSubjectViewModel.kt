@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
@@ -11,6 +12,7 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment.GetListAssessmentTypeUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType.GetListEvaluationTypeUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -21,6 +23,7 @@ class RegisterSubjectViewModel(
     private val validateFieldsSubjectUseCase: ValidateFieldsSubjectUseCase,
     private val registerOneSubjectUseCase: RegisterOneSubjectUseCase,
     private val getListEvaluationTypeUseCase: GetListEvaluationTypeUseCase,
+    private val getListAssessmentTypeUseCase: GetListAssessmentTypeUseCase,
 ) : ViewModel() {
 
     // Observer the animate loader
@@ -45,6 +48,9 @@ class RegisterSubjectViewModel(
 
     private val _responseEvaluationType = SingleLiveEvent<ModelState<List<String>?, String>?>()
     val responseEvaluationType: LiveData<ModelState<List<String>?, String>?> get() = _responseEvaluationType
+
+    private val _responseAssessmentType = SingleLiveEvent<ModelState<List<ResponseGetListAssessmentType?>, String?>>()
+    val responseAssessmentType: LiveData<ModelState<List<ResponseGetListAssessmentType?>, String?>> get() = _responseAssessmentType
 
 
     fun saveSubject(data: String?) {
@@ -100,5 +106,17 @@ class RegisterSubjectViewModel(
 
     fun loaderState(visible: Boolean) {
         _animateLoader.postValue(LoaderState(visible))
+    }
+
+    fun getListAssessmentType(){
+        viewModelScope.launch (dispatcherProvider.io) {
+            runCatching {
+                getListAssessmentTypeUseCase.getListAssessmentType()
+            }.onSuccess {
+                _responseAssessmentType.postValue(it)
+            }.onFailure {
+                _responseAssessmentType.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+            }
+        }
     }
 }
