@@ -1,17 +1,15 @@
 package com.mx.liftechnology.domain.usecase.loginflowdomain
 
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelRegex
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 interface ValidateFieldsLoginUseCase {
-    fun validateEmail(email: String?): ModelState<String, String>
-    fun validatePass(pass: String?): ModelState<String, String>
-    fun validatePassRegister(pass: String?): ModelState<String, String>
-    fun validateRepeatPass(pass: String?, repeatPass: String?): ModelState<String, String>
-    fun validateCode(code: String?): ModelState<String, String>
+    fun validateEmailCompose(email: String?): ModelStateOutFieldText
+    fun validatePassCompose(pass: String?): ModelStateOutFieldText
+    fun validatePassRegisterCompose(pass: String?):ModelStateOutFieldText
+    fun validateRepeatPassCompose(pass: String?, repeatPass: String?):ModelStateOutFieldText
+    fun validateCodeCompose(code: String?): ModelStateOutFieldText
 }
 
 class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
@@ -19,13 +17,13 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateEmail(email: String?): ModelState<String, String> {
+    override fun validateEmailCompose(email: String?): ModelStateOutFieldText {
         val emailPattern = ModelRegex.EMAIL
 
         return when {
-            email.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
-            !emailPattern.matches(email) -> ErrorUserState(ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
+            email.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            !emailPattern.matches(email) -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_USER_FORMAT_MISTAKE)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -33,10 +31,10 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validatePass(pass: String?): ModelState<String, String> {
+    override fun validatePassCompose(pass: String?): ModelStateOutFieldText{
         return when {
-            pass.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
+            pass.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -44,11 +42,11 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validatePassRegister(pass: String?): ModelState<String, String> {
+    override fun validatePassRegisterCompose(pass: String?): ModelStateOutFieldText {
         return when {
-            pass.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
-            !validPass(pass) -> ErrorUserState(ModelCodeInputs.ET_PASS_FORMAT_MISTAKE)
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
+            pass.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            !validPass(pass) -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_PASS_FORMAT_MISTAKE)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -61,11 +59,11 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateRepeatPass(pass: String?, repeatPass: String?): ModelState<String, String> {
+    override fun validateRepeatPassCompose(pass: String?, repeatPass: String?): ModelStateOutFieldText {
         return when {
-            repeatPass.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
-            repeatPass != pass -> ErrorUserState(ModelCodeInputs.ET_PASS_DIFFERENT_MISTAKE)
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
+            repeatPass.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            repeatPass != pass -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_PASS_DIFFERENT_MISTAKE)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -73,10 +71,10 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateCode(code: String?): ModelState<String, String> {
+    override fun validateCodeCompose(code: String?): ModelStateOutFieldText {
         return when {
-            code.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
+            code.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 }

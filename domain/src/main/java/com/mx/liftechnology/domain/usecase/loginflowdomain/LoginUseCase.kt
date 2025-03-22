@@ -18,7 +18,7 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface LoginUseCase {
+fun  interface LoginUseCase {
     suspend fun login(email: String?, pass: String?, remember: Boolean): ModelState<User?, String>?
 }
 
@@ -59,6 +59,7 @@ class LoginUseCaseImp(
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
+
 
     private fun savePreferences(result: ResponseDataLogin?, remember:Boolean): Boolean {
         return result?.user?.let { data ->

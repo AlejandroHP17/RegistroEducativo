@@ -1,18 +1,16 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.network.callapi.User
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.LoaderState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
-import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.LoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
@@ -21,61 +19,71 @@ class LoginViewModel(
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase
 ) : ViewModel() {
 
-    // Observer the animate loader
-    private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
-    val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    // Observer fields
-    private val _emailField = SingleLiveEvent<ModelState<String, String>>()
-    val emailField: LiveData<ModelState<String, String>> get() = _emailField
+    fun onEmailChanged(email: String) {
+        _uiState.update { it.copy(
+            email = email,
+            isErrorEmail = ModelStateOutFieldText(false, "")
+        ) }
+    }
 
-    private val _passField = SingleLiveEvent<ModelState<String, String>>()
-    val passField: LiveData<ModelState<String, String>> get() = _passField
+    fun onPassChanged(pass: String) {
+        _uiState.update { it.copy(
+            password = pass,
+            isErrorPass =  ModelStateOutFieldText(false, "")
+        ) }
+    }
 
-    // Observer the response of service
-    private val _responseLogin = SingleLiveEvent<ModelState<User?, *>>()
-    val responseLogin: LiveData<ModelState<User?, *>> get() = _responseLogin
+    fun onRememberChanged(remember: Boolean) {
+        _uiState.update { it.copy(
+            isRemember = remember
+        ) }
+    }
 
     /** Check the inputs and post error or correct states directly on the editexts
      * In correct case, make the request
      * @author pelkidev
      * @since 1.0.0
-     * @param email the user
-     * @param pass the user
-     * @param remember to enter on app automatically
      * */
-    fun validateFields(email: String?, pass: String?, remember: Boolean) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            val emailState = validateFieldsUseCase.validateEmail(email)
-            val passState = validateFieldsUseCase.validatePass(pass)
+    fun validateFieldsCompose(){
+        _uiState.update { it.copy(isLoading = true) }
+        val emailState = validateFieldsUseCase.validateEmailCompose(_uiState.value.email)
+        val passState = validateFieldsUseCase.validatePassCompose(_uiState.value.password)
 
-            _emailField.postValue(emailState)
-            _passField.postValue(passState)
+        _uiState.update {
+            it.copy(
+                isErrorEmail = emailState,
+                isErrorPass = passState)
+        }
 
-            if (emailState is SuccessState && passState is SuccessState) {
-                _animateLoader.postValue(LoaderState(true))
-                login(email, pass, remember)
-            }
+        if (!(emailState.isError && passState.isError)) {
+            loginCompose()
+        }else{
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
+
 
     /** Request to Login
      * @author pelkidev
      * @since 1.0.0
-     * @param email the user
-     * @param pass the user
-     * @param remember to enter on app automatically
      * */
-    private fun login(email: String?, pass: String?, remember: Boolean) {
+    private fun loginCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                loginUseCase.login(email, pass, remember)
+                loginUseCase.login(_uiState.value.email, _uiState.value.password, _uiState.value.isRemember)
             }.onSuccess {
-                _animateLoader.postValue(LoaderState(false))
-                _responseLogin.postValue(it)
+                _uiState.update { it.copy(
+                    isLoading = false,
+                    isSuccess = true
+                ) }
             }.onFailure {
-                _animateLoader.postValue(LoaderState(false))
-                _responseLogin.postValue(ErrorState(ModelCodeError.ERROR_UNKNOWN))
+                _uiState.update { it.copy(
+                    isLoading = false,
+                    isSuccess = false
+                ) }
             }
         }
     }

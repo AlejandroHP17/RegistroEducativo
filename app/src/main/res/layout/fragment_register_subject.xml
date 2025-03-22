@@ -91,10 +91,7 @@
 
             <include
                 android:id = "@+id/include_button"
-                layout="@layout/include_button"
-                app:layout_constraintTop_toBottomOf="@id/ll_check"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                layout="@layout/include_button"/>
 
         </LinearLayout>
 

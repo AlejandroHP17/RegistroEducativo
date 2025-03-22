@@ -4,6 +4,7 @@
     <!-- Generic Login -->
     <string name="form_generic_email">Correo eletrónico</string>
     <string name="form_generic_password">Contraseña</string>
+    <string name="form_generic">Generic</string>
 
     <!-- Register User -->
     <string name="form_reg_repeat_password">Repetir contraseña</string>

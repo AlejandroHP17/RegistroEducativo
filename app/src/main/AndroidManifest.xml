@@ -21,6 +21,10 @@
         android:theme="@style/Theme.App.SplashScreen"
         tools:targetApi="31">
         <activity
+            android:name=".main.ui.Compose"
+            android:theme="@style/Theme.App.RegistroEducativo"
+            android:exported="false" />
+        <activity
             android:name=".main.ui.activityMain.MainActivity"
             android:theme="@style/Theme.App.RegistroEducativo"
             android:exported="false" />
