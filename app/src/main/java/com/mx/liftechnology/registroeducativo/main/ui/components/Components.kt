@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,6 +34,10 @@ fun TestComponents() {
         ComponentHeaderBack("hola", "mundo") {}
 
         ComponentTextMix("hola", "mundo"){}
+
+        ComponentCheckBoxAndText(false,{},{})
+
+        ComponentHeaderMenu("Nos da gusto verte", "No tienes un ciclo activo"){}
     }
 
 }
@@ -110,11 +116,7 @@ fun ComponentHeader(title: String, body: String) {
 }
 
 @Composable
-fun ComponentTextMix(
-    text: String,
-    textClick: String,
-    onTextClick: () -> Unit,
-) {
+fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit, ) {
     /** Footer - Registrarse  */
     Row(
         modifier = Modifier
@@ -131,11 +133,7 @@ fun ComponentTextMix(
 }
 
 @Composable
-fun ComponentCheckBoxAndText(
-    checkBox : Boolean,
-    checkBoxClick :(Boolean) -> Unit,
-    textClick :() -> Unit
-){
+fun ComponentCheckBoxAndText(checkBox : Boolean, checkBoxClick :(Boolean) -> Unit, textClick :() -> Unit){
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth(),
@@ -165,4 +163,44 @@ fun ComponentCheckBoxAndText(
             }
         }
     }
+}
+
+@Composable
+fun ComponentHeaderMenu(title: String, body: String, onClick: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = color_transparent, // Color de fondo
+            contentColor = color_transparent
+        ),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier.background(color_transparent)
+        ) {
+            Spacer(
+                modifier = Modifier
+                    .height(dimensionResource(id = R.dimen.margin_between))
+                    .background(color_transparent)
+            )
+
+            TextDescription(body)
+
+            Spacer(
+                modifier = Modifier
+                    .height(dimensionResource(id = R.dimen.margin_between))
+                    .background(color_transparent)
+            )
+
+            TextHeader(title)
+
+            Spacer(
+                modifier = Modifier
+                    .height(dimensionResource(id = R.dimen.margin_between))
+                    .background(color_transparent)
+            )
+        }
+    }
+
+
 }
