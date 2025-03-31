@@ -14,6 +14,7 @@ import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
@@ -21,13 +22,14 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsR
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -40,6 +42,88 @@ class RegisterPartialViewModel(
 
     private val _uiState = MutableStateFlow(ModelRegisterPartialUIState())
     val uiState: StateFlow<ModelRegisterPartialUIState> = _uiState.asStateFlow()
+
+    fun onPartialChanged(partial: String) {
+        if (partial.toInt() > 0) {
+            val list = MutableList(partial.toInt()) { "" }
+
+            _uiState.update {
+                it.copy(
+                    numberPartials = partial,
+                    listCalendar = list,
+                    isErrorSubject = ModelStateOutFieldText(false, "")
+                )
+            }
+        }
+    }
+
+    fun onDateChange(data:
+                     kotlin. Pair<kotlin. Pair<LocalDate?, LocalDate?>, Int>) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                listCalendar = currentState.listCalendar?.mapIndexed { index, date ->
+                    if (index == data.second) {
+                        // ✅ Convertimos las fechas en una cadena antes de asignarlas
+                        val startDate = data.first.first?.toString() ?: ""
+                        val endDate = data.first.second?.toString() ?: ""
+                        "$startDate / $endDate" // Guardamos el rango de fechas en formato "YYYY-MM-DD - YYYY-MM-DD"
+                    } else {
+                        date // No cambia si no es el índice seleccionado
+                    }
+                }
+            )
+        }
+    }
+
+    fun validateFieldsCompose() {
+        _uiState.update { it.copy(isLoading = true) }
+        viewModelScope.launch(dispatcherProvider.io) {
+
+            //val periodState = validateFieldsUseCase.validatePeriodCompose(_uiState.value.numberPartials.toInt()?:0)
+            //val adapterState = validateFieldsUseCase.validateAdapterCompose(_uiState.value.listCalendar)
+
+            _uiState.update {
+                it.copy(
+                    //isErrorSubject = periodState,
+                    //isErrorOption = adapterState
+                )
+            }
+
+            //if (periodState.isError) {
+                registerListPartialCompose()
+            //}else{
+            //    _uiState.update { it.copy(isLoading = false) }
+            //}
+        }
+    }
+
+    private fun registerListPartialCompose() {
+        viewModelScope.launch(dispatcherProvider.io) {
+            runCatching {
+                registerListPartialUseCase.registerListPartialCompose(_uiState.value.numberPartials.toInt(), _uiState.value.listCalendar!!)
+            }.onSuccess { state ->
+                if(state is SuccessState){
+                    _uiState.update { it.copy(
+                        isLoading = false,
+                        isSuccess = true
+                    ) }
+                }else{
+                    _uiState.update { it.copy(
+                        isLoading = false,
+                        isSuccess = false
+                    ) }
+                }
+            }.onFailure {
+                _uiState.update { it.copy(
+                    isLoading = false,
+                    isSuccess = false
+                ) }
+            }
+        }
+    }
+
+
+
 
 
     // Observer the animate loader

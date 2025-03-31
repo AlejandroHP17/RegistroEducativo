@@ -17,10 +17,15 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 
-fun interface RegisterListPartialUseCase {
+interface RegisterListPartialUseCase {
     suspend fun registerListPartial(
         periodNumber: Int?,
         adapterPeriods:List<ModelDatePeriodDomain>
+    ): ModelState<List<String?>?, String>?
+
+    suspend fun registerListPartialCompose(
+        periodNumber: Int?,
+        adapterPeriods:List<String>
     ): ModelState<List<String?>?, String>?
 }
 
@@ -47,6 +52,44 @@ class RegisterListPartialUseCaseImp(
             listAdapter.add(
                 Partials(
                     description = (data.position + 1).toString(),
+                    startDate = part?.getOrNull(0)?.trim() ?: "",
+                    endDate = part?.getOrNull(1)?.trim() ?: "",
+                )
+            )
+        }
+
+        val request = CredentialsRegisterPartial(
+            numberPartials = periodNumber,
+            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
+            userId = userId,
+            teacherId = roleId,
+            listPartials = listAdapter
+        )
+
+        return when (val result =  crudPartialRepository.executeRegisterListPartial(request)) {
+            is ResultSuccess -> {
+                SuccessState(result.data)
+            }
+            is ResultError -> {
+                handleResponse(result.error)
+            }
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        }
+    }
+    override suspend fun registerListPartialCompose(
+        periodNumber: Int?,
+        adapterPeriods: List<String>
+    ): ModelState<List<String?>?, String> {
+        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+
+        val listAdapter: MutableList<Partials> = mutableListOf()
+        adapterPeriods.forEachIndexed { index,  data ->
+            val part = data?.split("/")
+            listAdapter.add(
+                Partials(
+                    description = (index + 1).toString(),
                     startDate = part?.getOrNull(0)?.trim() ?: "",
                     endDate = part?.getOrNull(1)?.trim() ?: "",
                 )

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +21,8 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.RegisterPartialList
+import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
@@ -31,6 +34,12 @@ fun RegisterPartialScreen(
 ) {
 
     val uiState by registerPartialViewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            navController.popBackStack()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -63,27 +72,28 @@ fun RegisterPartialScreen(
                 Box(
                     modifier = Modifier.weight(1f)
                 ) {
-                    /*SpinnerOutlinedTextField(
+                    SpinnerOutlinedTextField(
                         options = uiState.listOptions,
-                        selectedOption = uiState.options,
+                        selectedOption = uiState.numberPartials,
                         read = uiState.read,
-                        label = stringResource(id = R.string.register_subject_options),
+                        label = stringResource(id = R.string.register_partial_period),
                         error = uiState.isErrorSubject,
-                        onOptionSelected = { registerSubjectViewModel.onOptionsChanged(it)}
-                    )*/
+                        onOptionSelected = {
+                            registerPartialViewModel.onPartialChanged(it)
+                        }
+                    )
                 }
             }
 
             CustomSpace(dimensionResource(R.dimen.margin_between))
 
-            /*if(uiState.options.isNotEmpty() && uiState.options.toInt() > 0){
-                EvaluationPercentList(
-                    listWorkMethods = uiState.listWorkMethods,
-                    items = uiState.listAdapter!!,
-
-                    onNameChange = { registerSubjectViewModel.onNameChange(it)},
-                    onPercentChange = { registerSubjectViewModel.onPercentChange(it)})
-            }*/
+            if(uiState.numberPartials.isNotEmpty() && uiState.numberPartials.toInt() > 0){
+                RegisterPartialList(
+                    items = uiState.listCalendar!!,
+                    onDateChange = {
+                        registerPartialViewModel.onDateChange(it)
+                    })
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -91,7 +101,7 @@ fun RegisterPartialScreen(
                 containerColor = color_action,
                 text = stringResource(R.string.add_button),
                 onActionClick = {
-                //    registerSubjectViewModel.validateFieldsCompose()
+                    registerPartialViewModel.validateFieldsCompose()
                 }
             )
             CustomSpace(dimensionResource(R.dimen.margin_divided))

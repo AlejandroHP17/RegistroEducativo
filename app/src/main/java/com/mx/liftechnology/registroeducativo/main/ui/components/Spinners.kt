@@ -34,6 +34,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
 @Composable
 fun SpinnerScreen() {
     val options = listOf("Opción 1", "Opción 2", "Otro")
+    val options2 = listOf(ResponseGetListAssessmentType(assessmentTypeId = 1, description = "hola", teacherSchoolCycleGroupId = 1))
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
@@ -46,13 +47,13 @@ fun SpinnerScreen() {
             onOptionSelected = { selectedOption = it }
         )
 
-        /*SpinnerMixOutlinedTextField(
-            options = options,
+        SpinnerMixOutlinedTextField(
+            options = options2,
             selectedOption = selectedOption,
             label = "test",
             error = ModelStateOutFieldText(false, ""),
-            onOptionSelected = { selectedOption = it }
-        )*/
+            onOptionSelected = {  }
+        )
     }
 }
 
@@ -132,10 +133,8 @@ fun SpinnerOutlinedTextField(
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
         }
-
         CustomSpace(dimensionResource(R.dimen.margin_between))
     }
-
 }
 
 
@@ -219,7 +218,6 @@ fun SpinnerMixOutlinedTextField(
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
         }
-
     }
 
 }

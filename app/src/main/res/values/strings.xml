@@ -51,6 +51,7 @@
     <string name="register_partial_description">Ingresa los datos de tus parciales correspondientes al ciclo escolar activo, si ya los tienes registrados, puedes actualizarlos</string>
     <string name="register_partial_number_period">Número de parciales en el ciclo escolar</string>
     <string name="register_partial_period">Parciales</string>
+    <string name="register_partial_periods">Parcial %d</string>
     <string name="register_partial_start">Inicial</string>
     <string name="register_partial_end">Final</string>
     <string name="register_partial_calendar">Selecciona el rango de fechas de tu parcial</string>
