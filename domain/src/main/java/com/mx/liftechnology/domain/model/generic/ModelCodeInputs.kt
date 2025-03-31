@@ -5,6 +5,7 @@ data class ModelCodeInputs(val value: String) {
         const val ET_CORRECT_FORMAT: String = "Formato correcto"
 
         const val ET_EMPTY: String = "El campo no puede estar vacío"
+        const val ET_SPINNER_EMPTY: String = "Selecciona un campo"
         const val ET_MISTAKE_FORMAT: String = "El formato es incorrecto"
 
         const val ET_USER_FORMAT_MISTAKE: String = "Formato de usuario o correo incorrecto"

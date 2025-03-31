@@ -66,6 +66,7 @@
     <string name="register_subject_name_description_2">Ingresa los tipos de trabajo que se evaluaran en dicho campo formativo y su porcentaje correspondiente a la calificación final, el porcentaje total debe ser 100%</string>
     <string name="register_subject_name_description_3">Opciones de evaluación por campo formativo</string>
     <string name="register_subject_field">Campo formativo</string>
+    <string name="register_subject_options">Opciones</string>
     <string name="register_subject_evaluation">Tipo de evaluación</string>
     <string name="register_subject_percent">%</string>
 

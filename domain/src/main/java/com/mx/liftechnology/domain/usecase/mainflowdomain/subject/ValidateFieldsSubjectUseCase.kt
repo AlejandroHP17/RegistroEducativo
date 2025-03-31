@@ -1,14 +1,18 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject
 
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 interface ValidateFieldsSubjectUseCase {
     fun validateName(nameStudent: String?): ModelState<String, String>
+    fun validateNameCompose(nameStudent: String?): ModelStateOutFieldText
     fun validateListJobs(listJobs: MutableList<ModelFormatSubjectDomain>?): ModelState<String, String>
+    fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText
 }
 
 class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
@@ -20,6 +24,12 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
         return when {
             nameStudent.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
             else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
+        }
+    }
+    override fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText {
+        return when {
+            nameSubject.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -37,12 +47,25 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
             else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
+    override fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText {
+        return when{
+            listJobs?.size == 0 ->  ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
+            listJobs?.any { it.name.isNullOrEmpty() || it.percent.isNullOrEmpty() }
+                ?: false -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
+
+            !validPercentCompose(listJobs) -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_JOB)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+        }
+    }
+
+    private fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?) =
+        listJobs?.let { jobs ->
+            jobs.all { (it.percent?.toInt() ?: 0) > 0 } && jobs.sumOf { it.percent?.toInt() ?: 0 } == 100
+        } ?: false
 
     private fun validPercent(listJobs: MutableList<ModelFormatSubjectDomain>?) =
         listJobs?.let { jobs ->
             jobs.all { (it.percent?.toInt() ?: 0) > 0 } && jobs.sumOf { it.percent?.toInt() ?: 0 } == 100
         } ?: false
-
-
 }
 

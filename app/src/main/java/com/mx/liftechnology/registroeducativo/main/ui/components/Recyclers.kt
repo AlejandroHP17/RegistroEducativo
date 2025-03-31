@@ -1,62 +1,272 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.registroeducativo.R
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.Image
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
+
+@Preview(showBackground = true)
+@Composable
+fun MyGridScreenPreview() {
+    val items = listOf(
+        ModelPrincipalMenuData(
+            id = "hola",
+            image = R.drawable.ic_launcher_foreground,
+            titleCard = "text"
+        ),
+        ModelPrincipalMenuData(
+            id = "hola",
+            image = R.drawable.ic_launcher_foreground,
+            titleCard = "text"
+        ),
+        ModelPrincipalMenuData(
+            id = "hola",
+            image = R.drawable.ic_launcher_foreground,
+            titleCard = "text"
+        ),
+        ModelPrincipalMenuData(
+            id = "hola",
+            image = R.drawable.ic_launcher_foreground,
+            titleCard = "text"
+        ),
+    )
+
+    val items2 = listOf(
+        ModelDialogStudentGroupDomain(
+            selected = false,
+            item = null,
+            nameItem = "Hola mundo",
+        ),
+        ModelDialogStudentGroupDomain(
+            selected = true,
+            item = null,
+            nameItem = "Hola mundo",
+        ),
+    )
+
+    val items3 = listOf(ModelFormatSubjectDomain(1,"hola","mundo"))
+
+    Column {
+        MyGridScreen(items, 410.dp) {}
+        DialogGroupList(items2) {}
+        //EvaluationPercentList(null, items3,{},{})
+    }
+
+}
 
 @Composable
-fun MyGridScreen() {
-    val items = listOf(
-        R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground,
-        R.drawable.ic_launcher_foreground
-    )
+fun MyGridScreen(
+    items: List<ModelPrincipalMenuData>,
+    height: Dp,
+    onItemClick: (ModelPrincipalMenuData) -> Unit,
+) {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // Grid de 2 columnas
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height)
+            .background(color = color_transparent),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        userScrollEnabled = false
     ) {
-        items(items) { imageRes ->
-            GridItem(painterResource(id = imageRes))
+        items(items.size) { index ->  // Pasamos el índice
+            GridItem(items[index]) { selectedItem ->
+                onItemClick(selectedItem)
+            } // Pasamos el recurso individualmente
         }
     }
 }
 
 @Composable
-fun GridItem(image: Painter) {
+fun GridItem(
+    item: ModelPrincipalMenuData,
+    onItemClick: (ModelPrincipalMenuData) -> Unit,
+) { // Recibe un ID de recurso
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
-        elevation = CardDefaults.cardElevation(6.dp)
+            .padding(8.dp)
+            .clickable { onItemClick(item) },
+        colors = CardDefaults.cardColors(
+            containerColor = color_white, // Color de fondo
+            contentColor = color_white
+        ),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
+            modifier = Modifier.padding(dimensionResource(R.dimen.margin_between)),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = image,
+                painter = painterResource(id = item.image!!),
                 contentDescription = null,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.size(150.dp)
+            )
+
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
+
+            TextDescription(item.titleCard!!)
+        }
+    }
+}
+
+@Composable
+fun DialogGroupList(
+    items: List<ModelDialogStudentGroupDomain>,
+    onItemSelected: (ModelDialogStudentGroupDomain) -> Unit,
+) {
+    var selectedIndex by remember { mutableIntStateOf(-1) }
+
+    LazyColumn(
+        modifier = Modifier.padding(8.dp)
+    ) {
+        itemsIndexed(items) { index, item ->
+            DialogGroupItem(
+                item = item,
+                isSelected = index == selectedIndex,
+                onSelected = {
+                    selectedIndex = index
+                    onItemSelected(item.copy(selected = true))
+                }
             )
         }
     }
 }
+
+@Composable
+fun DialogGroupItem(
+    item: ModelDialogStudentGroupDomain,
+    isSelected: Boolean,
+    onSelected: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onSelected() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(
+            selected = isSelected,
+            onClick = onSelected,
+            colors = RadioButtonDefaults.colors(selectedColor = color_principal_text)
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = "${item.item?.cct.orEmpty()} ${item.item?.group.orEmpty()} ${item.item?.name.orEmpty()}",
+            fontSize = 16.sp
+        )
+    }
+}
+
+@Composable
+fun EvaluationPercentList(
+    listWorkMethods :List<ResponseGetListAssessmentType?>,
+    items: List<ModelSpinnersWorkMethods>,
+    onNameChange:(Pair<ResponseGetListAssessmentType?, Int>) -> Unit,
+    onPercentChange:(Pair<String, Int>) -> Unit,
+) {
+    LazyColumn {
+        itemsIndexed(items) { index, item ->
+            EvaluationPercentItem(
+                listWorkMethods = listWorkMethods,
+                name = item.name?: "vacio",
+                percent = item.percent ?: "0",
+                onNameChange = {onNameChange(Pair(it, index)) },
+                onPercentChange = {onPercentChange(Pair(it, index))}
+            )
+        }
+    }
+}
+
+@Composable
+fun EvaluationPercentItem(
+    listWorkMethods :List<ResponseGetListAssessmentType?>,
+    name: String,
+    percent: String,
+    onNameChange: (ResponseGetListAssessmentType?) -> Unit,
+    onPercentChange: (String) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
+    ) {
+        var selectedOption by remember { mutableStateOf(listWorkMethods[0]) }
+
+        Column(modifier = Modifier.weight(5f)) {
+            CustomSpace(dimensionResource(R.dimen.margin_between))
+            SpinnerMixOutlinedTextField(
+                options = listWorkMethods,
+                selectedOption = name,
+                label = stringResource(R.string.register_subject_evaluation),
+                error = ModelStateOutFieldText(false, ""),
+                onOptionSelected = {
+                    selectedOption = it
+                    onNameChange(it)
+                }
+            )
+        }
+
+        Box(modifier = Modifier.weight(2f)) {
+            // Campo de texto para el porcentaje
+            BoxEditTextGeneric(
+                value = percent,
+                enable = true,
+                label = stringResource(id = R.string.register_subject_percent),
+                error = ModelStateOutFieldText(false, "")
+            )
+            {
+                onPercentChange (it)
+            }
+        }
+    }
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
+}
+
+

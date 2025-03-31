@@ -1,12 +1,10 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,10 +26,10 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentCheckBoxAndText
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeader
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentTextMix
+import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.ImageLogo
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -68,16 +66,11 @@ fun LoginScreen(
         )
         {
 
-            var email by remember { mutableStateOf("") }
-            var pass by remember { mutableStateOf("") }
             var passwordVisible by remember { mutableStateOf(false) }
 
             /** Header - incluye logo y textos */
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_top_image))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_top_image))
+
             ImageLogo()
 
             ComponentHeader(
@@ -88,41 +81,31 @@ fun LoginScreen(
 
             /** Body - campos de captura, recuerdame, y olvidar contraseña*/
             BoxEditTextEmail(
-                value = email,
-                read = false,
+                value = uiState.email,
+                enable = true,
                 label = stringResource(id = R.string.form_generic_email),
                 error = uiState.isErrorEmail
             ) {
-                email = it
-                loginViewModel.onEmailChanged(email)
+                loginViewModel.onEmailChanged(it)
             }
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_between))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
             BoxEditTextPassword(
-                value = pass,
+                value = uiState.password,
                 statePass = passwordVisible,
-                read = false,
+                enable = true,
                 label = stringResource(id = R.string.form_generic_password),
                 error = uiState.isErrorPass,
                 onBoxChanged = {
-                    pass = it
-                    loginViewModel.onPassChanged(pass)
+                    loginViewModel.onPassChanged(it)
                 },
                 onStatePassChanged = {
                     passwordVisible = it
                 }
             )
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_outer))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_outer))
 
             ComponentCheckBoxAndText(
                 checkBox = uiState.isRemember,
@@ -131,11 +114,7 @@ fun LoginScreen(
             )
 
             /** Action - Boton de  salir por servicio  */
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_outer))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_outer))
 
             ButtonAction(color_action, stringResource(id = R.string.log_logIn)) {
                 loginViewModel.validateFieldsCompose()

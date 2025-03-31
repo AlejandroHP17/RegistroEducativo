@@ -32,6 +32,15 @@ fun TestText() {
                 .height(dimensionResource(id = R.dimen.margin_outer))
                 .background(color_transparent)
         )
+        TextSubHeader(
+            "Titulo"
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(dimensionResource(id = R.dimen.margin_outer))
+                .background(color_transparent)
+        )
 
         TextDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.")
 
@@ -61,6 +70,18 @@ fun TextHeader(
         text = title,
         color = color_principal_text,
         fontSize = dimensionResource(id = R.dimen.text_size_title).value.sp,
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+fun TextSubHeader(
+    title: String
+) {
+    Text(
+        text = title,
+        color = color_principal_text,
+        fontSize = dimensionResource(id = R.dimen.text_size_subtitle).value.sp,
         modifier = Modifier.fillMaxWidth()
     )
 }

@@ -1,19 +1,14 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassword
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -23,10 +18,10 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -44,8 +39,6 @@ fun ForgetPasswordScreen(navController: NavHostController, forgetPasswordViewMod
                 .padding(dimensionResource(id = R.dimen.margin_outer))
         )
         {
-            var email by remember { mutableStateOf("") }
-
             /** Header - incluye logo y textos */
             ComponentHeaderBack(
                 stringResource(id = R.string.forget_pass_welcome),
@@ -57,25 +50,21 @@ fun ForgetPasswordScreen(navController: NavHostController, forgetPasswordViewMod
             /** Body - campos de captura, recuerdame, y olvidar contraseña*/
 
             BoxEditTextEmail(
-                value = email,
-                read = false,
+                value = uiState.email,
+                enable = true,
                 label = stringResource(id = R.string.form_generic_email),
                 error = uiState.isErrorEmail
             ) {
-                email = it
-                forgetPasswordViewModel.onEmailChanged(email)
+                forgetPasswordViewModel.onEmailChanged(it)
             }
 
-            Spacer(modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_outer))
-                .background(color_transparent))
+            CustomSpace(dimensionResource(id = R.dimen.margin_outer))
 
             TextBody(
                 forgetPasswordViewModel.getRules(context)
             )
 
             /** Action - Boton de  salir por servicio  */
-
             Spacer(modifier = Modifier.weight(1f))
 
             ButtonAction(color_action, stringResource(id = R.string.forget_pass_button)){

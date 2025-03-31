@@ -8,13 +8,19 @@ import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.LoaderState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterStudentViewModel(
@@ -24,6 +30,114 @@ class RegisterStudentViewModel(
     private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
 
     ) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(ModelRegisterStudentUIState())
+    val uiState: StateFlow<ModelRegisterStudentUIState> = _uiState.asStateFlow()
+    private val myValue: ModelRegisterStudentUIState
+        get() = _uiState.value
+
+    fun onChangeName(name: String) {
+        _uiState.update { it.copy(
+            name = name,
+            isErrorName =  ModelStateOutFieldText(false, "")
+        ) }
+    }
+    fun onChangeLastName(lastName: String) {
+        _uiState.update { it.copy(
+            lastName = lastName,
+            isErrorLastName =  ModelStateOutFieldText(false, "")
+        ) }
+    }
+    fun onChangeSecondLastName(secondLastName: String) {
+        _uiState.update { it.copy(
+            secondLastName = secondLastName,
+            isErrorSecondLastName =  ModelStateOutFieldText(false, "")
+        ) }
+    }
+    fun onChangeCurp(curp: String) {
+        _uiState.update { it.copy(
+            curp = curp,
+            isErrorCurp =  ModelStateOutFieldText(false, "")
+        ) }
+    }
+    fun onChangeBirthday(birthday: String) {
+        _uiState.update { it.copy(
+            birthday = birthday,
+            isErrorBirthday =  ModelStateOutFieldText(false, "")
+        ) }
+    }
+    fun onChangePhoneNUmber(phoneNumber: String) {
+        _uiState.update { it.copy(
+            phoneNumber = phoneNumber,
+            isErrorPhoneNumber =  ModelStateOutFieldText(false, "")
+        ) }
+    }
+
+    fun validateFieldsCompose() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            val nameState = validateFieldsStudentUseCase.validateNameCompose(_uiState.value.name)
+            val lastNameState = validateFieldsStudentUseCase.validateLastNameCompose(_uiState.value.lastName)
+            val secondLastNameState =
+                validateFieldsStudentUseCase.validateSecondLastNameCompose(_uiState.value.secondLastName)
+            val curpState = validateFieldsStudentUseCase.validateCurpCompose(_uiState.value.curp)
+            val birthdayState = validateFieldsStudentUseCase.validateBirthdayCompose(_uiState.value.birthday)
+            val phoneNumberState = validateFieldsStudentUseCase.validatePhoneNumberCompose(_uiState.value.phoneNumber)
+
+            _uiState.update {
+                it.copy(
+                    isErrorName = nameState,
+                    isErrorLastName = lastNameState,
+                    isErrorSecondLastName = secondLastNameState,
+                    isErrorCurp = curpState,
+                    isErrorBirthday = birthdayState,
+                    isErrorPhoneNumber = phoneNumberState
+                )
+            }
+
+            if (!(nameState.isError && lastNameState.isError && secondLastNameState.isError && curpState.isError
+                && birthdayState.isError && phoneNumberState.isError
+            )) {
+                registerOneStudentCompose()
+            }else{
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    private fun registerOneStudentCompose() {
+        viewModelScope.launch(dispatcherProvider.io) {
+            runCatching {
+                registerOneStudentUseCase.registerOneStudent(
+                    myValue.name,
+                    myValue.lastName,
+                    myValue.secondLastName,
+                    myValue.curp,
+                    myValue.birthday,
+                    myValue.phoneNumber
+                )
+            }.onSuccess { state ->
+                if(state is SuccessState){
+                    _uiState.update { it.copy(
+                        isLoading = false,
+                        isSuccess = true
+                    ) }
+                }else{
+                    _uiState.update { it.copy(
+                        isLoading = false,
+                        isSuccess = false
+                    ) }
+                }
+            }.onFailure {
+                _uiState.update { it.copy(
+                    isLoading = false,
+                    isSuccess = false
+                ) }
+            }
+        }
+    }
+
+
 
     // Campos observables
     private val _nameField = MutableLiveData<ModelState<String, String>>()

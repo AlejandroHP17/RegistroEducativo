@@ -18,8 +18,9 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import java.util.Calendar
 import java.util.Date
 
-fun interface RegisterOneSchoolUseCase {
+interface RegisterOneSchoolUseCase {
     suspend fun registerOneSchool(result: ResponseCctSchool?, grade: Int?, group: String?, cycle: Int?): ModelState<List<String?>?, String>?
+    suspend fun registerOneSchoolCompose(cct: String?, schoolCycleTypeId:Int? , grade: Int?, group: String?, cycle: Int?): ModelState<List<String?>?, String>?
 }
 
 class RegisterOneSchoolUseCaseImp(
@@ -43,6 +44,41 @@ class RegisterOneSchoolUseCaseImp(
         val request = CredentialsRegisterSchool(
             cct = result?.cct,
             typeCycleSchoolId = result?.schoolCycleTypeId,
+            grade = grade,
+            nameGroup = group,
+            year = year.toString(),
+            period = cycle,
+            teacherId = roleId,
+            userId = userId,
+        )
+        return when (val result =  crudSchoolRepository.executeRegisterOneSchool(request)) {
+            is ResultSuccess -> {
+                SuccessState(result.data)
+            }
+            is ResultError -> {
+                handleResponse(result.error)
+            }
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        }
+    }
+
+    override suspend fun registerOneSchoolCompose(
+        cct: String?,
+        schoolCycleTypeId:Int? ,
+        grade: Int?,
+        group: String?,
+        cycle: Int?
+    ): ModelState<List<String?>?, String> {
+        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+
+        val buildDate = Date(Build.TIME)
+        val calendar = Calendar.getInstance().apply { time = buildDate }
+        val year = calendar[Calendar.YEAR]
+
+        val request = CredentialsRegisterSchool(
+            cct = cct,
+            typeCycleSchoolId = schoolCycleTypeId,
             grade = grade,
             nameGroup = group,
             year = year.toString(),

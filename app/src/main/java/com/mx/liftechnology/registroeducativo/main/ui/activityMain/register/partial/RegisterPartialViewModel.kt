@@ -20,7 +20,12 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPa
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -32,6 +37,11 @@ class RegisterPartialViewModel(
     private val registerListPartialUseCase: RegisterListPartialUseCase,
     private val getListPartialUseCase: GetListPartialUseCase,
 ) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(ModelRegisterPartialUIState())
+    val uiState: StateFlow<ModelRegisterPartialUIState> = _uiState.asStateFlow()
+
+
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
     val animateLoader: LiveData<ModelState<Boolean, Int>> get() = _animateLoader

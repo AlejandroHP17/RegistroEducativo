@@ -15,11 +15,16 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 
-fun interface RegisterOneSubjectUseCase {
+interface RegisterOneSubjectUseCase {
     suspend fun registerOneSubject(
         updatedList: MutableList<ModelFormatSubjectDomain>?,
+        name: String?
+    ): ModelState<List<String?>?, String>?
+    suspend fun registerOneSubjectCompose(
+        updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String?
     ): ModelState<List<String?>?, String>?
 }
@@ -46,6 +51,45 @@ class RegisterOneSubjectUseCaseImp(
             listAdapter.add(
                 Percent(
                     jobId = -1,
+                    percent = data.percent?.toInt(),
+                    assessmentType = data.name
+                )
+            )
+        }
+
+        val request = CredentialsRegisterSubject(
+            subject = name,
+            options = updatedList?.size,
+            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
+            userId = userId,
+            teacherId = roleId,
+            percents = listAdapter
+        )
+
+        return when (val result =  crudSubjectRepository.executeRegisterOneSubject(request)) {
+            is ResultSuccess -> {
+                SuccessState(result.data)
+            }
+            is ResultError -> {
+                handleResponse(result.error)
+            }
+            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        }
+    }
+
+    override suspend fun registerOneSubjectCompose(
+        updatedList: MutableList<ModelSpinnersWorkMethods>?,
+        name: String?
+    ): ModelState<List<String?>?, String> {
+        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+
+        val listAdapter: MutableList<Percent> = mutableListOf()
+        updatedList?.forEach { data ->
+            listAdapter.add(
+                Percent(
+                    jobId = data.assessmentTypeId,
                     percent = data.percent?.toInt(),
                     assessmentType = data.name
                 )

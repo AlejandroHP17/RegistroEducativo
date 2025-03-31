@@ -14,7 +14,12 @@ import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCase
 import com.mx.liftechnology.registroeducativo.framework.SingleLiveEvent
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /** MenuViewModel - Control the data of the menu
@@ -27,6 +32,67 @@ class MenuViewModel(
     private val menuGroupsUseCase: MenuGroupsUseCase,
     private val menuUseCase: MenuUseCase
 ) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(ModelMenuUIState())
+    val uiState: StateFlow<ModelMenuUIState> = _uiState.asStateFlow()
+
+    fun showDialog(show:Boolean) {
+        _uiState.update { it.copy(
+            showDialog = show
+        ) }
+    }
+
+    fun updateGroupCompose(nameItem: ModelDialogStudentGroupDomain) {
+        _uiState.update { it.copy(
+            studentGroupItem = nameItem
+        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            menuGroupsUseCase.updateGroup(nameItem)
+        }
+
+    }
+
+    /** getGroup - Get all the options from menu, or a mistake in case
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    fun getGroupCompose() {
+        _uiState.update { it.copy(isLoading = true) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            runCatching {
+                menuGroupsUseCase.getGroup()
+            }.onSuccess {state ->
+                if (state is SuccessState) {
+                    showGetControlRegisterCompose()
+                    _uiState.update { it.copy(
+                        studentGroupItem = state.result.infoSchoolSelected,
+                        studentGroupList = state.result.listSchool
+                    ) }
+                }
+                _uiState.update { it.copy(isLoading = false) }
+            }.onFailure {
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    /** getControlMenu -
+     * @author pelkidev
+     * @since 1.0.0
+     */
+    fun getControlMenuCompose() {
+        viewModelScope.launch(dispatcherProvider.io) {
+            runCatching {
+                menuUseCase.getControlMenu()
+            }.onSuccess { state ->
+                if(state is SuccessState){
+                    _uiState.update { it.copy(
+                        controlItems = state.result
+                    ) }
+                }
+            }
+        }
+    }
 
     // Observer the animate loader
     private val _animateLoader = SingleLiveEvent<ModelState<Boolean, Int>>()
@@ -106,4 +172,25 @@ class MenuViewModel(
             }
         }
     }
+
+    private fun showGetControlRegisterCompose(){
+        viewModelScope.launch (dispatcherProvider.io){
+            runCatching {
+                menuUseCase.getControlRegister()
+            }.onSuccess { state ->
+                if(state is SuccessState){
+                    _uiState.update { it.copy(
+                        evaluationItems = state.result,
+                        showControl = true
+                    ) }
+                }else{
+                    _uiState.update { it.copy(showControl = false) }
+                }
+            }.onFailure {
+                _uiState.update { it.copy(showControl = false) }
+            }
+        }
+    }
+
+
 }

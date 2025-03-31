@@ -47,39 +47,21 @@ fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) 
     Column(
         modifier = Modifier.background(color_transparent)
     ) {
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_top_return))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_top_return))
 
         ButtonReturn {
             onReturnClick()
         }
 
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_between))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
-        TextHeader(
-            title
-        )
+        TextHeader(title)
 
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_between))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
         TextDescription(body)
 
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_divided))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_divided))
     }
 }
 
@@ -89,29 +71,15 @@ fun ComponentHeader(title: String, body: String) {
         modifier = Modifier.background(color_transparent)
     ) {
 
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_top_return))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_top_return))
 
-        TextHeader(
-            title
-        )
+        TextHeader(title)
 
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_between))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
         TextDescription(body)
 
-        Spacer(
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_divided))
-                .background(color_transparent)
-        )
+        CustomSpace(dimensionResource(id = R.dimen.margin_divided))
     }
 }
 
@@ -178,21 +146,13 @@ fun ComponentHeaderMenu(title: String, body: String, onClick: () -> Unit) {
         Column(
             modifier = Modifier.background(color_transparent)
         ) {
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_between))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
-            TextDescription(body)
+            TextDescription(title)
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_between))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
-            TextHeader(title)
+            TextSubHeader(body)
 
             Spacer(
                 modifier = Modifier

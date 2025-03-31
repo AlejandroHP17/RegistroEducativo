@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -45,8 +44,8 @@ fun TestButton(){
     ){
         ButtonReturn({})
         ButtonAction(color_action, "Pulsame"){}
-        ButtonActionShort(color_success)
-        ButtonPair(color_action, {}, {})
+        ButtonActionShort(color_success, "Pulsame"){}
+        ButtonPair(color_action, "Pulsame", {}, {})
 
     }
 }
@@ -100,14 +99,17 @@ fun ButtonAction(
 }
 
 @Composable
-fun ButtonActionShort(containerColor:Color) {
+fun ButtonActionShort(
+    containerColor:Color,
+    text: String,
+    onActionClick: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Transparent))
     {
         Button(
-            onClick = { },
+            onClick = { onActionClick() },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp),
@@ -120,7 +122,7 @@ fun ButtonActionShort(containerColor:Color) {
                 disabledContainerColor = color_error
             )
         ) {
-            Text("Pulsame")
+            Text(text)
         }
     }
 }
@@ -128,6 +130,7 @@ fun ButtonActionShort(containerColor:Color) {
 @Composable
 fun ButtonPair(
     containerColor:Color,
+    text: String,
     onActionClick: () -> Unit,
     onRecordClick: () -> Unit,
 ) {
@@ -157,7 +160,7 @@ fun ButtonPair(
                 disabledContainerColor = color_disable
             )
         ) {
-            Text(text = stringResource(id = R.string.log_register))
+            Text(text = text)
         }
 
         Spacer(modifier = Modifier

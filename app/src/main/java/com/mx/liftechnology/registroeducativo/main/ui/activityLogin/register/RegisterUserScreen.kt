@@ -1,12 +1,10 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.register
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,10 +24,10 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGene
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -55,12 +53,6 @@ fun RegisterUserScreen(navController: NavHostController, registerUserViewModel: 
                 .padding(dimensionResource(id = R.dimen.margin_outer))
         )
         {
-
-            var email by remember { mutableStateOf("") }
-            var pass by remember { mutableStateOf("") }
-            var repeatPassword by remember { mutableStateOf("") }
-            var code by remember { mutableStateOf("") }
-
             var passwordVisible by remember { mutableStateOf(false) }
             var repeatPasswordVisible by remember { mutableStateOf(false) }
 
@@ -76,79 +68,61 @@ fun RegisterUserScreen(navController: NavHostController, registerUserViewModel: 
 
             /** Body - campos de captura, recuerdame, y olvidar contraseña*/
             BoxEditTextEmail(
-                value = email,
-                read = false,
+                value = uiState.email,
+                enable = true,
                 label = stringResource(id = R.string.form_generic_email),
                 error = uiState.isErrorEmail
             ) {
-                email = it
-                registerUserViewModel.onEmailChanged(email)
+                registerUserViewModel.onEmailChanged(it)
             }
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_between))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
             BoxEditTextPassword(
-                value = pass,
+                value = uiState.password,
                 statePass = passwordVisible,
-                read = false,
+                enable = true,
                 label = stringResource(id = R.string.form_generic_password),
                 error = uiState.isErrorPass,
                 onBoxChanged = {
-                    pass = it
-                    registerUserViewModel.onPassChanged(pass)
+                    registerUserViewModel.onPassChanged(it)
                 },
                 onStatePassChanged = {
                     passwordVisible = it
                 }
             )
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_between))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
             BoxEditTextPassword(
-                value = repeatPassword,
+                value = uiState.repeatPassword,
                 statePass = repeatPasswordVisible,
-                read = false,
+                enable = true,
                 label = stringResource(id = R.string.form_reg_repeat_password),
                 error = uiState.isErrorRepeatPass,
                 onBoxChanged = {
-                    repeatPassword = it
-                    registerUserViewModel.onRepeatPassChanged(repeatPassword)
+                    registerUserViewModel.onRepeatPassChanged(it)
                 },
                 onStatePassChanged = {
                     repeatPasswordVisible = it
                 }
             )
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_outer))
-                    .background(color_transparent)
-            )
+            CustomSpace(dimensionResource(id = R.dimen.margin_outer))
 
             TextBody(
                 registerUserViewModel.getRules(context)
             )
 
-            Spacer(modifier = Modifier
-                .height(dimensionResource(id = R.dimen.margin_divided))
-                .background(color_transparent))
+            CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
             BoxEditTextGeneric(
-                value = code,
-                read = false,
+                value = uiState.code,
+                enable = true,
                 label = stringResource(id = R.string.form_reg_code),
                 error = uiState.isErrorCode
             ) {
-                code = it
-                registerUserViewModel.onCodeChanged(code)
+                registerUserViewModel.onCodeChanged(it)
             }
 
             Spacer(modifier = Modifier.weight(1f))

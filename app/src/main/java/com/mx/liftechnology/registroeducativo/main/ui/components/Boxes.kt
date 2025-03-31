@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
@@ -49,7 +50,7 @@ fun TestBoxes(){
     ){
         BoxEditTextEmail(
             value = data,
-            read = false,
+            enable = true,
             label = stringResource(id = R.string.form_generic_email),
             error = ModelStateOutFieldText(false,"")
         )
@@ -58,7 +59,7 @@ fun TestBoxes(){
         BoxEditTextPassword(
             value = data,
             statePass = passwordVisible,
-            read = false,
+            enable = true,
             label = stringResource(id = R.string.form_generic_password),
             error = ModelStateOutFieldText(false,""),
             onBoxChanged = { data = it },
@@ -67,18 +68,26 @@ fun TestBoxes(){
 
         BoxEditTextGeneric(
             value = data,
-            read = false,
+            enable = true,
             label = stringResource(id = R.string.form_generic),
             error = ModelStateOutFieldText(false,"")
         )
         { data = it}
+
+        BoxEditTextCalendar(
+            value = data,
+            enable = true,
+            label = stringResource(id = R.string.form_generic),
+            error = ModelStateOutFieldText(false,"")
+        )
+        {  }
     }
 }
 
 @Composable
 fun BoxEditTextEmail(
     value:String,
-    read: Boolean,
+    enable: Boolean,
     label: String,
     error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
@@ -89,7 +98,7 @@ fun BoxEditTextEmail(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
-        readOnly = read,
+        enabled = enable,
         label = { Text(
             text = label,
             color = if(error.isError) color_error else color_principal_text) },
@@ -118,7 +127,7 @@ fun BoxEditTextEmail(
 fun BoxEditTextPassword(
     value:String,
     statePass : Boolean,
-    read:Boolean,
+    enable:Boolean,
     label: String,
     error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit,
@@ -131,7 +140,7 @@ fun BoxEditTextPassword(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
-        readOnly = read,
+        enabled = enable,
         label = {
             Text(
                 text = label,
@@ -176,7 +185,7 @@ fun BoxEditTextPassword(
 @Composable
 fun BoxEditTextGeneric(
     value:String,
-    read: Boolean,
+    enable: Boolean,
     label: String,
     error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
@@ -187,7 +196,7 @@ fun BoxEditTextGeneric(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
-        readOnly = read,
+        enabled = enable,
         label = { Text(
             text = label,
             color = if(error.isError) color_error else color_principal_text) },
@@ -209,12 +218,63 @@ fun BoxEditTextGeneric(
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
         )
     }
+
+    CustomSpace(dimensionResource(R.dimen.margin_between))
+}
+
+@Composable
+fun BoxEditTextCalendar(
+    value:String,
+    enable: Boolean,
+    label: String,
+    error: ModelStateOutFieldText,
+    onBoxChanged:() ->  Unit){
+
+    OutlinedTextField(
+        value = value,
+        onValueChange = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = dimensionResource(id = R.dimen.margin_between)),
+        enabled = enable,
+        label = { Text(
+            text = label,
+            color = if(error.isError) color_error else color_principal_text) },
+        isError = error.isError,
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = "calendar",
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .clickable { onBoxChanged()}
+            )
+        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
+        ),
+        maxLines = 1,
+        shape = RoundedCornerShape(8.dp),
+        colors = personalizeColors()
+    )
+
+    if (error.isError) {
+        Text(
+            text = error.errorMessage,
+            color = color_error,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+        )
+    }
+
+    CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
 
 
 @Composable
-private fun personalizeColors(): TextFieldColors {
+fun personalizeColors(): TextFieldColors {
     return TextFieldDefaults.colors(
 
         focusedTextColor = color_principal_text,

@@ -185,7 +185,7 @@ class RegisterSubjectFragment : Fragment() {
         }
     }
 
-    /** initAdapterPeriod - Adapter specialized in the number of periods of user can select
+    /** initAdapterPeriod - MenuScreenObject specialized in the number of periods of user can select
      * @author pelkidev
      * @since 1.0.0
      * */

@@ -7,6 +7,9 @@
     <dimen name="margin_between">8dp</dimen>
     <dimen name="margin_divided">16dp</dimen>
 
+    <dimen name="touch_google">48dp</dimen>
+    <dimen name="dimen_card">64dp</dimen>
+
 
     <dimen name="margin_empty_top">120dp</dimen>
     <dimen name="margin_empty_horizontal">48dp</dimen>
@@ -21,7 +24,7 @@
     <dimen name="padding_6dp">6dp</dimen>
 
     <dimen name="radius_card">8dp</dimen>
-    <dimen name="touch_google">48dp</dimen>
+
 
     <dimen name="text_size_title">32sp</dimen>
     <dimen name="text_size_subtitle">24sp</dimen>
