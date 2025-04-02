@@ -65,7 +65,7 @@ val crudSubjectModule = module {
     }
 
     viewModel {
-        RegisterSubjectViewModel(get(), get(), get(), get(), get())
+        RegisterSubjectViewModel(get(), get(), get(), get())
     }
     viewModel {
         ListSubjectViewModel(get())

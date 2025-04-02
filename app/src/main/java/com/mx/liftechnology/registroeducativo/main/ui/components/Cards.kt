@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
@@ -51,7 +52,7 @@ fun CustomCardView() {
         CustomCard(
             item = ModelCustomCard(
                 id = "1",
-                numberId = "1",
+                numberList = "1",
                 nameCard = "Curp",
             ),
             onItemMore = {},
@@ -61,7 +62,7 @@ fun CustomCardView() {
         GridItem(
             item = ModelPrincipalMenuData(
                 id = "1",
-                image =  com.mx.liftechnology.data.R.drawable.ic_students,
+                image = com.mx.liftechnology.data.R.drawable.ic_students,
                 titleCard = "texto"
             ),
             {}
@@ -78,16 +79,28 @@ fun CustomCardView() {
         )
 
         EvaluationPercentItem(
-            listWorkMethods = listOf(ResponseGetListAssessmentType(assessmentTypeId = 1, description = "hola", teacherSchoolCycleGroupId = 1)),
+            listWorkMethods = listOf(
+                ResponseGetListAssessmentType(
+                    assessmentTypeId = 1,
+                    description = "hola",
+                    teacherSchoolCycleGroupId = 1
+                )
+            ),
             name = "Hola",
             percent = "hola",
+            isErrorName = ModelStateOutFieldText(false, ""),
+            isErrorPercent = ModelStateOutFieldText(false, ""),
             onNameChange = {},
             onPercentChange = {}
         )
 
         RegisterPartialListItem(
             index = 1,
-            name = "nombre",
+            date = ModelDatePeriodDomain(
+                position = 1,
+                date = "hola",
+                isErrorDate = ModelStateOutFieldText(false, "")
+            ),
             onDateChange = {}
         )
     }
@@ -110,7 +123,7 @@ fun CustomCard(
 
             ) {
             Text(
-                text = (item.numberId ?: "0").toString(),
+                text = (item.numberList ?: "0").toString(),
                 fontSize = dimensionResource(id = R.dimen.text_size_form).value.sp,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.margin_8dp))
             )
@@ -144,6 +157,7 @@ fun CustomCard(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_more_vert),
                         contentDescription = "More Options",
+
                         modifier = Modifier
                             .size(dimensionResource(id = R.dimen.touch_google))
                             .padding(dimensionResource(id = R.dimen.margin_12dp))
@@ -216,9 +230,11 @@ fun DialogGroupItem(
 
 @Composable
 fun EvaluationPercentItem(
-    listWorkMethods :List<ResponseGetListAssessmentType?>,
+    listWorkMethods: List<ResponseGetListAssessmentType?>,
     name: String,
     percent: String,
+    isErrorName: ModelStateOutFieldText,
+    isErrorPercent: ModelStateOutFieldText,
     onNameChange: (ResponseGetListAssessmentType?) -> Unit,
     onPercentChange: (String) -> Unit,
 ) {
@@ -235,7 +251,7 @@ fun EvaluationPercentItem(
                 options = listWorkMethods,
                 selectedOption = name,
                 label = stringResource(R.string.register_subject_evaluation),
-                error = ModelStateOutFieldText(false, ""),
+                error = isErrorName,
                 onOptionSelected = {
                     selectedOption = it
                     onNameChange(it)
@@ -245,14 +261,14 @@ fun EvaluationPercentItem(
 
         Box(modifier = Modifier.weight(2f)) {
             // Campo de texto para el porcentaje
-            BoxEditTextGeneric(
+            BoxEditTextNumeric(
                 value = percent,
                 enable = true,
                 label = stringResource(id = R.string.register_subject_percent),
-                error = ModelStateOutFieldText(false, "")
+                error = isErrorPercent
             )
             {
-                onPercentChange (it)
+                onPercentChange(it)
             }
         }
     }
@@ -261,9 +277,9 @@ fun EvaluationPercentItem(
 
 @Composable
 fun RegisterPartialListItem(
-    index : Int,
-    name: String,
-    onDateChange: ( Pair<LocalDate?, LocalDate?>) -> Unit,
+    index: Int,
+    date: ModelDatePeriodDomain,
+    onDateChange: (Pair<LocalDate?, LocalDate?>) -> Unit,
 ) {
 
     var showDatePicker by remember { mutableStateOf(false) }
@@ -279,19 +295,16 @@ fun RegisterPartialListItem(
         }
     )
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
-    ) {
 
-        BoxEditTextCalendar(
-            value = name,
-            enable = false,
-            label = stringResource(id = R.string.register_partial_periods, index + 1),
-            error = ModelStateOutFieldText(false,"")
-        )
-        { showDatePicker = true }
-    }
+    BoxEditTextCalendar(
+        value = date.date ?: "",
+        enable = false,
+        label = stringResource(id = R.string.register_partial_periods, index + 1),
+        error = date.isErrorDate
+    )
+    { showDatePicker = true }
+
     CustomSpace(dimensionResource(R.dimen.margin_divided))
+
+
 }

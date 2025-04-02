@@ -94,6 +94,11 @@
     <string name="edit_student_edit">REGISTRAR</string>
 
 
+    <!-- Profile Flow -->
+    <string name="profile_name">Mi perfil</string>
+    <string name="profile_button">Cerrar sesión</string>
+
+
 
 
 </resources>

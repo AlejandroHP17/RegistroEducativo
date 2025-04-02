@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.register
+package com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,35 +16,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationPercentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.RegisterPartialList
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 @Composable
-fun RegisterSubjectScreen(
+fun RegisterPartialScreen(
     navController: NavHostController,
-    registerSubjectViewModel: RegisterSubjectViewModel = koinViewModel(),
+    registerPartialViewModel: RegisterPartialViewModel = koinViewModel(),
 ) {
 
-    val uiState by registerSubjectViewModel.uiState.collectAsState()
-    // Llamadas a servicios cuando se monta la pantalla
-    LaunchedEffect(Unit) {
-        registerSubjectViewModel.getListAssessmentType()
-    }
+    val uiState by registerPartialViewModel.uiState.collectAsState()
+
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
             navController.popBackStack()
         }
+    }
+    LaunchedEffect(Unit) {
+        registerPartialViewModel.getListPartialCompose()
     }
 
     Column(
@@ -53,57 +52,42 @@ fun RegisterSubjectScreen(
             .padding(dimensionResource(id = R.dimen.margin_outer))
     ) {
 
-        HeaderRegisterSubject(navController = navController)
+        HeaderRegisterPartial(navController = navController)
 
-        BodyRegisterSubject(
+        BodyRegisterPartial(
             uiState = uiState,
-            onSubjectChanged = { registerSubjectViewModel.onSubjectChanged(it) },
-            onOptionsChanged = { registerSubjectViewModel.onOptionsChanged(it) }
+            onPartialChanged = { registerPartialViewModel.onPartialChanged(it) }
         )
 
-        if (uiState.options.isNotEmpty() && uiState.options.toInt() > 0) {
-            ColumnRegisterSubject(
+        if (uiState.numberPartials.isNotEmpty() && uiState.numberPartials.toInt() > 0) {
+            ColumnRegisterPartial(
                 uiState = uiState,
-                onNameChange = { registerSubjectViewModel.onNameChange(it) },
-                onPercentChange = { registerSubjectViewModel.onPercentChange(it) }
+                onDateChange = { registerPartialViewModel.onDateChange(it) }
             )
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ActionRegisterSubject { registerSubjectViewModel.validateFieldsCompose() }
-
+        ActionRegisterPartial { registerPartialViewModel.validateFieldsCompose() }
     }
     LoadingAnimation(uiState.isLoading)
 
 }
 
 @Composable
-private fun HeaderRegisterSubject(navController: NavHostController) {
+private fun HeaderRegisterPartial(navController: NavHostController) {
     ComponentHeaderBack(
-        title = stringResource(R.string.register_subject_name),
-        body = stringResource(R.string.register_subject_name_description),
+        title = stringResource(R.string.register_partial),
+        body = stringResource(R.string.register_subject_name_description_2),
     ) { navController.popBackStack() }
 }
 
 @Composable
-private fun BodyRegisterSubject(
-    uiState: ModelRegisterSubjectUIState,
-    onSubjectChanged: (String) -> Unit,
-    onOptionsChanged: (String) -> Unit,
+private fun BodyRegisterPartial(
+    uiState: ModelRegisterPartialUIState,
+    onPartialChanged: (String) -> Unit,
 ) {
-    BoxEditTextGeneric(
-        value = uiState.subject,
-        enable = true,
-        label = stringResource(id = R.string.register_subject_field),
-        error = uiState.isErrorSubject
-    ) { onSubjectChanged(it) }
-
     CustomSpace(dimensionResource(R.dimen.margin_between))
-
-    TextBody(stringResource(R.string.register_subject_name_description_2))
-
-    CustomSpace(dimensionResource(R.dimen.margin_divided))
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -113,7 +97,7 @@ private fun BodyRegisterSubject(
             modifier = Modifier.weight(1f)
         ) {
             CustomSpace(dimensionResource(R.dimen.margin_outer))
-            TextBody(stringResource(R.string.register_subject_name_description_3))
+            TextBody(stringResource(R.string.register_partial_number_period))
         }
 
         Box(
@@ -121,34 +105,32 @@ private fun BodyRegisterSubject(
         ) {
             SpinnerOutlinedTextField(
                 options = uiState.listOptions,
-                selectedOption = uiState.options,
+                selectedOption = uiState.numberPartials,
                 read = uiState.read,
-                label = stringResource(id = R.string.register_subject_options),
+                label = stringResource(id = R.string.register_partial_period),
                 error = uiState.isErrorOption,
-                onOptionSelected = { onOptionsChanged(it) }
+                onOptionSelected = { onPartialChanged(it) }
             )
         }
     }
+
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
-
 @Composable
-private fun ColumnRegisterSubject(
-    uiState: ModelRegisterSubjectUIState,
-    onNameChange: (Pair<ResponseGetListAssessmentType?, Int>) -> Unit,
-    onPercentChange: (Pair<String, Int>) -> Unit,
+private fun ColumnRegisterPartial(
+    uiState: ModelRegisterPartialUIState,
+    onDateChange: (
+        Pair<Pair<LocalDate?, LocalDate?>, Int>,
+    ) -> Unit,
 ) {
-    EvaluationPercentList(
-        listWorkMethods = uiState.listWorkMethods,
-        items = uiState.listAdapter!!,
-        onNameChange = { onNameChange(it) },
-        onPercentChange = { onPercentChange(it) }
-    )
+    RegisterPartialList(
+        items = uiState.listCalendar!!,
+        onDateChange = { onDateChange(it) })
 }
 
 @Composable
-private fun ActionRegisterSubject(
+private fun ActionRegisterPartial(
     validateFieldsCompose: () -> Unit,
 ) {
     ButtonAction(

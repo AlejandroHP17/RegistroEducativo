@@ -25,7 +25,7 @@ interface RegisterListPartialUseCase {
 
     suspend fun registerListPartialCompose(
         periodNumber: Int?,
-        adapterPeriods:List<String>
+        adapterPeriods:List<ModelDatePeriodDomain>
     ): ModelState<List<String?>?, String>?
 }
 
@@ -78,7 +78,7 @@ class RegisterListPartialUseCaseImp(
     }
     override suspend fun registerListPartialCompose(
         periodNumber: Int?,
-        adapterPeriods: List<String>
+        adapterPeriods: List<ModelDatePeriodDomain>
     ): ModelState<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -86,7 +86,7 @@ class RegisterListPartialUseCaseImp(
 
         val listAdapter: MutableList<Partials> = mutableListOf()
         adapterPeriods.forEachIndexed { index,  data ->
-            val part = data?.split("/")
+            val part = data.date?.split("/")
             listAdapter.add(
                 Partials(
                     description = (index + 1).toString(),

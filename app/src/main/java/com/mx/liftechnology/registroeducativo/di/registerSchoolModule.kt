@@ -10,9 +10,9 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCaseImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school.RegisterSchoolViewModel
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCaseImp
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.school.RegisterSchoolViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -40,8 +40,8 @@ val registerSchoolModule = module {
         RegisterOneSchoolUseCaseImp(get(), get())
     }
 
-    single<ValidateFieldsRegisterUseCase> {
-        ValidateFieldsRegisterUseCaseImp()
+    single<ValidateFieldsRegisterSchoolUseCase> {
+        ValidateFieldsRegisterSchoolUseCaseImp()
     }
 
     viewModel {

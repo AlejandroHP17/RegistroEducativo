@@ -16,7 +16,8 @@ data class ModelCodeInputs(val value: String) {
         const val ET_NOT_FOUND: String = "Dato no encontrado"
 
         // Spinners
-        const val SP_NOT_OPTION: String = "No ha seleccionado un valor válido del spinner"
-        const val SP_NOT_JOB: String = "El porcentaje total debe ser 100%"
+        const val SP_NOT_OPTION: String = "No puede estar vacío"
+        const val SP_NOT_JOB: String = "Vacío"
+        const val SP_NOT: String = "La suma debe ser 100%"
     }
 }

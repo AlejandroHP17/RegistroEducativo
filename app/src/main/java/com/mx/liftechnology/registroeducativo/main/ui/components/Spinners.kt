@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -22,9 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
@@ -160,11 +163,15 @@ fun SpinnerMixOutlinedTextField(
         ) {
             OutlinedTextField(
                 value = selectedOption,
-                onValueChange = {
-                    if (isEditable) selectedOption = it
+                onValueChange = { newValue ->
+                    if (isEditable){
+                        if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
+                            selectedOption = newValue
+                        }
+                    }
                     onOptionSelected(ResponseGetListAssessmentType(
                         assessmentTypeId = -1,
-                        description = it,
+                        description = newValue,
                         teacherSchoolCycleGroupId = options.firstOrNull()?.teacherSchoolCycleGroupId
                     ))
                 }, // Deshabilitado para evitar edición manual
@@ -175,6 +182,8 @@ fun SpinnerMixOutlinedTextField(
                         color = color_principal_text
                     )
                 },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Sentences),
                 modifier = Modifier
                     .menuAnchor() // Ancla el menú al TextField
                     .fillMaxWidth()

@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.animation)
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.gson)
     implementation(libs.bundles.compose.unit)
 
 

@@ -40,8 +40,6 @@ Q
 !core/src/main/AndroidManifest.xml,a/e/ae00e14a93cb05cbe86f462a3bad74d51f6b1afc
 v
 Fcore/src/main/java/com/mx/liftechnology/core/util/ModelSelectorForm.kt,3/c/3c6465d8057b72b8c812ee6ce747cefa9b5add29
-…
-Uapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/MenuAdapter.kt,e/9/e9d112dcdd0e1a4dbd0bace30e5e969fe93197b0
 G
 core/proguard-rules.pro,a/e/ae321721a596c5c74bb3bf67ae304581e8f9ae75
 ~
@@ -100,8 +98,6 @@ Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/ModelSpinner
 Sapp/src/main/java/com/mx/liftechnology/registroeducativo/di/registerSchoolModule.kt,8/4/84314283ca7174386688da69b5ae5f12fb74549e
 ‡
 Wapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/PeriodAdapter.kt,9/6/96196eb97b4e69bbfceb67a0a5a23dca291d6dda
-§
-wapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/register/school/RegisterSchoolFragment.kt,3/f/3fe298f32d7e0fde4f32cd9a8bb6aeb2a16dacd7
 ƒ
 Sapp/src/main/java/com/mx/liftechnology/registroeducativo/di/forgetPasswordModule.kt,7/7/7724c73cd7fa1dede2a8800554f098e81070e7e0
 ’
@@ -124,10 +120,6 @@ z
 Jcore/src/main/java/com/mx/liftechnology/core/preference/ModelPreference.kt,e/c/ec3699b72bbc87a5ca6510f886b8d7f2cc43ed42
 ˆ
 Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/DispatcherProvider.kt,e/3/e383a0e7bbc7ea6fd40e3ecec1866fa814bb39b4
-Œ
-\app/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/DialogGroupAdapter.kt,1/5/15e6ffe63c3e2ef739774eb2a0a4b2e67aaace42
-‡
-Wapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/DialogSelectGroup.kt,5/2/524e4b2970110609fbd0c9afb9045997edb681f2
 
 Oapp/src/main/java/com/mx/liftechnology/registroeducativo/di/dispatcherModule.kt,d/9/d9148ad3b029ac9e751de701b6efa2947a3f8568
 
@@ -146,8 +138,6 @@ Lapp/src/main/java/com/mx/liftechnology/registroeducativo/di/profileModule.kt,f
 iapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/profile/ProfileViewModel.kt,8/4/84b6d4467a16cd41d1dfcd7f08d0b3703065d1cb
 ˜
 happ/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/profile/ProfileFragment.kt,a/7/a7f8e75e2cf25858580f45d16d1d38dbc4563bed
-…
-Uapp/src/main/java/com/mx/liftechnology/registroeducativo/main/util/IncludeMiniMenu.kt,0/9/09476a93fcee03c2a6f9bf101517236e7709dc96
 €
 Papp/src/main/java/com/mx/liftechnology/registroeducativo/di/crudPartialModule.kt,5/f/5fecbae12fbf7401e574a7830a7721f3fb5f68d9
 €
@@ -174,14 +164,6 @@ capp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/m
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
 Ž
 ^app/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/FormatSubjectAdapter.kt,2/4/24d7ec9d6301e81f6f7cb3b267d4a0951c5ad311
-ˆ
-Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/StudentAdapter.kt,0/c/0cb23e682aa0fbf819ec659312de9a9f7bb62829
-ˆ
-Xapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/SubjectAdapter.kt,1/6/16ee16a1637720e05771e3e0a850c9bf80645b21
-’
-bapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/menu/MenuFragment.kt,8/8/8892f7737958a8014300ba1fe1761b0b60ffbaaf
-œ
-lapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/evaluation/CalendarFragment.kt,0/3/03ceb330b4fc08e7fd885f998e50faacd2e5540e
 r
 Bdata/src/main/java/com/mx/liftechnology/data/util/ResultService.kt,6/9/699519ff6f9d2c9a6b513865a16aead357330de3
 |
@@ -204,10 +186,6 @@ odomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/student
 fdomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/ValidateVoiceStudentUseCase.kt,1/e/1eae4f51993cd4d0dbb38b66e4a64d862f1ca211
 Ÿ
 odomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/subject/ValidateFieldsSubjectUseCase.kt,9/5/95ae2c0acbd815d26a66147af91165a6e0180bec
-©
-yapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/student/register/RegisterStudentFragment.kt,0/e/0edd0f4c82cd5f2be4282ddaaa794a4a7dd007ad
-¡
-qapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/student/edit/EditStudentFragment.kt,e/d/edd215e086c3485df543d268837794d811e3fdce
 ‰
 Ycore/src/main/java/com/mx/liftechnology/core/network/callapi/RegisterOneSubjectApiCall.kt,4/c/4c7d8782942bcab0fe4396941cc46be60a23f639
 |
@@ -228,8 +206,6 @@ fdomain/src/main/java/com/mx/liftechnology/domain/model/student/ModelStudentRegi
 Odomain/src/main/java/com/mx/liftechnology/domain/model/ModelDatePeriodDomain.kt,d/f/dfd953fc3ab2c6a81a6ce5389f1991028a604996
 ‹
 [data/src/main/java/com/mx/liftechnology/data/repository/mainflowdata/MenuLocalRepository.kt,1/c/1ce25a64919d35d14e121b398ec6ad30ac299c36
-¡
-qapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/subject/list/ListSubjectFragment.kt,8/5/85d80f3cbbff8143a1f8444497ee01f2f722a97d
 
 Oapp/src/main/java/com/mx/liftechnology/registroeducativo/di/assignmentModule.kt,5/f/5f873abb39310ff47410eb3bbd39386ffc50deb1
 Ÿ
@@ -238,8 +214,6 @@ odomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/school/
 bapp/src/main/java/com/mx/liftechnology/registroeducativo/main/adapters/StudentAssignmentAdapter.kt,5/7/57d0b2a77e12fcecfb41795697e1424b52e52e68
 ‰
 Yapp/src/main/java/com/mx/liftechnology/registroeducativo/main/viewextensions/popUpMore.kt,d/2/d2cddec6acd3c5d46f12a1f1ddf2ab201e7e1b83
-¡
-qapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/student/list/ListStudentFragment.kt,4/e/4ec67b5ba9b2430b072ded90c0d15911dba7da82
 ‹
 [domain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/menu/MenuUseCase.kt,5/1/5171577e25a7c4a12548a2d218710cfe32bdeb96
 ‘
@@ -262,8 +236,6 @@ rapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/s
 ldomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/subject/RegisterOneSubjectUseCase.kt,6/9/696bb64c9024424ac211e5cb91833a3702ddab09
 ˜
 hdomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/subject/GetListSubjectUseCase.kt,7/1/71b6b72ed5d9a5136cd0793f09489aa20a41e019
-¢
-rapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/student/edit/EditStudentViewModel.kt,c/8/c8ea1aea4adae4f71858b30829da56043a1edcc9
 š
 jdomain/src/main/java/com/mx/liftechnology/domain/usecase/mainflowdomain/student/ModifyOneStudentUseCase.kt,3/4/34547843a34d3c7aadb77140219384227a4b8ecd
 ˆ
@@ -338,8 +310,6 @@ Yapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/components/Bac
 Uapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/components/Images.kt,a/6/a6e0b045cf00485e94277dea25f85387c376e16a
 {
 Kapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/Compose.kt,0/6/06fbaca6603ed525ecd44c0957370bc26802ad98
-”
-dapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/login/LoginCompose.kt,5/5/551d91fc7d6cb9d6910c04fa57fd9891c5c603bf
 Œ
 \app/src/main/java/com/mx/liftechnology/registroeducativo/main/util/navigation/LoginRoutes.kt,9/c/9ca8abc52aeb60f87e4f243b0eb90ec07376f1ea
 …
@@ -358,10 +328,6 @@ Yapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/components/Com
 `app/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityMain/menu/MenuScreen.kt,1/3/132ba10b28ba3c525537fc48a543a046ba18791b
  
 papp/src/main/java/com/mx/liftechnology/registroeducativo/main/model/viewmodels/login/ModelRegisterUserUIState.kt,e/d/ed18f42352e804c9b6ee3ebc2f1be47652e9564b
-ž
-napp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/register/RegisterUserCompose.kt,3/a/3a43a07b182f3fde4dedb85aa90e80e3fc01c59b
-¦
-vapp/src/main/java/com/mx/liftechnology/registroeducativo/main/ui/activityLogin/forgetPassword/ForgetPasswordCompose.kt,a/8/a80752f7fbedd600c7848599a705cb47dbe90cfd
 ¡
 qapp/src/main/java/com/mx/liftechnology/registroeducativo/main/model/viewmodels/main/ModelRegisterSchoolUIState.kt,1/c/1c01a73f7647c7531dda427b9a29c035b410915a
 ˆ

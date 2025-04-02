@@ -1,18 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject
 
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
-import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 interface ValidateFieldsSubjectUseCase {
-    fun validateName(nameStudent: String?): ModelState<String, String>
     fun validateNameCompose(nameStudent: String?): ModelStateOutFieldText
-    fun validateListJobs(listJobs: MutableList<ModelFormatSubjectDomain>?): ModelState<String, String>
-    fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText
+    fun validateOptionCompose(option: String?): ModelStateOutFieldText
+    fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>?
+    fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText
 }
 
 class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
@@ -20,15 +16,15 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateName(nameStudent: String?): ModelState<String, String> {
-        return when {
-            nameStudent.isNullOrEmpty() -> ErrorUserState(ModelCodeInputs.ET_EMPTY)
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
-        }
-    }
     override fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText {
         return when {
             nameSubject.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+        }
+    }
+    override fun validateOptionCompose(option: String?): ModelStateOutFieldText {
+        return when {
+            option.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_JOB)
             else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
@@ -37,35 +33,31 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
      * @author pelkidev
      * @since 1.0.0
      * */
-    override fun validateListJobs(listJobs: MutableList<ModelFormatSubjectDomain>?): ModelState<String, String> {
-        return when{
-            listJobs?.size == 0 -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
-            listJobs?.any { it.name.isNullOrEmpty() || it.percent.isNullOrEmpty() }
-                ?: false -> ErrorUserState(ModelCodeInputs.SP_NOT_OPTION)
+    override fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>? {
+        return listJobs?.map { item ->
+            val isNameInvalid = item.name.isNullOrEmpty()
+            val isPercentInvalid = item.percent.isNullOrEmpty()
 
-            !validPercent(listJobs) -> {ErrorUserState(ModelCodeInputs.SP_NOT_JOB)}
-            else -> SuccessState(ModelCodeInputs.ET_CORRECT_FORMAT)
-        }
-    }
-    override fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText {
-        return when{
-            listJobs?.size == 0 ->  ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
-            listJobs?.any { it.name.isNullOrEmpty() || it.percent.isNullOrEmpty() }
-                ?: false -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
-
-            !validPercentCompose(listJobs) -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_JOB)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
-        }
+            item.copy(
+                isErrorName = item.isErrorName.copy(
+                    isError = isNameInvalid,
+                    errorMessage = if (isNameInvalid) ModelCodeInputs.SP_NOT_OPTION else ""
+                ),
+                isErrorPercent = item.isErrorPercent.copy(
+                    isError = isPercentInvalid,
+                    errorMessage = if (isPercentInvalid) ModelCodeInputs.SP_NOT_JOB else ""
+                )
+            )
+        }?.toMutableList()
     }
 
-    private fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?) =
-        listJobs?.let { jobs ->
-            jobs.all { (it.percent?.toInt() ?: 0) > 0 } && jobs.sumOf { it.percent?.toInt() ?: 0 } == 100
-        } ?: false
-
-    private fun validPercent(listJobs: MutableList<ModelFormatSubjectDomain>?) =
-        listJobs?.let { jobs ->
-            jobs.all { (it.percent?.toInt() ?: 0) > 0 } && jobs.sumOf { it.percent?.toInt() ?: 0 } == 100
-        } ?: false
+    override fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?) : ModelStateOutFieldText{
+        return when {
+            listJobs?.let { jobs ->
+                jobs.all { (it.percent?.toIntOrNull() ?: 0) > 0 } && jobs.sumOf { it.percent?.toIntOrNull() ?: 0 } == 100
+            } ?: false -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            else -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT)
+        }
+    }
 }
 

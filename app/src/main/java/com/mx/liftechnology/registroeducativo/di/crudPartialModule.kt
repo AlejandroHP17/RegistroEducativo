@@ -4,11 +4,13 @@ import com.mx.liftechnology.core.network.callapi.GetListPartialApiCall
 import com.mx.liftechnology.core.network.callapi.RegisterListPartialApiCall
 import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
 import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepositoryImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.partial.RegisterPartialViewModel
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCaseImp
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial.RegisterPartialViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -31,6 +33,9 @@ val crudPartialModule = module {
     }
     single<GetListPartialUseCase> {
         GetListPartialUseCaseImp(get(), get())
+    }
+    single<ValidateFieldsRegisterPartialUseCase> {
+        ValidateFieldsRegisterPartialUseCaseImp()
     }
 
     viewModel {

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
@@ -140,6 +141,8 @@ fun EvaluationPercentList(
                 listWorkMethods = listWorkMethods,
                 name = item.name?: "vacio",
                 percent = item.percent ?: "0",
+                isErrorName = item.isErrorName,
+                isErrorPercent = item.isErrorPercent,
                 onNameChange = {onNameChange(Pair(it, index)) },
                 onPercentChange = {onPercentChange(Pair(it, index))}
             )
@@ -149,14 +152,14 @@ fun EvaluationPercentList(
 
 @Composable
 fun RegisterPartialList(
-    items: List<String>,
+    items: List<ModelDatePeriodDomain>,
     onDateChange:(Pair<Pair<LocalDate?, LocalDate?>, Int>) -> Unit
 ) {
     LazyColumn {
         itemsIndexed(items) { index, item ->
             RegisterPartialListItem(
                 index = index,
-                name = item,
+                date = item,
                 onDateChange = {onDateChange(Pair(it, index)) },
             )
         }

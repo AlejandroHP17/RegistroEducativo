@@ -26,11 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
@@ -70,6 +72,22 @@ fun TestBoxes(){
             value = data,
             enable = true,
             label = stringResource(id = R.string.form_generic),
+            error = ModelStateOutFieldText(false,"")
+        )
+        { data = it}
+
+        BoxEditTextAllCaps(
+            value = data,
+            enable = true,
+            label = stringResource(id = R.string.form_student_curp),
+            error = ModelStateOutFieldText(false,"")
+        )
+        { data = it}
+
+        BoxEditTextNumeric(
+            value = data,
+            enable = true,
+            label = stringResource(id = R.string.form_student_phone_number),
             error = ModelStateOutFieldText(false,"")
         )
         { data = it}
@@ -192,7 +210,10 @@ fun BoxEditTextGeneric(
 
     OutlinedTextField(
         value = value,
-        onValueChange = { onBoxChanged(it)},
+        onValueChange = { newValue ->
+            if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
+                onBoxChanged(newValue)
+            } },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
@@ -202,6 +223,7 @@ fun BoxEditTextGeneric(
             color = if(error.isError) color_error else color_principal_text) },
         isError = error.isError,
         keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Next
         ),
@@ -223,16 +245,20 @@ fun BoxEditTextGeneric(
 }
 
 @Composable
-fun BoxEditTextCalendar(
+fun BoxEditTextAllCaps(
     value:String,
     enable: Boolean,
     label: String,
     error: ModelStateOutFieldText,
-    onBoxChanged:() ->  Unit){
+    onBoxChanged:(String) ->  Unit){
 
     OutlinedTextField(
         value = value,
-        onValueChange = { },
+        onValueChange = { newValue ->
+            if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
+                onBoxChanged(newValue)
+            } },
+
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
@@ -241,16 +267,8 @@ fun BoxEditTextCalendar(
             text = label,
             color = if(error.isError) color_error else color_principal_text) },
         isError = error.isError,
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.DateRange,
-                contentDescription = "calendar",
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .clickable { onBoxChanged()}
-            )
-        },
         keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Characters,
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Next
         ),
@@ -269,6 +287,103 @@ fun BoxEditTextCalendar(
     }
 
     CustomSpace(dimensionResource(R.dimen.margin_between))
+}
+
+
+@Composable
+fun BoxEditTextNumeric(
+    value:String,
+    enable: Boolean,
+    label: String,
+    error: ModelStateOutFieldText,
+    onBoxChanged:(String) ->  Unit){
+
+    Column {
+        OutlinedTextField(
+            value = value,
+            onValueChange = { onBoxChanged(it)},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = dimensionResource(id = R.dimen.margin_between)),
+            enabled = enable,
+            label = { Text(
+                text = label,
+                color = if(error.isError) color_error else color_principal_text) },
+            isError = error.isError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            maxLines = 1,
+            shape = RoundedCornerShape(8.dp),
+            colors = personalizeColors()
+        )
+
+        if (error.isError) {
+            Text(
+                text = error.errorMessage,
+                color = color_error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+            )
+        }
+    }
+
+
+    CustomSpace(dimensionResource(R.dimen.margin_between))
+}
+
+@Composable
+fun BoxEditTextCalendar(
+    value:String,
+    enable: Boolean,
+    label: String,
+    error: ModelStateOutFieldText,
+    onBoxChanged:() ->  Unit){
+
+    Column {
+        OutlinedTextField(
+            value = value,
+            onValueChange = { },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = dimensionResource(id = R.dimen.margin_between)),
+            enabled = enable,
+            label = { Text(
+                text = label,
+                color = if(error.isError) color_error else color_principal_text) },
+            isError = error.isError,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "calendar",
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .clickable { onBoxChanged()}
+                )
+            },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Next
+            ),
+            maxLines = 1,
+            shape = RoundedCornerShape(8.dp),
+            colors = personalizeColors()
+        )
+
+        if (error.isError) {
+            Text(
+                text = error.errorMessage,
+                color = color_error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+            )
+        }
+
+        CustomSpace(dimensionResource(R.dimen.margin_between))
+    }
+
+
 }
 
 

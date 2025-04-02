@@ -8,6 +8,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain
  * Platform to evaluate an student.
  * */
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,9 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.LoginActivity
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreen
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.partial.RegisterPartialScreen
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.register.school.RegisterSchoolScreen
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial.RegisterPartialScreen
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.profile.ProfileScreen
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register.RegisterStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list.ListSubjectScreen
@@ -48,18 +52,42 @@ class MainActivity : AppCompatActivity() {
                 val navigationController = rememberNavController()
                 NavHost(
                     navController = navigationController,
-                    startDestination = MainRoutes.MENU.route
+                    startDestination = MainRoutes.Menu.route
                 ){
-                    composable(MainRoutes.MENU.route){ MenuScreen(navigationController) }
-                    composable(MainRoutes.REGISTER_SCHOOL.route){ RegisterSchoolScreen(navigationController) }
-                    composable(MainRoutes.REGISTER_STUDENT.route){ RegisterStudentScreen(navigationController) }
-                    composable(MainRoutes.LIST_STUDENT.route){ ListStudentScreen(navigationController) }
-                    composable(MainRoutes.LIST_SUBJECT.route){ ListSubjectScreen(navigationController) }
-                    composable(MainRoutes.REGISTER_SUBJECT.route){ RegisterSubjectScreen(navigationController) }
-                    composable(MainRoutes.REGISTER_PARTIAL.route){ RegisterPartialScreen(navigationController) }
+                    composable(MainRoutes.Menu.route){ MenuScreen(navigationController) }
+                    composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(navigationController) }
+                    composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
+                    composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
+                    composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(navigationController) }
+                    composable(MainRoutes.Profile.route){ ProfileScreen(navigationController) {navigate()} }
+
+
+                    composable(
+                        route = MainRoutes.RegisterStudent.route,
+                        arguments = listOf(navArgument("student") {
+                            nullable = true
+                            defaultValue = ""
+                        })
+                    ) { backStackEntry ->
+                        RegisterStudentScreen(
+                            navController = navigationController,
+                            backStackEntry = backStackEntry
+                        )
+                    }
+
+                    composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(navigationController) }
+
                 }
             }
         }
 
     }
+
+
+    private fun navigate(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 }

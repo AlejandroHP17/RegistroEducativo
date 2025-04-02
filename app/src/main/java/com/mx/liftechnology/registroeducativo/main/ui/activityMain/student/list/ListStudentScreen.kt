@@ -17,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListStudentUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomCard
@@ -33,13 +33,6 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewListStudentScreen() {
-    val navController = rememberNavController() // Crea un controlador de navegación simulado
-    ListStudentScreen(navController)
-}
-
 @Composable
 fun ListStudentScreen(
     navController: NavHostController,
@@ -47,7 +40,7 @@ fun ListStudentScreen(
 ) {
     // Cargar la lista de estudiantes cuando se monta la pantalla
     LaunchedEffect(Unit) {
-        listStudentViewModel.getListStudentCompose()
+        listStudentViewModel.getListStudent()
     }
 
     val uiState by listStudentViewModel.uiState.collectAsState()
@@ -61,43 +54,20 @@ fun ListStudentScreen(
             EmptyStudentState(navController)
         } else {
 
-            Column(
-                modifier = Modifier.fillMaxSize()
-            )
-            {
-                ComponentHeaderBack(
-                    title = stringResource(R.string.get_student_name),
-                    body = ""
-                ) {  navController.popBackStack() }
+            Column(modifier = Modifier.fillMaxSize()) {
+                HeaderListStudent(navController = navController)
 
-                LazyColumn(
-                    modifier = Modifier.wrapContentHeight(),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
-                ) {
-                    itemsIndexed(uiState.studentListUI) { _, item ->
-                        CustomCard(
-                            item = item,
-                            onItemClick = {
-                                /*val navigate = MainRoutes.EDIT_STUDENT.createRoute(student)
-                                navController.navigate(navigate)*/
-                            },
-                            onItemMore = { student ->
-                            }
-                        )
+                BodyListStudent(
+                    uiState = uiState,
+                    onNavigate = {
+                        navController.navigate(MainRoutes.RegisterStudent.createRoutes(listStudentViewModel.getStudent(it)))
                     }
-                }
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                ButtonAction(
-                    containerColor = color_action,
-                    text = stringResource(R.string.add_button),
-                    onActionClick = { navController.navigate(MainRoutes.REGISTER_STUDENT.route) }
-                )
-
-                CustomSpace(dimensionResource(R.dimen.margin_divided))
+                ActionListStudent(navController = navController)
             }
-
         }
         LoadingAnimation(uiState.isLoading)
     }
@@ -111,7 +81,50 @@ fun EmptyStudentState(navController: NavController) {
         description = stringResource(R.string.empty_student_2),
         button = stringResource(R.string.add_button),
         onReturnClick = { navController.popBackStack() },
-        onActionClick = { navController.navigate(MainRoutes.REGISTER_STUDENT.route) }
+        onActionClick = { navController.navigate(MainRoutes.RegisterStudent.route) }
     )
 }
 
+@Composable
+private fun HeaderListStudent(navController: NavHostController) {
+    ComponentHeaderBack(
+        title = stringResource(R.string.get_student_name),
+        body = stringResource(R.string.tools_empty)
+    ) {  navController.popBackStack() }
+}
+
+@Composable
+private fun BodyListStudent(
+    uiState: ModelListStudentUIState,
+    onNavigate:(ModelCustomCard) ->  Unit
+    ) {
+    LazyColumn(
+        modifier = Modifier.wrapContentHeight(),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
+    ) {
+        itemsIndexed(uiState.studentListUI) { _, item ->
+            CustomCard(
+                item = item,
+                onItemClick = {
+                    onNavigate(item)
+                },
+                onItemMore = {
+
+                }
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun ActionListStudent(
+    navController: NavHostController
+) {
+    ButtonAction(
+        containerColor = color_action,
+        text = stringResource(R.string.add_button),
+        onActionClick = {   navController.navigate(MainRoutes.RegisterStudent.createRoutes(null)) }
+    )
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
+}

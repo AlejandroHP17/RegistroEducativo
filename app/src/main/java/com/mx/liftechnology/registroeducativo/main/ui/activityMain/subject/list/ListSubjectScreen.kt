@@ -17,11 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomCard
@@ -32,21 +31,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewListSubjectScreen() {
-    val navController = rememberNavController() // Crea un controlador de navegación simulado
-    ListSubjectScreen(navController)
-}
 
 @Composable
 fun ListSubjectScreen(
     navController: NavHostController,
-    listSubjectViewModel: ListSubjectViewModel = koinViewModel()
+    listSubjectViewModel: ListSubjectViewModel = koinViewModel(),
 ) {
     // Cargar la lista de estudiantes cuando se monta la pantalla
     LaunchedEffect(Unit) {
-        listSubjectViewModel.getSubjectCompose()
+        listSubjectViewModel.getSubject()
     }
 
     val uiState by listSubjectViewModel.uiState.collectAsState()
@@ -60,43 +53,17 @@ fun ListSubjectScreen(
             EmptySubjectState(navController)
         } else {
 
-            Column(
-                modifier = Modifier.fillMaxSize()
-            )
-            {
-                ComponentHeaderBack(
-                    title = stringResource(R.string.get_subject_name),
-                    body = ""
-                ) {  navController.popBackStack() }
+            Column(modifier = Modifier.fillMaxSize()) {
+                HeaderListSubject(navController = navController)
 
-                LazyColumn(
-                    modifier = Modifier.wrapContentHeight(),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
-                ) {
-                    itemsIndexed(uiState.subjectListUI) { _, item ->
-                        CustomCard(
-                            item = item,
-                            onItemClick = {
-                                /*val navigate = MainRoutes.EDIT_STUDENT.createRoute(student)
-                                navController.navigate(navigate)*/
-                            },
-                            onItemMore = { student ->
-                            }
-                        )
-                    }
-                }
+                BodyListSubject(
+                    uiState = uiState,
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                ButtonAction(
-                    containerColor = color_action,
-                    text = stringResource(R.string.add_button),
-                    onActionClick = { navController.navigate(MainRoutes.REGISTER_SUBJECT.route) }
-                )
-
-                CustomSpace(dimensionResource(R.dimen.margin_divided))
+                ActionListSubject(navController = navController)
             }
-
         }
         LoadingAnimation(uiState.isLoading)
     }
@@ -110,7 +77,49 @@ fun EmptySubjectState(navController: NavController) {
         description = stringResource(R.string.empty_subject_2),
         button = stringResource(R.string.add_button),
         onReturnClick = { navController.popBackStack() },
-        onActionClick = { navController.navigate(MainRoutes.REGISTER_SUBJECT.route) }
+        onActionClick = { navController.navigate(MainRoutes.RegisterSubject.route) }
     )
 }
 
+
+@Composable
+private fun HeaderListSubject(navController: NavHostController) {
+    ComponentHeaderBack(
+        title = stringResource(R.string.get_subject_name),
+        body = stringResource(R.string.tools_empty)
+    ) { navController.popBackStack() }
+}
+
+@Composable
+private fun BodyListSubject(
+    uiState: ModelListSubjectUIState,
+) {
+    LazyColumn(
+        modifier = Modifier.wrapContentHeight(),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
+    ) {
+        itemsIndexed(uiState.subjectListUI) { _, item ->
+            CustomCard(
+                item = item,
+                onItemClick = {
+                    /*val navigate = MainRoutes.EDIT_STUDENT.createRoute(student)
+                    navController.navigate(navigate)*/
+                },
+                onItemMore = { student ->
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ActionListSubject(
+    navController: NavController,
+) {
+    ButtonAction(
+        containerColor = color_action,
+        text = stringResource(R.string.add_button),
+        onActionClick = { navController.navigate(MainRoutes.RegisterSubject.route) }
+    )
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
+}

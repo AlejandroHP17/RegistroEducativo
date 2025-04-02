@@ -8,7 +8,6 @@ data class ModelMenuUIState(
     val isLoading: Boolean = false,
     val evaluationItems: List<ModelPrincipalMenuData> = listOf(),
     val controlItems: List<ModelPrincipalMenuData> = listOf(),
-    val showDialog: Boolean = false,
     val studentGroupItem : ModelDialogStudentGroupDomain = ModelDialogStudentGroupDomain(
         selected = false,
         item = null,

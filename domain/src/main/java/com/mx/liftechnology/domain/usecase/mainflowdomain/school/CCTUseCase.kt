@@ -14,8 +14,7 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 
-interface CCTUseCase {
-    suspend fun getSchoolCCT(cct: String): ModelState<ResponseCctSchool?, String>
+fun interface CCTUseCase {
     suspend fun getSchoolCCTCompose(cct: String): ModelState<ModelResultSchoolDomain?, String>
 }
 
@@ -42,30 +41,11 @@ class CCTUseCaseImp(
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
-    override suspend fun getSchoolCCT(cct: String): ModelState<ResponseCctSchool?, String> {
-        return when (val result =  cctRepository.executeSchoolCCT(cct)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
 
     /**
      * Maneja la respuesta del servidor y retorna el estado adecuado.
      */
     private fun handleResponseCompose(error: FailureService): ModelState<ModelResultSchoolDomain?, String> {
-        return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }    private fun handleResponse(error: FailureService): ModelState<ResponseCctSchool?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
