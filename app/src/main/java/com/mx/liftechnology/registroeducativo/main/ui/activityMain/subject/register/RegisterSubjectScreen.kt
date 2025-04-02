@@ -50,7 +50,7 @@ fun RegisterSubjectScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.margin_outer))
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
 
         HeaderRegisterSubject(navController = navController)

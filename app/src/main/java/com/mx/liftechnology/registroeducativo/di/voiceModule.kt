@@ -1,10 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import android.content.Context
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.VoiceViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.parameter.parametersOf
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 /** DI
@@ -12,9 +9,5 @@ import org.koin.dsl.module
  * @since 1.0.0
  */
 val voiceModule = module {
-
-    factory { (context: Context) -> VoiceRecognitionManager(context) }
-
-    viewModel { (context: Context) -> VoiceViewModel(get { parametersOf(context) }) }
-
+    single { VoiceRecognitionManager(androidContext()) }
 }

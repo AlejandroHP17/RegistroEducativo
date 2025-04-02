@@ -15,7 +15,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -47,7 +50,8 @@ class MainActivity : AppCompatActivity() {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(background()) // Aplica el fondo aquí
+                    .windowInsetsPadding(WindowInsets.systemBars)
+                    .background(background())
             ) {
                 val navigationController = rememberNavController()
                 NavHost(

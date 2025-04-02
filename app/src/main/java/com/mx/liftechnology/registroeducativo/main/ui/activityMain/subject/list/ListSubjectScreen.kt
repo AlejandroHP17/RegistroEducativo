@@ -47,7 +47,7 @@ fun ListSubjectScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.margin_outer))
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
         if (uiState.subjectList.isNullOrEmpty()) {
             EmptySubjectState(navController)
@@ -65,8 +65,8 @@ fun ListSubjectScreen(
                 ActionListSubject(navController = navController)
             }
         }
-        LoadingAnimation(uiState.isLoading)
     }
+    LoadingAnimation(uiState.isLoading)
 }
 
 @Composable

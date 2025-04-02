@@ -45,7 +45,7 @@ fun TestButton(){
         ButtonReturn({})
         ButtonAction(color_action, "Pulsame"){}
         ButtonActionShort(color_success, "Pulsame"){}
-        ButtonPair(color_action, "Pulsame", {}, {})
+        ButtonPair(color_action, color_action, "Pulsame", {}, {})
 
     }
 }
@@ -129,7 +129,8 @@ fun ButtonActionShort(
 
 @Composable
 fun ButtonPair(
-    containerColor:Color,
+    actionColor:Color,
+    recordColor:Color,
     text: String,
     onActionClick: () -> Unit,
     onRecordClick: () -> Unit,
@@ -155,7 +156,7 @@ fun ButtonPair(
             border = BorderStroke(1.dp, color_principal_text),
             colors = ButtonDefaults.buttonColors(
                 contentColor = color_principal_text,
-                containerColor = containerColor,
+                containerColor = actionColor,
                 disabledContentColor = color_principal_text,
                 disabledContainerColor = color_disable
             )
@@ -182,7 +183,7 @@ fun ButtonPair(
             border = BorderStroke(1.dp, color_principal_text),
             colors = ButtonDefaults.buttonColors(
                 contentColor = color_principal_text,
-                containerColor = color_success,
+                containerColor = recordColor,
                 disabledContentColor = color_principal_text,
                 disabledContainerColor = color_error
             ),

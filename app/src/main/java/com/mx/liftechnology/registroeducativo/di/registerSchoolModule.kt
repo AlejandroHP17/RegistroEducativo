@@ -45,6 +45,6 @@ val registerSchoolModule = module {
     }
 
     viewModel {
-        RegisterSchoolViewModel(get(), get(), get(), get())
+        RegisterSchoolViewModel(get(), get(), get(), get(), get())
     }
 }

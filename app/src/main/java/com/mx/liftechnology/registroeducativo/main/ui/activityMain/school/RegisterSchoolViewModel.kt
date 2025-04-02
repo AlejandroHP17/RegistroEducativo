@@ -2,13 +2,17 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.school
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
+import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,10 +25,21 @@ class RegisterSchoolViewModel(
     private val cctUseCase: CCTUseCase,
     private val validateFieldsUseCase: ValidateFieldsRegisterSchoolUseCase,
     private val registerOneSchoolUseCase: RegisterOneSchoolUseCase,
+    private val voiceRecognitionManager: VoiceRecognitionManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterSchoolUIState())
     val uiState: StateFlow<ModelRegisterSchoolUIState> = _uiState.asStateFlow()
+
+    init {
+        // Observa cambios del reconocimiento de voz
+        voiceRecognitionManager.resultsLiveData.observeForever { results ->
+            log(results.toString())
+            validateData(results)
+        }
+    }
+
+    private var isListening = true
 
     fun onCycleChanged(cycle: String) {
         _uiState.update {
@@ -54,6 +69,7 @@ class RegisterSchoolViewModel(
     }
 
     fun onCctChanged(cct: String) {
+        log(cct.length.toString())
         _uiState.update {
             if (cct.length == 10) {
                 getSchoolCCT(cct)
@@ -177,5 +193,29 @@ class RegisterSchoolViewModel(
                 }
             }
         }
+    }
+
+    /** Seccion para voz */
+    override fun onCleared() {
+        super.onCleared()
+        voiceRecognitionManager.release()
+    }
+
+    fun change() {
+        if (isListening) {
+            voiceRecognitionManager.startListening()
+            isListening = false
+            _uiState.update { it.copy(buttonColor = color_error) }
+        } else {
+            voiceRecognitionManager.stopListening()
+            isListening = true
+            _uiState.update { it.copy(buttonColor = color_success) }
+        }
+    }
+
+    private fun validateData(state: List<String>) {
+        val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
+        onCctChanged(result?: "")
+        _uiState.update { it.copy(cct = result?: "") }
     }
 }

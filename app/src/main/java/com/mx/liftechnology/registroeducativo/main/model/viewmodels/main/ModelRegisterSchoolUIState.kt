@@ -1,12 +1,15 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodels.main
 
+import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 
 data class ModelRegisterSchoolUIState(
     val isLoading: Boolean = false,
     val read : Boolean = true,
     val isSuccess : Boolean = false,
+    val buttonColor : Color = color_success,
 
     val cct: String = "",
     val schoolName: String = "",

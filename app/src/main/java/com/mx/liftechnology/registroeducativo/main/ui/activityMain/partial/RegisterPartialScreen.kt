@@ -49,7 +49,7 @@ fun RegisterPartialScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.margin_outer))
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
 
         HeaderRegisterPartial(navController = navController)
@@ -71,7 +71,6 @@ fun RegisterPartialScreen(
         ActionRegisterPartial { registerPartialViewModel.validateFieldsCompose() }
     }
     LoadingAnimation(uiState.isLoading)
-
 }
 
 @Composable

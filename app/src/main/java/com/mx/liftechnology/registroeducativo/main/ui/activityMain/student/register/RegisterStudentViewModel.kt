@@ -2,7 +2,9 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.regi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
@@ -10,6 +12,8 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStu
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
+import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,13 +25,25 @@ class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
     private val registerOneStudentUseCase: RegisterOneStudentUseCase,
-    private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase
+    private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
+    private val voiceRecognitionManager: VoiceRecognitionManager
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterStudentUIState())
     val uiState: StateFlow<ModelRegisterStudentUIState> = _uiState.asStateFlow()
     private val myValue: ModelRegisterStudentUIState
         get() = _uiState.value
+
+
+    init {
+        // Observa cambios del reconocimiento de voz
+        voiceRecognitionManager.resultsLiveData.observeForever { results ->
+            log(results.toString())
+            validateDataRecord(results)
+        }
+    }
+
+    private var isListening = true
 
     fun onChangeName(name: String) {
         _uiState.update { it.copy(
@@ -143,14 +159,39 @@ class RegisterStudentViewModel(
         }
     }
 
+    /** Seccion para voz */
+    override fun onCleared() {
+        super.onCleared()
+        voiceRecognitionManager.release()
+    }
 
-    fun validateDataRecord(data: List<String>) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            log(data.toString())
+    fun change() {
+        if (isListening) {
+            voiceRecognitionManager.startListening()
+            isListening = false
+            _uiState.update { it.copy(buttonColor = color_error) }
+        } else {
+            voiceRecognitionManager.stopListening()
+            isListening = true
+            _uiState.update { it.copy(buttonColor = color_success) }
+        }
+    }
+
+    private fun validateDataRecord(data: List<String>) {
+        viewModelScope.launch {
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
-            result?.let {
-                log(it.toString())
-               // _fillFields.postValue(it)
+            result?.let { studentData ->
+                log(studentData.toString())
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        name = studentData[ModelVoiceConstants.NAME] ?: "",
+                        lastName = studentData[ModelVoiceConstants.LAST_NAME] ?: "",
+                        secondLastName = studentData[ModelVoiceConstants.SECOND_LAST_NAME] ?: "",
+                        curp = studentData[ModelVoiceConstants.CURP] ?: "",
+                        birthday = studentData[ModelVoiceConstants.BIRTHDAY] ?: "",
+                        phoneNumber = studentData[ModelVoiceConstants.PHONE_NUMBER] ?: ""
+                    )
+                }
             }
         }
     }

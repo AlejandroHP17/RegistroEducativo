@@ -1,7 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register
 
 import android.app.DatePickerDialog
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,9 +37,9 @@ import java.util.Calendar
 @Composable
 fun RegisterStudentScreen(
     navController: NavHostController,
-    backStackEntry : NavBackStackEntry,
+    backStackEntry: NavBackStackEntry,
     registerStudentViewModel: RegisterStudentViewModel = koinViewModel(),
-){
+) {
     val uiState by registerStudentViewModel.uiState.collectAsState()
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
@@ -77,40 +76,41 @@ fun RegisterStudentScreen(
         )
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(dimensionResource(id = R.dimen.margin_outer))
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+    )
+    {
+
+        HeaderRegisterStudent(navController = navController)
+
+        BodyRegisterStudent(
+            uiState = uiState,
+            onChangeName = { registerStudentViewModel.onChangeName(it) },
+            onChangeLastName = { registerStudentViewModel.onChangeLastName(it) },
+            onChangeSecondLastName = { registerStudentViewModel.onChangeSecondLastName(it) }
         )
-        {
 
-            HeaderRegisterStudent(navController = navController)
+        Body2RegisterStudent(
+            uiState = uiState,
+            onChangeCurp = { registerStudentViewModel.onChangeCurp(it) },
+            datePickerDialog = datePickerDialog,
+            onChangePhoneNUmber = { registerStudentViewModel.onChangePhoneNUmber(it) }
+        )
 
-            BodyRegisterStudent(
-                uiState = uiState,
-                onChangeName = {registerStudentViewModel.onChangeName(it)},
-                onChangeLastName = {registerStudentViewModel.onChangeLastName(it)},
-                onChangeSecondLastName = {registerStudentViewModel.onChangeSecondLastName(it)}
-            )
+        Spacer(modifier = Modifier.weight(1f))
 
-            Body2RegisterStudent(
-                uiState = uiState,
-                onChangeCurp = {registerStudentViewModel.onChangeCurp(it)},
-                datePickerDialog = datePickerDialog,
-                onChangePhoneNUmber = {registerStudentViewModel.onChangePhoneNUmber(it)}
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            ActionRegisterStudent { registerStudentViewModel.validateFieldsCompose() }
-        }
-
-        LoadingAnimation(uiState.isLoading)
+        ActionRegisterStudent(
+            uiState = uiState,
+            validateFieldsCompose = { registerStudentViewModel.validateFieldsCompose() },
+            onRecord = { registerStudentViewModel.change() })
     }
+
+    LoadingAnimation(uiState.isLoading)
+
 }
 
 
@@ -119,76 +119,79 @@ private fun HeaderRegisterStudent(navController: NavHostController) {
     ComponentHeaderBack(
         title = stringResource(R.string.register_student_name),
         body = stringResource(R.string.register_student_name_description)
-    ) {  navController.popBackStack() }
+    ) { navController.popBackStack() }
 }
 
 @Composable
 private fun BodyRegisterStudent(
     uiState: ModelRegisterStudentUIState,
-    onChangeName:(String) -> Unit,
-    onChangeLastName:(String) -> Unit,
-    onChangeSecondLastName:(String) -> Unit
+    onChangeName: (String) -> Unit,
+    onChangeLastName: (String) -> Unit,
+    onChangeSecondLastName: (String) -> Unit,
 ) {
     BoxEditTextGeneric(
         value = uiState.name,
         enable = true,
         label = stringResource(id = R.string.form_student_name),
         error = uiState.isErrorName
-    ){ onChangeName(it)}
+    ) { onChangeName(it) }
 
     BoxEditTextGeneric(
         value = uiState.lastName,
         enable = true,
         label = stringResource(id = R.string.form_student_last_name),
         error = uiState.isErrorLastName
-    ){ onChangeLastName(it)}
+    ) { onChangeLastName(it) }
 
     BoxEditTextGeneric(
         value = uiState.secondLastName,
         enable = true,
         label = stringResource(id = R.string.form_student_second_last_name),
         error = uiState.isErrorSecondLastName
-    ){ onChangeSecondLastName(it)}
+    ) { onChangeSecondLastName(it) }
 }
 
 @Composable
 private fun Body2RegisterStudent(
     uiState: ModelRegisterStudentUIState,
-    onChangeCurp:(String) -> Unit,
+    onChangeCurp: (String) -> Unit,
     datePickerDialog: DatePickerDialog,
-    onChangePhoneNUmber:(String) -> Unit
+    onChangePhoneNUmber: (String) -> Unit,
 ) {
     BoxEditTextAllCaps(
         value = uiState.curp,
         enable = true,
         label = stringResource(id = R.string.form_student_curp),
         error = uiState.isErrorCurp
-    ){ onChangeCurp(it)}
+    ) { onChangeCurp(it) }
 
     BoxEditTextCalendar(
         value = uiState.birthday,
         enable = false,
         label = stringResource(id = R.string.form_student_birthday),
         error = uiState.isErrorBirthday
-    ){ datePickerDialog.show()}
+    ) { datePickerDialog.show() }
 
     BoxEditTextNumeric(
         value = uiState.phoneNumber,
         enable = true,
         label = stringResource(id = R.string.form_student_phone_number),
         error = uiState.isErrorPhoneNumber
-    ){ onChangePhoneNUmber(it)}
+    ) { onChangePhoneNUmber(it) }
 }
 
 
 @Composable
 private fun ActionRegisterStudent(
-    validateFieldsCompose:() -> Unit
+    uiState: ModelRegisterStudentUIState,
+    validateFieldsCompose: () -> Unit,
+    onRecord: () -> Unit,
 ) {
     ButtonPair(
-        containerColor = color_action,
+        actionColor = color_action,
+        recordColor = uiState.buttonColor,
         text = stringResource(R.string.add_button),
         onActionClick = { validateFieldsCompose() },
-        onRecordClick = {}
+        onRecordClick = { onRecord() }
     )
 }

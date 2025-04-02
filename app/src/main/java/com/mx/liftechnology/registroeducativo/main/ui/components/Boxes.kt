@@ -256,7 +256,7 @@ fun BoxEditTextAllCaps(
         value = value,
         onValueChange = { newValue ->
             if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
-                onBoxChanged(newValue)
+                onBoxChanged(newValue.uppercase())
             } },
 
         modifier = Modifier

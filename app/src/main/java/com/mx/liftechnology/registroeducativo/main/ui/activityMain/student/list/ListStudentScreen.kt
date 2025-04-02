@@ -48,7 +48,7 @@ fun ListStudentScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.margin_outer))
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
         if (uiState.studentList.isNullOrEmpty()) {
             EmptyStudentState(navController)
@@ -69,8 +69,8 @@ fun ListStudentScreen(
                 ActionListStudent(navController = navController)
             }
         }
-        LoadingAnimation(uiState.isLoading)
     }
+    LoadingAnimation(uiState.isLoading)
 }
 
 @Composable

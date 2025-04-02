@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -44,7 +45,7 @@ fun RegisterSchoolScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.margin_outer))
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
 
         HeaderRegisterSchool(navController = navController)
@@ -60,7 +61,10 @@ fun RegisterSchoolScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ActionRegisterSchool { registerSchoolViewModel.validateFields() }
+        ActionRegisterSchool(
+            uiState = uiState,
+            validateFieldsCompose = { registerSchoolViewModel.validateFields() },
+            onRecord = {registerSchoolViewModel.change()})
     }
 
     LoadingAnimation(uiState.isLoading)
@@ -79,7 +83,7 @@ private fun BodyRegisterSchool(
     uiState: ModelRegisterSchoolUIState,
     onCctChanged: (String) -> Unit,
 ) {
-    BoxEditTextGeneric(
+    BoxEditTextAllCaps (
         value = uiState.cct,
         enable = true,
         label = stringResource(id = R.string.form_school_cct),
@@ -165,12 +169,17 @@ private fun BodyDoubleRegisterSchool(
 
 @Composable
 private fun ActionRegisterSchool(
+    uiState: ModelRegisterSchoolUIState,
     validateFieldsCompose: () -> Unit,
+    onRecord: () -> Unit,
 ) {
     ButtonPair(
-        containerColor = color_action,
+        actionColor = color_action,
+        recordColor = uiState.buttonColor,
         text = stringResource(R.string.add_button),
         onActionClick = { validateFieldsCompose() },
-        onRecordClick = {}
+        onRecordClick = {onRecord()}
     )
+
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
 }

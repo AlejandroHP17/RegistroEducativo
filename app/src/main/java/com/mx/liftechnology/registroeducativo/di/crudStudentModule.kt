@@ -52,7 +52,7 @@ val crudStudentModule = module {
     }
 
     viewModel {
-        RegisterStudentViewModel(get(), get(), get(), get())
+        RegisterStudentViewModel(get(), get(), get(), get(), get())
     }
     viewModel {
         ListStudentViewModel(get())

@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -48,45 +47,43 @@ fun MenuScreen(
     val uiState by menuViewModel.uiState.collectAsState()
     val showDialog = remember { mutableStateOf(false) }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(dimensionResource(id = R.dimen.margin_outer))
-        )
-        {
-            itemsIndexed(listOf(HEADER, REGISTER, CONTROL)) { _, section ->
-                when (section) {
-                    HEADER -> {
-                        HeaderMenuScreen(
-                            uiState = uiState,
-                            onShowDialog = { showDialog.value = true }
-                        )
-                    }
 
-                    REGISTER -> {
-                        if (uiState.showControl) {
-                            RegisterAreaMenuScreen(
-                                uiState = uiState,
-                                navController = navController
-                            )
-                        }
-                    }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+    )
+    {
+        itemsIndexed(listOf(HEADER, REGISTER, CONTROL)) { _, section ->
+            when (section) {
+                HEADER -> {
+                    HeaderMenuScreen(
+                        uiState = uiState,
+                        onShowDialog = { showDialog.value = true }
+                    )
+                }
 
-                    CONTROL -> {
-                        ControlAreaMenuScreen(
+                REGISTER -> {
+                    if (uiState.showControl) {
+                        RegisterAreaMenuScreen(
                             uiState = uiState,
                             navController = navController
                         )
                     }
                 }
+
+                CONTROL -> {
+                    ControlAreaMenuScreen(
+                        uiState = uiState,
+                        navController = navController
+                    )
+                }
             }
         }
-
-        LoadingAnimation(uiState.isLoading)
     }
+
+    LoadingAnimation(uiState.isLoading)
+
 
     if (showDialog.value) {
         AlertDialogMenu(
