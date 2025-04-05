@@ -52,9 +52,8 @@ fun SpinnerScreen() {
 
         SpinnerMixOutlinedTextField(
             options = options2,
-            selectedOption = selectedOption,
+            selectedOption = selectedOption.stringToModelStateOutFieldText(),
             label = "test",
-            error = ModelStateOutFieldText(false, ""),
             onOptionSelected = {  }
         )
     }
@@ -144,16 +143,15 @@ fun SpinnerOutlinedTextField(
 @Composable
 fun SpinnerMixOutlinedTextField(
     options: List<ResponseGetListAssessmentType?>,
-    selectedOption: String,
+    selectedOption: ModelStateOutFieldText,
     label: String,
-    error: ModelStateOutFieldText,
     onOptionSelected: (ResponseGetListAssessmentType?) -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) } // Controla si el menú está abierto
-    var selectedOption by remember { mutableStateOf(selectedOption) } // Texto seleccionado
-    var isEditable by remember { mutableStateOf(true) } //habilita la edicion de texto
+    var expanded by remember { mutableStateOf(false) }
+    var selectedOptions by remember { mutableStateOf(selectedOption) }
+    var isEditable by remember { mutableStateOf(true) }
 
-    if (selectedOption == "Nuevo") selectedOption = ""
+    if (selectedOption.valueText == "Nuevo") selectedOptions = "".stringToModelStateOutFieldText()
 
     Column {
         ExposedDropdownMenuBox(
@@ -161,11 +159,11 @@ fun SpinnerMixOutlinedTextField(
             onExpandedChange = { expanded = !expanded }
         ) {
             OutlinedTextField(
-                value = selectedOption,
+                value = selectedOption.valueText,
                 onValueChange = { newValue ->
                     if (isEditable){
                         if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
-                            selectedOption = newValue
+                            selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
                         }
                     }
                     onOptionSelected(ResponseGetListAssessmentType(
@@ -198,34 +196,31 @@ fun SpinnerMixOutlinedTextField(
                 colors = personalizeColors()
             )
 
-
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false } // Cierra el menú si se toca fuera
+                onDismissRequest = { expanded = false }
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(
                         text = { Text(option?.description ?: "Nuevo") },
                         onClick = {
                             onOptionSelected(option)
-
-                            selectedOption = option?.description ?: "Nuevo"
+                            selectedOptions = (option?.description ?: "Nuevo").stringToModelStateOutFieldText()
                             isEditable = option?.description == "Nuevo"
-                            expanded = false // Cierra el menú después de seleccionar
+                            expanded = false
                         }
                     )
                 }
             }
         }
 
-        if (error.isError) {
+        if (selectedOption.isError) {
             Text(
-                text = error.errorMessage,
+                text = selectedOption.errorMessage,
                 color = color_error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
         }
     }
-
 }

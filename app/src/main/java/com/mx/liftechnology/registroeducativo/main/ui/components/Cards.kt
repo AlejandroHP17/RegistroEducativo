@@ -87,10 +87,8 @@ fun CustomCardView() {
                     teacherSchoolCycleGroupId = 1
                 )
             ),
-            name = "Hola",
-            percent = "hola",
-            isErrorName = ModelStateOutFieldText(false, ""),
-            isErrorPercent = ModelStateOutFieldText(false, ""),
+            name = "Hola".stringToModelStateOutFieldText(),
+            percent = "hola".stringToModelStateOutFieldText(),
             onNameChange = {},
             onPercentChange = {}
         )
@@ -99,8 +97,7 @@ fun CustomCardView() {
             index = 1,
             date = ModelDatePeriodDomain(
                 position = 1,
-                date = "hola",
-                isErrorDate = ModelStateOutFieldText(false, "")
+                date = "hola".stringToModelStateOutFieldText(),
             ),
             onDateChange = {}
         )
@@ -238,10 +235,8 @@ fun DialogGroupItem(
 @Composable
 fun EvaluationPercentItem(
     listWorkMethods: List<ResponseGetListAssessmentType?>,
-    name: String,
-    percent: String,
-    isErrorName: ModelStateOutFieldText,
-    isErrorPercent: ModelStateOutFieldText,
+    name: ModelStateOutFieldText,
+    percent: ModelStateOutFieldText,
     onNameChange: (ResponseGetListAssessmentType?) -> Unit,
     onPercentChange: (String) -> Unit,
 ) {
@@ -258,7 +253,6 @@ fun EvaluationPercentItem(
                 options = listWorkMethods,
                 selectedOption = name,
                 label = stringResource(R.string.register_subject_evaluation),
-                error = isErrorName,
                 onOptionSelected = {
                     selectedOption = it
                     onNameChange(it)
@@ -269,7 +263,7 @@ fun EvaluationPercentItem(
         Box(modifier = Modifier.weight(2f)) {
             // Campo de texto para el porcentaje
             BoxEditTextNumeric(
-                value = percent.stringToModelStateOutFieldText(),
+                value = percent,
                 enable = true,
                 label = stringResource(id = R.string.register_subject_percent),
             )
@@ -335,7 +329,7 @@ fun RegisterPartialListItem(
 
 
     BoxEditTextCalendar(
-        value = date.date.stringToModelStateOutFieldText(),
+        value = date.date,
         enable = false,
         label = stringResource(id = R.string.register_partial_periods, index + 1),
     )

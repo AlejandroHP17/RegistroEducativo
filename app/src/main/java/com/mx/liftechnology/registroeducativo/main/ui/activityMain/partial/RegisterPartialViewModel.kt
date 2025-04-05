@@ -3,7 +3,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
@@ -33,7 +32,7 @@ class RegisterPartialViewModel(
             val list = MutableList(partial.toInt()) { index ->
                 ModelDatePeriodDomain(
                     position = index,
-                    date = ""
+                    date = "".stringToModelStateOutFieldText()
                 )
             }
 
@@ -56,11 +55,7 @@ class RegisterPartialViewModel(
                         val endDate = data.first.second?.toString() ?: ""
                          // Guardamos el rango de fechas en formato "YYYY-MM-DD - YYYY-MM-DD"
                         date.copy(
-                            date  = "$startDate / $endDate",
-                            isErrorDate = ModelStateOutFieldText(
-                                isError = false,
-                                errorMessage = ""
-                            ),
+                            date  = "$startDate / $endDate".stringToModelStateOutFieldText()
                         )
                     } else {
                         date

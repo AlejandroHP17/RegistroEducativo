@@ -13,6 +13,7 @@ import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface GetListPartialUseCase {
@@ -39,7 +40,10 @@ class GetListPartialUseCaseImp (
                 val listDate = result.data?.mapIndexed { index, item ->
                     ModelDatePeriodDomain(
                         position = index,
-                        date = "${item?.startDate} / ${item?.endDate}" // Reemplaza con los campos que necesites
+                        date = ModelStateOutFieldText(
+                            valueText = "${item?.startDate} / ${item?.endDate}",
+                            isError = false,
+                            errorMessage = "")
                     )
                 } ?.toMutableList()
                 if (listDate?.size!! > 0)

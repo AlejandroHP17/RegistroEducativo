@@ -28,6 +28,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGene
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextNumeric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
@@ -188,4 +189,5 @@ private fun ActionRegisterStudent(
         onActionClick = { validateFieldsCompose() },
         onRecordClick = { onRecord() }
     )
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
 }

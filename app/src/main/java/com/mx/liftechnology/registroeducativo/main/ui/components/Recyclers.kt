@@ -142,10 +142,8 @@ fun EvaluationPercentList(
         itemsIndexed(items) { index, item ->
             EvaluationPercentItem(
                 listWorkMethods = listWorkMethods,
-                name = item.name?: "vacio",
-                percent = item.percent ?: "0",
-                isErrorName = item.isErrorName,
-                isErrorPercent = item.isErrorPercent,
+                name = item.name,
+                percent = item.percent,
                 onNameChange = {onNameChange(Pair(it, index)) },
                 onPercentChange = {onPercentChange(Pair(it, index))}
             )
@@ -164,7 +162,7 @@ fun EvaluationStudentList(
         itemsIndexed(items) { index, item ->
             EvaluationStudentItem(
                 nameStudent = item.studentName.stringToModelStateOutFieldText(),
-                score = item.score.stringToModelStateOutFieldText(),
+                score = item.score,
                 onScoreChange =  {onScoreChange(Pair(item.id, it))},
             )
         }

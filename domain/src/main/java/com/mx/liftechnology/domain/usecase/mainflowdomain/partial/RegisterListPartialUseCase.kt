@@ -48,12 +48,12 @@ class RegisterListPartialUseCaseImp(
 
         val listAdapter: MutableList<Partials> = mutableListOf()
         adapterPeriods.forEach { data ->
-            val part = data.date?.split("/")
+            val part = data.date.valueText.split("/")
             listAdapter.add(
                 Partials(
                     description = (data.position + 1).toString(),
-                    startDate = part?.getOrNull(0)?.trim() ?: "",
-                    endDate = part?.getOrNull(1)?.trim() ?: "",
+                    startDate = part.getOrNull(0)?.trim() ?: "",
+                    endDate = part.getOrNull(1)?.trim() ?: "",
                 )
             )
         }
@@ -86,7 +86,7 @@ class RegisterListPartialUseCaseImp(
 
         val listAdapter: MutableList<Partials> = mutableListOf()
         adapterPeriods.forEachIndexed { index,  data ->
-            val part = data.date?.split("/")
+            val part = data.date.valueText.split("/")
             listAdapter.add(
                 Partials(
                     description = (index + 1).toString(),

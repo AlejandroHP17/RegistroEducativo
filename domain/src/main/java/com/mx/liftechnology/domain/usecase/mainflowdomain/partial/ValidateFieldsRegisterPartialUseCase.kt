@@ -28,9 +28,9 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
      * */
     override fun validateAdapter(adapterPeriods: List<ModelDatePeriodDomain>?): List<ModelDatePeriodDomain>?{
         return adapterPeriods?.map { item ->
-            val isDateInvalid = item.date.isNullOrEmpty()
+            val isDateInvalid = item.date.valueText.isNullOrEmpty()
             item.copy(
-                isErrorDate = item.isErrorDate.copy(
+                date = item.date.copy(
                     isError = isDateInvalid,
                     errorMessage = if (isDateInvalid) ModelCodeInputs.ET_EMPTY else ""
                 )
@@ -39,7 +39,7 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
     }
 
     override fun validateAdapterError(adapterPeriods: List<ModelDatePeriodDomain>?):ModelStateOutFieldText{
-        return if (adapterPeriods?.any { it.isErrorDate.isError } == true) {
+        return if (adapterPeriods?.any { it.date.isError } == true) {
             ModelStateOutFieldText(isError = true, errorMessage = ModelCodeInputs.SP_NOT_OPTION)
         } else {
             ModelStateOutFieldText(isError = false, errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)

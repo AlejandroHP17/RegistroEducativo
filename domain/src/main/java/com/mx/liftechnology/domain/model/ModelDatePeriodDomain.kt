@@ -8,9 +8,9 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
  */
 data class ModelDatePeriodDomain(
     val position:Int,
-    val date: String?,
-    val isErrorDate: ModelStateOutFieldText =
+    val date: ModelStateOutFieldText =
         ModelStateOutFieldText(
+            valueText = "",
             isError = false,
             errorMessage = ""
         ),

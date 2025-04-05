@@ -90,8 +90,8 @@ class RegisterOneSubjectUseCaseImp(
             listAdapter.add(
                 Percent(
                     jobId = data.assessmentTypeId,
-                    percent = data.percent?.toInt(),
-                    assessmentType = data.name
+                    percent = data.percent.valueText.toInt(),
+                    assessmentType = data.name.valueText
                 )
             )
         }

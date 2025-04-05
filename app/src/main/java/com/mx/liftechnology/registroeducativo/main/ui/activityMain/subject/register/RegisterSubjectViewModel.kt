@@ -41,7 +41,7 @@ class RegisterSubjectViewModel(
                 listAdapter = it.listAdapter?.map { subject ->
                     if (subject.position == value.second) {
                         subject.copy(
-                            name = value.first?.description,
+                            name = value.first?.description.stringToModelStateOutFieldText(),
                             assessmentTypeId =  value.first?.assessmentTypeId,
                             teacherSchoolCycleGroupId =  value.first?.teacherSchoolCycleGroupId,
                         )
@@ -58,7 +58,7 @@ class RegisterSubjectViewModel(
             it.copy(
                 listAdapter = it.listAdapter?.map { subject ->
                     if (subject.position == value.second) {
-                        subject.copy(percent = value.first)
+                        subject.copy(percent = value.first.stringToModelStateOutFieldText())
                     } else {
                         subject
                     }
@@ -72,8 +72,8 @@ class RegisterSubjectViewModel(
             val list = MutableList(options.toInt()) { index ->
                 ModelSpinnersWorkMethods(
                     position = index,
-                    name = "",
-                    percent = "",
+                    name = "".stringToModelStateOutFieldText(),
+                    percent = "".stringToModelStateOutFieldText(),
                     assessmentTypeId = -1,
                     teacherSchoolCycleGroupId = 1
                 )

@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
@@ -55,11 +54,7 @@ class RegisterAssignmentViewModel (
                     studentListUI = currentState.studentListUI.mapIndexed { _, score ->
                         if (score.id == data.first) {
                             score.copy(
-                                score = data.second ,
-                                isErrorScore = ModelStateOutFieldText(
-                                    isError = false,
-                                    errorMessage = ""
-                                )
+                                score = data.second.stringToModelStateOutFieldText(),
                             )
                         }else {
                             score
@@ -102,7 +97,7 @@ class RegisterAssignmentViewModel (
                     id = student.studentId ?: "",
                     numberList = (index + 1).toString(), // Numeración comenzando en 1
                     studentName = "${student.lastName} ${student.secondLastName} ${student.name}".trim(),
-                    score = "10.0"
+                    score = "10.0".stringToModelStateOutFieldText()
                 )
             } ?: emptyList()
     }

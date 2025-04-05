@@ -35,17 +35,17 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
      * */
     override fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>? {
         return listJobs?.map { item ->
-            val isNameInvalid = item.name.isNullOrEmpty()
-            val isPercentInvalid = item.percent.isNullOrEmpty()
+            val isNameInvalid = item.name.valueText.isNullOrEmpty()
+            val isPercentInvalid = item.percent.valueText.isNullOrEmpty()
 
             item.copy(
-                isErrorName = item.isErrorName.copy(
-                    valueText = item.name?:"",
+                name = item.name.copy(
+                    valueText = item.name.valueText,
                     isError = isNameInvalid,
                     errorMessage = if (isNameInvalid) ModelCodeInputs.SP_NOT_OPTION else ""
                 ),
-                isErrorPercent = item.isErrorPercent.copy(
-                    valueText = item.percent?:"",
+                percent = item.percent.copy(
+                    valueText = item.percent.valueText,
                     isError = isPercentInvalid,
                     errorMessage = if (isPercentInvalid) ModelCodeInputs.SP_NOT_JOB else ""
                 )
@@ -56,9 +56,9 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
     override fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?) : ModelStateOutFieldText{
         return when {
             listJobs?.let { jobs ->
-                jobs.all { (it.percent?.toIntOrNull() ?: 0) > 0 } && jobs.sumOf { it.percent?.toIntOrNull() ?: 0 } == 100
-            } ?: false -> ModelStateOutFieldText( isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
-            else -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT)
+                jobs.all { (it.percent.valueText.toIntOrNull() ?: 0) > 0 } && jobs.sumOf { it.percent.valueText.toIntOrNull() ?: 0 } == 100
+            } ?: false -> ModelStateOutFieldText(valueText = listJobs?.size.toString(), isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            else -> ModelStateOutFieldText(valueText = listJobs?.size.toString(), isError = true,  errorMessage = ModelCodeInputs.SP_NOT)
         }
     }
 }
