@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun RegisterUserScreen(
     navController: NavHostController,
-    registerUserViewModel: RegisterViewModel = koinViewModel(),
+    registerUserViewModel: RegisterUserViewModel = koinViewModel(),
 ) {
     val uiState by registerUserViewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -125,10 +125,9 @@ fun BodyRegisterUserScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
     BoxEditTextGeneric(
-        value = uiState.code.valueText,
+        value = uiState.code,
         enable = true,
         label = stringResource(id = R.string.form_reg_code),
-        error = uiState.code,
         onBoxChanged = { onCodeChanged(it) }
     )
 }

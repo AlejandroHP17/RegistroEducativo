@@ -43,6 +43,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.M
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_azul_link
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import java.time.LocalDate
 
 @Preview(showBackground = true)
@@ -105,9 +106,8 @@ fun CustomCardView() {
         )
 
         EvaluationStudentItem(
-            nameStudent = "Alejandro",
-            score = "10.0",
-            isErrorScore = ModelStateOutFieldText(false, ""),
+            nameStudent = "Alejandro".stringToModelStateOutFieldText(),
+            score = "10.0".stringToModelStateOutFieldText(),
             onScoreChange =  {},
         )
     }
@@ -269,10 +269,9 @@ fun EvaluationPercentItem(
         Box(modifier = Modifier.weight(2f)) {
             // Campo de texto para el porcentaje
             BoxEditTextNumeric(
-                value = percent,
+                value = percent.stringToModelStateOutFieldText(),
                 enable = true,
                 label = stringResource(id = R.string.register_subject_percent),
-                error = isErrorPercent
             )
             {
                 onPercentChange(it)
@@ -284,9 +283,8 @@ fun EvaluationPercentItem(
 
 @Composable
 fun EvaluationStudentItem(
-    nameStudent: String,
-    score: String,
-    isErrorScore: ModelStateOutFieldText,
+    nameStudent: ModelStateOutFieldText,
+    score: ModelStateOutFieldText,
     onScoreChange: (String) -> Unit,
 ) {
     Row(
@@ -299,7 +297,6 @@ fun EvaluationStudentItem(
                 value = nameStudent,
                 enable = false,
                 label = stringResource(id = R.string.tools_empty),
-                error = ModelStateOutFieldText(false, "")
             ){}
         }
 
@@ -309,7 +306,6 @@ fun EvaluationStudentItem(
                 value = score,
                 enable = true,
                 label = stringResource(id = R.string.assignment_score),
-                error = isErrorScore
             )
             { onScoreChange(it) }
         }
@@ -339,10 +335,9 @@ fun RegisterPartialListItem(
 
 
     BoxEditTextCalendar(
-        value = date.date ?: "",
+        value = date.date.stringToModelStateOutFieldText(),
         enable = false,
         label = stringResource(id = R.string.register_partial_periods, index + 1),
-        error = date.isErrorDate
     )
     { showDatePicker = true }
 

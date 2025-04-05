@@ -20,8 +20,8 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
      * */
     override fun validateName(name: String?):ModelStateOutFieldText {
         return when {
-            name.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            name.isNullOrEmpty() -> ModelStateOutFieldText( valueText = name?: "", isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(valueText = name,isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -32,8 +32,8 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
      * */
     override fun validateLastName(lastName: String?): ModelStateOutFieldText{
         return when {
-            lastName.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            lastName.isNullOrEmpty() -> ModelStateOutFieldText(valueText = lastName?: "",isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(valueText = lastName,isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -44,8 +44,8 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
      * */
     override fun validateSecondLastName(secondLastName: String?): ModelStateOutFieldText {
         return when {
-            secondLastName.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            secondLastName.isNullOrEmpty() -> ModelStateOutFieldText(valueText = secondLastName?: "",isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(valueText = secondLastName,isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -55,9 +55,9 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
      * */
     override fun validateCurp(curp: String?): ModelStateOutFieldText {
         return when {
-            curp.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            curp.valid() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_CURP_FORMAT_MISTAKE)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            curp.isNullOrEmpty() -> ModelStateOutFieldText(valueText = curp?: "",isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            curp.valid() -> ModelStateOutFieldText(valueText = curp,isError = true,  errorMessage = ModelCodeInputs.ET_CURP_FORMAT_MISTAKE)
+            else -> ModelStateOutFieldText(valueText = curp,isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -68,9 +68,9 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
 
     override fun validatePhoneNumber(number: String?): ModelStateOutFieldText{
         return when {
-            number.isNullOrEmpty()-> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            number.validPhoneNumber() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_PHONE_NUMBER_FORMAT_MISTAKE)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            number.isNullOrEmpty()-> ModelStateOutFieldText(valueText = number?: "",isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            number.validPhoneNumber() -> ModelStateOutFieldText(valueText = number,isError = true,  errorMessage = ModelCodeInputs.ET_PHONE_NUMBER_FORMAT_MISTAKE)
+            else -> ModelStateOutFieldText(valueText = number,isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -82,8 +82,8 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
 
     override fun validateBirthday(birthday: String?): ModelStateOutFieldText{
         return when{
-            birthday.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            else ->  ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            birthday.isNullOrEmpty() -> ModelStateOutFieldText(valueText = birthday?: "" ,isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else ->  ModelStateOutFieldText(valueText = birthday, isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

@@ -61,7 +61,7 @@ fun RegisterSubjectScreen(
             onOptionsChanged = { registerSubjectViewModel.onOptionsChanged(it) }
         )
 
-        if (uiState.options.isNotEmpty() && uiState.options.toInt() > 0) {
+        if (uiState.options.valueText.isNotEmpty() && uiState.options.valueText.toInt() > 0) {
             ColumnRegisterSubject(
                 uiState = uiState,
                 onNameChange = { registerSubjectViewModel.onNameChange(it) },
@@ -96,7 +96,6 @@ private fun BodyRegisterSubject(
         value = uiState.subject,
         enable = true,
         label = stringResource(id = R.string.register_subject_field),
-        error = uiState.isErrorSubject
     ) { onSubjectChanged(it) }
 
     CustomSpace(dimensionResource(R.dimen.margin_between))
@@ -124,7 +123,6 @@ private fun BodyRegisterSubject(
                 selectedOption = uiState.options,
                 read = uiState.read,
                 label = stringResource(id = R.string.register_subject_options),
-                error = uiState.isErrorOption,
                 onOptionSelected = { onOptionsChanged(it) }
             )
         }

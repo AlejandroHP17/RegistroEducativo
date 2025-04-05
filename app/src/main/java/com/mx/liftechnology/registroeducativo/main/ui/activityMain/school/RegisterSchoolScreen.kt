@@ -50,7 +50,10 @@ fun RegisterSchoolScreen(
 
         HeaderRegisterSchool(navController = navController)
 
-        BodyRegisterSchool(uiState) { registerSchoolViewModel.onCctChanged(it) }
+        BodyRegisterSchool(
+            uiState = uiState,
+            onCctChanged =  { registerSchoolViewModel.onCctChanged(it) }
+        )
 
         BodyDoubleRegisterSchool(
             uiState = uiState,
@@ -87,21 +90,19 @@ private fun BodyRegisterSchool(
         value = uiState.cct,
         enable = true,
         label = stringResource(id = R.string.form_school_cct),
-        error = uiState.isErrorCct
-    ) { onCctChanged(it) }
+        onBoxChanged = { onCctChanged(it) }
+    )
 
     BoxEditTextGeneric(
         value = uiState.schoolName,
         enable = false,
         label = stringResource(id = R.string.form_school_name),
-        error = uiState.isErrorGeneric
     ) {}
 
     BoxEditTextGeneric(
         value = uiState.shift,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
-        error = uiState.isErrorGeneric
     ) {}
 }
 
@@ -121,7 +122,6 @@ private fun BodyDoubleRegisterSchool(
                 value = uiState.type,
                 enable = false,
                 label = stringResource(id = R.string.form_school_type),
-                error = uiState.isErrorGeneric,
             ) {}
         }
 
@@ -131,7 +131,6 @@ private fun BodyDoubleRegisterSchool(
                 selectedOption = uiState.cycle,
                 read = uiState.read,
                 label = stringResource(id = R.string.form_school_term),
-                error = uiState.isErrorCycle,
                 onOptionSelected = { onCycleChanged(it) }
             )
         }
@@ -149,7 +148,6 @@ private fun BodyDoubleRegisterSchool(
                 selectedOption = uiState.grade,
                 read = uiState.read,
                 label = stringResource(id = R.string.form_school_grade),
-                error = uiState.isErrorGrade,
                 onOptionSelected = { onGradeChanged(it) }
             )
         }
@@ -160,7 +158,6 @@ private fun BodyDoubleRegisterSchool(
                 selectedOption = uiState.group,
                 read = uiState.read,
                 label = stringResource(id = R.string.form_school_group),
-                error = uiState.isErrorGroup,
                 onOptionSelected = { onGroupChanged(it) }
             )
         }

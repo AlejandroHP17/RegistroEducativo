@@ -81,7 +81,7 @@ fun RegisterPartialScreen(
                 bottom.linkTo(action.top)
                 height = Dimension.fillToConstraints
             }) {
-            if (uiState.numberPartials.isNotEmpty() && uiState.numberPartials.toInt() > 0) {
+            if (uiState.numberPartials.valueText.isNotEmpty() && uiState.numberPartials.valueText.toInt() > 0) {
                 ColumnRegisterPartial(
                     uiState = uiState,
                     onDateChange = { registerPartialViewModel.onDateChange(it) }
@@ -135,7 +135,6 @@ private fun BodyRegisterPartial(
                 selectedOption = uiState.numberPartials,
                 read = uiState.read,
                 label = stringResource(id = R.string.register_partial_period),
-                error = uiState.isErrorOption,
                 onOptionSelected = { onPartialChanged(it) }
             )
         }

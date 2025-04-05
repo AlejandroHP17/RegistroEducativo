@@ -29,6 +29,7 @@ import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import java.time.LocalDate
 
 @Preview(showBackground = true)
@@ -162,9 +163,8 @@ fun EvaluationStudentList(
     ){
         itemsIndexed(items) { index, item ->
             EvaluationStudentItem(
-                nameStudent = item.studentName ?: "Desconocido",
-                score = item.score,
-                isErrorScore = item.isErrorScore,
+                nameStudent = item.studentName.stringToModelStateOutFieldText(),
+                score = item.score.stringToModelStateOutFieldText(),
                 onScoreChange =  {onScoreChange(Pair(item.id, it))},
             )
         }

@@ -10,6 +10,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPa
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,9 +39,8 @@ class RegisterPartialViewModel(
 
             _uiState.update {
                 it.copy(
-                    numberPartials = partial,
-                    listCalendar = list,
-                    isErrorOption = ModelStateOutFieldText(false, "")
+                    numberPartials = partial.stringToModelStateOutFieldText(),
+                    listCalendar = list
                 )
             }
         }
@@ -74,13 +74,13 @@ class RegisterPartialViewModel(
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch(dispatcherProvider.io) {
 
-            val periodState = validateFieldsRegisterPartialUseCase.validatePeriod(_uiState.value.numberPartials)
+            val periodState = validateFieldsRegisterPartialUseCase.validatePeriod(_uiState.value.numberPartials.valueText)
             val listCalendarState = validateFieldsRegisterPartialUseCase.validateAdapter(_uiState.value.listCalendar)
             val calendarState = validateFieldsRegisterPartialUseCase.validateAdapterError(listCalendarState)
 
             _uiState.update {
                 it.copy(
-                    isErrorOption = periodState,
+                    numberPartials = periodState,
                     listCalendar = listCalendarState
                 )
             }
@@ -95,7 +95,7 @@ class RegisterPartialViewModel(
     private fun registerListPartialCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerListPartialUseCase.registerListPartialCompose(_uiState.value.numberPartials.toInt(), _uiState.value.listCalendar!!)
+                registerListPartialUseCase.registerListPartialCompose(_uiState.value.numberPartials.valueText.toInt(), _uiState.value.listCalendar!!)
             }.onSuccess { state ->
                 if(state is SuccessState){
                     _uiState.update { it.copy(
@@ -128,7 +128,7 @@ class RegisterPartialViewModel(
                             listCalendar = state.result?.map { data ->
                                 data.copy(date = data.date)
                             } ?: emptyList(),
-                            numberPartials = state.result?.size?.toString().orEmpty()
+                            numberPartials = state.result?.size?.toString().stringToModelStateOutFieldText()
                         )
                     }
                 }

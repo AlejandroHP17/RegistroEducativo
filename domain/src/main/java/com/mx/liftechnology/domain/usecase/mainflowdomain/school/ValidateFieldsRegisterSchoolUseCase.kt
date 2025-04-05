@@ -18,9 +18,9 @@ class ValidateFieldsRegisterSchoolUseCaseImp : ValidateFieldsRegisterSchoolUseCa
      * */
     override fun validateGradeCompose(grade: String?): ModelStateOutFieldText{
         return when {
-            grade.isNullOrBlank() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY)
-            grade.toIntOrNull() == null -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_MISTAKE_FORMAT)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            grade.isNullOrBlank() -> ModelStateOutFieldText(valueText = grade?:"", isError = true,  errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY)
+            grade.toIntOrNull() == null -> ModelStateOutFieldText(valueText = grade, isError = true,  errorMessage = ModelCodeInputs.ET_MISTAKE_FORMAT)
+            else -> ModelStateOutFieldText(valueText = grade,isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -30,8 +30,8 @@ class ValidateFieldsRegisterSchoolUseCaseImp : ValidateFieldsRegisterSchoolUseCa
      * */
     override fun validateGroupCompose(group: String?): ModelStateOutFieldText {
         return when {
-            group.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            group.isNullOrEmpty() -> ModelStateOutFieldText(valueText = group?:"",isError = true,  errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY)
+            else -> ModelStateOutFieldText(valueText = group, isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -41,9 +41,9 @@ class ValidateFieldsRegisterSchoolUseCaseImp : ValidateFieldsRegisterSchoolUseCa
      * */
     override fun validateCycleCompose(cycle: String?): ModelStateOutFieldText {
         return when {
-            cycle.isNullOrBlank() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY)
-            cycle.toIntOrNull() == null -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_MISTAKE_FORMAT)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            cycle.isNullOrBlank() -> ModelStateOutFieldText(valueText = cycle?:"",isError = true,  errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY)
+            cycle.toIntOrNull() == null -> ModelStateOutFieldText(valueText = cycle, isError = true,  errorMessage = ModelCodeInputs.ET_MISTAKE_FORMAT)
+            else -> ModelStateOutFieldText(valueText = cycle, isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -53,9 +53,9 @@ class ValidateFieldsRegisterSchoolUseCaseImp : ValidateFieldsRegisterSchoolUseCa
      * */
     override fun validateCctCompose(cct: String?): ModelStateOutFieldText {
         return when {
-            cct.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            cct.length != 10 -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_NOT_FOUND)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            cct.isNullOrEmpty() -> ModelStateOutFieldText(valueText = cct?:"", isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            cct.length != 10 -> ModelStateOutFieldText(valueText = cct, isError = true,  errorMessage = ModelCodeInputs.ET_NOT_FOUND)
+            else -> ModelStateOutFieldText(valueText = cct, isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 }

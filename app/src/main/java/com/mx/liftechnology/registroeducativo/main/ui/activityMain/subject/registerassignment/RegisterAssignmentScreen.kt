@@ -131,15 +131,13 @@ fun BodyRegisterAssignment(
         value = uiState.nameJob,
         enable = true,
         label = stringResource(id = R.string.form_assignment_name),
-        error = uiState.isErrorNameJob
     ) {onNameJobChanged(it)}
 
 
     BoxEditTextCalendar(
         value = uiState.date,
         enable = true,
-        label = stringResource(id = R.string.form_assignment_date),
-        error = uiState.isErrorDate
+        label = stringResource(id = R.string.form_assignment_date)
     ) { datePickerDialog.show() }
 }
 
@@ -169,7 +167,6 @@ private fun Body2RegisterAssignment(
                 selectedOption = uiState.nameAssignment,
                 read = false,
                 label = stringResource(id = R.string.assignment_type),
-                error = uiState.isErrorOption,
                 onOptionSelected = { onNameAssignmentChanged(it) }
             )
         }

@@ -3,7 +3,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.regi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
@@ -15,6 +14,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,60 +47,54 @@ class RegisterStudentViewModel(
 
     fun onChangeName(name: String) {
         _uiState.update { it.copy(
-            name = name,
-            isErrorName =  ModelStateOutFieldText(false, "")
+            name = name.stringToModelStateOutFieldText()
         ) }
     }
     fun onChangeLastName(lastName: String) {
         _uiState.update { it.copy(
-            lastName = lastName,
-            isErrorLastName =  ModelStateOutFieldText(false, "")
+            lastName = lastName.stringToModelStateOutFieldText()
         ) }
     }
     fun onChangeSecondLastName(secondLastName: String) {
         _uiState.update { it.copy(
-            secondLastName = secondLastName,
-            isErrorSecondLastName =  ModelStateOutFieldText(false, "")
+            secondLastName = secondLastName.stringToModelStateOutFieldText()
         ) }
     }
     fun onChangeCurp(curp: String) {
         _uiState.update { it.copy(
-            curp = curp,
-            isErrorCurp =  ModelStateOutFieldText(false, "")
+            curp = curp.stringToModelStateOutFieldText()
         ) }
     }
     fun onChangeBirthday(birthday: String) {
         _uiState.update { it.copy(
-            birthday = birthday,
-            isErrorBirthday =  ModelStateOutFieldText(false, "")
+            birthday = birthday.stringToModelStateOutFieldText()
         ) }
     }
     fun onChangePhoneNUmber(phoneNumber: String) {
         _uiState.update { it.copy(
-            phoneNumber = phoneNumber,
-            isErrorPhoneNumber =  ModelStateOutFieldText(false, "")
+            phoneNumber = phoneNumber.stringToModelStateOutFieldText()
         ) }
     }
 
     fun validateFieldsCompose() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            val nameState = validateFieldsStudentUseCase.validateName(_uiState.value.name)
-            val lastNameState = validateFieldsStudentUseCase.validateLastName(_uiState.value.lastName)
+            val nameState = validateFieldsStudentUseCase.validateName(_uiState.value.name.valueText)
+            val lastNameState = validateFieldsStudentUseCase.validateLastName(_uiState.value.lastName.valueText)
             val secondLastNameState =
-                validateFieldsStudentUseCase.validateSecondLastName(_uiState.value.secondLastName)
-            val curpState = validateFieldsStudentUseCase.validateCurp(_uiState.value.curp)
-            val birthdayState = validateFieldsStudentUseCase.validateBirthday(_uiState.value.birthday)
-            val phoneNumberState = validateFieldsStudentUseCase.validatePhoneNumber(_uiState.value.phoneNumber)
+                validateFieldsStudentUseCase.validateSecondLastName(_uiState.value.secondLastName.valueText)
+            val curpState = validateFieldsStudentUseCase.validateCurp(_uiState.value.curp.valueText)
+            val birthdayState = validateFieldsStudentUseCase.validateBirthday(_uiState.value.birthday.valueText)
+            val phoneNumberState = validateFieldsStudentUseCase.validatePhoneNumber(_uiState.value.phoneNumber.valueText)
 
             _uiState.update {
                 it.copy(
-                    isErrorName = nameState,
-                    isErrorLastName = lastNameState,
-                    isErrorSecondLastName = secondLastNameState,
-                    isErrorCurp = curpState,
-                    isErrorBirthday = birthdayState,
-                    isErrorPhoneNumber = phoneNumberState
+                    name = nameState,
+                    lastName = lastNameState,
+                    secondLastName = secondLastNameState,
+                    curp = curpState,
+                    birthday = birthdayState,
+                    phoneNumber = phoneNumberState
                 )
             }
 
@@ -118,12 +112,12 @@ class RegisterStudentViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 registerOneStudentUseCase.registerOneStudent(
-                    myValue.name,
-                    myValue.lastName,
-                    myValue.secondLastName,
-                    myValue.curp,
-                    myValue.birthday,
-                    myValue.phoneNumber
+                    myValue.name.valueText,
+                    myValue.lastName.valueText,
+                    myValue.secondLastName.valueText,
+                    myValue.curp.valueText,
+                    myValue.birthday.valueText,
+                    myValue.phoneNumber.valueText
                 )
             }.onSuccess { state ->
                 if(state is SuccessState){
@@ -149,12 +143,12 @@ class RegisterStudentViewModel(
     fun getArguments(student: ModelStudentDomain) {
         _uiState.update {
             it.copy(
-                name = student.name ?: "",
-                lastName = student.lastName ?: "",
-                secondLastName = student.secondLastName ?: "",
-                curp = student.curp ?: "",
-                birthday = student.birthday ?: "",
-                phoneNumber = student.phoneNumber ?: "",
+                name = student.name.stringToModelStateOutFieldText(),
+                lastName = student.lastName.stringToModelStateOutFieldText(),
+                secondLastName = student.secondLastName.stringToModelStateOutFieldText(),
+                curp = student.curp.stringToModelStateOutFieldText(),
+                birthday = student.birthday.stringToModelStateOutFieldText(),
+                phoneNumber = student.phoneNumber.stringToModelStateOutFieldText(),
             )
         }
     }
@@ -184,12 +178,12 @@ class RegisterStudentViewModel(
                 log(studentData.toString())
                 _uiState.update { currentState ->
                     currentState.copy(
-                        name = studentData[ModelVoiceConstants.NAME] ?: "",
-                        lastName = studentData[ModelVoiceConstants.LAST_NAME] ?: "",
-                        secondLastName = studentData[ModelVoiceConstants.SECOND_LAST_NAME] ?: "",
-                        curp = studentData[ModelVoiceConstants.CURP] ?: "",
-                        birthday = studentData[ModelVoiceConstants.BIRTHDAY] ?: "",
-                        phoneNumber = studentData[ModelVoiceConstants.PHONE_NUMBER] ?: ""
+                        name = studentData[ModelVoiceConstants.NAME].stringToModelStateOutFieldText(),
+                        lastName = studentData[ModelVoiceConstants.LAST_NAME].stringToModelStateOutFieldText(),
+                        secondLastName = studentData[ModelVoiceConstants.SECOND_LAST_NAME].stringToModelStateOutFieldText(),
+                        curp = studentData[ModelVoiceConstants.CURP].stringToModelStateOutFieldText(),
+                        birthday = studentData[ModelVoiceConstants.BIRTHDAY].stringToModelStateOutFieldText(),
+                        phoneNumber = studentData[ModelVoiceConstants.PHONE_NUMBER].stringToModelStateOutFieldText()
                     )
                 }
             }

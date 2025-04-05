@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(
+class RegisterUserViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val registerUseCase: RegisterUseCase,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,

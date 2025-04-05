@@ -32,6 +32,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 
 @Preview(showBackground = true)
 @Composable
@@ -43,10 +44,9 @@ fun SpinnerScreen() {
     Column {
         SpinnerOutlinedTextField(
             options = options,
-            selectedOption = selectedOption,
+            selectedOption = selectedOption.stringToModelStateOutFieldText(),
             read = false,
             label = "test",
-            error = ModelStateOutFieldText(false, ""),
             onOptionSelected = { selectedOption = it }
         )
 
@@ -64,10 +64,9 @@ fun SpinnerScreen() {
 @Composable
 fun SpinnerOutlinedTextField(
     options: List<String>,
-    selectedOption: String,
+    selectedOption: ModelStateOutFieldText,
     read: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onOptionSelected: (String) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) } // Controla si el menú está abierto
@@ -84,7 +83,7 @@ fun SpinnerOutlinedTextField(
             } // Abre/cierra el menú al hacer clic
         ) {
             OutlinedTextField(
-                value = selectedText,
+                value = selectedText.valueText,
                 onValueChange = {}, // Deshabilitado para evitar edición manual
                 enabled = false,
                 label = {
@@ -117,7 +116,7 @@ fun SpinnerOutlinedTextField(
                         DropdownMenuItem(
                             text = { Text(option) },
                             onClick = {
-                                selectedText = option
+                                selectedText = option.stringToModelStateOutFieldText()
                                 onOptionSelected(option)
                                 expanded = false // Cierra el menú después de seleccionar
                             }
@@ -128,9 +127,9 @@ fun SpinnerOutlinedTextField(
 
         }
 
-        if (error.isError) {
+        if (selectedOption.isError) {
             Text(
-                text = error.errorMessage,
+                text = selectedText.errorMessage,
                 color = color_error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)

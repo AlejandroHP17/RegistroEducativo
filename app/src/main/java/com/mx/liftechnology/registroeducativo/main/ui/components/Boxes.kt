@@ -70,34 +70,30 @@ fun TestBoxes(){
         )
 
         BoxEditTextGeneric(
-            value = data,
+            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_generic),
-            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
+            label = stringResource(id = R.string.form_generic)
         )
         { data = it}
 
         BoxEditTextAllCaps(
-            value = data,
+            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_student_curp),
-            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
+            label = stringResource(id = R.string.form_student_curp)
         )
         { data = it}
 
         BoxEditTextNumeric(
-            value = data,
+            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_student_phone_number),
-            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
+            label = stringResource(id = R.string.form_student_phone_number)
         )
         { data = it}
 
         BoxEditTextCalendar(
-            value = data,
+            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_generic),
-            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
+            label = stringResource(id = R.string.form_generic)
         )
         {  }
     }
@@ -201,14 +197,13 @@ fun BoxEditTextPassword(
 
 @Composable
 fun BoxEditTextGeneric(
-    value:String,
+    value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
 
     OutlinedTextField(
-        value = value,
+        value = value.valueText,
         onValueChange = { newValue ->
             if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
                 onBoxChanged(newValue)
@@ -219,8 +214,8 @@ fun BoxEditTextGeneric(
         enabled = enable,
         label = { Text(
             text = label,
-            color = if(error.isError) color_error else color_principal_text) },
-        isError = error.isError,
+            color = if(value.isError) color_error else color_principal_text) },
+        isError = value.isError,
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
             keyboardType = KeyboardType.Text,
@@ -231,9 +226,9 @@ fun BoxEditTextGeneric(
         colors = personalizeColors()
     )
 
-    if (error.isError) {
+    if (value.isError) {
         Text(
-            text = error.errorMessage,
+            text = value.errorMessage,
             color = color_error,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -245,14 +240,13 @@ fun BoxEditTextGeneric(
 
 @Composable
 fun BoxEditTextAllCaps(
-    value:String,
+    value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
 
     OutlinedTextField(
-        value = value,
+        value = value.valueText,
         onValueChange = { newValue ->
             if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
                 onBoxChanged(newValue.uppercase())
@@ -264,8 +258,8 @@ fun BoxEditTextAllCaps(
         enabled = enable,
         label = { Text(
             text = label,
-            color = if(error.isError) color_error else color_principal_text) },
-        isError = error.isError,
+            color = if(value.isError) color_error else color_principal_text) },
+        isError = value.isError,
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Characters,
             keyboardType = KeyboardType.Text,
@@ -276,9 +270,9 @@ fun BoxEditTextAllCaps(
         colors = personalizeColors()
     )
 
-    if (error.isError) {
+    if (value.isError) {
         Text(
-            text = error.errorMessage,
+            text = value.errorMessage,
             color = color_error,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -291,15 +285,14 @@ fun BoxEditTextAllCaps(
 
 @Composable
 fun BoxEditTextNumeric(
-    value:String,
+    value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
 
     Column {
         OutlinedTextField(
-            value = value,
+            value = value.valueText,
             onValueChange = { onBoxChanged(it)},
             modifier = Modifier
                 .fillMaxWidth()
@@ -307,8 +300,8 @@ fun BoxEditTextNumeric(
             enabled = enable,
             label = { Text(
                 text = label,
-                color = if(error.isError) color_error else color_principal_text) },
-            isError = error.isError,
+                color = if(value.isError) color_error else color_principal_text) },
+            isError = value.isError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
@@ -318,9 +311,9 @@ fun BoxEditTextNumeric(
             colors = personalizeColors()
         )
 
-        if (error.isError) {
+        if (value.isError) {
             Text(
-                text = error.errorMessage,
+                text = value.errorMessage,
                 color = color_error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -332,10 +325,9 @@ fun BoxEditTextNumeric(
 
 @Composable
 fun BoxEditTextScore(
-    value: String,
+    value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
 
     var isEdited by remember { mutableStateOf(false) }
@@ -353,7 +345,7 @@ fun BoxEditTextScore(
 
     Column {
         OutlinedTextField(
-            value = value,
+            value = value.valueText,
             onValueChange = { rawInput ->
                 val newValue = rawInput.replace(',', '.')
                 if (newValue.isEmpty() || ModelRegex.SCORE.matches(newValue)) {
@@ -367,8 +359,8 @@ fun BoxEditTextScore(
             enabled = enable,
             label = { Text(
                 text = label,
-                color = if(error.isError) color_error else color_principal_text) },
-            isError = error.isError,
+                color = if(value.isError) color_error else color_principal_text) },
+            isError = value.isError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
@@ -378,9 +370,9 @@ fun BoxEditTextScore(
             colors = personalizeColors(),
         )
 
-        if (error.isError) {
+        if (value.isError) {
             Text(
-                text = error.errorMessage,
+                text = value.errorMessage,
                 color = color_error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -392,15 +384,14 @@ fun BoxEditTextScore(
 
 @Composable
 fun BoxEditTextCalendar(
-    value:String,
+    value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:() ->  Unit){
 
     Column {
         OutlinedTextField(
-            value = value,
+            value = value.valueText,
             onValueChange = { },
             modifier = Modifier
                 .fillMaxWidth()
@@ -408,8 +399,8 @@ fun BoxEditTextCalendar(
             enabled = enable,
             label = { Text(
                 text = label,
-                color = if(error.isError) color_error else color_principal_text) },
-            isError = error.isError,
+                color = if(value.isError) color_error else color_principal_text) },
+            isError = value.isError,
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Default.DateRange,
@@ -428,9 +419,9 @@ fun BoxEditTextCalendar(
             colors = personalizeColors()
         )
 
-        if (error.isError) {
+        if (value.isError) {
             Text(
-                text = error.errorMessage,
+                text = value.errorMessage,
                 color = color_error,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)

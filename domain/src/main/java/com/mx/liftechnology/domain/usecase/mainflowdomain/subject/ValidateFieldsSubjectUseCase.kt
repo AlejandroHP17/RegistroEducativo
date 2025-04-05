@@ -18,14 +18,14 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
      * */
     override fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText {
         return when {
-            nameSubject.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            nameSubject.isNullOrEmpty() -> ModelStateOutFieldText(valueText = nameSubject?:"", isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
+            else -> ModelStateOutFieldText(valueText = nameSubject, isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
     override fun validateOptionCompose(option: String?): ModelStateOutFieldText {
         return when {
-            option.isNullOrEmpty() -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_JOB)
-            else -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            option.isNullOrEmpty() -> ModelStateOutFieldText(valueText = option?:"", isError = true,  errorMessage = ModelCodeInputs.SP_NOT_JOB)
+            else -> ModelStateOutFieldText(valueText = option, isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 
@@ -40,10 +40,12 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
 
             item.copy(
                 isErrorName = item.isErrorName.copy(
+                    valueText = item.name?:"",
                     isError = isNameInvalid,
                     errorMessage = if (isNameInvalid) ModelCodeInputs.SP_NOT_OPTION else ""
                 ),
                 isErrorPercent = item.isErrorPercent.copy(
+                    valueText = item.percent?:"",
                     isError = isPercentInvalid,
                     errorMessage = if (isPercentInvalid) ModelCodeInputs.SP_NOT_JOB else ""
                 )
@@ -55,7 +57,7 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
         return when {
             listJobs?.let { jobs ->
                 jobs.all { (it.percent?.toIntOrNull() ?: 0) > 0 } && jobs.sumOf { it.percent?.toIntOrNull() ?: 0 } == 100
-            } ?: false -> ModelStateOutFieldText(isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            } ?: false -> ModelStateOutFieldText( isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
             else -> ModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT)
         }
     }

@@ -3,7 +3,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
@@ -11,6 +10,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFields
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment.GetListAssessmentTypeUseCase
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,8 +30,7 @@ class RegisterSubjectViewModel(
     fun onSubjectChanged(subject: String) {
         _uiState.update {
             it.copy(
-                subject = subject,
-                isErrorSubject = ModelStateOutFieldText(false, "")
+                subject = subject.stringToModelStateOutFieldText()
             )
         }
     }
@@ -82,9 +81,9 @@ class RegisterSubjectViewModel(
 
             _uiState.update {
                 it.copy(
-                    options = options,
+                    options = options.stringToModelStateOutFieldText(),
                     listAdapter = list,
-                    isErrorSubject = ModelStateOutFieldText(false, "")
+                    subject = it.subject.valueText.stringToModelStateOutFieldText()
                 )
             }
         }
@@ -93,14 +92,14 @@ class RegisterSubjectViewModel(
     fun validateFieldsCompose() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch(dispatcherProvider.io) {
-            val nameState = validateFieldsSubjectUseCase.validateNameCompose(_uiState.value.subject)
-            val optionState = validateFieldsSubjectUseCase.validateOptionCompose(_uiState.value.options)
+            val nameState = validateFieldsSubjectUseCase.validateNameCompose(_uiState.value.subject.valueText)
+            val optionState = validateFieldsSubjectUseCase.validateOptionCompose(_uiState.value.options.valueText)
             val updatedListState = validateFieldsSubjectUseCase.validateListJobsCompose(_uiState.value.listAdapter?.toMutableList())
 
             _uiState.update {
                 it.copy(
-                    isErrorSubject = nameState,
-                    isErrorOption = optionState,
+                    subject = nameState,
+                    options = optionState,
                     listAdapter =  updatedListState
                 )
             }
@@ -111,7 +110,7 @@ class RegisterSubjectViewModel(
                 if(!optionState.isError) registerSubjectCompose()
                 _uiState.update {
                     it.copy(
-                        isErrorOption = optionState,
+                        options = optionState,
                         isLoading = false)
                 }
             }else{
@@ -123,7 +122,7 @@ class RegisterSubjectViewModel(
     private fun registerSubjectCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerOneSubjectUseCase.registerOneSubjectCompose(_uiState.value.listAdapter?.toMutableList(), _uiState.value.subject)
+                registerOneSubjectUseCase.registerOneSubjectCompose(_uiState.value.listAdapter?.toMutableList(), _uiState.value.subject.valueText)
             }.onSuccess { state ->
                 if(state is SuccessState){
                     _uiState.update { it.copy(

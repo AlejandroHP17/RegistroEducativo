@@ -14,6 +14,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,8 +45,7 @@ class RegisterSchoolViewModel(
     fun onCycleChanged(cycle: String) {
         _uiState.update {
             it.copy(
-                cycle = cycle,
-                isErrorCycle = ModelStateOutFieldText(false, "")
+                cycle = cycle.stringToModelStateOutFieldText()
             )
         }
     }
@@ -53,8 +53,7 @@ class RegisterSchoolViewModel(
     fun onGradeChanged(grade: String) {
         _uiState.update {
             it.copy(
-                grade = grade,
-                isErrorGrade = ModelStateOutFieldText(false, "")
+                grade = grade.stringToModelStateOutFieldText()
             )
         }
     }
@@ -62,8 +61,7 @@ class RegisterSchoolViewModel(
     fun onGroupChanged(group: String) {
         _uiState.update {
             it.copy(
-                group = group,
-                isErrorGroup = ModelStateOutFieldText(false, "")
+                group = group.stringToModelStateOutFieldText()
             )
         }
     }
@@ -74,20 +72,22 @@ class RegisterSchoolViewModel(
             if (cct.length == 10) {
                 getSchoolCCT(cct)
                 it.copy(
-                    cct = cct.uppercase(),
                     isLoading = true,
-                    isErrorCct = ModelStateOutFieldText(false, "")
+                    cct = ModelStateOutFieldText(
+                        valueText = cct.uppercase(),
+                        isError = false,
+                        errorMessage = "")
                 )
             } else {
                 it.copy(
-                    cct = cct.uppercase(),
-                    schoolName = "",
-                    shift = "",
-                    type = "",
-                    isErrorCct = ModelStateOutFieldText(
+                    cct = ModelStateOutFieldText(
+                        valueText = cct.uppercase(),
                         isError = true,
                         errorMessage = ModelCodeInputs.ET_NOT_FOUND
                     ),
+                    schoolName =  it.schoolName.copy(valueText = ""),
+                    shift = it.shift.copy(valueText = ""),
+                    type = it.type.copy(valueText = ""),
                     read = true
                 )
             }
@@ -107,10 +107,10 @@ class RegisterSchoolViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            schoolName = state.result?.result?.schoolName ?: "",
+                            schoolName = it.schoolName.copy(valueText = state.result?.result?.schoolName ?: ""),
                             schoolCycleTypeId = state.result?.result?.schoolCycleTypeId ?: -1,
-                            shift = state.result?.result?.shift ?: "",
-                            type = state.result?.result?.schoolCycleType ?: "",
+                            shift = it.shift.copy(valueText = state.result?.result?.shift ?: ""),
+                            type = it.type.copy(valueText = state.result?.result?.schoolCycleType ?: ""),
                             spinner = state.result?.spinners,
                             read = false
                         )
@@ -119,11 +119,12 @@ class RegisterSchoolViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            schoolName = "",
+                            schoolName = "".stringToModelStateOutFieldText(),
                             schoolCycleTypeId = -1,
-                            shift = "",
-                            type = "",
-                            isErrorCct = ModelStateOutFieldText(
+                            shift = "".stringToModelStateOutFieldText(),
+                            type = "".stringToModelStateOutFieldText(),
+                            cct = ModelStateOutFieldText(
+                                valueText = it.cct.valueText,
                                 isError = true,
                                 errorMessage = ModelCodeInputs.ET_NOT_FOUND
                             ),
@@ -145,17 +146,17 @@ class RegisterSchoolViewModel(
     fun validateFields() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch(dispatcherProvider.io) {
-            val cctState = validateFieldsUseCase.validateCctCompose(_uiState.value.cct)
-            val gradeState = validateFieldsUseCase.validateGradeCompose(_uiState.value.grade)
-            val groupState = validateFieldsUseCase.validateGroupCompose(_uiState.value.group)
-            val cycleState = validateFieldsUseCase.validateCycleCompose(_uiState.value.cycle)
+            val cctState = validateFieldsUseCase.validateCctCompose(_uiState.value.cct.valueText)
+            val gradeState = validateFieldsUseCase.validateGradeCompose(_uiState.value.grade.valueText)
+            val groupState = validateFieldsUseCase.validateGroupCompose(_uiState.value.group.valueText)
+            val cycleState = validateFieldsUseCase.validateCycleCompose(_uiState.value.cycle.valueText)
 
             _uiState.update {
                 it.copy(
-                    isErrorGrade = gradeState,
-                    isErrorGroup = groupState,
-                    isErrorCycle = cycleState,
-                    isErrorCct = cctState
+                    grade = gradeState,
+                    group = groupState,
+                    cycle = cycleState,
+                    cct = cctState
                 )
             }
 
@@ -171,11 +172,11 @@ class RegisterSchoolViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 registerOneSchoolUseCase.registerOneSchool(
-                    cct = _uiState.value.cct,
+                    cct = _uiState.value.cct.valueText,
                     schoolCycleTypeId = _uiState.value.schoolCycleTypeId,
-                    grade = _uiState.value.grade.toInt(),
-                    group = _uiState.value.group,
-                    cycle = _uiState.value.cycle.toInt()
+                    grade = _uiState.value.grade.valueText.toInt(),
+                    group = _uiState.value.group.valueText,
+                    cycle = _uiState.value.cycle.valueText.toInt()
                 )
             }.onSuccess {
                 _uiState.update {
@@ -216,6 +217,6 @@ class RegisterSchoolViewModel(
     private fun validateData(state: List<String>) {
         val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
         onCctChanged(result?: "")
-        _uiState.update { it.copy(cct = result?: "") }
+        _uiState.update { it.copy(cct = it.cct.copy( valueText = result?: "")) }
     }
 }

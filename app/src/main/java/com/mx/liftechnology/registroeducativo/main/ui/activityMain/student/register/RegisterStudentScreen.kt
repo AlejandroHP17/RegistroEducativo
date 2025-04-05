@@ -133,21 +133,18 @@ private fun BodyRegisterStudent(
         value = uiState.name,
         enable = true,
         label = stringResource(id = R.string.form_student_name),
-        error = uiState.isErrorName
     ) { onChangeName(it) }
 
     BoxEditTextGeneric(
         value = uiState.lastName,
         enable = true,
         label = stringResource(id = R.string.form_student_last_name),
-        error = uiState.isErrorLastName
     ) { onChangeLastName(it) }
 
     BoxEditTextGeneric(
         value = uiState.secondLastName,
         enable = true,
         label = stringResource(id = R.string.form_student_second_last_name),
-        error = uiState.isErrorSecondLastName
     ) { onChangeSecondLastName(it) }
 }
 
@@ -162,21 +159,18 @@ private fun Body2RegisterStudent(
         value = uiState.curp,
         enable = true,
         label = stringResource(id = R.string.form_student_curp),
-        error = uiState.isErrorCurp
     ) { onChangeCurp(it) }
 
     BoxEditTextCalendar(
         value = uiState.birthday,
         enable = false,
         label = stringResource(id = R.string.form_student_birthday),
-        error = uiState.isErrorBirthday
     ) { datePickerDialog.show() }
 
     BoxEditTextNumeric(
         value = uiState.phoneNumber,
         enable = true,
         label = stringResource(id = R.string.form_student_phone_number),
-        error = uiState.isErrorPhoneNumber
     ) { onChangePhoneNUmber(it) }
 }
 

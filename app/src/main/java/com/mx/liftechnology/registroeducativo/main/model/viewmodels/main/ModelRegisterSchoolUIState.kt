@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
+import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 
 data class ModelRegisterSchoolUIState(
     val isLoading: Boolean = false,
@@ -11,40 +12,14 @@ data class ModelRegisterSchoolUIState(
     val isSuccess : Boolean = false,
     val buttonColor : Color = color_success,
 
-    val cct: String = "",
-    val schoolName: String = "",
     val schoolCycleTypeId: Int = -1,
-    val shift: String = "",
-    val type: String = "",
-
-    val cycle: String = "",
-    val grade: String = "",
-    val group: String = "",
     val spinner: ModelSpinnerSchoolDomain? = null,
 
-    val isErrorCct: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            isError = false,
-            errorMessage = ""
-        ),
-    val isErrorGrade: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            isError = false,
-            errorMessage = ""
-        ),
-    val isErrorGroup: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            isError = false,
-            errorMessage = ""
-        ),
-    val isErrorCycle: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            isError = false,
-            errorMessage = ""
-        ),
-    val isErrorGeneric: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            isError = false,
-            errorMessage = ""
-        )
+    val cct: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val grade: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val group: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val cycle: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val schoolName: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val shift: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val type: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
 )
