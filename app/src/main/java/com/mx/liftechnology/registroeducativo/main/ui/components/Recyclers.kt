@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
 import java.time.LocalDate
 
@@ -68,7 +70,7 @@ fun MyGridScreenPreview() {
         ),
     )
 
-    val items3 = listOf(ModelFormatSubjectDomain(1,"hola","mundo"))
+    val items3 = listOf(ModelFormatSubjectDomain(1,"hola","mundo",1))
 
     Column {
         MyGridScreen(items, 410.dp) {}
@@ -151,11 +153,30 @@ fun EvaluationPercentList(
 }
 
 @Composable
+fun EvaluationStudentList(
+    items: List<ModelCustomCardStudent>,
+    onScoreChange:(Pair<String, String>) -> Unit,
+) {
+    LazyColumn (
+        Modifier.fillMaxHeight()
+    ){
+        itemsIndexed(items) { index, item ->
+            EvaluationStudentItem(
+                nameStudent = item.studentName ?: "Desconocido",
+                score = item.score,
+                isErrorScore = item.isErrorScore,
+                onScoreChange =  {onScoreChange(Pair(item.id, it))},
+            )
+        }
+    }
+}
+
+@Composable
 fun RegisterPartialList(
     items: List<ModelDatePeriodDomain>,
     onDateChange:(Pair<Pair<LocalDate?, LocalDate?>, Int>) -> Unit
 ) {
-    LazyColumn {
+    LazyColumn (){
         itemsIndexed(items) { index, item ->
             RegisterPartialListItem(
                 index = index,

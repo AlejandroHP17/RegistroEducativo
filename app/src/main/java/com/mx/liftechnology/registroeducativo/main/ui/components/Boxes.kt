@@ -2,6 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.FocusInteraction
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,19 +54,17 @@ fun TestBoxes(){
         modifier = Modifier.background(background())
     ){
         BoxEditTextEmail(
-            value = data,
+            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_generic_email),
-            error = ModelStateOutFieldText(false,"")
+            label = stringResource(id = R.string.form_generic_email)
         )
         { data = it}
 
         BoxEditTextPassword(
-            value = data,
+            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             statePass = passwordVisible,
             enable = true,
             label = stringResource(id = R.string.form_generic_password),
-            error = ModelStateOutFieldText(false,""),
             onBoxChanged = { data = it },
             onStatePassChanged = { passwordVisible = it }
         )
@@ -72,7 +73,7 @@ fun TestBoxes(){
             value = data,
             enable = true,
             label = stringResource(id = R.string.form_generic),
-            error = ModelStateOutFieldText(false,"")
+            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
         )
         { data = it}
 
@@ -80,7 +81,7 @@ fun TestBoxes(){
             value = data,
             enable = true,
             label = stringResource(id = R.string.form_student_curp),
-            error = ModelStateOutFieldText(false,"")
+            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
         )
         { data = it}
 
@@ -88,7 +89,7 @@ fun TestBoxes(){
             value = data,
             enable = true,
             label = stringResource(id = R.string.form_student_phone_number),
-            error = ModelStateOutFieldText(false,"")
+            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
         )
         { data = it}
 
@@ -96,7 +97,7 @@ fun TestBoxes(){
             value = data,
             enable = true,
             label = stringResource(id = R.string.form_generic),
-            error = ModelStateOutFieldText(false,"")
+            error = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = "")
         )
         {  }
     }
@@ -104,14 +105,13 @@ fun TestBoxes(){
 
 @Composable
 fun BoxEditTextEmail(
-    value:String,
+    value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit){
 
     OutlinedTextField(
-        value = value,
+        value = value.valueText,
         onValueChange = { onBoxChanged(it)},
         modifier = Modifier
             .fillMaxWidth()
@@ -119,8 +119,8 @@ fun BoxEditTextEmail(
         enabled = enable,
         label = { Text(
             text = label,
-            color = if(error.isError) color_error else color_principal_text) },
-        isError = error.isError,
+            color = if(value.isError) color_error else color_principal_text) },
+        isError = value.isError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next
@@ -130,9 +130,9 @@ fun BoxEditTextEmail(
         colors = personalizeColors()
     )
 
-    if (error.isError) {
+    if (value.isError) {
         Text(
-            text = error.errorMessage,
+            text = value.errorMessage,
             color = color_error,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -143,17 +143,16 @@ fun BoxEditTextEmail(
 
 @Composable
 fun BoxEditTextPassword(
-    value:String,
+    value:ModelStateOutFieldText,
     statePass : Boolean,
     enable:Boolean,
     label: String,
-    error: ModelStateOutFieldText,
     onBoxChanged:(String) ->  Unit,
     onStatePassChanged:(Boolean) ->  Unit)
 {
 
     OutlinedTextField(
-        value = value,
+        value = value.valueText,
         onValueChange = { onBoxChanged(it) },
         modifier = Modifier
             .fillMaxWidth()
@@ -162,7 +161,7 @@ fun BoxEditTextPassword(
         label = {
             Text(
                 text = label,
-                color = if (error.isError) color_error else color_principal_text
+                color = if (value.isError) color_error else color_principal_text
             )
         },
         trailingIcon = {
@@ -179,7 +178,7 @@ fun BoxEditTextPassword(
                     .clickable { onStatePassChanged(  !statePass )}
             )
         },
-        isError = error.isError,
+        isError = value.isError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Next
@@ -190,9 +189,9 @@ fun BoxEditTextPassword(
         colors = personalizeColors()
     )
 
-    if (error.isError) {
+    if (value.isError) {
         Text(
-            text = error.errorMessage,
+            text = value.errorMessage,
             color = color_error,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
@@ -328,8 +327,66 @@ fun BoxEditTextNumeric(
             )
         }
     }
+    CustomSpace(dimensionResource(R.dimen.margin_between))
+}
 
+@Composable
+fun BoxEditTextScore(
+    value: String,
+    enable: Boolean,
+    label: String,
+    error: ModelStateOutFieldText,
+    onBoxChanged:(String) ->  Unit){
 
+    var isEdited by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+
+    // Detectar el primer enfoque
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            if (interaction is FocusInteraction.Focus && !isEdited) {
+                onBoxChanged("") // Limpiar campo
+                isEdited = true
+            }
+        }
+    }
+
+    Column {
+        OutlinedTextField(
+            value = value,
+            onValueChange = { rawInput ->
+                val newValue = rawInput.replace(',', '.')
+                if (newValue.isEmpty() || ModelRegex.SCORE.matches(newValue)) {
+                    onBoxChanged(newValue)
+                }
+            },
+            interactionSource = interactionSource,
+            modifier = Modifier.fillMaxWidth()
+                .fillMaxWidth()
+                .padding(top = dimensionResource(id = R.dimen.margin_between)),
+            enabled = enable,
+            label = { Text(
+                text = label,
+                color = if(error.isError) color_error else color_principal_text) },
+            isError = error.isError,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            maxLines = 1,
+            shape = RoundedCornerShape(8.dp),
+            colors = personalizeColors(),
+        )
+
+        if (error.isError) {
+            Text(
+                text = error.errorMessage,
+                color = color_error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+            )
+        }
+    }
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 

@@ -23,10 +23,15 @@ class ForgetPasswordViewModel(
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     fun onEmailChanged(email: String) {
-        _uiState.update { it.copy(
-            email = email,
-            isErrorEmail = ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                email = ModelStateOutFieldText(
+                    valueText = email,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     /** Check the inputs and post error or correct states directly on the editexts
@@ -37,15 +42,16 @@ class ForgetPasswordViewModel(
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(isLoading = true) }
-            val emailState = validateFieldsUseCase.validateEmailCompose(_uiState.value.email)
+            val emailState =
+                validateFieldsUseCase.validateEmailCompose(_uiState.value.email.valueText)
 
             _uiState.update {
-                it.copy(isErrorEmail = emailState)
+                it.copy(email = emailState)
             }
         }
     }
 
-    fun getRules(context: Context):  String {
+    fun getRules(context: Context): String {
         val listRules = context.resources?.getStringArray(R.array.rules_forget_pass)
         val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
         return stringBuilder

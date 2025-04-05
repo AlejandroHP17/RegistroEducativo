@@ -28,11 +28,13 @@
             android:name=".main.ui.activityMain.MainActivity"
             android:theme="@style/Theme.App.RegistroEducativo"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".main.ui.activityLogin.LoginActivity"
             android:theme="@style/Theme.App.RegistroEducativo"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".main.ui.activitySplash.SplashActivity"

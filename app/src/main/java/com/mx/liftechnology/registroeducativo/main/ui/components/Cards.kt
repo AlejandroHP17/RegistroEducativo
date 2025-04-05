@@ -103,6 +103,13 @@ fun CustomCardView() {
             ),
             onDateChange = {}
         )
+
+        EvaluationStudentItem(
+            nameStudent = "Alejandro",
+            score = "10.0",
+            isErrorScore = ModelStateOutFieldText(false, ""),
+            onScoreChange =  {},
+        )
     }
 }
 
@@ -270,6 +277,41 @@ fun EvaluationPercentItem(
             {
                 onPercentChange(it)
             }
+        }
+    }
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
+}
+
+@Composable
+fun EvaluationStudentItem(
+    nameStudent: String,
+    score: String,
+    isErrorScore: ModelStateOutFieldText,
+    onScoreChange: (String) -> Unit,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
+    ) {
+        Box(modifier = Modifier.weight(5f)) {
+            BoxEditTextGeneric(
+                value = nameStudent,
+                enable = false,
+                label = stringResource(id = R.string.tools_empty),
+                error = ModelStateOutFieldText(false, "")
+            ){}
+        }
+
+
+        Box(modifier = Modifier.weight(2f)) {
+            BoxEditTextScore(
+                value = score,
+                enable = true,
+                label = stringResource(id = R.string.assignment_score),
+                error = isErrorScore
+            )
+            { onScoreChange(it) }
         }
     }
     CustomSpace(dimensionResource(R.dimen.margin_divided))

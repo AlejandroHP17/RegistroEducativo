@@ -79,7 +79,9 @@
     <!-- Gets Flow -->
     <string name="assignment_name">Campo formativo</string>
     <string name="assignment_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
-    <string name="assignment_type">Tipo de trabajo</string>
+    <string name="assignment_type">Trabajo</string>
+    <string name="assignment_type_evaluate">Tipo de trabajo a evaluar</string>
+    <string name="assignment_score">Calif.</string>
 
 
     <!-- Dialogs Flow -->

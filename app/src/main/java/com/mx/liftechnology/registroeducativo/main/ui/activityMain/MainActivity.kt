@@ -31,8 +31,10 @@ import com.mx.liftechnology.registroeducativo.main.ui.activityMain.profile.Profi
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register.RegisterStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.assignment.AssignmentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list.ListSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.register.RegisterSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.registerassignment.RegisterAssignmentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.background
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
@@ -62,6 +64,7 @@ class MainActivity : AppCompatActivity() {
                     composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(navigationController) }
                     composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
                     composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
+                    composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(navigationController) }
                     composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(navigationController) }
                     composable(MainRoutes.Profile.route){ ProfileScreen(navigationController) {navigate()} }
 
@@ -79,8 +82,31 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
 
-                    composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(navigationController) }
+                    composable(
+                        route = MainRoutes.Assignment.route,
+                        arguments = listOf(navArgument("subject") {
+                            nullable = true
+                            defaultValue = ""
+                        })
+                    ) { backStackEntry ->
+                        AssignmentScreen(
+                            navController = navigationController,
+                            backStackEntry = backStackEntry
+                        )
+                    }
 
+                    composable(
+                        route = MainRoutes.RegisterAssignment.route,
+                        arguments = listOf(navArgument("subject") {
+                            nullable = true
+                            defaultValue = ""
+                        })
+                    ) { backStackEntry ->
+                        RegisterAssignmentScreen(
+                            navController = navigationController,
+                            backStackEntry = backStackEntry
+                        )
+                    }
                 }
             }
         }

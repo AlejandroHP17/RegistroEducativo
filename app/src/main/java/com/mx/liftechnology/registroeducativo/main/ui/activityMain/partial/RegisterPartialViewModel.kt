@@ -63,7 +63,7 @@ class RegisterPartialViewModel(
                             ),
                         )
                     } else {
-                        date // No cambia si no es el índice seleccionado
+                        date
                     }
                 }
             )

@@ -3,30 +3,32 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodels.login
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 data class RegisterUserUiState(
-    val email: String = "",
-    val password: String = "",
-    val repeatPassword: String = "",
-    val code: String = "",
+    val isSuccess: Boolean = false,
     val isLoading: Boolean = false,
-    val isErrorEmail: ModelStateOutFieldText =
+
+    val email: ModelStateOutFieldText =
         ModelStateOutFieldText(
+            valueText = "",
             isError = false,
             errorMessage = ""
         ),
-    val isErrorPass: ModelStateOutFieldText =
+    val password: ModelStateOutFieldText =
         ModelStateOutFieldText(
+            valueText = "",
             isError = false,
             errorMessage = ""
         ),
-    val isErrorRepeatPass: ModelStateOutFieldText =
+    val repeatPassword: ModelStateOutFieldText =
         ModelStateOutFieldText(
+            valueText = "",
             isError = false,
             errorMessage = ""
         ),
-    val isErrorCode: ModelStateOutFieldText =
+    val code: ModelStateOutFieldText =
         ModelStateOutFieldText(
+            valueText = "",
             isError = false,
             errorMessage = ""
         ),
-    val isSuccess: Boolean = false
+
 )

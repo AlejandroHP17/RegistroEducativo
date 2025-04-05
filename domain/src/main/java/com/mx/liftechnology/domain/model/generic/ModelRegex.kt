@@ -11,6 +11,7 @@ object ModelRegex {
     val EMAIL = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$")
     val PASS = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")
     val CCT = Regex("^[A-ZÑ0-9&]$")
+    val SCORE = Regex("^(10([.,]0)?|10[.,]?|[0-9]([.,]\\d?)?)$")
 }
 
 

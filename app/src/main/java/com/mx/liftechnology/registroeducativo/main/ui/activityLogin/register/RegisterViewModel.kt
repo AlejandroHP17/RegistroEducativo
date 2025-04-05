@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 class RegisterViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val registerUseCase: RegisterUseCase,
-    private val validateFieldsUseCase: ValidateFieldsLoginUseCase
+    private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUserUiState())
@@ -28,31 +28,51 @@ class RegisterViewModel(
         get() = _uiState.value
 
     fun onEmailChanged(email: String) {
-        _uiState.update { it.copy(
-            email = email,
-            isErrorEmail = ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                email = ModelStateOutFieldText(
+                    valueText = email,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     fun onPassChanged(pass: String) {
-        _uiState.update { it.copy(
-            password = pass,
-            isErrorPass =  ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                password = ModelStateOutFieldText(
+                    valueText = pass,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     fun onRepeatPassChanged(repeatPass: String) {
-        _uiState.update { it.copy(
-            repeatPassword = repeatPass,
-            isErrorRepeatPass =  ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                repeatPassword = ModelStateOutFieldText(
+                    valueText = repeatPass,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     fun onCodeChanged(code: String) {
-        _uiState.update { it.copy(
-            code = code,
-            isErrorCode =  ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                code = ModelStateOutFieldText(
+                    valueText = code,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     /** Check the inputs and post error or correct states directly on the editexts
@@ -60,30 +80,34 @@ class RegisterViewModel(
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateFieldsCompose(){
+    fun validateFieldsCompose() {
         _uiState.update { it.copy(isLoading = true) }
-        val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email)
-        val passState = validateFieldsUseCase.validatePassRegisterCompose(myValue.password)
-        val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(myValue.password, myValue.repeatPassword)
-        val codeState = validateFieldsUseCase.validateCodeCompose(myValue.code)
+        val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
+        val passState =
+            validateFieldsUseCase.validatePassRegisterCompose(myValue.password.valueText)
+        val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(
+            myValue.password.valueText,
+            myValue.repeatPassword.valueText
+        )
+        val codeState = validateFieldsUseCase.validateCodeCompose(myValue.code.valueText)
 
         _uiState.update {
             it.copy(
-                isErrorEmail = emailState,
-                isErrorPass = passState,
-                isErrorRepeatPass = repeatPassState,
-                isErrorCode = codeState
+                email = emailState,
+                password = passState,
+                repeatPassword = repeatPassState,
+                code = codeState
             )
         }
 
         if (!(emailState.isError || passState.isError || repeatPassState.isError || codeState.isError)) {
             registerCompose()
-        }else{
+        } else {
             _uiState.update { it.copy(isLoading = false) }
         }
     }
 
-    fun getRules(context: Context):  String {
+    fun getRules(context: Context): String {
         val listRules = context.resources?.getStringArray(R.array.rules_pass)
         val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
         return stringBuilder
@@ -97,28 +121,34 @@ class RegisterViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
                 registerUseCase.putRegister(
-                    myValue.email,
-                    myValue.password,
-                    myValue.code
+                    myValue.email.valueText,
+                    myValue.password.valueText,
+                    myValue.code.valueText
                 )
             }.onSuccess { state ->
-                if(state is SuccessState){
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = true
-                    ) }
-                }else{
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = false
-                    ) }
+                if (state is SuccessState) {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = false
+                        )
+                    }
                 }
 
             }.onFailure {
-                _uiState.update { it.copy(
-                    isLoading = false,
-                    isSuccess = false
-                ) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isSuccess = false
+                    )
+                }
             }
         }
     }

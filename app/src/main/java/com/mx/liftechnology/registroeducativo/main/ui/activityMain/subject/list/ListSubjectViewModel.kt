@@ -42,10 +42,14 @@ class ListSubjectViewModel(
     private fun List<ModelFormatSubjectDomain>?.convertModelCustomCard():List<ModelCustomCard>{
         return this?.map {
             ModelCustomCard(
-                id = it.position.toString(),
+                id = it.subjectId.toString(),
                 numberList = "",
                 nameCard = "${it.name}"
             )
         }?: emptyList()
+    }
+
+    fun getSubject(item: ModelCustomCard): ModelFormatSubjectDomain? {
+        return _uiState.value.subjectList?.find { it.subjectId.toString() == item.id }
     }
 }

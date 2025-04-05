@@ -36,7 +36,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun ListStudentScreen(
     navController: NavHostController,
-    listStudentViewModel: ListStudentViewModel = koinViewModel()
+    listStudentViewModel: ListStudentViewModel = koinViewModel(),
 ) {
     // Cargar la lista de estudiantes cuando se monta la pantalla
     LaunchedEffect(Unit) {
@@ -60,13 +60,17 @@ fun ListStudentScreen(
                 BodyListStudent(
                     uiState = uiState,
                     onNavigate = {
-                        navController.navigate(MainRoutes.RegisterStudent.createRoutes(listStudentViewModel.getStudent(it)))
+                        navController.navigate(
+                            MainRoutes.RegisterStudent.createRoutes(
+                                listStudentViewModel.getStudent(it)
+                            )
+                        )
                     }
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                ActionListStudent(navController = navController)
+                ActionListStudent { navController.navigate(MainRoutes.RegisterStudent.createRoutes(null)) }
             }
         }
     }
@@ -90,14 +94,14 @@ private fun HeaderListStudent(navController: NavHostController) {
     ComponentHeaderBack(
         title = stringResource(R.string.get_student_name),
         body = stringResource(R.string.tools_empty)
-    ) {  navController.popBackStack() }
+    ) { navController.popBackStack() }
 }
 
 @Composable
 private fun BodyListStudent(
     uiState: ModelListStudentUIState,
-    onNavigate:(ModelCustomCard) ->  Unit
-    ) {
+    onNavigate: (ModelCustomCard) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier.wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
@@ -119,12 +123,12 @@ private fun BodyListStudent(
 
 @Composable
 private fun ActionListStudent(
-    navController: NavHostController
+    onActionClick: () -> Unit,
 ) {
     ButtonAction(
         containerColor = color_action,
         text = stringResource(R.string.add_button),
-        onActionClick = {   navController.navigate(MainRoutes.RegisterStudent.createRoutes(null)) }
+        onActionClick = { onActionClick() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 }

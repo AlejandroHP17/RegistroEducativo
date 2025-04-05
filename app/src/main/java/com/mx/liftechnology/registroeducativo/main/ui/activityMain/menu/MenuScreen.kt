@@ -47,7 +47,6 @@ fun MenuScreen(
     val uiState by menuViewModel.uiState.collectAsState()
     val showDialog = remember { mutableStateOf(false) }
 
-
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -106,10 +105,9 @@ object MenuScreenObject {
 private fun HeaderMenuScreen(uiState: ModelMenuUIState, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
         title = stringResource(R.string.menu_grettins, "Profesor"),
-        body = uiState.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty)
-    ) {
-        onShowDialog(true)
-    }
+        body = uiState.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
+        onClick = { onShowDialog(true) }
+    )
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 }
 
@@ -123,7 +121,6 @@ private fun RegisterAreaMenuScreen(uiState: ModelMenuUIState, navController: Nav
     ) {
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL_REGISTER)
         MyGridScreen(uiState.evaluationItems, 628.dp) { selectedItem ->
-
             when (selectedItem.id) {
                 menuItemsRegister[0] -> navController.navigate(MainRoutes.ListStudent.route)
                 menuItemsRegister[1] -> navController.navigate(MainRoutes.ListSubject.route)

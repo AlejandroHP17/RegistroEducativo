@@ -11,12 +11,14 @@ import com.mx.liftechnology.core.network.callapi.ResponseGetListSubject
 data class ModelFormatSubjectDomain(
     val position:Int,
     var name: String?,
-    var percent: String?
+    var percent: String?,
+    val subjectId: Int?
 ):Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int
     ) {
     }
 
@@ -24,6 +26,7 @@ data class ModelFormatSubjectDomain(
         parcel.writeInt(position)
         parcel.writeString(name)
         parcel.writeString(percent)
+        parcel.writeValue(subjectId)
     }
 
     override fun describeContents(): Int {
@@ -47,7 +50,8 @@ fun List<ResponseGetListSubject?>?.toModelSubjectList() :List<ModelFormatSubject
         ModelFormatSubjectDomain(
             position = index,
             name = response?.subjectDescription,
-            percent = null
+            percent = null,
+            subjectId = response?.subjectTeacherSchoolCycleGroupId
         )
     }?: emptyList()
 }

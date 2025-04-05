@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +14,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
@@ -46,39 +47,66 @@ fun RegisterPartialScreen(
         registerPartialViewModel.getListPartialCompose()
     }
 
-    Column(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        val (header, body, column, action) = createRefs()
 
-        HeaderRegisterPartial(navController = navController)
+        Column(
+            modifier = Modifier.constrainAs(header) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) { HeaderRegisterPartial(navigate =  {navController.popBackStack()}) }
 
-        BodyRegisterPartial(
-            uiState = uiState,
-            onPartialChanged = { registerPartialViewModel.onPartialChanged(it) }
-        )
-
-        if (uiState.numberPartials.isNotEmpty() && uiState.numberPartials.toInt() > 0) {
-            ColumnRegisterPartial(
+        Column(
+            modifier = Modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            BodyRegisterPartial(
                 uiState = uiState,
-                onDateChange = { registerPartialViewModel.onDateChange(it) }
+                onPartialChanged = { registerPartialViewModel.onPartialChanged(it) }
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier.constrainAs(column) {
+                top.linkTo(body.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(action.top)
+                height = Dimension.fillToConstraints
+            }) {
+            if (uiState.numberPartials.isNotEmpty() && uiState.numberPartials.toInt() > 0) {
+                ColumnRegisterPartial(
+                    uiState = uiState,
+                    onDateChange = { registerPartialViewModel.onDateChange(it) }
+                )
+            }
+        }
 
-        ActionRegisterPartial { registerPartialViewModel.validateFieldsCompose() }
+        Column(
+            modifier = Modifier.constrainAs(action) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) { ActionRegisterPartial { registerPartialViewModel.validateFieldsCompose() } }
     }
     LoadingAnimation(uiState.isLoading)
 }
 
 @Composable
-private fun HeaderRegisterPartial(navController: NavHostController) {
+private fun HeaderRegisterPartial(
+    navigate : () -> Unit
+) {
     ComponentHeaderBack(
         title = stringResource(R.string.register_partial),
         body = stringResource(R.string.register_subject_name_description_2),
-    ) { navController.popBackStack() }
+        onReturnClick = { navigate()})
 }
 
 @Composable
@@ -132,6 +160,7 @@ private fun ColumnRegisterPartial(
 private fun ActionRegisterPartial(
     validateFieldsCompose: () -> Unit,
 ) {
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
         containerColor = color_action,
         text = stringResource(R.string.add_button),

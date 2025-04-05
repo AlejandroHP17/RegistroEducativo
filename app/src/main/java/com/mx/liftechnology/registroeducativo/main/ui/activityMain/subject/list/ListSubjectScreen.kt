@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomCard
@@ -58,6 +59,9 @@ fun ListSubjectScreen(
 
                 BodyListSubject(
                     uiState = uiState,
+                    onNavigate = {
+                        navController.navigate(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it)))
+                    }
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -93,6 +97,7 @@ private fun HeaderListSubject(navController: NavHostController) {
 @Composable
 private fun BodyListSubject(
     uiState: ModelListSubjectUIState,
+    onNavigate:(ModelCustomCard) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.wrapContentHeight(),
@@ -102,8 +107,7 @@ private fun BodyListSubject(
             CustomCard(
                 item = item,
                 onItemClick = {
-                    /*val navigate = MainRoutes.EDIT_STUDENT.createRoute(student)
-                    navController.navigate(navigate)*/
+                    onNavigate(item)
                 },
                 onItemMore = { student ->
                 }

@@ -16,30 +16,44 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val loginUseCase: LoginUseCase,
-    private val validateFieldsUseCase: ValidateFieldsLoginUseCase
+    private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+    private val myValue: LoginUiState
+        get() = _uiState.value
 
     fun onEmailChanged(email: String) {
-        _uiState.update { it.copy(
-            email = email,
-            isErrorEmail = ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                email = ModelStateOutFieldText(
+                    valueText = email,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     fun onPassChanged(pass: String) {
-        _uiState.update { it.copy(
-            password = pass,
-            isErrorPass =  ModelStateOutFieldText(false, "")
-        ) }
+        _uiState.update {
+            it.copy(
+                password = ModelStateOutFieldText(
+                    valueText = pass,
+                    isError = false,
+                    errorMessage = ""
+                )
+            )
+        }
     }
 
     fun onRememberChanged(remember: Boolean) {
-        _uiState.update { it.copy(
-            isRemember = remember
-        ) }
+        _uiState.update {
+            it.copy(
+                isRemember = remember
+            )
+        }
     }
 
     /** Check the inputs and post error or correct states directly on the editexts
@@ -47,22 +61,20 @@ class LoginViewModel(
      * @author pelkidev
      * @since 1.0.0
      * */
-    fun validateFieldsCompose(){
+    fun validateFieldsCompose() {
         _uiState.update { it.copy(isLoading = true) }
-        val emailState = validateFieldsUseCase.validateEmailCompose(_uiState.value.email)
-        val passState = validateFieldsUseCase.validatePassCompose(_uiState.value.password)
+        val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
+        val passState = validateFieldsUseCase.validatePassCompose(myValue.password.valueText)
 
         _uiState.update {
             it.copy(
-                isErrorEmail = emailState,
-                isErrorPass = passState)
+                email = emailState,
+                password = passState
+            )
         }
 
-        if (!(emailState.isError && passState.isError)) {
-            loginCompose()
-        }else{
-            _uiState.update { it.copy(isLoading = false) }
-        }
+        if (!(emailState.isError || passState.isError)) loginCompose()
+        else _uiState.update { it.copy(isLoading = false) }
     }
 
 
@@ -73,17 +85,25 @@ class LoginViewModel(
     private fun loginCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                loginUseCase.login(_uiState.value.email, _uiState.value.password, _uiState.value.isRemember)
+                loginUseCase.login(
+                    _uiState.value.email.valueText,
+                    _uiState.value.password.valueText,
+                    _uiState.value.isRemember
+                )
             }.onSuccess {
-                _uiState.update { it.copy(
-                    isLoading = false,
-                    isSuccess = true
-                ) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isSuccess = true
+                    )
+                }
             }.onFailure {
-                _uiState.update { it.copy(
-                    isLoading = false,
-                    isSuccess = false
-                ) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isSuccess = false
+                    )
+                }
             }
         }
     }
