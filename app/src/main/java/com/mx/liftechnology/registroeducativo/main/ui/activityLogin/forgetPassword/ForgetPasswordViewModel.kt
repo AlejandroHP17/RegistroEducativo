@@ -41,7 +41,6 @@ class ForgetPasswordViewModel(
      * */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update { it.copy(isLoading = true) }
             val emailState =
                 validateFieldsUseCase.validateEmailCompose(_uiState.value.email.valueText)
 

@@ -66,6 +66,25 @@ fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) 
 }
 
 @Composable
+fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
+    Column(
+        modifier = Modifier.background(color_transparent)
+    ) {
+        CustomSpace(dimensionResource(id = R.dimen.margin_top_return))
+
+        ButtonReturn {
+            onReturnClick()
+        }
+
+        CustomSpace(dimensionResource(id = R.dimen.margin_between))
+
+        TextHeader(title)
+
+        CustomSpace(dimensionResource(id = R.dimen.margin_divided))
+    }
+}
+
+@Composable
 fun ComponentHeader(title: String, body: String) {
     Column(
         modifier = Modifier.background(color_transparent)

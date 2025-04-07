@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +14,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.registroeducativo.R
@@ -46,44 +47,70 @@ fun RegisterSubjectScreen(
             navController.popBackStack()
         }
     }
-
-    Column(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        val (header, body, column, action) = createRefs()
 
-        HeaderRegisterSubject(navController = navController)
+        Column(
+            modifier = Modifier.constrainAs(header) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) { HeaderRegisterSubject(navigate = { navController.popBackStack() }) }
 
-        BodyRegisterSubject(
-            uiState = uiState,
-            onSubjectChanged = { registerSubjectViewModel.onSubjectChanged(it) },
-            onOptionsChanged = { registerSubjectViewModel.onOptionsChanged(it) }
-        )
-
-        if (uiState.options.valueText.isNotEmpty() && uiState.options.valueText.toInt() > 0) {
-            ColumnRegisterSubject(
+        Column(
+            modifier = Modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            BodyRegisterSubject(
                 uiState = uiState,
-                onNameChange = { registerSubjectViewModel.onNameChange(it) },
-                onPercentChange = { registerSubjectViewModel.onPercentChange(it) }
+                onSubjectChanged = { registerSubjectViewModel.onSubjectChanged(it) },
+                onOptionsChanged = { registerSubjectViewModel.onOptionsChanged(it) }
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = Modifier.constrainAs(column) {
+                top.linkTo(body.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(action.top)
+                height = Dimension.fillToConstraints
+            }) {
+            if (uiState.options.valueText.isNotEmpty() && uiState.options.valueText.toInt() > 0) {
+                ColumnRegisterSubject(
+                    uiState = uiState,
+                    onNameChange = { registerSubjectViewModel.onNameChange(it) },
+                    onPercentChange = { registerSubjectViewModel.onPercentChange(it) }
+                )
+            }
+        }
 
-        ActionRegisterSubject { registerSubjectViewModel.validateFieldsCompose() }
-
+        Column(
+            modifier = Modifier.constrainAs(action) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            ActionRegisterSubject { registerSubjectViewModel.validateFieldsCompose() }
+        }
     }
     LoadingAnimation(uiState.isLoading)
-
 }
 
 @Composable
-private fun HeaderRegisterSubject(navController: NavHostController) {
+private fun HeaderRegisterSubject(
+    navigate: () -> Unit,
+) {
     ComponentHeaderBack(
         title = stringResource(R.string.register_subject_name),
         body = stringResource(R.string.register_subject_name_description),
-    ) { navController.popBackStack() }
+        onReturnClick = { navigate() })
 }
 
 @Composable

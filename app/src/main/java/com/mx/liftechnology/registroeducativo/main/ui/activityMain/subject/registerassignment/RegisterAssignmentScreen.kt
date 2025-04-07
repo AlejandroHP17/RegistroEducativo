@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
@@ -27,7 +28,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationStudentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
@@ -75,35 +76,70 @@ fun RegisterAssignmentScreen(
         )
     }
 
-    Box(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        val (header, body, body2, column, action) = createRefs()
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.constrainAs(header) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
             HeaderRegisterAssignment(
                 uiState = uiState,
-                navController = navController)
+                navController = navController
+            )
+        }
 
+        Column(
+            modifier = Modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
             BodyRegisterAssignment(
                 uiState = uiState,
-                onNameJobChanged = { registerAssignmentViewModel.onChangeName(it)},
+                onNameJobChanged = { registerAssignmentViewModel.onChangeName(it) },
                 datePickerDialog = datePickerDialog,
             )
+        }
 
+        Column(
+            modifier = Modifier.constrainAs(body2) {
+                top.linkTo(body.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
             Body2RegisterAssignment(
                 uiState = uiState,
                 onNameAssignmentChanged = { registerAssignmentViewModel.onNameAssignmentChanged(it) }
             )
+        }
 
+        Column(
+            modifier = Modifier.constrainAs(column) {
+                top.linkTo(body2.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(action.top)
+                height = Dimension.fillToConstraints
+            }) {
             ColumnRegisterScore(
                 uiState = uiState,
-                onScoreChange = { registerAssignmentViewModel.onScoreChange(it)}
+                onScoreChange = { registerAssignmentViewModel.onScoreChange(it) }
             )
+        }
 
-            Spacer(modifier = Modifier.weight(1f))
-
+        Column(
+            modifier = Modifier.constrainAs(action) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
             ActionRegisterAssignment()
         }
 
@@ -114,10 +150,10 @@ fun RegisterAssignmentScreen(
 @Composable
 private fun HeaderRegisterAssignment(
     uiState: ModelRegisterAssignmentUIState,
-    navController: NavHostController) {
-    ComponentHeaderBack(
-        title = uiState.subject?.name ?: "Desconocido",
-        body = stringResource(R.string.tools_empty)
+    navController: NavHostController,
+) {
+    ComponentHeaderBackWithout(
+        title = uiState.subject?.name ?: "Desconocido"
     ) { navController.popBackStack() }
 }
 
@@ -126,12 +162,12 @@ fun BodyRegisterAssignment(
     uiState: ModelRegisterAssignmentUIState,
     onNameJobChanged: (String) -> Unit,
     datePickerDialog: DatePickerDialog,
-){
+) {
     BoxEditTextGeneric(
         value = uiState.nameJob,
         enable = true,
         label = stringResource(id = R.string.form_assignment_name),
-    ) {onNameJobChanged(it)}
+    ) { onNameJobChanged(it) }
 
 
     BoxEditTextCalendar(
@@ -146,8 +182,6 @@ private fun Body2RegisterAssignment(
     uiState: ModelRegisterAssignmentUIState,
     onNameAssignmentChanged: (String) -> Unit,
 ) {
-    CustomSpace(dimensionResource(R.dimen.margin_between))
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
@@ -178,21 +212,22 @@ private fun Body2RegisterAssignment(
 @Composable
 private fun ColumnRegisterScore(
     uiState: ModelRegisterAssignmentUIState,
-    onScoreChange: (Pair<String, String> ) -> Unit,
+    onScoreChange: (Pair<String, String>) -> Unit,
 ) {
-   EvaluationStudentList(
+    EvaluationStudentList(
         items = uiState.studentListUI,
         onScoreChange = { onScoreChange(it) },
-   )
+    )
 }
 
 @Composable
 private fun ActionRegisterAssignment(
 ) {
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
         containerColor = color_action,
         text = stringResource(R.string.save),
-        onActionClick = {  }
+        onActionClick = { }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 }

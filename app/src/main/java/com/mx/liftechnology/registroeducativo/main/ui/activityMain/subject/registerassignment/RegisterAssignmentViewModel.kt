@@ -95,7 +95,7 @@ class RegisterAssignmentViewModel (
             ?.mapIndexed { index, student ->
                 ModelCustomCardStudent(
                     id = student.studentId ?: "",
-                    numberList = (index + 1).toString(), // Numeración comenzando en 1
+                    numberList = (index + 1).toString(),
                     studentName = "${student.lastName} ${student.secondLastName} ${student.name}".trim(),
                     score = "10.0".stringToModelStateOutFieldText()
                 )

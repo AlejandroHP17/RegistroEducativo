@@ -21,7 +21,6 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.CONTROL
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.HEADER
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.REGISTER
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderMenu
@@ -47,42 +46,45 @@ fun MenuScreen(
     val uiState by menuViewModel.uiState.collectAsState()
     val showDialog = remember { mutableStateOf(false) }
 
-    LazyColumn(
+    Column (
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
-    )
-    {
-        itemsIndexed(listOf(HEADER, REGISTER, CONTROL)) { _, section ->
-            when (section) {
-                HEADER -> {
-                    HeaderMenuScreen(
-                        uiState = uiState,
-                        onShowDialog = { showDialog.value = true }
-                    )
-                }
+    ) {
+        HeaderMenuScreen(
+            uiState = uiState,
+            onShowDialog = { showDialog.value = true }
+        )
 
-                REGISTER -> {
-                    if (uiState.showControl) {
-                        RegisterAreaMenuScreen(
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        )
+        {
+            itemsIndexed(listOf( REGISTER, CONTROL)) { _, section ->
+                when (section) {
+
+                    REGISTER -> {
+                        if (uiState.showControl) {
+                            RegisterAreaMenuScreen(
+                                uiState = uiState,
+                                navController = navController
+                            )
+                        }
+                    }
+
+                    CONTROL -> {
+                        ControlAreaMenuScreen(
                             uiState = uiState,
                             navController = navController
                         )
                     }
-                }
-
-                CONTROL -> {
-                    ControlAreaMenuScreen(
-                        uiState = uiState,
-                        navController = navController
-                    )
                 }
             }
         }
     }
 
     LoadingAnimation(uiState.isLoading)
-
 
     if (showDialog.value) {
         AlertDialogMenu(
@@ -96,7 +98,6 @@ fun MenuScreen(
 object MenuScreenObject {
     const val ADAPTER_CONTROL = "Área de Control"
     const val ADAPTER_CONTROL_REGISTER = "Área de Registro y evaluación"
-    const val HEADER = "header"
     const val REGISTER = "register"
     const val CONTROL = "control"
 }

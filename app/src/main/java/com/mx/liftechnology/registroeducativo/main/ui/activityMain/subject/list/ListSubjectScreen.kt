@@ -1,9 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -17,13 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EmptyState
@@ -45,27 +45,49 @@ fun ListSubjectScreen(
 
     val uiState by listSubjectViewModel.uiState.collectAsState()
 
-    Box(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        val (header, column, action) = createRefs()
+
         if (uiState.subjectList.isNullOrEmpty()) {
-            EmptySubjectState(navController)
+            EmptySubjectState(
+                onReturnClick = {navController.popBackStack()},
+                onActionClick = {navController.navigate(MainRoutes.RegisterSubject.route) }
+            )
         } else {
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                HeaderListSubject(navController = navController)
+            Column(
+                modifier = Modifier.constrainAs(header) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }) {HeaderListSubject(navController = navController)}
 
+            Column(
+                modifier = Modifier.constrainAs(column) {
+                    top.linkTo(header.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(action.top)
+                    height = Dimension.fillToConstraints
+                }) {
                 BodyListSubject(
                     uiState = uiState,
                     onNavigate = {
                         navController.navigate(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it)))
                     }
                 )
+            }
 
-                Spacer(modifier = Modifier.weight(1f))
-
+            Column(
+                modifier = Modifier.constrainAs(action) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }) {
                 ActionListSubject(navController = navController)
             }
         }
@@ -74,23 +96,25 @@ fun ListSubjectScreen(
 }
 
 @Composable
-fun EmptySubjectState(navController: NavController) {
+fun EmptySubjectState(
+    onReturnClick:() ->Unit,
+    onActionClick:() ->Unit
+) {
     EmptyState(
         image = painterResource(id = R.drawable.ic_empty_subject),
         title = stringResource(R.string.empty_subject_1),
         description = stringResource(R.string.empty_subject_2),
         button = stringResource(R.string.add_button),
-        onReturnClick = { navController.popBackStack() },
-        onActionClick = { navController.navigate(MainRoutes.RegisterSubject.route) }
+        onReturnClick = { onReturnClick() },
+        onActionClick = { onActionClick() }
     )
 }
 
 
 @Composable
 private fun HeaderListSubject(navController: NavHostController) {
-    ComponentHeaderBack(
+    ComponentHeaderBackWithout(
         title = stringResource(R.string.get_subject_name),
-        body = stringResource(R.string.tools_empty)
     ) { navController.popBackStack() }
 }
 
@@ -120,6 +144,7 @@ private fun BodyListSubject(
 private fun ActionListSubject(
     navController: NavController,
 ) {
+    CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
         containerColor = color_action,
         text = stringResource(R.string.add_button),
