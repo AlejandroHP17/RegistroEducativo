@@ -43,7 +43,7 @@ class LoginUseCaseImp(
             password = pass.orEmpty(),
             latitude = latitude?.toString().orEmpty(),
             longitude = longitude?.toString().orEmpty(),
-            imei = Build.SERIAL + Build.FINGERPRINT + Build.ID
+            imei = Build.FINGERPRINT + Build.ID
         )
 
         return when (val result = repositoryLogin.executeLogin(request)) {

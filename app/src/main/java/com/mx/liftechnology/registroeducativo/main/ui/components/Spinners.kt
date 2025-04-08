@@ -161,10 +161,8 @@ fun SpinnerMixOutlinedTextField(
             OutlinedTextField(
                 value = selectedOption.valueText,
                 onValueChange = { newValue ->
-                    if (isEditable){
-                        if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
-                            selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
-                        }
+                    if (isEditable && (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue))){
+                        selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
                     }
                     onOptionSelected(ResponseGetListAssessmentType(
                         assessmentTypeId = -1,
@@ -204,8 +202,8 @@ fun SpinnerMixOutlinedTextField(
                     DropdownMenuItem(
                         text = { Text(option?.description ?: "Nuevo") },
                         onClick = {
-                            onOptionSelected(option)
-                            selectedOptions = (option?.description ?: "Nuevo").stringToModelStateOutFieldText()
+                            selectedOptions = (option?.description).stringToModelStateOutFieldText()
+                            onOptionSelected(option?.copy(description = if(option.description == "Nuevo") "" else selectedOptions.valueText))
                             isEditable = option?.description == "Nuevo"
                             expanded = false
                         }

@@ -70,7 +70,7 @@ class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
         val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         return try {
             val date = inputFormat.parse(textDate)
-            outputFormat.format(date)
+            outputFormat.format(date!!)
         } catch (e: Exception) {
             null
         }

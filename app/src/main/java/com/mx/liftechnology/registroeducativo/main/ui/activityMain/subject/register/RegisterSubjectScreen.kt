@@ -136,14 +136,14 @@ private fun BodyRegisterSubject(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Column(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(5f)
         ) {
             CustomSpace(dimensionResource(R.dimen.margin_outer))
             TextBody(stringResource(R.string.register_subject_name_description_3))
         }
 
         Box(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(4f)
         ) {
             SpinnerOutlinedTextField(
                 options = uiState.listOptions,
