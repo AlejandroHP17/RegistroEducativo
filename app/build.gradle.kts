@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.androidx.navigation.safeargs)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.compose)
@@ -28,8 +27,6 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.basic)
-    implementation(libs.bundles.androidx.navigation)
-    implementation(libs.bundles.androidx.lifecycle)
     implementation(libs.bundles.timber)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx.ui)

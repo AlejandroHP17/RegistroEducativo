@@ -134,7 +134,7 @@ private fun BodyRegisterPartial(
                 options = uiState.listOptions,
                 selectedOption = uiState.numberPartials,
                 read = uiState.read,
-                label = stringResource(id = R.string.register_partial_period),
+                label = stringResource(id = R.string.form_partial_period),
                 onOptionSelected = { onPartialChanged(it) }
             )
         }

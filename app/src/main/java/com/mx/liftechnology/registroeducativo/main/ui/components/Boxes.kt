@@ -72,7 +72,7 @@ fun TestBoxes(){
         BoxEditTextGeneric(
             value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_generic)
+            label = stringResource(id = R.string.tools_generic)
         )
         { data = it}
 
@@ -93,7 +93,7 @@ fun TestBoxes(){
         BoxEditTextCalendar(
             value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
-            label = stringResource(id = R.string.form_generic)
+            label = stringResource(id = R.string.tools_generic)
         )
         {  }
     }

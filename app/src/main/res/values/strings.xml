@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Registro Educativo</string>
 
@@ -50,10 +51,6 @@
     <string name="register_partial">Registra tus parciales</string>
     <string name="register_partial_description">Ingresa los datos de tus parciales correspondientes al ciclo escolar activo, si ya los tienes registrados, puedes actualizarlos</string>
     <string name="register_partial_number_period">Número de parciales en el ciclo escolar</string>
-    <string name="register_partial_period">Parciales</string>
-    <string name="register_partial_periods">Parcial %d</string>
-    <string name="register_partial_start">Inicial</string>
-    <string name="register_partial_end">Final</string>
     <string name="register_partial_calendar">Selecciona el rango de fechas de tu parcial</string>
 
     <!-- Register Student Flow -->
@@ -66,10 +63,7 @@
     <string name="register_subject_name_description">Ingresa los datos del campo formativo</string>
     <string name="register_subject_name_description_2">Ingresa los tipos de trabajo que se evaluaran en dicho campo formativo y su porcentaje correspondiente a la calificación final, el porcentaje total debe ser 100%</string>
     <string name="register_subject_name_description_3">Opciones de evaluación por campo formativo</string>
-    <string name="register_subject_field">Campo formativo</string>
-    <string name="register_subject_options">Opcion</string>
-    <string name="register_subject_evaluation">Tipo de evaluación</string>
-    <string name="register_subject_percent">%</string>
+
 
     <!-- Gets Flow -->
     <string name="get_student_name">Lista de alumnos</string>
@@ -79,9 +73,8 @@
     <!-- Gets Flow -->
     <string name="assignment_name">Campo formativo</string>
     <string name="assignment_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
-    <string name="assignment_type">Trabajo</string>
     <string name="assignment_type_evaluate">Tipo de trabajo a evaluar</string>
-    <string name="assignment_score">Calif.</string>
+
 
 
     <!-- Dialogs Flow -->
@@ -95,12 +88,8 @@
     <string name="edit_student_name_description">Ingresa los datos del alumno</string>
     <string name="edit_student_edit">REGISTRAR</string>
 
-
     <!-- Profile Flow -->
     <string name="profile_name">Mi perfil</string>
     <string name="profile_button">Cerrar sesión</string>
-
-
-
 
 </resources>

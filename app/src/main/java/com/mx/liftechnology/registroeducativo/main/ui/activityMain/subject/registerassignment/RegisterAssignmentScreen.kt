@@ -200,7 +200,7 @@ private fun Body2RegisterAssignment(
                 options = uiState.listOptions,
                 selectedOption = uiState.nameAssignment,
                 read = false,
-                label = stringResource(id = R.string.assignment_type),
+                label = stringResource(id = R.string.form_assignment_type),
                 onOptionSelected = { onNameAssignmentChanged(it) }
             )
         }

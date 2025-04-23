@@ -252,7 +252,7 @@ fun EvaluationPercentItem(
             SpinnerMixOutlinedTextField(
                 options = listWorkMethods,
                 selectedOption = name,
-                label = stringResource(R.string.register_subject_evaluation),
+                label = stringResource(R.string.form_subject_evaluation),
                 onOptionSelected = {
                     selectedOption = it
                     onNameChange(it)
@@ -265,7 +265,7 @@ fun EvaluationPercentItem(
             BoxEditTextNumeric(
                 value = percent,
                 enable = true,
-                label = stringResource(id = R.string.register_subject_percent),
+                label = stringResource(id = R.string.form_subject_percent),
             )
             {
                 onPercentChange(it)
@@ -299,7 +299,7 @@ fun EvaluationStudentItem(
             BoxEditTextScore(
                 value = score,
                 enable = true,
-                label = stringResource(id = R.string.assignment_score),
+                label = stringResource(id = R.string.form_assignment_score),
             )
             { onScoreChange(it) }
         }
@@ -331,7 +331,7 @@ fun RegisterPartialListItem(
     BoxEditTextCalendar(
         value = date.date,
         enable = false,
-        label = stringResource(id = R.string.register_partial_periods, index + 1),
+        label = stringResource(id = R.string.form_partial_periods, index + 1),
     )
     { showDatePicker = true }
 

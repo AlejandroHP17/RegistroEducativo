@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- LOGIN FLOW -->
     <!-- Generic Login -->
     <string name="form_generic_email">Correo eletrónico</string>
     <string name="form_generic_password">Contraseña</string>
-    <string name="form_generic">Generic</string>
 
     <!-- Register User -->
     <string name="form_reg_repeat_password">Repetir contraseña</string>
     <string name="form_reg_code">Código</string>
 
+    <!-- MAIN FLOW -->
     <!-- School User -->
     <string name="form_school_cct">CCT</string>
-    <string name="form_school_term">Ciclo</string>
     <string name="form_school_name">Nombre de la escuela</string>
     <string name="form_school_shift">Turno</string>
     <string name="form_school_type">Tipo</string>
+    <string name="form_school_term">Ciclo</string>
     <string name="form_school_grade">Grado</string>
     <string name="form_school_group">Grupo</string>
 
@@ -27,10 +28,26 @@
     <string name="form_student_birthday">Fecha de nacimiento</string>
     <string name="form_student_phone_number">Número de contacto</string>
 
+    <!-- Subject -->
+    <string name="form_subject_field">Campo formativo</string>
+    <string name="form_subject_options">Opcion</string>
+    <string name="form_subject_evaluation">Tipo de evaluación</string>
+    <string name="form_subject_percent">%</string>
+
+    <!-- Partials -->
+    <string name="form_partial_period">Parciales</string>
+    <string name="form_partial_periods">Parcial %d</string>
+    <string name="form_partial_start">Inicial</string>
+    <string name="form_partial_end">Final</string>
+
     <!-- Assignment -->
     <string name="form_assignment_name">Nombre del trabajo</string>
     <string name="form_assignment_date">Fecha del trabajo</string>
+    <string name="form_assignment_type">Trabajo</string>
+    <string name="form_assignment_score">Calif.</string>
 
+
+    <!-- GENERIC -->
     <string name="form_error_generic">Campo vacío</string>
     <string name="form_error_characters">El formato no es correcto</string>
 </resources>

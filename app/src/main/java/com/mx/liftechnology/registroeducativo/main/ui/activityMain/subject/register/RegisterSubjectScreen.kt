@@ -122,7 +122,7 @@ private fun BodyRegisterSubject(
     BoxEditTextGeneric(
         value = uiState.subject,
         enable = true,
-        label = stringResource(id = R.string.register_subject_field),
+        label = stringResource(id = R.string.form_subject_field),
     ) { onSubjectChanged(it) }
 
     CustomSpace(dimensionResource(R.dimen.margin_between))
@@ -149,7 +149,7 @@ private fun BodyRegisterSubject(
                 options = uiState.listOptions,
                 selectedOption = uiState.options,
                 read = uiState.read,
-                label = stringResource(id = R.string.register_subject_options),
+                label = stringResource(id = R.string.form_subject_options),
                 onOptionSelected = { onOptionsChanged(it) }
             )
         }
