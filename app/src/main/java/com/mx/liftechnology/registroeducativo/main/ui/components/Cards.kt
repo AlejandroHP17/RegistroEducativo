@@ -37,7 +37,6 @@ import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_azul_link
@@ -70,11 +69,7 @@ fun CustomCardView() {
         )
 
         DialogGroupItem(
-            item = ModelDialogStudentGroupDomain(
-                selected = true,
-                item = null,
-                nameItem = "nombre"
-            ),
+            text = "nombre",
             isSelected = true,
             onSelected = {}
         )
@@ -98,6 +93,7 @@ fun CustomCardView() {
             date = ModelDatePeriodDomain(
                 position = 1,
                 date = "hola".stringToModelStateOutFieldText(),
+                partialCycleGroup = 0
             ),
             onDateChange = {}
         )
@@ -207,7 +203,7 @@ fun GridItem(
 
 @Composable
 fun DialogGroupItem(
-    item: ModelDialogStudentGroupDomain,
+    text: String,
     isSelected: Boolean,
     onSelected: () -> Unit,
 ) {
@@ -226,7 +222,7 @@ fun DialogGroupItem(
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = "${item.item?.cct.orEmpty()} ${item.item?.group.orEmpty()} ${item.item?.name.orEmpty()}",
+            text = text ,
             fontSize = 16.sp
         )
     }

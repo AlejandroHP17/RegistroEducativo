@@ -103,7 +103,7 @@ fun ComponentHeader(title: String, body: String) {
 }
 
 @Composable
-fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit, ) {
+fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit) {
     /** Footer - Registrarse  */
     Row(
         modifier = Modifier
@@ -120,7 +120,11 @@ fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit, )
 }
 
 @Composable
-fun ComponentCheckBoxAndText(checkBox : Boolean, checkBoxClick :(Boolean) -> Unit, textClick :() -> Unit){
+fun ComponentCheckBoxAndText(
+    checkBox: Boolean,
+    checkBoxClick: (Boolean) -> Unit,
+    textClick: () -> Unit,
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth(),
@@ -153,7 +157,10 @@ fun ComponentCheckBoxAndText(checkBox : Boolean, checkBoxClick :(Boolean) -> Uni
 }
 
 @Composable
-fun ComponentHeaderMenu(title: String, body: String, onClick: () -> Unit) {
+fun ComponentHeaderMenu(
+    title: String,
+    body: String,
+    onClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(

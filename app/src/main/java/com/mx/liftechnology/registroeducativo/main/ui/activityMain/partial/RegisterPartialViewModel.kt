@@ -32,7 +32,8 @@ class RegisterPartialViewModel(
             val list = MutableList(partial.toInt()) { index ->
                 ModelDatePeriodDomain(
                     position = index,
-                    date = "".stringToModelStateOutFieldText()
+                    date = "".stringToModelStateOutFieldText(),
+                    partialCycleGroup = 0
                 )
             }
 

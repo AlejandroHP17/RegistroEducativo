@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -114,12 +113,10 @@ fun DialogGroupList(
 ) {
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
-    LazyColumn(
-        modifier = Modifier.padding(8.dp)
-    ) {
+    LazyColumn {
         itemsIndexed(items) { index, item ->
             DialogGroupItem(
-                item = item,
+                text = "${item.item?.cct.orEmpty()} ${item.item?.group.orEmpty()} ${item.item?.name.orEmpty()}",
                 isSelected = index == selectedIndex,
                 onSelected = {
                     selectedIndex = index

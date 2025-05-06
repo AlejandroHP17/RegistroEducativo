@@ -8,6 +8,8 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartial
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.SavePartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.SavePartialUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial.RegisterPartialViewModel
@@ -36,6 +38,9 @@ val crudPartialModule = module {
     }
     single<ValidateFieldsRegisterPartialUseCase> {
         ValidateFieldsRegisterPartialUseCaseImp()
+    }
+    single<SavePartialUseCase> {
+        SavePartialUseCaseImp(get())
     }
 
     viewModel {

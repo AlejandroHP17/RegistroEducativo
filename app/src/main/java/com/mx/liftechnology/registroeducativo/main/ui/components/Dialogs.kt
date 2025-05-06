@@ -1,12 +1,14 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
@@ -18,6 +20,7 @@ fun AlertDialogPreview(){
     AlertDialogMenu(ModelMenuUIState(),{}){}
 }
 
+
 @Composable
 fun AlertDialogMenu(
     uiState: ModelMenuUIState,
@@ -28,12 +31,14 @@ fun AlertDialogMenu(
     var itemSelected = remember { mutableStateOf<ModelDialogStudentGroupDomain?>(null) }
 
     if (openDialog.value) {
+
         AlertDialog(
+            modifier = Modifier.padding(horizontal = 0.dp),
             onDismissRequest = {
                 openDialog.value = false
                 dismiss()
             },
-            title = { Text("Selecciona tu ciclo escolar") },
+            title = { TextTitleDialog("Selecciona tu ciclo escolar") },
             text = {
                 DialogGroupList(uiState.studentGroupList) { selectedItem ->
                     itemSelected.value = selectedItem

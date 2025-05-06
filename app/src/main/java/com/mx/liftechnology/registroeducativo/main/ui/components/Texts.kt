@@ -59,6 +59,13 @@ fun TestText() {
         )
 
         TextBody("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
+         Spacer(
+            modifier = Modifier
+                .height(dimensionResource(id = R.dimen.margin_outer))
+                .background(color_transparent)
+        )
+
+        TextTitleDialog("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.")
     }
 }
 
@@ -87,12 +94,14 @@ fun TextSubHeader(
 }
 
 @Composable
-fun TextDescription(text: String) {
+fun TextDescription(
+    text: String,
+    modifier: Modifier = Modifier) {
     Text(
         text = text,
         color = color_principal_text,
         fontSize = dimensionResource(id = R.dimen.text_size_body).value.sp,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
     )
 }
@@ -113,6 +122,17 @@ fun TextBody(text: String) {
         text = text,
         color = color_principal_text,
         fontSize = dimensionResource(id = R.dimen.text_size_form).value.sp,
+        modifier = Modifier
+            .fillMaxWidth()
+    )
+}
+
+@Composable
+fun TextTitleDialog(text: String) {
+    Text(
+        text = text,
+        color = color_principal_text,
+        fontSize = dimensionResource(id = R.dimen.text_size_title_dialog).value.sp,
         modifier = Modifier
             .fillMaxWidth()
     )

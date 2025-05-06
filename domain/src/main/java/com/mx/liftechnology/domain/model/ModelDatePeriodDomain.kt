@@ -14,4 +14,5 @@ data class ModelDatePeriodDomain(
             isError = false,
             errorMessage = ""
         ),
+    val partialCycleGroup: Int?,
 )

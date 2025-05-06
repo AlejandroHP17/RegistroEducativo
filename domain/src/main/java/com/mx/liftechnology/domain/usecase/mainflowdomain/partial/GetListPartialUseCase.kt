@@ -18,7 +18,6 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 
 fun interface GetListPartialUseCase {
     suspend fun getListPartial(): ModelState<MutableList<ModelDatePeriodDomain>?, String>?
-
 }
 class GetListPartialUseCaseImp (
     private val crudPartialRepository: CrudPartialRepository,
@@ -43,13 +42,14 @@ class GetListPartialUseCaseImp (
                         date = ModelStateOutFieldText(
                             valueText = "${item?.startDate} / ${item?.endDate}",
                             isError = false,
-                            errorMessage = "")
+                            errorMessage = ""),
+                        partialCycleGroup = item?.partialCycleGroup
                     )
                 } ?.toMutableList()
-                if (listDate?.size!! > 0)
+                if (listDate?.size!! > 0) {
                     SuccessState(listDate)
-                else
-                    ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                }
+                else ErrorState(ModelCodeError.ERROR_UNKNOWN)
             }
             is ResultError -> {
                 handleResponse(result.error)

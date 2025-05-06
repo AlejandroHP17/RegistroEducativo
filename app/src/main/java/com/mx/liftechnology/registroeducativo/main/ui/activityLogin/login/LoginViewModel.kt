@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.LoginUiState
@@ -90,12 +91,21 @@ class LoginViewModel(
                     _uiState.value.password.valueText,
                     _uiState.value.isRemember
                 )
-            }.onSuccess {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isSuccess = true
-                    )
+            }.onSuccess { result ->
+                if(result is SuccessState){
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    }
+                }else{
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = false
+                        )
+                    }
                 }
             }.onFailure {
                 _uiState.update {

@@ -13,4 +13,5 @@ object ModelPreference {
     const val ID_ROLE = "ID_ROLE"   // ID by type and unique
 
     const val ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"  // Group Selected
+    const val ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP"  // Group Selected
 }
