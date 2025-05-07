@@ -24,8 +24,8 @@ interface MenuGroupsUseCase {
 
 class MenuGroupsUseCaseImp(
     private val menuRepository: MenuRepository,
-    private val preference: PreferenceUseCase
-): MenuGroupsUseCase {
+    private val preference: PreferenceUseCase,
+) : MenuGroupsUseCase {
 
     /** getGroup - Get the list of groups, select a default and process the information
      * @author pelkidev
@@ -42,6 +42,8 @@ class MenuGroupsUseCaseImp(
 
         return when (val result = menuRepository.executeGetGroup(request)) {
             is ResultSuccess -> {
+                /* Convierte al modelo base para recopilar toda la informacion de escuelas y parciales
+                *  esta primera sección llena la parte de escuelas*/
                 val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
                 if (convertedResult.isNotEmpty()) {
                     SuccessState(
@@ -60,33 +62,43 @@ class MenuGroupsUseCaseImp(
         }
     }
 
-    /** selectOneGroup - Select a group, if the user is new the first one,
+    /** SelectOneGroup - Select a group, if the user is new the first one,
      *  if the user is old, select group with help of the preference
      * @author pelkidev
      * @return ModelState
      * */
     private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
-        return convertedResult.let {
+        return convertedResult.let { itemParent ->
             if (preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1) {
-                preference.savePreferenceInt(
-                    ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,
-                    it.firstOrNull()?.item?.teacherSchoolCycleGroupId
-                )
-                buildOneInformation(convertedResult)
+                val item = itemParent.firstOrNull { it.item?.teacherSchoolCycleGroupId != null }
+                item?.item?.teacherSchoolCycleGroupId?.let { id ->
+                    preference.savePreferenceInt(
+                        ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,
+                        id
+                    )
+                }
+                buildOneInformation(item)
             } else {
-                val listImprovised = convertedResult.filter { onlyData ->
+                val itemImprovised = itemParent.firstOrNull { onlyData ->
                     preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == onlyData.item?.teacherSchoolCycleGroupId
                 }
-                buildOneInformation(listImprovised)
+                buildOneInformation(itemImprovised)
             }
         }
     }
 
-    private fun buildOneInformation(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
+    /** Reasign data in the new model
+     * @author Alejandro Hernandez Pelcastre
+     * @since 1.0.0
+     */
+    private fun buildOneInformation(convertedResult: ModelDialogStudentGroupDomain?): ModelDialogStudentGroupDomain {
         val modelResponse = ModelDialogStudentGroupDomain(
-            selected = convertedResult.firstOrNull()?.selected,
-            item = convertedResult.firstOrNull()?.item,
-            nameItem = "${convertedResult.firstOrNull()?.item?.cct} - ${convertedResult.firstOrNull()?.item?.group}${convertedResult.firstOrNull()?.item?.name} - ${convertedResult.firstOrNull()?.item?.shift}"
+            selected = convertedResult?.selected,
+            item = convertedResult?.item,
+            nameItem = "${convertedResult?.item?.cct} - ${convertedResult?.item?.group}${convertedResult?.item?.name} - ${convertedResult?.item?.shift}",
+            listItemPartial = convertedResult?.listItemPartial,
+            itemPartial = convertedResult?.itemPartial,
+            namePartial = convertedResult?.namePartial,
         )
         return modelResponse
     }
@@ -112,6 +124,10 @@ class MenuGroupsUseCaseImp(
         }
     }
 
+    /** Update the group in preferences
+     * @author Alejandro Hernandez Pelcastre
+     * @since 1.0.0
+     */
     override suspend fun updateGroup(nameItem: ModelDialogStudentGroupDomain) {
         preference.savePreferenceInt(
             ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,

@@ -45,15 +45,20 @@ class LocationHelper(private val context: Context) {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             /** Permission reject before, show the dialog */
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    context as Activity,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                showPermissionRationaleDialog(permissionLauncher)
+            if (context is Activity) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        context,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                ) {
+                    showPermissionRationaleDialog(permissionLauncher)
+                } else {
+                    permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                }
             } else {
-                permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                // Manejo alternativo
             }
+
         } else {
             /** Permission accept before, get the location */
             getLastKnownLocation(callback)

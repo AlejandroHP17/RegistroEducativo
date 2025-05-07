@@ -9,7 +9,7 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
-import com.mx.liftechnology.registroeducativo.main.funextensions.log
+import com.mx.liftechnology.core.util.log
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success

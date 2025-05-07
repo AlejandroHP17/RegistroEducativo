@@ -4,6 +4,8 @@ import com.mx.liftechnology.core.network.callapi.GroupApiCall
 import com.mx.liftechnology.data.repository.mainflowdata.MenuLocalRepository
 import com.mx.liftechnology.data.repository.mainflowdata.MenuRepository
 import com.mx.liftechnology.data.repository.mainflowdata.MenuRepositoryImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMenuUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMenuUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCase
@@ -33,6 +35,9 @@ val menuModule = module {
     }
     single<MenuGroupsUseCase> {
         MenuGroupsUseCaseImp(get(), get())
+    }
+    single<GetListPartialMenuUseCase> {
+        GetListPartialMenuUseCaseImp(get(), get())
     }
 
     viewModel {

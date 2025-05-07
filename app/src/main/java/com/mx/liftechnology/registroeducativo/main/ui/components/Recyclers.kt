@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
@@ -62,11 +63,17 @@ fun MyGridScreenPreview() {
             selected = false,
             item = null,
             nameItem = "Hola mundo",
+            listItemPartial = null,
+            itemPartial = null,
+            namePartial = null
         ),
         ModelDialogStudentGroupDomain(
             selected = true,
             item = null,
             nameItem = "Hola mundo",
+            listItemPartial = null,
+            itemPartial = null,
+            namePartial = null
         ),
     )
 
@@ -124,6 +131,31 @@ fun DialogGroupList(
                 }
             )
         }
+    }
+}
+
+@Composable
+fun DialogPartialList(
+    items: List<ModelDialogGroupPartialDomain>?,
+    onItemSelected: (ModelDialogGroupPartialDomain) -> Unit,
+) {
+    var selectedIndex by remember { mutableIntStateOf(-1) }
+
+    LazyColumn {
+        items?.let {
+            itemsIndexed(items) { index, item ->
+
+                DialogGroupItem(
+                    text = "${item.name}",
+                    isSelected = index == selectedIndex,
+                    onSelected = {
+                        selectedIndex = index
+                        onItemSelected(item)
+                    }
+                )
+            }
+        }
+
     }
 }
 

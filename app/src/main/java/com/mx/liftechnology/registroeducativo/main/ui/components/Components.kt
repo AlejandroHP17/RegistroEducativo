@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
@@ -37,7 +36,7 @@ fun TestComponents() {
 
         ComponentCheckBoxAndText(false,{},{})
 
-        ComponentHeaderMenu("Nos da gusto verte", "No tienes un ciclo activo"){}
+        ComponentHeaderMenu("Nos da gusto verte", "No tienes un ciclo activo", "parciales"){}
     }
 
 }
@@ -160,6 +159,7 @@ fun ComponentCheckBoxAndText(
 fun ComponentHeaderMenu(
     title: String,
     body: String,
+    partial: String,
     onClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -180,11 +180,9 @@ fun ComponentHeaderMenu(
 
             TextSubHeader(body)
 
-            Spacer(
-                modifier = Modifier
-                    .height(dimensionResource(id = R.dimen.margin_between))
-                    .background(color_transparent)
-            )
+            TextDescription(partial)
+
+            CustomSpace(dimensionResource(id = R.dimen.margin_between))
         }
     }
 

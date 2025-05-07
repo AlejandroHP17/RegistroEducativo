@@ -3,13 +3,13 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.school
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
+import com.mx.liftechnology.core.util.log
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
-import com.mx.liftechnology.registroeducativo.main.funextensions.log
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success

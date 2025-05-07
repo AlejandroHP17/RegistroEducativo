@@ -4,6 +4,7 @@
 
     <string name="save">Guardar</string>
     <string name="select">Seleccionar</string>
+    <string name="next">Siguiente</string>
 
     <string name="empty_subject_1">Sin Campos Formativos</string>
     <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
@@ -38,6 +39,7 @@
     <string name="menu_grettins">Nos da gusto verte %s</string>
     <string name="menu_empty">No tienes un ciclo escolar activo</string>
     <string name="menu_ciclo">Ciclo escolar 2024 - 2025</string>
+    <string name="menu_partial">Sin parciales</string>
 
     <!-- SubMenu Flow -->
     <string name="sub_menu_title">Registro</string>

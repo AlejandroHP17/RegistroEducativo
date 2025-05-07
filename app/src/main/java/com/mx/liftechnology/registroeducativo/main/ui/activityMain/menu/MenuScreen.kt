@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.control.ModelMenuControlState
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.CONTROL
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.REGISTER
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
@@ -31,29 +31,41 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.TextSubHeader
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
-
+/** Menu screen, show the principal view and control the flows
+ * @author Alejandro Hernandez Pelcastre
+ * @since 1.0.0
+ */
 @Composable
 fun MenuScreen(
     navController: NavHostController,
     menuViewModel: MenuViewModel = koinViewModel(),
 ) {
-    // Llamadas a servicios cuando se monta la pantalla
+
+    /* Variables locales y en viewmodel */
+    val uiState by menuViewModel.uiState.collectAsState()
+    val controlState by menuViewModel.controlState.collectAsState()
+    val showDialog = remember { mutableStateOf(false) }
+    val isGroup = remember { mutableStateOf(false) }
+
+    /* Llamadas a servicios cuando se monta la pantalla */
     LaunchedEffect(Unit) {
-        menuViewModel.getGroup()
-        menuViewModel.getControlMenu()
+        if (controlState.studentGroupItem.itemPartial == null){
+            menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
+            menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
+        }
     }
 
-    val uiState by menuViewModel.uiState.collectAsState()
-    val showDialog = remember { mutableStateOf(false) }
-
-    Column (
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
         HeaderMenuScreen(
-            uiState = uiState,
-            onShowDialog = { showDialog.value = true }
+            controlState = controlState,
+            onShowDialog = {
+                isGroup.value = true
+                showDialog.value = true
+            }
         )
 
         LazyColumn(
@@ -61,21 +73,22 @@ fun MenuScreen(
                 .fillMaxSize()
         )
         {
-            itemsIndexed(listOf( REGISTER, CONTROL)) { _, section ->
+            itemsIndexed(listOf(REGISTER, CONTROL)) { _, section ->
                 when (section) {
 
                     REGISTER -> {
                         if (uiState.showControl) {
                             RegisterAreaMenuScreen(
-                                uiState = uiState,
-                                navController = navController
+                                controlState = controlState,
+                                navController = navController,
+                                test = { menuViewModel.test() }
                             )
                         }
                     }
 
                     CONTROL -> {
                         ControlAreaMenuScreen(
-                            uiState = uiState,
+                            controlState = controlState,
                             navController = navController
                         )
                     }
@@ -88,8 +101,16 @@ fun MenuScreen(
 
     if (showDialog.value) {
         AlertDialogMenu(
-            uiState = uiState,
-            itemSelectedReturn = { menuViewModel.updateGroup(it) },
+            controlState = controlState,
+            itemSelectedReturn = {
+                menuViewModel.updateGroup(it)
+                isGroup.value = false
+            },
+            itemSelectedPartialReturn = {
+                menuViewModel.updatePartial(it)
+                isGroup.value = true
+            },
+            selectType = isGroup.value,
             dismiss = { showDialog.value = false }
         )
     }
@@ -103,17 +124,22 @@ object MenuScreenObject {
 }
 
 @Composable
-private fun HeaderMenuScreen(uiState: ModelMenuUIState, onShowDialog: (Boolean) -> Unit) {
+private fun HeaderMenuScreen(controlState: ModelMenuControlState, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
         title = stringResource(R.string.menu_grettins, "Profesor"),
-        body = uiState.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
+        body = controlState.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
+        partial = controlState.studentGroupItem.namePartial ?: stringResource(R.string.menu_partial),
         onClick = { onShowDialog(true) }
     )
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 }
 
 @Composable
-private fun RegisterAreaMenuScreen(uiState: ModelMenuUIState, navController: NavHostController) {
+private fun RegisterAreaMenuScreen(
+    controlState: ModelMenuControlState,
+    navController: NavHostController,
+    test: () -> Unit,
+) {
     val menuItemsRegister =
         stringArrayResource(com.mx.liftechnology.data.R.array.menu_items_register)
     Column(
@@ -121,13 +147,16 @@ private fun RegisterAreaMenuScreen(uiState: ModelMenuUIState, navController: Nav
             .fillMaxWidth()
     ) {
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL_REGISTER)
-        MyGridScreen(uiState.evaluationItems, 628.dp) { selectedItem ->
+        MyGridScreen(controlState.evaluationItems, 628.dp) { selectedItem ->
             when (selectedItem.id) {
                 menuItemsRegister[0] -> navController.navigate(MainRoutes.ListStudent.route)
                 menuItemsRegister[1] -> navController.navigate(MainRoutes.ListSubject.route)
                 menuItemsRegister[2] -> navController.navigate(MainRoutes.RegisterPartial.route)
-                menuItemsRegister[3] -> {}
-                menuItemsRegister[4] -> {}
+                menuItemsRegister[3] -> {
+                    test()
+                }
+
+                menuItemsRegister[4] -> {test()}
             }
         }
     }
@@ -135,14 +164,17 @@ private fun RegisterAreaMenuScreen(uiState: ModelMenuUIState, navController: Nav
 }
 
 @Composable
-private fun ControlAreaMenuScreen(uiState: ModelMenuUIState, navController: NavHostController) {
+private fun ControlAreaMenuScreen(
+    controlState: ModelMenuControlState,
+    navController: NavHostController,
+) {
     val menuItemsControl = stringArrayResource(com.mx.liftechnology.data.R.array.menu_items_control)
     Column(
         modifier = Modifier
             .fillMaxWidth()
     ) {
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL)
-        MyGridScreen(uiState.controlItems, 200.dp) { selectedItem ->
+        MyGridScreen(controlState.controlItems, 200.dp) { selectedItem ->
             when (selectedItem.id) {
                 menuItemsControl[0] -> navController.navigate(MainRoutes.RegisterSchool.route)
                 menuItemsControl[1] -> navController.navigate(MainRoutes.Profile.route)

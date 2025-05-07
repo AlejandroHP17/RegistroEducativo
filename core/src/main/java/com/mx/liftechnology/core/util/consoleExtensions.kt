@@ -1,6 +1,5 @@
-package com.mx.liftechnology.registroeducativo.main.funextensions
+package com.mx.liftechnology.core.util
 
-import com.mx.liftechnology.registroeducativo.BuildConfig
 import timber.log.Timber
 
 /** Print logs depending the flavor
@@ -9,8 +8,7 @@ import timber.log.Timber
  */
 // Función de extensión mejorada para registrar logs
 inline fun <reified T : Any> T.log(message: String, name: String = "Desarrollo: ") {
-    if (BuildConfig.LOG_TAG) {
         val tag = this::class.java.simpleName  // Obtiene el nombre real de la clase
-        Timber.tag(tag).i(name + message)
-    }
+        Timber.tag(tag).i("$name  $message")
+
 }

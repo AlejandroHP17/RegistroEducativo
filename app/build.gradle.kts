@@ -27,7 +27,7 @@ android {
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.basic)
-    implementation(libs.bundles.timber)
+
     implementation(libs.bundles.koin)
     implementation(libs.bundles.androidx.ui)
     implementation(libs.bundles.junit.test)
