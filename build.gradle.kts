@@ -1,4 +1,3 @@
-import org.gradle.api.JavaVersion
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -6,9 +5,9 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.jetbrains.kotlin.android) apply false
     alias(libs.plugins.kotlin.parcelize) apply false
-    alias(libs.plugins.androidx.navigation.safeargs) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     kotlin("jvm")
 }
 
@@ -32,11 +31,11 @@ subprojects {
 
         }
         extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-            compileSdkVersion(34)
+            compileSdkVersion(35)
 
             defaultConfig {
                 minSdk = 28
-                targetSdk = 34
+                targetSdk = 35
                 versionCode = 1
                 versionName = "0.0.1"
 

@@ -18,19 +18,11 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.SplashScreen"
+        android:theme="@style/Theme.App.RegistroEducativo"
         tools:targetApi="31">
         <activity
-            android:name=".main.ui.activityMain.MainActivity"
+            android:name=".main.ui.MainActivity"
             android:theme="@style/Theme.App.RegistroEducativo"
-            android:exported="false" />
-        <activity
-            android:name=".main.ui.activityLogin.LoginActivity"
-            android:theme="@style/Theme.App.RegistroEducativo"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity
-            android:name=".main.ui.activitySplash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

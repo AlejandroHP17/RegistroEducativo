@@ -1,12 +1,16 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.callapi.GroupApiCall
-import com.mx.liftechnology.data.repository.mainFlow.MenuLocalRepository
-import com.mx.liftechnology.data.repository.mainFlow.MenuRepository
-import com.mx.liftechnology.data.repository.mainFlow.MenuRepositoryImp
-import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCase
-import com.mx.liftechnology.domain.usecase.flowmenu.MenuUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.menu.MenuViewModel
+import com.mx.liftechnology.data.repository.mainflowdata.MenuLocalRepository
+import com.mx.liftechnology.data.repository.mainflowdata.MenuRepository
+import com.mx.liftechnology.data.repository.mainflowdata.MenuRepositoryImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMenuUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMenuUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCaseImp
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,10 +31,16 @@ val menuModule = module {
     }
 
     single<MenuUseCase> {
-        MenuUseCaseImp(get(), get(), get())
+        MenuUseCaseImp(get())
+    }
+    single<MenuGroupsUseCase> {
+        MenuGroupsUseCaseImp(get(), get())
+    }
+    single<GetListPartialMenuUseCase> {
+        GetListPartialMenuUseCaseImp(get(), get())
     }
 
     viewModel {
-        MenuViewModel(get(), get())
+        MenuViewModel(get(), get(), get(), get(), get())
     }
 }

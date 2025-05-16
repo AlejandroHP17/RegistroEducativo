@@ -8,8 +8,10 @@ object ModelPreference {
     const val LOGIN = "LOGIN"
     const val ACCESS_TOKEN = "ACCESS_TOKEN"
 
-    const val ID_USER = "ID_USER"
-    const val ID_ROLE = "ID_ROLE"
-    const val USER_ROLE = "USER_ROLE"
-    const val ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"
+    const val ID_USER = "ID_USER"  // Global User
+    const val USER_ROLE = "USER_ROLE"  // User Type (teacher or student)
+    const val ID_ROLE = "ID_ROLE"   // ID by type and unique
+
+    const val ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"  // Group Selected
+    const val ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP"  // Group Selected
 }

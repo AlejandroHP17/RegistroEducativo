@@ -2,17 +2,18 @@ package com.mx.liftechnology.core.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKeys
-
+import androidx.security.crypto.MasterKey
 
 interface PreferenceRepository {
     fun <T> getPreference(name: String, default: T): T
     fun <T> savePreference(name: String, value: T)
+    fun cleanPreference() : Boolean
 }
 
 class PreferenceRepositoryImpl(
-    private val applicationContext: Context
+    private val applicationContext: Context,
 ) : PreferenceRepository {
 
     init {
@@ -25,27 +26,32 @@ class PreferenceRepositoryImpl(
      * */
     private fun initPreferences() {
         try {
-            val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+            val masterKey = MasterKey.Builder(applicationContext)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
             securePrefs = EncryptedSharedPreferences.create(
-                PREFS_FILENAME,
-                masterKeyAlias,
                 applicationContext,
+                PREFS_FILENAME,
+                masterKey,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         } catch (e: Exception) {
             // Si hay un error al desencriptar, eliminar las preferencias corruptas
             applicationContext.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
-                .edit()
-                .clear()
-                .apply()
+                .edit {
+                    clear()
+                }
 
             // Intentar de nuevo después de borrar las preferencias corruptas
-            val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+            val masterKey = MasterKey.Builder(applicationContext)
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
+
             securePrefs = EncryptedSharedPreferences.create(
-                PREFS_FILENAME,
-                masterKeyAlias,
                 applicationContext,
+                PREFS_FILENAME,
+                masterKey,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
@@ -83,5 +89,10 @@ class PreferenceRepositoryImpl(
             }
             apply()  // Save the changes asynchronously
         }
+    }
+
+    override fun cleanPreference(): Boolean {
+        securePrefs.edit { clear() }
+        return true
     }
 }

@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 
-interface RegisterApiCall {
+fun interface RegisterApiCall {
     /** Realiza la petición al API */
     @POST(Environment.END_POINT_REGISTER)
     suspend fun callApi(
@@ -23,5 +23,5 @@ data class CredentialsRegister(
     @SerializedName("password")
     val password: String,
     @SerializedName("codigoactivacion")
-    val codigoactivacion: String
+    val activationCode: String
 )
