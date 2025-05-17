@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Modifier
 import com.mx.liftechnology.registroeducativo.main.ui.components.background
+import org.koin.androidx.compose.koinViewModel
 
 /** MainActivity
  * @author pelkidev
@@ -32,13 +33,14 @@ class MainActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         setContent {
+            val sharedViewModel: SharedViewModel = koinViewModel()
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .windowInsetsPadding(WindowInsets.systemBars)
                     .background(background())
             ) {
-                AppNavHost()
+                AppNavHost(sharedViewModel = sharedViewModel)
             }
         }
     }

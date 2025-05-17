@@ -12,28 +12,23 @@ import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun  interface LoginUseCase {
-    suspend fun login(email: String?, pass: String?, remember: Boolean): ModelState<User?, String>?
-}
-
-class LoginUseCaseImp(
+class LoginUseCase(
     private val repositoryLogin: LoginRepository,
     private val locationHelper: LocationHelper,
     private val preference: PreferenceUseCase
-) : LoginUseCase {
+) {
 
     /**
      * Login
      * @author pelkidev
      * @since 1.0.0
      */
-    override suspend fun login(email: String?, pass: String?, remember: Boolean): ModelState<User?, String> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean): ModelState<User?, String> {
         val location = locationHelper.getCurrentLocation()
         val latitude = location?.latitude
         val longitude = location?.longitude
@@ -46,18 +41,23 @@ class LoginUseCaseImp(
             imei = Build.FINGERPRINT + Build.ID
         )
 
-        return when (val result = repositoryLogin.executeLogin(request)) {
-            is ResultSuccess -> {
-                result.data?.accessToken?.let {
-                    if(savePreferences(result.data, remember)) SuccessState(result.data?.user)
-                    else ErrorUserState(ModelCodeError.ERROR_CRITICAL)
-                }?: ErrorUserState(ModelCodeError.ERROR_CRITICAL)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+        return runCatching { repositoryLogin.executeLogin(request) }.fold(
+            onSuccess = { result ->
+                when (result){
+                    is ResultSuccess -> {
+                        result.data?.accessToken?.let {
+                            if(savePreferences(result.data, remember)) SuccessState(result.data?.user)
+                            else ErrorState(ModelCodeError.ERROR_CRITICAL)
+                        }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
+                    }
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+
+                }
+            },
+            onFailure = { ErrorState(ModelCodeError.ERROR_CRITICAL) }
+        )
     }
 
 
@@ -85,7 +85,7 @@ class LoginUseCaseImp(
     private fun handleResponse(error: FailureService): ModelState<User?, String> {
         return when(error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
             is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
             is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)

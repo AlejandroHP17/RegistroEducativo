@@ -3,10 +3,10 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassw
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.LoginUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,17 +19,13 @@ class ForgetPasswordViewModel(
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelLoginUiState())
+    val uiState: StateFlow<ModelLoginUiState> = _uiState.asStateFlow()
 
     fun onEmailChanged(email: String) {
         _uiState.update {
             it.copy(
-                email = ModelStateOutFieldText(
-                    valueText = email,
-                    isError = false,
-                    errorMessage = ""
-                )
+                email = email.stringToModelStateOutFieldText()
             )
         }
     }
@@ -41,8 +37,7 @@ class ForgetPasswordViewModel(
      * */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
-            val emailState =
-                validateFieldsUseCase.validateEmailCompose(_uiState.value.email.valueText)
+            val emailState = validateFieldsUseCase.validateEmailCompose(_uiState.value.email.valueText)
 
             _uiState.update {
                 it.copy(email = emailState)

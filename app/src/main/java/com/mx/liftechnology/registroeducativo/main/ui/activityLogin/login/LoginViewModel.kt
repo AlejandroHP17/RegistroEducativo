@@ -2,11 +2,17 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.core.util.log
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.LoginUiState
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,19 +26,15 @@ class LoginViewModel(
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
-    private val myValue: LoginUiState
+    private val _uiState = MutableStateFlow(ModelLoginUiState())
+    val uiState: StateFlow<ModelLoginUiState> = _uiState.asStateFlow()
+    private val myValue: ModelLoginUiState
         get() = _uiState.value
 
     fun onEmailChanged(email: String) {
         _uiState.update {
             it.copy(
-                email = ModelStateOutFieldText(
-                    valueText = email,
-                    isError = false,
-                    errorMessage = ""
-                )
+                email = email.stringToModelStateOutFieldText()
             )
         }
     }
@@ -40,11 +42,7 @@ class LoginViewModel(
     fun onPassChanged(pass: String) {
         _uiState.update {
             it.copy(
-                password = ModelStateOutFieldText(
-                    valueText = pass,
-                    isError = false,
-                    errorMessage = ""
-                )
+                password = pass.stringToModelStateOutFieldText()
             )
         }
     }
@@ -63,7 +61,7 @@ class LoginViewModel(
      * @since 1.0.0
      * */
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(isLoading = true) }
+        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
         val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
         val passState = validateFieldsUseCase.validatePassCompose(myValue.password.valueText)
 
@@ -75,7 +73,7 @@ class LoginViewModel(
         }
 
         if (!(emailState.isError || passState.isError)) loginCompose()
-        else _uiState.update { it.copy(isLoading = false) }
+        else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
     }
 
 
@@ -85,36 +83,58 @@ class LoginViewModel(
      * */
     private fun loginCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
-            runCatching {
-                loginUseCase.login(
-                    _uiState.value.email.valueText,
-                    _uiState.value.password.valueText,
-                    _uiState.value.isRemember
-                )
-            }.onSuccess { result ->
-                if(result is SuccessState){
+            when (val result = loginUseCase.invoke(
+                myValue.email.valueText,
+                myValue.password.valueText,
+                myValue.isRemember
+            )) {
+                is SuccessState -> {
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
-                            isSuccess = true
-                        )
-                    }
-                }else{
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isSuccess = false
+                            uiState = ModelStateUIEnum.SUCCESS,
+                            controlToast = ModelStateToastUI(
+                                messageToast = R.string.toast_success_login,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.SUCCESS
+                            )
                         )
                     }
                 }
-            }.onFailure {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isSuccess = false
-                    )
+
+                is ErrorUserState -> {
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR,
+                            controlToast = ModelStateToastUI(
+                                messageToast = R.string.toast_error_login_user,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.ERROR
+                            )
+                        )
+                    }
+                }
+
+                else -> {
+                    log(result.toString())
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR
+                        )
+                    }
                 }
             }
+        }
+    }
+
+    fun modifyShowToast(show: Boolean) {
+        _uiState.update {
+            it.copy(
+                controlToast = ModelStateToastUI(
+                    messageToast = it.controlToast.messageToast,
+                    showToast = show,
+                    typeToast = it.controlToast.typeToast
+                )
+            )
         }
     }
 }

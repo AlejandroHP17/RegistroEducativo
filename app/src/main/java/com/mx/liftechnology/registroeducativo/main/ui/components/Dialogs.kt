@@ -12,19 +12,19 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.control.ModelMenuControlState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 
 @Preview(showBackground = true)
 @Composable
 fun AlertDialogPreview(){
-    AlertDialogMenu(ModelMenuControlState(),{},{},false){}
+    AlertDialogMenu(ModelMenuUIState(),{},{},false){}
 }
 
 
 @Composable
 fun AlertDialogMenu(
-    controlState: ModelMenuControlState,
+    controlState: ModelMenuUIState,
     itemSelectedReturn: (ModelDialogStudentGroupDomain) -> Unit,
     itemSelectedPartialReturn: (ModelDialogGroupPartialDomain?) -> Unit,
     selectType : Boolean,
@@ -89,8 +89,5 @@ fun AlertDialogMenu(
                 dismissButton = {}
             )
         }
-
-
-
     }
 }

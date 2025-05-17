@@ -29,7 +29,7 @@ import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import java.time.LocalDate
 
 @Preview(showBackground = true)

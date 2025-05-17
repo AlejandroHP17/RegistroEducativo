@@ -4,12 +4,11 @@ import com.mx.liftechnology.core.network.callapi.GroupApiCall
 import com.mx.liftechnology.data.repository.mainflowdata.MenuLocalRepository
 import com.mx.liftechnology.data.repository.mainflowdata.MenuRepository
 import com.mx.liftechnology.data.repository.mainflowdata.MenuRepositoryImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetControlMenuUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetControlRegisterUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetGroupMenuUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMenuUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMenuUseCaseImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuGroupsUseCaseImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.MenuUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.UpdateGroupMenuUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -30,17 +29,26 @@ val menuModule = module {
         MenuRepositoryImp(get())
     }
 
-    single<MenuUseCase> {
-        MenuUseCaseImp(get())
+    single {
+        GetControlMenuUseCase(get())
     }
-    single<MenuGroupsUseCase> {
-        MenuGroupsUseCaseImp(get(), get())
+    single {
+        GetControlRegisterUseCase(get())
     }
-    single<GetListPartialMenuUseCase> {
-        GetListPartialMenuUseCaseImp(get(), get())
+
+    single{
+        UpdateGroupMenuUseCase(get())
+
+    }
+    single {
+        GetGroupMenuUseCase(get(), get())
+    }
+
+    single {
+        GetListPartialMenuUseCase(get(), get())
     }
 
     viewModel {
-        MenuViewModel(get(), get(), get(), get(), get())
+        MenuViewModel(get(), get(), get(), get(), get(), get(), get(), get())
     }
 }

@@ -52,4 +52,5 @@ class ListSubjectViewModel(
     fun getSubject(item: ModelCustomCard): ModelFormatSubjectDomain? {
         return _uiState.value.subjectList?.find { it.subjectId.toString() == item.id }
     }
+
 }

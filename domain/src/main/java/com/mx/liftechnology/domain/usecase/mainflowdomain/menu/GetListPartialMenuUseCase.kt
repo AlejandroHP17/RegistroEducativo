@@ -16,14 +16,12 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.menu.ListPartialToConvertModelDialogGroupPartialDomains
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 
-fun interface GetListPartialMenuUseCase {
-    suspend fun getListPartial(): ModelState<List<ModelDialogGroupPartialDomain>?, String>?
-}
-class GetListPartialMenuUseCaseImp (
+
+class GetListPartialMenuUseCase (
     private val crudPartialRepository: CrudPartialRepository,
     private val preference: PreferenceUseCase
-) : GetListPartialMenuUseCase {
-    override suspend fun getListPartial(): ModelState<List<ModelDialogGroupPartialDomain>?, String> {
+)  {
+     suspend operator fun invoke(): ModelState<List<ModelDialogGroupPartialDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -34,19 +32,23 @@ class GetListPartialMenuUseCaseImp (
             teacherId = roleId
         )
 
-        return when (val result =  crudPartialRepository.executeGetListPartial(request)) {
-            is ResultSuccess -> {
-                val convertedResult = result.data.ListPartialToConvertModelDialogGroupPartialDomains
-                if (convertedResult.isNotEmpty()) {
-                    SuccessState(convertedResult)
-                }
-                else ErrorState(ModelCodeError.ERROR_UNKNOWN)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+         return runCatching { crudPartialRepository.executeGetListPartial(request) }.fold(
+             onSuccess = { result ->
+                 when (result){
+                     is ResultSuccess -> {
+                         val convertedResult = result.data.ListPartialToConvertModelDialogGroupPartialDomains
+                         if (convertedResult.isNotEmpty()) {
+                             SuccessState(convertedResult)
+                         }
+                         else ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                     }
+                     is ResultError -> {
+                         handleResponse(result.error)
+                     }
+                 }
+             },
+             onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+         )
     }
 
     private fun handleResponse(error: FailureService): ModelState<List<ModelDialogGroupPartialDomain>?, String> {

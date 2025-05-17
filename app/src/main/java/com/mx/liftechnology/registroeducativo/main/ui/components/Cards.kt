@@ -42,7 +42,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.M
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_azul_link
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import java.time.LocalDate
 
 @Preview(showBackground = true)

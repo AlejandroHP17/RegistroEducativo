@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
@@ -140,11 +141,13 @@ fun RegisterAssignmentScreen(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-            ActionRegisterAssignment()
+            ActionRegisterAssignment(
+                onClick = { registerAssignmentViewModel.validateFields() }
+            )
         }
 
     }
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable
@@ -222,12 +225,13 @@ private fun ColumnRegisterScore(
 
 @Composable
 private fun ActionRegisterAssignment(
+    onClick:() -> Unit
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
         containerColor = color_action,
         text = stringResource(R.string.save),
-        onActionClick = { }
+        onActionClick = { onClick() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 }

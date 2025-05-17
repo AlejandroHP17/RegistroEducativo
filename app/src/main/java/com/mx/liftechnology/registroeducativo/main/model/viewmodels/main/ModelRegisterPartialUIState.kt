@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodels.main
 
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 
 data class ModelRegisterPartialUIState(
     val showControl: Boolean = false,

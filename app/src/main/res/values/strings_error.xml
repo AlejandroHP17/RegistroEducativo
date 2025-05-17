@@ -1,9 +1,0 @@
-<resources>
-
-    <string name="toast_success_login">Te has logueado correctamente, bienvenido</string>
-    <string name="toast_success_register_user">Tu usuario se registrado correctamente, puedes iniciar sesión ahora</string>
-
-
-    <string name="toast_error_validate_fields">Favor de verifical que todos los campos esten correctos</string>
-
-</resources>

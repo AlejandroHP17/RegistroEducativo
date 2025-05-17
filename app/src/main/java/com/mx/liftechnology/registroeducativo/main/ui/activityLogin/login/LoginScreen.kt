@@ -14,7 +14,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.LoginUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
+import com.mx.liftechnology.registroeducativo.main.ui.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -34,17 +36,24 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     navController: NavHostController,
     loginViewModel: LoginViewModel = koinViewModel(),
+    sharedViewModel: SharedViewModel,
     onSuccess: () -> Unit,
 ) {
     val uiState by loginViewModel.uiState.collectAsState()
 
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) onSuccess()
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS) onSuccess()
+    }
+
+    LaunchedEffect (uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+        loginViewModel.modifyShowToast(false)
     }
 
     Column(
         modifier = ModifierOrientation()
     ) {
+
         HeaderLoginScreen()
 
         BodyLoginScreen(
@@ -61,7 +70,8 @@ fun LoginScreen(
 
         FooterLoginScreen { navController.navigate(LoginRoutes.REGISTER_USER.route) }
     }
-    LoadingAnimation(uiState.isLoading)
+
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable
@@ -78,7 +88,7 @@ fun HeaderLoginScreen() {
 
 @Composable
 fun BodyLoginScreen(
-    uiState: LoginUiState,
+    uiState: ModelLoginUiState,
     onEmailChanged: (String) -> Unit,
     onPassChanged: (String) -> Unit,
     onRememberChanged: (Boolean) -> Unit,

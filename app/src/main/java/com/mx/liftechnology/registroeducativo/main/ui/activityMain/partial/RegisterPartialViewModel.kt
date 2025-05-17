@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
@@ -9,7 +10,6 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPa
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

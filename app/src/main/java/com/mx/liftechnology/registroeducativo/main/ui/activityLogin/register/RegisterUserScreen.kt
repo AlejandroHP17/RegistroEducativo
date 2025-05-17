@@ -15,7 +15,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.RegisterUserUiState
+import com.mx.liftechnology.registroeducativo.main.ui.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
@@ -33,16 +35,23 @@ import org.koin.androidx.compose.koinViewModel
 fun RegisterUserScreen(
     navController: NavHostController,
     registerUserViewModel: RegisterUserViewModel = koinViewModel(),
+    sharedViewModel: SharedViewModel,
 ) {
     val uiState by registerUserViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     // Detectar el cambio de estado y notificar a la Activity
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS) {
             navController.popBackStack()
         }
     }
+
+    LaunchedEffect (uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+        registerUserViewModel.modifyShowToast(false)
+    }
+
     Column(
         ModifierOrientation()
     ) {
@@ -60,7 +69,8 @@ fun RegisterUserScreen(
         Spacer(modifier = Modifier.weight(1f))
         FooterRegisterUserScreen { registerUserViewModel.validateFieldsCompose() }
     }
-    LoadingAnimation(uiState.isLoading)
+
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 

@@ -10,6 +10,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.ui.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -20,7 +23,8 @@ import org.koin.androidx.compose.koinViewModel
 fun ProfileScreen(
     navController: NavHostController,
     profileViewModel: ProfileViewModel = koinViewModel(),
-    onSuccess : () -> Unit
+    sharedViewModel: SharedViewModel,
+    onCloseSession : () -> Unit
 ) {
 
     Column(
@@ -35,8 +39,14 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         ActionProfile{
+            val control = ModelStateToastUI(
+                messageToast = R.string.toast_informative_close_session,
+                showToast = true,
+                typeToast = ModelStateTypeToastUI.INFORMATIVE
+            )
+            sharedViewModel.modifyShowToast(control)
             profileViewModel.closeSession()
-            onSuccess()
+            onCloseSession()
         }
     }
 }

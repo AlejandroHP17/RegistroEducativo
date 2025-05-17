@@ -12,21 +12,15 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface RegisterUseCase {
-    suspend fun putRegister(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String>?
-}
-
-class RegisterUseCaseImp(
+class RegisterUserUseCase(
     private val registerRepository: RegisterRepository
-) : RegisterUseCase {
+)  {
 
     /** Request to Register
      * @author pelkidev
      * @since 1.0.0
      * */
-    override suspend fun putRegister(
-        email: String, pass: String, activatationCode: String
-    ): ModelState<List<String>?, String> {
+    suspend operator fun invoke(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String> {
         val request = CredentialsRegister(
             email = email.lowercase(),
             password = pass,

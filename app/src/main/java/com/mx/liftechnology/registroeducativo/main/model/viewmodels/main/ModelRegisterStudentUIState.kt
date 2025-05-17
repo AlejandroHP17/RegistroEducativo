@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodels.main
 import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 
 data class ModelRegisterStudentUIState(
     val isLoading: Boolean = false,

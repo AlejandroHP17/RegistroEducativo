@@ -1,5 +1,6 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -17,8 +18,8 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
      * */
     override fun validatePeriod(period: String?): ModelStateOutFieldText {
         return when {
-            (period?.toIntOrNull() ?: 0) < 1 -> ModelStateOutFieldText(valueText = period?:"", isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
-            else -> ModelStateOutFieldText(valueText = period?:"", isError = false,  errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            (period?.toIntOrNull() ?: 0) < 1 -> period.stringToModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
+            else -> period.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.core.util.log
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
@@ -14,7 +15,6 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -73,18 +73,11 @@ class RegisterSchoolViewModel(
                 getSchoolCCT(cct)
                 it.copy(
                     isLoading = true,
-                    cct = ModelStateOutFieldText(
-                        valueText = cct.uppercase(),
-                        isError = false,
-                        errorMessage = "")
+                    cct = cct.uppercase().stringToModelStateOutFieldText()
                 )
             } else {
                 it.copy(
-                    cct = ModelStateOutFieldText(
-                        valueText = cct.uppercase(),
-                        isError = true,
-                        errorMessage = ModelCodeInputs.ET_NOT_FOUND
-                    ),
+                    cct = cct.uppercase().stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND),
                     schoolName =  it.schoolName.copy(valueText = ""),
                     shift = it.shift.copy(valueText = ""),
                     type = it.type.copy(valueText = ""),

@@ -4,7 +4,6 @@ import com.mx.liftechnology.core.network.callapi.LoginApiCall
 import com.mx.liftechnology.data.repository.loginflowdata.LoginRepository
 import com.mx.liftechnology.data.repository.loginflowdata.LoginRepositoryImp
 import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCase
-import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCaseImp
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login.LoginViewModel
@@ -16,7 +15,7 @@ import retrofit2.Retrofit
  * @author pelkidev
  * @since 1.0.0
  */
-val loginModule = module {
+val loginUserModule = module {
 
     factory { get<Retrofit>().create(LoginApiCall::class.java) }
 
@@ -24,8 +23,8 @@ val loginModule = module {
         LoginRepositoryImp(get())
     }
 
-    single<LoginUseCase> {
-        LoginUseCaseImp(get(), get(), get())
+    single {
+        LoginUseCase(get(),get(), get())
     }
 
     single<ValidateFieldsLoginUseCase> {

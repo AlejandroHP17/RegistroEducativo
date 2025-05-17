@@ -11,7 +11,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.LoginUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -44,7 +45,7 @@ fun ForgetPasswordScreen(
         Spacer(modifier = Modifier.weight(1f))
         FooterForgetPasswordScreen { forgetPasswordViewModel.validateFieldsCompose() }
     }
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable
@@ -60,7 +61,7 @@ fun HeaderForgetPasswordScreen(
 
 @Composable
 fun BodyForgetPasswordScreen(
-    uiState: LoginUiState,
+    uiState: ModelLoginUiState,
     onEmailChanged: (String) -> Unit,
     getRules: String,
 ) {

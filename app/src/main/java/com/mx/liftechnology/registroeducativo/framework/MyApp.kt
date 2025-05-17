@@ -10,12 +10,13 @@ import com.mx.liftechnology.registroeducativo.di.crudSubjectModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
-import com.mx.liftechnology.registroeducativo.di.loginModule
+import com.mx.liftechnology.registroeducativo.di.loginUserModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.profileModule
 import com.mx.liftechnology.registroeducativo.di.registerAssignmentModule
-import com.mx.liftechnology.registroeducativo.di.registerModule
 import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
+import com.mx.liftechnology.registroeducativo.di.registerUserModule
+import com.mx.liftechnology.registroeducativo.di.sharedModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
 import com.mx.liftechnology.registroeducativo.di.voiceModule
 import org.koin.android.ext.koin.androidContext
@@ -42,14 +43,15 @@ class MyApp : Application() {
         startKoin {
             androidContext(this@MyApp)
             modules(
+                sharedModule,
                 voiceModule,
                 dispatcherModule,
                 locationModule,
                 networkModule,
                 preferenceModule,
                 splashModule,
-                loginModule,
-                registerModule,
+                loginUserModule,
+                registerUserModule,
                 forgetPasswordModule,
                 menuModule,
                 registerSchoolModule,

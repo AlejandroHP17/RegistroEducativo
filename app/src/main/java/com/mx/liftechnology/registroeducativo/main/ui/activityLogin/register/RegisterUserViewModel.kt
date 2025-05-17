@@ -3,11 +3,16 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.register
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.core.util.log
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.loginflowdomain.RegisterUseCase
+import com.mx.liftechnology.domain.usecase.loginflowdomain.RegisterUserUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.RegisterUserUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class RegisterUserViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val registerUseCase: RegisterUseCase,
+    private val registerUserUseCase: RegisterUserUseCase,
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel() {
 
@@ -29,49 +34,25 @@ class RegisterUserViewModel(
 
     fun onEmailChanged(email: String) {
         _uiState.update {
-            it.copy(
-                email = ModelStateOutFieldText(
-                    valueText = email,
-                    isError = false,
-                    errorMessage = ""
-                )
-            )
+            it.copy(email = email.stringToModelStateOutFieldText())
         }
     }
 
     fun onPassChanged(pass: String) {
         _uiState.update {
-            it.copy(
-                password = ModelStateOutFieldText(
-                    valueText = pass,
-                    isError = false,
-                    errorMessage = ""
-                )
-            )
+            it.copy(password = pass.stringToModelStateOutFieldText())
         }
     }
 
     fun onRepeatPassChanged(repeatPass: String) {
         _uiState.update {
-            it.copy(
-                repeatPassword = ModelStateOutFieldText(
-                    valueText = repeatPass,
-                    isError = false,
-                    errorMessage = ""
-                )
-            )
+            it.copy(repeatPassword = repeatPass.stringToModelStateOutFieldText())
         }
     }
 
     fun onCodeChanged(code: String) {
         _uiState.update {
-            it.copy(
-                code = ModelStateOutFieldText(
-                    valueText = code,
-                    isError = false,
-                    errorMessage = ""
-                )
-            )
+            it.copy(code = code.stringToModelStateOutFieldText())
         }
     }
 
@@ -81,7 +62,7 @@ class RegisterUserViewModel(
      * @since 1.0.0
      * */
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(isLoading = true) }
+        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
         val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
         val passState =
             validateFieldsUseCase.validatePassRegisterCompose(myValue.password.valueText)
@@ -103,7 +84,7 @@ class RegisterUserViewModel(
         if (!(emailState.isError || passState.isError || repeatPassState.isError || codeState.isError)) {
             registerCompose()
         } else {
-            _uiState.update { it.copy(isLoading = false) }
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
         }
     }
 
@@ -119,37 +100,58 @@ class RegisterUserViewModel(
      * */
     private fun registerCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
-            runCatching {
-                registerUseCase.putRegister(
-                    myValue.email.valueText,
-                    myValue.password.valueText,
-                    myValue.code.valueText
-                )
-            }.onSuccess { state ->
-                if (state is SuccessState) {
+            when (val result = registerUserUseCase.invoke(
+                myValue.email.valueText,
+                myValue.password.valueText,
+                myValue.code.valueText
+            )) {
+                is SuccessState -> {
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
-                            isSuccess = true
-                        )
-                    }
-                } else {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isSuccess = false
+                            uiState = ModelStateUIEnum.SUCCESS,
+                            controlToast = ModelStateToastUI(
+                                messageToast = R.string.toast_success_register_user,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.SUCCESS
+                            )
                         )
                     }
                 }
 
-            }.onFailure {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isSuccess = false
-                    )
+                is ErrorUserState -> {
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR,
+                            controlToast = ModelStateToastUI(
+                                messageToast = R.string.toast_error_register_user,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.ERROR
+                            )
+                        )
+                    }
+                }
+
+                else -> {
+                    log(result.toString())
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR
+                        )
+                    }
                 }
             }
+        }
+    }
+
+    fun modifyShowToast(show: Boolean) {
+        _uiState.update {
+            it.copy(
+                controlToast = ModelStateToastUI(
+                    messageToast = it.controlToast.messageToast,
+                    showToast = show,
+                    typeToast = it.controlToast.typeToast
+                )
+            )
         }
     }
 }

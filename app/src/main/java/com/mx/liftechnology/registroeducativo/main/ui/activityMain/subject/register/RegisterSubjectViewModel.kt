@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
@@ -10,7 +11,6 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFields
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment.GetListAssessmentTypeUseCase
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,8 +42,8 @@ class RegisterSubjectViewModel(
                     if (subject.position == value.second) {
                         subject.copy(
                             name = value.first?.description.stringToModelStateOutFieldText(),
-                            assessmentTypeId =  value.first?.assessmentTypeId,
-                            teacherSchoolCycleGroupId =  value.first?.teacherSchoolCycleGroupId,
+                            assessmentTypeId = value.first?.assessmentTypeId,
+                            teacherSchoolCycleGroupId = value.first?.teacherSchoolCycleGroupId,
                         )
                     } else {
                         subject
@@ -92,28 +92,33 @@ class RegisterSubjectViewModel(
     fun validateFieldsCompose() {
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch(dispatcherProvider.io) {
-            val nameState = validateFieldsSubjectUseCase.validateNameCompose(_uiState.value.subject.valueText)
-            val optionState = validateFieldsSubjectUseCase.validateOptionCompose(_uiState.value.options.valueText)
-            val updatedListState = validateFieldsSubjectUseCase.validateListJobsCompose(_uiState.value.listAdapter?.toMutableList())
+            val nameState =
+                validateFieldsSubjectUseCase.validateNameCompose(_uiState.value.subject.valueText)
+            val optionState =
+                validateFieldsSubjectUseCase.validateOptionCompose(_uiState.value.options.valueText)
+            val updatedListState =
+                validateFieldsSubjectUseCase.validateListJobsCompose(_uiState.value.listAdapter?.toMutableList())
 
             _uiState.update {
                 it.copy(
                     subject = nameState,
                     options = optionState,
-                    listAdapter =  updatedListState
+                    listAdapter = updatedListState
                 )
             }
 
             if (!(nameState.isError || optionState.isError)) {
-                val optionState = validateFieldsSubjectUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
+                val optionState =
+                    validateFieldsSubjectUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
 
-                if(!optionState.isError) registerSubjectCompose()
+                if (!optionState.isError) registerSubjectCompose()
                 _uiState.update {
                     it.copy(
                         options = optionState,
-                        isLoading = false)
+                        isLoading = false
+                    )
                 }
-            }else{
+            } else {
                 _uiState.update { it.copy(isLoading = false) }
             }
         }
@@ -122,24 +127,33 @@ class RegisterSubjectViewModel(
     private fun registerSubjectCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             runCatching {
-                registerOneSubjectUseCase.registerOneSubjectCompose(_uiState.value.listAdapter?.toMutableList(), _uiState.value.subject.valueText)
+                registerOneSubjectUseCase.registerOneSubjectCompose(
+                    _uiState.value.listAdapter?.toMutableList(),
+                    _uiState.value.subject.valueText
+                )
             }.onSuccess { state ->
-                if(state is SuccessState){
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = true
-                    ) }
-                }else{
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = false
-                    ) }
+                if (state is SuccessState) {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = false
+                        )
+                    }
                 }
             }.onFailure {
-                _uiState.update { it.copy(
-                    isLoading = false,
-                    isSuccess = false
-                ) }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        isSuccess = false
+                    )
+                }
             }
         }
     }
@@ -149,31 +163,45 @@ class RegisterSubjectViewModel(
             runCatching {
                 getListAssessmentTypeUseCase.getListAssessmentType()
             }.onSuccess { state ->
-                if(state is SuccessState){
+                if (state is SuccessState) {
                     val list = state.result.toMutableList()
-                    list.add(ResponseGetListAssessmentType(
-                        assessmentTypeId = -1,
-                        description = "Nuevo",
-                        teacherSchoolCycleGroupId = 1),
-                    )
-                    _uiState.update { it.copy(
-                        listWorkMethods = list
-                    ) }
-                }else{
-                    _uiState.update { it.copy(
-                        listWorkMethods = listOf (ResponseGetListAssessmentType(
+                    list.add(
+                        ResponseGetListAssessmentType(
                             assessmentTypeId = -1,
                             description = "Nuevo",
-                            teacherSchoolCycleGroupId = 1),
-                        ) )}
+                            teacherSchoolCycleGroupId = 1
+                        ),
+                    )
+                    _uiState.update {
+                        it.copy(
+                            listWorkMethods = list
+                        )
+                    }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            listWorkMethods = listOf(
+                                ResponseGetListAssessmentType(
+                                    assessmentTypeId = -1,
+                                    description = "Nuevo",
+                                    teacherSchoolCycleGroupId = 1
+                                ),
+                            )
+                        )
+                    }
                 }
             }.onFailure {
-                _uiState.update { it.copy(
-                    listWorkMethods = listOf (ResponseGetListAssessmentType(
-                        assessmentTypeId = -1,
-                        description = "Nuevo",
-                        teacherSchoolCycleGroupId = 1),
-                    ) )}
+                _uiState.update {
+                    it.copy(
+                        listWorkMethods = listOf(
+                            ResponseGetListAssessmentType(
+                                assessmentTypeId = -1,
+                                description = "Nuevo",
+                                teacherSchoolCycleGroupId = 1
+                            ),
+                        )
+                    )
+                }
             }
         }
     }

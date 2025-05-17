@@ -19,7 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.control.ModelMenuControlState
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
+import com.mx.liftechnology.registroeducativo.main.ui.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.CONTROL
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.REGISTER
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
@@ -39,19 +41,28 @@ import org.koin.androidx.compose.koinViewModel
 fun MenuScreen(
     navController: NavHostController,
     menuViewModel: MenuViewModel = koinViewModel(),
+    onCloseSession: () ->Unit
 ) {
 
     /* Variables locales y en viewmodel */
+    val sharedViewModel: SharedViewModel = koinViewModel()
     val uiState by menuViewModel.uiState.collectAsState()
-    val controlState by menuViewModel.controlState.collectAsState()
     val showDialog = remember { mutableStateOf(false) }
     val isGroup = remember { mutableStateOf(false) }
 
     /* Llamadas a servicios cuando se monta la pantalla */
     LaunchedEffect(Unit) {
-        if (controlState.studentGroupItem.itemPartial == null){
+        if (uiState.studentGroupItem.itemPartial == null){
             menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
             menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
+        }
+    }
+
+    LaunchedEffect ( Unit){
+        if(uiState.uiState == ModelStateUIEnum.UNAUTHORIZED){
+            sharedViewModel.modifyShowToast(uiState.controlToast)
+            menuViewModel.modifyShowToast(false)
+            onCloseSession()
         }
     }
 
@@ -61,7 +72,7 @@ fun MenuScreen(
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
         HeaderMenuScreen(
-            controlState = controlState,
+            controlState = uiState,
             onShowDialog = {
                 isGroup.value = true
                 showDialog.value = true
@@ -79,16 +90,16 @@ fun MenuScreen(
                     REGISTER -> {
                         if (uiState.showControl) {
                             RegisterAreaMenuScreen(
-                                controlState = controlState,
+                                controlState = uiState,
                                 navController = navController,
-                                test = { menuViewModel.test() }
+                                test = { }
                             )
                         }
                     }
 
                     CONTROL -> {
                         ControlAreaMenuScreen(
-                            controlState = controlState,
+                            controlState = uiState,
                             navController = navController
                         )
                     }
@@ -97,11 +108,11 @@ fun MenuScreen(
         }
     }
 
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 
     if (showDialog.value) {
         AlertDialogMenu(
-            controlState = controlState,
+            controlState = uiState,
             itemSelectedReturn = {
                 menuViewModel.updateGroup(it)
                 isGroup.value = false
@@ -124,7 +135,7 @@ object MenuScreenObject {
 }
 
 @Composable
-private fun HeaderMenuScreen(controlState: ModelMenuControlState, onShowDialog: (Boolean) -> Unit) {
+private fun HeaderMenuScreen(controlState: ModelMenuUIState, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
         title = stringResource(R.string.menu_grettins, "Profesor"),
         body = controlState.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
@@ -136,7 +147,7 @@ private fun HeaderMenuScreen(controlState: ModelMenuControlState, onShowDialog: 
 
 @Composable
 private fun RegisterAreaMenuScreen(
-    controlState: ModelMenuControlState,
+    controlState: ModelMenuUIState,
     navController: NavHostController,
     test: () -> Unit,
 ) {
@@ -165,7 +176,7 @@ private fun RegisterAreaMenuScreen(
 
 @Composable
 private fun ControlAreaMenuScreen(
-    controlState: ModelMenuControlState,
+    controlState: ModelMenuUIState,
     navController: NavHostController,
 ) {
     val menuItemsControl = stringArrayResource(com.mx.liftechnology.data.R.array.menu_items_control)
