@@ -15,10 +15,12 @@ crypto = "1.1.0-alpha06"
 splashScreen = "1.0.1"
 lottie = "6.1.0"
 timber = "5.0.1"
+datetime = "0.9.0"
+calendar = "2.3.0"
 
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.04.00"
+composeBom = "2025.05.01"
 constraintVersion = "1.1.1"
 
 
@@ -41,6 +43,8 @@ androidx-compose-navigation = { group = "androidx.navigation", name = "navigatio
 androidx-compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version = "1.7.8" }
 androidx-compose-koin = { group = "io.insert-koin", name = "koin-androidx-compose", version = "3.5.4" }
 androidx-compose-lottie = { group = "com.airbnb.android", name = "lottie-compose", version = "6.1.0" }
+androidx-compose-datetime = { group = "io.github.vanpra.compose-material-dialogs", name = "datetime", version.ref = "datetime"}
+androidx-compose-calendar = { group = "com.kizitonwose.calendar", name = "compose", version.ref = "calendar"}
 
 
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
@@ -95,7 +99,9 @@ compose = [
     "androidx-compose-navigation",
     "androidx-compose-livedata",
     "androidx-compose-koin",
-    "androidx-compose-lottie"
+    "androidx-compose-lottie",
+    "androidx-compose-datetime",
+    "androidx-compose-calendar"
 ]
 
 compose-unit = [

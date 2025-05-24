@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
@@ -42,7 +43,6 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.M
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_azul_link
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import java.time.LocalDate
 
 @Preview(showBackground = true)
@@ -313,8 +313,7 @@ fun RegisterPartialListItem(
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDates by remember { mutableStateOf<Pair<LocalDate?, LocalDate?>>(null to null) }
 
-
-    DateRangePickerDialog(
+    CustomDateRangePicker(
         showDialog = showDatePicker,
         onDismiss = { showDatePicker = false },
         onDateSelected = { startDate, endDate ->

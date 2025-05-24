@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.log
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.SuccessState
@@ -115,7 +115,7 @@ class LoginViewModel(
                 }
 
                 else -> {
-                    log(result.toString())
+                    logs(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

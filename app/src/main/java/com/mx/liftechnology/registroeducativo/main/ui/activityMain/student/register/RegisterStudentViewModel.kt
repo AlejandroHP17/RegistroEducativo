@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.regi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.core.util.log
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.generic.SuccessState
@@ -38,7 +38,7 @@ class RegisterStudentViewModel(
     init {
         // Observa cambios del reconocimiento de voz
         voiceRecognitionManager.resultsLiveData.observeForever { results ->
-            log(results.toString())
+            logs(results.toString())
             validateDataRecord(results)
         }
     }
@@ -175,7 +175,7 @@ class RegisterStudentViewModel(
         viewModelScope.launch {
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
             result?.let { studentData ->
-                log(studentData.toString())
+                logs(studentData.toString())
                 _uiState.update { currentState ->
                     currentState.copy(
                         name = studentData[ModelVoiceConstants.NAME].stringToModelStateOutFieldText(),

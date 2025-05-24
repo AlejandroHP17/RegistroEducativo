@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui
+package com.mx.liftechnology.registroeducativo.main.ui.principal
 
 /**
  * Principal activity, the purpose of the app is to help in the study´s field

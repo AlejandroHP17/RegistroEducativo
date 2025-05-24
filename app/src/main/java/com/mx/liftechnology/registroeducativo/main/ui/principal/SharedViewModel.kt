@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui
+package com.mx.liftechnology.registroeducativo.main.ui.principal
 
 import androidx.lifecycle.ViewModel
 import com.mx.liftechnology.registroeducativo.main.model.ModelShareUIState

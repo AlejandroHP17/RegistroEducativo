@@ -3,7 +3,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.school
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.core.util.log
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -35,7 +34,6 @@ class RegisterSchoolViewModel(
     init {
         // Observa cambios del reconocimiento de voz
         voiceRecognitionManager.resultsLiveData.observeForever { results ->
-            log(results.toString())
             validateData(results)
         }
     }
@@ -67,7 +65,6 @@ class RegisterSchoolViewModel(
     }
 
     fun onCctChanged(cct: String) {
-        log(cct.length.toString())
         _uiState.update {
             if (cct.length == 10) {
                 getSchoolCCT(cct)

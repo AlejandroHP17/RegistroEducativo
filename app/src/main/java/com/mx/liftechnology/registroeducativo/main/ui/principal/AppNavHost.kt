@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui
+package com.mx.liftechnology.registroeducativo.main.ui.principal
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -130,7 +130,4 @@ fun AppNavHost(
             }
         )
     }
-
-
-
 }
