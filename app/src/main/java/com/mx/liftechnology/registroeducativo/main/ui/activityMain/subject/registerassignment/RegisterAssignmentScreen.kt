@@ -22,6 +22,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -82,6 +83,7 @@ fun RegisterAssignmentScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        logs("Screen list student assignment")
         val (header, body, body2, column, action) = createRefs()
 
         Column(

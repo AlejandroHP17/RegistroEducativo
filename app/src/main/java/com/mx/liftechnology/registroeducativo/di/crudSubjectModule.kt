@@ -11,13 +11,10 @@ import com.mx.liftechnology.data.repository.mainflowdata.subject.assessment.Crud
 import com.mx.liftechnology.data.repository.mainflowdata.subject.evaluationtype.CrudEvaluationTypeRepository
 import com.mx.liftechnology.data.repository.mainflowdata.subject.evaluationtype.CrudEvaluationTypeRepositoryImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment.GetListAssessmentTypeUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment.GetListAssessmentTypeUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType.GetListEvaluationTypeUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType.GetListEvaluationTypeUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list.ListSubjectViewModel
@@ -50,15 +47,11 @@ val crudSubjectModule = module {
     single<GetListEvaluationTypeUseCase> {
         GetListEvaluationTypeUseCaseImp(get(), get())
     }
-    single<RegisterOneSubjectUseCase> {
-        RegisterOneSubjectUseCaseImp(get(), get())
-    }
-    single<GetListSubjectUseCase> {
-        GetListSubjectUseCaseImp(get(), get())
-    }
-    single<GetListAssessmentTypeUseCase> {
-        GetListAssessmentTypeUseCaseImp(get(), get())
-    }
+    single {RegisterOneSubjectUseCase(get(), get())}
+
+    single {GetListSubjectUseCase(get(), get())}
+
+    single {GetListAssessmentTypeUseCase(get(), get())}
 
     single<ValidateFieldsSubjectUseCase> {
         ValidateFieldsSubjectUseCaseImp()
@@ -68,6 +61,6 @@ val crudSubjectModule = module {
         RegisterSubjectViewModel(get(), get(), get(), get())
     }
     viewModel {
-        ListSubjectViewModel(get())
+        ListSubjectViewModel(get(), get())
     }
 }

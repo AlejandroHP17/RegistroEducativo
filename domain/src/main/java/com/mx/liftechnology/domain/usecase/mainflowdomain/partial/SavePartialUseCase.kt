@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 class SavePartialUseCase (
     private val preference: PreferenceUseCase
 )  {
-    suspend operator fun invoke (
+    operator fun invoke (
         listPartial :
         List<ModelDialogGroupPartialDomain>?): ModelDialogGroupPartialDomain?  {
 

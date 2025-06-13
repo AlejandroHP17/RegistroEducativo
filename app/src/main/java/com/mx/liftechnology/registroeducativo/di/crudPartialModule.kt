@@ -4,12 +4,10 @@ import com.mx.liftechnology.core.network.callapi.GetListPartialApiCall
 import com.mx.liftechnology.core.network.callapi.RegisterListPartialApiCall
 import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
 import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepositoryImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.SavePartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.UpdatePartialUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial.RegisterPartialViewModel
@@ -30,12 +28,13 @@ val crudPartialModule = module {
         CrudPartialRepositoryImp(get(), get())
     }
 
-    single<RegisterListPartialUseCase> {
-        RegisterListPartialUseCaseImp(get(), get())
+    single{
+        RegisterListPartialUseCase(get(), get())
     }
-    single<GetListPartialUseCase> {
-        GetListPartialUseCaseImp(get(), get())
+    single {
+        GetListPartialUseCase(get(), get())
     }
+
     single<ValidateFieldsRegisterPartialUseCase> {
         ValidateFieldsRegisterPartialUseCaseImp()
     }

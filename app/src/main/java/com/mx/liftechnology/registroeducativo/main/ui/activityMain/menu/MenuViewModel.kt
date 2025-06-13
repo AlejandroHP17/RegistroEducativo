@@ -21,17 +21,20 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /** MenuViewModel - Control the data of the menu
  * @author pelkidev
  * @since 1.0.0
  */
 class MenuViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val preference: PreferenceUseCase,
     private val getGroupMenuUseCase: GetGroupMenuUseCase,
     private val updateGroupMenuUseCase: UpdateGroupMenuUseCase,
@@ -50,8 +53,8 @@ class MenuViewModel(
      * @since 1.0.0
      */
     fun getGroup() {
-        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.io) {
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             when (val state = getGroupMenuUseCase.invoke()) {
                 is SuccessState -> {
                     getListPartialCompose()
@@ -60,7 +63,7 @@ class MenuViewModel(
                         it.copy(
                             studentGroupItem = state.result.infoSchoolSelected,
                             studentGroupList = state.result.listSchool,
-                            uiState = ModelStateUIEnum.SUCCESS
+                            uiState = ModelStateUIEnum.NOTHING
                         )
                     }
                 }
@@ -96,20 +99,18 @@ class MenuViewModel(
      * @since 1.0.0
      */
     fun updateGroup(nameItem: ModelDialogStudentGroupDomain) {
-        _uiState.update { it.copy(studentGroupItem = nameItem) }
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.io) {
+            _uiState.update { it.copy(studentGroupItem = nameItem) }
             updateGroupMenuUseCase.invoke(nameItem)
             getListPartialCompose()
         }
     }
 
-    private fun getListPartialCompose() {
-        viewModelScope.launch {
-            when (val state = getListPartialMenuUseCase.invoke()) {
-                is SuccessState -> {
-                    val itemSelected =
-                        savePartialUseCase.invoke( state.result)
-
+    private suspend fun getListPartialCompose() {
+        when (val state = getListPartialMenuUseCase.invoke()) {
+            is SuccessState -> {
+                withContext(dispatcherProvider.io){
+                    val itemSelected = savePartialUseCase.invoke(state.result)
                     _uiState.update {
                         it.copy(
                             studentGroupItem = it.studentGroupItem.copy(
@@ -131,9 +132,11 @@ class MenuViewModel(
                         )
                     }
                 }
+            }
 
-                is ErrorUserState -> {
-                    savePartialUseCase.invoke( null)
+            is ErrorUserState -> {
+                withContext(dispatcherProvider.io){
+                    savePartialUseCase.invoke(null)
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
@@ -145,8 +148,10 @@ class MenuViewModel(
                         )
                     }
                 }
+            }
 
-                else -> {
+            else -> {
+                withContext(dispatcherProvider.io){
                     savePartialUseCase.invoke(null)
                     logs(state.toString())
                     _uiState.update {
@@ -165,13 +170,13 @@ class MenuViewModel(
      * @since 1.0.0
      */
     fun getControlMenu() {
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.io) {
             when (val state = getControlMenuUseCase.invoke()) {
                 is SuccessState -> {
                     _uiState.update {
                         it.copy(
                             controlItems = state.result,
-                            uiState = ModelStateUIEnum.SUCCESS
+                            uiState = ModelStateUIEnum.NOTHING
                         )
                     }
                 }
@@ -189,57 +194,57 @@ class MenuViewModel(
         }
     }
 
-    private fun showGetControlRegister() {
-        viewModelScope.launch {
-            when (val state = getControlRegisterUseCase.invoke()) {
-                is SuccessState -> {
-                    _uiState.update {
-                        it.copy(
-                            showControl = true,
-                            evaluationItems = state.result,
-                            uiState = ModelStateUIEnum.SUCCESS
-                        )
-                    }
+    private suspend fun showGetControlRegister() {
+        when (val state = getControlRegisterUseCase.invoke()) {
+            is SuccessState -> {
+                _uiState.update {
+                    it.copy(
+                        showControl = true,
+                        evaluationItems = state.result,
+                        uiState = ModelStateUIEnum.NOTHING
+                    )
                 }
+            }
 
-                else -> {
-                    logs(state.toString())
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            showControl = false
-                        )
-                    }
+            else -> {
+                logs(state.toString())
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        showControl = false
+                    )
                 }
             }
         }
+
     }
 
 
     fun updatePartial(partialItem: ModelDialogGroupPartialDomain?) {
-        _uiState.update {
-            it.copy(
-                studentGroupItem = it.studentGroupItem.copy(
-                    itemPartial = partialItem,
-                    namePartial = partialItem?.name
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(
+                    studentGroupItem = it.studentGroupItem.copy(
+                        itemPartial = partialItem,
+                        namePartial = partialItem?.name
+                    )
                 )
-            )
-        }
-
-        viewModelScope.launch {
+            }
             updatePartialUseCase.invoke(partialItem?.partialId ?: -1)
         }
     }
 
     fun modifyShowToast(show: Boolean) {
-        _uiState.update {
-            it.copy(
-                controlToast = ModelStateToastUI(
-                    messageToast = it.controlToast.messageToast,
-                    showToast = show,
-                    typeToast = it.controlToast.typeToast
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
+                    )
                 )
-            )
+            }
         }
     }
 }

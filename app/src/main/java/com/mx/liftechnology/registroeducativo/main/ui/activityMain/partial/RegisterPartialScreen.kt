@@ -17,7 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -26,6 +28,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimatio
 import com.mx.liftechnology.registroeducativo.main.ui.components.RegisterPartialList
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
@@ -34,15 +37,20 @@ import java.time.LocalDate
 fun RegisterPartialScreen(
     navController: NavHostController,
     registerPartialViewModel: RegisterPartialViewModel = koinViewModel(),
+    sharedViewModel: SharedViewModel
 ) {
 
     val uiState by registerPartialViewModel.uiState.collectAsState()
 
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            navController.popBackStack()
-        }
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS)  navController.popBackStack()
     }
+
+    LaunchedEffect (uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+        registerPartialViewModel.modifyShowToast(false)
+    }
+
     LaunchedEffect(Unit) {
         registerPartialViewModel.getListPartialCompose()
     }
@@ -52,6 +60,7 @@ fun RegisterPartialScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        logs("Register partial")
         val (header, body, column, action) = createRefs()
 
         Column(
@@ -96,7 +105,7 @@ fun RegisterPartialScreen(
                 end.linkTo(parent.end)
             }) { ActionRegisterPartial { registerPartialViewModel.validateFieldsCompose() } }
     }
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable

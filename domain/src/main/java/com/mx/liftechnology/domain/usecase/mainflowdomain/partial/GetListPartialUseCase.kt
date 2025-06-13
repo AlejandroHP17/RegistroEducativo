@@ -16,14 +16,11 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface GetListPartialUseCase {
-    suspend fun getListPartial(): ModelState<MutableList<ModelDatePeriodDomain>?, String>?
-}
-class GetListPartialUseCaseImp (
+class GetListPartialUseCase(
     private val crudPartialRepository: CrudPartialRepository,
     private val preference: PreferenceUseCase
-) : GetListPartialUseCase {
-    override suspend fun getListPartial(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
+)  {
+    suspend operator fun invoke(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -34,28 +31,30 @@ class GetListPartialUseCaseImp (
             teacherId = roleId
         )
 
-        return when (val result =  crudPartialRepository.executeGetListPartial(request)) {
-            is ResultSuccess -> {
-                val listDate = result.data?.mapIndexed { index, item ->
-                    ModelDatePeriodDomain(
-                        position = index,
-                        date = ModelStateOutFieldText(
-                            valueText = "${item?.startDate} / ${item?.endDate}",
-                            isError = false,
-                            errorMessage = ""),
-                        partialCycleGroup = item?.partialCycleGroup
-                    )
-                } ?.toMutableList()
-                if (listDate?.size!! > 0) {
-                    SuccessState(listDate)
+        return runCatching {crudPartialRepository.executeGetListPartial(request) }.fold(
+            onSuccess = { result ->
+                when(result){
+                    is ResultSuccess -> {
+                        val listDate = result.data?.mapIndexed { index, item ->
+                            ModelDatePeriodDomain(
+                                position = index,
+                                date = ModelStateOutFieldText(
+                                    valueText = "${item?.startDate} / ${item?.endDate}",
+                                    isError = false,
+                                    errorMessage = ""),
+                                partialCycleGroup = item?.partialCycleGroup
+                            )
+                        } ?.toMutableList()
+                        if (listDate?.size!! > 0) {
+                            SuccessState(listDate)
+                        }
+                        else ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                    }
+                    is ResultError -> { handleResponse(result.error) }
                 }
-                else ErrorState(ModelCodeError.ERROR_UNKNOWN)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
     private fun handleResponse(error: FailureService): ModelState<MutableList<ModelDatePeriodDomain>?, String> {

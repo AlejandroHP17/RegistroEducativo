@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val loginUseCase: LoginUseCase,
-    private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
+    private val validateFieldsUseCase: ValidateFieldsLoginUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelLoginUiState())
@@ -32,26 +32,32 @@ class LoginViewModel(
         get() = _uiState.value
 
     fun onEmailChanged(email: String) {
-        _uiState.update {
-            it.copy(
-                email = email.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(
+                    email = email.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     fun onPassChanged(pass: String) {
-        _uiState.update {
-            it.copy(
-                password = pass.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(
+                    password = pass.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     fun onRememberChanged(remember: Boolean) {
-        _uiState.update {
-            it.copy(
-                isRemember = remember
-            )
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(
+                    isRemember = remember
+                )
+            }
         }
     }
 
@@ -61,19 +67,21 @@ class LoginViewModel(
      * @since 1.0.0
      * */
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-        val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
-        val passState = validateFieldsUseCase.validatePassCompose(myValue.password.valueText)
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
+            val passState = validateFieldsUseCase.validatePassCompose(myValue.password.valueText)
 
-        _uiState.update {
-            it.copy(
-                email = emailState,
-                password = passState
-            )
+            _uiState.update {
+                it.copy(
+                    email = emailState,
+                    password = passState
+                )
+            }
+
+            if (!(emailState.isError || passState.isError)) loginCompose()
+            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
         }
-
-        if (!(emailState.isError || passState.isError)) loginCompose()
-        else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
     }
 
 
@@ -81,60 +89,61 @@ class LoginViewModel(
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun loginCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = loginUseCase.invoke(
-                myValue.email.valueText,
-                myValue.password.valueText,
-                myValue.isRemember
-            )) {
-                is SuccessState -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.SUCCESS,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_success_login,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.SUCCESS
-                            )
+    private suspend fun loginCompose() {
+        when (val result = loginUseCase.invoke(
+            myValue.email.valueText,
+            myValue.password.valueText,
+            myValue.isRemember
+        )) {
+            is SuccessState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.SUCCESS,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_success_login,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.SUCCESS
                         )
-                    }
+                    )
                 }
+            }
 
-                is ErrorUserState -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_error_login_user,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
+            is ErrorUserState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_error_login_user,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.ERROR
                         )
-                    }
+                    )
                 }
+            }
 
-                else -> {
-                    logs(result.toString())
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
-                    }
+            else -> {
+                logs(result.toString())
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR
+                    )
                 }
             }
         }
+
     }
 
     fun modifyShowToast(show: Boolean) {
-        _uiState.update {
-            it.copy(
-                controlToast = ModelStateToastUI(
-                    messageToast = it.controlToast.messageToast,
-                    showToast = show,
-                    typeToast = it.controlToast.typeToast
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
+                    )
                 )
-            )
+            }
         }
     }
 }

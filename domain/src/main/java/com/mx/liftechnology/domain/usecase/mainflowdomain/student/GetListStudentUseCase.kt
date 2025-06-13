@@ -14,20 +14,13 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.student.ModelStudentRegisterAssignmentDomain
 import com.mx.liftechnology.domain.model.student.toModelStudentList
-import com.mx.liftechnology.domain.model.student.toModelStudentRegisterAssignmentList
 
-interface GetListStudentUseCase {
-    suspend fun getListStudent(): ModelState<List<ModelStudentDomain>?, String>?
-    suspend fun getListStudentAssignment(): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String>
-}
-
-class GetListStudentUseCaseImp(
+class GetListStudentUseCase(
     private val crudStudentRepository: CrudStudentRepository,
     private val preference: PreferenceUseCase
-) : GetListStudentUseCase {
-    override suspend fun getListStudent(): ModelState<List<ModelStudentDomain>?, String> {
+)  {
+    suspend operator fun invoke(): ModelState<List<ModelStudentDomain>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg =
@@ -39,45 +32,20 @@ class GetListStudentUseCaseImp(
             teacherSchoolCycleGroupId = pecg
         )
 
-        return when (val result = crudStudentRepository.executeGetListStudent(request)) {
-            is ResultSuccess -> {
-                if (result.data.isNullOrEmpty()) ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-                else SuccessState(result.data?.toModelStudentList())
-            }
-
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-
-    override suspend fun getListStudentAssignment(): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String> {
-        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
-        val pecg =
-            preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
-
-        val request = CredentialGetListStudent(
-            teacherId = roleId,
-            userId = userId,
-            teacherSchoolCycleGroupId = pecg
+        return runCatching { crudStudentRepository.executeGetListStudent(request) }.fold(
+            onSuccess = { result ->
+                when(result){
+                    is ResultSuccess ->{
+                        if (result.data.isNullOrEmpty()) ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+                        else SuccessState(result.data?.toModelStudentList())
+                    }
+                    is ResultError -> { handleResponse(result.error) }
+                }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
         )
-
-        return when (val result = crudStudentRepository.executeGetListStudent(request)) {
-            is ResultSuccess -> {
-                if (result.data.isNullOrEmpty()) ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-                else SuccessState(result.data?.toModelStudentRegisterAssignmentList())
-            }
-
-            is ResultError -> {
-                handleResponseAssignment(result.error)
-            }
-
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
+
 
     /** handleResponse - Validate the code response, and assign the correct function of that
      * @author pelkidev
@@ -86,16 +54,6 @@ class GetListStudentUseCaseImp(
      * @return ModelState
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelStudentDomain>?, String> {
-        return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-
-    private fun handleResponseAssignment(error: FailureService): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)

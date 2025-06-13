@@ -20,6 +20,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastU
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUIState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,46 +28,48 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterAssignmentViewModel(
+    private val dispatcherProvider: DispatcherProvider,
     private val getListStudentUseCase: GetListStudentUseCase,
     private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase,
     private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
     private val validateFieldsAssignmentUseCase: ValidateFieldsAssignmentUseCase,
     private val registerAssignmentUseCase: RegisterAssignmentUseCase,
-
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterAssignmentUIState())
     val uiState: StateFlow<ModelRegisterAssignmentUIState> = _uiState.asStateFlow()
 
     fun updateSubject(subject: ModelFormatSubjectDomain?) {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcherProvider.io) {
             saveIdSubjectSelectedUseCase.invoke(subject?.subjectId)
             getListAssessmentType()
-        }
-        _uiState.update {
-            it.copy(
-                subject = subject
-            )
+            _uiState.update {
+                it.copy(
+                    subject = subject
+                )
+            }
         }
     }
 
     private fun getListAssessmentType() {
-        viewModelScope.launch {
-            runCatching {
-                getListAssignmentPerSubjectUseCase.invoke()
-            }.onSuccess { state ->
-                if (state is SuccessState) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
+                is SuccessState -> {
                     _uiState.update {
                         it.copy(
-                            listOptions = change(state.result)
+                            listOptions = change(result.result)
                         )
                     }
-
-                } else {
-
                 }
-            }.onFailure {
 
+                else -> {
+                    logs(result.toString())
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR
+                        )
+                    }
+                }
             }
         }
     }
@@ -76,62 +79,72 @@ class RegisterAssignmentViewModel(
     }
 
     fun onChangeName(name: String) {
-        _uiState.update {
-            it.copy(
-                nameJob = name.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update {
+                it.copy(
+                    nameJob = name.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     fun onChangeDate(date: String) {
-        _uiState.update {
-            it.copy(
-                date = date.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update {
+                it.copy(
+                    date = date.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     fun onNameAssignmentChanged(partial: String) {
-        _uiState.update {
-            it.copy(
-                nameAssignment = partial.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update {
+                it.copy(
+                    nameAssignment = partial.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     fun onScoreChange(data: Pair<String, String>) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                studentListUI = currentState.studentListUI.mapIndexed { _, score ->
-                    if (score.id == data.first) {
-                        score.copy(
-                            score = data.second.stringToModelStateOutFieldText(),
-                        )
-                    } else {
-                        score
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    studentListUI = currentState.studentListUI.mapIndexed { _, score ->
+                        if (score.id == data.first) {
+                            score.copy(
+                                score = data.second.stringToModelStateOutFieldText(),
+                            )
+                        } else {
+                            score
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 
     fun getListStudent() {
-        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-        viewModelScope.launch {
-            runCatching {
-                getListStudentUseCase.getListStudent()
-            }.onSuccess { state ->
-                if (state is SuccessState) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            when(val result = getListStudentUseCase.invoke()){
+                is SuccessState -> {
                     _uiState.update {
                         it.copy(
-                            studentList = state.result,
-                            studentListUI = state.result.convertModelCustomCard()
+                            studentList = result.result,
+                            studentListUI = result.result.convertModelCustomCard(),
+                            uiState = ModelStateUIEnum.NOTHING
                         )
                     }
                 }
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
-            }.onFailure {
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                is ErrorUserState -> {
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                }
+                else -> {
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                }
             }
         }
     }
@@ -154,68 +167,67 @@ class RegisterAssignmentViewModel(
     }
 
     fun validateFields() {
-        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-        val nameJobState =
-            validateFieldsAssignmentUseCase.validateNameJob(_uiState.value.nameJob.valueText)
-        val nameAssignmentState =
-            validateFieldsAssignmentUseCase.validateNameAssignment(_uiState.value.nameAssignment.valueText)
-        val dateState = validateFieldsAssignmentUseCase.validateDate(_uiState.value.date.valueText)
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            val nameJobState =
+                validateFieldsAssignmentUseCase.validateNameJob(_uiState.value.nameJob.valueText)
+            val nameAssignmentState =
+                validateFieldsAssignmentUseCase.validateNameAssignment(_uiState.value.nameAssignment.valueText)
+            val dateState = validateFieldsAssignmentUseCase.validateDate(_uiState.value.date.valueText)
 
-        _uiState.update {
-            it.copy(
-                nameJob = nameJobState,
-                nameAssignment = nameAssignmentState,
-                date = dateState
-            )
+            _uiState.update {
+                it.copy(
+                    nameJob = nameJobState,
+                    nameAssignment = nameAssignmentState,
+                    date = dateState
+                )
+            }
+
+            if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerAssignment()
+            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
         }
-
-        if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerAssignment()
-        else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
     }
 
-    private fun registerAssignment() {
-        viewModelScope.launch {
-            when (val result = registerAssignmentUseCase.invoke(
-                _uiState.value.nameJob.valueText,
-                _uiState.value.nameAssignment.valueText,
-                _uiState.value.date.valueText
-            )) {
-                is SuccessState -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.SUCCESS,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_success_login,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.SUCCESS
-                            )
+    private suspend fun registerAssignment() {
+        when (val result = registerAssignmentUseCase.invoke(
+            _uiState.value.nameJob.valueText,
+            _uiState.value.nameAssignment.valueText,
+            _uiState.value.date.valueText
+        )) {
+            is SuccessState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.SUCCESS,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_success_login,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.SUCCESS
                         )
-                    }
+                    )
                 }
+            }
 
-                is ErrorUserState -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_error_login_user,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
+            is ErrorUserState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_error_login_user,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.ERROR
                         )
-                    }
+                    )
                 }
+            }
 
-                else -> {
-                    logs(result.toString())
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
-                    }
+            else -> {
+                logs(result.toString())
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR
+                    )
                 }
             }
         }
     }
-
 }

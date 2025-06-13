@@ -17,28 +17,12 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 
-interface RegisterListPartialUseCase {
-    suspend fun registerListPartial(
-        periodNumber: Int?,
-        adapterPeriods:List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String>?
-
-    suspend fun registerListPartialCompose(
-        periodNumber: Int?,
-        adapterPeriods:List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String>?
-}
-
-class RegisterListPartialUseCaseImp(
+class RegisterListPartialUseCase(
     private val crudPartialRepository: CrudPartialRepository,
     private val preference: PreferenceUseCase
-): RegisterListPartialUseCase {
+) {
 
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    override suspend fun registerListPartial(
+    suspend operator fun invoke(
         periodNumber: Int?,
         adapterPeriods: List<ModelDatePeriodDomain>
     ): ModelState<List<String?>?, String> {
@@ -47,11 +31,11 @@ class RegisterListPartialUseCaseImp(
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val listAdapter: MutableList<Partials> = mutableListOf()
-        adapterPeriods.forEach { data ->
+        adapterPeriods.forEachIndexed { index,  data ->
             val part = data.date.valueText.split("/")
             listAdapter.add(
                 Partials(
-                    description = (data.position + 1).toString(),
+                    description = (index + 1).toString(),
                     startDate = part.getOrNull(0)?.trim() ?: "",
                     endDate = part.getOrNull(1)?.trim() ?: "",
                 )
@@ -66,56 +50,21 @@ class RegisterListPartialUseCaseImp(
             listPartials = listAdapter
         )
 
-        return when (val result =  crudPartialRepository.executeRegisterListPartial(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-    override suspend fun registerListPartialCompose(
-        periodNumber: Int?,
-        adapterPeriods: List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
-
-        val listAdapter: MutableList<Partials> = mutableListOf()
-        adapterPeriods.forEachIndexed { index,  data ->
-            val part = data.date.valueText.split("/")
-            listAdapter.add(
-                Partials(
-                    description = (index + 1).toString(),
-                    startDate = part?.getOrNull(0)?.trim() ?: "",
-                    endDate = part?.getOrNull(1)?.trim() ?: "",
-                )
-            )
-        }
-
-        val request = CredentialsRegisterPartial(
-            numberPartials = periodNumber,
-            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
-            userId = userId,
-            teacherId = roleId,
-            listPartials = listAdapter
+        return runCatching { crudPartialRepository.executeRegisterListPartial(request) }.fold(
+            onSuccess = { result ->
+                when(result){
+                    is ResultSuccess -> {
+                        result.data?.let {
+                            if(it.isNotEmpty()) SuccessState(result.data)
+                            else ErrorState(ModelCodeError.ERROR_CRITICAL)
+                        }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
+                    }
+                    is ResultError -> { handleResponse(result.error)}
+                }
+            },
+            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN)}
         )
-
-        return when (val result =  crudPartialRepository.executeRegisterListPartial(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
-
-
 
     /** handleResponse - Validate the code response, and assign the correct function of that
      * @author pelkidev
@@ -132,6 +81,5 @@ class RegisterListPartialUseCaseImp(
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
-
 }
 

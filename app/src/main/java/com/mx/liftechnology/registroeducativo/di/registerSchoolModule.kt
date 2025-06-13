@@ -6,10 +6,8 @@ import com.mx.liftechnology.data.repository.mainflowdata.CCTRepository
 import com.mx.liftechnology.data.repository.mainflowdata.CCTRepositoryImp
 import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepository
 import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepositoryImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.CCTUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.school.RegisterSchoolViewModel
@@ -29,16 +27,12 @@ val registerSchoolModule = module {
     single<CCTRepository> {
         CCTRepositoryImp(get())
     }
-    single<CCTUseCase> {
-        CCTUseCaseImp(get())
-    }
+    factory{GetCctUseCase(get()) }
 
     single<CrudSchoolRepository> {
         CrudSchoolRepositoryImp(get())
     }
-    single<RegisterOneSchoolUseCase> {
-        RegisterOneSchoolUseCaseImp(get(), get())
-    }
+    factory{RegisterOneSchoolUseCase(get(), get())}
 
     single<ValidateFieldsRegisterSchoolUseCase> {
         ValidateFieldsRegisterSchoolUseCaseImp()

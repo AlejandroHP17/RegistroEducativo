@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
-import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -27,6 +27,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.ImageLogo
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
+import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import org.koin.androidx.compose.koinViewModel
@@ -39,10 +40,12 @@ fun LoginScreen(
     sharedViewModel: SharedViewModel,
     onSuccess: () -> Unit,
 ) {
+
     val uiState by loginViewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS) onSuccess()
+
     }
 
     LaunchedEffect (uiState.controlToast) {
@@ -53,7 +56,7 @@ fun LoginScreen(
     Column(
         modifier = ModifierOrientation()
     ) {
-
+        logs("Screen Login")
         HeaderLoginScreen()
 
         BodyLoginScreen(

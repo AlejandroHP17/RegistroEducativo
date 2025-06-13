@@ -17,24 +17,20 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import java.util.Calendar
 import java.util.Date
 
-fun interface RegisterOneSchoolUseCase {
-    suspend fun registerOneSchool(cct: String?, schoolCycleTypeId:Int?, grade: Int?, group: String?, cycle: Int?): ModelState<List<String?>?, String>?
-}
-
-class RegisterOneSchoolUseCaseImp(
+class RegisterOneSchoolUseCase(
     private val crudSchoolRepository: CrudSchoolRepository,
-    private val preference: PreferenceUseCase
-): RegisterOneSchoolUseCase {
+    private val preference: PreferenceUseCase,
+) {
 
-    override suspend fun registerOneSchool(
+    suspend operator fun invoke(
         cct: String?,
-        schoolCycleTypeId:Int? ,
+        schoolCycleTypeId: Int?,
         grade: Int?,
         group: String?,
-        cycle: Int?
+        cycle: Int?,
     ): ModelState<List<String?>?, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
         val buildDate = Date(Build.TIME)
         val calendar = Calendar.getInstance().apply { time = buildDate }
@@ -50,15 +46,20 @@ class RegisterOneSchoolUseCaseImp(
             teacherId = roleId,
             userId = userId,
         )
-        return when (val result =  crudSchoolRepository.executeRegisterOneSchool(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+        return runCatching { crudSchoolRepository.executeRegisterOneSchool(request) }.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is ResultSuccess -> {
+                        SuccessState(result.data)
+                    }
+
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+                }
+            },
+            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN) }
+        )
     }
 
     /** handleResponse - Validate the code response, and assign the correct function of that

@@ -14,70 +14,14 @@ import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 
-interface RegisterOneSubjectUseCase {
-    suspend fun registerOneSubject(
-        updatedList: MutableList<ModelFormatSubjectDomain>?,
-        name: String?
-    ): ModelState<List<String?>?, String>?
-    suspend fun registerOneSubjectCompose(
-        updatedList: MutableList<ModelSpinnersWorkMethods>?,
-        name: String?
-    ): ModelState<List<String?>?, String>?
-}
-
-class RegisterOneSubjectUseCaseImp(
+class RegisterOneSubjectUseCase(
     private val crudSubjectRepository: CrudSubjectRepository,
     private val preference: PreferenceUseCase
-): RegisterOneSubjectUseCase {
-
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    override suspend fun registerOneSubject(
-        updatedList: MutableList<ModelFormatSubjectDomain>?,
-        name: String?
-    ): ModelState<List<String?>?, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
-
-        val listAdapter: MutableList<Percent> = mutableListOf()
-        updatedList?.forEach { data ->
-            listAdapter.add(
-                Percent(
-                    jobId = -1,
-                    percent = data.percent?.toInt(),
-                    assessmentType = data.name
-                )
-            )
-        }
-
-        val request = CredentialsRegisterSubject(
-            subject = name,
-            options = updatedList?.size,
-            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
-            userId = userId,
-            teacherId = roleId,
-            percents = listAdapter
-        )
-
-        return when (val result =  crudSubjectRepository.executeRegisterOneSubject(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-
-    override suspend fun registerOneSubjectCompose(
+) {
+    suspend operator fun invoke(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String?
     ): ModelState<List<String?>?, String> {
@@ -105,15 +49,20 @@ class RegisterOneSubjectUseCaseImp(
             percents = listAdapter
         )
 
-        return when (val result =  crudSubjectRepository.executeRegisterOneSubject(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+        return runCatching {crudSubjectRepository.executeRegisterOneSubject(request)}.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is ResultSuccess -> {
+                        SuccessState(result.data)
+                    }
+
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+                }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
     /** handleResponse - Validate the code response, and assign the correct function of that

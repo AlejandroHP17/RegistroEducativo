@@ -41,5 +41,5 @@ val registerAssignmentModule = module {
     single { GetListAssignmentPerSubjectUseCase(get(),get()) }
     single { RegisterAssignmentUseCase() }
 
-    viewModel { RegisterAssignmentViewModel(get(), get(),get(), get(), get()) }
+    viewModel { RegisterAssignmentViewModel(get(), get(),get(), get(), get(), get()) }
 }

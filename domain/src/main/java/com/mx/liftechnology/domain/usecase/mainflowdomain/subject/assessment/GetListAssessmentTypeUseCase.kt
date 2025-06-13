@@ -15,15 +15,11 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface GetListAssessmentTypeUseCase {
-    suspend fun getListAssessmentType () :ModelState<List<ResponseGetListAssessmentType?>, String?>
-}
-
-class GetListAssessmentTypeUseCaseImp(
+class GetListAssessmentTypeUseCase(
     private val crudAssessmentTypeRepository: CrudAssessmentTypeRepository,
     private val preference : PreferenceUseCase
-): GetListAssessmentTypeUseCase {
-    override suspend fun getListAssessmentType():ModelState<List<ResponseGetListAssessmentType?>, String?> {
+) {
+    suspend operator fun invoke():ModelState<List<ResponseGetListAssessmentType?>, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -34,15 +30,22 @@ class GetListAssessmentTypeUseCaseImp(
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssessmentTypeRepository.executeGetListAssessment(request)){
-            is ResultSuccess ->
-                result.data?.let {
-                    SuccessState(result.data!!)
-                }?: ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        return runCatching { crudAssessmentTypeRepository.executeGetListAssessment(request) }.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is ResultSuccess -> {
+                        result.data?.let {
+                            SuccessState(result.data!!)
+                        }?: ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                    }
 
-            is ResultError -> handleResponse(result.error)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+                }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
     /** handleResponse - Validate the code response, and assign the correct function of that

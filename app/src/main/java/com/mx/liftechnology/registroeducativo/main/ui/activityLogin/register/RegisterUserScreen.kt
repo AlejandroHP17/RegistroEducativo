@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.RegisterUserUiState
@@ -40,11 +41,8 @@ fun RegisterUserScreen(
     val uiState by registerUserViewModel.uiState.collectAsState()
     val context = LocalContext.current
 
-    // Detectar el cambio de estado y notificar a la Activity
     LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS) {
-            navController.popBackStack()
-        }
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
     }
 
     LaunchedEffect (uiState.controlToast) {
@@ -55,7 +53,7 @@ fun RegisterUserScreen(
     Column(
         ModifierOrientation()
     ) {
-
+        logs("Register User")
         HeaderRegisterUserScreen { navController.popBackStack() }
 
         BodyRegisterUserScreen(

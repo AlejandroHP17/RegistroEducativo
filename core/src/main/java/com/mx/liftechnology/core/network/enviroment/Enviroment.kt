@@ -7,8 +7,10 @@ import android.os.Build
  * Constants of end point
  * */
 object Environment {
-    private const val EMULATOR_BASE_URL = "http://10.0.2.2:8000/api/v1/"
-    private const val DEVICE_BASE_URL = "http://192.168.100.28:8000/api/v1/"
+    private const val EMULATOR_BASE_URL = "http://3.17.67.71/api/v1/"
+    //private const val EMULATOR_BASE_URL = "http://10.0.2.2:8000/api/v1/"
+    //private const val DEVICE_BASE_URL = "http://192.168.100.94:8000/api/v1/"
+    private const val DEVICE_BASE_URL = "http://3.17.67.71/api/v1/"
 
     val URL_BASE: String
         get() = if (isRunningOnEmulator()) EMULATOR_BASE_URL else DEVICE_BASE_URL

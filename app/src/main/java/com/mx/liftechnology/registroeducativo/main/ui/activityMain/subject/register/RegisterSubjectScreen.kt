@@ -18,7 +18,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -28,12 +30,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationPerce
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun RegisterSubjectScreen(
     navController: NavHostController,
+    sharedViewModel: SharedViewModel,
     registerSubjectViewModel: RegisterSubjectViewModel = koinViewModel(),
 ) {
 
@@ -42,16 +46,20 @@ fun RegisterSubjectScreen(
     LaunchedEffect(Unit) {
         registerSubjectViewModel.getListAssessmentType()
     }
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            navController.popBackStack()
-        }
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+    }
+
+    LaunchedEffect (uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+        registerSubjectViewModel.modifyShowToast(false)
     }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        logs("Screen subject")
         val (header, body, column, action) = createRefs()
 
         Column(
@@ -100,7 +108,7 @@ fun RegisterSubjectScreen(
             ActionRegisterSubject { registerSubjectViewModel.validateFieldsCompose() }
         }
     }
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable

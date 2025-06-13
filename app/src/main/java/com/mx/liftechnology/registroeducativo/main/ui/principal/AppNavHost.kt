@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -59,16 +60,35 @@ fun AppNavHost(
                 ) }
             composable(LoginRoutes.FORGET_PASSWORD.route){ ForgetPasswordScreen(navigationController) }
 
+
+
             // Main flow
-            composable(MainRoutes.Menu.route){ MenuScreen(
+            composable(
+                route = MainRoutes.Menu.route,
+                arguments = listOf(
+                    navArgument("reload") {
+                        type = NavType.BoolType
+                        defaultValue = false
+                        nullable = false
+                    }
+                )){ MenuScreen(
+                reload = it.arguments?.getBoolean("reload") ?: false,
                 navController = navigationController,
+                sharedViewModel = sharedViewModel,
                 onCloseSession = {navigationController.navigate(LoginRoutes.LOGIN.route){popUpTo(MainRoutes.Menu.route) { inclusive = true } }}
             ) }
-            composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(navigationController) }
+            composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(
+                navController = navigationController,
+                sharedViewModel = sharedViewModel
+            ) }
             composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
             composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
-            composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(navigationController) }
-            composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(navigationController) }
+            composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(
+                navController = navigationController,
+                sharedViewModel = sharedViewModel,) }
+            composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(
+                navController = navigationController,
+                sharedViewModel = sharedViewModel) }
             composable(MainRoutes.Profile.route){ ProfileScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
@@ -85,7 +105,8 @@ fun AppNavHost(
             ) { backStackEntry ->
                 RegisterStudentScreen(
                     navController = navigationController,
-                    backStackEntry = backStackEntry
+                    backStackEntry = backStackEntry,
+                    sharedViewModel = sharedViewModel,
                 )
             }
 

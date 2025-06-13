@@ -17,7 +17,7 @@ class GetControlMenuUseCase(
     private val localRepository: MenuLocalRepository,
 ) {
 
-    suspend operator fun invoke(): ModelState<List<ModelPrincipalMenuData>, String> {
+    operator fun invoke(): ModelState<List<ModelPrincipalMenuData>, String> {
         return runCatching { localRepository.getControlMenu() }.fold(
             onSuccess = { list ->
                 if (list.isEmpty()) ErrorState(ModelCodeError.ERROR_EMPTY)

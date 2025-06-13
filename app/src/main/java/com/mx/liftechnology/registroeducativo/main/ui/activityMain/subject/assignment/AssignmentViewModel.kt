@@ -12,9 +12,5 @@ class AssignmentViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ModelAssignmentUIState())
     val uiState: StateFlow<ModelAssignmentUIState> = _uiState.asStateFlow()
 
-    fun updateSubject(subject: ModelFormatSubjectDomain?){
-        _uiState.update { it.copy(
-            subject =  subject
-        ) }
-    }
+    fun updateSubject(subject: ModelFormatSubjectDomain?) = _uiState.update { it.copy(subject =  subject) }
 }

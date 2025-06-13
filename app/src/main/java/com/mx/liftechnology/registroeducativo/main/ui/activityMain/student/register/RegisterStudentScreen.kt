@@ -19,8 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
@@ -30,6 +32,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
@@ -39,6 +42,7 @@ import java.util.Calendar
 fun RegisterStudentScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
+    sharedViewModel: SharedViewModel,
     registerStudentViewModel: RegisterStudentViewModel = koinViewModel(),
 ) {
     val uiState by registerStudentViewModel.uiState.collectAsState()
@@ -57,10 +61,13 @@ fun RegisterStudentScreen(
         student?.let { registerStudentViewModel.getArguments(it) }
     }
 
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            navController.popBackStack()
-        }
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+    }
+
+    LaunchedEffect (uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+        registerStudentViewModel.modifyShowToast(false)
     }
 
     // Estado para controlar la fecha seleccionada
@@ -85,7 +92,7 @@ fun RegisterStudentScreen(
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     )
     {
-
+        logs("Screen register student")
         HeaderRegisterStudent(navController = navController)
 
         BodyRegisterStudent(
@@ -110,7 +117,7 @@ fun RegisterStudentScreen(
             onRecord = { registerStudentViewModel.change() })
     }
 
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 
 }
 

@@ -71,10 +71,8 @@ class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
         }
     }
 
-    private fun validPass(pass: String): Boolean {
-        val regex = ModelRegex.PASS
-        return regex.matches(pass)
-    }
+    private fun validPass(pass: String): Boolean = ModelRegex.PASS.matches(pass)
+
 
     /** Validate RepeatPass
      * @author pelkidev

@@ -2,12 +2,18 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +23,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class RegisterPartialViewModel(
+open class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsRegisterPartialUseCase: ValidateFieldsRegisterPartialUseCase,
     private val registerListPartialUseCase: RegisterListPartialUseCase,
@@ -28,48 +34,52 @@ class RegisterPartialViewModel(
     val uiState: StateFlow<ModelRegisterPartialUIState> = _uiState.asStateFlow()
 
     fun onPartialChanged(partial: String) {
-        if (partial.toInt() > 0) {
-            val list = MutableList(partial.toInt()) { index ->
-                ModelDatePeriodDomain(
-                    position = index,
-                    date = "".stringToModelStateOutFieldText(),
-                    partialCycleGroup = 0
-                )
-            }
+        viewModelScope.launch (dispatcherProvider.io){
+            if (partial.toInt() > 0) {
+                val list = MutableList(partial.toInt()) { index ->
+                    ModelDatePeriodDomain(
+                        position = index,
+                        date = "".stringToModelStateOutFieldText(),
+                        partialCycleGroup = 0
+                    )
+                }
 
-            _uiState.update {
-                it.copy(
-                    numberPartials = partial.stringToModelStateOutFieldText(),
-                    listCalendar = list
-                )
+                _uiState.update {
+                    it.copy(
+                        numberPartials = partial.stringToModelStateOutFieldText(),
+                        listCalendar = list
+                    )
+                }
             }
         }
     }
 
     fun onDateChange(data: Pair<Pair<LocalDate?, LocalDate?>, Int>) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                listCalendar = currentState.listCalendar?.mapIndexed { index, date ->
-                    if (index == data.second) {
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update { currentState ->
+                currentState.copy(
+                    listCalendar = currentState.listCalendar?.mapIndexed { index, date ->
+                        if (index == data.second) {
 
-                        val startDate = data.first.first?.toString() ?: ""
-                        val endDate = data.first.second?.toString() ?: ""
-                         // Guardamos el rango de fechas en formato "YYYY-MM-DD - YYYY-MM-DD"
-                        date.copy(
-                            date  = "$startDate / $endDate".stringToModelStateOutFieldText()
-                        )
-                    } else {
-                        date
+                            val startDate = data.first.first?.toString() ?: ""
+                            val endDate = data.first.second?.toString() ?: ""
+                            // Guardamos el rango de fechas en formato "YYYY-MM-DD - YYYY-MM-DD"
+                            date.copy(
+                                date  = "$startDate / $endDate".stringToModelStateOutFieldText()
+                            )
+                        } else {
+                            date
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch(dispatcherProvider.io) {
 
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             val periodState = validateFieldsRegisterPartialUseCase.validatePeriod(_uiState.value.numberPartials.valueText)
             val listCalendarState = validateFieldsRegisterPartialUseCase.validateAdapter(_uiState.value.listCalendar)
             val calendarState = validateFieldsRegisterPartialUseCase.validateAdapterError(listCalendarState)
@@ -83,31 +93,39 @@ class RegisterPartialViewModel(
 
             if (!(periodState.isError || calendarState.isError))
                 registerListPartialCompose()
-            else _uiState.update { it.copy(isLoading = false) }
-
+            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
         }
     }
 
-    private fun registerListPartialCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            runCatching {
-                registerListPartialUseCase.registerListPartialCompose(_uiState.value.numberPartials.valueText.toInt(), _uiState.value.listCalendar!!)
-            }.onSuccess { state ->
-                if(state is SuccessState){
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = true
-                    ) }
-                }else{
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = false
-                    ) }
-                }
-            }.onFailure {
+    private suspend fun registerListPartialCompose() {
+        when (val result =  registerListPartialUseCase.invoke(
+            _uiState.value.numberPartials.valueText.toInt(),
+            _uiState.value.listCalendar!!
+        )){
+            is SuccessState -> {
                 _uiState.update { it.copy(
-                    isLoading = false,
-                    isSuccess = false
+                    uiState = ModelStateUIEnum.SUCCESS,
+                    controlToast = ModelStateToastUI(
+                        messageToast = R.string.toast_success_register_partial,
+                        showToast = true,
+                        typeToast = ModelStateTypeToastUI.SUCCESS
+                    )
+                ) }
+            }
+            is ErrorUserState -> {
+                _uiState.update { it.copy(
+                    uiState = ModelStateUIEnum.ERROR,
+                    controlToast = ModelStateToastUI(
+                        messageToast = R.string.toast_error_register_partials,
+                        showToast = true,
+                        typeToast = ModelStateTypeToastUI.ERROR
+                    )
+                ) }
+            }
+            else -> {
+                logs(result.toString())
+                _uiState.update { it.copy(
+                    uiState = ModelStateUIEnum.ERROR
                 ) }
             }
         }
@@ -115,22 +133,40 @@ class RegisterPartialViewModel(
 
     fun getListPartialCompose(){
         viewModelScope.launch (dispatcherProvider.io) {
-            runCatching {
-                getListPartialUseCase.getListPartial()
-            }.onSuccess {state ->
-                if(state is SuccessState){
+            when(val result = getListPartialUseCase.invoke()){
+                is SuccessState -> {
                     _uiState.update { item ->
                         item.copy(
-                            listCalendar = state.result?.map { data ->
+                            listCalendar = result.result?.map { data ->
                                 data.copy(date = data.date)
                             } ?: emptyList(),
-                            numberPartials = state.result?.size?.toString().stringToModelStateOutFieldText()
+                            numberPartials = result.result?.size?.toString().stringToModelStateOutFieldText()
                         )
                     }
                 }
-            }.onFailure {
+                else -> {
+                    logs(result.toString())
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR
+                        )
+                    }
+                }
             }
         }
     }
 
+    fun modifyShowToast(show: Boolean) {
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
+                    )
+                )
+            }
+        }
+    }
 }

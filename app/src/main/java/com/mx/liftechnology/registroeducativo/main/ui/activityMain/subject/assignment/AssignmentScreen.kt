@@ -15,8 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -36,17 +38,13 @@ fun AssignmentScreen(
     val uiState by assignmentViewModel.uiState.collectAsState()
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
-
     LaunchedEffect(Unit) {
-
         val subject: ModelFormatSubjectDomain? = if (subjectJson.isNullOrEmpty()) {
             null
         } else {
             Gson().fromJson(subjectJson, ModelFormatSubjectDomain::class.java)
         }
-
         assignmentViewModel.updateSubject(subject)
-
     }
 
 
@@ -55,7 +53,7 @@ fun AssignmentScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-
+        logs("Screen assignment")
         Column(modifier = Modifier.fillMaxSize()) {
             HeaderAssignment(
                 uiState =  uiState,
@@ -70,7 +68,7 @@ fun AssignmentScreen(
         }
 
     }
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable

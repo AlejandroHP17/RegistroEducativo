@@ -7,11 +7,9 @@ import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepo
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentViewModel
@@ -33,12 +31,10 @@ val crudStudentModule = module {
         CrudStudentRepositoryImp(get(), get())
     }
 
-    single<RegisterOneStudentUseCase> {
-        RegisterOneStudentUseCaseImp(get(), get())
-    }
-    single<GetListStudentUseCase> {
-        GetListStudentUseCaseImp(get(), get())
-    }
+    single {RegisterOneStudentUseCase(get(), get())}
+
+    single{GetListStudentUseCase(get(), get())}
+
     single<ModifyOneStudentUseCase> {
         ModifyOneStudentUseCaseImp(get(), get())
     }

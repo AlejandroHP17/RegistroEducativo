@@ -19,8 +19,7 @@ class GetListAssignmentPerSubjectUseCase (
     private val crudAssignmentRepository: CrudAssignmentRepository,
     private val preference : PreferenceUseCase
 ) {
-    suspend fun invoke(): ModelState<List<ResponseGetPercentSubjectId>?, String?>{
-
+    suspend operator fun invoke(): ModelState<List<ResponseGetPercentSubjectId>?, String?>{
 
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -34,11 +33,15 @@ class GetListAssignmentPerSubjectUseCase (
             subjectSchoolCycleGroupId = subjectSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssignmentRepository.executeGetPercentSubjectId(request)){
-            is ResultSuccess -> SuccessState(result.data)
-            is ResultError -> handleResponse(result.error)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+        return runCatching { crudAssignmentRepository.executeGetPercentSubjectId(request) }.fold(
+            onSuccess = { result->
+                when(result) {
+                    is ResultSuccess -> SuccessState(result.data)
+                    is ResultError -> handleResponse(result.error)
+                }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
     /** handleResponse - Validate the code response, and assign the correct function of that

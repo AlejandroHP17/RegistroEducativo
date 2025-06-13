@@ -3,12 +3,18 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment.GetListAssessmentTypeUseCase
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,70 +34,78 @@ class RegisterSubjectViewModel(
     val uiState: StateFlow<ModelRegisterSubjectUIState> = _uiState.asStateFlow()
 
     fun onSubjectChanged(subject: String) {
-        _uiState.update {
-            it.copy(
-                subject = subject.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update {
+                it.copy(
+                    subject = subject.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     fun onNameChange(value: Pair<ResponseGetListAssessmentType?, Int>) {
-        _uiState.update {
-            it.copy(
-                listAdapter = it.listAdapter?.map { subject ->
-                    if (subject.position == value.second) {
-                        subject.copy(
-                            name = value.first?.description.stringToModelStateOutFieldText(),
-                            assessmentTypeId = value.first?.assessmentTypeId,
-                            teacherSchoolCycleGroupId = value.first?.teacherSchoolCycleGroupId,
-                        )
-                    } else {
-                        subject
-                    }
-                },
-            )
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update {
+                it.copy(
+                    listAdapter = it.listAdapter?.map { subject ->
+                        if (subject.position == value.second) {
+                            subject.copy(
+                                name = value.first?.description.stringToModelStateOutFieldText(),
+                                assessmentTypeId = value.first?.assessmentTypeId,
+                                teacherSchoolCycleGroupId = value.first?.teacherSchoolCycleGroupId,
+                            )
+                        } else {
+                            subject
+                        }
+                    },
+                )
+            }
         }
     }
 
     fun onPercentChange(value: Pair<String, Int>) {
-        _uiState.update {
-            it.copy(
-                listAdapter = it.listAdapter?.map { subject ->
-                    if (subject.position == value.second) {
-                        subject.copy(percent = value.first.stringToModelStateOutFieldText())
-                    } else {
-                        subject
-                    }
-                },
-            )
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update {
+                it.copy(
+                    listAdapter = it.listAdapter?.map { subject ->
+                        if (subject.position == value.second) {
+                            subject.copy(percent = value.first.stringToModelStateOutFieldText())
+                        } else {
+                            subject
+                        }
+                    },
+                )
+            }
         }
     }
 
     fun onOptionsChanged(options: String) {
-        if (options.toInt() > 0) {
-            val list = MutableList(options.toInt()) { index ->
-                ModelSpinnersWorkMethods(
-                    position = index,
-                    name = "".stringToModelStateOutFieldText(),
-                    percent = "".stringToModelStateOutFieldText(),
-                    assessmentTypeId = -1,
-                    teacherSchoolCycleGroupId = 1
-                )
-            }
+        viewModelScope.launch(dispatcherProvider.io) {
+            if (options.toInt() > 0) {
+                val list = MutableList(options.toInt()) { index ->
+                    ModelSpinnersWorkMethods(
+                        position = index,
+                        name = "".stringToModelStateOutFieldText(),
+                        percent = "".stringToModelStateOutFieldText(),
+                        assessmentTypeId = -1,
+                        teacherSchoolCycleGroupId = 1
+                    )
+                }
 
-            _uiState.update {
-                it.copy(
-                    options = options.stringToModelStateOutFieldText(),
-                    listAdapter = list,
-                    subject = it.subject.valueText.stringToModelStateOutFieldText()
-                )
+                _uiState.update {
+                    it.copy(
+                        options = options.stringToModelStateOutFieldText(),
+                        listAdapter = list,
+                        subject = it.subject.valueText.stringToModelStateOutFieldText()
+                    )
+                }
             }
         }
     }
 
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(isLoading = true) }
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             val nameState =
                 validateFieldsSubjectUseCase.validateNameCompose(_uiState.value.subject.valueText)
             val optionState =
@@ -115,43 +129,49 @@ class RegisterSubjectViewModel(
                 _uiState.update {
                     it.copy(
                         options = optionState,
-                        isLoading = false
+                        uiState = ModelStateUIEnum.NOTHING
                     )
                 }
             } else {
-                _uiState.update { it.copy(isLoading = false) }
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
     }
 
-    private fun registerSubjectCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            runCatching {
-                registerOneSubjectUseCase.registerOneSubjectCompose(
-                    _uiState.value.listAdapter?.toMutableList(),
-                    _uiState.value.subject.valueText
-                )
-            }.onSuccess { state ->
-                if (state is SuccessState) {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isSuccess = true
-                        )
-                    }
-                } else {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            isSuccess = false
-                        )
-                    }
-                }
-            }.onFailure {
+    private suspend fun registerSubjectCompose() {
+        when (val result =
+            registerOneSubjectUseCase.invoke(
+                _uiState.value.listAdapter?.toMutableList(),
+                _uiState.value.subject.valueText
+            )){
+
+            is SuccessState -> {
+                _uiState.update { it.copy(
+                    uiState = ModelStateUIEnum.SUCCESS,
+                    controlToast = ModelStateToastUI(
+                        messageToast = R.string.toast_success_register_subject,
+                        showToast = true,
+                        typeToast = ModelStateTypeToastUI.SUCCESS
+                    )
+                ) }
+            }
+            is ErrorUserState -> {
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
-                        isSuccess = false
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_error_register_subject,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.ERROR
+                        )
+                    )
+                }
+            }
+            else -> {
+                logs(result.toString())
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR
                     )
                 }
             }
@@ -160,11 +180,10 @@ class RegisterSubjectViewModel(
 
     fun getListAssessmentType() {
         viewModelScope.launch(dispatcherProvider.io) {
-            runCatching {
-                getListAssessmentTypeUseCase.getListAssessmentType()
-            }.onSuccess { state ->
-                if (state is SuccessState) {
-                    val list = state.result.toMutableList()
+            when (val result = getListAssessmentTypeUseCase.invoke()
+            ) {
+                is SuccessState -> {
+                    val list = result.result.toMutableList()
                     list.add(
                         ResponseGetListAssessmentType(
                             assessmentTypeId = -1,
@@ -177,7 +196,10 @@ class RegisterSubjectViewModel(
                             listWorkMethods = list
                         )
                     }
-                } else {
+                }
+
+                else -> {
+                    logs(result.toString())
                     _uiState.update {
                         it.copy(
                             listWorkMethods = listOf(
@@ -190,18 +212,20 @@ class RegisterSubjectViewModel(
                         )
                     }
                 }
-            }.onFailure {
-                _uiState.update {
-                    it.copy(
-                        listWorkMethods = listOf(
-                            ResponseGetListAssessmentType(
-                                assessmentTypeId = -1,
-                                description = "Nuevo",
-                                teacherSchoolCycleGroupId = 1
-                            ),
-                        )
+            }
+        }
+    }
+
+    fun modifyShowToast(show: Boolean) {
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
                     )
-                }
+                )
             }
         }
     }

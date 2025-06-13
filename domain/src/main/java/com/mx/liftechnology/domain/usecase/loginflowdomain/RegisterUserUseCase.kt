@@ -15,7 +15,6 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 class RegisterUserUseCase(
     private val registerRepository: RegisterRepository
 )  {
-
     /** Request to Register
      * @author pelkidev
      * @since 1.0.0
@@ -53,5 +52,4 @@ class RegisterUserUseCase(
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
-
 }

@@ -33,26 +33,34 @@ class RegisterUserViewModel(
         get() = _uiState.value
 
     fun onEmailChanged(email: String) {
-        _uiState.update {
-            it.copy(email = email.stringToModelStateOutFieldText())
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(email = email.stringToModelStateOutFieldText())
+            }
         }
     }
 
     fun onPassChanged(pass: String) {
-        _uiState.update {
-            it.copy(password = pass.stringToModelStateOutFieldText())
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(password = pass.stringToModelStateOutFieldText())
+            }
         }
     }
 
     fun onRepeatPassChanged(repeatPass: String) {
-        _uiState.update {
-            it.copy(repeatPassword = repeatPass.stringToModelStateOutFieldText())
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(repeatPassword = repeatPass.stringToModelStateOutFieldText())
+            }
         }
     }
 
     fun onCodeChanged(code: String) {
-        _uiState.update {
-            it.copy(code = code.stringToModelStateOutFieldText())
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update {
+                it.copy(code = code.stringToModelStateOutFieldText())
+            }
         }
     }
 
@@ -62,29 +70,31 @@ class RegisterUserViewModel(
      * @since 1.0.0
      * */
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-        val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
-        val passState =
-            validateFieldsUseCase.validatePassRegisterCompose(myValue.password.valueText)
-        val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(
-            myValue.password.valueText,
-            myValue.repeatPassword.valueText
-        )
-        val codeState = validateFieldsUseCase.validateCodeCompose(myValue.code.valueText)
-
-        _uiState.update {
-            it.copy(
-                email = emailState,
-                password = passState,
-                repeatPassword = repeatPassState,
-                code = codeState
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
+            val passState =
+                validateFieldsUseCase.validatePassRegisterCompose(myValue.password.valueText)
+            val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(
+                myValue.password.valueText,
+                myValue.repeatPassword.valueText
             )
-        }
+            val codeState = validateFieldsUseCase.validateCodeCompose(myValue.code.valueText)
 
-        if (!(emailState.isError || passState.isError || repeatPassState.isError || codeState.isError)) {
-            registerCompose()
-        } else {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            _uiState.update {
+                it.copy(
+                    email = emailState,
+                    password = passState,
+                    repeatPassword = repeatPassState,
+                    code = codeState
+                )
+            }
+
+            if (!(emailState.isError || passState.isError || repeatPassState.isError || codeState.isError)) {
+                registerCompose()
+            } else {
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            }
         }
     }
 
@@ -98,60 +108,60 @@ class RegisterUserViewModel(
      * @author pelkidev
      * @since 1.0.0
      * */
-    private fun registerCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = registerUserUseCase.invoke(
-                myValue.email.valueText,
-                myValue.password.valueText,
-                myValue.code.valueText
-            )) {
-                is SuccessState -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.SUCCESS,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_success_register_user,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.SUCCESS
-                            )
+    private suspend fun registerCompose() {
+        when (val result = registerUserUseCase.invoke(
+            myValue.email.valueText,
+            myValue.password.valueText,
+            myValue.code.valueText
+        )) {
+            is SuccessState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.SUCCESS,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_success_register_user,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.SUCCESS
                         )
-                    }
+                    )
                 }
+            }
 
-                is ErrorUserState -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_error_register_user,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
+            is ErrorUserState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_error_register_user,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.ERROR
                         )
-                    }
+                    )
                 }
+            }
 
-                else -> {
-                    logs(result.toString())
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
-                    }
+            else -> {
+                logs(result.toString())
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR
+                    )
                 }
             }
         }
     }
 
     fun modifyShowToast(show: Boolean) {
-        _uiState.update {
-            it.copy(
-                controlToast = ModelStateToastUI(
-                    messageToast = it.controlToast.messageToast,
-                    showToast = show,
-                    typeToast = it.controlToast.typeToast
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
+                    )
                 )
-            )
+            }
         }
     }
 }

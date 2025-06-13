@@ -49,6 +49,6 @@ val menuModule = module {
     }
 
     viewModel {
-        MenuViewModel(get(), get(), get(), get(), get(), get(), get(), get())
+        MenuViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 }

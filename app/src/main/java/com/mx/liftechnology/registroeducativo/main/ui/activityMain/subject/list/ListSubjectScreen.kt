@@ -19,7 +19,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUIState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -50,6 +52,7 @@ fun ListSubjectScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        logs("Screen list subject")
         val (header, column, action) = createRefs()
 
         if (uiState.subjectList.isNullOrEmpty()) {
@@ -92,7 +95,7 @@ fun ListSubjectScreen(
             }
         }
     }
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable

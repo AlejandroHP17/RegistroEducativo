@@ -5,12 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
@@ -46,39 +51,52 @@ class RegisterStudentViewModel(
     private var isListening = true
 
     fun onChangeName(name: String) {
-        _uiState.update { it.copy(
-            name = name.stringToModelStateOutFieldText()
-        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(
+                name = name.stringToModelStateOutFieldText()
+            ) }
+        }
     }
     fun onChangeLastName(lastName: String) {
-        _uiState.update { it.copy(
-            lastName = lastName.stringToModelStateOutFieldText()
-        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(
+                lastName = lastName.stringToModelStateOutFieldText()
+            ) }
+        }
     }
     fun onChangeSecondLastName(secondLastName: String) {
-        _uiState.update { it.copy(
-            secondLastName = secondLastName.stringToModelStateOutFieldText()
-        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(
+                secondLastName = secondLastName.stringToModelStateOutFieldText()
+            ) }
+        }
     }
     fun onChangeCurp(curp: String) {
-        _uiState.update { it.copy(
-            curp = curp.stringToModelStateOutFieldText()
-        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(
+                curp = curp.stringToModelStateOutFieldText()
+            ) }
+        }
     }
     fun onChangeBirthday(birthday: String) {
-        _uiState.update { it.copy(
-            birthday = birthday.stringToModelStateOutFieldText()
-        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(
+                birthday = birthday.stringToModelStateOutFieldText()
+            ) }
+        }
     }
     fun onChangePhoneNUmber(phoneNumber: String) {
-        _uiState.update { it.copy(
-            phoneNumber = phoneNumber.stringToModelStateOutFieldText()
-        ) }
+        viewModelScope.launch(dispatcherProvider.io) {
+            _uiState.update { it.copy(
+                phoneNumber = phoneNumber.stringToModelStateOutFieldText()
+            ) }
+        }
     }
 
     fun validateFieldsCompose() {
-        _uiState.update { it.copy(isLoading = true) }
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.io){
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+
             val nameState = validateFieldsStudentUseCase.validateName(_uiState.value.name.valueText)
             val lastNameState = validateFieldsStudentUseCase.validateLastName(_uiState.value.lastName.valueText)
             val secondLastNameState =
@@ -103,53 +121,66 @@ class RegisterStudentViewModel(
             )) {
                 registerOneStudentCompose()
             }else{
-                _uiState.update { it.copy(isLoading = false) }
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
     }
 
-    private fun registerOneStudentCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            runCatching {
-                registerOneStudentUseCase.registerOneStudent(
-                    myValue.name.valueText,
-                    myValue.lastName.valueText,
-                    myValue.secondLastName.valueText,
-                    myValue.curp.valueText,
-                    myValue.birthday.valueText,
-                    myValue.phoneNumber.valueText
-                )
-            }.onSuccess { state ->
-                if(state is SuccessState){
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = true
-                    ) }
-                }else{
-                    _uiState.update { it.copy(
-                        isLoading = false,
-                        isSuccess = false
-                    ) }
-                }
-            }.onFailure {
+    private suspend fun registerOneStudentCompose() {
+        when (val result =
+            registerOneStudentUseCase.invoke(
+                myValue.name.valueText,
+                myValue.lastName.valueText,
+                myValue.secondLastName.valueText,
+                myValue.curp.valueText,
+                myValue.birthday.valueText,
+                myValue.phoneNumber.valueText
+            )){
+            is SuccessState -> {
                 _uiState.update { it.copy(
-                    isLoading = false,
-                    isSuccess = false
+                    uiState = ModelStateUIEnum.SUCCESS,
+                    controlToast = ModelStateToastUI(
+                        messageToast = R.string.toast_success_register_student,
+                        showToast = true,
+                        typeToast = ModelStateTypeToastUI.SUCCESS
+                    )
                 ) }
+            }
+            is ErrorUserState -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = ModelStateToastUI(
+                            messageToast = R.string.toast_error_register_student,
+                            showToast = true,
+                            typeToast = ModelStateTypeToastUI.ERROR
+                        )
+                    )
+                }
+            }
+            else -> {
+                logs(result.toString())
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR
+                    )
+                }
             }
         }
     }
 
     fun getArguments(student: ModelStudentDomain) {
-        _uiState.update {
-            it.copy(
-                name = student.name.stringToModelStateOutFieldText(),
-                lastName = student.lastName.stringToModelStateOutFieldText(),
-                secondLastName = student.secondLastName.stringToModelStateOutFieldText(),
-                curp = student.curp.stringToModelStateOutFieldText(),
-                birthday = student.birthday.stringToModelStateOutFieldText(),
-                phoneNumber = student.phoneNumber.stringToModelStateOutFieldText(),
-            )
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    name = student.name.stringToModelStateOutFieldText(),
+                    lastName = student.lastName.stringToModelStateOutFieldText(),
+                    secondLastName = student.secondLastName.stringToModelStateOutFieldText(),
+                    curp = student.curp.stringToModelStateOutFieldText(),
+                    birthday = student.birthday.stringToModelStateOutFieldText(),
+                    phoneNumber = student.phoneNumber.stringToModelStateOutFieldText(),
+                )
+            }
         }
     }
 
@@ -160,19 +191,21 @@ class RegisterStudentViewModel(
     }
 
     fun change() {
-        if (isListening) {
-            voiceRecognitionManager.startListening()
-            isListening = false
-            _uiState.update { it.copy(buttonColor = color_error) }
-        } else {
-            voiceRecognitionManager.stopListening()
-            isListening = true
-            _uiState.update { it.copy(buttonColor = color_success) }
+        viewModelScope.launch (dispatcherProvider.main){
+            if (isListening) {
+                voiceRecognitionManager.startListening()
+                isListening = false
+                _uiState.update { it.copy(buttonColor = color_error) }
+            } else {
+                voiceRecognitionManager.stopListening()
+                isListening = true
+                _uiState.update { it.copy(buttonColor = color_success) }
+            }
         }
     }
 
     private fun validateDataRecord(data: List<String>) {
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.main){
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
             result?.let { studentData ->
                 logs(studentData.toString())
@@ -186,6 +219,20 @@ class RegisterStudentViewModel(
                         phoneNumber = studentData[ModelVoiceConstants.PHONE_NUMBER].stringToModelStateOutFieldText()
                     )
                 }
+            }
+        }
+    }
+
+    fun modifyShowToast(show: Boolean) {
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
+                    )
+                )
             }
         }
     }

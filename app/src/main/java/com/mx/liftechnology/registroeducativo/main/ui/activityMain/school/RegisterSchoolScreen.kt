@@ -16,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
@@ -25,21 +27,29 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeader
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
+import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun RegisterSchoolScreen(
     navController: NavHostController,
+    sharedViewModel: SharedViewModel,
     registerSchoolViewModel: RegisterSchoolViewModel = koinViewModel(),
 ) {
     val uiState by registerSchoolViewModel.uiState.collectAsState()
 
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            navController.popBackStack()
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS)navController.navigate(MainRoutes.Menu.withReload(true)) {
+            popUpTo(MainRoutes.Menu.route) { inclusive = true }
         }
+    }
+
+    LaunchedEffect (uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+        registerSchoolViewModel.modifyShowToast(false)
     }
 
     Column(
@@ -47,7 +57,7 @@ fun RegisterSchoolScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-
+        logs("Screen register school")
         HeaderRegisterSchool(navController = navController)
 
         BodyRegisterSchool(
@@ -70,7 +80,7 @@ fun RegisterSchoolScreen(
             onRecord = {registerSchoolViewModel.change()})
     }
 
-    LoadingAnimation(uiState.isLoading)
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable

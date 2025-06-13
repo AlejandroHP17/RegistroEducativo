@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListStudentUIState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,22 +22,22 @@ class ListStudentViewModel(
     val uiState: StateFlow<ModelListStudentUIState> = _uiState.asStateFlow()
 
     fun getListStudent() {
-        _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
-            runCatching {
-                getListStudentUseCase.getListStudent()
-            }.onSuccess { state ->
-                if (state is SuccessState) {
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+
+            when(val result = getListStudentUseCase.invoke()){
+                is SuccessState -> {
                     _uiState.update {
                         it.copy(
-                            studentList = state.result,
-                            studentListUI = state.result.convertModelCustomCard()
+                            studentList = result.result,
+                            studentListUI = result.result.convertModelCustomCard(),
+                            uiState = ModelStateUIEnum.NOTHING
                         )
                     }
                 }
-                _uiState.update { it.copy(isLoading = false) }
-            }.onFailure {
-                _uiState.update { it.copy(isLoading = false) }
+                else -> {
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                }
             }
         }
     }
@@ -57,7 +58,5 @@ class ListStudentViewModel(
             } ?: emptyList()
     }
 
-    fun getStudent(item: ModelCustomCard): ModelStudentDomain? {
-        return _uiState.value.studentList?.find { it.studentId == item.id }
-    }
+    fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _uiState.value.studentList?.find { it.studentId == item.id }
 }

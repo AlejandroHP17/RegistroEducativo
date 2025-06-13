@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
@@ -39,26 +40,26 @@ import org.koin.androidx.compose.koinViewModel
  */
 @Composable
 fun MenuScreen(
+    reload: Boolean,
     navController: NavHostController,
     menuViewModel: MenuViewModel = koinViewModel(),
+    sharedViewModel: SharedViewModel,
     onCloseSession: () ->Unit
 ) {
 
     /* Variables locales y en viewmodel */
-    val sharedViewModel: SharedViewModel = koinViewModel()
     val uiState by menuViewModel.uiState.collectAsState()
     val showDialog = remember { mutableStateOf(false) }
     val isGroup = remember { mutableStateOf(false) }
 
-    /* Llamadas a servicios cuando se monta la pantalla */
-    LaunchedEffect(Unit) {
-        if (uiState.studentGroupItem.itemPartial == null){
+    LaunchedEffect(reload) {
+        if (uiState.studentGroupItem.itemPartial == null || reload){
             menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
             menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
         }
     }
 
-    LaunchedEffect ( Unit){
+    LaunchedEffect ( uiState.uiState){
         if(uiState.uiState == ModelStateUIEnum.UNAUTHORIZED){
             sharedViewModel.modifyShowToast(uiState.controlToast)
             menuViewModel.modifyShowToast(false)
@@ -71,6 +72,7 @@ fun MenuScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
+        logs("Menu")
         HeaderMenuScreen(
             controlState = uiState,
             onShowDialog = {
@@ -80,10 +82,8 @@ fun MenuScreen(
         )
 
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-        )
-        {
+            modifier = Modifier.fillMaxSize()
+        ) {
             itemsIndexed(listOf(REGISTER, CONTROL)) { _, section ->
                 when (section) {
 
@@ -163,10 +163,7 @@ private fun RegisterAreaMenuScreen(
                 menuItemsRegister[0] -> navController.navigate(MainRoutes.ListStudent.route)
                 menuItemsRegister[1] -> navController.navigate(MainRoutes.ListSubject.route)
                 menuItemsRegister[2] -> navController.navigate(MainRoutes.RegisterPartial.route)
-                menuItemsRegister[3] -> {
-                    test()
-                }
-
+                menuItemsRegister[3] -> { test() }
                 menuItemsRegister[4] -> {test()}
             }
         }

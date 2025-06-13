@@ -7,7 +7,12 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 
 sealed class MainRoutes (val route: String) {
 
-    data object Menu: MainRoutes("menu")
+    data object Menu : MainRoutes("menu?reload={reload}") {
+        fun withReload(reload: Boolean = false): String {
+            return "menu?reload=$reload"
+        }
+    }
+
     data object RegisterSchool: MainRoutes("registerSchool")
     data object ListStudent: MainRoutes("listStudent")
     data object RegisterSubject: MainRoutes("registerSubject")

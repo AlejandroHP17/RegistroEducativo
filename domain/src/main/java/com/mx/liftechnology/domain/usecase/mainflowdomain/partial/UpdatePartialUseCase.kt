@@ -8,7 +8,7 @@ class UpdatePartialUseCase(
     private val preference: PreferenceUseCase,
 ) {
 
-    suspend operator fun invoke(itemId: Int) {
+     operator fun invoke(itemId: Int) {
         preference.savePreferenceInt(
             ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP,
             itemId

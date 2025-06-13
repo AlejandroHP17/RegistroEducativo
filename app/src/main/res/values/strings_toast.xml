@@ -3,13 +3,21 @@
     <!--- Success -->
     <string name="toast_success_login">Has iniciado sesión correctamente, bienvenido</string>
     <string name="toast_success_register_user">Tu usuario se registrado correctamente, puedes iniciar sesión ahora</string>
+    <string name="toast_success_register_school">Se creó correctamente el grupo, puedes agregar información</string>
+    <string name="toast_success_register_partial">Se agregaron correctamente los parciales al ciclo escolar</string>
+    <string name="toast_success_register_student">Se registró correctamente al alumno</string>
+    <string name="toast_success_register_subject">Se registró correctamente el campo formativo</string>
 
 
     <!--- Error -->
     <string name="toast_error_validate_fields">Favor de verificar que todos los campos esten correctos</string>
     <string name="toast_error_login_user">Usuario o contraseña incorrectos, por favor valide nuevamente su información</string>
     <string name="toast_error_register_user">No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos</string>
+    <string name="toast_error_register_school">No se ha podido registrar el grupo, vuelva a intentarlo</string>
     <string name="toast_error_update_info_ui">No se logró actualizar la información, intente más tarde</string>
+    <string name="toast_error_register_partials">No de lograron crear los parciales, intente nuevamente</string>
+    <string name="toast_error_register_student">No de logró registrar al alumno, intente nuevamente</string>
+    <string name="toast_error_register_subject">No de logró registrar el campo formativo, intente nuevamente</string>
 
 
     <!--- Warning -->

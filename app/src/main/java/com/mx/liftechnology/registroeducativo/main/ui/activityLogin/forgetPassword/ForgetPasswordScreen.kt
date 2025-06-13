@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
@@ -35,6 +36,7 @@ fun ForgetPasswordScreen(
     Column(
         ModifierOrientation()
     ) {
+        logs("Screen Forget password")
         HeaderForgetPasswordScreen { navController.popBackStack() }
 
         BodyForgetPasswordScreen(
