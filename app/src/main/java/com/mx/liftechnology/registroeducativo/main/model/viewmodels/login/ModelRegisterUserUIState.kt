@@ -1,17 +1,17 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodels.login
 
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
-data class RegisterUserUiState(
+data class ModelRegisterUserUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
-    val email: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val password: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val repeatPassword: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val code: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false)
+)
 
-    )
+data class ModelRegisterUserUICallbacks(
+    val onEmailChanged: (String) -> Unit,
+    val onPassChanged: (String) -> Unit,
+    val onRepeatPassChanged: (String) -> Unit,
+    val onCodeChanged: (String) -> Unit
+)

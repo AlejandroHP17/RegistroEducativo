@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.loginflowdomain.RegisterUserUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
@@ -13,7 +14,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.RegisterUserUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelRegisterUserUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,40 +28,42 @@ class RegisterUserViewModel(
     private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(RegisterUserUiState())
-    val uiState: StateFlow<RegisterUserUiState> = _uiState.asStateFlow()
-    private val myValue: RegisterUserUiState
-        get() = _uiState.value
+    private val _uiState = MutableStateFlow(ModelRegisterUserUiState())
+    val uiState: StateFlow<ModelRegisterUserUiState> = _uiState.asStateFlow()
+
+    private val _emailState = MutableStateFlow(ModelStateOutFieldText())
+    val emailState: StateFlow<ModelStateOutFieldText> = _emailState.asStateFlow()
+
+    private val _passwordState = MutableStateFlow(ModelStateOutFieldText())
+    val passwordState: StateFlow<ModelStateOutFieldText> = _passwordState.asStateFlow()
+
+    private val _repeatPasswordState = MutableStateFlow(ModelStateOutFieldText())
+    val repeatPasswordState: StateFlow<ModelStateOutFieldText> = _repeatPasswordState.asStateFlow()
+
+    private val _codeState = MutableStateFlow(ModelStateOutFieldText())
+    val codeState: StateFlow<ModelStateOutFieldText> = _codeState.asStateFlow()
 
     fun onEmailChanged(email: String) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update {
-                it.copy(email = email.stringToModelStateOutFieldText())
-            }
+            _emailState.update { email.stringToModelStateOutFieldText() }
         }
     }
 
     fun onPassChanged(pass: String) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update {
-                it.copy(password = pass.stringToModelStateOutFieldText())
-            }
+            _passwordState.update { pass.stringToModelStateOutFieldText() }
         }
     }
 
     fun onRepeatPassChanged(repeatPass: String) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update {
-                it.copy(repeatPassword = repeatPass.stringToModelStateOutFieldText())
-            }
+            _repeatPasswordState.update { repeatPass.stringToModelStateOutFieldText() }
         }
     }
 
     fun onCodeChanged(code: String) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update {
-                it.copy(code = code.stringToModelStateOutFieldText())
-            }
+            _codeState.update { code.stringToModelStateOutFieldText() }
         }
     }
 
@@ -72,23 +75,19 @@ class RegisterUserViewModel(
     fun validateFieldsCompose() {
         viewModelScope.launch (dispatcherProvider.io){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
+            val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
             val passState =
-                validateFieldsUseCase.validatePassRegisterCompose(myValue.password.valueText)
+                validateFieldsUseCase.validatePassRegisterCompose(_passwordState.value.valueText)
             val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(
-                myValue.password.valueText,
-                myValue.repeatPassword.valueText
+                _passwordState.value.valueText,
+                _repeatPasswordState.value.valueText
             )
-            val codeState = validateFieldsUseCase.validateCodeCompose(myValue.code.valueText)
+            val codeState = validateFieldsUseCase.validateCodeCompose(_codeState.value.valueText)
 
-            _uiState.update {
-                it.copy(
-                    email = emailState,
-                    password = passState,
-                    repeatPassword = repeatPassState,
-                    code = codeState
-                )
-            }
+            _emailState.update { emailState }
+            _passwordState.update { passState }
+            _repeatPasswordState.update { repeatPassState }
+            _codeState.update { codeState }
 
             if (!(emailState.isError || passState.isError || repeatPassState.isError || codeState.isError)) {
                 registerCompose()
@@ -110,9 +109,9 @@ class RegisterUserViewModel(
      * */
     private suspend fun registerCompose() {
         when (val result = registerUserUseCase.invoke(
-            myValue.email.valueText,
-            myValue.password.valueText,
-            myValue.code.valueText
+            _emailState.value.valueText,
+            _passwordState.value.valueText,
+            _codeState.value.valueText,
         )) {
             is SuccessState -> {
                 _uiState.update {

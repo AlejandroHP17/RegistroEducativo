@@ -12,19 +12,19 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIDialog
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 
 @Preview(showBackground = true)
 @Composable
 fun AlertDialogPreview(){
-    AlertDialogMenu(ModelMenuUIState(),{},{},false){}
+    AlertDialogMenu(ModelMenuUIDialog(),{},{},false){}
 }
 
 
 @Composable
 fun AlertDialogMenu(
-    controlState: ModelMenuUIState,
+    uiDialog: ModelMenuUIDialog,
     itemSelectedReturn: (ModelDialogStudentGroupDomain) -> Unit,
     itemSelectedPartialReturn: (ModelDialogGroupPartialDomain?) -> Unit,
     selectType : Boolean,
@@ -45,7 +45,7 @@ fun AlertDialogMenu(
                 },
                 title = {TextTitleDialog("Selecciona tu ciclo escolar") },
                 text = {
-                    DialogGroupList(controlState.studentGroupList) { selectedItem ->
+                    DialogGroupList(uiDialog.studentGroupList) { selectedItem ->
                         itemSelected.value = selectedItem
                     }
                 },
@@ -71,7 +71,7 @@ fun AlertDialogMenu(
                 title = { TextTitleDialog("Selecciona tu Parcial")
                 },
                 text = {
-                    DialogPartialList(controlState.studentGroupItem.listItemPartial) { selectedItem ->
+                    DialogPartialList(uiDialog.studentGroupItem.listItemPartial) { selectedItem ->
                         itemPartialSelected.value = selectedItem
                     }
                 },

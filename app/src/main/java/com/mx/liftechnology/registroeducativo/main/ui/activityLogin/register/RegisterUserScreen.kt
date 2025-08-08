@@ -15,9 +15,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.RegisterUserUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelRegisterUserUICallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
@@ -39,14 +40,19 @@ fun RegisterUserScreen(
     sharedViewModel: SharedViewModel,
 ) {
     val uiState by registerUserViewModel.uiState.collectAsState()
+    val emailState by registerUserViewModel.emailState.collectAsState()
+    val passwordState by registerUserViewModel.passwordState.collectAsState()
+    val repeatPasswordState by registerUserViewModel.repeatPasswordState.collectAsState()
+    val codeState by registerUserViewModel.codeState.collectAsState()
+
     val context = LocalContext.current
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
     }
 
-    LaunchedEffect (uiState.controlToast) {
-        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
+    LaunchedEffect(uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast(uiState.controlToast)
         registerUserViewModel.modifyShowToast(false)
     }
 
@@ -57,12 +63,17 @@ fun RegisterUserScreen(
         HeaderRegisterUserScreen { navController.popBackStack() }
 
         BodyRegisterUserScreen(
-            uiState = uiState,
-            onEmailChanged = { registerUserViewModel.onEmailChanged(it) },
-            onPassChanged = { registerUserViewModel.onPassChanged(it) },
-            onRepeatPassChanged = { registerUserViewModel.onRepeatPassChanged(it) },
+            emailState = emailState,
+            passwordState = passwordState,
+            repeatPasswordState = repeatPasswordState,
+            codeState = codeState,
+            callbacks = ModelRegisterUserUICallbacks(
+                onEmailChanged = { registerUserViewModel.onEmailChanged(it) },
+                onPassChanged = { registerUserViewModel.onPassChanged(it) },
+                onRepeatPassChanged = { registerUserViewModel.onRepeatPassChanged(it) },
+                onCodeChanged = { registerUserViewModel.onCodeChanged(it) }
+            ),
             getRules = registerUserViewModel.getRules(context),
-            onCodeChanged = { registerUserViewModel.onCodeChanged(it) }
         )
         Spacer(modifier = Modifier.weight(1f))
         FooterRegisterUserScreen { registerUserViewModel.validateFieldsCompose() }
@@ -85,31 +96,31 @@ fun HeaderRegisterUserScreen(
 
 @Composable
 fun BodyRegisterUserScreen(
-    uiState: RegisterUserUiState,
-    onEmailChanged: (String) -> Unit,
-    onPassChanged: (String) -> Unit,
-    onRepeatPassChanged: (String) -> Unit,
+    emailState: ModelStateOutFieldText,
+    passwordState: ModelStateOutFieldText,
+    repeatPasswordState: ModelStateOutFieldText,
+    codeState: ModelStateOutFieldText,
+    callbacks: ModelRegisterUserUICallbacks,
     getRules: String,
-    onCodeChanged: (String) -> Unit,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     var repeatPasswordVisible by remember { mutableStateOf(false) }
 
     BoxEditTextEmail(
-        value = uiState.email,
+        value = emailState,
         enable = true,
         label = stringResource(id = R.string.form_generic_email),
-        onBoxChanged = { onEmailChanged(it) }
+        onBoxChanged = { callbacks.onEmailChanged(it) }
     )
 
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
     BoxEditTextPassword(
-        value = uiState.password,
+        value = passwordState,
         statePass = passwordVisible,
         enable = true,
         label = stringResource(id = R.string.form_generic_password),
-        onBoxChanged = { onPassChanged(it) },
+        onBoxChanged = { callbacks.onPassChanged(it) },
         onStatePassChanged = {
             passwordVisible = it
         }
@@ -118,11 +129,11 @@ fun BodyRegisterUserScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
     BoxEditTextPassword(
-        value = uiState.repeatPassword,
+        value = repeatPasswordState,
         statePass = repeatPasswordVisible,
         enable = true,
         label = stringResource(id = R.string.form_reg_repeat_password),
-        onBoxChanged = { onRepeatPassChanged(it) },
+        onBoxChanged = { callbacks.onRepeatPassChanged(it) },
         onStatePassChanged = { repeatPasswordVisible = it }
     )
 
@@ -133,10 +144,10 @@ fun BodyRegisterUserScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
     BoxEditTextGeneric(
-        value = uiState.code,
+        value = codeState,
         enable = true,
         label = stringResource(id = R.string.form_reg_code),
-        onBoxChanged = { onCodeChanged(it) }
+        onBoxChanged = { callbacks.onCodeChanged(it) }
     )
 }
 

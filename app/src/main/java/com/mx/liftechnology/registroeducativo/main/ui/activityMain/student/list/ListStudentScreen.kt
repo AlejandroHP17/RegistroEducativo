@@ -56,8 +56,17 @@ fun ListStudentScreen(
 
         if (uiState.studentList.isNullOrEmpty()) {
             EmptyStudentState(
-                onReturnClick = {navController.popBackStack()},
-                onActionClick = { navController.navigate(MainRoutes.RegisterStudent.createRoutes(null))}
+                onReturnClick = {
+                    logs("return to menu from student", "click")
+                    navController.popBackStack()
+                                },
+                onActionClick = {
+                    logs("go to detail Student from student", "click")
+                    navController.navigate(MainRoutes.RegisterStudent.createRoutes(null)){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
         } else {
 
@@ -67,7 +76,12 @@ fun ListStudentScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
-                HeaderListStudent(navController = navController)
+                HeaderListStudent(
+                    onReturnClick = {
+                        logs("return to menu from student", "click")
+                        navController.popBackStack()
+                    },
+                )
             }
 
             Column(
@@ -82,11 +96,15 @@ fun ListStudentScreen(
                 BodyListStudent(
                     uiState = uiState,
                     onNavigate = {
+                        logs("go to detail Student from student", "click")
                         navController.navigate(
                             MainRoutes.RegisterStudent.createRoutes(
                                 listStudentViewModel.getStudent(it)
                             )
-                        )
+                        ){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
             }
@@ -120,10 +138,15 @@ fun EmptyStudentState(
 }
 
 @Composable
-private fun HeaderListStudent(navController: NavHostController) {
+private fun HeaderListStudent(
+    onReturnClick:() ->Unit
+) {
     ComponentHeaderBackWithout(
-        title = stringResource(R.string.get_student_name)
-    ) { navController.popBackStack() }
+        title = stringResource(R.string.get_student_name),
+        onReturnClick = {
+            onReturnClick()
+        }
+    )
 }
 
 @Composable
@@ -135,7 +158,7 @@ private fun BodyListStudent(
         modifier = Modifier.wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
-        itemsIndexed(uiState.studentListUI) { _, item ->
+        itemsIndexed(uiState.studentListUI, key = { _, item -> item.id }) { _, item ->
             CustomCard(
                 item = item,
                 onItemClick = {

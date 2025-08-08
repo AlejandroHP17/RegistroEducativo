@@ -14,9 +14,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.LoginCallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -42,10 +43,11 @@ fun LoginScreen(
 ) {
 
     val uiState by loginViewModel.uiState.collectAsState()
+    val emailState by loginViewModel.emailState.collectAsState()
+    val passwordState by loginViewModel.passwordState.collectAsState()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS) onSuccess()
-
     }
 
     LaunchedEffect (uiState.controlToast) {
@@ -60,10 +62,14 @@ fun LoginScreen(
         HeaderLoginScreen()
 
         BodyLoginScreen(
-            uiState = uiState,
-            onEmailChanged = { loginViewModel.onEmailChanged(it) },
-            onPassChanged = { loginViewModel.onPassChanged(it) },
-            onRememberChanged = { loginViewModel.onRememberChanged(it) },
+            isRemember = uiState.isRemember,
+            emailState = emailState,
+            passwordState = passwordState,
+            callbacks = LoginCallbacks(
+                onEmailChanged = { loginViewModel.onEmailChanged(it) },
+                onPassChanged = { loginViewModel.onPassChanged(it) },
+                onRememberChanged = { loginViewModel.onRememberChanged(it) }
+            ),
             navigate = { navController.navigate(LoginRoutes.FORGET_PASSWORD.route) }
         )
 
@@ -91,36 +97,36 @@ fun HeaderLoginScreen() {
 
 @Composable
 fun BodyLoginScreen(
-    uiState: ModelLoginUiState,
-    onEmailChanged: (String) -> Unit,
-    onPassChanged: (String) -> Unit,
-    onRememberChanged: (Boolean) -> Unit,
+    isRemember: Boolean,
+    emailState : ModelStateOutFieldText,
+    passwordState: ModelStateOutFieldText,
+    callbacks: LoginCallbacks,
     navigate: () -> Unit,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
     BoxEditTextEmail(
-        value = uiState.email,
+        value = emailState,
         enable = true,
         label = stringResource(id = R.string.form_generic_email),
-    ) { onEmailChanged(it) }
+    ) { callbacks.onEmailChanged(it) }
 
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
     BoxEditTextPassword(
-        value = uiState.password,
+        value = passwordState,
         statePass = passwordVisible,
         enable = true,
         label = stringResource(id = R.string.form_generic_password),
-        onBoxChanged = { onPassChanged(it) },
+        onBoxChanged = { callbacks.onPassChanged(it) },
         onStatePassChanged = { passwordVisible = it }
     )
 
     CustomSpace(dimensionResource(id = R.dimen.margin_outer))
 
     ComponentCheckBoxAndText(
-        checkBox = uiState.isRemember,
-        checkBoxClick = { onRememberChanged(it) },
+        checkBox = isRemember,
+        checkBoxClick = { callbacks.onRememberChanged(it) },
         textClick = { navigate() }
     )
 }

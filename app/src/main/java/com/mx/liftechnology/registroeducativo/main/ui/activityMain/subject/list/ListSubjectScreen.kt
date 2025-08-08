@@ -57,8 +57,17 @@ fun ListSubjectScreen(
 
         if (uiState.subjectList.isNullOrEmpty()) {
             EmptySubjectState(
-                onReturnClick = {navController.popBackStack()},
-                onActionClick = {navController.navigate(MainRoutes.RegisterSubject.route) }
+                onReturnClick = {
+                    logs("return to menu from subject", "click")
+                    navController.popBackStack()
+                                },
+                onActionClick = {
+                    logs("go to detail Suject from subject", "click")
+                    navController.navigate(MainRoutes.RegisterSubject.route){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
             )
         } else {
 
@@ -67,7 +76,14 @@ fun ListSubjectScreen(
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                }) {HeaderListSubject(navController = navController)}
+                }) {
+                HeaderListSubject(
+                    onReturnClick = {
+                        logs("return to menu from subject", "click")
+                        navController.popBackStack()
+                    }
+                )
+            }
 
             Column(
                 modifier = Modifier.constrainAs(column) {
@@ -80,7 +96,10 @@ fun ListSubjectScreen(
                 BodyListSubject(
                     uiState = uiState,
                     onNavigate = {
-                        navController.navigate(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it)))
+                        navController.navigate(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it))){
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 )
             }
@@ -115,10 +134,10 @@ fun EmptySubjectState(
 
 
 @Composable
-private fun HeaderListSubject(navController: NavHostController) {
+private fun HeaderListSubject( onReturnClick:() ->Unit) {
     ComponentHeaderBackWithout(
         title = stringResource(R.string.get_subject_name),
-    ) { navController.popBackStack() }
+    ) { onReturnClick() }
 }
 
 @Composable
@@ -130,13 +149,13 @@ private fun BodyListSubject(
         modifier = Modifier.wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
-        itemsIndexed(uiState.subjectListUI) { _, item ->
+        itemsIndexed(uiState.subjectListUI, key = { _, item -> item.id }) { _, item ->
             CustomCard(
                 item = item,
                 onItemClick = {
                     onNavigate(item)
                 },
-                onItemMore = { student ->
+                onItemMore = { _ ->
                 }
             )
         }

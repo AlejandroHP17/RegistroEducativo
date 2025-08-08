@@ -11,18 +11,21 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
 
 data class ModelRegisterSchoolUIState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val read : Boolean = true,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
     val buttonColor : Color = color_success,
+)
 
-    val schoolCycleTypeId: Int = -1,
-    val spinner: ModelSpinnerSchoolDomain? = null,
-
-    val cct: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val grade: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val group: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val cycle: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+data class ModelRegisterSchoolUISemiAutomaticData(
     val schoolName: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val shift: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val type: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val schoolCycleTypeId: Int = -1,
+    val spinner: ModelSpinnerSchoolDomain? = null,
+    val read : Boolean = true,
+)
+
+data class ModelRegisterSchoolUICallbacks(
+    val onCycleChanged: (String) -> Unit,
+    val onGradeChanged: (String) -> Unit,
+    val onGroupChanged: (String) -> Unit,
 )

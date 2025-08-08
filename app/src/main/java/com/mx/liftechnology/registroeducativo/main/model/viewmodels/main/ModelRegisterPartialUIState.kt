@@ -9,11 +9,14 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
 data class ModelRegisterPartialUIState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
+    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false)
+)
+
+data class ModelRegisterPartialUIData(
     val listOptions: List<String> = listOf("1","2","3","4","5","6"),
     val listCalendar: List<ModelDatePeriodDomain>? = null,
     val numberPartials: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val read : Boolean = false,
+    val read : Boolean = false
 )
 
 

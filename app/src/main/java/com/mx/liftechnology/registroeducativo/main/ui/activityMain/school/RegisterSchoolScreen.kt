@@ -17,8 +17,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUICallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUISemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
@@ -40,6 +43,11 @@ fun RegisterSchoolScreen(
     registerSchoolViewModel: RegisterSchoolViewModel = koinViewModel(),
 ) {
     val uiState by registerSchoolViewModel.uiState.collectAsState()
+    val uiSemiAutomaticData by registerSchoolViewModel.uiSemiAutomaticData.collectAsState()
+    val cct by registerSchoolViewModel.cct.collectAsState()
+    val grade by registerSchoolViewModel.grade.collectAsState()
+    val group by registerSchoolViewModel.group.collectAsState()
+    val cycle by registerSchoolViewModel.cycle.collectAsState()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS)navController.navigate(MainRoutes.Menu.withReload(true)) {
@@ -61,15 +69,21 @@ fun RegisterSchoolScreen(
         HeaderRegisterSchool(navController = navController)
 
         BodyRegisterSchool(
-            uiState = uiState,
+            cct = cct,
+            uiAutomatic = uiSemiAutomaticData,
             onCctChanged =  { registerSchoolViewModel.onCctChanged(it) }
         )
 
         BodyDoubleRegisterSchool(
-            uiState = uiState,
-            onCycleChanged = { registerSchoolViewModel.onCycleChanged(it) },
-            onGradeChanged = { registerSchoolViewModel.onGradeChanged(it) },
-            onGroupChanged = { registerSchoolViewModel.onGroupChanged(it) }
+            semiAutomatic = uiSemiAutomaticData,
+            cycle = cycle,
+            grade = grade,
+            group = group,
+            callbacks = ModelRegisterSchoolUICallbacks(
+                onCycleChanged = {registerSchoolViewModel.onCycleChanged(it)},
+                onGradeChanged = {registerSchoolViewModel.onGradeChanged(it)},
+                onGroupChanged = { registerSchoolViewModel.onGroupChanged(it) }
+            )
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -93,24 +107,25 @@ private fun HeaderRegisterSchool(navController: NavHostController) {
 
 @Composable
 private fun BodyRegisterSchool(
-    uiState: ModelRegisterSchoolUIState,
+    cct: ModelStateOutFieldText,
+    uiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
     onCctChanged: (String) -> Unit,
 ) {
     BoxEditTextAllCaps (
-        value = uiState.cct,
+        value = cct,
         enable = true,
         label = stringResource(id = R.string.form_school_cct),
         onBoxChanged = { onCctChanged(it) }
     )
 
     BoxEditTextGeneric(
-        value = uiState.schoolName,
+        value = uiAutomatic.schoolName,
         enable = false,
         label = stringResource(id = R.string.form_school_name),
     ) {}
 
     BoxEditTextGeneric(
-        value = uiState.shift,
+        value = uiAutomatic.shift,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
     ) {}
@@ -118,10 +133,11 @@ private fun BodyRegisterSchool(
 
 @Composable
 private fun BodyDoubleRegisterSchool(
-    uiState: ModelRegisterSchoolUIState,
-    onCycleChanged: (String) -> Unit,
-    onGradeChanged: (String) -> Unit,
-    onGroupChanged: (String) -> Unit,
+    semiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
+    cycle: ModelStateOutFieldText,
+    grade: ModelStateOutFieldText,
+    group: ModelStateOutFieldText,
+    callbacks: ModelRegisterSchoolUICallbacks
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -129,7 +145,7 @@ private fun BodyDoubleRegisterSchool(
     ) {
         Box(modifier = Modifier.weight(1f)) {
             BoxEditTextGeneric(
-                value = uiState.type,
+                value = semiAutomatic.type,
                 enable = false,
                 label = stringResource(id = R.string.form_school_type),
             ) {}
@@ -137,11 +153,11 @@ private fun BodyDoubleRegisterSchool(
 
         Box(modifier = Modifier.weight(1f)) {
             SpinnerOutlinedTextField(
-                options = uiState.spinner?.cycle ?: emptyList(),
-                selectedOption = uiState.cycle,
-                read = uiState.read,
+                options = semiAutomatic.spinner?.cycle ?: emptyList(),
+                selectedOption = cycle,
+                read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_term),
-                onOptionSelected = { onCycleChanged(it) }
+                onOptionSelected = { callbacks.onCycleChanged(it) }
             )
         }
     }
@@ -154,21 +170,21 @@ private fun BodyDoubleRegisterSchool(
     ) {
         Box(modifier = Modifier.weight(1f)) {
             SpinnerOutlinedTextField(
-                options = uiState.spinner?.grade ?: emptyList(),
-                selectedOption = uiState.grade,
-                read = uiState.read,
+                options = semiAutomatic.spinner?.grade ?: emptyList(),
+                selectedOption = grade,
+                read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_grade),
-                onOptionSelected = { onGradeChanged(it) }
+                onOptionSelected = { callbacks.onGradeChanged(it) }
             )
         }
 
         Box(modifier = Modifier.weight(1f)) {
             SpinnerOutlinedTextField(
-                options = uiState.spinner?.group ?: emptyList(),
-                selectedOption = uiState.group,
-                read = uiState.read,
+                options = semiAutomatic.spinner?.group ?: emptyList(),
+                selectedOption = group,
+                read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_group),
-                onOptionSelected = { onGroupChanged(it) }
+                onOptionSelected = { callbacks.onGroupChanged(it) }
             )
         }
     }

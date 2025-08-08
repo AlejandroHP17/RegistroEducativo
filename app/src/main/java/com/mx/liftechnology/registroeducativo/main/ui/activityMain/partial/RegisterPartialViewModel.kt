@@ -14,6 +14,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,6 +34,9 @@ open class RegisterPartialViewModel(
     private val _uiState = MutableStateFlow(ModelRegisterPartialUIState())
     val uiState: StateFlow<ModelRegisterPartialUIState> = _uiState.asStateFlow()
 
+    private val _uiData = MutableStateFlow(ModelRegisterPartialUIData())
+    val uiData: StateFlow<ModelRegisterPartialUIData> = _uiData.asStateFlow()
+
     fun onPartialChanged(partial: String) {
         viewModelScope.launch (dispatcherProvider.io){
             if (partial.toInt() > 0) {
@@ -44,7 +48,7 @@ open class RegisterPartialViewModel(
                     )
                 }
 
-                _uiState.update {
+                _uiData.update {
                     it.copy(
                         numberPartials = partial.stringToModelStateOutFieldText(),
                         listCalendar = list
@@ -56,7 +60,7 @@ open class RegisterPartialViewModel(
 
     fun onDateChange(data: Pair<Pair<LocalDate?, LocalDate?>, Int>) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update { currentState ->
+            _uiData.update { currentState ->
                 currentState.copy(
                     listCalendar = currentState.listCalendar?.mapIndexed { index, date ->
                         if (index == data.second) {
@@ -80,11 +84,11 @@ open class RegisterPartialViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
 
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            val periodState = validateFieldsRegisterPartialUseCase.validatePeriod(_uiState.value.numberPartials.valueText)
-            val listCalendarState = validateFieldsRegisterPartialUseCase.validateAdapter(_uiState.value.listCalendar)
+            val periodState = validateFieldsRegisterPartialUseCase.validatePeriod(_uiData.value.numberPartials.valueText)
+            val listCalendarState = validateFieldsRegisterPartialUseCase.validateAdapter(_uiData.value.listCalendar)
             val calendarState = validateFieldsRegisterPartialUseCase.validateAdapterError(listCalendarState)
 
-            _uiState.update {
+            _uiData.update {
                 it.copy(
                     numberPartials = periodState,
                     listCalendar = listCalendarState
@@ -99,8 +103,8 @@ open class RegisterPartialViewModel(
 
     private suspend fun registerListPartialCompose() {
         when (val result =  registerListPartialUseCase.invoke(
-            _uiState.value.numberPartials.valueText.toInt(),
-            _uiState.value.listCalendar!!
+            _uiData.value.numberPartials.valueText.toInt(),
+            _uiData.value.listCalendar!!
         )){
             is SuccessState -> {
                 _uiState.update { it.copy(
@@ -135,7 +139,7 @@ open class RegisterPartialViewModel(
         viewModelScope.launch (dispatcherProvider.io) {
             when(val result = getListPartialUseCase.invoke()){
                 is SuccessState -> {
-                    _uiState.update { item ->
+                    _uiData.update { item ->
                         item.copy(
                             listCalendar = result.result?.map { data ->
                                 data.copy(date = data.date)

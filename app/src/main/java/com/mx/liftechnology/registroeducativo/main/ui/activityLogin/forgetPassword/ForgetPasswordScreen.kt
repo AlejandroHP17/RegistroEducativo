@@ -11,9 +11,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -31,6 +31,7 @@ fun ForgetPasswordScreen(
     forgetPasswordViewModel: ForgetPasswordViewModel = koinViewModel(),
 ) {
     val uiState by forgetPasswordViewModel.uiState.collectAsState()
+    val emailState by forgetPasswordViewModel.emailState.collectAsState()
     val context = LocalContext.current
 
     Column(
@@ -40,7 +41,7 @@ fun ForgetPasswordScreen(
         HeaderForgetPasswordScreen { navController.popBackStack() }
 
         BodyForgetPasswordScreen(
-            uiState = uiState,
+            emailState = emailState,
             onEmailChanged = { forgetPasswordViewModel.onEmailChanged(it) },
             getRules = forgetPasswordViewModel.getRules(context)
         )
@@ -63,12 +64,12 @@ fun HeaderForgetPasswordScreen(
 
 @Composable
 fun BodyForgetPasswordScreen(
-    uiState: ModelLoginUiState,
+    emailState : ModelStateOutFieldText,
     onEmailChanged: (String) -> Unit,
     getRules: String,
 ) {
     BoxEditTextEmail(
-        value = uiState.email,
+        value = emailState,
         enable = true,
         label = stringResource(id = R.string.form_generic_email),
         onBoxChanged = { onEmailChanged(it) }

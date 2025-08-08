@@ -21,7 +21,8 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIDialog
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.CONTROL
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.REGISTER
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
@@ -49,11 +50,14 @@ fun MenuScreen(
 
     /* Variables locales y en viewmodel */
     val uiState by menuViewModel.uiState.collectAsState()
+    val uiDialog by menuViewModel.uiDialog.collectAsState()
+    val uiData by menuViewModel.uiData.collectAsState()
+
     val showDialog = remember { mutableStateOf(false) }
     val isGroup = remember { mutableStateOf(false) }
 
     LaunchedEffect(reload) {
-        if (uiState.studentGroupItem.itemPartial == null || reload){
+        if (uiDialog.studentGroupItem.itemPartial == null || reload){
             menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
             menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
         }
@@ -74,7 +78,7 @@ fun MenuScreen(
     ) {
         logs("Menu")
         HeaderMenuScreen(
-            controlState = uiState,
+            uiDialog = uiDialog,
             onShowDialog = {
                 isGroup.value = true
                 showDialog.value = true
@@ -90,7 +94,7 @@ fun MenuScreen(
                     REGISTER -> {
                         if (uiState.showControl) {
                             RegisterAreaMenuScreen(
-                                controlState = uiState,
+                                uiData = uiData,
                                 navController = navController,
                                 test = { }
                             )
@@ -99,7 +103,7 @@ fun MenuScreen(
 
                     CONTROL -> {
                         ControlAreaMenuScreen(
-                            controlState = uiState,
+                            uiData = uiData,
                             navController = navController
                         )
                     }
@@ -112,7 +116,7 @@ fun MenuScreen(
 
     if (showDialog.value) {
         AlertDialogMenu(
-            controlState = uiState,
+            uiDialog = uiDialog,
             itemSelectedReturn = {
                 menuViewModel.updateGroup(it)
                 isGroup.value = false
@@ -135,11 +139,11 @@ object MenuScreenObject {
 }
 
 @Composable
-private fun HeaderMenuScreen(controlState: ModelMenuUIState, onShowDialog: (Boolean) -> Unit) {
+private fun HeaderMenuScreen(uiDialog: ModelMenuUIDialog, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
         title = stringResource(R.string.menu_grettins, "Profesor"),
-        body = controlState.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
-        partial = controlState.studentGroupItem.namePartial ?: stringResource(R.string.menu_partial),
+        body = uiDialog.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
+        partial = uiDialog.studentGroupItem.namePartial ?: stringResource(R.string.menu_partial),
         onClick = { onShowDialog(true) }
     )
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
@@ -147,7 +151,7 @@ private fun HeaderMenuScreen(controlState: ModelMenuUIState, onShowDialog: (Bool
 
 @Composable
 private fun RegisterAreaMenuScreen(
-    controlState: ModelMenuUIState,
+    uiData: ModelMenuUIData,
     navController: NavHostController,
     test: () -> Unit,
 ) {
@@ -157,11 +161,24 @@ private fun RegisterAreaMenuScreen(
         modifier = Modifier
             .fillMaxWidth()
     ) {
+        logs("Recompuso vista menu", "click")
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL_REGISTER)
-        MyGridScreen(controlState.evaluationItems, 628.dp) { selectedItem ->
+        MyGridScreen(uiData.evaluationItems, 628.dp) { selectedItem ->
             when (selectedItem.id) {
-                menuItemsRegister[0] -> navController.navigate(MainRoutes.ListStudent.route)
-                menuItemsRegister[1] -> navController.navigate(MainRoutes.ListSubject.route)
+                menuItemsRegister[0] -> {
+                    logs("go to student", "click")
+                    navController.navigate(MainRoutes.ListStudent.route){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+                menuItemsRegister[1] -> {
+                    logs("go to subject", "click")
+                    navController.navigate(MainRoutes.ListSubject.route){
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
                 menuItemsRegister[2] -> navController.navigate(MainRoutes.RegisterPartial.route)
                 menuItemsRegister[3] -> { test() }
                 menuItemsRegister[4] -> {test()}
@@ -173,7 +190,7 @@ private fun RegisterAreaMenuScreen(
 
 @Composable
 private fun ControlAreaMenuScreen(
-    controlState: ModelMenuUIState,
+    uiData: ModelMenuUIData,
     navController: NavHostController,
 ) {
     val menuItemsControl = stringArrayResource(com.mx.liftechnology.data.R.array.menu_items_control)
@@ -182,7 +199,7 @@ private fun ControlAreaMenuScreen(
             .fillMaxWidth()
     ) {
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL)
-        MyGridScreen(controlState.controlItems, 200.dp) { selectedItem ->
+        MyGridScreen(uiData.controlItems, 200.dp) { selectedItem ->
             when (selectedItem.id) {
                 menuItemsControl[0] -> navController.navigate(MainRoutes.RegisterSchool.route)
                 menuItemsControl[1] -> navController.navigate(MainRoutes.Profile.route)

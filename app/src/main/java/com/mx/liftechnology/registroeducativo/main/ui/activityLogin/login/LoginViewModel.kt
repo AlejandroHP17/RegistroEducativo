@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
@@ -28,26 +29,22 @@ class LoginViewModel(
 
     private val _uiState = MutableStateFlow(ModelLoginUiState())
     val uiState: StateFlow<ModelLoginUiState> = _uiState.asStateFlow()
-    private val myValue: ModelLoginUiState
-        get() = _uiState.value
+
+    private val _emailState = MutableStateFlow(ModelStateOutFieldText())
+    val emailState: StateFlow<ModelStateOutFieldText> = _emailState.asStateFlow()
+
+    private val _passwordState = MutableStateFlow(ModelStateOutFieldText())
+    val passwordState: StateFlow<ModelStateOutFieldText> = _passwordState.asStateFlow()
 
     fun onEmailChanged(email: String) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update {
-                it.copy(
-                    email = email.stringToModelStateOutFieldText()
-                )
-            }
+            _emailState.update { email.stringToModelStateOutFieldText() }
         }
     }
 
     fun onPassChanged(pass: String) {
         viewModelScope.launch (dispatcherProvider.io){
-            _uiState.update {
-                it.copy(
-                    password = pass.stringToModelStateOutFieldText()
-                )
-            }
+            _passwordState.update {pass.stringToModelStateOutFieldText() }
         }
     }
 
@@ -69,15 +66,11 @@ class LoginViewModel(
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            val emailState = validateFieldsUseCase.validateEmailCompose(myValue.email.valueText)
-            val passState = validateFieldsUseCase.validatePassCompose(myValue.password.valueText)
+            val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
+            val passState = validateFieldsUseCase.validatePassCompose(_passwordState.value.valueText)
 
-            _uiState.update {
-                it.copy(
-                    email = emailState,
-                    password = passState
-                )
-            }
+            _emailState.update { emailState }
+            _passwordState.update { passState }
 
             if (!(emailState.isError || passState.isError)) loginCompose()
             else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
@@ -91,9 +84,9 @@ class LoginViewModel(
      * */
     private suspend fun loginCompose() {
         when (val result = loginUseCase.invoke(
-            myValue.email.valueText,
-            myValue.password.valueText,
-            myValue.isRemember
+            _emailState.value.valueText,
+            _passwordState.value.valueText,
+            _uiState.value.isRemember
         )) {
             is SuccessState -> {
                 _uiState.update {

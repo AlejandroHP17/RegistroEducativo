@@ -77,12 +77,15 @@ fun AppNavHost(
                 sharedViewModel = sharedViewModel,
                 onCloseSession = {navigationController.navigate(LoginRoutes.LOGIN.route){popUpTo(MainRoutes.Menu.route) { inclusive = true } }}
             ) }
+            composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
+            composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
+
+
             composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel
             ) }
-            composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
-            composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
+
             composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,) }

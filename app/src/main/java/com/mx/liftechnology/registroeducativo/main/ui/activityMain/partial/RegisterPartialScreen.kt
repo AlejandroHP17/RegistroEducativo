@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIData
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -41,6 +41,7 @@ fun RegisterPartialScreen(
 ) {
 
     val uiState by registerPartialViewModel.uiState.collectAsState()
+    val uiData by registerPartialViewModel.uiData.collectAsState()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS)  navController.popBackStack()
@@ -77,7 +78,7 @@ fun RegisterPartialScreen(
                 end.linkTo(parent.end)
             }) {
             BodyRegisterPartial(
-                uiState = uiState,
+                uiData = uiData,
                 onPartialChanged = { registerPartialViewModel.onPartialChanged(it) }
             )
         }
@@ -90,9 +91,9 @@ fun RegisterPartialScreen(
                 bottom.linkTo(action.top)
                 height = Dimension.fillToConstraints
             }) {
-            if (uiState.numberPartials.valueText.isNotEmpty() && uiState.numberPartials.valueText.toInt() > 0) {
+            if (uiData.numberPartials.valueText.isNotEmpty() && uiData.numberPartials.valueText.toInt() > 0) {
                 ColumnRegisterPartial(
-                    uiState = uiState,
+                    uiData = uiData,
                     onDateChange = { registerPartialViewModel.onDateChange(it) }
                 )
             }
@@ -120,7 +121,7 @@ private fun HeaderRegisterPartial(
 
 @Composable
 private fun BodyRegisterPartial(
-    uiState: ModelRegisterPartialUIState,
+    uiData: ModelRegisterPartialUIData,
     onPartialChanged: (String) -> Unit,
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_between))
@@ -140,9 +141,9 @@ private fun BodyRegisterPartial(
             modifier = Modifier.weight(1f)
         ) {
             SpinnerOutlinedTextField(
-                options = uiState.listOptions,
-                selectedOption = uiState.numberPartials,
-                read = uiState.read,
+                options = uiData.listOptions,
+                selectedOption = uiData.numberPartials,
+                read = uiData.read,
                 label = stringResource(id = R.string.form_partial_period),
                 onOptionSelected = { onPartialChanged(it) }
             )
@@ -154,13 +155,13 @@ private fun BodyRegisterPartial(
 
 @Composable
 private fun ColumnRegisterPartial(
-    uiState: ModelRegisterPartialUIState,
+    uiData: ModelRegisterPartialUIData,
     onDateChange: (
         Pair<Pair<LocalDate?, LocalDate?>, Int>,
     ) -> Unit,
 ) {
     RegisterPartialList(
-        items = uiState.listCalendar!!,
+        items = uiData.listCalendar!!,
         onDateChange = { onDateChange(it) })
 }
 

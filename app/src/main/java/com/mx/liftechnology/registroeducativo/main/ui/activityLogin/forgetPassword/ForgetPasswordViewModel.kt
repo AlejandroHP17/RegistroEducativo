@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
@@ -22,11 +23,12 @@ class ForgetPasswordViewModel(
     private val _uiState = MutableStateFlow(ModelLoginUiState())
     val uiState: StateFlow<ModelLoginUiState> = _uiState.asStateFlow()
 
+    private val _emailState = MutableStateFlow(ModelStateOutFieldText())
+    val emailState: StateFlow<ModelStateOutFieldText> = _emailState.asStateFlow()
+
     fun onEmailChanged(email: String) {
-        _uiState.update {
-            it.copy(
-                email = email.stringToModelStateOutFieldText()
-            )
+        viewModelScope.launch (dispatcherProvider.io){
+            _emailState.update { email.stringToModelStateOutFieldText() }
         }
     }
 
@@ -37,11 +39,9 @@ class ForgetPasswordViewModel(
      * */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
-            val emailState = validateFieldsUseCase.validateEmailCompose(_uiState.value.email.valueText)
+            val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
 
-            _uiState.update {
-                it.copy(email = emailState)
-            }
+            _emailState.update { emailState }
         }
     }
 
