@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
@@ -32,6 +33,63 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+
+@Preview(showBackground = true)
+@Composable
+fun RegisterPartialScreenPreview() {
+    val uiData = ModelRegisterPartialUIData()
+
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+    ) {
+        val (header, body, column, action) = createRefs()
+
+        Column(
+            modifier = Modifier.constrainAs(header) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) { HeaderRegisterPartial(navigate =  {}) }
+
+        Column(
+            modifier = Modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            BodyRegisterPartial(
+                uiData = uiData,
+                onPartialChanged = { }
+            )
+        }
+
+        Column(
+            modifier = Modifier.constrainAs(column) {
+                top.linkTo(body.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(action.top)
+                height = Dimension.fillToConstraints
+            }) {
+
+                ColumnRegisterPartial(
+                    uiData = uiData,
+                    onDateChange = {  }
+                )
+
+        }
+
+        Column(
+            modifier = Modifier.constrainAs(action) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) { ActionRegisterPartial { } }
+    }
+}
+
 
 @Composable
 fun RegisterPartialScreen(

@@ -1,29 +1,49 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.User
+import com.mx.liftechnology.core.network.callapi.CredentialsRegisterOneJobStudent
+import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.data.repository.mainflowdata.subject.RegisterAssignmentRepository
 import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-class RegisterAssignmentUseCase {
+class RegisterAssignmentUseCase (
+    private val registerAssignmentRepository: RegisterAssignmentRepository,
+    private val preference: PreferenceUseCase
+){
 
-    suspend operator fun invoke(nameJob: String, nameAssignment: String, date: String): ModelState<String, String> {
-        /*val request = Credentials(
-            nameJob = nameJob?.lowercase().orEmpty(),
-            nameAssignment = nameAssignment.orEmpty(),
-            date = date?.toString().orEmpty()
+    suspend operator fun invoke(nameJob: String, nameAssignment: Int, typeJob: Int, date: String): ModelState<List<String?>?, String> {
+        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val profSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val partialCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP)
+
+        val request = CredentialsRegisterOneJobStudent(
+            description = nameJob,
+            date = date,
+            number = 1,
+            typeJobPecgId = typeJob,
+            fieldPecgPercentId = nameAssignment,
+            userId = userId,
+            teacherId = roleId,
+            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
+            partialCycleGroupId = partialCycleGroupId?:1,
+            dayPartialCycleGroupId = 1,
+            studentJobs = listOf()
         )
 
-        return runCatching { repositoryLogin.executeLogin(request) }.fold(
+        return runCatching { registerAssignmentRepository.executePutAssignment(request) }.fold(
             onSuccess = { result ->
                 when (result){
                     is ResultSuccess -> {
-                        result.data?.accessToken?.let {
-                            if(savePreferences(result.data, remember)) SuccessState(result.data?.user)
-                            else ErrorState(ModelCodeError.ERROR_CRITICAL)
+                        result.data?.let {
+                            SuccessState(result.data)
                         }?: ErrorState(ModelCodeError.ERROR_CRITICAL)
                     }
                     is ResultError -> {
@@ -33,8 +53,7 @@ class RegisterAssignmentUseCase {
                 }
             },
             onFailure = { ErrorState(ModelCodeError.ERROR_CRITICAL) }
-        )*/
-        return SuccessState("")
+        )
     }
 
     /** handleResponse - Validate the code response, and assign the correct function of that
@@ -44,7 +63,7 @@ class RegisterAssignmentUseCase {
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<User?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when(error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
             is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)

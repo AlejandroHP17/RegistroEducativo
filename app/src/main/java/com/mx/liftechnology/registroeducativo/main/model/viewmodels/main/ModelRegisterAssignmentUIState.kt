@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodels.main
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -16,8 +17,16 @@ data class ModelRegisterAssignmentUIState(
 
     val nameJob : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val listOptions: List<String> = listOf("1","2","3","4","5","6"),
-    val nameAssignment: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val listOptions: List<ModelFormatAssignment> ?= listOf(),
+    val assignment: ModelFormatAssignment = ModelFormatAssignment(
+        id = null,
+        percent= null,
+        subjectSchoolCycleGroupId = null,
+        description	= "".stringToModelStateOutFieldText(),
+        teacherSchoolCycleGroupId= null,
+        assignmentId= null,
+        assignmentName= "".stringToModelStateOutFieldText()
+    ),
     val studentList: List<ModelStudentDomain>? = null,
     val studentListUI: List<ModelCustomCardStudent> = emptyList(),
 )

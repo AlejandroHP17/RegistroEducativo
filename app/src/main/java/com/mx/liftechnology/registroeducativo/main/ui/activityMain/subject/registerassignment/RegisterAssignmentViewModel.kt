@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.network.callapi.ResponseGetPercentSubjectId
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
@@ -57,7 +56,7 @@ class RegisterAssignmentViewModel(
                 is SuccessState -> {
                     _uiState.update {
                         it.copy(
-                            listOptions = change(result.result)
+                            listOptions = result.result
                         )
                     }
                 }
@@ -72,10 +71,6 @@ class RegisterAssignmentViewModel(
                 }
             }
         }
-    }
-
-    private fun change(result: List<ResponseGetPercentSubjectId>?): List<String> {
-        return result?.map { it.assignmentName ?: "" }?.toList() ?: listOf("")
     }
 
     fun onChangeName(name: String) {
@@ -100,11 +95,13 @@ class RegisterAssignmentViewModel(
 
     fun onNameAssignmentChanged(partial: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update {
+            /*_uiState.update {
                 it.copy(
-                    nameAssignment = partial.stringToModelStateOutFieldText()
+                    assignment = it.assignment(
+                        partial.stringToModelStateOutFieldText()
+                    )
                 )
-            }
+            }*/
         }
     }
 
@@ -172,13 +169,13 @@ class RegisterAssignmentViewModel(
             val nameJobState =
                 validateFieldsAssignmentUseCase.validateNameJob(_uiState.value.nameJob.valueText)
             val nameAssignmentState =
-                validateFieldsAssignmentUseCase.validateNameAssignment(_uiState.value.nameAssignment.valueText)
+                validateFieldsAssignmentUseCase.validateNameAssignment(_uiState.value.assignment.assignmentName.valueText)
             val dateState = validateFieldsAssignmentUseCase.validateDate(_uiState.value.date.valueText)
 
             _uiState.update {
                 it.copy(
                     nameJob = nameJobState,
-                    nameAssignment = nameAssignmentState,
+                    //assignment = nameAssignmentState,
                     date = dateState
                 )
             }
@@ -190,9 +187,10 @@ class RegisterAssignmentViewModel(
 
     private suspend fun registerAssignment() {
         when (val result = registerAssignmentUseCase.invoke(
-            _uiState.value.nameJob.valueText,
-            _uiState.value.nameAssignment.valueText,
-            _uiState.value.date.valueText
+            nameJob = _uiState.value.nameJob.valueText,
+            nameAssignment = 1,
+            typeJob = 1,
+            date = _uiState.value.date.valueText
         )) {
             is SuccessState -> {
                 _uiState.update {

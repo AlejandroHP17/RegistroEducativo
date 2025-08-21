@@ -17,8 +17,16 @@ fun interface RegisterOneJobStudentApiCall {
 }
 
 data class CredentialsRegisterOneJobStudent(
+    @SerializedName("descripcion")
+    val description: String,
     @SerializedName("fecha")
     val date: String,
+    @SerializedName("numero")
+    val number: Int,
+    @SerializedName("tipotrabajopecg_id")
+    val typeJobPecgId: Int,
+    @SerializedName("campoformativopecgporcentaje_id")
+    val fieldPecgPercentId: Int,
     @SerializedName("user_id")
     val userId: Int?,
     @SerializedName("profesor_id")
@@ -27,8 +35,6 @@ data class CredentialsRegisterOneJobStudent(
     val teacherSchoolCycleGroupId: Int?,
     @SerializedName("parcialciclogrupo_id")
     val partialCycleGroupId: Int,
-    @SerializedName("trabajodiapcg_id")
-    val jobDayPCG: Int,
     @SerializedName("diaparcialciclogrupo_id")
     val dayPartialCycleGroupId: Int,
     @SerializedName("alumnostrabajos")

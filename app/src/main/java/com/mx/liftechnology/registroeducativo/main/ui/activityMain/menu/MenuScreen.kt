@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,13 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIDialog
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.CONTROL
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.REGISTER
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
@@ -31,9 +35,37 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.MyGridScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextSubHeader
+import com.mx.liftechnology.registroeducativo.main.ui.components.background
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
+
+@Preview(showBackground = true)
+@Composable
+fun MenuScreenPreview() {
+    val uiDialog = ModelMenuUIDialog()
+    val uiState = ModelMenuUIState()
+    val uiData = ModelMenuUIData()
+    val fakeNavController = rememberNavController()
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+            .background(background())
+    ) {
+        logs("Menu")
+        HeaderMenuScreen(
+            uiDialog = uiDialog,
+            onShowDialog = {}
+        )
+        BodyMenuScreen(
+            uiState = uiState,
+            uiData = uiData,
+            navController = fakeNavController
+        )
+    }
+}
+
 
 /** Menu screen, show the principal view and control the flows
  * @author Alejandro Hernandez Pelcastre
@@ -45,7 +77,7 @@ fun MenuScreen(
     navController: NavHostController,
     menuViewModel: MenuViewModel = koinViewModel(),
     sharedViewModel: SharedViewModel,
-    onCloseSession: () ->Unit
+    onCloseSession: () -> Unit,
 ) {
 
     /* Variables locales y en viewmodel */
@@ -57,14 +89,14 @@ fun MenuScreen(
     val isGroup = remember { mutableStateOf(false) }
 
     LaunchedEffect(reload) {
-        if (uiDialog.studentGroupItem.itemPartial == null || reload){
+        if (uiDialog.studentGroupItem.itemPartial == null || reload) {
             menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
             menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
         }
     }
 
-    LaunchedEffect ( uiState.uiState){
-        if(uiState.uiState == ModelStateUIEnum.UNAUTHORIZED){
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.UNAUTHORIZED) {
             sharedViewModel.modifyShowToast(uiState.controlToast)
             menuViewModel.modifyShowToast(false)
             onCloseSession()
@@ -84,32 +116,12 @@ fun MenuScreen(
                 showDialog.value = true
             }
         )
+        BodyMenuScreen(
+            uiState = uiState,
+            uiData = uiData,
+            navController = navController
+        )
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            itemsIndexed(listOf(REGISTER, CONTROL)) { _, section ->
-                when (section) {
-
-                    REGISTER -> {
-                        if (uiState.showControl) {
-                            RegisterAreaMenuScreen(
-                                uiData = uiData,
-                                navController = navController,
-                                test = { }
-                            )
-                        }
-                    }
-
-                    CONTROL -> {
-                        ControlAreaMenuScreen(
-                            uiData = uiData,
-                            navController = navController
-                        )
-                    }
-                }
-            }
-        }
     }
 
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -150,6 +162,39 @@ private fun HeaderMenuScreen(uiDialog: ModelMenuUIDialog, onShowDialog: (Boolean
 }
 
 @Composable
+private fun BodyMenuScreen(
+    uiState: ModelMenuUIState,
+    uiData: ModelMenuUIData,
+    navController: NavHostController
+) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        itemsIndexed(listOf(REGISTER, CONTROL)) { _, section ->
+            when (section) {
+
+                REGISTER -> {
+                    if (uiState.showControl) {
+                        RegisterAreaMenuScreen(
+                            uiData = uiData,
+                            navController = navController,
+                            test = { }
+                        )
+                    }
+                }
+
+                CONTROL -> {
+                    ControlAreaMenuScreen(
+                        uiData = uiData,
+                        navController = navController
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun RegisterAreaMenuScreen(
     uiData: ModelMenuUIData,
     navController: NavHostController,
@@ -167,21 +212,28 @@ private fun RegisterAreaMenuScreen(
             when (selectedItem.id) {
                 menuItemsRegister[0] -> {
                     logs("go to student", "click")
-                    navController.navigate(MainRoutes.ListStudent.route){
+                    navController.navigate(MainRoutes.ListStudent.route) {
                         launchSingleTop = true
                         restoreState = true
                     }
                 }
+
                 menuItemsRegister[1] -> {
                     logs("go to subject", "click")
-                    navController.navigate(MainRoutes.ListSubject.route){
+                    navController.navigate(MainRoutes.ListSubject.route) {
                         launchSingleTop = true
                         restoreState = true
                     }
                 }
+
                 menuItemsRegister[2] -> navController.navigate(MainRoutes.RegisterPartial.route)
-                menuItemsRegister[3] -> { test() }
-                menuItemsRegister[4] -> {test()}
+                menuItemsRegister[3] -> {
+                    test()
+                }
+
+                menuItemsRegister[4] -> {
+                    test()
+                }
             }
         }
     }

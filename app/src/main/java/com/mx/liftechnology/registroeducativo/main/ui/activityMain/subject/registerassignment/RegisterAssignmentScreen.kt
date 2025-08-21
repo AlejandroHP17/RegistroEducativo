@@ -23,6 +23,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -34,7 +35,6 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeader
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationStudentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
 import org.koin.androidx.compose.koinViewModel
@@ -119,7 +119,7 @@ fun RegisterAssignmentScreen(
             }) {
             Body2RegisterAssignment(
                 uiState = uiState,
-                onNameAssignmentChanged = { registerAssignmentViewModel.onNameAssignmentChanged(it) }
+                onNameAssignmentChanged = { registerAssignmentViewModel.onNameAssignmentChanged(it.assignmentName.valueText) }
             )
         }
 
@@ -185,7 +185,7 @@ fun BodyRegisterAssignment(
 @Composable
 private fun Body2RegisterAssignment(
     uiState: ModelRegisterAssignmentUIState,
-    onNameAssignmentChanged: (String) -> Unit,
+    onNameAssignmentChanged: (ModelFormatAssignment) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -201,13 +201,13 @@ private fun Body2RegisterAssignment(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            SpinnerOutlinedTextField(
-                options = uiState.listOptions,
-                selectedOption = uiState.nameAssignment,
+           /* SpinnerOutlinedTextField(
+                options = uiState.listOptions!!,
+                selectedOption = uiState.assignment,
                 read = false,
                 label = stringResource(id = R.string.form_assignment_type),
                 onOptionSelected = { onNameAssignmentChanged(it) }
-            )
+            )*/
         }
     }
 
