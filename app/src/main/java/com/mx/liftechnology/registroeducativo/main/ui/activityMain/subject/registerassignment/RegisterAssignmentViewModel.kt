@@ -19,8 +19,8 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDialogState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,8 +46,8 @@ class RegisterAssignmentViewModel(
     private val _dataState = MutableStateFlow(ModelRegisterAssignmentDataState())
     val dataState: StateFlow<ModelRegisterAssignmentDataState> = _dataState.asStateFlow()
 
-    private val _dialogState = MutableStateFlow(ModelRegisterAssignmentDialogState())
-    val dialogState: StateFlow<ModelRegisterAssignmentDialogState> = _dialogState.asStateFlow()
+    private val _dialogState = MutableStateFlow(ModelCustomCalendar())
+    val dialogState: StateFlow<ModelCustomCalendar> = _dialogState.asStateFlow()
 
     fun updateSubject(subject: ModelFormatSubjectDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {

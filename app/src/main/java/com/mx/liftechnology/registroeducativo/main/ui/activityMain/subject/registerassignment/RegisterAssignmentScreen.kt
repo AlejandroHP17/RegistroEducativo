@@ -27,8 +27,8 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDialogState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -100,7 +100,7 @@ fun RegisterAssignmentScreen(
                 showDialog = {
                     registerAssignmentViewModel.updateDates()
                     showDialog.value = true
-                             },
+                             }
             )
         }
 
@@ -167,7 +167,7 @@ private fun HeaderRegisterAssignment(
 @Composable
 fun BodyRegisterAssignment(
     dataState: ModelRegisterAssignmentDataState,
-    dialogState: ModelRegisterAssignmentDialogState,
+    dialogState: ModelCustomCalendar,
     onNameJobChanged: (String) -> Unit,
     showDialog: () -> Unit,
 ) {

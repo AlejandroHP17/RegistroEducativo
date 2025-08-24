@@ -31,8 +31,3 @@ data class ModelRegisterAssignmentDataState (
     val studentList: List<ModelStudentDomain>? = null,
     val studentListUI: List<ModelCustomCardStudent> = emptyList(),
 )
-
-data class ModelRegisterAssignmentDialogState(
-    val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val rangeDate : String? = null
-)

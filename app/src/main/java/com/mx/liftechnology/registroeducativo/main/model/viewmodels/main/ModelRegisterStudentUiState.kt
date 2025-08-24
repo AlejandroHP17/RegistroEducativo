@@ -8,7 +8,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
-data class ModelRegisterStudentUIState(
+data class ModelRegisterStudentUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val buttonColor : Color = colorSuccess,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
@@ -21,3 +21,12 @@ data class ModelRegisterStudentUIState(
     val phoneNumber:ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
 
     )
+
+data class ModelRegisterStudentUiCallbacks(
+    val onNameChanged: (String) -> Unit,
+    val onLastNameChanged: (String) -> Unit,
+    val onSecondLastNameChanged: (String) -> Unit,
+    val onCurpChanged: (String) -> Unit,
+    val onBirthdayChanged: () -> Unit,
+    val onPhoneNumberChanged: (String) -> Unit
+)

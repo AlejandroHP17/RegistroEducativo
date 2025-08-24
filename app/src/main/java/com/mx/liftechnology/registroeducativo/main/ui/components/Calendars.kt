@@ -15,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDialogState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorApprove
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
@@ -141,7 +141,7 @@ fun DateRangePickerDialog(
 @Composable
 fun DateSimplePickerDialog(
     showDialog: Boolean,
-    dialogState: ModelRegisterAssignmentDialogState,
+    dialogState: ModelCustomCalendar?,
     onDismiss: () -> Unit,
     onDateSelected: (date: LocalDate) -> Unit,
 ) {
@@ -149,18 +149,14 @@ fun DateSimplePickerDialog(
     var date by remember{ mutableStateOf<LocalDate?>(null) }
     var isEnable by remember { mutableStateOf(false) }
 
-    val calendar = Calendar.getInstance()
-    val year = calendar[Calendar.YEAR]
-
     val datePickerState = rememberDatePickerState(
-        yearRange = year - 2 .. year + 2,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 val candidate = Instant.ofEpochMilli(utcTimeMillis)
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()
 
-                val split = dialogState.rangeDate?.split("/")
+                val split = dialogState?.rangeDate?.split("/")
                 return split?.let {
                     val start = it[0].toLocalDate()
                     val end = it[1].toLocalDate()

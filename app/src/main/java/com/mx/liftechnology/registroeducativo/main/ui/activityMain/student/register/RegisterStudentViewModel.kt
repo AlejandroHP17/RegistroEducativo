@@ -16,7 +16,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -34,9 +34,9 @@ class RegisterStudentViewModel(
     private val voiceRecognitionManager: VoiceRecognitionManager
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterStudentUIState())
-    val uiState: StateFlow<ModelRegisterStudentUIState> = _uiState.asStateFlow()
-    private val myValue: ModelRegisterStudentUIState
+    private val _uiState = MutableStateFlow(ModelRegisterStudentUiState())
+    val uiState: StateFlow<ModelRegisterStudentUiState> = _uiState.asStateFlow()
+    private val myValue: ModelRegisterStudentUiState
         get() = _uiState.value
 
 
