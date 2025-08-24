@@ -13,7 +13,7 @@ fun interface RegisterOneJobStudentApiCall {
     @POST(Environment.END_POINT_REGISTER_JOB)
     suspend fun callApi(
         @Body credentials: CredentialsRegisterOneJobStudent,
-    ): Response<GenericResponse<List<String?>?>>
+    ): Response<GenericResponse<List<ResponseStudentJobs?>?>>
 }
 
 data class CredentialsRegisterOneJobStudent(
@@ -49,3 +49,14 @@ data class CredentialStudentJobs(
     @SerializedName("comentario")
     val comment: String,
 )
+
+data class ResponseStudentJobs(
+    @SerializedName("fecha")
+    val date: String,
+    @SerializedName("alumnoescuelaciclogrupo_id")
+    val studentSchoolCycleGroupId: Int,
+    @SerializedName("resultado")
+    val result: String,
+)
+
+

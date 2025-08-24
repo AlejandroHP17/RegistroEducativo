@@ -1,6 +1,8 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
+import com.mx.liftechnology.core.network.callapi.CredentialStudentJobs
 import com.mx.liftechnology.core.network.callapi.CredentialsRegisterOneJobStudent
+import com.mx.liftechnology.core.network.callapi.ResponseStudentJobs
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.mainflowdata.subject.RegisterAssignmentRepository
@@ -18,7 +20,7 @@ class RegisterAssignmentUseCase (
     private val preference: PreferenceUseCase
 ){
 
-    suspend operator fun invoke(nameJob: String, nameAssignment: Int, typeJob: Int, date: String): ModelState<List<String?>?, String> {
+    suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<CredentialStudentJobs>): ModelState<List<ResponseStudentJobs?>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -29,13 +31,14 @@ class RegisterAssignmentUseCase (
             date = date,
             number = 1,
             typeJobPecgId = typeJob,
-            fieldPecgPercentId = nameAssignment,
+            fieldPecgPercentId = typeJob,
             userId = userId,
             teacherId = roleId,
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
             partialCycleGroupId = partialCycleGroupId?:1,
             dayPartialCycleGroupId = 1,
-            studentJobs = listOf()
+            studentJobs = studentListUI
+
         )
 
         return runCatching { registerAssignmentRepository.executePutAssignment(request) }.fold(
@@ -63,7 +66,7 @@ class RegisterAssignmentUseCase (
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<ResponseStudentJobs?>?, String> {
         return when(error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
             is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)

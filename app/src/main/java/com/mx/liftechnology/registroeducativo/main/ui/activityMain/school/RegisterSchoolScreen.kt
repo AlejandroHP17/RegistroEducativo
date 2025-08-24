@@ -157,7 +157,7 @@ private fun BodyDoubleRegisterSchool(
                 selectedOption = cycle,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_term),
-                onOptionSelected = { callbacks.onCycleChanged(it) }
+                onOptionSelected = { callbacks.onCycleChanged(it.value.toString()) }
             )
         }
     }
@@ -174,7 +174,7 @@ private fun BodyDoubleRegisterSchool(
                 selectedOption = grade,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_grade),
-                onOptionSelected = { callbacks.onGradeChanged(it) }
+                onOptionSelected = { callbacks.onGradeChanged(it.value.toString()) }
             )
         }
 
@@ -184,7 +184,7 @@ private fun BodyDoubleRegisterSchool(
                 selectedOption = group,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_group),
-                onOptionSelected = { callbacks.onGroupChanged(it) }
+                onOptionSelected = { callbacks.onGroupChanged(it.value.toString()) }
             )
         }
     }

@@ -18,6 +18,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastU
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUISemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.toUi
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -125,7 +126,7 @@ class RegisterSchoolViewModel(
                             shift = it.shift.copy(valueText = state.result?.result?.shift ?: ""),
                             type = it.type.copy(valueText = state.result?.result?.schoolCycleType ?: ""),
                             schoolCycleTypeId = state.result?.result?.schoolCycleTypeId ?: -1,
-                            spinner = state.result?.spinners,
+                            spinner = state.result?.spinners?.toUi(),
                             read = false
                         )
                     }

@@ -3,12 +3,12 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodels.main
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
 
 data class ModelRegisterAssignmentUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
@@ -18,16 +18,12 @@ data class ModelRegisterAssignmentUiState(
 
 data class ModelRegisterAssignmentDataState (
     val nameJob : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val listOptions: List<ModelFormatAssignment> ?= listOf(),
-    val assignment: ModelFormatAssignment = ModelFormatAssignment(
-        id = null,
-        percent= null,
-        subjectSchoolCycleGroupId = null,
-        description	= "".stringToModelStateOutFieldText(),
-        teacherSchoolCycleGroupId= null,
-        assignmentId= null,
-        assignmentName= "".stringToModelStateOutFieldText()
-    ),
+    val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val listOptions: List<ModelCustomSpinner> ?= listOf(),
+    val options: ModelCustomSpinner? = null,
+
+
+    val nameAssignment: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val studentList: List<ModelStudentDomain>? = null,
     val studentListUI: List<ModelCustomCardStudent> = emptyList(),
 )

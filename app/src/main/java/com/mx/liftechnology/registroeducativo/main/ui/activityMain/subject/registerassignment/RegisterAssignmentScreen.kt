@@ -22,13 +22,13 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.core.util.logs
-import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
@@ -37,7 +37,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.DateSimplePickerDialog
 import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationStudentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
@@ -46,6 +48,7 @@ fun RegisterAssignmentScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
     registerAssignmentViewModel: RegisterAssignmentViewModel = koinViewModel(),
+    sharedViewModel: SharedViewModel,
 ) {
 
     val uiState by registerAssignmentViewModel.uiState.collectAsStateWithLifecycle()
@@ -53,7 +56,7 @@ fun RegisterAssignmentScreen(
     val dialogState by registerAssignmentViewModel.dialogState.collectAsStateWithLifecycle()
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
-    var showDialog = remember { mutableStateOf(false) }
+    val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         registerAssignmentViewModel.getListStudent()
@@ -64,8 +67,17 @@ fun RegisterAssignmentScreen(
         }
 
         registerAssignmentViewModel.updateSubject(subject)
-
     }
+
+    LaunchedEffect(uiState.uiState) {
+        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+    }
+
+    LaunchedEffect(uiState.controlToast) {
+        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast(uiState.controlToast)
+        registerAssignmentViewModel.modifyShowToast(false)
+    }
+
 
     ConstraintLayout(
         modifier = Modifier
@@ -100,7 +112,7 @@ fun RegisterAssignmentScreen(
                 showDialog = {
                     registerAssignmentViewModel.updateDates()
                     showDialog.value = true
-                             }
+                }
             )
         }
 
@@ -111,8 +123,8 @@ fun RegisterAssignmentScreen(
                 end.linkTo(parent.end)
             }) {
             Body2RegisterAssignment(
-                uiState = uiState,
-                onNameAssignmentChanged = { registerAssignmentViewModel.onNameAssignmentChanged(it.assignmentName.valueText) }
+                dataState = dataState,
+                onNameAssignmentChanged = { registerAssignmentViewModel.onNameAssignmentChanged(it) }
             )
         }
 
@@ -143,12 +155,12 @@ fun RegisterAssignmentScreen(
 
     }
 
-    if(showDialog.value){
+    if (showDialog.value) {
         DateSimplePickerDialog(
             showDialog = true,
             dialogState = dialogState,
-            onDismiss = { showDialog.value = false},
-            onDateSelected = {registerAssignmentViewModel.onChangeDate(it.toString())}
+            onDismiss = { showDialog.value = false },
+            onDateSelected = { registerAssignmentViewModel.onChangeDate(it.toString()) }
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -186,8 +198,8 @@ fun BodyRegisterAssignment(
 
 @Composable
 private fun Body2RegisterAssignment(
-    uiState: ModelRegisterAssignmentUiState,
-    onNameAssignmentChanged: (ModelFormatAssignment) -> Unit,
+    dataState: ModelRegisterAssignmentDataState,
+    onNameAssignmentChanged: (ModelCustomSpinner) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -203,13 +215,13 @@ private fun Body2RegisterAssignment(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            /*SpinnerOutlinedTextField(
-                options = uiState.listOptions!!,
-                selectedOption = uiState.assignment,
+            SpinnerOutlinedTextField(
+                options = dataState.listOptions!!,
+                selectedOption = dataState.nameAssignment,
                 read = false,
                 label = stringResource(id = R.string.form_assignment_type),
                 onOptionSelected = { onNameAssignmentChanged(it) }
-            )*/
+            )
         }
     }
 
@@ -229,7 +241,7 @@ private fun ColumnRegisterScore(
 
 @Composable
 private fun ActionRegisterAssignment(
-    onClick:() -> Unit
+    onClick: () -> Unit,
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(

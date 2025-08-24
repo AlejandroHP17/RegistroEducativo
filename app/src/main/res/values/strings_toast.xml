@@ -7,6 +7,7 @@
     <string name="toast_success_register_partial">Se agregaron correctamente los parciales al ciclo escolar</string>
     <string name="toast_success_register_student">Se registró correctamente al alumno</string>
     <string name="toast_success_register_subject">Se registró correctamente el campo formativo</string>
+    <string name="toast_success_register_assignment">Se registraron correctamente las calificaciones</string>
 
 
     <!--- Error -->
@@ -18,6 +19,7 @@
     <string name="toast_error_register_partials">No de lograron crear los parciales, intente nuevamente</string>
     <string name="toast_error_register_student">No de logró registrar al alumno, intente nuevamente</string>
     <string name="toast_error_register_subject">No de logró registrar el campo formativo, intente nuevamente</string>
+    <string name="toast_error_register_assignment">Hubo un error, intente nuevamente</string>
 
 
     <!--- Warning -->

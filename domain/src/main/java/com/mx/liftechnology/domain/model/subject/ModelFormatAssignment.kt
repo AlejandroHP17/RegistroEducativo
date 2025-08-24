@@ -11,3 +11,4 @@ data class ModelFormatAssignment (
     val assignmentId: Int?,
     val assignmentName:ModelStateOutFieldText
 )
+

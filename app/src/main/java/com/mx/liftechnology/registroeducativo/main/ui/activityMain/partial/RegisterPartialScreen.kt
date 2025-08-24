@@ -23,6 +23,7 @@ import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogConfirm
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -84,7 +85,7 @@ fun RegisterPartialScreen(
             }) {
             BodyRegisterPartial(
                 uiData = uiData,
-                onPartialChanged = { registerPartialViewModel.onPartialChanged(it) }
+                onPartialChanged = { registerPartialViewModel.onPartialChanged(it.value.toString()) }
             )
         }
 
@@ -142,7 +143,7 @@ private fun HeaderRegisterPartial(
 @Composable
 private fun BodyRegisterPartial(
     uiData: ModelRegisterPartialUIData,
-    onPartialChanged: (String) -> Unit,
+    onPartialChanged: (ModelCustomSpinner) -> Unit,
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_between))
 

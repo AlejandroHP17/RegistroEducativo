@@ -158,7 +158,7 @@ private fun BodyRegisterSubject(
                 selectedOption = uiState.options,
                 read = uiState.read,
                 label = stringResource(id = R.string.form_subject_options),
-                onOptionSelected = { onOptionsChanged(it) }
+                onOptionSelected = { onOptionsChanged(it.value!!) }
             )
         }
     }

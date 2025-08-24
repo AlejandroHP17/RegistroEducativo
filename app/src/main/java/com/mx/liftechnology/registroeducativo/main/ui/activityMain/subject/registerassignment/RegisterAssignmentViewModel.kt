@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.regi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.network.callapi.CredentialStudentJobs
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
@@ -22,6 +23,8 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.toCustomSpinnerList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -67,7 +70,7 @@ class RegisterAssignmentViewModel(
                 is SuccessState -> {
                     _dataState.update {
                         it.copy(
-                            listOptions = result.result
+                            listOptions = result.result.toCustomSpinnerList()
                         )
                     }
                 }
@@ -104,15 +107,14 @@ class RegisterAssignmentViewModel(
         }
     }
 
-    fun onNameAssignmentChanged(partial: String) {
+    fun onNameAssignmentChanged(assignment: ModelCustomSpinner) {
         viewModelScope.launch(dispatcherProvider.io) {
-            /*_dataState.update {
+            _dataState.update {
                 it.copy(
-                    assignment = it.assignment(
-                        partial.stringToModelStateOutFieldText()
-                    )
+                    nameAssignment = assignment.value.stringToModelStateOutFieldText(),
+                    options = assignment
                 )
-            }*/
+            }
         }
     }
 
@@ -182,13 +184,13 @@ class RegisterAssignmentViewModel(
             val nameJobState =
                 validateFieldsAssignmentUseCase.validateNameJob(_dataState.value.nameJob.valueText)
             val nameAssignmentState =
-                validateFieldsAssignmentUseCase.validateNameAssignment(_dataState.value.assignment.assignmentName.valueText)
+                validateFieldsAssignmentUseCase.validateNameAssignment(_dataState.value.nameAssignment.valueText)
             val dateState = validateFieldsAssignmentUseCase.validateDate(_dialogState.value.date.valueText)
 
             _dataState.update {
                 it.copy(
                     nameJob = nameJobState,
-                    //assignment = nameAssignmentState,
+                    nameAssignment = nameAssignmentState,
                 )
             }
             _dialogState.update {
@@ -203,16 +205,16 @@ class RegisterAssignmentViewModel(
     private suspend fun registerAssignment() {
         when (val result = registerAssignmentUseCase.invoke(
             nameJob = _dataState.value.nameJob.valueText,
-            nameAssignment = 1,
-            typeJob = 1,
-            date = _dialogState.value.date.valueText
+            typeJob = _dataState.value.options?.id!!,
+            date = _dialogState.value.date.valueText,
+            studentListUI = _dataState.value.studentListUI.toCredentialStudent()
         )) {
             is SuccessState -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
                         controlToast = ModelStateToastUI(
-                            messageToast = R.string.toast_success_login,
+                            messageToast = R.string.toast_success_register_assignment,
                             showToast = true,
                             typeToast = ModelStateTypeToastUI.SUCCESS
                         )
@@ -225,7 +227,7 @@ class RegisterAssignmentViewModel(
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR,
                         controlToast = ModelStateToastUI(
-                            messageToast = R.string.toast_error_login_user,
+                            messageToast = R.string.toast_error_register_assignment,
                             showToast = true,
                             typeToast = ModelStateTypeToastUI.ERROR
                         )
@@ -250,6 +252,31 @@ class RegisterAssignmentViewModel(
             _dialogState.update {
                 it.copy(
                     rangeDate = dates
+                )
+            }
+        }
+    }
+
+
+    fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<CredentialStudentJobs>{
+        return this.map { student ->
+            CredentialStudentJobs(
+                studentSchoolCycleGroupId = student.id.toIntOrNull() ?: 0,
+                qualification = student.score.valueText.toFloatOrNull() ?: 0f,
+                comment = "Asistió"
+            )
+        }
+    }
+
+    fun modifyShowToast(show: Boolean) {
+        viewModelScope.launch (dispatcherProvider.main){
+            _uiState.update {
+                it.copy(
+                    controlToast = ModelStateToastUI(
+                        messageToast = it.controlToast.messageToast,
+                        showToast = show,
+                        typeToast = it.controlToast.typeToast
+                    )
                 )
             }
         }

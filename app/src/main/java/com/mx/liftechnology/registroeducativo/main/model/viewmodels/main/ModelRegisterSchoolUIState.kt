@@ -3,10 +3,10 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodels.main
 import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 data class ModelRegisterSchoolUIState(
@@ -20,7 +20,7 @@ data class ModelRegisterSchoolUISemiAutomaticData(
     val shift: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val type: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val schoolCycleTypeId: Int = -1,
-    val spinner: ModelSpinnerSchoolDomain? = null,
+    val spinner: ModelSpinnerSchoolUi? = null,
     val read : Boolean = true,
 )
 
@@ -28,4 +28,10 @@ data class ModelRegisterSchoolUICallbacks(
     val onCycleChanged: (String) -> Unit,
     val onGradeChanged: (String) -> Unit,
     val onGroupChanged: (String) -> Unit,
+)
+
+data class ModelSpinnerSchoolUi(
+    val cycle: List<ModelCustomSpinner>?,
+    val grade: List<ModelCustomSpinner>?,
+    val group: List<ModelCustomSpinner>?
 )

@@ -135,7 +135,8 @@ fun AppNavHost(
             ) { backStackEntry ->
                 RegisterAssignmentScreen(
                     navController = navigationController,
-                    backStackEntry = backStackEntry
+                    backStackEntry = backStackEntry,
+                    sharedViewModel = sharedViewModel,
                 )
             }
         }

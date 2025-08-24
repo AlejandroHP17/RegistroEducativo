@@ -27,24 +27,35 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 
 @Preview(showBackground = true)
 @Composable
 fun SpinnerScreen() {
-    val options = listOf("Opción 1", "Opción 2", "Otro")
+    val options = listOf(
+        ModelCustomSpinner(
+            value ="Opción 1",
+            id= 1),
+        ModelCustomSpinner(
+            value ="Opción 2",
+            id= 2),
+        ModelCustomSpinner(
+            value ="Otro",
+            id= 3),
+        )
     val options2 = listOf(ResponseGetListAssessmentType(assessmentTypeId = 1, description = "hola", teacherSchoolCycleGroupId = 1))
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
         SpinnerOutlinedTextField(
             options = options,
-            selectedOption = selectedOption.stringToModelStateOutFieldText(),
+            selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             read = false,
             label = "test",
             onOptionSelected = { selectedOption = it }
@@ -52,7 +63,7 @@ fun SpinnerScreen() {
 
         SpinnerMixOutlinedTextField(
             options = options2,
-            selectedOption = selectedOption.stringToModelStateOutFieldText(),
+            selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             label = "test",
             onOptionSelected = {  }
         )
@@ -62,11 +73,11 @@ fun SpinnerScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerOutlinedTextField(
-    options: List<String>,
+    options: List<ModelCustomSpinner>,
     selectedOption: ModelStateOutFieldText,
     read: Boolean,
     label: String,
-    onOptionSelected: (String) -> Unit,
+    onOptionSelected: (ModelCustomSpinner) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) } // Controla si el menú está abierto
     var selectedText by remember { mutableStateOf(selectedOption) } // Texto seleccionado
@@ -113,9 +124,9 @@ fun SpinnerOutlinedTextField(
                 ) {
                     options.forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(option) },
+                            text = { Text(option.value!!) },
                             onClick = {
-                                selectedText = option.stringToModelStateOutFieldText()
+                                selectedText = option.value.stringToModelStateOutFieldText()
                                 onOptionSelected(option)
                                 expanded = false // Cierra el menú después de seleccionar
                             }
