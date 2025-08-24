@@ -1,13 +1,13 @@
-package com.mx.liftechnology.domain.usecase.loginflowdomain
+package com.mx.liftechnology.domain.usecase.loginflowdomain.login
 
 import android.os.Build
-import com.mx.liftechnology.core.network.callapi.Credentials
-import com.mx.liftechnology.core.network.callapi.ResponseDataLogin
-import com.mx.liftechnology.core.network.callapi.User
+import com.mx.liftechnology.core.network.callapi.loginflow.Credentials
+import com.mx.liftechnology.core.network.callapi.loginflow.ResponseDataLogin
+import com.mx.liftechnology.core.network.callapi.loginflow.User
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
-import com.mx.liftechnology.data.repository.loginflowdata.LoginRepository
+import com.mx.liftechnology.data.repository.loginflowdata.login.LoginRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess

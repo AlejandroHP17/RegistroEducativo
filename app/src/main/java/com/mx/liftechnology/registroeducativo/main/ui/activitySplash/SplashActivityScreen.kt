@@ -6,10 +6,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mx.liftechnology.core.util.LocationHelper
 import org.koin.androidx.compose.koinViewModel
 
@@ -49,7 +49,7 @@ fun SplashScreen(
     }
 
     // Navegación
-    val navigate by splashViewModel.navigate.collectAsState()
+    val navigate by splashViewModel.navigate.collectAsStateWithLifecycle()
     LaunchedEffect(navigate) {
         when (navigate) {
             true -> onNavigateToMain()

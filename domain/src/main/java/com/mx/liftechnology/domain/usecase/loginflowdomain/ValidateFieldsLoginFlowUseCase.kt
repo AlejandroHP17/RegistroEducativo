@@ -5,7 +5,7 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
-interface ValidateFieldsLoginUseCase {
+interface ValidateFieldsLoginFlowUseCase {
     fun validateEmailCompose(email: String?): ModelStateOutFieldText
     fun validatePassCompose(pass: String?): ModelStateOutFieldText
     fun validatePassRegisterCompose(pass: String?): ModelStateOutFieldText
@@ -13,7 +13,7 @@ interface ValidateFieldsLoginUseCase {
     fun validateCodeCompose(code: String?): ModelStateOutFieldText
 }
 
-class ValidateFieldsLoginUseCaseImp : ValidateFieldsLoginUseCase {
+class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
     /** validateEmail
      * @author pelkidev
      * @since 1.0.0

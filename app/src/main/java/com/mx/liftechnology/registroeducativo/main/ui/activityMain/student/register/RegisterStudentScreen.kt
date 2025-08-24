@@ -9,13 +9,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
@@ -33,7 +33,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeader
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
 
@@ -45,7 +45,7 @@ fun RegisterStudentScreen(
     sharedViewModel: SharedViewModel,
     registerStudentViewModel: RegisterStudentViewModel = koinViewModel(),
 ) {
-    val uiState by registerStudentViewModel.uiState.collectAsState()
+    val uiState by registerStudentViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     val studentJson = backStackEntry.arguments?.getString("student")
@@ -190,7 +190,7 @@ private fun ActionRegisterStudent(
     onRecord: () -> Unit,
 ) {
     ButtonPair(
-        actionColor = color_action,
+        actionColor = colorAction,
         recordColor = uiState.buttonColor,
         text = stringResource(R.string.add_button),
         onActionClick = { validateFieldsCompose() },

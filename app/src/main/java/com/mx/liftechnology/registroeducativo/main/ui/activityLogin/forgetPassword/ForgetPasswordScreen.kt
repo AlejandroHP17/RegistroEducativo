@@ -3,12 +3,12 @@ package com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassw
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -21,7 +21,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -30,8 +30,8 @@ fun ForgetPasswordScreen(
     navController: NavHostController,
     forgetPasswordViewModel: ForgetPasswordViewModel = koinViewModel(),
 ) {
-    val uiState by forgetPasswordViewModel.uiState.collectAsState()
-    val emailState by forgetPasswordViewModel.emailState.collectAsState()
+    val uiState by forgetPasswordViewModel.uiState.collectAsStateWithLifecycle()
+    val emailState by forgetPasswordViewModel.emailState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column(
@@ -86,7 +86,7 @@ fun FooterForgetPasswordScreen(
     validateFieldsCompose: () -> Unit,
 ) {
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(id = R.string.forget_pass_button),
         onActionClick = { validateFieldsCompose() }
     )

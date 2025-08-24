@@ -3,10 +3,10 @@ package com.mx.liftechnology.registroeducativo.main.ui.principal
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,7 +36,7 @@ fun AppNavHost(
     sharedViewModel: SharedViewModel
 ) {
     val navigationController = rememberNavController()
-    val uiState by sharedViewModel.uiState.collectAsState()
+    val uiState by sharedViewModel.uiState.collectAsStateWithLifecycle()
     Box(modifier = Modifier.fillMaxSize()) {
 
         NavHost(navController = navigationController, startDestination = "splash") {

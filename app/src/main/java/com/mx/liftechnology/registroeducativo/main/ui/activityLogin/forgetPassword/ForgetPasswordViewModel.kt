@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
+import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelLoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class ForgetPasswordViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
+    private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelLoginUiState())

@@ -9,19 +9,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterPartialUIData
+import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogConfirm
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -30,66 +32,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.RegisterPartial
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-
-@Preview(showBackground = true)
-@Composable
-fun RegisterPartialScreenPreview() {
-    val uiData = ModelRegisterPartialUIData()
-
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
-    ) {
-        val (header, body, column, action) = createRefs()
-
-        Column(
-            modifier = Modifier.constrainAs(header) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }) { HeaderRegisterPartial(navigate =  {}) }
-
-        Column(
-            modifier = Modifier.constrainAs(body) {
-                top.linkTo(header.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }) {
-            BodyRegisterPartial(
-                uiData = uiData,
-                onPartialChanged = { }
-            )
-        }
-
-        Column(
-            modifier = Modifier.constrainAs(column) {
-                top.linkTo(body.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(action.top)
-                height = Dimension.fillToConstraints
-            }) {
-
-                ColumnRegisterPartial(
-                    uiData = uiData,
-                    onDateChange = {  }
-                )
-
-        }
-
-        Column(
-            modifier = Modifier.constrainAs(action) {
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }) { ActionRegisterPartial { } }
-    }
-}
-
 
 @Composable
 fun RegisterPartialScreen(
@@ -98,8 +43,10 @@ fun RegisterPartialScreen(
     sharedViewModel: SharedViewModel
 ) {
 
-    val uiState by registerPartialViewModel.uiState.collectAsState()
-    val uiData by registerPartialViewModel.uiData.collectAsState()
+    val uiState by registerPartialViewModel.uiState.collectAsStateWithLifecycle()
+    val uiData by registerPartialViewModel.uiData.collectAsStateWithLifecycle()
+
+    val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS)  navController.popBackStack()
@@ -152,7 +99,7 @@ fun RegisterPartialScreen(
             if (uiData.numberPartials.valueText.isNotEmpty() && uiData.numberPartials.valueText.toInt() > 0) {
                 ColumnRegisterPartial(
                     uiData = uiData,
-                    onDateChange = { registerPartialViewModel.onDateChange(it) }
+                    onDateChange = { registerPartialViewModel.onDateChange(it) },
                 )
             }
         }
@@ -162,8 +109,22 @@ fun RegisterPartialScreen(
                 bottom.linkTo(parent.bottom)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }) { ActionRegisterPartial { registerPartialViewModel.validateFieldsCompose() } }
+            }
+        ) { ActionRegisterPartial (
+            isAvailable = uiState.isAvailable,
+            validateFieldsCompose = { showDialog.value = true }
+        ) }
     }
+
+    if (showDialog.value) {
+        AlertDialogConfirm(
+            itemSelectedReturn = {
+                if(it) registerPartialViewModel.validateFieldsCompose()
+            },
+            dismiss = { showDialog.value = false }
+        )
+    }
+
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
@@ -174,7 +135,8 @@ private fun HeaderRegisterPartial(
     ComponentHeaderBack(
         title = stringResource(R.string.register_partial),
         body = stringResource(R.string.register_subject_name_description_2),
-        onReturnClick = { navigate()})
+        onReturnClick = { navigate()}
+    )
 }
 
 @Composable
@@ -225,11 +187,13 @@ private fun ColumnRegisterPartial(
 
 @Composable
 private fun ActionRegisterPartial(
+    isAvailable: Boolean,
     validateFieldsCompose: () -> Unit,
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
-        containerColor = color_action,
+        isAvailable = isAvailable,
+        containerColor = colorAction,
         text = stringResource(R.string.add_button),
         onActionClick = { validateFieldsCompose() }
     )

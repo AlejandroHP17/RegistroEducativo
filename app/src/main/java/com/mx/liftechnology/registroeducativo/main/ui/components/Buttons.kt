@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_disable
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorApprove
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisable
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 
 @Preview(showBackground = true)
@@ -43,10 +47,60 @@ fun TestButton(){
         modifier = Modifier.background(background())
     ){
         ButtonReturn({})
-        ButtonAction(color_action, "Pulsame"){}
-        ButtonActionShort(color_success, "Pulsame"){}
-        ButtonPair(color_action, color_action, "Pulsame", {}, {})
+        ButtonAction(colorAction, "Pulsame",{}, true)
+        ButtonActionShort(colorSuccess, "Pulsame"){}
+        ButtonPair(colorAction, colorAction, "Pulsame", {}, {})
+        ButtonsCalendar(colorDisabled, colorApprove, colorSuccess,true, {}, {})
+    }
+}
 
+@Composable
+fun ButtonsCalendar(
+    colorStart: Color,
+    colorEnd: Color,
+    colorContinue : Color,
+    disabledContinue: Boolean,
+    onActionClick: (Int) -> Unit,
+    onDismiss : () -> Unit
+){
+    Row (
+        modifier = Modifier.fillMaxWidth().padding(horizontal = dimensionResource(id = R.dimen.margin_outer)),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ){
+        OutlinedButton(
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = colorStart,
+                contentColor = colorPrincipalText
+            ),
+            onClick = { onActionClick(0) }
+        )
+        {Text(
+            "Inicio")}
+
+        OutlinedButton(
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = colorEnd,
+                contentColor = colorPrincipalText
+            ),
+            onClick = { onActionClick(1) }
+        )
+
+        {Text("Fin")}
+
+        OutlinedButton(
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = colorContinue,
+                contentColor = colorPrincipalText,
+                disabledContainerColor = colorDisabled,
+                disabledContentColor = colorPrincipalText
+            ),
+            enabled = disabledContinue,
+            onClick = {
+                onActionClick(2)
+                onDismiss()
+            }
+        )
+        {Text("Confirmar")}
     }
 }
 
@@ -63,7 +117,7 @@ fun ButtonReturn(
         Icon(
             painter = painterResource(id = R.drawable.ic_return),
             contentDescription = "Return",
-            tint = color_principal_text,
+            tint = colorPrincipalText,
             modifier = Modifier.size(32.dp),
         )
     }
@@ -74,7 +128,8 @@ fun ButtonReturn(
 fun ButtonAction(
     containerColor:Color,
     text: String,
-    onActionClick: () -> Unit
+    onActionClick: () -> Unit,
+    isAvailable: Boolean = true,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -85,13 +140,14 @@ fun ButtonAction(
             onClick = { onActionClick() },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20),
-            border = BorderStroke(1.dp, color_principal_text),
+            border = BorderStroke(1.dp, colorPrincipalText),
             colors = ButtonDefaults.buttonColors(
-                contentColor = color_principal_text,
+                contentColor = colorPrincipalText,
                 containerColor = containerColor,
-                disabledContentColor = color_principal_text,
-                disabledContainerColor = color_disable
-            )
+                disabledContentColor = colorPrincipalText,
+                disabledContainerColor = colorDisable
+            ),
+            enabled = isAvailable
         ) {
             Text(text)
         }
@@ -114,12 +170,12 @@ fun ButtonActionShort(
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp),
             shape = RoundedCornerShape(20),
-            border = BorderStroke(1.dp, color_principal_text),
+            border = BorderStroke(1.dp, colorPrincipalText),
             colors = ButtonDefaults.buttonColors(
-                contentColor = color_principal_text,
+                contentColor = colorPrincipalText,
                 containerColor = containerColor,
-                disabledContentColor = color_principal_text,
-                disabledContainerColor = color_error
+                disabledContentColor = colorPrincipalText,
+                disabledContainerColor = colorError
             )
         ) {
             Text(text)
@@ -153,12 +209,12 @@ fun ButtonPair(
                     width = Dimension.fillToConstraints
                 },
             shape = RoundedCornerShape(20),
-            border = BorderStroke(1.dp, color_principal_text),
+            border = BorderStroke(1.dp, colorPrincipalText),
             colors = ButtonDefaults.buttonColors(
-                contentColor = color_principal_text,
+                contentColor = colorPrincipalText,
                 containerColor = actionColor,
-                disabledContentColor = color_principal_text,
-                disabledContainerColor = color_disable
+                disabledContentColor = colorPrincipalText,
+                disabledContainerColor = colorDisable
             )
         ) {
             Text(text = text)
@@ -180,12 +236,12 @@ fun ButtonPair(
                 },
             enabled = true,
             shape = RoundedCornerShape(20),
-            border = BorderStroke(1.dp, color_principal_text),
+            border = BorderStroke(1.dp, colorPrincipalText),
             colors = ButtonDefaults.buttonColors(
-                contentColor = color_principal_text,
+                contentColor = colorPrincipalText,
                 containerColor = recordColor,
-                disabledContentColor = color_principal_text,
-                disabledContainerColor = color_error
+                disabledContentColor = colorPrincipalText,
+                disabledContainerColor = colorError
             ),
             contentPadding = PaddingValues(0.dp)
         ) {

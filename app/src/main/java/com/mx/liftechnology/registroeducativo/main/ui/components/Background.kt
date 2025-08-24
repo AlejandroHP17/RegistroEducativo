@@ -34,18 +34,18 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_bg_first
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_bg_second
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgFirst
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgSecond
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
 @Preview(showBackground = true)
 @Composable
 fun background(): Brush {
     return Brush.verticalGradient(
         colors = listOf(
-            color_bg_first,
-            color_bg_second
+            colorBgFirst,
+            colorBgSecond
         )
     )
 }
@@ -78,7 +78,7 @@ fun CustomSpace(dimen: Dp) {
     Spacer(
         modifier = Modifier
             .height(dimen)
-            .background(color_transparent)
+            .background(colorTransparent)
     )
 }
 
@@ -124,7 +124,7 @@ fun EmptyState(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = color_transparent),
+            .background(color = colorTransparent),
     ) {
         val (returnBox, bodyBox) = createRefs()
 
@@ -166,7 +166,7 @@ fun EmptyState(
 
             CustomSpace(dimensionResource(id = R.dimen.margin_extra_outer))
 
-            ButtonActionShort(color_action, button) { onActionClick() }
+            ButtonActionShort(colorAction, button) { onActionClick() }
         }
     }
 

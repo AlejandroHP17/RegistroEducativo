@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -31,7 +31,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -42,12 +42,12 @@ fun RegisterSchoolScreen(
     sharedViewModel: SharedViewModel,
     registerSchoolViewModel: RegisterSchoolViewModel = koinViewModel(),
 ) {
-    val uiState by registerSchoolViewModel.uiState.collectAsState()
-    val uiSemiAutomaticData by registerSchoolViewModel.uiSemiAutomaticData.collectAsState()
-    val cct by registerSchoolViewModel.cct.collectAsState()
-    val grade by registerSchoolViewModel.grade.collectAsState()
-    val group by registerSchoolViewModel.group.collectAsState()
-    val cycle by registerSchoolViewModel.cycle.collectAsState()
+    val uiState by registerSchoolViewModel.uiState.collectAsStateWithLifecycle()
+    val uiSemiAutomaticData by registerSchoolViewModel.uiSemiAutomaticData.collectAsStateWithLifecycle()
+    val cct by registerSchoolViewModel.cct.collectAsStateWithLifecycle()
+    val grade by registerSchoolViewModel.grade.collectAsStateWithLifecycle()
+    val group by registerSchoolViewModel.group.collectAsStateWithLifecycle()
+    val cycle by registerSchoolViewModel.cycle.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS)navController.navigate(MainRoutes.Menu.withReload(true)) {
@@ -197,7 +197,7 @@ private fun ActionRegisterSchool(
     onRecord: () -> Unit,
 ) {
     ButtonPair(
-        actionColor = color_action,
+        actionColor = colorAction,
         recordColor = uiState.buttonColor,
         text = stringResource(R.string.add_button),
         onActionClick = { validateFieldsCompose() },

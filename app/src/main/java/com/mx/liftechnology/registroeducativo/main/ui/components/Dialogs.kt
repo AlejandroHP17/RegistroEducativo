@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
@@ -13,12 +14,62 @@ import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIDialog
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 @Preview(showBackground = true)
 @Composable
 fun AlertDialogPreview(){
-    AlertDialogMenu(ModelMenuUIDialog(),{},{},false){}
+    Column {
+        AlertDialogMenu(ModelMenuUIDialog(),{},{},false){}
+        CustomSpace(16.dp)
+        AlertDialogConfirm({},{})
+    }
+
+}
+
+@Composable
+fun AlertDialogConfirm(
+    itemSelectedReturn: (Boolean) -> Unit,
+    dismiss: () -> Unit
+){
+    val openDialog = remember { mutableStateOf(true) }
+
+    if (openDialog.value) {
+
+        AlertDialog(
+            modifier = Modifier.padding(horizontal = 0.dp),
+            onDismissRequest = {
+                openDialog.value = false
+                dismiss()
+            },
+            title = { TextTitleDialog(stringResource(R.string.dialog_wish_continue)) },
+            text = { TextBody(stringResource(R.string.dialog_wish_continue_description)) },
+            confirmButton = {
+                ButtonAction(
+                    containerColor = colorSuccess,
+                    text = stringResource(R.string.save),
+                    onActionClick = {
+                        itemSelectedReturn(true)
+                        openDialog.value = false
+                        dismiss()
+                    }
+                )
+            },
+            dismissButton = {
+                ButtonAction(
+                    containerColor = colorError,
+                    text = stringResource(R.string.cancel),
+                    onActionClick = {
+                        itemSelectedReturn(false)
+                        openDialog.value = false
+                        dismiss()
+                    }
+                )
+            }
+        )
+    }
 }
 
 
@@ -50,13 +101,13 @@ fun AlertDialogMenu(
                     }
                 },
                 confirmButton = {
-                        ButtonAction(
-                            containerColor = color_action,
-                            text = stringResource(R.string.next)
-                        ) {
+                    ButtonAction(
+                        containerColor = colorAction,
+                        text = stringResource(R.string.next),
+                        onActionClick = {
                             itemSelected.value?.let { itemSelectedReturn(it) }
                         }
-
+                    )
                 },
                 dismissButton = {}
             )
@@ -76,14 +127,15 @@ fun AlertDialogMenu(
                     }
                 },
                 confirmButton = {
-                        ButtonAction(
-                            containerColor = color_action,
-                            text = stringResource(R.string.select)
-                        ) {
+                    ButtonAction(
+                        containerColor = colorAction,
+                        text = stringResource(R.string.select),
+                        onActionClick = {
                             itemPartialSelected.value?.let { itemSelectedPartialReturn(it) }
                             openDialog.value = false
                             dismiss()
                         }
+                    )
 
                 },
                 dismissButton = {}

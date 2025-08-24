@@ -7,7 +7,8 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +22,11 @@ class ListSubjectViewModel(
     private val getListSubjectUseCase: GetListSubjectUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelListSubjectUIState())
-    val uiState: StateFlow<ModelListSubjectUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelListSubjectUiState())
+    val uiState: StateFlow<ModelListSubjectUiState> = _uiState.asStateFlow()
+
+    private val _dataState = MutableStateFlow(ModelListSubjectDataState())
+    val dataState: StateFlow<ModelListSubjectDataState> = _dataState.asStateFlow()
 
     fun getSubject() {
         viewModelScope.launch (dispatcherProvider.main){
@@ -30,10 +34,10 @@ class ListSubjectViewModel(
 
             when(val result = getListSubjectUseCase.invoke()){
                 is SuccessState -> {
-                    _uiState.update { it.copy(
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _dataState.update { it.copy(
                         subjectList = result.result,
                         subjectListUI = result.result.convertModelCustomCard(),
-                        uiState = ModelStateUIEnum.NOTHING
                     ) }
                 }
                 else -> {
@@ -58,5 +62,5 @@ class ListSubjectViewModel(
         }?: emptyList()
     }
 
-    fun getSubject(item: ModelCustomCard): ModelFormatSubjectDomain? = _uiState.value.subjectList?.find { it.subjectId.toString() == item.id }
+    fun getSubject(item: ModelCustomCard): ModelFormatSubjectDomain? = _dataState.value.subjectList?.find { it.subjectId.toString() == item.id }
 }

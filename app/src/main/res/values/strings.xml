@@ -5,6 +5,7 @@
     <string name="save">Guardar</string>
     <string name="select">Seleccionar</string>
     <string name="next">Siguiente</string>
+    <string name="cancel">Cancelar</string>
 
     <string name="empty_subject_1">Sin Campos Formativos</string>
     <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
@@ -81,6 +82,8 @@
 
     <!-- Dialogs Flow -->
     <string name="dialog_select_cycle">Selecciona tu ciclo escolar</string>
+    <string name="dialog_wish_continue">¿Deseas continuar?</string>
+    <string name="dialog_wish_continue_description">Una vez confirmado no podrás modificar el número ni las fechas ingresadas</string>
 
     <!-- Dialogs Flow -->
     <string name="calendar">Calendario</string>

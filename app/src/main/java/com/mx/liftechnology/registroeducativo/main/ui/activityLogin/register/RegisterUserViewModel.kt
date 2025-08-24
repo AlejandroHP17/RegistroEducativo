@@ -8,8 +8,8 @@ import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.loginflowdomain.RegisterUserUseCase
-import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
+import com.mx.liftechnology.domain.usecase.loginflowdomain.register.RegisterUserUseCase
+import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 class RegisterUserViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val registerUserUseCase: RegisterUserUseCase,
-    private val validateFieldsUseCase: ValidateFieldsLoginUseCase,
+    private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterUserUiState())

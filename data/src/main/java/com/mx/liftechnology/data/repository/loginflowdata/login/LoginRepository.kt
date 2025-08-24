@@ -1,8 +1,8 @@
-package com.mx.liftechnology.data.repository.loginflowdata
+package com.mx.liftechnology.data.repository.loginflowdata.login
 
-import com.mx.liftechnology.core.network.callapi.Credentials
-import com.mx.liftechnology.core.network.callapi.LoginApiCall
-import com.mx.liftechnology.core.network.callapi.ResponseDataLogin
+import com.mx.liftechnology.core.network.callapi.loginflow.Credentials
+import com.mx.liftechnology.core.network.callapi.loginflow.LoginApiCall
+import com.mx.liftechnology.core.network.callapi.loginflow.ResponseDataLogin
 import com.mx.liftechnology.data.util.ExceptionHandler
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError

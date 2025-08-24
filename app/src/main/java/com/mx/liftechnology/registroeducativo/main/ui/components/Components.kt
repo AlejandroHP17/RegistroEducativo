@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
 @Preview(showBackground = true)
 @Composable
@@ -44,7 +44,7 @@ fun TestComponents() {
 @Composable
 fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) {
     Column(
-        modifier = Modifier.background(color_transparent)
+        modifier = Modifier.background(colorTransparent)
     ) {
         CustomSpace(dimensionResource(id = R.dimen.margin_top_return))
 
@@ -67,7 +67,7 @@ fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) 
 @Composable
 fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
     Column(
-        modifier = Modifier.background(color_transparent)
+        modifier = Modifier.background(colorTransparent)
     ) {
         CustomSpace(dimensionResource(id = R.dimen.margin_top_return))
 
@@ -86,7 +86,7 @@ fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
 @Composable
 fun ComponentHeader(title: String, body: String) {
     Column(
-        modifier = Modifier.background(color_transparent)
+        modifier = Modifier.background(colorTransparent)
     ) {
 
         CustomSpace(dimensionResource(id = R.dimen.margin_top_return))
@@ -164,13 +164,13 @@ fun ComponentHeaderMenu(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = color_transparent, // Color de fondo
-            contentColor = color_transparent
+            containerColor = colorTransparent, // Color de fondo
+            contentColor = colorTransparent
         ),
         onClick = onClick
     ) {
         Column(
-            modifier = Modifier.background(color_transparent)
+            modifier = Modifier.background(colorTransparent)
         ) {
             CustomSpace(dimensionResource(id = R.dimen.margin_between))
 

@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,10 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -35,36 +32,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.MyGridScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextSubHeader
-import com.mx.liftechnology.registroeducativo.main.ui.components.background
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
-
-@Preview(showBackground = true)
-@Composable
-fun MenuScreenPreview() {
-    val uiDialog = ModelMenuUIDialog()
-    val uiState = ModelMenuUIState()
-    val uiData = ModelMenuUIData()
-    val fakeNavController = rememberNavController()
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
-            .background(background())
-    ) {
-        logs("Menu")
-        HeaderMenuScreen(
-            uiDialog = uiDialog,
-            onShowDialog = {}
-        )
-        BodyMenuScreen(
-            uiState = uiState,
-            uiData = uiData,
-            navController = fakeNavController
-        )
-    }
-}
 
 
 /** Menu screen, show the principal view and control the flows
@@ -81,9 +51,9 @@ fun MenuScreen(
 ) {
 
     /* Variables locales y en viewmodel */
-    val uiState by menuViewModel.uiState.collectAsState()
-    val uiDialog by menuViewModel.uiDialog.collectAsState()
-    val uiData by menuViewModel.uiData.collectAsState()
+    val uiState by menuViewModel.uiState.collectAsStateWithLifecycle()
+    val uiDialog by menuViewModel.uiDialog.collectAsStateWithLifecycle()
+    val uiData by menuViewModel.uiData.collectAsStateWithLifecycle()
 
     val showDialog = remember { mutableStateOf(false) }
     val isGroup = remember { mutableStateOf(false) }
@@ -206,7 +176,6 @@ private fun RegisterAreaMenuScreen(
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        logs("Recompuso vista menu", "click")
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL_REGISTER)
         MyGridScreen(uiData.evaluationItems, 628.dp) { selectedItem ->
             when (selectedItem.id) {

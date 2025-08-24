@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -29,7 +29,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ImageLogo
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -42,9 +42,9 @@ fun LoginScreen(
     onSuccess: () -> Unit,
 ) {
 
-    val uiState by loginViewModel.uiState.collectAsState()
-    val emailState by loginViewModel.emailState.collectAsState()
-    val passwordState by loginViewModel.passwordState.collectAsState()
+    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+    val emailState by loginViewModel.emailState.collectAsStateWithLifecycle()
+    val passwordState by loginViewModel.passwordState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS) onSuccess()
@@ -138,7 +138,7 @@ fun ActionLoginScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_outer))
 
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(id = R.string.log_logIn),
         onActionClick = { validateFieldsCompose() }
     )

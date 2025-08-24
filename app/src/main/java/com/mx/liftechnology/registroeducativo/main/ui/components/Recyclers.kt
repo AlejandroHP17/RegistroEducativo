@@ -28,7 +28,7 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import java.time.LocalDate
 
@@ -99,7 +99,7 @@ fun MyGridScreen(
         modifier = Modifier
             .fillMaxWidth()
             .height(height)
-            .background(color = color_transparent),
+            .background(color = colorTransparent),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         userScrollEnabled = false

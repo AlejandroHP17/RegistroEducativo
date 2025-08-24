@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.registerassignment
 
-import android.app.DatePickerDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,15 +9,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
@@ -27,18 +26,20 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDialogState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.DateSimplePickerDialog
 import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationStudentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
-import java.util.Calendar
 
 @Composable
 fun RegisterAssignmentScreen(
@@ -47,10 +48,12 @@ fun RegisterAssignmentScreen(
     registerAssignmentViewModel: RegisterAssignmentViewModel = koinViewModel(),
 ) {
 
-    val uiState by registerAssignmentViewModel.uiState.collectAsState()
-    val context = LocalContext.current
-    val calendar = Calendar.getInstance()
+    val uiState by registerAssignmentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by registerAssignmentViewModel.dataState.collectAsStateWithLifecycle()
+    val dialogState by registerAssignmentViewModel.dialogState.collectAsStateWithLifecycle()
     val subjectJson = backStackEntry.arguments?.getString("subject")
+
+    var showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         registerAssignmentViewModel.getListStudent()
@@ -62,20 +65,6 @@ fun RegisterAssignmentScreen(
 
         registerAssignmentViewModel.updateSubject(subject)
 
-    }
-
-    // Estado para controlar la fecha seleccionada
-    val datePickerDialog = remember {
-        DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                val selectedDate = "$year-${month + 1}-$dayOfMonth"
-                registerAssignmentViewModel.onChangeDate(selectedDate) // Guardar la fecha
-            },
-            calendar[Calendar.YEAR],
-            calendar[Calendar.MONTH],
-            calendar[Calendar.DAY_OF_MONTH]
-        )
     }
 
     ConstraintLayout(
@@ -105,9 +94,13 @@ fun RegisterAssignmentScreen(
                 end.linkTo(parent.end)
             }) {
             BodyRegisterAssignment(
-                uiState = uiState,
+                dataState = dataState,
+                dialogState = dialogState,
                 onNameJobChanged = { registerAssignmentViewModel.onChangeName(it) },
-                datePickerDialog = datePickerDialog,
+                showDialog = {
+                    registerAssignmentViewModel.updateDates()
+                    showDialog.value = true
+                             },
             )
         }
 
@@ -132,7 +125,7 @@ fun RegisterAssignmentScreen(
                 height = Dimension.fillToConstraints
             }) {
             ColumnRegisterScore(
-                uiState = uiState,
+                dataState = dataState,
                 onScoreChange = { registerAssignmentViewModel.onScoreChange(it) }
             )
         }
@@ -149,12 +142,21 @@ fun RegisterAssignmentScreen(
         }
 
     }
+
+    if(showDialog.value){
+        DateSimplePickerDialog(
+            showDialog = true,
+            dialogState = dialogState,
+            onDismiss = { showDialog.value = false},
+            onDateSelected = {registerAssignmentViewModel.onChangeDate(it.toString())}
+        )
+    }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 @Composable
 private fun HeaderRegisterAssignment(
-    uiState: ModelRegisterAssignmentUIState,
+    uiState: ModelRegisterAssignmentUiState,
     navController: NavHostController,
 ) {
     ComponentHeaderBackWithout(
@@ -164,27 +166,27 @@ private fun HeaderRegisterAssignment(
 
 @Composable
 fun BodyRegisterAssignment(
-    uiState: ModelRegisterAssignmentUIState,
+    dataState: ModelRegisterAssignmentDataState,
+    dialogState: ModelRegisterAssignmentDialogState,
     onNameJobChanged: (String) -> Unit,
-    datePickerDialog: DatePickerDialog,
+    showDialog: () -> Unit,
 ) {
     BoxEditTextGeneric(
-        value = uiState.nameJob,
+        value = dataState.nameJob,
         enable = true,
         label = stringResource(id = R.string.form_assignment_name),
     ) { onNameJobChanged(it) }
 
-
     BoxEditTextCalendar(
-        value = uiState.date,
+        value = dialogState.date,
         enable = true,
         label = stringResource(id = R.string.form_assignment_date)
-    ) { datePickerDialog.show() }
+    ) { showDialog() }
 }
 
 @Composable
 private fun Body2RegisterAssignment(
-    uiState: ModelRegisterAssignmentUIState,
+    uiState: ModelRegisterAssignmentUiState,
     onNameAssignmentChanged: (ModelFormatAssignment) -> Unit,
 ) {
     Row(
@@ -201,7 +203,7 @@ private fun Body2RegisterAssignment(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-           /* SpinnerOutlinedTextField(
+            /*SpinnerOutlinedTextField(
                 options = uiState.listOptions!!,
                 selectedOption = uiState.assignment,
                 read = false,
@@ -216,11 +218,11 @@ private fun Body2RegisterAssignment(
 
 @Composable
 private fun ColumnRegisterScore(
-    uiState: ModelRegisterAssignmentUIState,
+    dataState: ModelRegisterAssignmentDataState,
     onScoreChange: (Pair<String, String>) -> Unit,
 ) {
     EvaluationStudentList(
-        items = uiState.studentListUI,
+        items = dataState.studentListUI,
         onScoreChange = { onScoreChange(it) },
     )
 }
@@ -231,7 +233,7 @@ private fun ActionRegisterAssignment(
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(R.string.save),
         onActionClick = { onClick() }
     )

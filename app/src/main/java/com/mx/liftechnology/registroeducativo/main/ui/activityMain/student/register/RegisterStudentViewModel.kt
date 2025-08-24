@@ -17,8 +17,8 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUIState
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -195,11 +195,11 @@ class RegisterStudentViewModel(
             if (isListening) {
                 voiceRecognitionManager.startListening()
                 isListening = false
-                _uiState.update { it.copy(buttonColor = color_error) }
+                _uiState.update { it.copy(buttonColor = colorError) }
             } else {
                 voiceRecognitionManager.stopListening()
                 isListening = true
-                _uiState.update { it.copy(buttonColor = color_success) }
+                _uiState.update { it.copy(buttonColor = colorSuccess) }
             }
         }
     }

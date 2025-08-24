@@ -19,10 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error_toast
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_informative_toast
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success_toast
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_warning_toast
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorErrorToast
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorInformativeToast
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccessToast
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWarningToast
 import kotlinx.coroutines.delay
 
 @Composable
@@ -59,19 +59,19 @@ fun ShowCustomAnimated(
                     .background(
                         when (typeToast) {
                             ModelStateTypeToastUI.SUCCESS -> {
-                                color_success_toast
+                                colorSuccessToast
                             }
 
                             ModelStateTypeToastUI.ERROR -> {
-                                color_error_toast
+                                colorErrorToast
                             }
 
                             ModelStateTypeToastUI.WARNING -> {
-                                color_warning_toast
+                                colorWarningToast
                             }
 
                             ModelStateTypeToastUI.INFORMATIVE -> {
-                                color_informative_toast
+                                colorInformativeToast
                             }
                         }, RoundedCornerShape(8.dp)
                     )

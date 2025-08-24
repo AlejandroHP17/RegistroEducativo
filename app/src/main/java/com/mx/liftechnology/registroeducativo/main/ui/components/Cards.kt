@@ -40,9 +40,9 @@ import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_azul_link
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 import java.time.LocalDate
 
 @Preview(showBackground = true)
@@ -116,7 +116,7 @@ fun CustomCard(
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(20),
-        colors = CardDefaults.cardColors(containerColor = color_azul_link)
+        colors = CardDefaults.cardColors(containerColor = colorAzulLink)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -138,7 +138,7 @@ fun CustomCard(
                     topEnd = 8.dp
 
                 ),
-                colors = CardDefaults.cardColors(containerColor = color_white),
+                colors = CardDefaults.cardColors(containerColor = colorWhite),
                 onClick = { onItemClick(item) }
             ) {
                 Row(
@@ -180,8 +180,8 @@ fun GridItem(
             .padding(8.dp)
             .clickable { onItemClick(item) },
         colors = CardDefaults.cardColors(
-            containerColor = color_white, // Color de fondo
-            contentColor = color_white
+            containerColor = colorWhite, // Color de fondo
+            contentColor = colorWhite
         ),
     ) {
         Column(
@@ -216,7 +216,7 @@ fun DialogGroupItem(
         RadioButton(
             selected = isSelected,
             onClick = onSelected,
-            colors = RadioButtonDefaults.colors(selectedColor = color_principal_text)
+            colors = RadioButtonDefaults.colors(selectedColor = colorPrincipalText)
         )
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -313,14 +313,21 @@ fun RegisterPartialListItem(
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDates by remember { mutableStateOf<Pair<LocalDate?, LocalDate?>>(null to null) }
 
-    CustomDateRangePicker(
+   /* CustomDateRangePicker(
         showDialog = showDatePicker,
         onDismiss = { showDatePicker = false },
         onDateSelected = { startDate, endDate ->
             selectedDates = startDate to endDate
             onDateChange(selectedDates)
         }
-    )
+    )*/
+
+    DateRangePickerDialog(showDialog = showDatePicker,
+        onDismiss = { showDatePicker = false },
+        onDateSelected = { startDate, endDate ->
+            selectedDates = startDate to endDate
+            onDateChange(selectedDates)
+        })
 
 
     BoxEditTextCalendar(

@@ -38,10 +38,10 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_secondary_text
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSecondaryText
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 
 
 @Preview(showBackground = true)
@@ -115,7 +115,7 @@ fun BoxEditTextEmail(
         enabled = enable,
         label = { Text(
             text = label,
-            color = if(value.isError) color_error else color_principal_text) },
+            color = if(value.isError) colorError else colorPrincipalText) },
         isError = value.isError,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
@@ -129,7 +129,7 @@ fun BoxEditTextEmail(
     if (value.isError) {
         Text(
             text = value.errorMessage,
-            color = color_error,
+            color = colorError,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
         )
@@ -157,7 +157,7 @@ fun BoxEditTextPassword(
         label = {
             Text(
                 text = label,
-                color = if (value.isError) color_error else color_principal_text
+                color = if (value.isError) colorError else colorPrincipalText
             )
         },
         trailingIcon = {
@@ -188,7 +188,7 @@ fun BoxEditTextPassword(
     if (value.isError) {
         Text(
             text = value.errorMessage,
-            color = color_error,
+            color = colorError,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
         )
@@ -214,7 +214,7 @@ fun BoxEditTextGeneric(
         enabled = enable,
         label = { Text(
             text = label,
-            color = if(value.isError) color_error else color_principal_text) },
+            color = if(value.isError) colorError else colorPrincipalText) },
         isError = value.isError,
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
@@ -229,7 +229,7 @@ fun BoxEditTextGeneric(
     if (value.isError) {
         Text(
             text = value.errorMessage,
-            color = color_error,
+            color = colorError,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
         )
@@ -258,7 +258,7 @@ fun BoxEditTextAllCaps(
         enabled = enable,
         label = { Text(
             text = label,
-            color = if(value.isError) color_error else color_principal_text) },
+            color = if(value.isError) colorError else colorPrincipalText) },
         isError = value.isError,
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Characters,
@@ -273,7 +273,7 @@ fun BoxEditTextAllCaps(
     if (value.isError) {
         Text(
             text = value.errorMessage,
-            color = color_error,
+            color = colorError,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(start = 16.dp, top = 4.dp)
         )
@@ -300,7 +300,7 @@ fun BoxEditTextNumeric(
             enabled = enable,
             label = { Text(
                 text = label,
-                color = if(value.isError) color_error else color_principal_text) },
+                color = if(value.isError) colorError else colorPrincipalText) },
             isError = value.isError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
@@ -314,7 +314,7 @@ fun BoxEditTextNumeric(
         if (value.isError) {
             Text(
                 text = value.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
@@ -359,7 +359,7 @@ fun BoxEditTextScore(
             enabled = enable,
             label = { Text(
                 text = label,
-                color = if(value.isError) color_error else color_principal_text) },
+                color = if(value.isError) colorError else colorPrincipalText) },
             isError = value.isError,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
@@ -373,7 +373,7 @@ fun BoxEditTextScore(
         if (value.isError) {
             Text(
                 text = value.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
@@ -387,7 +387,7 @@ fun BoxEditTextCalendar(
     value:ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    onBoxChanged:() ->  Unit){
+    onBoxChanged: () ->  Unit){
 
     Column {
         OutlinedTextField(
@@ -399,7 +399,7 @@ fun BoxEditTextCalendar(
             enabled = enable,
             label = { Text(
                 text = label,
-                color = if(value.isError) color_error else color_principal_text) },
+                color = if(value.isError) colorError else colorPrincipalText) },
             isError = value.isError,
             trailingIcon = {
                 Icon(
@@ -422,7 +422,7 @@ fun BoxEditTextCalendar(
         if (value.isError) {
             Text(
                 text = value.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
@@ -440,54 +440,54 @@ fun BoxEditTextCalendar(
 fun personalizeColors(): TextFieldColors {
     return TextFieldDefaults.colors(
 
-        focusedTextColor = color_principal_text,
-        unfocusedTextColor = color_principal_text,
-        disabledTextColor = color_secondary_text,
-        errorTextColor = color_error,
+        focusedTextColor = colorPrincipalText,
+        unfocusedTextColor = colorPrincipalText,
+        disabledTextColor = colorSecondaryText,
+        errorTextColor = colorError,
 
-        focusedContainerColor = color_white,
-        unfocusedContainerColor = color_white,
-        disabledContainerColor = color_white,
-        errorContainerColor = color_white,
+        focusedContainerColor = colorWhite,
+        unfocusedContainerColor = colorWhite,
+        disabledContainerColor = colorWhite,
+        errorContainerColor = colorWhite,
 
-        cursorColor = color_principal_text,
-        errorCursorColor = color_principal_text,
+        cursorColor = colorPrincipalText,
+        errorCursorColor = colorPrincipalText,
 
-        focusedIndicatorColor = color_principal_text,
-        unfocusedIndicatorColor = color_secondary_text,
-        disabledIndicatorColor = color_secondary_text,
-        errorIndicatorColor = color_error,
+        focusedIndicatorColor = colorPrincipalText,
+        unfocusedIndicatorColor = colorSecondaryText,
+        disabledIndicatorColor = colorSecondaryText,
+        errorIndicatorColor = colorError,
 
-        focusedLeadingIconColor = color_principal_text,
-        unfocusedLeadingIconColor = color_principal_text,
-        disabledLeadingIconColor = color_principal_text,
-        errorLeadingIconColor = color_error,
+        focusedLeadingIconColor = colorPrincipalText,
+        unfocusedLeadingIconColor = colorPrincipalText,
+        disabledLeadingIconColor = colorPrincipalText,
+        errorLeadingIconColor = colorError,
 
-        focusedTrailingIconColor = color_principal_text,
-        unfocusedTrailingIconColor = color_principal_text,
-        disabledTrailingIconColor = color_principal_text,
-        errorTrailingIconColor = color_error,
+        focusedTrailingIconColor = colorPrincipalText,
+        unfocusedTrailingIconColor = colorPrincipalText,
+        disabledTrailingIconColor = colorPrincipalText,
+        errorTrailingIconColor = colorError,
 
-        focusedLabelColor = color_principal_text,
-        unfocusedLabelColor = color_principal_text,
-        disabledLabelColor = color_principal_text,
-        errorLabelColor = color_error,
-        focusedPlaceholderColor = color_principal_text,
-        unfocusedPlaceholderColor = color_principal_text,
-        disabledPlaceholderColor = color_principal_text,
-        errorPlaceholderColor = color_error,
-        focusedSupportingTextColor = color_principal_text,
-        unfocusedSupportingTextColor = color_principal_text,
-        disabledSupportingTextColor = color_principal_text,
-        errorSupportingTextColor = color_error,
-        focusedPrefixColor = color_principal_text,
-        unfocusedPrefixColor = color_principal_text,
-        disabledPrefixColor = color_principal_text,
-        errorPrefixColor = color_error,
-        focusedSuffixColor = color_principal_text,
-        unfocusedSuffixColor = color_principal_text,
-        disabledSuffixColor = color_principal_text,
-        errorSuffixColor = color_error,
+        focusedLabelColor = colorPrincipalText,
+        unfocusedLabelColor = colorPrincipalText,
+        disabledLabelColor = colorPrincipalText,
+        errorLabelColor = colorError,
+        focusedPlaceholderColor = colorPrincipalText,
+        unfocusedPlaceholderColor = colorPrincipalText,
+        disabledPlaceholderColor = colorPrincipalText,
+        errorPlaceholderColor = colorError,
+        focusedSupportingTextColor = colorPrincipalText,
+        unfocusedSupportingTextColor = colorPrincipalText,
+        disabledSupportingTextColor = colorPrincipalText,
+        errorSupportingTextColor = colorError,
+        focusedPrefixColor = colorPrincipalText,
+        unfocusedPrefixColor = colorPrincipalText,
+        disabledPrefixColor = colorPrincipalText,
+        errorPrefixColor = colorError,
+        focusedSuffixColor = colorPrincipalText,
+        unfocusedSuffixColor = colorPrincipalText,
+        disabledSuffixColor = colorPrincipalText,
+        errorSuffixColor = colorError,
 
         )
 }

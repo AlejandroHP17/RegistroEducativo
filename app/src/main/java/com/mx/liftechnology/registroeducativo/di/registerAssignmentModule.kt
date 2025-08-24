@@ -9,6 +9,7 @@ import com.mx.liftechnology.data.repository.mainflowdata.subject.RegisterAssignm
 import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepository
 import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepositoryImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.RegisterAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.RegisterListAssignmentUseCase
@@ -48,6 +49,7 @@ val registerAssignmentModule = module {
     single { SaveIdSubjectSelectedUseCase(get()) }
     single { GetListAssignmentPerSubjectUseCase(get(),get()) }
     single { RegisterAssignmentUseCase(get(), get()) }
+    single { GetDatesActivePartialUseCase(get()) }
 
-    viewModel { RegisterAssignmentViewModel(get(), get(),get(), get(), get(), get()) }
+    viewModel { RegisterAssignmentViewModel(get(), get(),get(), get(), get(), get(), get()) }
 }

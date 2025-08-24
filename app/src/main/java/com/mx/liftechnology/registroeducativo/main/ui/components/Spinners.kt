@@ -30,8 +30,8 @@ import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 
 @Preview(showBackground = true)
@@ -88,7 +88,7 @@ fun SpinnerOutlinedTextField(
                 label = {
                     Text(
                         text = label,
-                        color = color_principal_text
+                        color = colorPrincipalText
                     )
                 },
                 modifier = Modifier
@@ -129,7 +129,7 @@ fun SpinnerOutlinedTextField(
         if (selectedOption.isError) {
             Text(
                 text = selectedText.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
@@ -174,7 +174,7 @@ fun SpinnerMixOutlinedTextField(
                 label = {
                     Text(
                         text = label,
-                        color = color_principal_text
+                        color = colorPrincipalText
                     )
                 },
                 keyboardOptions = KeyboardOptions(
@@ -215,7 +215,7 @@ fun SpinnerMixOutlinedTextField(
         if (selectedOption.isError) {
             Text(
                 text = selectedOption.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )

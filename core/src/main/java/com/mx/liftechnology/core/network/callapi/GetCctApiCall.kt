@@ -1,7 +1,7 @@
 package com.mx.liftechnology.core.network.callapi
 
 import com.google.gson.annotations.SerializedName
-import com.mx.liftechnology.core.model.modelApi.GenericResponse
+import com.mx.liftechnology.core.model.GenericResponse
 import com.mx.liftechnology.core.network.enviroment.Environment
 import retrofit2.Response
 import retrofit2.http.GET

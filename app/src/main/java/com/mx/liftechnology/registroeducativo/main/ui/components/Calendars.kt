@@ -1,147 +1,217 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components
 
-import androidx.appcompat.app.AppCompatActivity
+import android.icu.util.Calendar
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SelectableDates
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_secondary_text
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_white
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDialogState
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorApprove
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerDialog(
     showDialog: Boolean,
     onDismiss: () -> Unit,
     onDateSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
 ) {
-    val context = LocalContext.current
-
-    if (showDialog) {
-        val picker = MaterialDatePicker.Builder.dateRangePicker()
-            .setTitleText("Selecciona un rango de fechas")
-            .build()
-
-        picker.addOnPositiveButtonClickListener { selection ->
-            val startDate = selection.first?.let {
-                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-            }
-            val endDate = selection.second?.let {
-                Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-            }
-
-            if (startDate != null && endDate != null) {
-                onDateSelected(startDate, endDate)
-            }
-        }
-
-        picker.addOnDismissListener { onDismiss() }
-
-        picker.show((context as AppCompatActivity).supportFragmentManager, "DATE_PICKER")
-
-
-    }
-}
-
-enum class ModelStepCalendar(){
-    START,
-    FINISH
-}
-
-@Composable
-fun CustomDateRangePicker(
-    showDialog: Boolean,
-    onDismiss: () -> Unit,
-    onDateSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
-) {
-    val dateDialogState = rememberMaterialDialogState()
 
     var startDate by remember{ mutableStateOf<LocalDate?>(null) }
     var endDate by remember { mutableStateOf<LocalDate?>(null) }
-    var stepCalendar by remember { mutableStateOf(ModelStepCalendar.START) }
 
-    if (showDialog && !dateDialogState.showing) {
-        // Asegura mostrar el diálogo sólo una vez
-        dateDialogState.show()
+    var colorStart by remember { mutableStateOf(colorDisabled) }
+    var colorEnd by remember { mutableStateOf(colorDisabled) }
+    var isEnable by remember { mutableStateOf(false) }
+
+    var selectingState by remember { mutableStateOf(true) }
+
+    val calendar = Calendar.getInstance()
+    val year = calendar[Calendar.YEAR]
+
+    val datePickerStateStart = rememberDatePickerState(
+        //initialSelectedDateMillis = startDate?.toMillis(),
+        yearRange = year - 2 .. year + 2,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val candidate = Instant.ofEpochMilli(utcTimeMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                return endDate?.let { candidate < it } ?: true
+            }
+        }
+    )
+    val datePickerStateEnd = rememberDatePickerState(
+        //initialSelectedDateMillis = endDate?.toMillis(),
+        yearRange = year - 2 .. year + 2,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val candidate = Instant.ofEpochMilli(utcTimeMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                return startDate?.let { candidate >= it } ?: true
+            }
+        }
+    )
+
+    datePickerStateStart.selectedDateMillis?.let { millis ->
+        val localDate: LocalDate = Instant.ofEpochMilli(millis)
+            .atZone(ZoneOffset.UTC)
+            .toLocalDate()
+        startDate = localDate
+        colorStart = colorApprove
+        isEnable = colorEnd == colorApprove
     }
 
-    LaunchedEffect(showDialog) {
-        if (showDialog) {
-            startDate = null
-            endDate = null
-            stepCalendar = ModelStepCalendar.START
+    datePickerStateEnd.selectedDateMillis?.let { millis ->
+        val localDate: LocalDate = Instant.ofEpochMilli(millis)
+            .atZone(ZoneOffset.UTC)
+            .toLocalDate()
+        endDate = localDate
+        colorEnd = colorApprove
+        isEnable = colorStart == colorApprove
+    }
+
+
+    if(showDialog){
+        DatePickerDialog (
+            onDismissRequest = { onDismiss() },
+            confirmButton = {
+                ButtonsCalendar(
+                    colorStart = colorStart,
+                    colorEnd = colorEnd,
+                    colorContinue = colorSuccess,
+                    disabledContinue = isEnable,
+                    onActionClick = {
+                        when (it){
+                            0->{
+                                datePickerStateStart.selectedDateMillis = startDate?.toMillis()
+                                if (startDate != null) {
+                                    datePickerStateStart.displayedMonthMillis =
+                                        startDate!!.withDayOfMonth(1).toMillis()
+                                }
+                                selectingState = true
+                            }
+                            1->{
+                                datePickerStateEnd.selectedDateMillis = endDate?.toMillis()
+                                if (endDate != null) {
+                                    datePickerStateEnd.displayedMonthMillis =
+                                        endDate!!.withDayOfMonth(1).toMillis()
+                                }
+                                selectingState = false
+                            }
+                            2-> {
+                                onDateSelected(startDate!!, endDate!!)
+                                onDismiss()
+                            }
+                        }
+                    },
+                    onDismiss = {}
+                )
+
+            }, colors = DatePickerDefaults.colors()
+        ){
+            DatePicker(
+                state = if (selectingState) datePickerStateStart else datePickerStateEnd
+            )
         }
     }
+}
 
-    MaterialDialog(
-        dialogState = dateDialogState,
-        onCloseRequest = {
-            onDismiss()
-        },
-        buttons = {
-            positiveButton(
-                text =
-                    if (stepCalendar == ModelStepCalendar.FINISH) "Aceptar"
-                    else  "Siguiente"
-            ) {
-                if (stepCalendar == ModelStepCalendar.START) {
-                    stepCalendar = ModelStepCalendar.FINISH
-                }
-                else {
-                    if (startDate != null && endDate != null) {
-                        onDateSelected(startDate!!, endDate!!)
-                        startDate = null
-                        endDate = null
-                        dateDialogState.hide()
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DateSimplePickerDialog(
+    showDialog: Boolean,
+    dialogState: ModelRegisterAssignmentDialogState,
+    onDismiss: () -> Unit,
+    onDateSelected: (date: LocalDate) -> Unit,
+) {
+
+    var date by remember{ mutableStateOf<LocalDate?>(null) }
+    var isEnable by remember { mutableStateOf(false) }
+
+    val calendar = Calendar.getInstance()
+    val year = calendar[Calendar.YEAR]
+
+    val datePickerState = rememberDatePickerState(
+        yearRange = year - 2 .. year + 2,
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val candidate = Instant.ofEpochMilli(utcTimeMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+
+                val split = dialogState.rangeDate?.split("/")
+                return split?.let {
+                    val start = it[0].toLocalDate()
+                    val end = it[1].toLocalDate()
+                    candidate in start..end
+                } ?: true
+            }
+        }
+    )
+
+    datePickerState.selectedDateMillis?.let { millis ->
+        val localDate: LocalDate = Instant.ofEpochMilli(millis)
+            .atZone(ZoneOffset.UTC)
+            .toLocalDate()
+        date = localDate
+        isEnable = true
+    }
+
+    if(showDialog){
+        DatePickerDialog (
+            onDismissRequest = { onDismiss() },
+            confirmButton = {
+                OutlinedButton(
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = colorSuccess,
+                        contentColor = colorPrincipalText,
+                        disabledContainerColor = colorDisabled,
+                        disabledContentColor = colorPrincipalText
+                    ),
+                    enabled = isEnable,
+                    onClick = {
+                        onDateSelected(date!!)
                         onDismiss()
                     }
-                }
-            }
+                )
+                { Text("Confirmar") }
 
-            negativeButton(
-                text = if (stepCalendar == ModelStepCalendar.START) "Cancelar" else "Atrás"
-            ) {
-                if (stepCalendar == ModelStepCalendar.START) {
-                    startDate = null
-                    endDate = null
-                    stepCalendar = ModelStepCalendar.START
-                    dateDialogState.hide()
-                    onDismiss()
-                } else {
-                    stepCalendar = ModelStepCalendar.START
-                    endDate = null
-                }
-            }
-        }
-    ) {
-        datepicker(
-            title = if (stepCalendar == ModelStepCalendar.START) "Selecciona la fecha inicial" else "Selecciona la fecha final",
-            initialDate = LocalDate.now(),
-            colors = DatePickerDefaults.colors(
-                headerBackgroundColor = color_principal_text,
-                headerTextColor = color_white,
-                calendarHeaderTextColor = color_principal_text,
-                dateActiveBackgroundColor = color_principal_text,
-                dateInactiveTextColor = color_secondary_text,
-                dateActiveTextColor = color_white
+            }, colors = DatePickerDefaults.colors()
+        ){
+            DatePicker(
+                state = datePickerState
             )
-        ) { date ->
-            if (stepCalendar == ModelStepCalendar.START) {
-                startDate = date
-            } else {
-                endDate = date
-            }
         }
     }
+}
+
+fun LocalDate.toMillis(): Long {
+    return this.atStartOfDay(ZoneId.systemDefault())
+        .toInstant()
+        .toEpochMilli()
+}
+
+fun String.toLocalDate(): LocalDate {
+    return LocalDate.parse(this, DateTimeFormatter.ISO_LOCAL_DATE)
 }

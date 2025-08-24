@@ -65,17 +65,18 @@ class MenuViewModel(
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             when (val state = getGroupMenuUseCase.invoke()) {
                 is SuccessState -> {
-                    getListPartialCompose()
-                    showGetControlRegister()
-                    _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.NOTHING)
-                    }
                     _uiDialog.update {
                         it.copy(
                             studentGroupItem = state.result.infoSchoolSelected,
                             studentGroupList = state.result.listSchool,
                         )
                     }
+                    getListPartialCompose()
+                    showGetControlRegister()
+                    _uiState.update {
+                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                    }
+
                 }
 
                 is ErrorUnauthorizedState -> {
@@ -121,24 +122,28 @@ class MenuViewModel(
             is SuccessState -> {
                 withContext(dispatcherProvider.io) {
                     val itemSelected = savePartialUseCase.invoke(state.result)
-                    _uiDialog.update {
-                        it.copy(
-                            studentGroupItem = it.studentGroupItem.copy(
+                    val studentGroupItem =  _uiDialog.value.studentGroupItem.copy(
+                        listItemPartial = state.result,
+                        namePartial = itemSelected?.name,
+                        itemPartial = itemSelected
+                    )
+
+                    val studentGroupList=  _uiDialog.value.studentGroupList.map { groupItem ->
+                        if (groupItem.itemPartial?.partialId == itemSelected?.partialId) {
+                            groupItem.copy(
                                 listItemPartial = state.result,
                                 namePartial = itemSelected?.name,
                                 itemPartial = itemSelected
-                            ),
-                            studentGroupList = it.studentGroupList.map { groupItem ->
-                                if (groupItem.itemPartial?.partialId == itemSelected?.partialId) {
-                                    groupItem.copy(
-                                        listItemPartial = state.result,
-                                        namePartial = itemSelected?.name,
-                                        itemPartial = itemSelected
-                                    )
-                                } else {
-                                    groupItem
-                                }
-                            }
+                            )
+                        } else {
+                            groupItem
+                        }
+                    }
+
+                    _uiDialog.update {
+                        it.copy(
+                            studentGroupItem = studentGroupItem,
+                            studentGroupList = studentGroupList
                         )
                     }
                 }

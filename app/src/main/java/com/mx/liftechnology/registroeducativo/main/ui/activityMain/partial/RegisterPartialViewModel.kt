@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-open class RegisterPartialViewModel(
+class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsRegisterPartialUseCase: ValidateFieldsRegisterPartialUseCase,
     private val registerListPartialUseCase: RegisterListPartialUseCase,
@@ -139,6 +139,11 @@ open class RegisterPartialViewModel(
         viewModelScope.launch (dispatcherProvider.io) {
             when(val result = getListPartialUseCase.invoke()){
                 is SuccessState -> {
+                    _uiState.update { item ->
+                        item.copy(
+                            isAvailable = false
+                        )
+                    }
                     _uiData.update { item ->
                         item.copy(
                             listCalendar = result.result?.map { data ->

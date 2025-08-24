@@ -9,13 +9,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.core.util.logs
@@ -31,7 +31,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimatio
 import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -41,7 +41,7 @@ fun RegisterSubjectScreen(
     registerSubjectViewModel: RegisterSubjectViewModel = koinViewModel(),
 ) {
 
-    val uiState by registerSubjectViewModel.uiState.collectAsState()
+    val uiState by registerSubjectViewModel.uiState.collectAsStateWithLifecycle()
     // Llamadas a servicios cuando se monta la pantalla
     LaunchedEffect(Unit) {
         registerSubjectViewModel.getListAssessmentType()
@@ -185,7 +185,7 @@ private fun ActionRegisterSubject(
     validateFieldsCompose: () -> Unit,
 ) {
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(R.string.add_button),
         onActionClick = { validateFieldsCompose() }
     )

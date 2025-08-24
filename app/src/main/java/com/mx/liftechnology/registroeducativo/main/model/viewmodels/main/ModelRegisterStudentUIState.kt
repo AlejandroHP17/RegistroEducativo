@@ -6,11 +6,11 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_success
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 data class ModelRegisterStudentUIState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val buttonColor : Color = color_success,
+    val buttonColor : Color = colorSuccess,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
 
     val name: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),

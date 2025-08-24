@@ -1,7 +1,7 @@
-package com.mx.liftechnology.domain.usecase.loginflowdomain
+package com.mx.liftechnology.domain.usecase.loginflowdomain.register
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegister
-import com.mx.liftechnology.data.repository.loginflowdata.RegisterRepository
+import com.mx.liftechnology.core.network.callapi.loginflow.CredentialsRegister
+import com.mx.liftechnology.data.repository.loginflowdata.register.RegisterRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess

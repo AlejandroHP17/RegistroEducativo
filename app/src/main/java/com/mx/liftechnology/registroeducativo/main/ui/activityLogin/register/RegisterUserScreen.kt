@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -29,7 +29,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimatio
 import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -39,11 +39,11 @@ fun RegisterUserScreen(
     registerUserViewModel: RegisterUserViewModel = koinViewModel(),
     sharedViewModel: SharedViewModel,
 ) {
-    val uiState by registerUserViewModel.uiState.collectAsState()
-    val emailState by registerUserViewModel.emailState.collectAsState()
-    val passwordState by registerUserViewModel.passwordState.collectAsState()
-    val repeatPasswordState by registerUserViewModel.repeatPasswordState.collectAsState()
-    val codeState by registerUserViewModel.codeState.collectAsState()
+    val uiState by registerUserViewModel.uiState.collectAsStateWithLifecycle()
+    val emailState by registerUserViewModel.emailState.collectAsStateWithLifecycle()
+    val passwordState by registerUserViewModel.passwordState.collectAsStateWithLifecycle()
+    val repeatPasswordState by registerUserViewModel.repeatPasswordState.collectAsStateWithLifecycle()
+    val codeState by registerUserViewModel.codeState.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 
@@ -157,7 +157,7 @@ fun FooterRegisterUserScreen(
     validateFieldsCompose: () -> Unit,
 ) {
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(id = R.string.log_register),
         onActionClick = { validateFieldsCompose() }
     )

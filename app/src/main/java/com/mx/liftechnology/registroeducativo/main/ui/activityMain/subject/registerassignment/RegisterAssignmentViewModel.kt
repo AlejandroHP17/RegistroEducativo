@@ -10,6 +10,7 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.RegisterAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.ValidateFieldsAssignmentUseCase
@@ -17,7 +18,9 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentDialogState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,10 +36,18 @@ class RegisterAssignmentViewModel(
     private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
     private val validateFieldsAssignmentUseCase: ValidateFieldsAssignmentUseCase,
     private val registerAssignmentUseCase: RegisterAssignmentUseCase,
+    private val getDatesActivePartialUseCase: GetDatesActivePartialUseCase,
+
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterAssignmentUIState())
-    val uiState: StateFlow<ModelRegisterAssignmentUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelRegisterAssignmentUiState())
+    val uiState: StateFlow<ModelRegisterAssignmentUiState> = _uiState.asStateFlow()
+
+    private val _dataState = MutableStateFlow(ModelRegisterAssignmentDataState())
+    val dataState: StateFlow<ModelRegisterAssignmentDataState> = _dataState.asStateFlow()
+
+    private val _dialogState = MutableStateFlow(ModelRegisterAssignmentDialogState())
+    val dialogState: StateFlow<ModelRegisterAssignmentDialogState> = _dialogState.asStateFlow()
 
     fun updateSubject(subject: ModelFormatSubjectDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -54,7 +65,7 @@ class RegisterAssignmentViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
                 is SuccessState -> {
-                    _uiState.update {
+                    _dataState.update {
                         it.copy(
                             listOptions = result.result
                         )
@@ -75,7 +86,7 @@ class RegisterAssignmentViewModel(
 
     fun onChangeName(name: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update {
+            _dataState.update {
                 it.copy(
                     nameJob = name.stringToModelStateOutFieldText()
                 )
@@ -85,7 +96,7 @@ class RegisterAssignmentViewModel(
 
     fun onChangeDate(date: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update {
+            _dialogState.update {
                 it.copy(
                     date = date.stringToModelStateOutFieldText()
                 )
@@ -95,7 +106,7 @@ class RegisterAssignmentViewModel(
 
     fun onNameAssignmentChanged(partial: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            /*_uiState.update {
+            /*_dataState.update {
                 it.copy(
                     assignment = it.assignment(
                         partial.stringToModelStateOutFieldText()
@@ -107,7 +118,7 @@ class RegisterAssignmentViewModel(
 
     fun onScoreChange(data: Pair<String, String>) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update { currentState ->
+            _dataState.update { currentState ->
                 currentState.copy(
                     studentListUI = currentState.studentListUI.mapIndexed { _, score ->
                         if (score.id == data.first) {
@@ -128,12 +139,14 @@ class RegisterAssignmentViewModel(
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             when(val result = getListStudentUseCase.invoke()){
                 is SuccessState -> {
-                    _uiState.update {
+                    _dataState.update {
                         it.copy(
                             studentList = result.result,
-                            studentListUI = result.result.convertModelCustomCard(),
-                            uiState = ModelStateUIEnum.NOTHING
+                            studentListUI = result.result.convertModelCustomCard()
                         )
+                    }
+                    _uiState.update {
+                        it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
                 }
                 is ErrorUserState -> {
@@ -167,17 +180,19 @@ class RegisterAssignmentViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             val nameJobState =
-                validateFieldsAssignmentUseCase.validateNameJob(_uiState.value.nameJob.valueText)
+                validateFieldsAssignmentUseCase.validateNameJob(_dataState.value.nameJob.valueText)
             val nameAssignmentState =
-                validateFieldsAssignmentUseCase.validateNameAssignment(_uiState.value.assignment.assignmentName.valueText)
-            val dateState = validateFieldsAssignmentUseCase.validateDate(_uiState.value.date.valueText)
+                validateFieldsAssignmentUseCase.validateNameAssignment(_dataState.value.assignment.assignmentName.valueText)
+            val dateState = validateFieldsAssignmentUseCase.validateDate(_dialogState.value.date.valueText)
 
-            _uiState.update {
+            _dataState.update {
                 it.copy(
                     nameJob = nameJobState,
                     //assignment = nameAssignmentState,
-                    date = dateState
                 )
+            }
+            _dialogState.update {
+                it.copy( date = dateState )
             }
 
             if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerAssignment()
@@ -187,10 +202,10 @@ class RegisterAssignmentViewModel(
 
     private suspend fun registerAssignment() {
         when (val result = registerAssignmentUseCase.invoke(
-            nameJob = _uiState.value.nameJob.valueText,
+            nameJob = _dataState.value.nameJob.valueText,
             nameAssignment = 1,
             typeJob = 1,
-            date = _uiState.value.date.valueText
+            date = _dialogState.value.date.valueText
         )) {
             is SuccessState -> {
                 _uiState.update {
@@ -225,6 +240,17 @@ class RegisterAssignmentViewModel(
                         uiState = ModelStateUIEnum.ERROR
                     )
                 }
+            }
+        }
+    }
+
+    fun updateDates(){
+        viewModelScope.launch(dispatcherProvider.io) {
+            val dates = getDatesActivePartialUseCase.invoke()
+            _dialogState.update {
+                it.copy(
+                    rangeDate = dates
+                )
             }
         }
     }

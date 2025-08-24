@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -17,12 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
@@ -30,7 +30,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EmptyState
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -45,7 +45,8 @@ fun ListSubjectScreen(
         listSubjectViewModel.getSubject()
     }
 
-    val uiState by listSubjectViewModel.uiState.collectAsState()
+    val uiState by listSubjectViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by listSubjectViewModel.dataState.collectAsStateWithLifecycle()
 
     ConstraintLayout(
         modifier = Modifier
@@ -55,7 +56,7 @@ fun ListSubjectScreen(
         logs("Screen list subject")
         val (header, column, action) = createRefs()
 
-        if (uiState.subjectList.isNullOrEmpty()) {
+        if (dataState.subjectList.isNullOrEmpty()) {
             EmptySubjectState(
                 onReturnClick = {
                     logs("return to menu from subject", "click")
@@ -94,7 +95,7 @@ fun ListSubjectScreen(
                     height = Dimension.fillToConstraints
                 }) {
                 BodyListSubject(
-                    uiState = uiState,
+                    uiState = dataState,
                     onNavigate = {
                         navController.navigate(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it))){
                             launchSingleTop = true
@@ -142,7 +143,7 @@ private fun HeaderListSubject( onReturnClick:() ->Unit) {
 
 @Composable
 private fun BodyListSubject(
-    uiState: ModelListSubjectUIState,
+    uiState: ModelListSubjectDataState,
     onNavigate:(ModelCustomCard) -> Unit
 ) {
     LazyColumn(
@@ -168,7 +169,7 @@ private fun ActionListSubject(
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(R.string.add_button),
         onActionClick = { navController.navigate(MainRoutes.RegisterSubject.route) }
     )

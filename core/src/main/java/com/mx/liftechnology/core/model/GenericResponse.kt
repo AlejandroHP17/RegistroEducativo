@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.model.modelApi
+package com.mx.liftechnology.core.model
 
 import com.google.gson.annotations.SerializedName
 

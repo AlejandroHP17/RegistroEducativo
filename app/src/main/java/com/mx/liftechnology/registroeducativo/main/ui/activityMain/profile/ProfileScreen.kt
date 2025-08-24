@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -65,7 +65,7 @@ private fun ActionProfile(
     closeSessionCompose: () -> Unit,
 ) {
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(R.string.profile_button),
         onActionClick = { closeSessionCompose() }
     )

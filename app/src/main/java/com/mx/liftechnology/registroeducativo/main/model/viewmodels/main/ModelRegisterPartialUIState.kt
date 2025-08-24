@@ -9,7 +9,8 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
 data class ModelRegisterPartialUIState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false)
+    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
+    val isAvailable : Boolean = true
 )
 
 data class ModelRegisterPartialUIData(

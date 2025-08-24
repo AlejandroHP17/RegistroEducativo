@@ -1,7 +1,7 @@
-package com.mx.liftechnology.data.repository.loginflowdata
+package com.mx.liftechnology.data.repository.loginflowdata.register
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegister
-import com.mx.liftechnology.core.network.callapi.RegisterApiCall
+import com.mx.liftechnology.core.network.callapi.loginflow.CredentialsRegister
+import com.mx.liftechnology.core.network.callapi.loginflow.RegisterApiCall
 import com.mx.liftechnology.data.util.ExceptionHandler
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
@@ -16,7 +16,7 @@ fun interface RegisterRepository{
 
 class RegisterRepositoryImp(
     private val registerApiCall: RegisterApiCall
-) :  RegisterRepository {
+) : RegisterRepository {
 
     /** Execute the user register
      * @author pelkidev

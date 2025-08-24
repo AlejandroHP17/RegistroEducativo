@@ -10,13 +10,14 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 
-data class ModelRegisterAssignmentUIState(
+data class ModelRegisterAssignmentUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
     val subject : ModelFormatSubjectDomain? = null,
+)
 
+data class ModelRegisterAssignmentDataState (
     val nameJob : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val listOptions: List<ModelFormatAssignment> ?= listOf(),
     val assignment: ModelFormatAssignment = ModelFormatAssignment(
         id = null,
@@ -29,4 +30,9 @@ data class ModelRegisterAssignmentUIState(
     ),
     val studentList: List<ModelStudentDomain>? = null,
     val studentListUI: List<ModelCustomCardStudent> = emptyList(),
+)
+
+data class ModelRegisterAssignmentDialogState(
+    val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
+    val rangeDate : String? = null
 )

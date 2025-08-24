@@ -7,8 +7,8 @@ import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
-import com.mx.liftechnology.domain.usecase.loginflowdomain.LoginUseCase
-import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginUseCase
+import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
+import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val loginUseCase: LoginUseCase,
-    private val validateFieldsUseCase: ValidateFieldsLoginUseCase
+    private val validateFieldsLoginFlowUseCase: ValidateFieldsLoginFlowUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelLoginUiState())
@@ -66,8 +66,8 @@ class LoginViewModel(
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
-            val passState = validateFieldsUseCase.validatePassCompose(_passwordState.value.valueText)
+            val emailState = validateFieldsLoginFlowUseCase.validateEmailCompose(_emailState.value.valueText)
+            val passState = validateFieldsLoginFlowUseCase.validatePassCompose(_passwordState.value.valueText)
 
             _emailState.update { emailState }
             _passwordState.update { passState }

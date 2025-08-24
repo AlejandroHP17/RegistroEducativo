@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
@@ -24,7 +24,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -35,7 +35,7 @@ fun AssignmentScreen(
     assignmentViewModel: AssignmentViewModel = koinViewModel(),
 ) {
 
-    val uiState by assignmentViewModel.uiState.collectAsState()
+    val uiState by assignmentViewModel.uiState.collectAsStateWithLifecycle()
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
     LaunchedEffect(Unit) {
@@ -86,7 +86,7 @@ private fun ActionAssignment(
     onActionClick:() -> Unit
 ) {
     ButtonAction(
-        containerColor = color_action,
+        containerColor = colorAction,
         text = stringResource(R.string.add_button),
         onActionClick = { onActionClick() }
     )
