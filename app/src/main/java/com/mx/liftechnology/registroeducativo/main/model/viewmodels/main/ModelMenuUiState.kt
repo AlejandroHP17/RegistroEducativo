@@ -6,13 +6,13 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
-data class ModelMenuUIState(
+data class ModelMenuUiState(
     val showControl: Boolean = false,
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
 )
 
-data class ModelMenuUIDialog(
+data class ModelMenuDialogState(
     val studentGroupItem: ModelDialogStudentGroupDomain = ModelDialogStudentGroupDomain(
         selected = false,
         item = null,
@@ -33,7 +33,7 @@ data class ModelMenuUIDialog(
     )
 )
 
-data class ModelMenuUIData (
+data class ModelMenuDataState (
     val evaluationItems: List<ModelPrincipalMenuData> = listOf(),
     val controlItems: List<ModelPrincipalMenuData> = listOf(),
 )

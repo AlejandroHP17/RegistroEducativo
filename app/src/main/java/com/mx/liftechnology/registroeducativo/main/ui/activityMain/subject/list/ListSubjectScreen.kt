@@ -1,6 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.ui.activityMain.subject.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,9 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListSubjectDataState
@@ -31,6 +30,8 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EmptyState
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
+import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
+import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,53 +41,40 @@ fun ListSubjectScreen(
     navController: NavHostController,
     listSubjectViewModel: ListSubjectViewModel = koinViewModel(),
 ) {
+    val uiState by listSubjectViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by listSubjectViewModel.dataState.collectAsStateWithLifecycle()
+
     // Cargar la lista de estudiantes cuando se monta la pantalla
     LaunchedEffect(Unit) {
         listSubjectViewModel.getSubject()
     }
-
-    val uiState by listSubjectViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by listSubjectViewModel.dataState.collectAsStateWithLifecycle()
 
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Screen list subject")
         val (header, column, action) = createRefs()
 
         if (dataState.subjectList.isNullOrEmpty()) {
             EmptySubjectState(
-                onReturnClick = {
-                    logs("return to menu from subject", "click")
-                    navController.popBackStack()
-                                },
-                onActionClick = {
-                    logs("go to detail Suject from subject", "click")
-                    navController.navigate(MainRoutes.RegisterSubject.route){
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                onReturnClick = { navController.popBackStack() },
+                onActionClick = { navController.navigateWithParams(MainRoutes.RegisterSubject.route) }
             )
         } else {
 
-            Column(
+            Box(
                 modifier = Modifier.constrainAs(header) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
                 HeaderListSubject(
-                    onReturnClick = {
-                        logs("return to menu from subject", "click")
-                        navController.popBackStack()
-                    }
+                    onReturnClick = { navController.popBackStack() }
                 )
             }
 
-            Column(
+            Box(
                 modifier = Modifier.constrainAs(column) {
                     top.linkTo(header.bottom)
                     start.linkTo(parent.start)
@@ -97,10 +85,7 @@ fun ListSubjectScreen(
                 BodyListSubject(
                     uiState = dataState,
                     onNavigate = {
-                        navController.navigate(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it))){
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        navController.navigateWithParams(MainRoutes.Assignment.createRoutes(listSubjectViewModel.getSubject(it)))
                     }
                 )
             }
@@ -111,7 +96,9 @@ fun ListSubjectScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
-                ActionListSubject(navController = navController)
+                ActionListSubject {
+                    navController.navigateWithState(MainRoutes.RegisterSubject.route)
+                }
             }
         }
     }
@@ -165,13 +152,13 @@ private fun BodyListSubject(
 
 @Composable
 private fun ActionListSubject(
-    navController: NavController,
+    onActionClick: () -> Unit,
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_divided))
     ButtonAction(
         containerColor = colorAction,
         text = stringResource(R.string.add_button),
-        onActionClick = { navController.navigate(MainRoutes.RegisterSubject.route) }
+        onActionClick = { onActionClick() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 }

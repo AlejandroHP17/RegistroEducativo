@@ -176,7 +176,6 @@ fun GridItem(
 ) { // Recibe un ID de recurso
     Card(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(8.dp)
             .clickable { onItemClick(item) },
         colors = CardDefaults.cardColors(
@@ -195,7 +194,6 @@ fun GridItem(
             )
 
             CustomSpace(dimensionResource(id = R.dimen.margin_between))
-
             TextDescription(item.titleCard!!)
         }
     }

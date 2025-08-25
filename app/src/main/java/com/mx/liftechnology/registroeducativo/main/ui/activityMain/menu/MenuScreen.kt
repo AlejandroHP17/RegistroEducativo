@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringArrayResource
@@ -21,9 +22,9 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIDialog
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuDialogState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuUiState
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.CONTROL
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreenObject.REGISTER
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
@@ -33,6 +34,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimatio
 import com.mx.liftechnology.registroeducativo.main.ui.components.MyGridScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextSubHeader
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
+import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -52,14 +54,14 @@ fun MenuScreen(
 
     /* Variables locales y en viewmodel */
     val uiState by menuViewModel.uiState.collectAsStateWithLifecycle()
-    val uiDialog by menuViewModel.uiDialog.collectAsStateWithLifecycle()
-    val uiData by menuViewModel.uiData.collectAsStateWithLifecycle()
+    val dialogState by menuViewModel.dialogState.collectAsStateWithLifecycle()
+    val dataState by menuViewModel.dataState.collectAsStateWithLifecycle()
 
-    val showDialog = remember { mutableStateOf(false) }
-    val isGroup = remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
+    var isGroup by remember { mutableStateOf(false) }
 
     LaunchedEffect(reload) {
-        if (uiDialog.studentGroupItem.itemPartial == null || reload) {
+        if (dialogState.studentGroupItem.itemPartial == null || reload) {
             menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
             menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
         }
@@ -80,35 +82,34 @@ fun MenuScreen(
     ) {
         logs("Menu")
         HeaderMenuScreen(
-            uiDialog = uiDialog,
+            uiDialog = dialogState,
             onShowDialog = {
-                isGroup.value = true
-                showDialog.value = true
+                isGroup = true
+                showDialog = true
             }
         )
         BodyMenuScreen(
             uiState = uiState,
-            uiData = uiData,
-            navController = navController
+            uiData = dataState,
+            navController = { navController.navigateWithState(it) }
         )
-
     }
 
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 
-    if (showDialog.value) {
+    if (showDialog) {
         AlertDialogMenu(
-            uiDialog = uiDialog,
+            uiDialog = dialogState,
             itemSelectedReturn = {
                 menuViewModel.updateGroup(it)
-                isGroup.value = false
+                isGroup = false
             },
             itemSelectedPartialReturn = {
                 menuViewModel.updatePartial(it)
-                isGroup.value = true
+                isGroup = true
             },
-            selectType = isGroup.value,
-            dismiss = { showDialog.value = false }
+            selectType = isGroup,
+            dismiss = { showDialog = false }
         )
     }
 }
@@ -121,7 +122,7 @@ object MenuScreenObject {
 }
 
 @Composable
-private fun HeaderMenuScreen(uiDialog: ModelMenuUIDialog, onShowDialog: (Boolean) -> Unit) {
+private fun HeaderMenuScreen(uiDialog: ModelMenuDialogState, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
         title = stringResource(R.string.menu_grettins, "Profesor"),
         body = uiDialog.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
@@ -133,9 +134,9 @@ private fun HeaderMenuScreen(uiDialog: ModelMenuUIDialog, onShowDialog: (Boolean
 
 @Composable
 private fun BodyMenuScreen(
-    uiState: ModelMenuUIState,
-    uiData: ModelMenuUIData,
-    navController: NavHostController
+    uiState: ModelMenuUiState,
+    uiData: ModelMenuDataState,
+    navController: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -147,7 +148,7 @@ private fun BodyMenuScreen(
                     if (uiState.showControl) {
                         RegisterAreaMenuScreen(
                             uiData = uiData,
-                            navController = navController,
+                            navController = { navController(it) },
                             test = { }
                         )
                     }
@@ -156,7 +157,7 @@ private fun BodyMenuScreen(
                 CONTROL -> {
                     ControlAreaMenuScreen(
                         uiData = uiData,
-                        navController = navController
+                        navController = { navController(it) },
                     )
                 }
             }
@@ -166,8 +167,8 @@ private fun BodyMenuScreen(
 
 @Composable
 private fun RegisterAreaMenuScreen(
-    uiData: ModelMenuUIData,
-    navController: NavHostController,
+    uiData: ModelMenuDataState,
+    navController: (String) -> Unit,
     test: () -> Unit,
 ) {
     val menuItemsRegister =
@@ -177,32 +178,16 @@ private fun RegisterAreaMenuScreen(
             .fillMaxWidth()
     ) {
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL_REGISTER)
-        MyGridScreen(uiData.evaluationItems, 628.dp) { selectedItem ->
+        MyGridScreen(uiData.evaluationItems, 660.dp) { selectedItem ->
             when (selectedItem.id) {
-                menuItemsRegister[0] -> {
-                    logs("go to student", "click")
-                    navController.navigate(MainRoutes.ListStudent.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                menuItemsRegister[0] -> navController(MainRoutes.ListStudent.route)
+                menuItemsRegister[1] -> navController(MainRoutes.ListSubject.route)
+                menuItemsRegister[2] -> navController(MainRoutes.RegisterPartial.route)
 
-                menuItemsRegister[1] -> {
-                    logs("go to subject", "click")
-                    navController.navigate(MainRoutes.ListSubject.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                menuItemsRegister[3] -> test()
 
-                menuItemsRegister[2] -> navController.navigate(MainRoutes.RegisterPartial.route)
-                menuItemsRegister[3] -> {
-                    test()
-                }
+                menuItemsRegister[4] -> test()
 
-                menuItemsRegister[4] -> {
-                    test()
-                }
             }
         }
     }
@@ -211,21 +196,18 @@ private fun RegisterAreaMenuScreen(
 
 @Composable
 private fun ControlAreaMenuScreen(
-    uiData: ModelMenuUIData,
-    navController: NavHostController,
+    uiData: ModelMenuDataState,
+    navController: (String) -> Unit,
 ) {
     val menuItemsControl = stringArrayResource(com.mx.liftechnology.data.R.array.menu_items_control)
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        TextSubHeader(MenuScreenObject.ADAPTER_CONTROL)
-        MyGridScreen(uiData.controlItems, 200.dp) { selectedItem ->
-            when (selectedItem.id) {
-                menuItemsControl[0] -> navController.navigate(MainRoutes.RegisterSchool.route)
-                menuItemsControl[1] -> navController.navigate(MainRoutes.Profile.route)
-            }
+
+    TextSubHeader(MenuScreenObject.ADAPTER_CONTROL)
+    MyGridScreen(uiData.controlItems, 220.dp) { selectedItem ->
+        when (selectedItem.id) {
+            menuItemsControl[0] -> navController(MainRoutes.RegisterSchool.route)
+            menuItemsControl[1] -> navController(MainRoutes.Profile.route)
         }
     }
+
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 }

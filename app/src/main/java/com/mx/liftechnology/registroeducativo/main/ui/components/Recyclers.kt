@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
@@ -29,7 +30,6 @@ import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import java.time.LocalDate
 
 @Preview(showBackground = true)
@@ -93,7 +93,6 @@ fun MyGridScreen(
     height: Dp,
     onItemClick: (ModelPrincipalMenuData) -> Unit,
 ) {
-
     LazyVerticalGrid(
         columns = GridCells.Fixed(2), // Grid de 2 columnas
         modifier = Modifier

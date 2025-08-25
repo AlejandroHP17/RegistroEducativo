@@ -3,13 +3,22 @@ package com.mx.liftechnology.registroeducativo.main.ui.principal
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -37,6 +46,10 @@ fun AppNavHost(
 ) {
     val navigationController = rememberNavController()
     val uiState by sharedViewModel.uiState.collectAsStateWithLifecycle()
+    var isBlocked by remember { mutableStateOf(false) }
+
+
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         NavHost(navController = navigationController, startDestination = "splash") {
@@ -154,5 +167,54 @@ fun AppNavHost(
                 sharedViewModel.modifyShowToast(control)
             }
         )
+
+        // 🔒 Overlay bloqueador
+        if (isBlocked) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        awaitPointerEventScope {
+                            while (true) {
+                                awaitPointerEvent()
+                            }
+                        }
+                    }
+            )
+        }
     }
+
+    // 1) Bloquear inmediatamente cuando cambia el destino
+    DisposableEffect(navigationController) {
+        val listener = NavController.OnDestinationChangedListener { _, _, _ ->
+            // Al iniciar un cambio de destino, bloquea
+            isBlocked = true
+        }
+        navigationController.addOnDestinationChangedListener(listener)
+        onDispose { navigationController.removeOnDestinationChangedListener(listener) }
+    }
+
+// 2) Desbloquear cuando el destino actual esté RESUMED
+    val currentEntry by navigationController.currentBackStackEntryAsState()
+
+    DisposableEffect(currentEntry) {
+        // Estado inicial según el lifecycle actual
+        isBlocked = currentEntry?.lifecycle?.currentState != Lifecycle.State.RESUMED
+
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME -> isBlocked = false
+                // En estos estados mantenemos el bloqueo
+                Lifecycle.Event.ON_CREATE,
+                Lifecycle.Event.ON_START,
+                Lifecycle.Event.ON_PAUSE,
+                Lifecycle.Event.ON_STOP -> isBlocked = true
+                else -> { /* no-op */ }
+            }
+        }
+        currentEntry?.lifecycle?.addObserver(observer)
+        onDispose { currentEntry?.lifecycle?.removeObserver(observer) }
+    }
+
+
 }

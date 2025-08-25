@@ -6,7 +6,8 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListStudentUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListStudentDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListStudentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +19,11 @@ class ListStudentViewModel(
     private val getListStudentUseCase: GetListStudentUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelListStudentUIState())
-    val uiState: StateFlow<ModelListStudentUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelListStudentUiState())
+    val uiState: StateFlow<ModelListStudentUiState> = _uiState.asStateFlow()
+
+    private val _dataState = MutableStateFlow(ModelListStudentDataState())
+    val dataState: StateFlow<ModelListStudentDataState> = _dataState.asStateFlow()
 
     fun getListStudent() {
         viewModelScope.launch {
@@ -28,10 +32,12 @@ class ListStudentViewModel(
             when(val result = getListStudentUseCase.invoke()){
                 is SuccessState -> {
                     _uiState.update {
+                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                    }
+                    _dataState.update {
                         it.copy(
                             studentList = result.result,
-                            studentListUI = result.result.convertModelCustomCard(),
-                            uiState = ModelStateUIEnum.NOTHING
+                            studentListUI = result.result.convertModelCustomCard()
                         )
                     }
                 }
@@ -58,5 +64,5 @@ class ListStudentViewModel(
             } ?: emptyList()
     }
 
-    fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _uiState.value.studentList?.find { it.studentId == item.id }
+    fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
 }
