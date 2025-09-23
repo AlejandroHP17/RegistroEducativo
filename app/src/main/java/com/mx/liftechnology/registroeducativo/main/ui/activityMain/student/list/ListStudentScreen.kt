@@ -20,6 +20,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelListStudentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
@@ -155,8 +156,11 @@ private fun BodyListStudent(
         itemsIndexed(dataState.studentListUI, key = { _, item -> item.id }) { _, item ->
             CustomCard(
                 item = item,
-                onItemClick = { onNavigate(item) },
-                onItemMore = { }
+                callbacks = ModelStateSpinnerUI(
+                    onItemClick = {  },
+                    onEdit = { onNavigate(item) },
+                    onDelete = {}
+                )
             )
         }
     }

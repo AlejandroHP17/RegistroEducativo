@@ -19,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuDataState
@@ -80,7 +79,6 @@ fun MenuScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Menu")
         HeaderMenuScreen(
             uiDialog = dialogState,
             onShowDialog = {
@@ -183,8 +181,7 @@ private fun RegisterAreaMenuScreen(
                 menuItemsRegister[0] -> navController(MainRoutes.ListStudent.route)
                 menuItemsRegister[1] -> navController(MainRoutes.ListSubject.route)
                 menuItemsRegister[2] -> navController(MainRoutes.RegisterPartial.route)
-
-                menuItemsRegister[3] -> test()
+                menuItemsRegister[3] -> navController(MainRoutes.Calendar.route)
 
                 menuItemsRegister[4] -> test()
 

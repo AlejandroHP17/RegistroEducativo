@@ -4,6 +4,7 @@ import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
 import com.mx.liftechnology.registroeducativo.di.assignmentModule
+import com.mx.liftechnology.registroeducativo.di.calendarModule
 import com.mx.liftechnology.registroeducativo.di.crudPartialModule
 import com.mx.liftechnology.registroeducativo.di.crudStudentModule
 import com.mx.liftechnology.registroeducativo.di.crudSubjectModule
@@ -60,7 +61,8 @@ class MyApp : Application() {
                 crudSubjectModule,
                 profileModule,
                 assignmentModule,
-                registerAssignmentModule
+                registerAssignmentModule,
+                calendarModule
             )
         }
     }

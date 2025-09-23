@@ -25,6 +25,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassword.ForgetPasswordScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.login.LoginScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.register.RegisterUserScreen
+import com.mx.liftechnology.registroeducativo.main.ui.activityMain.calendar.CalendarScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.partial.RegisterPartialScreen
 import com.mx.liftechnology.registroeducativo.main.ui.activityMain.profile.ProfileScreen
@@ -93,6 +94,7 @@ fun AppNavHost(
             ) }
             composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
             composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
+            composable(MainRoutes.Calendar.route){ CalendarScreen(navigationController) }
 
 
             composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(
@@ -102,7 +104,7 @@ fun AppNavHost(
 
             composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(
                 navController = navigationController,
-                sharedViewModel = sharedViewModel,) }
+                sharedViewModel = sharedViewModel) }
             composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel) }

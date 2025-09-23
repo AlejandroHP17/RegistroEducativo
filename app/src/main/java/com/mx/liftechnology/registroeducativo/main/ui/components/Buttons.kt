@@ -2,6 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -38,6 +41,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
 
 @Preview(showBackground = true)
@@ -46,6 +50,11 @@ fun TestButton(){
     Column (
         modifier = Modifier.background(background())
     ){
+        SegmentedControl(
+            options = listOf("Campo formativo", "Estudiante"),
+            selectedIndex = 0,
+            onOptionSelected = { it }
+        )
         ButtonReturn({})
         ButtonAction(colorAction, "Pulsame",{}, true)
         ButtonActionShort(colorSuccess, "Pulsame"){}
@@ -53,6 +62,52 @@ fun TestButton(){
         ButtonsCalendar(colorDisabled, colorApprove, colorSuccess,true, {}, {})
     }
 }
+
+@Composable
+fun SegmentedControl(
+    options: List<String>,
+    selectedIndex: Int,
+    onOptionSelected: (Int) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape( 8.dp))
+            .border(
+                width = 2.dp,
+                color = colorAction,
+                shape = RoundedCornerShape(
+                    bottomStart = 8.dp,
+                    topEnd = 8.dp,
+                    bottomEnd = 8.dp,
+                    topStart = 8.dp
+                )
+            )
+            .background(colorDisabled)
+    ) {
+        options.forEachIndexed { index, option ->
+            val isSelected = index == selectedIndex
+
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip( RoundedCornerShape(8.dp))
+                    .background(
+                        if (isSelected) colorSuccess else colorTransparent
+                    )
+                    .clickable { onOptionSelected(index) }
+                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = option,
+                    color = colorPrincipalText
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun ButtonsCalendar(

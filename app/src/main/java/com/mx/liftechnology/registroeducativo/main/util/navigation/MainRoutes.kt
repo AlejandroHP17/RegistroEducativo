@@ -18,6 +18,7 @@ sealed class MainRoutes (val route: String) {
     data object RegisterSubject: MainRoutes("registerSubject")
     data object ListSubject: MainRoutes("listSubject")
     data object RegisterPartial: MainRoutes("registerPartial")
+    data object Calendar: MainRoutes("calendar")
     data object Profile: MainRoutes("profile")
 
     data object RegisterStudent : MainRoutes("registerStudent?student={student}") {

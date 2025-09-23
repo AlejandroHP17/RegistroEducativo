@@ -1,6 +1,9 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components
 
 import android.icu.util.Calendar
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -17,11 +20,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorApprove
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -207,6 +215,61 @@ fun DateSimplePickerDialog(
             )
         }
     }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerScreen(
+    dialogState: ModelCustomCalendar?,
+    onDateSelected: (date: LocalDate) -> Unit,
+) {
+
+    var date by remember{ mutableStateOf<LocalDate?>(null) }
+    var isEnable by remember { mutableStateOf(false) }
+
+    val datePickerState = rememberDatePickerState(
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                val candidate = Instant.ofEpochMilli(utcTimeMillis)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+
+                val split = dialogState?.rangeDate?.split("/")
+                return split?.let {
+                    val start = it[0].toLocalDate()
+                    val end = it[1].toLocalDate()
+                    candidate in start..end
+                } ?: true
+            }
+        }
+    )
+
+    datePickerState.selectedDateMillis?.let { millis ->
+        val localDate: LocalDate = Instant.ofEpochMilli(millis)
+            .atZone(ZoneOffset.UTC)
+            .toLocalDate()
+        date = localDate
+        isEnable = true
+    }
+
+
+    DatePicker(
+        state = datePickerState,
+        colors = DatePickerDefaults.colors(
+            containerColor = colorWhite,
+            headlineContentColor = colorPrincipalText,
+            weekdayContentColor = colorPrincipalText,
+            selectedDayContainerColor = colorPrincipalText,
+            selectedDayContentColor = colorWhite,
+        ),
+        modifier = Modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(colorTransparent)
+            .padding(8.dp)
+    )
+
+
 }
 
 fun LocalDate.toMillis(): Long {

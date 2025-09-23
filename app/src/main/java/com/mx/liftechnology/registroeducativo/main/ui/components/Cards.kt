@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -41,6 +43,7 @@ import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
@@ -59,8 +62,11 @@ fun CustomCardView() {
                 numberList = "1",
                 nameCard = "Curp",
             ),
-            onItemMore = {},
-            onItemClick = {}
+            callbacks = ModelStateSpinnerUI(
+                onItemClick = {},
+                onEdit = {},
+                onDelete = {}
+            )
         )
 
         ComplexCard(
@@ -129,9 +135,11 @@ fun CustomCardView() {
 @Composable
 fun CustomCard(
     item: ModelCustomCard,
-    onItemClick: (ModelCustomCard) -> Unit,
-    onItemMore: (ModelCustomCard) -> Unit,
+    callbacks: ModelStateSpinnerUI
 ) {
+
+    var expanded by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -164,7 +172,7 @@ fun CustomCard(
 
                 ),
                 colors = CardDefaults.cardColors(containerColor = colorWhite),
-                onClick = { onItemClick(item) }
+                onClick = { callbacks.onItemClick(item) }
             ) {
                 Row(
                     modifier = Modifier
@@ -179,14 +187,37 @@ fun CustomCard(
                         modifier = Modifier.weight(1f)
                     )
 
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_more_vert),
-                        contentDescription = "More Options",
-                        modifier = Modifier
-                            .size(dimensionResource(id = R.dimen.touch_google))
-                            .padding(dimensionResource(id = R.dimen.margin_12dp))
-                            .clickable { onItemMore(item) }
-                    )
+                    Box {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_more_vert),
+                            contentDescription = "More Options",
+                            modifier = Modifier
+                                .size(dimensionResource(id = R.dimen.touch_google))
+                                .padding(dimensionResource(id = R.dimen.margin_12dp))
+                                .clickable { expanded = true }
+                        )
+
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Editar") },
+                                onClick = {
+                                    expanded = false
+                                    callbacks.onEdit(item)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Eliminar") },
+                                onClick = {
+                                    expanded = false
+                                    callbacks.onDelete(item)
+                                }
+                            )
+                        }
+                    }
+
                 }
             }
         }

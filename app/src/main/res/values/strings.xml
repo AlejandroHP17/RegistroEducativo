@@ -93,6 +93,9 @@
     <string name="edit_student_name_description">Ingresa los datos del alumno</string>
     <string name="edit_student_edit">REGISTRAR</string>
 
+    <!-- Calendar Flow -->
+    <string name="calendar_name">Calendario</string>
+
     <!-- Profile Flow -->
     <string name="profile_name">Mi perfil</string>
     <string name="profile_button">Cerrar sesión</string>
