@@ -122,15 +122,14 @@ class RegisterSubjectViewModel(
             }
 
             if (!(nameState.isError || optionState.isError)) {
-                val optionState =
-                    validateFieldsSubjectUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
+                val optionState = validateFieldsSubjectUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
 
-                if (!optionState.isError) registerSubjectCompose()
-                _uiState.update {
-                    it.copy(
-                        options = optionState,
-                        uiState = ModelStateUIEnum.NOTHING
-                    )
+                _uiState.update { it.copy(options = optionState) }
+
+                if (!optionState.isError) {
+                    registerSubjectCompose()
+                }else{
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                 }
             } else {
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }

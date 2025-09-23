@@ -20,8 +20,8 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.login.ModelRegisterUserUICallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSimpleGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -143,7 +143,7 @@ fun BodyRegisterUserScreen(
 
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
-    BoxEditTextGeneric(
+    BoxEditTextSimpleGeneric(
         value = codeState,
         enable = true,
         label = stringResource(id = R.string.form_reg_code),

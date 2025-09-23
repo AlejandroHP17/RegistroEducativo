@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
@@ -40,12 +41,9 @@ class RegisterStudentViewModel(
         get() = _uiState.value
 
 
-    init {
-        // Observa cambios del reconocimiento de voz
-        voiceRecognitionManager.resultsLiveData.observeForever { results ->
-            logs(results.toString())
-            validateDataRecord(results)
-        }
+    private val resultsObserver = androidx.lifecycle.Observer<List<String>> { results ->
+        logs(results.toString())
+        validateDataRecord(results)
     }
 
     private var isListening = true
@@ -73,11 +71,32 @@ class RegisterStudentViewModel(
     }
     fun onChangeCurp(curp: String) {
         viewModelScope.launch(dispatcherProvider.io) {
+            validateCurpWithBirthday(curp)
             _uiState.update { it.copy(
                 curp = curp.stringToModelStateOutFieldText()
             ) }
         }
     }
+    private fun validateCurpWithBirthday(curp: String) {
+        if (curp.length > 10) {
+            val rawDate = curp.substring(4, 10)
+
+            return try {
+                val year = rawDate.substring(0, 2).toInt()
+                val month = rawDate.substring(2, 4).toInt()
+                val day = rawDate.substring(4, 6).toInt()
+
+                val fullYear = if (year <= 29) 2000 + year else 1900 + year
+
+                val localDate = LocalDate.of(fullYear, month, day)
+                onChangeBirthday( localDate.toString())
+            } catch (_: Exception) {
+                //Nothing
+            }
+        }
+    }
+
+
     fun onChangeBirthday(birthday: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
@@ -187,6 +206,8 @@ class RegisterStudentViewModel(
     /** Seccion para voz */
     override fun onCleared() {
         super.onCleared()
+        // remover observer para evitar duplicados/leaks
+        voiceRecognitionManager.resultsLiveData.removeObserver(resultsObserver)
         voiceRecognitionManager.release()
     }
 

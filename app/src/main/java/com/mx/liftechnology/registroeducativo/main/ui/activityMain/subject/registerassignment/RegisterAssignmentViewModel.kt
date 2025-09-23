@@ -68,9 +68,11 @@ class RegisterAssignmentViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
                 is SuccessState -> {
+                    val convertData = result.result.toCustomSpinnerList()
+                    onNameAssignmentChanged(convertData?.first()!!)
                     _dataState.update {
                         it.copy(
-                            listOptions = result.result.toCustomSpinnerList()
+                            listOptions = convertData
                         )
                     }
                 }
@@ -258,7 +260,7 @@ class RegisterAssignmentViewModel(
     }
 
 
-    fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<CredentialStudentJobs>{
+    private fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<CredentialStudentJobs>{
         return this.map { student ->
             CredentialStudentJobs(
                 studentSchoolCycleGroupId = student.id.toIntOrNull() ?: 0,

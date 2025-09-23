@@ -42,7 +42,8 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
 @Composable
 fun AppNavHost(
-    sharedViewModel: SharedViewModel
+    sharedViewModel: SharedViewModel,
+    restoreActivity : () -> Unit
 ) {
     val navigationController = rememberNavController()
     val uiState by sharedViewModel.uiState.collectAsStateWithLifecycle()
@@ -108,7 +109,7 @@ fun AppNavHost(
             composable(MainRoutes.Profile.route){ ProfileScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
-                onCloseSession = {navigationController.navigate(LoginRoutes.LOGIN.route){popUpTo(MainRoutes.Profile.route) { inclusive = true } } }
+                onCloseSession = { restoreActivity() }
             )}
 
 

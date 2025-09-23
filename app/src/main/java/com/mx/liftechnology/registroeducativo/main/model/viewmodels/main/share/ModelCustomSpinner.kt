@@ -29,7 +29,7 @@ fun List<ModelFormatAssignment>?.toCustomSpinnerList(): List<ModelCustomSpinner>
     return this?.map { assignment ->
         ModelCustomSpinner(
             id = assignment.id,
-            value = assignment.assignmentName.valueText // asumo que ModelStateOutFieldText tiene un campo `value`
+            value = assignment.assignmentName.valueText
         )
     }
 }

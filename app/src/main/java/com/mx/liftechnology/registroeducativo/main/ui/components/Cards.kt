@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,6 +41,8 @@ import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
@@ -59,13 +63,29 @@ fun CustomCardView() {
             onItemClick = {}
         )
 
+        ComplexCard(
+            item = ModelComplexCard(
+                idTitle = 1,
+                nameTitle = "1",
+                isShowTitle = true,
+                isExpandedTitle = true,
+                list = null
+            ),
+            complexCallbacks = ModelAssignmentUiCallbacks(
+                onExpandedTitle = {},
+                onExpandedSubTitle = {},
+                onItemClick = {}
+            )
+        )
+
+
         GridItem(
             item = ModelPrincipalMenuData(
                 id = "1",
                 image = com.mx.liftechnology.data.R.drawable.ic_students,
                 titleCard = "texto"
             ),
-            {}
+            onItemClick = {}
         )
 
         DialogGroupItem(
@@ -115,7 +135,12 @@ fun CustomCard(
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-        shape = RoundedCornerShape(20),
+        shape = RoundedCornerShape(
+            bottomStart = 8.dp,
+            topEnd = 8.dp,
+            bottomEnd = 8.dp,
+            topStart = 8.dp
+        ),
         colors = CardDefaults.cardColors(containerColor = colorAzulLink)
     ) {
         Row(
@@ -157,12 +182,108 @@ fun CustomCard(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_more_vert),
                         contentDescription = "More Options",
-
                         modifier = Modifier
                             .size(dimensionResource(id = R.dimen.touch_google))
                             .padding(dimensionResource(id = R.dimen.margin_12dp))
                             .clickable { onItemMore(item) }
                     )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ComplexCard(
+    item: ModelComplexCard?,
+    complexCallbacks: ModelAssignmentUiCallbacks,
+) {
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth().wrapContentHeight(),
+        shape = RoundedCornerShape(
+            bottomStart = 8.dp,
+            topEnd = 8.dp,
+            bottomEnd = 8.dp,
+            topStart = 8.dp
+        ),
+        colors = CardDefaults.cardColors(containerColor = colorAzulLink)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.margin_8dp)))
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(bottom = dimensionResource(id = R.dimen.margin_divided)),
+                shape = RoundedCornerShape(
+                    bottomStart = 8.dp,
+                    topEnd = 8.dp
+
+                ),
+                colors = CardDefaults.cardColors(containerColor = colorWhite),
+                onClick = { complexCallbacks.onItemClick(item) }
+            ) {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .clickable { complexCallbacks.onExpandedTitle(!((item?.isExpandedTitle)?:false)) }
+                            .fillMaxWidth()
+                            .padding(
+                                start = dimensionResource(id = R.dimen.margin_16dp) ),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = item?.nameTitle ?: "",
+                            fontSize = 16.sp,
+                            modifier = Modifier.weight(1f)
+                                .padding(top = dimensionResource(id = R.dimen.margin_12dp))
+                        )
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_principal_drop),
+                            contentDescription = "More Options",
+
+                            modifier = Modifier
+                                .size(dimensionResource(id = R.dimen.touch_google))
+                                .padding(dimensionResource(id = R.dimen.margin_12dp))
+                        )
+                    }
+
+                    AnimatedVisibility(visible = item?.isExpandedTitle ?: false) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 16.dp)
+                        ) {
+                            item?.list?.forEach{item ->
+                                Row(
+                                    modifier = Modifier
+                                        .clickable { complexCallbacks.onExpandedSubTitle(!((item?.isExpandedSubTitle)?:false)) }
+                                        .fillMaxWidth()
+                                        .padding(
+                                            start = dimensionResource(id = R.dimen.margin_16dp) ),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ){
+                                    Text(
+                                        text = item?.nameSubTitle ?: "",
+                                        modifier = Modifier.padding(8.dp)
+                                    )
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_drop_down),
+                                        contentDescription = "More Options",
+
+                                        modifier = Modifier
+                                            .size(dimensionResource(id = R.dimen.touch_google))
+                                            .padding(dimensionResource(id = R.dimen.margin_16dp))
+                                    )
+                                }
+
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -239,8 +360,6 @@ fun EvaluationPercentItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
-        var selectedOption by remember { mutableStateOf(listWorkMethods[0]) }
-
         Column(modifier = Modifier.weight(5f)) {
             CustomSpace(dimensionResource(R.dimen.margin_between))
             SpinnerMixOutlinedTextField(
@@ -248,7 +367,6 @@ fun EvaluationPercentItem(
                 selectedOption = name,
                 label = stringResource(R.string.form_subject_evaluation),
                 onOptionSelected = {
-                    selectedOption = it
                     onNameChange(it)
                 }
             )
@@ -259,6 +377,7 @@ fun EvaluationPercentItem(
             BoxEditTextNumeric(
                 value = percent,
                 enable = true,
+                maxNumberCharacter = 4,
                 label = stringResource(id = R.string.form_subject_percent),
             )
             {
@@ -281,7 +400,7 @@ fun EvaluationStudentItem(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(5f)) {
-            BoxEditTextGeneric(
+            BoxEditTextSimpleGeneric(
                 value = nameStudent,
                 enable = false,
                 label = stringResource(id = R.string.tools_empty),
@@ -310,15 +429,6 @@ fun RegisterPartialListItem(
 
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDates by remember { mutableStateOf<Pair<LocalDate?, LocalDate?>>(null to null) }
-
-   /* CustomDateRangePicker(
-        showDialog = showDatePicker,
-        onDismiss = { showDatePicker = false },
-        onDateSelected = { startDate, endDate ->
-            selectedDates = startDate to endDate
-            onDateChange(selectedDates)
-        }
-    )*/
 
     DateRangePickerDialog(showDialog = showDatePicker,
         onDismiss = { showDatePicker = false },

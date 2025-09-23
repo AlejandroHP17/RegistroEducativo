@@ -26,7 +26,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterStudentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCapitalLetterGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextNumeric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -128,21 +128,21 @@ private fun BodyRegisterStudent(
     uiState: ModelRegisterStudentUiState,
     callbacks: ModelRegisterStudentUiCallbacks,
 ) {
-    BoxEditTextGeneric(
+    BoxEditTextCapitalLetterGeneric(
         value = uiState.name,
         enable = true,
         label = stringResource(id = R.string.form_student_name),
         onBoxChanged = { callbacks.onNameChanged(it) }
     )
 
-    BoxEditTextGeneric(
+    BoxEditTextCapitalLetterGeneric(
         value = uiState.lastName,
         enable = true,
         label = stringResource(id = R.string.form_student_last_name),
         onBoxChanged = { callbacks.onLastNameChanged(it) }
     )
 
-    BoxEditTextGeneric(
+    BoxEditTextCapitalLetterGeneric(
         value = uiState.secondLastName,
         enable = true,
         label = stringResource(id = R.string.form_student_second_last_name),
@@ -167,6 +167,7 @@ private fun BodyRegisterStudent(
         value = uiState.phoneNumber,
         enable = true,
         label = stringResource(id = R.string.form_student_phone_number),
+        maxNumberCharacter = 10,
         onBoxChanged = { callbacks.onPhoneNumberChanged(it) }
     )
 }

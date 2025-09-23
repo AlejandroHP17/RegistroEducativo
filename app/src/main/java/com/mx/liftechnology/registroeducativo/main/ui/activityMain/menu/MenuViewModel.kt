@@ -245,7 +245,7 @@ class MenuViewModel(
                     )
                 )
             }
-            updatePartialUseCase.invoke(partialItem?.partialId ?: -1)
+            updatePartialUseCase.invoke(partialItem)
         }
     }
 

@@ -30,7 +30,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextComplexGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -183,7 +183,7 @@ fun BodyRegisterAssignment(
     onNameJobChanged: (String) -> Unit,
     showDialog: () -> Unit,
 ) {
-    BoxEditTextGeneric(
+    BoxEditTextComplexGeneric(
         value = dataState.nameJob,
         enable = true,
         label = stringResource(id = R.string.form_assignment_name),

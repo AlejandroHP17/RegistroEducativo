@@ -22,7 +22,7 @@ import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSubjectUIState
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextComplexGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -127,7 +127,7 @@ private fun BodyRegisterSubject(
     onSubjectChanged: (String) -> Unit,
     onOptionsChanged: (String) -> Unit,
 ) {
-    BoxEditTextGeneric(
+    BoxEditTextComplexGeneric(
         value = uiState.subject,
         enable = true,
         label = stringResource(id = R.string.form_subject_field),

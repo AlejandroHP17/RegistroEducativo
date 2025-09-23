@@ -55,11 +55,9 @@ class RegisterSchoolViewModel(
     private val _cycle = MutableStateFlow(ModelStateOutFieldText())
     val cycle: StateFlow<ModelStateOutFieldText> = _cycle.asStateFlow()
 
-    init {
-        // Observa cambios del reconocimiento de voz
-        voiceRecognitionManager.resultsLiveData.observeForever { results ->
-            validateData(results)
-        }
+    private val resultsObserver = androidx.lifecycle.Observer<List<String>> { results ->
+        logs(results.toString())
+        validateData(results)
     }
 
     private var isListening = true
@@ -239,6 +237,8 @@ class RegisterSchoolViewModel(
     /** Seccion para voz */
     override fun onCleared() {
         super.onCleared()
+        // remover observer para evitar duplicados/leaks
+        voiceRecognitionManager.resultsLiveData.removeObserver(resultsObserver)
         voiceRecognitionManager.release()
     }
 

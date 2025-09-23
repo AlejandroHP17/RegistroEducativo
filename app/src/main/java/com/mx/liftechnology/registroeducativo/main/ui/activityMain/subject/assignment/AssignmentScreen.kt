@@ -15,12 +15,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.ComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
@@ -36,6 +38,7 @@ fun AssignmentScreen(
 ) {
 
     val uiState by assignmentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by assignmentViewModel.dataState.collectAsStateWithLifecycle()
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
     LaunchedEffect(Unit) {
@@ -53,12 +56,19 @@ fun AssignmentScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Screen assignment")
         Column(modifier = Modifier.fillMaxSize()) {
             HeaderAssignment(
                 uiState =  uiState,
                 navController = navController)
-
+            BodyAssignment(
+                dataState =  dataState,
+                complexCallbacks = ModelAssignmentUiCallbacks(
+                    onExpandedTitle = { assignmentViewModel.updateExpandedTitle(it) },
+                    onExpandedSubTitle = { // assignmentViewModel.updateExpandedSubTitle(it)
+                         },
+                    onItemClick = {}
+                )
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -73,12 +83,27 @@ fun AssignmentScreen(
 
 @Composable
 private fun HeaderAssignment(
-    uiState: ModelAssignmentUIState,
+    uiState: ModelAssignmentUiState,
     navController: NavHostController) {
     ComponentHeaderBack(
         title = uiState.subject?.name ?: "Desconocido",
         body = stringResource(R.string.assignment_description)
     ) { navController.popBackStack() }
+}
+
+@Composable
+private fun BodyAssignment(
+    dataState: ModelAssignmentDataState,
+    complexCallbacks: ModelAssignmentUiCallbacks
+    ){
+    ComplexCard(
+        item = dataState.dataCard,
+        complexCallbacks = ModelAssignmentUiCallbacks(
+            onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
+            onExpandedSubTitle = { complexCallbacks.onExpandedSubTitle(it) },
+            onItemClick = { complexCallbacks.onItemClick(it) }
+        )
+    )
 }
 
 @Composable

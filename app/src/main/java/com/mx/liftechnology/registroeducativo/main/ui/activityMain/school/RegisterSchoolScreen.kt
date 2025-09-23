@@ -16,7 +16,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -24,7 +23,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRe
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUISemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelRegisterSchoolUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSimpleGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -65,7 +64,6 @@ fun RegisterSchoolScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Screen register school")
         HeaderRegisterSchool(navController = navController)
 
         BodyRegisterSchool(
@@ -118,13 +116,13 @@ private fun BodyRegisterSchool(
         onBoxChanged = { onCctChanged(it) }
     )
 
-    BoxEditTextGeneric(
+    BoxEditTextSimpleGeneric(
         value = uiAutomatic.schoolName,
         enable = false,
         label = stringResource(id = R.string.form_school_name),
     ) {}
 
-    BoxEditTextGeneric(
+    BoxEditTextSimpleGeneric(
         value = uiAutomatic.shift,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
@@ -144,7 +142,7 @@ private fun BodyDoubleRegisterSchool(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            BoxEditTextGeneric(
+            BoxEditTextSimpleGeneric(
                 value = semiAutomatic.type,
                 enable = false,
                 label = stringResource(id = R.string.form_school_type),

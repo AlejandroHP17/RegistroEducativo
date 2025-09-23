@@ -42,9 +42,18 @@ class MainActivity : AppCompatActivity() {
                         .windowInsetsPadding(WindowInsets.systemBars)
                         .background(background())
                 ) {
-                    AppNavHost(sharedViewModel = sharedViewModel)
+                    AppNavHost(
+                        sharedViewModel = sharedViewModel,
+                        restoreActivity = { restoreActivity()}
+                    )
                 }
             }
         }
+    }
+
+    private fun restoreActivity(){
+        val intent = intent
+        finish()
+        startActivity(intent)
     }
 }
