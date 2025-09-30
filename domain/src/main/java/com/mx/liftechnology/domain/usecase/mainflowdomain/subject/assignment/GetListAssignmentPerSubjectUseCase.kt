@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetPercentSubjectId
-import com.mx.liftechnology.core.network.callapi.ResponseGetPercentSubjectId
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPercentSubjectId
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPercentSubjectId
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -18,7 +18,7 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 
 class GetListAssignmentPerSubjectUseCase (
-    private val crudAssignmentRepository: CrudAssignmentRepository,
+    private val getPercentSubjectRepository: GetPercentSubjectRepository,
     private val preference : PreferenceUseCase
 ) {
     suspend operator fun invoke(): ModelState<List<ModelFormatAssignment>?, String?>{
@@ -28,14 +28,14 @@ class GetListAssignmentPerSubjectUseCase (
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
         val subjectSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP)
 
-        val request = CredentialsGetPercentSubjectId(
+        val request = RequestGetPercentSubjectId(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId,
             subjectSchoolCycleGroupId = subjectSchoolCycleGroupId
         )
 
-        return runCatching { crudAssignmentRepository.executeGetPercentSubjectId(request) }.fold(
+        return runCatching { getPercentSubjectRepository.executeGetPercentSubject(request) }.fold(
             onSuccess = { result->
                 when(result) {
                     is ResultSuccess -> {

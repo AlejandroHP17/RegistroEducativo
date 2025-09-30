@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterPartial
-import com.mx.liftechnology.core.network.callapi.Partials
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestPartials
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
+import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -18,10 +18,9 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 
 
 class RegisterListPartialUseCase(
-    private val crudPartialRepository: CrudPartialRepository,
+    private val registerListPartialRepository: RegisterListPartialRepository,
     private val preference: PreferenceUseCase
 ) {
-
     suspend operator fun invoke(
         periodNumber: Int?,
         adapterPeriods: List<ModelDatePeriodDomain>
@@ -30,11 +29,11 @@ class RegisterListPartialUseCase(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val listAdapter: MutableList<Partials> = mutableListOf()
+        val listAdapter: MutableList<RequestPartials> = mutableListOf()
         adapterPeriods.forEachIndexed { index,  data ->
             val part = data.date.valueText.split("/")
             listAdapter.add(
-                Partials(
+                RequestPartials(
                     description = (index + 1).toString(),
                     startDate = part.getOrNull(0)?.trim() ?: "",
                     endDate = part.getOrNull(1)?.trim() ?: "",
@@ -42,7 +41,7 @@ class RegisterListPartialUseCase(
             )
         }
 
-        val request = CredentialsRegisterPartial(
+        val request = RequestRegisterPartial(
             numberPartials = periodNumber,
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
             userId = userId,
@@ -50,7 +49,7 @@ class RegisterListPartialUseCase(
             listPartials = listAdapter
         )
 
-        return runCatching { crudPartialRepository.executeRegisterListPartial(request) }.fold(
+        return runCatching { registerListPartialRepository.executeRegisterListPartial(request) }.fold(
             onSuccess = { result ->
                 when(result){
                     is ResultSuccess -> {

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.menu
 
-import com.mx.liftechnology.core.network.callapi.ResponseGetPartial
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPartial
 
 data class ModelDialogGroupPartialDomain(
     val partialId: Int,
@@ -13,7 +13,7 @@ val List<ResponseGetPartial?>?.ListPartialToConvertModelDialogGroupPartialDomain
     get() = this?.mapIndexedNotNull { index, partial -> // Filtramos los valores nulos
         partial?.let {
             ModelDialogGroupPartialDomain(
-                partialId = it.partialCycleGroup,
+                partialId = it.partialCycleGroupId,
                 startDate = it.startDate,
                 endDate = it.endDate,
                 name = "Parcial ${index+1}",

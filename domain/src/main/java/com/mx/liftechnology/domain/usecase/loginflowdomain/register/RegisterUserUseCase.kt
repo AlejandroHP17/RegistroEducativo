@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.loginflowdomain.register
 
-import com.mx.liftechnology.core.network.callapi.loginflow.CredentialsRegister
-import com.mx.liftechnology.data.repository.loginflowdata.register.RegisterRepository
+import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestRegisterUser
+import com.mx.liftechnology.data.repository.flowLogin.register.RegisterUserRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -13,19 +13,19 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 class RegisterUserUseCase(
-    private val registerRepository: RegisterRepository
+    private val registerUserRepository: RegisterUserRepository
 )  {
     /** Request to Register
      * @author pelkidev
      * @since 1.0.0
      * */
     suspend operator fun invoke(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String> {
-        val request = CredentialsRegister(
+        val request = RequestRegisterUser(
             email = email.lowercase(),
             password = pass,
             activationCode = activatationCode
         )
-        return when (val result =  registerRepository.executeRegister(request)) {
+        return when (val result =  registerUserRepository.executeRegisterUser(request)) {
             is ResultSuccess -> {
                 SuccessState(result.data)
             }

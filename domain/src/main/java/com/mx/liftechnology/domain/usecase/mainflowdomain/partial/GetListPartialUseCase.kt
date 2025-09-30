@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetPartial
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
+import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -17,7 +17,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 class GetListPartialUseCase(
-    private val crudPartialRepository: CrudPartialRepository,
+    private val getListPartialRepository: GetListPartialRepository,
     private val preference: PreferenceUseCase
 )  {
     suspend operator fun invoke(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
@@ -25,13 +25,13 @@ class GetListPartialUseCase(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetPartial(
+        val request = RequestGetPartial(
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
             userId = userId,
             teacherId = roleId
         )
 
-        return runCatching {crudPartialRepository.executeGetListPartial(request) }.fold(
+        return runCatching {getListPartialRepository.executeGetListPartial(request) }.fold(
             onSuccess = { result ->
                 when(result){
                     is ResultSuccess -> {
@@ -42,7 +42,7 @@ class GetListPartialUseCase(
                                     valueText = "${item?.startDate} / ${item?.endDate}",
                                     isError = false,
                                     errorMessage = ""),
-                                partialCycleGroup = item?.partialCycleGroup
+                                partialCycleGroup = item?.partialCycleGroupId
                             )
                         } ?.toMutableList()
                         if (listDate?.size!! > 0) {

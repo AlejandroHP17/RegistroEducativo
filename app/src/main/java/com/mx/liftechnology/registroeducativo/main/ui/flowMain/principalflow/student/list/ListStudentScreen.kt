@@ -1,0 +1,77 @@
+package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericEmptyScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericListScreen
+import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
+import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import org.koin.androidx.compose.koinViewModel
+
+
+@Composable
+fun ListStudentScreen(
+    navController: NavHostController,
+    listStudentViewModel: ListStudentViewModel = koinViewModel(),
+) {
+
+    val uiState by listStudentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by listStudentViewModel.dataState.collectAsStateWithLifecycle()
+
+    // Cargar la lista de estudiantes cuando se monta la pantalla
+    LaunchedEffect(Unit) {
+        listStudentViewModel.getListStudent()
+    }
+
+    if (dataState.studentList.isNullOrEmpty()) {
+        GenericEmptyScreen(
+            image = painterResource(id = R.drawable.ic_empty_student),
+            title = stringResource(R.string.empty_student_1),
+            description = stringResource(R.string.empty_student_2),
+            button = stringResource(R.string.add_button),
+            onReturnClick = { navController.popBackStack() },
+            onActionClick = {
+                navController.navigateWithParams(
+                    MainRoutes.RegisterStudent.createRoutes(
+                        null
+                    )
+                )
+            }
+        )
+    } else {
+        GenericListScreen(
+            title = stringResource(R.string.get_student_name),
+            textButton = stringResource(R.string.add_button),
+            items = dataState.studentListUI,
+            onReturnClick = { navController.popBackStack() },
+            callbacks = ModelStateSpinnerUI(
+                onItemClick = { },
+                onEdit = {
+                    navController.navigateWithParams(
+                        MainRoutes.RegisterStudent.createRoutes(
+                            listStudentViewModel.getStudent(it)
+                        )
+                    )
+                },
+                onDelete = {}
+            ),
+            onAction = {
+                navController.navigateWithParams(
+                    MainRoutes.RegisterStudent.createRoutes(
+                        null
+                    )
+                )
+            }
+        )
+    }
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+}

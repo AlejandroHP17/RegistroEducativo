@@ -26,12 +26,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomSpinner
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 
@@ -175,11 +175,13 @@ fun SpinnerMixOutlinedTextField(
                     if (isEditable && (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue))){
                         selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
                     }
-                    onOptionSelected(ResponseGetListAssessmentType(
+                    onOptionSelected(
+                        ResponseGetListAssessmentType(
                         assessmentTypeId = -1,
                         description = newValue,
                         teacherSchoolCycleGroupId = options.firstOrNull()?.teacherSchoolCycleGroupId
-                    ))
+                    )
+                    )
                 }, // Deshabilitado para evitar edición manual
                 readOnly = !isEditable,
                 label = {

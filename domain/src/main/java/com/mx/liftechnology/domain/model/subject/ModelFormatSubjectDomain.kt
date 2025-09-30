@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.model.subject
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.mx.liftechnology.core.network.callapi.ResponseGetListSubject
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListSubject
 
 /** Model - to select the dates
  * @author pelkidev

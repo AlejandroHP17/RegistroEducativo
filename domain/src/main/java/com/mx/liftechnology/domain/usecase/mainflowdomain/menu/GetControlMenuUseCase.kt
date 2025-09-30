@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
-import com.mx.liftechnology.data.repository.mainflowdata.MenuLocalRepository
+import com.mx.liftechnology.data.repository.flowMain.menu.MenuLocalRepository
 import com.mx.liftechnology.domain.model.generic.ErrorState
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState

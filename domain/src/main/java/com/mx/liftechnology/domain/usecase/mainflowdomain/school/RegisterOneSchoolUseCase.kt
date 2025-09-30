@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import android.os.Build
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterSchool
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepository
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -18,7 +18,7 @@ import java.util.Calendar
 import java.util.Date
 
 class RegisterOneSchoolUseCase(
-    private val crudSchoolRepository: CrudSchoolRepository,
+    private val registerSchoolRepository: RegisterSchoolRepository,
     private val preference: PreferenceUseCase,
 ) {
 
@@ -36,7 +36,7 @@ class RegisterOneSchoolUseCase(
         val calendar = Calendar.getInstance().apply { time = buildDate }
         val year = calendar[Calendar.YEAR]
 
-        val request = CredentialsRegisterSchool(
+        val request = RequestRegisterSchool(
             cct = cct,
             typeCycleSchoolId = schoolCycleTypeId,
             grade = grade,
@@ -46,7 +46,7 @@ class RegisterOneSchoolUseCase(
             teacherId = roleId,
             userId = userId,
         )
-        return runCatching { crudSchoolRepository.executeRegisterOneSchool(request) }.fold(
+        return runCatching { registerSchoolRepository.executeRegisterOneSchool(request) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {

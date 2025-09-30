@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetListAssignment
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListAssignment
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -19,7 +19,7 @@ fun interface GetListAssignmentUseCase {
 }
 
 class GetListAssignmentUseCaseImp(
-    private val crudAssignmentRepository: CrudAssignmentRepository,
+    private val getListAssignmentRepository: GetListAssignmentRepository,
     private val preference : PreferenceUseCase
 ): GetListAssignmentUseCase {
     override suspend fun getListAssignment():ModelState<List<String>?, String?> {
@@ -27,13 +27,13 @@ class GetListAssignmentUseCaseImp(
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetListAssignment(
+        val request = RequestGetListAssignment(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssignmentRepository.executeGetListAssignment(request)){
+        return when(val result =  getListAssignmentRepository.executeGetListAssignment(request)){
             is ResultSuccess -> SuccessState(result.data)
             is ResultError -> handleResponse(result.error)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)

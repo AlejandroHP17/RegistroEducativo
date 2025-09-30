@@ -1,16 +1,16 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.callapi.GetCctApiCall
-import com.mx.liftechnology.core.network.callapi.RegisterOneSchoolApiCall
-import com.mx.liftechnology.data.repository.mainflowdata.CCTRepository
-import com.mx.liftechnology.data.repository.mainflowdata.CCTRepositoryImp
-import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepository
-import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepositoryImp
+import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSchoolApiCall
+import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
+import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepository
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepositoryImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.school.RegisterSchoolViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -22,15 +22,15 @@ import retrofit2.Retrofit
 val registerSchoolModule = module {
 
     factory { get<Retrofit>().create(GetCctApiCall::class.java) }
-    factory { get<Retrofit>().create(RegisterOneSchoolApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterSchoolApiCall::class.java) }
 
-    single<CCTRepository> {
-        CCTRepositoryImp(get())
+    single<GetCctRepository> {
+        GetCctRepositoryImp(get())
     }
     factory{GetCctUseCase(get()) }
 
-    single<CrudSchoolRepository> {
-        CrudSchoolRepositoryImp(get())
+    single<RegisterSchoolRepository> {
+        RegisterSchoolRepositoryImp(get())
     }
     factory{RegisterOneSchoolUseCase(get(), get())}
 

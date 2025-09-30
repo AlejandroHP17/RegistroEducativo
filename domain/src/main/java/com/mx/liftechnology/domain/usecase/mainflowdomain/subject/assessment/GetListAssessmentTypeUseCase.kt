@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetListAssessmentType
-import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assessment.CrudAssessmentTypeRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assessment.GetAssessmentTypeRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -16,7 +16,7 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 class GetListAssessmentTypeUseCase(
-    private val crudAssessmentTypeRepository: CrudAssessmentTypeRepository,
+    private val getAssessmentTypeRepository: GetAssessmentTypeRepository,
     private val preference : PreferenceUseCase
 ) {
     suspend operator fun invoke():ModelState<List<ResponseGetListAssessmentType?>, String?> {
@@ -24,13 +24,13 @@ class GetListAssessmentTypeUseCase(
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetListAssessmentType(
+        val request = RequestGetListAssessmentType(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return runCatching { crudAssessmentTypeRepository.executeGetListAssessment(request) }.fold(
+        return runCatching { getAssessmentTypeRepository.executeGetListAssessment(request) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {

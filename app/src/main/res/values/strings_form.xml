@@ -34,7 +34,7 @@
     <string name="form_subject_evaluation">Tipo de evaluación</string>
     <string name="form_subject_percent">%</string>
 
-    <!-- Partials -->
+    <!-- RequestPartials -->
     <string name="form_partial_period">Parciales</string>
     <string name="form_partial_periods">Parcial %d</string>
     <string name="form_partial_start">Inicial</string>

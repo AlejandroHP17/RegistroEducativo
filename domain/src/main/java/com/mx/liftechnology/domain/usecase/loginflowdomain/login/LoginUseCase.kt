@@ -1,13 +1,13 @@
 package com.mx.liftechnology.domain.usecase.loginflowdomain.login
 
 import android.os.Build
-import com.mx.liftechnology.core.network.callapi.loginflow.Credentials
-import com.mx.liftechnology.core.network.callapi.loginflow.ResponseDataLogin
-import com.mx.liftechnology.core.network.callapi.loginflow.User
+import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestLogin
+import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseLogin
+import com.mx.liftechnology.core.network.apiCall.flowLogin.UserLogin
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
-import com.mx.liftechnology.data.repository.loginflowdata.login.LoginRepository
+import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -28,12 +28,12 @@ class LoginUseCase(
      * @author pelkidev
      * @since 1.0.0
      */
-    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean): ModelState<User?, String> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean): ModelState<UserLogin?, String> {
         val location = locationHelper.getCurrentLocation()
         val latitude = location?.latitude
         val longitude = location?.longitude
 
-        val request = Credentials(
+        val request = RequestLogin(
             email = email?.lowercase().orEmpty(),
             password = pass.orEmpty(),
             latitude = latitude?.toString().orEmpty(),
@@ -46,7 +46,7 @@ class LoginUseCase(
                 when (result){
                     is ResultSuccess -> {
                         result.data?.accessToken?.let {
-                            if(savePreferences(result.data, remember)) SuccessState(result.data?.user)
+                            if(savePreferences(result.data, remember)) SuccessState(result.data?.userLogin)
                             else ErrorState(ModelCodeError.ERROR_CRITICAL)
                         }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
                     }
@@ -61,13 +61,13 @@ class LoginUseCase(
     }
 
 
-    private fun savePreferences(result: ResponseDataLogin?, remember:Boolean): Boolean {
-        return result?.user?.let { data ->
+    private fun savePreferences(result: ResponseLogin?, remember:Boolean): Boolean {
+        return result?.userLogin?.let { data ->
             preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
-            preference.savePreferenceInt(ModelPreference.ID_USER, data.userID)
+            preference.savePreferenceInt(ModelPreference.ID_USER, data.userId)
             preference.savePreferenceInt(ModelPreference.ID_ROLE,
-                if (data.teacherID == null) data.studentID
-                else data.teacherID
+                if (data.teacherId == null) data.studentId
+                else data.teacherId
             )
             preference.savePreferenceString(ModelPreference.USER_ROLE, data.role)
             preference.savePreferenceBoolean(ModelPreference.LOGIN, remember)
@@ -82,7 +82,7 @@ class LoginUseCase(
      * if not return the correct error
      * @return ModelState
      */
-    private fun handleResponse(error: FailureService): ModelState<User?, String> {
+    private fun handleResponse(error: FailureService): ModelState<UserLogin?, String> {
         return when(error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
             is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)

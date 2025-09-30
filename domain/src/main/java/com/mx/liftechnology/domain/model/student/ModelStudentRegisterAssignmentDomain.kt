@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.student
 
-import com.mx.liftechnology.core.network.callapi.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
 
 data class ModelStudentRegisterAssignmentDomain (
     val studentId : String?,

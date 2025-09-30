@@ -1,9 +1,11 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.callapi.GetListStudentApiCall
-import com.mx.liftechnology.core.network.callapi.RegisterOneStudentApiCall
-import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepository
-import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepositoryImp
+import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
+import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepositoryImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
@@ -12,8 +14,8 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStude
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register.RegisterStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -24,11 +26,14 @@ import retrofit2.Retrofit
  */
 val crudStudentModule = module {
 
-    factory { get<Retrofit>().create(RegisterOneStudentApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterStudentApiCall::class.java) }
     factory { get<Retrofit>().create(GetListStudentApiCall::class.java) }
 
-    single<CrudStudentRepository> {
-        CrudStudentRepositoryImp(get(), get())
+    single<RegisterStudentRepository> {
+        RegisterStudentRepositoryImp(get())
+    }
+    single<GetStudentRepository> {
+        GetStudentRepositoryImp(get())
     }
 
     single {RegisterOneStudentUseCase(get(), get())}

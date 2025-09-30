@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSubject
-import com.mx.liftechnology.core.network.callapi.Percent
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestPercent
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterSubject
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.CrudSubjectRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.RegisterSubjectRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -18,7 +18,7 @@ import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 
 class RegisterOneSubjectUseCase(
-    private val crudSubjectRepository: CrudSubjectRepository,
+    private val registerSubjectRepository: RegisterSubjectRepository,
     private val preference: PreferenceUseCase
 ) {
     suspend operator fun invoke(
@@ -29,10 +29,10 @@ class RegisterOneSubjectUseCase(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val listAdapter: MutableList<Percent> = mutableListOf()
+        val listAdapter: MutableList<RequestPercent> = mutableListOf()
         updatedList?.forEach { data ->
             listAdapter.add(
-                Percent(
+                RequestPercent(
                     jobId = data.assessmentTypeId,
                     percent = data.percent.valueText.toInt(),
                     assessmentType = data.name.valueText
@@ -40,7 +40,7 @@ class RegisterOneSubjectUseCase(
             )
         }
 
-        val request = CredentialsRegisterSubject(
+        val request = RequestRegisterSubject(
             subject = name,
             options = updatedList?.size,
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
@@ -49,7 +49,7 @@ class RegisterOneSubjectUseCase(
             percents = listAdapter
         )
 
-        return runCatching {crudSubjectRepository.executeRegisterOneSubject(request)}.fold(
+        return runCatching {registerSubjectRepository.executeRegisterOneSubject(request)}.fold(
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {

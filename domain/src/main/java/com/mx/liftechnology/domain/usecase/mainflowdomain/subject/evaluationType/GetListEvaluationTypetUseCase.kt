@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetListEvaluationType
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListEvaluationType
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.evaluationtype.CrudEvaluationTypeRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype.GetListEvaluationTypeRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -19,7 +19,7 @@ fun interface GetListEvaluationTypeUseCase {
 }
 
 class GetListEvaluationTypeUseCaseImp (
-    private val crudEvaluationTypeRepository : CrudEvaluationTypeRepository,
+    private val getListEvaluationTypeRepository : GetListEvaluationTypeRepository,
     private val preference: PreferenceUseCase
 ) : GetListEvaluationTypeUseCase {
 
@@ -28,13 +28,13 @@ class GetListEvaluationTypeUseCaseImp (
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetListEvaluationType(
+        val request = RequestGetListEvaluationType(
             teacherId = roleId,
             userId = userId,
             teacherSchoolCycleGroupId = pecg
         )
 
-        return when (val result =  crudEvaluationTypeRepository.executeGetListEvaluationType(request)) {
+        return when (val result =  getListEvaluationTypeRepository.executeGetListEvaluationType(request)) {
             is ResultSuccess -> {
                 SuccessState(result.data)
             }

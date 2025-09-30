@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.ModelMenuDialogState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuDialogUI
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
@@ -22,7 +22,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 @Composable
 fun AlertDialogPreview(){
     Column {
-        AlertDialogMenu(ModelMenuDialogState(),{},{},false){}
+        AlertDialogMenu(ModelMenuDialogUI(),{},{},false){}
         CustomSpace(16.dp)
         AlertDialogConfirm({},{})
     }
@@ -75,7 +75,7 @@ fun AlertDialogConfirm(
 
 @Composable
 fun AlertDialogMenu(
-    uiDialog: ModelMenuDialogState,
+    uiDialog: ModelMenuDialogUI,
     itemSelectedReturn: (ModelDialogStudentGroupDomain) -> Unit,
     itemSelectedPartialReturn: (ModelDialogGroupPartialDomain?) -> Unit,
     selectType : Boolean,

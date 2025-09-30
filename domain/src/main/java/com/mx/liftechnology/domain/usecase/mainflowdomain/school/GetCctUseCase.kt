@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
-import com.mx.liftechnology.core.network.callapi.ResponseCctSchool
-import com.mx.liftechnology.data.repository.mainflowdata.CCTRepository
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -15,7 +15,7 @@ import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 
 class GetCctUseCase(
-    private val cctRepository: CCTRepository,
+    private val getCctRepository: GetCctRepository,
 ) {
 
     /** Validate CCT
@@ -23,7 +23,7 @@ class GetCctUseCase(
      * @since 1.0.0
      * */
     suspend operator fun invoke(cct: String): ModelState<ModelResultSchoolDomain?, String> {
-        return runCatching { cctRepository.executeSchoolCCT(cct) }.fold(
+        return runCatching { getCctRepository.executeGetCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {

@@ -1,11 +1,11 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.CredentialStudentJobs
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterOneJobStudent
-import com.mx.liftechnology.core.network.callapi.ResponseStudentJobs
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterJobStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestStudentJobs
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseStudentJobs
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.RegisterAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -20,13 +20,13 @@ class RegisterAssignmentUseCase (
     private val preference: PreferenceUseCase
 ){
 
-    suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<CredentialStudentJobs>): ModelState<List<ResponseStudentJobs?>?, String> {
+    suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<RequestStudentJobs>): ModelState<List<ResponseStudentJobs?>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
         val partialCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP)
 
-        val request = CredentialsRegisterOneJobStudent(
+        val request = RequestRegisterJobStudent(
             description = nameJob,
             date = date,
             number = 1,
@@ -41,7 +41,7 @@ class RegisterAssignmentUseCase (
 
         )
 
-        return runCatching { registerAssignmentRepository.executePutAssignment(request) }.fold(
+        return runCatching { registerAssignmentRepository.RegisterAssignment(request) }.fold(
             onSuccess = { result ->
                 when (result){
                     is ResultSuccess -> {

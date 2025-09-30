@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.ui
 
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 
 data class ModelStateSpinnerUI(
     val onItemClick:(ModelCustomCard) -> Unit,

@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject
 
-import com.mx.liftechnology.core.network.callapi.CredentialGetListSubject
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListSubject
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.CrudSubjectRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.GetListSubjectRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -18,7 +18,7 @@ import com.mx.liftechnology.domain.model.subject.toModelSubjectList
 
 
 class GetListSubjectUseCase (
-    private val crudSubjectRepository : CrudSubjectRepository,
+    private val getListSubjectRepository : GetListSubjectRepository,
     private val preference: PreferenceUseCase
 ) {
     suspend operator fun invoke(): ModelState<List<ModelFormatSubjectDomain>?, String> {
@@ -26,13 +26,13 @@ class GetListSubjectUseCase (
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialGetListSubject(
+        val request = RequestGetListSubject(
             teacherId = roleId,
             userId = userId,
             teacherSchoolCycleGroupId = pecg
         )
 
-        return runCatching { crudSubjectRepository.executeGetListSubject(request) }.fold(
+        return runCatching { getListSubjectRepository.executeGetListSubject(request) }.fold(
             onSuccess = { result ->
                 when(result){
                     is ResultSuccess -> {

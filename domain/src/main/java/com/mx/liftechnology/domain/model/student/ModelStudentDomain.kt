@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.model.student
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.mx.liftechnology.core.network.callapi.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
 
 data class ModelStudentDomain (
     val studentId : String?,

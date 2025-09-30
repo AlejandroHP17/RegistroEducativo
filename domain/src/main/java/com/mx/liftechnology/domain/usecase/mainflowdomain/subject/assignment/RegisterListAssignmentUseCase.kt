@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterAssignment
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterAssignment
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -19,7 +19,7 @@ fun interface RegisterListAssignmentUseCase {
 }
 
 class RegisterListAssignmentUseCaseImp(
-    private val crudAssignmentRepository: CrudAssignmentRepository,
+    private val registerListAssignmentRepository: RegisterListAssignmentRepository,
     private val preference : PreferenceUseCase
 ): RegisterListAssignmentUseCase {
     override suspend fun registerListAssignment():ModelState<List<String>?, String?> {
@@ -27,13 +27,13 @@ class RegisterListAssignmentUseCaseImp(
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsRegisterAssignment(
+        val request = RequestRegisterAssignment(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssignmentRepository.executeRegisterListAssignment(request)){
+        return when(val result =  registerListAssignmentRepository.executeRegisterListAssignment(request)){
             is ResultSuccess -> SuccessState(result.data)
             is ResultError -> handleResponse(result.error)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)

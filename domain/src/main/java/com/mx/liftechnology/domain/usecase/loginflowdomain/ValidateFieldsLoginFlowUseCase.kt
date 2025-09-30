@@ -83,17 +83,17 @@ class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
         repeatPass: String?,
     ): ModelStateOutFieldText {
         return when {
-            repeatPass.isNullOrEmpty() -> pass.stringToModelStateOutFieldText(
+            repeatPass.isNullOrEmpty() -> repeatPass.stringToModelStateOutFieldText(
                 isError = true,
                 errorMessage = ModelCodeInputs.ET_EMPTY
             )
 
-            repeatPass != pass -> pass.stringToModelStateOutFieldText(
+            repeatPass != pass -> repeatPass.stringToModelStateOutFieldText(
                 isError = true,
                 errorMessage = ModelCodeInputs.ET_PASS_DIFFERENT_MISTAKE
             )
 
-            else -> pass.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            else -> repeatPass.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

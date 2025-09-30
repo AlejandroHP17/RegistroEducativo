@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -16,7 +16,7 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 
 
 class RegisterOneStudentUseCase(
-    private val crudStudentRepository: CrudStudentRepository,
+    private val crudStudentRepository: RegisterStudentRepository,
     private val preference: PreferenceUseCase
 ) {
 
@@ -32,7 +32,7 @@ class RegisterOneStudentUseCase(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsRegisterStudent(
+        val request = RequestRegisterStudent(
             name = name,
             lastName = lastName,
             secondLastName = secondLastName,

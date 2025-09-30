@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.registroeducativo.main.ui.activityLogin.forgetPassword.ForgetPasswordViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.forgetPassword.ForgetPasswordViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGroup
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGroup
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.MenuRepository
+import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -29,7 +29,7 @@ class GetGroupMenuUseCase(
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
-        val request = CredentialsGroup(
+        val request = RequestGroup(
             teacherId = roleId,
             userId = userId,
         )
