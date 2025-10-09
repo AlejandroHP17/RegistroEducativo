@@ -10,7 +10,7 @@ data class ModelDialogGroupPartialDomain(
 )
 
 val List<ResponseGetPartial?>?.ListPartialToConvertModelDialogGroupPartialDomains: List<ModelDialogGroupPartialDomain>
-    get() = this?.mapIndexedNotNull { index, partial -> // Filtramos los valores nulos
+    get() = this?.mapIndexedNotNull { index, partial ->
         partial?.let {
             ModelDialogGroupPartialDomain(
                 partialId = it.partialCycleGroupId,

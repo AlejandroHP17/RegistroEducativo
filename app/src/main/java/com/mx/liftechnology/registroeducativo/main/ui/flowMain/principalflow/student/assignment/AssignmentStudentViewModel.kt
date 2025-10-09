@@ -1,9 +1,10 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.assignment
+package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AssignmentViewModel (
+class AssignmentStudentViewModel (
     private val dispatcherProvider: DispatcherProvider,
     private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
     private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase
@@ -32,10 +33,10 @@ class AssignmentViewModel (
     private val _dataState = MutableStateFlow(ModelAssignmentDataState())
     val dataState: StateFlow<ModelAssignmentDataState> = _dataState.asStateFlow()
 
-    fun updateSubject(subject: ModelFormatSubjectDomain?) {
-        saveIdSubjectSelectedUseCase.invoke(subject?.subjectId)
-        getListAssessmentType(subject)
-        _uiState.update { it.copy(subject =  subject) }
+    fun updateStudent(student: ModelStudentDomain?) {
+        /*saveIdSubjectSelectedUseCase.invoke(subject?.subjectId)
+        getListAssessmentType(subject)*/
+        _uiState.update { it.copy(student =  student) }
     }
 
     private fun getListAssessmentType(subject: ModelFormatSubjectDomain?) {

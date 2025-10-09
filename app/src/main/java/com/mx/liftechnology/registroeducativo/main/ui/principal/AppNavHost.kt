@@ -22,22 +22,23 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.forgetPassword.ForgetPasswordScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login.LoginScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register.RegisterUserScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.calendar.CalendarScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial.RegisterPartialScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.calendar.CalendarScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment.AssignmentStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.assignment.AssignmentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.assignment.AssignmentSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.list.ListSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.register.RegisterSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.registerassignment.RegisterAssignmentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashScreen
-import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
@@ -130,13 +131,26 @@ fun AppNavHost(
             }
 
             composable(
-                route = MainRoutes.Assignment.route,
+                route = MainRoutes.AssignmentStudent.route,
+                arguments = listOf(navArgument("student") {
+                    nullable = true
+                    defaultValue = ""
+                })
+            ) { backStackEntry ->
+                AssignmentStudentScreen(
+                    navController = navigationController,
+                    backStackEntry = backStackEntry
+                )
+            }
+
+            composable(
+                route = MainRoutes.AssignmentSubject.route,
                 arguments = listOf(navArgument("subject") {
                     nullable = true
                     defaultValue = ""
                 })
             ) { backStackEntry ->
-                AssignmentScreen(
+                AssignmentSubjectScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry
                 )

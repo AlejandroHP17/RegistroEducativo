@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -9,7 +10,8 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
 data class ModelAssignmentUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
-    val subject : ModelFormatSubjectDomain? = null
+    val subject : ModelFormatSubjectDomain? = null,
+    val student : ModelStudentDomain? = null
 )
 
 data class ModelAssignmentDataState(
