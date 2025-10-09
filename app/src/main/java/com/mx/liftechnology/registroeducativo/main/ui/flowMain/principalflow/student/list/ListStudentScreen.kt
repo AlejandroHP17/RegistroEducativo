@@ -10,9 +10,9 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericListScreen
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
@@ -54,7 +54,13 @@ fun ListStudentScreen(
             items = dataState.studentListUI,
             onReturnClick = { navController.popBackStack() },
             callbacks = ModelStateSpinnerUI(
-                onItemClick = { },
+                onItemClick = {
+                    navController.navigateWithParams(
+                        MainRoutes.AssignmentStudent.createRoutes(
+                            listStudentViewModel.getStudent(it)
+                        )
+                    )
+                },
                 onEdit = {
                     navController.navigateWithParams(
                         MainRoutes.RegisterStudent.createRoutes(

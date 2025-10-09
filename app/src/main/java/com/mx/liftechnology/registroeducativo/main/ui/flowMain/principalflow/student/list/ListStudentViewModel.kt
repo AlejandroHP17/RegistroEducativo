@@ -9,6 +9,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ListStudentViewModel(
-    private val getListStudentUseCase: GetListStudentUseCase,
+    private val dispatcherProvider: DispatcherProvider,
+    private val getListStudentUseCase: GetListStudentUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelListStudentUiState())

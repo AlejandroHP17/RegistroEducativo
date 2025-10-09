@@ -28,7 +28,14 @@ sealed class MainRoutes (val route: String) {
         }
     }
 
-    data object Assignment : MainRoutes("assignment?subject={subject}") {
+    data object AssignmentStudent: MainRoutes("assignment?student={student}") {
+        fun createRoutes(student: ModelStudentDomain?): String {
+            val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
+            return "assignment?student=$studentJson" // Se usa "" en vez de "null"
+        }
+    }
+
+    data object AssignmentSubject : MainRoutes("assignment?subject={subject}") {
         fun createRoutes(subject: ModelFormatSubjectDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "assignment?subject=$subjectJson" // Se usa "" en vez de "null"

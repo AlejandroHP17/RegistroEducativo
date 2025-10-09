@@ -120,7 +120,7 @@ private fun GenericHeaderList(
 }
 
 @Composable
-private fun BodyListGeneric(
+fun BodyListGeneric(
     items: List<ModelCustomCard>,
     callbacks: ModelStateSpinnerUI,
 ) {

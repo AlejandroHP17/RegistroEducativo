@@ -17,20 +17,20 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AssignmentScreen(
+fun AssignmentSubjectScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    assignmentViewModel: AssignmentViewModel = koinViewModel(),
+    assignmentSubjectViewModel: AssignmentSubjectViewModel = koinViewModel(),
 ) {
 
-    val uiState by assignmentViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by assignmentViewModel.dataState.collectAsStateWithLifecycle()
+    val uiState by assignmentSubjectViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by assignmentSubjectViewModel.dataState.collectAsStateWithLifecycle()
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
     LaunchedEffect(Unit) {
@@ -39,7 +39,7 @@ fun AssignmentScreen(
         } else {
             Gson().fromJson(subjectJson, ModelFormatSubjectDomain::class.java)
         }
-        assignmentViewModel.updateSubject(subject)
+        assignmentSubjectViewModel.updateSubject(subject)
     }
 
 
@@ -51,12 +51,12 @@ fun AssignmentScreen(
 
         GenericJobsScreen(
             title = uiState.subject?.name ?: "Desconocido",
-            description = stringResource(R.string.assignment_description),
+            description = stringResource(R.string.assignment_subject_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelAssignmentUiCallbacks(
-                onExpandedTitle = { assignmentViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = { // assignmentViewModel.updateExpandedSubTitle(it)
+                onExpandedTitle = { assignmentSubjectViewModel.updateExpandedTitle(it) },
+                onExpandedSubTitle = { // assignmentSubjectViewModel.updateExpandedSubTitle(it)
                 },
                 onItemClick = {}
             ),

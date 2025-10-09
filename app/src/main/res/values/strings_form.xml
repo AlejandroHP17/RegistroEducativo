@@ -40,7 +40,7 @@
     <string name="form_partial_start">Inicial</string>
     <string name="form_partial_end">Final</string>
 
-    <!-- Assignment -->
+    <!-- AssignmentSubject -->
     <string name="form_assignment_name">Nombre del trabajo</string>
     <string name="form_assignment_date">Fecha del trabajo</string>
     <string name="form_assignment_type">Trabajo</string>

@@ -10,9 +10,9 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.GenericListScreen
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
@@ -50,7 +50,7 @@ fun ListSubjectScreen(
             callbacks = ModelStateSpinnerUI(
                 onItemClick = {
                     navController.navigateWithParams(
-                        MainRoutes.Assignment.createRoutes(
+                        MainRoutes.AssignmentSubject.createRoutes(
                             listSubjectViewModel.getSubject(it)
                         )
                     )
