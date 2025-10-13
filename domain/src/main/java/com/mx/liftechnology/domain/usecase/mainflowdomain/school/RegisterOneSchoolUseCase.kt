@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import android.os.Build
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterSchool
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.school.CrudSchoolRepository
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -17,30 +17,45 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import java.util.Calendar
 import java.util.Date
 
-fun interface RegisterOneSchoolUseCase {
-    suspend fun registerOneSchool(cct: String?, schoolCycleTypeId:Int?, grade: Int?, group: String?, cycle: Int?): ModelState<List<String?>?, String>?
-}
+/**
+ * Use case for registering a single school.
+ *
+ * @property registerSchoolRepository The repository for school registration.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class RegisterOneSchoolUseCase(
+    private val registerSchoolRepository: RegisterSchoolRepository,
+    private val preference: PreferenceUseCase,
+) {
 
-class RegisterOneSchoolUseCaseImp(
-    private val crudSchoolRepository: CrudSchoolRepository,
-    private val preference: PreferenceUseCase
-): RegisterOneSchoolUseCase {
-
-    override suspend fun registerOneSchool(
+    /**
+     * Executes the school registration process.
+     *
+     * @param cct The CCT of the school.
+     * @param schoolCycleTypeId The ID of the school cycle type.
+     * @param grade The grade.
+     * @param group The group name.
+     * @param cycle The cycle period.
+     * @return A [ModelState] indicating the result of the registration.
+     */
+    suspend operator fun invoke(
         cct: String?,
-        schoolCycleTypeId:Int? ,
+        schoolCycleTypeId: Int?,
         grade: Int?,
         group: String?,
-        cycle: Int?
+        cycle: Int?,
     ): ModelState<List<String?>?, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
+        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
         val buildDate = Date(Build.TIME)
         val calendar = Calendar.getInstance().apply { time = buildDate }
         val year = calendar[Calendar.YEAR]
 
-        val request = CredentialsRegisterSchool(
+        val request = RequestRegisterSchool(
             cct = cct,
             typeCycleSchoolId = schoolCycleTypeId,
             grade = grade,
@@ -50,22 +65,27 @@ class RegisterOneSchoolUseCaseImp(
             teacherId = roleId,
             userId = userId,
         )
-        return when (val result =  crudSchoolRepository.executeRegisterOneSchool(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+        return runCatching { registerSchoolRepository.executeRegisterOneSchool(request) }.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is ResultSuccess -> {
+                        SuccessState(result.data)
+                    }
+
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+                }
+            },
+            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN) }
+        )
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the school registration repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
@@ -77,4 +97,3 @@ class RegisterOneSchoolUseCaseImp(
         }
     }
 }
-

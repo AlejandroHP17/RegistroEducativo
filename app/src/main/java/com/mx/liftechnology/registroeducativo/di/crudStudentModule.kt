@@ -1,60 +1,99 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.callapi.GetListStudentApiCall
-import com.mx.liftechnology.core.network.callapi.RegisterOneStudentApiCall
-import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepository
-import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepositoryImp
+import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
+import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepositoryImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.list.ListStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.activityMain.student.register.RegisterStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for student-related CRUD dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val crudStudentModule = module {
 
-    factory { get<Retrofit>().create(RegisterOneStudentApiCall::class.java) }
+    /**
+     * Provides an instance of [RegisterStudentApiCall].
+     */
+    factory { get<Retrofit>().create(RegisterStudentApiCall::class.java) }
+
+    /**
+     * Provides an instance of [GetListStudentApiCall].
+     */
     factory { get<Retrofit>().create(GetListStudentApiCall::class.java) }
 
-    single<CrudStudentRepository> {
-        CrudStudentRepositoryImp(get(), get())
+    /**
+     * Provides a singleton instance of [RegisterStudentRepository].
+     */
+    single<RegisterStudentRepository> {
+        RegisterStudentRepositoryImp(get())
     }
 
-    single<RegisterOneStudentUseCase> {
-        RegisterOneStudentUseCaseImp(get(), get())
+    /**
+     * Provides a singleton instance of [GetStudentRepository].
+     */
+    single<GetStudentRepository> {
+        GetStudentRepositoryImp(get())
     }
-    single<GetListStudentUseCase> {
-        GetListStudentUseCaseImp(get(), get())
-    }
+
+    /**
+     * Provides a singleton instance of [RegisterOneStudentUseCase].
+     */
+    single {RegisterOneStudentUseCase(get(), get())}
+
+    /**
+     * Provides a singleton instance of [GetListStudentUseCase].
+     */
+    single{GetListStudentUseCase(get(), get())}
+
+    /**
+     * Provides a singleton instance of [ModifyOneStudentUseCase].
+     */
     single<ModifyOneStudentUseCase> {
         ModifyOneStudentUseCaseImp(get(), get())
     }
 
+    /**
+     * Provides a singleton instance of [ValidateVoiceStudentUseCase].
+     */
     single<ValidateVoiceStudentUseCase> {
         ValidateVoiceStudentUseCaseImp()
     }
 
+    /**
+     * Provides a singleton instance of [ValidateFieldsStudentUseCase].
+     */
     single<ValidateFieldsStudentUseCase> {
         ValidateFieldsStudentUseCaseImp()
     }
 
+    /**
+     * Provides an instance of [RegisterStudentViewModel].
+     */
     viewModel {
         RegisterStudentViewModel(get(), get(), get(), get(), get())
     }
+
+    /**
+     * Provides an instance of [ListStudentViewModel].
+     */
     viewModel {
-        ListStudentViewModel(get())
+        ListStudentViewModel(get(), get())
     }
 }

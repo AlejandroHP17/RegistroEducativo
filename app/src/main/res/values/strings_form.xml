@@ -34,13 +34,13 @@
     <string name="form_subject_evaluation">Tipo de evaluación</string>
     <string name="form_subject_percent">%</string>
 
-    <!-- Partials -->
+    <!-- RequestPartials -->
     <string name="form_partial_period">Parciales</string>
     <string name="form_partial_periods">Parcial %d</string>
     <string name="form_partial_start">Inicial</string>
     <string name="form_partial_end">Final</string>
 
-    <!-- Assignment -->
+    <!-- AssignmentSubject -->
     <string name="form_assignment_name">Nombre del trabajo</string>
     <string name="form_assignment_date">Fecha del trabajo</string>
     <string name="form_assignment_type">Trabajo</string>

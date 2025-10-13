@@ -12,6 +12,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
 
+/**
+ * A composable function for previewing the images in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun TestImages(){
@@ -22,7 +25,9 @@ fun TestImages(){
     }
 }
 
-
+/**
+ * A composable that displays the application logo.
+ */
 @Composable
 fun ImageLogo(){
     Image(

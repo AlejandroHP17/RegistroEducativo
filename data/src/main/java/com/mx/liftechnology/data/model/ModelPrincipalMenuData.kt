@@ -1,8 +1,14 @@
 package com.mx.liftechnology.data.model
 
-/** Model - Include all the elements to control in the adapter
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Data model for a principal menu item.
+ *
+ * @property id The unique identifier for the menu item.
+ * @property image The resource ID for the menu item's image.
+ * @property titleCard The title of the menu item.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 data class ModelPrincipalMenuData(
     val id: String,

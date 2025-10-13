@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetListAssessmentType
-import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assessment.CrudAssessmentTypeRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assessment.GetAssessmentTypeRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -15,42 +15,58 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface GetListAssessmentTypeUseCase {
-    suspend fun getListAssessmentType () :ModelState<List<ResponseGetListAssessmentType?>, String?>
-}
-
-class GetListAssessmentTypeUseCaseImp(
-    private val crudAssessmentTypeRepository: CrudAssessmentTypeRepository,
+/**
+ * Use case for getting the list of assessment types.
+ *
+ * @property getAssessmentTypeRepository The repository for fetching assessment types.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class GetListAssessmentTypeUseCase(
+    private val getAssessmentTypeRepository: GetAssessmentTypeRepository,
     private val preference : PreferenceUseCase
-): GetListAssessmentTypeUseCase {
-    override suspend fun getListAssessmentType():ModelState<List<ResponseGetListAssessmentType?>, String?> {
+) {
+    /**
+     * Executes the process of getting the list of assessment types.
+     *
+     * @return A [ModelState] containing the list of assessment types or an error.
+     */
+    suspend operator fun invoke():ModelState<List<ResponseGetListAssessmentType?>, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetListAssessmentType(
+        val request = RequestGetListAssessmentType(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssessmentTypeRepository.executeGetListAssessment(request)){
-            is ResultSuccess ->
-                result.data?.let {
-                    SuccessState(result.data!!)
-                }?: ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        return runCatching { getAssessmentTypeRepository.executeGetListAssessment(request) }.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is ResultSuccess -> {
+                        result.data?.let {
+                            SuccessState(result.data!!)
+                        }?: ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                    }
 
-            is ResultError -> handleResponse(result.error)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+                }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the assessment type repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ResponseGetListAssessmentType?>, String?> {
         return when(error) {

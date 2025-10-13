@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.student.CrudStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -14,27 +14,32 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface RegisterOneStudentUseCase {
-    suspend fun registerOneStudent(
-        name: String,
-        lastName: String,
-        secondLastName: String,
-        curp: String,
-        birthday: String,
-        phoneNumber: String
-    ): ModelState<List<String?>?, String>?
-}
-
-class RegisterOneStudentUseCaseImp(
-    private val crudStudentRepository: CrudStudentRepository,
+/**
+ * Use case for registering a single student.
+ *
+ * @property crudStudentRepository The repository for student CRUD operations.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class RegisterOneStudentUseCase(
+    private val crudStudentRepository: RegisterStudentRepository,
     private val preference: PreferenceUseCase
-): RegisterOneStudentUseCase {
+) {
 
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    override suspend fun registerOneStudent(
+    /**
+     * Executes the student registration process.
+     *
+     * @param name The student's name.
+     * @param lastName The student's last name.
+     * @param secondLastName The student's second last name.
+     * @param curp The student's CURP.
+     * @param birthday The student's birthday.
+     * @param phoneNumber The student's phone number.
+     * @return A [ModelState] indicating the result of the registration.
+     */
+    suspend operator fun invoke(
         name: String,
         lastName: String,
         secondLastName: String,
@@ -46,7 +51,7 @@ class RegisterOneStudentUseCaseImp(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsRegisterStudent(
+        val request = RequestRegisterStudent(
             name = name,
             lastName = lastName,
             secondLastName = secondLastName,
@@ -57,23 +62,29 @@ class RegisterOneStudentUseCaseImp(
             userId = userId,
             teacherSchoolCycleGroupId = pecg
         )
-        return when (val result =  crudStudentRepository.executeRegisterOneStudent(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+
+        return runCatching { crudStudentRepository.executeRegisterOneStudent(request) }.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is ResultSuccess -> {
+                        SuccessState(result.data)
+                    }
+
+                    is ResultError -> {
+                        handleResponse(result.error)
+                    }
+                }
+                        },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the student registration repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
@@ -85,4 +96,3 @@ class RegisterOneStudentUseCaseImp(
         }
     }
 }
-

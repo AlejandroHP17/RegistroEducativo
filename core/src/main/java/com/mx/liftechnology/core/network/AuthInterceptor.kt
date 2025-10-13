@@ -5,11 +5,24 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
+/**
+ * OkHttp interceptor for adding the authentication token to requests.
+ *
+ * @property tokenProvider The provider for the authentication token.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
+    /**
+     * Intercepts the request and adds the token if required.
+     *
+     * @param chain The interceptor chain.
+     * @return The response.
+     */
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        /** Add token if the endpoint needs it*/
         if (requiresAuth(request)) {
             val token = tokenProvider.getToken() ?: ""
             val newRequest = request.newBuilder()
@@ -20,9 +33,11 @@ class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
         return chain.proceed(request)
     }
 
-    /** Validate with the end point
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * Checks if a request requires authentication.
+     *
+     * @param request The request to check.
+     * @return True if the request requires authentication, false otherwise.
      */
     private fun requiresAuth(request: Request): Boolean {
         return when (request.url.toString()) {
@@ -34,4 +49,3 @@ class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
         }
     }
 }
-

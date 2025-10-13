@@ -19,19 +19,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodels.main.share.ModelCustomCardStudent
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 import java.time.LocalDate
 
+/**
+ * A composable function for previewing the lists in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun MyGridScreenPreview() {
@@ -82,37 +85,47 @@ fun MyGridScreenPreview() {
     Column {
         MyGridScreen(items, 410.dp) {}
         DialogGroupList(items2) {}
-        //EvaluationPercentList(null, items3,{},{})
     }
 
 }
 
+/**
+ * A screen that displays a grid of items.
+ *
+ * @param items The list of items to display.
+ * @param height The height of the grid.
+ * @param onItemClick A lambda to be invoked when an item is clicked.
+ */
 @Composable
 fun MyGridScreen(
     items: List<ModelPrincipalMenuData>,
     height: Dp,
     onItemClick: (ModelPrincipalMenuData) -> Unit,
 ) {
-
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2), // Grid de 2 columnas
+        columns = GridCells.Fixed(2),
         modifier = Modifier
             .fillMaxWidth()
             .height(height)
-            .background(color = color_transparent),
+            .background(color = colorTransparent),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         userScrollEnabled = false
     ) {
-        items(items.size) { index ->  // Pasamos el índice
+        items(items.size) { index ->
             GridItem(items[index]) { selectedItem ->
                 onItemClick(selectedItem)
-            } // Pasamos el recurso individualmente
+            }
         }
     }
 }
 
-
+/**
+ * A list of group items for a dialog.
+ *
+ * @param items The list of group items to display.
+ * @param onItemSelected A lambda to be invoked when an item is selected.
+ */
 @Composable
 fun DialogGroupList(
     items: List<ModelDialogStudentGroupDomain>,
@@ -134,6 +147,12 @@ fun DialogGroupList(
     }
 }
 
+/**
+ * A list of partial items for a dialog.
+ *
+ * @param items The list of partial items to display.
+ * @param onItemSelected A lambda to be invoked when an item is selected.
+ */
 @Composable
 fun DialogPartialList(
     items: List<ModelDialogGroupPartialDomain>?,
@@ -159,7 +178,14 @@ fun DialogPartialList(
     }
 }
 
-
+/**
+ * A list of evaluation percentage items.
+ *
+ * @param listWorkMethods The list of work methods to choose from.
+ * @param items The list of evaluation percentage items to display.
+ * @param onNameChange A lambda to be invoked when the name of an item changes.
+ * @param onPercentChange A lambda to be invoked when the percentage of an item changes.
+ */
 @Composable
 fun EvaluationPercentList(
     listWorkMethods :List<ResponseGetListAssessmentType?>,
@@ -180,6 +206,12 @@ fun EvaluationPercentList(
     }
 }
 
+/**
+ * A list of student evaluation items.
+ *
+ * @param items The list of student evaluation items to display.
+ * @param onScoreChange A lambda to be invoked when the score of an item changes.
+ */
 @Composable
 fun EvaluationStudentList(
     items: List<ModelCustomCardStudent>,
@@ -198,6 +230,12 @@ fun EvaluationStudentList(
     }
 }
 
+/**
+ * A list for registering partials.
+ *
+ * @param items The list of date periods to display.
+ * @param onDateChange A lambda to be invoked when the date of an item changes.
+ */
 @Composable
 fun RegisterPartialList(
     items: List<ModelDatePeriodDomain>,

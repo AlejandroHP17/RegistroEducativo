@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterAssignment
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterAssignment
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -14,38 +14,60 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Interface for registering a list of assignments.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterListAssignmentUseCase {
+    /**
+     * Executes the process of registering a list of assignments.
+     *
+     * @return A [ModelState] indicating the result of the registration.
+     */
     suspend fun registerListAssignment () :ModelState<List<String>?, String?>
 }
 
+/**
+ * Implementation of [RegisterListAssignmentUseCase].
+ *
+ * @property registerListAssignmentRepository The repository for registering a list of assignments.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterListAssignmentUseCaseImp(
-    private val crudAssignmentRepository: CrudAssignmentRepository,
+    private val registerListAssignmentRepository: RegisterListAssignmentRepository,
     private val preference : PreferenceUseCase
 ): RegisterListAssignmentUseCase {
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun registerListAssignment():ModelState<List<String>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsRegisterAssignment(
+        val request = RequestRegisterAssignment(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssignmentRepository.executeRegisterListAssignment(request)){
+        return when(val result =  registerListAssignmentRepository.executeRegisterListAssignment(request)){
             is ResultSuccess -> SuccessState(result.data)
             is ResultError -> handleResponse(result.error)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the assignment repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
         return when(error) {

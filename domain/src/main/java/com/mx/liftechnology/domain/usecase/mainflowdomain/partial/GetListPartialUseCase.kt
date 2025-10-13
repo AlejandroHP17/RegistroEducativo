@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetPartial
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
+import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -16,48 +16,67 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-fun interface GetListPartialUseCase {
-    suspend fun getListPartial(): ModelState<MutableList<ModelDatePeriodDomain>?, String>?
-}
-class GetListPartialUseCaseImp (
-    private val crudPartialRepository: CrudPartialRepository,
+/**
+ * Use case for getting the list of partials.
+ *
+ * @property getListPartialRepository The repository for fetching the list of partials.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class GetListPartialUseCase(
+    private val getListPartialRepository: GetListPartialRepository,
     private val preference: PreferenceUseCase
-) : GetListPartialUseCase {
-    override suspend fun getListPartial(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
+)  {
+    /**
+     * Executes the process of getting the list of partials.
+     *
+     * @return A [ModelState] containing a mutable list of [ModelDatePeriodDomain] or an error.
+     */
+    suspend operator fun invoke(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetPartial(
+        val request = RequestGetPartial(
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
             userId = userId,
             teacherId = roleId
         )
 
-        return when (val result =  crudPartialRepository.executeGetListPartial(request)) {
-            is ResultSuccess -> {
-                val listDate = result.data?.mapIndexed { index, item ->
-                    ModelDatePeriodDomain(
-                        position = index,
-                        date = ModelStateOutFieldText(
-                            valueText = "${item?.startDate} / ${item?.endDate}",
-                            isError = false,
-                            errorMessage = ""),
-                        partialCycleGroup = item?.partialCycleGroup
-                    )
-                } ?.toMutableList()
-                if (listDate?.size!! > 0) {
-                    SuccessState(listDate)
+        return runCatching {getListPartialRepository.executeGetListPartial(request) }.fold(
+            onSuccess = { result ->
+                when(result){
+                    is ResultSuccess -> {
+                        val listDate = result.data?.mapIndexed { index, item ->
+                            ModelDatePeriodDomain(
+                                position = index,
+                                date = ModelStateOutFieldText(
+                                    valueText = "${item?.startDate} / ${item?.endDate}",
+                                    isError = false,
+                                    errorMessage = ""),
+                                partialCycleGroup = item?.partialCycleGroupId
+                            )
+                        } ?.toMutableList()
+                        if (listDate?.size!! > 0) {
+                            SuccessState(listDate)
+                        }
+                        else ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                    }
+                    is ResultError -> { handleResponse(result.error) }
                 }
-                else ErrorState(ModelCodeError.ERROR_UNKNOWN)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
+            },
+            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+        )
     }
 
+    /**
+     * Handles error responses from the partials repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
+     */
     private fun handleResponse(error: FailureService): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)

@@ -5,6 +5,7 @@
     <string name="save">Guardar</string>
     <string name="select">Seleccionar</string>
     <string name="next">Siguiente</string>
+    <string name="cancel">Cancelar</string>
 
     <string name="empty_subject_1">Sin Campos Formativos</string>
     <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
@@ -74,13 +75,16 @@
 
     <!-- Gets Flow -->
     <string name="assignment_name">Campo formativo</string>
-    <string name="assignment_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
+    <string name="assignment_subject_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
+    <string name="assignment_student_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de trabajos con calificación del alumno</string>
     <string name="assignment_type_evaluate">Tipo de trabajo a evaluar</string>
 
 
 
     <!-- Dialogs Flow -->
     <string name="dialog_select_cycle">Selecciona tu ciclo escolar</string>
+    <string name="dialog_wish_continue">¿Deseas continuar?</string>
+    <string name="dialog_wish_continue_description">Una vez confirmado no podrás modificar el número ni las fechas ingresadas</string>
 
     <!-- Dialogs Flow -->
     <string name="calendar">Calendario</string>
@@ -89,6 +93,9 @@
     <string name="edit_student_name">Edita los datos</string>
     <string name="edit_student_name_description">Ingresa los datos del alumno</string>
     <string name="edit_student_edit">REGISTRAR</string>
+
+    <!-- Calendar Flow -->
+    <string name="calendar_name">Calendario</string>
 
     <!-- Profile Flow -->
     <string name="profile_name">Mi perfil</string>

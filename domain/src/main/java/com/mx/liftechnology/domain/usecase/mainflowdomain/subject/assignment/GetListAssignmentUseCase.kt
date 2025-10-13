@@ -1,9 +1,9 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
-import com.mx.liftechnology.core.network.callapi.CredentialsGetListAssignment
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListAssignment
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.subject.assignment.CrudAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -14,38 +14,60 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Interface for getting the list of assignments.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListAssignmentUseCase {
+    /**
+     * Executes the process of getting the list of assignments.
+     *
+     * @return A [ModelState] containing the list of assignment names or an error.
+     */
     suspend fun getListAssignment () :ModelState<List<String>?, String?>
 }
 
+/**
+ * Implementation of [GetListAssignmentUseCase].
+ *
+ * @property getListAssignmentRepository The repository for fetching the assignment list.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListAssignmentUseCaseImp(
-    private val crudAssignmentRepository: CrudAssignmentRepository,
+    private val getListAssignmentRepository: GetListAssignmentRepository,
     private val preference : PreferenceUseCase
 ): GetListAssignmentUseCase {
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun getListAssignment():ModelState<List<String>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val request = CredentialsGetListAssignment(
+        val request = RequestGetListAssignment(
             teacherId = teacherId,
             userId = userId,
             teacherSchoolCycleGroupId = teacherSchoolCycleGroupId
         )
 
-        return when(val result =  crudAssignmentRepository.executeGetListAssignment(request)){
+        return when(val result =  getListAssignmentRepository.executeGetListAssignment(request)){
             is ResultSuccess -> SuccessState(result.data)
             is ResultError -> handleResponse(result.error)
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the assignment repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
         return when(error) {

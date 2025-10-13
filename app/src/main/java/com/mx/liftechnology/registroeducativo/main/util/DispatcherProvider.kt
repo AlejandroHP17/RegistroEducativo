@@ -3,20 +3,28 @@ package com.mx.liftechnology.registroeducativo.main.util
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-/** DispatcherProvider - Help with coroutines
- * @author pelkidev
- * @since 1.0.0
+/**
+ * An interface for providing Coroutine dispatchers.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 interface DispatcherProvider {
+    /** The main dispatcher. */
     val main: CoroutineDispatcher
+    /** The I/O dispatcher. */
     val io: CoroutineDispatcher
+    /** The default dispatcher. */
     val default: CoroutineDispatcher
+    /** The unconfined dispatcher. */
     val unconfined: CoroutineDispatcher
 }
 
-/** DefaultDispatcherProvider - Help with coroutines
- * @author pelkidev
- * @since 1.0.0
+/**
+ * The default implementation of [DispatcherProvider].
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 class DefaultDispatcherProvider : DispatcherProvider {
     override val main: CoroutineDispatcher = Dispatchers.Main

@@ -1,10 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
-import com.mx.liftechnology.core.network.callapi.CredentialsRegisterPartial
-import com.mx.liftechnology.core.network.callapi.Partials
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestPartials
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.mainflowdata.partial.CrudPartialRepository
+import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -16,29 +16,27 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-
-interface RegisterListPartialUseCase {
-    suspend fun registerListPartial(
-        periodNumber: Int?,
-        adapterPeriods:List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String>?
-
-    suspend fun registerListPartialCompose(
-        periodNumber: Int?,
-        adapterPeriods:List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String>?
-}
-
-class RegisterListPartialUseCaseImp(
-    private val crudPartialRepository: CrudPartialRepository,
+/**
+ * Use case for registering a list of partials.
+ *
+ * @property registerListPartialRepository The repository for registering a list of partials.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class RegisterListPartialUseCase(
+    private val registerListPartialRepository: RegisterListPartialRepository,
     private val preference: PreferenceUseCase
-): RegisterListPartialUseCase {
-
-    /** Validate Email
-     * @author pelkidev
-     * @since 1.0.0
-     * */
-    override suspend fun registerListPartial(
+) {
+    /**
+     * Executes the process of registering a list of partials.
+     *
+     * @param periodNumber The number of periods.
+     * @param adapterPeriods The list of date periods to register.
+     * @return A [ModelState] indicating the result of the registration.
+     */
+    suspend operator fun invoke(
         periodNumber: Int?,
         adapterPeriods: List<ModelDatePeriodDomain>
     ): ModelState<List<String?>?, String> {
@@ -46,19 +44,19 @@ class RegisterListPartialUseCaseImp(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        val listAdapter: MutableList<Partials> = mutableListOf()
-        adapterPeriods.forEach { data ->
+        val listAdapter: MutableList<RequestPartials> = mutableListOf()
+        adapterPeriods.forEachIndexed { index,  data ->
             val part = data.date.valueText.split("/")
             listAdapter.add(
-                Partials(
-                    description = (data.position + 1).toString(),
+                RequestPartials(
+                    description = (index + 1).toString(),
                     startDate = part.getOrNull(0)?.trim() ?: "",
                     endDate = part.getOrNull(1)?.trim() ?: "",
                 )
             )
         }
 
-        val request = CredentialsRegisterPartial(
+        val request = RequestRegisterPartial(
             numberPartials = periodNumber,
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
             userId = userId,
@@ -66,62 +64,27 @@ class RegisterListPartialUseCaseImp(
             listPartials = listAdapter
         )
 
-        return when (val result =  crudPartialRepository.executeRegisterListPartial(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-    override suspend fun registerListPartialCompose(
-        periodNumber: Int?,
-        adapterPeriods: List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
-
-        val listAdapter: MutableList<Partials> = mutableListOf()
-        adapterPeriods.forEachIndexed { index,  data ->
-            val part = data.date.valueText.split("/")
-            listAdapter.add(
-                Partials(
-                    description = (index + 1).toString(),
-                    startDate = part?.getOrNull(0)?.trim() ?: "",
-                    endDate = part?.getOrNull(1)?.trim() ?: "",
-                )
-            )
-        }
-
-        val request = CredentialsRegisterPartial(
-            numberPartials = periodNumber,
-            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
-            userId = userId,
-            teacherId = roleId,
-            listPartials = listAdapter
+        return runCatching { registerListPartialRepository.executeRegisterListPartial(request) }.fold(
+            onSuccess = { result ->
+                when(result){
+                    is ResultSuccess -> {
+                        result.data?.let {
+                            if(it.isNotEmpty()) SuccessState(result.data)
+                            else ErrorState(ModelCodeError.ERROR_CRITICAL)
+                        }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
+                    }
+                    is ResultError -> { handleResponse(result.error)}
+                }
+            },
+            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN)}
         )
-
-        return when (val result =  crudPartialRepository.executeRegisterListPartial(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
 
-
-
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the partials repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
@@ -132,6 +95,4 @@ class RegisterListPartialUseCaseImp(
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
-
 }
-

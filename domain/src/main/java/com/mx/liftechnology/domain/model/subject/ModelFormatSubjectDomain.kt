@@ -2,11 +2,19 @@ package com.mx.liftechnology.domain.model.subject
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.mx.liftechnology.core.network.callapi.ResponseGetListSubject
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListSubject
 
-/** Model - to select the dates
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Data model representing the format of a subject in the domain layer.
+ * This class is Parcelable to allow it to be passed between Android components.
+ *
+ * @property position The position of the subject in a list.
+ * @property name The name of the subject.
+ * @property percent The percentage value associated with the subject.
+ * @property subjectId The ID of the subject.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 data class ModelFormatSubjectDomain(
     val position:Int,
@@ -44,7 +52,15 @@ data class ModelFormatSubjectDomain(
     }
 }
 
-
+/**
+ * Extension function to convert a list of [ResponseGetListSubject] to a list of [ModelFormatSubjectDomain].
+ *
+ * @receiver A nullable list of [ResponseGetListSubject] objects.
+ * @return A list of [ModelFormatSubjectDomain] objects.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun List<ResponseGetListSubject?>?.toModelSubjectList() :List<ModelFormatSubjectDomain>{
     return this?.mapIndexed { index, response ->
         ModelFormatSubjectDomain(

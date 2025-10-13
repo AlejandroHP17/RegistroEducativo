@@ -34,22 +34,30 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_action
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_bg_first
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_bg_second
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_transparent
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgFirst
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgSecond
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
+/**
+ * A composable function that returns a vertical gradient brush for the background.
+ */
 @Preview(showBackground = true)
 @Composable
 fun background(): Brush {
     return Brush.verticalGradient(
         colors = listOf(
-            color_bg_first,
-            color_bg_second
+            colorBgFirst,
+            colorBgSecond
         )
     )
 }
 
+/**
+ * A composable that shows a loading animation.
+ *
+ * @param isVisible Whether the animation is visible.
+ */
 @Composable
 fun LoadingAnimation(isVisible: Boolean) {
     if (isVisible) {
@@ -59,8 +67,8 @@ fun LoadingAnimation(isVisible: Boolean) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f)) // Fondo semi-transparente
-                .clickable(enabled = false) {} // Evita toques mientras carga
+                .background(Color.Black.copy(alpha = 0.5f))
+                .clickable(enabled = false) {}
         ) {
             LottieAnimation(
                 composition = composition,
@@ -73,16 +81,23 @@ fun LoadingAnimation(isVisible: Boolean) {
     }
 }
 
+/**
+ * A composable that creates a custom space.
+ *
+ * @param dimen The height of the space.
+ */
 @Composable
 fun CustomSpace(dimen: Dp) {
     Spacer(
         modifier = Modifier
             .height(dimen)
-            .background(color_transparent)
+            .background(colorTransparent)
     )
 }
 
-
+/**
+ * A composable that returns a modifier that adapts to the screen orientation.
+ */
 @Composable
 fun ModifierOrientation():Modifier{
     val configuration = LocalConfiguration.current
@@ -100,7 +115,9 @@ fun ModifierOrientation():Modifier{
 
 }
 
-
+/**
+ * A composable function for previewing the empty state view.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun EmptyStateView() {
@@ -112,6 +129,16 @@ private fun EmptyStateView() {
         {}) {}
 }
 
+/**
+ * A composable that shows an empty state view.
+ *
+ * @param image The image to display.
+ * @param title The title of the empty state.
+ * @param description The description of the empty state.
+ * @param button The text for the action button.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param onActionClick A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun EmptyState(
     image: Painter,
@@ -124,7 +151,7 @@ fun EmptyState(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = color_transparent),
+            .background(color = colorTransparent),
     ) {
         val (returnBox, bodyBox) = createRefs()
 
@@ -166,7 +193,7 @@ fun EmptyState(
 
             CustomSpace(dimensionResource(id = R.dimen.margin_extra_outer))
 
-            ButtonActionShort(color_action, button) { onActionClick() }
+            ButtonActionShort(colorAction, button) { onActionClick() }
         }
     }
 

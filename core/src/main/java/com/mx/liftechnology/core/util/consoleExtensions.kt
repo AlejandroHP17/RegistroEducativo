@@ -2,13 +2,17 @@ package com.mx.liftechnology.core.util
 
 import timber.log.Timber
 
-/** Print logs depending the flavor
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Logs a message using Timber, with the class name as the tag.
+ *
+ * @param message The message to log.
+ * @param name A prefix for the message (defaults to "Desarrollo: ").
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
-// Función de extensión mejorada para registrar logs
-inline fun <reified T : Any> T.log(message: String, name: String = "Desarrollo: ") {
-        val tag = this::class.java.simpleName  // Obtiene el nombre real de la clase
+inline fun <reified T : Any> T.logs(message: String, name: String = "Desarrollo: ") {
+        val tag = this::class.java.simpleName
         Timber.tag(tag).i("$name  $message")
 
 }

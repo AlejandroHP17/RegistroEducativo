@@ -26,25 +26,39 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.core.network.callapi.ResponseGetListAssessmentType
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
+import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_error
-import com.mx.liftechnology.registroeducativo.main.ui.theme.color_principal_text
-import com.mx.liftechnology.registroeducativo.main.viewextensions.stringToModelStateOutFieldText
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 
+/**
+ * A composable function for previewing the spinners in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun SpinnerScreen() {
-    val options = listOf("Opción 1", "Opción 2", "Otro")
+    val options = listOf(
+        ModelCustomSpinner(
+            value ="Opción 1",
+            id= 1),
+        ModelCustomSpinner(
+            value ="Opción 2",
+            id= 2),
+        ModelCustomSpinner(
+            value ="Otro",
+            id= 3),
+        )
     val options2 = listOf(ResponseGetListAssessmentType(assessmentTypeId = 1, description = "hola", teacherSchoolCycleGroupId = 1))
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
         SpinnerOutlinedTextField(
             options = options,
-            selectedOption = selectedOption.stringToModelStateOutFieldText(),
+            selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             read = false,
             label = "test",
             onOptionSelected = { selectedOption = it }
@@ -52,24 +66,33 @@ fun SpinnerScreen() {
 
         SpinnerMixOutlinedTextField(
             options = options2,
-            selectedOption = selectedOption.stringToModelStateOutFieldText(),
+            selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             label = "test",
             onOptionSelected = {  }
         )
     }
 }
 
+/**
+ * An outlined text field with a dropdown menu.
+ *
+ * @param options The list of options to display.
+ * @param selectedOption The currently selected option.
+ * @param read Whether the text field is read-only.
+ * @param label The label for the text field.
+ * @param onOptionSelected A lambda to be invoked when an option is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerOutlinedTextField(
-    options: List<String>,
+    options: List<ModelCustomSpinner>,
     selectedOption: ModelStateOutFieldText,
     read: Boolean,
     label: String,
-    onOptionSelected: (String) -> Unit,
+    onOptionSelected: (ModelCustomSpinner) -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) } // Controla si el menú está abierto
-    var selectedText by remember { mutableStateOf(selectedOption) } // Texto seleccionado
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedOption) }
 
     Column {
         ExposedDropdownMenuBox(
@@ -79,20 +102,20 @@ fun SpinnerOutlinedTextField(
                 if (!read) {
                     expanded = !expanded
                 }
-            } // Abre/cierra el menú al hacer clic
+            }
         ) {
             OutlinedTextField(
                 value = selectedText.valueText,
-                onValueChange = {}, // Deshabilitado para evitar edición manual
+                onValueChange = {}, 
                 enabled = false,
                 label = {
                     Text(
                         text = label,
-                        color = color_principal_text
+                        color = colorPrincipalText
                     )
                 },
                 modifier = Modifier
-                    .menuAnchor() // Ancla el menú al TextField
+                    .menuAnchor()
                     .fillMaxWidth(),
                 trailingIcon = {
                     Icon(
@@ -109,15 +132,15 @@ fun SpinnerOutlinedTextField(
                 ExposedDropdownMenu(
 
                     expanded = expanded,
-                    onDismissRequest = { expanded = false } // Cierra el menú si se toca fuera
+                    onDismissRequest = { expanded = false }
                 ) {
                     options.forEach { option ->
                         DropdownMenuItem(
-                            text = { Text(option) },
+                            text = { Text(option.value!!) },
                             onClick = {
-                                selectedText = option.stringToModelStateOutFieldText()
+                                selectedText = option.value.stringToModelStateOutFieldText()
                                 onOptionSelected(option)
-                                expanded = false // Cierra el menú después de seleccionar
+                                expanded = false
                             }
                         )
                     }
@@ -129,7 +152,7 @@ fun SpinnerOutlinedTextField(
         if (selectedOption.isError) {
             Text(
                 text = selectedText.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
@@ -138,7 +161,14 @@ fun SpinnerOutlinedTextField(
     }
 }
 
-
+/**
+ * An outlined text field with a dropdown menu that allows for custom input.
+ *
+ * @param options The list of options to display.
+ * @param selectedOption The currently selected option.
+ * @param label The label for the text field.
+ * @param onOptionSelected A lambda to be invoked when an option is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerMixOutlinedTextField(
@@ -164,23 +194,25 @@ fun SpinnerMixOutlinedTextField(
                     if (isEditable && (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue))){
                         selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
                     }
-                    onOptionSelected(ResponseGetListAssessmentType(
+                    onOptionSelected(
+                        ResponseGetListAssessmentType(
                         assessmentTypeId = -1,
                         description = newValue,
                         teacherSchoolCycleGroupId = options.firstOrNull()?.teacherSchoolCycleGroupId
-                    ))
-                }, // Deshabilitado para evitar edición manual
+                    )
+                    )
+                }, 
                 readOnly = !isEditable,
                 label = {
                     Text(
                         text = label,
-                        color = color_principal_text
+                        color = colorPrincipalText
                     )
                 },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences),
                 modifier = Modifier
-                    .menuAnchor() // Ancla el menú al TextField
+                    .menuAnchor() 
                     .fillMaxWidth()
                     .clickable { expanded = true },
                 trailingIcon = {
@@ -215,7 +247,7 @@ fun SpinnerMixOutlinedTextField(
         if (selectedOption.isError) {
             Text(
                 text = selectedOption.errorMessage,
-                color = color_error,
+                color = colorError,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
