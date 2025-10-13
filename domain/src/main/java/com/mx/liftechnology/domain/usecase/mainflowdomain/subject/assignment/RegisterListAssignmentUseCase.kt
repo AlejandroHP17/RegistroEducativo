@@ -14,14 +14,37 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Interface for registering a list of assignments.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterListAssignmentUseCase {
+    /**
+     * Executes the process of registering a list of assignments.
+     *
+     * @return A [ModelState] indicating the result of the registration.
+     */
     suspend fun registerListAssignment () :ModelState<List<String>?, String?>
 }
 
+/**
+ * Implementation of [RegisterListAssignmentUseCase].
+ *
+ * @property registerListAssignmentRepository The repository for registering a list of assignments.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterListAssignmentUseCaseImp(
     private val registerListAssignmentRepository: RegisterListAssignmentRepository,
     private val preference : PreferenceUseCase
 ): RegisterListAssignmentUseCase {
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun registerListAssignment():ModelState<List<String>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -40,12 +63,11 @@ class RegisterListAssignmentUseCaseImp(
         }
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the assignment repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
         return when(error) {

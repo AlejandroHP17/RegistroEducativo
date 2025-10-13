@@ -17,6 +17,16 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Use case for handling user login.
+ *
+ * @property repositoryLogin The repository for login operations.
+ * @property locationHelper Helper to get the current device location.
+ * @property preference Use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class LoginUseCase(
     private val repositoryLogin: LoginRepository,
     private val locationHelper: LocationHelper,
@@ -24,9 +34,12 @@ class LoginUseCase(
 ) {
 
     /**
-     * Login
-     * @author pelkidev
-     * @since 1.0.0
+     * Executes the login process.
+     *
+     * @param email The user's email.
+     * @param pass The user's password.
+     * @param remember Whether to save the user's session.
+     * @return A [ModelState] representing the result of the login attempt.
      */
     suspend operator fun invoke (email: String?, pass: String?, remember: Boolean): ModelState<UserLogin?, String> {
         val location = locationHelper.getCurrentLocation()
@@ -60,7 +73,13 @@ class LoginUseCase(
         )
     }
 
-
+    /**
+     * Saves user preferences after a successful login.
+     *
+     * @param result The login response data.
+     * @param remember Whether to save the login session.
+     * @return True if the preferences were saved successfully, false otherwise.
+     */
     private fun savePreferences(result: ResponseLogin?, remember:Boolean): Boolean {
         return result?.userLogin?.let { data ->
             preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
@@ -75,12 +94,11 @@ class LoginUseCase(
         }?: false
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the login repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<UserLogin?, String> {
         return when(error) {

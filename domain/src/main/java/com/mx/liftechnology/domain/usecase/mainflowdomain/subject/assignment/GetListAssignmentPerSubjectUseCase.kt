@@ -17,10 +17,24 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 
+/**
+ * Use case for getting the list of assignments per subject.
+ *
+ * @property getPercentSubjectRepository The repository for fetching the assignments.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListAssignmentPerSubjectUseCase (
     private val getPercentSubjectRepository: GetPercentSubjectRepository,
     private val preference : PreferenceUseCase
 ) {
+    /**
+     * Executes the process of getting the list of assignments per subject.
+     *
+     * @return A [ModelState] containing the list of assignments or an error.
+     */
     suspend operator fun invoke(): ModelState<List<ModelFormatAssignment>?, String?>{
 
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -64,12 +78,11 @@ class GetListAssignmentPerSubjectUseCase (
         }?: emptyList()
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelFormatAssignment>?, String?> {
         return when(error) {

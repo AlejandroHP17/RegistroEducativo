@@ -7,16 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-
+/**
+ * Interface for the subject registration API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterSubjectApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to register a subject.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     */
     @POST(Environment.END_POINT_REGISTER_SUBJECT)
     suspend fun callApi(
         @Body request: RequestRegisterSubject
     ): Response<ResponseGeneric<List<String?>?>>
 }
 
-// Modelo para credenciales
+/**
+ * Data model for the subject registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterSubject(
     @SerializedName("campoformativo")
     val subject: String?,
@@ -32,6 +47,12 @@ data class RequestRegisterSubject(
     val percents: List<RequestPercent?>
 )
 
+/**
+ * Data model for the percentage in the subject registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestPercent(
     @SerializedName("trabajo_id")
     val jobId: Int?,
@@ -40,13 +61,3 @@ data class RequestPercent(
     @SerializedName("trabajo_descripcion")
     val assessmentType: String?
 )
-
-
-
-
-
-
-
-
-
-

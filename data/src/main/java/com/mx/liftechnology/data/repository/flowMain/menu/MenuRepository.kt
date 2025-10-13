@@ -10,21 +10,39 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the menu repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface MenuRepository{
+    /**
+     * Executes the request to get the group list for the menu.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetGroup(
         request: RequestGroup
     ): ResultService<List<ResponseGroupTeacher?>?, FailureService>
 }
 
-/** MenuRepository - Build the element list of menu (home)
- * @author pelkidev
- * @since 1.0.0
- * @return listMenuItems contains the list of menu
- * */
+/**
+ * Implementation of [MenuRepository].
+ *
+ * @property groupApiCall The API call for getting the group list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class MenuRepositoryImp(
     private val groupApiCall: GroupApiCall
 ): MenuRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeGetGroup(request: RequestGroup): ResultService<List<ResponseGroupTeacher?>?, FailureService> {
         return try {
             val response = groupApiCall.callApi(request)

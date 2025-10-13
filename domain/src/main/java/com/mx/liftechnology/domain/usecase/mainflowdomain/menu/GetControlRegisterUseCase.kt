@@ -8,14 +8,22 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 
-/** MenuUseCase - Get the list of menu and process the information
- * @author pelkidev
- * @date 28/08/2023
- * @param localRepository connect with the repository
- * */
+/**
+ * Use case for getting the control register menu list.
+ *
+ * @property localRepository The repository for accessing local menu data.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetControlRegisterUseCase(
     private val localRepository: MenuLocalRepository,
 ) {
+    /**
+     * Executes the process of getting the control register menu list.
+     *
+     * @return A [ModelState] containing the list of menu items or an error.
+     */
     operator fun invoke():  ModelState<List<ModelPrincipalMenuData>, String> {
         return runCatching { localRepository.getControlRegister() }.fold(
             onSuccess = { list ->
@@ -26,6 +34,3 @@ class GetControlRegisterUseCase(
         )
     }
 }
-
-
-

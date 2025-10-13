@@ -10,15 +10,38 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the subject list repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListSubjectRepository{
+    /**
+     * Executes the request to get the list of subjects.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetListSubject(request: RequestGetListSubject)
     : ResultService<List<ResponseGetListSubject?>?, FailureService>
 }
 
+/**
+ * Implementation of [GetListSubjectRepository].
+ *
+ * @property getListSubjectApiCall The API call for getting the subject list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListSubjectRepositoryImp(
     private val getListSubjectApiCall : GetListSubjectApiCall
 ) : GetListSubjectRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeGetListSubject(
         request: RequestGetListSubject
     ) : ResultService<List<ResponseGetListSubject?>?, FailureService> {

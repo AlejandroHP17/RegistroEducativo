@@ -7,15 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+/**
+ * Interface for the group API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GroupApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to get the list of groups for a teacher.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGroupTeacher] data.
+     */
     @POST(Environment.END_POINT_GET_GROUP)
     suspend fun callApi(
         @Body request: RequestGroup
     ): Response<ResponseGeneric<List<ResponseGroupTeacher?>?>>
 }
 
-// Modelo para credenciales
+/**
+ * Data model for the group request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestGroup(
     @SerializedName("profesor_id")
     val teacherId: Int?,
@@ -23,6 +39,12 @@ data class RequestGroup(
     val userId: Int?
 )
 
+/**
+ * Data model for the group response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGroupTeacher(
     @SerializedName("cct")
     val cct: String,

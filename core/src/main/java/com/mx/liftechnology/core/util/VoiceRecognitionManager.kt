@@ -15,18 +15,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.Locale
 
+/**
+ * Manages voice recognition functionality.
+ *
+ * @property context The application context.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class VoiceRecognitionManager(private val context: Context) {
 
     private val _resultsLiveData = MutableLiveData<List<String>>()
+    /** LiveData that emits the recognition results. */
     val resultsLiveData: LiveData<List<String>> get() = _resultsLiveData
 
     private val _errorLiveData = MutableLiveData<String>()
+    /** LiveData that emits recognition errors. */
     val errorLiveData: LiveData<String> get() = _errorLiveData
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var recognizerIntent: Intent? = null
 
-    // Control simple para evitar reinicios infinitos
     private var restartAttempts = 0
     private val maxRestartAttempts = 5
     private val handler = Handler(Looper.getMainLooper())
@@ -38,25 +47,21 @@ class VoiceRecognitionManager(private val context: Context) {
     }
 
     private val listener = object : RecognitionListener {
-        override fun onReadyForSpeech(params: Bundle?) {
-        }
+        override fun onReadyForSpeech(params: Bundle?) {}
 
-        override fun onBeginningOfSpeech() {
-        }
+        override fun onBeginningOfSpeech() {}
 
         override fun onRmsChanged(rmsdB: Float) {}
 
         override fun onBufferReceived(buffer: ByteArray?) {}
 
-        override fun onEndOfSpeech() {
-        }
+        override fun onEndOfSpeech() {}
 
         override fun onError(error: Int) {
             val msg = getErrorText(error)
             _errorLiveData.postValue(msg)
             isListening = false
 
-            // Reintentar en errores transitorios
             when (error) {
                 SpeechRecognizer.ERROR_NO_MATCH,
                 SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> {
@@ -71,11 +76,9 @@ class VoiceRecognitionManager(private val context: Context) {
                 SpeechRecognizer.ERROR_SERVER,
                 SpeechRecognizer.ERROR_NETWORK,
                 SpeechRecognizer.ERROR_NETWORK_TIMEOUT -> {
-                    // Reiniciar el recognizer (recrearlo) en errores de cliente/servidor
                     resetRecognizer()
                 }
                 else -> {
-                    // Para otros errores solo intentamos reset
                     resetRecognizer()
                 }
             }
@@ -86,12 +89,10 @@ class VoiceRecognitionManager(private val context: Context) {
             isListening = false
             val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             _resultsLiveData.postValue(matches ?: emptyList())
-            // Si quieres escucha continua, puedes llamar startListening() aquí con cuidado
         }
 
         override fun onPartialResults(partialResults: Bundle?) {
             val partial = partialResults?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-            // opcional: enviar partialResults si deseas
         }
 
         override fun onEvent(eventType: Int, params: Bundle?) {}
@@ -99,7 +100,6 @@ class VoiceRecognitionManager(private val context: Context) {
 
     private fun setupRecognizer() {
         try {
-            // Asegurarnos de usar applicationContext para evitar leaks de Activity
             val appCtx = context.applicationContext
             if (speechRecognizer == null) {
                 speechRecognizer = SpeechRecognizer.createSpeechRecognizer(appCtx)
@@ -118,8 +118,10 @@ class VoiceRecognitionManager(private val context: Context) {
         }
     }
 
+    /**
+     * Starts listening for voice input.
+     */
     fun startListening() {
-        // Revisar permiso
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -143,11 +145,13 @@ class VoiceRecognitionManager(private val context: Context) {
             isListening = true
         } catch (e: Exception) {
             _errorLiveData.postValue("No se pudo iniciar: ${e.message}")
-            // intentar resetear y recrear
             resetRecognizer()
         }
     }
 
+    /**
+     * Stops listening for voice input.
+     */
     fun stopListening() {
         try {
             speechRecognizer?.stopListening()
@@ -169,10 +173,12 @@ class VoiceRecognitionManager(private val context: Context) {
         recognizerIntent = null
         isListening = false
         restartAttempts = 0
-        // Lo recreamos
         setupRecognizer()
     }
 
+    /**
+     * Releases the resources used by the speech recognizer.
+     */
     fun release() {
         handler.removeCallbacksAndMessages(null)
         try {

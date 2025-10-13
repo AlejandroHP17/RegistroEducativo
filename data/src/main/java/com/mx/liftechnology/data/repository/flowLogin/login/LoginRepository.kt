@@ -10,14 +10,37 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the login repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface LoginRepository{
+  /**
+   * Executes the login request.
+   *
+   * @param request The login request data.
+   * @return A [ResultService] indicating the result of the operation.
+   */
   suspend fun executeLogin(request: RequestLogin): ResultService<ResponseLogin?, FailureService>
 }
 
+/**
+ * Implementation of [LoginRepository].
+ *
+ * @property loginApiCall The API call for login.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class LoginRepositoryImp(
     private val loginApiCall: LoginApiCall
 ) : LoginRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeLogin(
         request: RequestLogin
     ): ResultService<ResponseLogin?, FailureService> {

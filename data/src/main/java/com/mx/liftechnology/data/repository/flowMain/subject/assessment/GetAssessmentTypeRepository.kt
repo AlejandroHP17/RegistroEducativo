@@ -10,19 +10,37 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
-
+/**
+ * Interface for the assessment type repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetAssessmentTypeRepository{
+    /**
+     * Executes the request to get the list of assessment types.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetListAssessment(request : RequestGetListAssessmentType)
             : ResultService<List<ResponseGetListAssessmentType?>?, FailureService>
 }
 
+/**
+ * Implementation of [GetAssessmentTypeRepository].
+ *
+ * @property getListAssessmentTypeApiCall The API call for getting the assessment type list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetAssessmentTypeRepositoryImp(
     private val getListAssessmentTypeApiCall: GetListAssessmentTypeApiCall
 ) : GetAssessmentTypeRepository {
 
-    /** Execute the user register
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * {@inheritDoc}
      */
     override suspend fun executeGetListAssessment(
         request : RequestGetListAssessmentType

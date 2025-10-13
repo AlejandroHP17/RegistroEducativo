@@ -9,14 +9,37 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the assignment list repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListAssignmentRepository{
+    /**
+     * Executes the request to get the list of assignments.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetListAssignment(request : RequestGetListAssignment): ResultService<List<String>?, FailureService>
 }
 
+/**
+ * Implementation of [GetListAssignmentRepository].
+ *
+ * @property getListAssignmentApiCall The API call for getting the assignment list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListAssignmentRepositoryImp(
     private val getListAssignmentApiCall: GetListAssignmentApiCall
 ): GetListAssignmentRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeGetListAssignment(request: RequestGetListAssignment) : ResultService<List<String>?, FailureService>{
         return try{
             val response = getListAssignmentApiCall.callApi(request)

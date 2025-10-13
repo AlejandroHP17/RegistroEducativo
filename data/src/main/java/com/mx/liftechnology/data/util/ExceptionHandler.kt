@@ -1,6 +1,18 @@
 package com.mx.liftechnology.data.util
 
+/**
+ * An object that handles exceptions and converts them into a [FailureService].
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 object ExceptionHandler {
+    /**
+     * Handles a given [Throwable] and converts it into a [FailureService].
+     *
+     * @param exception The exception to handle.
+     * @return A [FailureService] representing the handled exception.
+     */
     fun handleException(exception: Throwable): FailureService {
         return when (exception) {
             is java.net.UnknownHostException -> FailureService.NetworkError  // No hay conexión a Internet

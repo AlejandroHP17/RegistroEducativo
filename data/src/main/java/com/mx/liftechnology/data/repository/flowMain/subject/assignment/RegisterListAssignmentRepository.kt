@@ -9,13 +9,36 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the assignment list registration repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterListAssignmentRepository{
+    /**
+     * Executes the request to register a list of assignments.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeRegisterListAssignment(request : RequestRegisterAssignment): ResultService<List<String>?, FailureService>
 }
 
+/**
+ * Implementation of [RegisterListAssignmentRepository].
+ *
+ * @property registerListAssignmentApiCall The API call for registering an assignment list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterListAssignmentRepositoryImp(
     private val registerListAssignmentApiCall: RegisterListAssignmentApiCall
 ): RegisterListAssignmentRepository {
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeRegisterListAssignment(request: RequestRegisterAssignment) : ResultService<List<String>?, FailureService>{
         return try{
             val response = registerListAssignmentApiCall.callApi(request)

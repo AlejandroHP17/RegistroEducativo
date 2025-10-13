@@ -4,13 +4,20 @@ import android.content.Context
 import com.mx.liftechnology.data.R
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 
-/** MenuLocalRepository - Build the element list of menu (home)
- * @author pelkidev
- * @since 1.0.0
- * @param context use for read strings
- * @return listMenuItems contains the list of menu
- * */
+/**
+ * Local repository for accessing menu data from resources.
+ *
+ * @property context The application context.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class MenuLocalRepository(private val context: Context) {
+    /**
+     * Gets the list of control menu items.
+     *
+     * @return A list of [ModelPrincipalMenuData] for the control menu.
+     */
     fun getControlMenu(): List<ModelPrincipalMenuData> {
 
         val listMenuItems = context.resources.getStringArray(R.array.menu_items_control)
@@ -27,6 +34,11 @@ class MenuLocalRepository(private val context: Context) {
         }
     }
 
+    /**
+     * Gets the list of register menu items.
+     *
+     * @return A list of [ModelPrincipalMenuData] for the register menu.
+     */
     fun getControlRegister(): List<ModelPrincipalMenuData> {
         val listMenuItems = context.resources.getStringArray(R.array.menu_items_register)
         val imageResources = arrayOf(

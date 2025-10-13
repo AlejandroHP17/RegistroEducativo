@@ -6,12 +6,46 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
+/**
+ * Interface for accessing and managing SharedPreferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 interface PreferenceRepository {
+    /**
+     * Gets a preference value.
+     *
+     * @param name The name of the preference to get.
+     * @param default The default value to return if the preference is not found.
+     * @return The preference value.
+     */
     fun <T> getPreference(name: String, default: T): T
+
+    /**
+     * Saves a preference value.
+     *
+     * @param name The name of the preference to save.
+     * @param value The value to save.
+     */
     fun <T> savePreference(name: String, value: T)
+
+    /**
+     * Clears all preferences.
+     *
+     * @return True if the preferences were cleared successfully, false otherwise.
+     */
     fun cleanPreference() : Boolean
 }
 
+/**
+ * Implementation of [PreferenceRepository] that uses [EncryptedSharedPreferences] for secure storage.
+ *
+ * @property applicationContext The application context.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class PreferenceRepositoryImpl(
     private val applicationContext: Context,
 ) : PreferenceRepository {
@@ -20,10 +54,6 @@ class PreferenceRepositoryImpl(
         initPreferences()
     }
 
-    /** initPreferences - Start the preferences
-     * @author pelkidev
-     * @since 1.0.0
-     * */
     private fun initPreferences() {
         try {
             val masterKey = MasterKey.Builder(applicationContext)
@@ -37,13 +67,11 @@ class PreferenceRepositoryImpl(
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         } catch (e: Exception) {
-            // Si hay un error al desencriptar, eliminar las preferencias corruptas
             applicationContext.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
                 .edit {
                     clear()
                 }
 
-            // Intentar de nuevo después de borrar las preferencias corruptas
             val masterKey = MasterKey.Builder(applicationContext)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
@@ -63,6 +91,9 @@ class PreferenceRepositoryImpl(
         private lateinit var securePrefs: SharedPreferences
     }
 
+    /**
+     * {@inheritDoc}
+     */
     override fun <T> getPreference(name: String, default: T): T {
         return with(securePrefs) {
             @Suppress("UNCHECKED_CAST")
@@ -77,6 +108,9 @@ class PreferenceRepositoryImpl(
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     override fun <T> savePreference(name: String, value: T) {
         with(securePrefs.edit()) {
             when (value) {
@@ -91,6 +125,9 @@ class PreferenceRepositoryImpl(
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     override fun cleanPreference(): Boolean {
         securePrefs.edit { clear() }
         return true

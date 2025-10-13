@@ -9,13 +9,36 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the evaluation type list repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListEvaluationTypeRepository {
+    /**
+     * Executes the request to get the list of evaluation types.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetListEvaluationType( request: RequestGetListEvaluationType) : ResultService<List<String>?, FailureService>
 }
 
+/**
+ * Implementation of [GetListEvaluationTypeRepository].
+ *
+ * @property getListEvaluationTypeApiCall The API call for getting the evaluation type list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListEvaluationTypeRepositoryImp (
     private var getListEvaluationTypeApiCall : GetListEvaluationTypeApiCall
 ): GetListEvaluationTypeRepository{
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeGetListEvaluationType(request: RequestGetListEvaluationType): ResultService<List<String>?, FailureService> {
         return try {
             val response = getListEvaluationTypeApiCall.callApi(request)

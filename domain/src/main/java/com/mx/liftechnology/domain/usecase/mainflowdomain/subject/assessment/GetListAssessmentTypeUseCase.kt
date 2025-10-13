@@ -15,10 +15,24 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Use case for getting the list of assessment types.
+ *
+ * @property getAssessmentTypeRepository The repository for fetching assessment types.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListAssessmentTypeUseCase(
     private val getAssessmentTypeRepository: GetAssessmentTypeRepository,
     private val preference : PreferenceUseCase
 ) {
+    /**
+     * Executes the process of getting the list of assessment types.
+     *
+     * @return A [ModelState] containing the list of assessment types or an error.
+     */
     suspend operator fun invoke():ModelState<List<ResponseGetListAssessmentType?>, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -48,12 +62,11 @@ class GetListAssessmentTypeUseCase(
         )
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the assessment type repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ResponseGetListAssessmentType?>, String?> {
         return when(error) {

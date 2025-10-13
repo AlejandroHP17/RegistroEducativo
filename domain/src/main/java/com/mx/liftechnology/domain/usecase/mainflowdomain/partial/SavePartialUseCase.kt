@@ -6,10 +6,24 @@ import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
+/**
+ * Use case for saving the current partial in user preferences.
+ *
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class SavePartialUseCase (
     private val preference: PreferenceUseCase
 )  {
+    /**
+     * Saves the current partial based on the current date and the provided list of partials.
+     * It finds the partial that contains the current date, or the last one if none match.
+     *
+     * @param listPartial The list of available partials.
+     * @return The selected [ModelDialogGroupPartialDomain], or null if the list is empty.
+     */
     operator fun invoke (
         listPartial :
         List<ModelDialogGroupPartialDomain>?

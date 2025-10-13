@@ -16,15 +16,25 @@ import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.menu.ModelInfoStudentGroupDomain
 import com.mx.liftechnology.domain.model.menu.RGTtoConvertModelDialogStudentGroupDomains
 
+/**
+ * Use case for getting the list of groups for the menu, selecting a default, and processing the information.
+ *
+ * @property menuRepository The repository for menu-related operations.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetGroupMenuUseCase(
     private val menuRepository: MenuRepository,
     private val preference: PreferenceUseCase,
 ) {
 
-    /** getGroup - Get the list of groups, select a default and process the information
-     * @author pelkidev
-     * @return ModelState
-     * */
+    /**
+     * Executes the process of getting the groups, selecting a default, and processing the information.
+     *
+     * @return A [ModelState] containing the group information or an error.
+     */
     suspend operator fun invoke(): ModelState<ModelInfoStudentGroupDomain, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -38,8 +48,6 @@ class GetGroupMenuUseCase(
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {
-                        /* Convierte al modelo base para recopilar toda la informacion de escuelas y parciales
-                        *  esta primera sección llena la parte de escuelas*/
                         val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
                         if (convertedResult.isNotEmpty()) {
                             SuccessState(
@@ -61,11 +69,13 @@ class GetGroupMenuUseCase(
 
     }
 
-    /** SelectOneGroup - Select a group, if the user is new the first one,
-     *  if the user is old, select group with help of the preference
-     * @author pelkidev
-     * @return ModelState
-     * */
+    /**
+     * Selects a group from the list. If the user is new, it selects the first one.
+     * If the user has a previously selected group, it selects that one from preferences.
+     *
+     * @param convertedResult The list of groups to select from.
+     * @return The selected [ModelDialogStudentGroupDomain].
+     */
     private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
         return convertedResult.let { itemParent ->
             if (preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1) {
@@ -86,9 +96,11 @@ class GetGroupMenuUseCase(
         }
     }
 
-    /** Reasign data in the new model
-     * @author Alejandro Hernandez Pelcastre
-     * @since 1.0.0
+    /**
+     * Reassembles the data into a new [ModelDialogStudentGroupDomain] object.
+     *
+     * @param convertedResult The source [ModelDialogStudentGroupDomain] object.
+     * @return The newly created [ModelDialogStudentGroupDomain] object.
      */
     private fun buildOneInformation(convertedResult: ModelDialogStudentGroupDomain?): ModelDialogStudentGroupDomain {
         val modelResponse = ModelDialogStudentGroupDomain(
@@ -103,12 +115,11 @@ class GetGroupMenuUseCase(
     }
 
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the menu repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<ModelInfoStudentGroupDomain, String> {
         return when (error) {

@@ -7,16 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-
+/**
+ * Interface for the partial list API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListPartialApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to get the list of partials.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGetPartial] data.
+     */
     @POST(Environment.END_POINT_GET_PARTIAL)
     suspend fun callApi(
         @Body request: RequestGetPartial,
     ): Response<ResponseGeneric<List<ResponseGetPartial?>?>>
 }
 
-// Modelo para credenciales
+/**
+ * Data model for the partial list request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestGetPartial(
     @SerializedName("profesorescuelaciclogrupo_id")
     val teacherSchoolCycleGroupId: Int?,
@@ -26,6 +41,12 @@ data class RequestGetPartial(
     val teacherId: Int?,
 )
 
+/**
+ * Data model for the partial response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetPartial(
     @SerializedName("parcialciclogrupo_id")
     val partialCycleGroupId: Int,

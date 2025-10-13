@@ -9,15 +9,38 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the student registration repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterStudentRepository{
+    /**
+     * Executes the student registration request.
+     *
+     * @param request The student registration request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeRegisterOneStudent(request: RequestRegisterStudent)
     : ResultService<List<String?>?, FailureService>
 }
 
+/**
+ * Implementation of [RegisterStudentRepository].
+ *
+ * @property registerStudentApiCall The API call for student registration.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterStudentRepositoryImp(
     private val registerStudentApiCall: RegisterStudentApiCall,
 ) : RegisterStudentRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeRegisterOneStudent(
         request: RequestRegisterStudent
     ): ResultService<List<String?>?, FailureService> {

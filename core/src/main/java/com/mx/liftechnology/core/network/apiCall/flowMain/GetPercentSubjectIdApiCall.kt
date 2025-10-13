@@ -7,14 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+/**
+ * Interface for the subject percentage API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 interface GetPercentSubjectIdApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to get the percentage of a subject.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGetPercentSubjectId] data.
+     */
     @POST(Environment.END_POINT_GET_SUBJECT_PERCENT)
     suspend fun callApi(
         @Body request: RequestGetPercentSubjectId
     ): Response<ResponseGeneric<List<ResponseGetPercentSubjectId>?>?>
 }
 
+/**
+ * Data model for the subject percentage request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestGetPercentSubjectId(
     @SerializedName("profesor_id")
     val teacherId: Int?,
@@ -26,6 +43,12 @@ data class RequestGetPercentSubjectId(
     val subjectSchoolCycleGroupId: Int?
 )
 
+/**
+ * Data model for the subject percentage response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetPercentSubjectId(
     @SerializedName("id")
     val id :Int?,

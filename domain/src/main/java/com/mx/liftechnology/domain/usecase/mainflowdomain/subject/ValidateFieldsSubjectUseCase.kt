@@ -5,18 +5,52 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
+/**
+ * Interface for validating fields related to a subject.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 interface ValidateFieldsSubjectUseCase {
-    fun validateNameCompose(nameStudent: String?): ModelStateOutFieldText
+    /**
+     * Validates the subject name.
+     * @param nameSubject The name of the subject to validate.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
+    fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText
+
+    /**
+     * Validates a selected option.
+     * @param option The option to validate.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
     fun validateOptionCompose(option: String?): ModelStateOutFieldText
+
+    /**
+     * Validates a list of work methods (jobs).
+     * @param listJobs The list of work methods to validate.
+     * @return A mutable list with updated validation states, or null.
+     */
     fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>?
+
+    /**
+     * Validates that the sum of percentages for all work methods is 100.
+     * @param listJobs The list of work methods to validate.
+     * @return A [ModelStateOutFieldText] indicating if the sum is correct.
+     */
     fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText
 }
 
+/**
+ * Implementation of [ValidateFieldsSubjectUseCase].
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
-    /** validatePass
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText {
         return when {
             nameSubject.isNullOrEmpty() -> nameSubject.stringToModelStateOutFieldText(
@@ -28,6 +62,9 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     override fun validateOptionCompose(option: String?): ModelStateOutFieldText {
         return when {
             option.isNullOrEmpty() -> option.stringToModelStateOutFieldText(
@@ -39,10 +76,9 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
         }
     }
 
-    /** Validate Pass
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>? {
         return listJobs?.map { item ->
             val isNameInvalid = item.name.valueText.isNullOrEmpty()
@@ -63,6 +99,9 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
         }?.toMutableList()
     }
 
+    /**
+     * {@inheritDoc}
+     */
     override fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText {
         return when {
             listJobs?.let { jobs ->
@@ -83,4 +122,3 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
         }
     }
 }
-

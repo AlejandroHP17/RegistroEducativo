@@ -16,10 +16,24 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.student.toModelStudentList
 
+/**
+ * Use case for getting the list of students.
+ *
+ * @property getStudentRepository The repository for fetching the student list.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListStudentUseCase(
     private val getStudentRepository: GetStudentRepository,
     private val preference: PreferenceUseCase
 )  {
+    /**
+     * Executes the process of getting the list of students.
+     *
+     * @return A [ModelState] containing the list of students or an error.
+     */
     suspend operator fun invoke(): ModelState<List<ModelStudentDomain>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -46,12 +60,11 @@ class GetListStudentUseCase(
         )
     }
 
-
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the student repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelStudentDomain>?, String> {
         return when (error) {

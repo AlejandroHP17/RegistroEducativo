@@ -4,12 +4,21 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 
-class UpdateGroupMenuUseCase(
+/**
+ * Use case for updating the selected group in user preferences.
+ *
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class MenuGroupsUseCase(
     private val preference: PreferenceUseCase
 )  {
-    /** Update the group in preferences
-     * @author Alejandro Hernandez Pelcastre
-     * @since 1.0.0
+    /**
+     * Updates the selected group in preferences.
+     *
+     * @param nameItem The [ModelDialogStudentGroupDomain] object representing the selected group.
      */
     operator fun invoke(nameItem: ModelDialogStudentGroupDomain) {
         preference.savePreferenceInt(

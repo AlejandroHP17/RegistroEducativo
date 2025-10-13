@@ -12,13 +12,25 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Use case for handling user registration.
+ *
+ * @property registerUserRepository The repository for user registration operations.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterUserUseCase(
     private val registerUserRepository: RegisterUserRepository
 )  {
-    /** Request to Register
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * Executes the user registration process.
+     *
+     * @param email The user's email.
+     * @param pass The user's password.
+     * @param activatationCode The activation code for the account.
+     * @return A [ModelState] representing the result of the registration attempt.
+     */
     suspend operator fun invoke(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String> {
         val request = RequestRegisterUser(
             email = email.lowercase(),
@@ -36,12 +48,11 @@ class RegisterUserUseCase(
         }
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the registration repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String> {
         return when(error) {

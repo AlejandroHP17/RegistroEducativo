@@ -10,15 +10,38 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the student list repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetStudentRepository{
+    /**
+     * Executes the request to get the list of students.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetListStudent(request: RequestGetListStudent)
     : ResultService<List<ResponseGetStudent?>?, FailureService>
 }
 
+/**
+ * Implementation of [GetStudentRepository].
+ *
+ * @property getListStudentApiCall The API call for getting the student list.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetStudentRepositoryImp(
     private val getListStudentApiCall : GetListStudentApiCall
 ) : GetStudentRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeGetListStudent(
         request: RequestGetListStudent
     ) : ResultService<List<ResponseGetStudent?>?, FailureService> {

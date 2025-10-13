@@ -9,19 +9,38 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the school registration repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterSchoolRepository{
+  /**
+   * Executes the school registration request.
+   *
+   * @param request The school registration request data.
+   * @return A [ResultService] indicating the result of the operation.
+   */
   suspend fun executeRegisterOneSchool(
       request : RequestRegisterSchool
   ): ResultService<List<String?>?, FailureService>
 }
 
+/**
+ * Implementation of [RegisterSchoolRepository].
+ *
+ * @property registerSchoolApiCall The API call for school registration.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterSchoolRepositoryImp(
     private val registerSchoolApiCall: RegisterSchoolApiCall
 ) : RegisterSchoolRepository {
 
-    /** Execute the user register
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * {@inheritDoc}
      */
     override suspend fun executeRegisterOneSchool(
         request : RequestRegisterSchool

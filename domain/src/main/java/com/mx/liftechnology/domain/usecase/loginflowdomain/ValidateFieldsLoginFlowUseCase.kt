@@ -5,19 +5,60 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
+/**
+ * Interface for validating fields in the login and registration flows.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 interface ValidateFieldsLoginFlowUseCase {
+    /**
+     * Validates an email address.
+     * @param email The email to validate.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
     fun validateEmailCompose(email: String?): ModelStateOutFieldText
+
+    /**
+     * Validates a password for login.
+     * @param pass The password to validate.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
     fun validatePassCompose(pass: String?): ModelStateOutFieldText
+
+    /**
+     * Validates a password for registration.
+     * @param pass The password to validate.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
     fun validatePassRegisterCompose(pass: String?): ModelStateOutFieldText
+
+    /**
+     * Validates that two passwords match.
+     * @param pass The original password.
+     * @param repeatPass The password to compare against.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
     fun validateRepeatPassCompose(pass: String?, repeatPass: String?): ModelStateOutFieldText
+
+    /**
+     * Validates an activation code.
+     * @param code The code to validate.
+     * @return A [ModelStateOutFieldText] with the validation result.
+     */
     fun validateCodeCompose(code: String?): ModelStateOutFieldText
 }
 
+/**
+ * Implementation of [ValidateFieldsLoginFlowUseCase].
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
-    /** validateEmail
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validateEmailCompose(email: String?): ModelStateOutFieldText {
         val emailPattern = ModelRegex.EMAIL
 
@@ -36,10 +77,9 @@ class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
         }
     }
 
-    /** validatePassLogin
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validatePassCompose(pass: String?): ModelStateOutFieldText {
         return when {
             pass.isNullOrEmpty() -> pass.stringToModelStateOutFieldText(
@@ -51,10 +91,9 @@ class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
         }
     }
 
-    /** Validate PassRegister
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validatePassRegisterCompose(pass: String?): ModelStateOutFieldText {
         return when {
             pass.isNullOrEmpty() -> pass.stringToModelStateOutFieldText(
@@ -74,10 +113,9 @@ class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
     private fun validPass(pass: String): Boolean = ModelRegex.PASS.matches(pass)
 
 
-    /** Validate RepeatPass
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validateRepeatPassCompose(
         pass: String?,
         repeatPass: String?,
@@ -97,10 +135,9 @@ class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
         }
     }
 
-    /** Validate Code
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * {@inheritDoc}
+     */
     override fun validateCodeCompose(code: String?): ModelStateOutFieldText {
         return when {
             code.isNullOrEmpty() -> code.stringToModelStateOutFieldText(

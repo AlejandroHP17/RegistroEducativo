@@ -4,6 +4,22 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
 
+/**
+ * Data model representing a student in the domain layer.
+ * This class is Parcelable to allow it to be passed between Android components.
+ *
+ * @property studentId The student's ID.
+ * @property curp The student's CURP.
+ * @property birthday The student's birthday.
+ * @property phoneNumber The student's phone number.
+ * @property userId The student's user ID.
+ * @property name The student's name.
+ * @property lastName The student's last name.
+ * @property secondLastName The student's second last name.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ModelStudentDomain (
     val studentId : String?,
     val curp : String?,
@@ -52,7 +68,15 @@ data class ModelStudentDomain (
     }
 }
 
-// Función para convertir una lista de ResponseGetStudent a ModelStudentDomain
+/**
+ * Extension function to convert a list of [ResponseGetStudent] to a list of [ModelStudentDomain].
+ *
+ * @receiver A nullable list of [ResponseGetStudent] objects.
+ * @return A list of [ModelStudentDomain] objects.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun List<ResponseGetStudent?>?.toModelStudentList(): List<ModelStudentDomain> {
     return this?.map { response ->
         ModelStudentDomain(

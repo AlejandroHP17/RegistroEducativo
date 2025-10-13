@@ -16,10 +16,24 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Use case for getting the list of partials.
+ *
+ * @property getListPartialRepository The repository for fetching the list of partials.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListPartialUseCase(
     private val getListPartialRepository: GetListPartialRepository,
     private val preference: PreferenceUseCase
 )  {
+    /**
+     * Executes the process of getting the list of partials.
+     *
+     * @return A [ModelState] containing a mutable list of [ModelDatePeriodDomain] or an error.
+     */
     suspend operator fun invoke(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -57,6 +71,12 @@ class GetListPartialUseCase(
         )
     }
 
+    /**
+     * Handles error responses from the partials repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
+     */
     private fun handleResponse(error: FailureService): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)

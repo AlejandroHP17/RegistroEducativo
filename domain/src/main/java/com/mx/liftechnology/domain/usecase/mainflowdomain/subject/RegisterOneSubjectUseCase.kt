@@ -16,11 +16,26 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
-
+/**
+ * Use case for registering a single subject.
+ *
+ * @property registerSubjectRepository The repository for subject registration.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterOneSubjectUseCase(
     private val registerSubjectRepository: RegisterSubjectRepository,
     private val preference: PreferenceUseCase
 ) {
+    /**
+     * Executes the subject registration process.
+     *
+     * @param updatedList The list of work methods and their percentages.
+     * @param name The name of the subject.
+     * @return A [ModelState] indicating the result of the registration.
+     */
     suspend operator fun invoke(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String?
@@ -65,11 +80,11 @@ class RegisterOneSubjectUseCase(
         )
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the subject repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {

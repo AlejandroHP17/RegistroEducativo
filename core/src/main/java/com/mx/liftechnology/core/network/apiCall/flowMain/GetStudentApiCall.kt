@@ -7,14 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+/**
+ * Interface for the student list API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListStudentApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to get the list of students.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGetStudent] data.
+     */
     @POST(Environment.END_POINT_GET_STUDENT)
     suspend fun callApi(
         @Body request: RequestGetListStudent
     ): Response<ResponseGeneric<List<ResponseGetStudent?>?>>
 }
 
+/**
+ * Data model for the student list request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestGetListStudent(
     @SerializedName("profesor_id")
     val teacherId: Int?,
@@ -24,6 +41,12 @@ data class RequestGetListStudent(
     val teacherSchoolCycleGroupId: Int?
 )
 
+/**
+ * Data model for the student response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetStudent(
     @SerializedName("id")
     val id: String?,

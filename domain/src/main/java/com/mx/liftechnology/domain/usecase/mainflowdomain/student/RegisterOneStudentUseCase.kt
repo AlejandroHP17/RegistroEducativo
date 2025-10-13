@@ -14,12 +14,31 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-
+/**
+ * Use case for registering a single student.
+ *
+ * @property crudStudentRepository The repository for student CRUD operations.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterOneStudentUseCase(
     private val crudStudentRepository: RegisterStudentRepository,
     private val preference: PreferenceUseCase
 ) {
 
+    /**
+     * Executes the student registration process.
+     *
+     * @param name The student's name.
+     * @param lastName The student's last name.
+     * @param secondLastName The student's second last name.
+     * @param curp The student's CURP.
+     * @param birthday The student's birthday.
+     * @param phoneNumber The student's phone number.
+     * @return A [ModelState] indicating the result of the registration.
+     */
     suspend operator fun invoke(
         name: String,
         lastName: String,
@@ -61,11 +80,11 @@ class RegisterOneStudentUseCase(
     }
 
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the student registration repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
@@ -77,4 +96,3 @@ class RegisterOneStudentUseCase(
         }
     }
 }
-

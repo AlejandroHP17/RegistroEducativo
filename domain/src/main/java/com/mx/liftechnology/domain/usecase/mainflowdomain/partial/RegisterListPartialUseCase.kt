@@ -16,11 +16,26 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
-
+/**
+ * Use case for registering a list of partials.
+ *
+ * @property registerListPartialRepository The repository for registering a list of partials.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterListPartialUseCase(
     private val registerListPartialRepository: RegisterListPartialRepository,
     private val preference: PreferenceUseCase
 ) {
+    /**
+     * Executes the process of registering a list of partials.
+     *
+     * @param periodNumber The number of periods.
+     * @param adapterPeriods The list of date periods to register.
+     * @return A [ModelState] indicating the result of the registration.
+     */
     suspend operator fun invoke(
         periodNumber: Int?,
         adapterPeriods: List<ModelDatePeriodDomain>
@@ -65,11 +80,11 @@ class RegisterListPartialUseCase(
         )
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the partials repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
@@ -81,4 +96,3 @@ class RegisterListPartialUseCase(
         }
     }
 }
-

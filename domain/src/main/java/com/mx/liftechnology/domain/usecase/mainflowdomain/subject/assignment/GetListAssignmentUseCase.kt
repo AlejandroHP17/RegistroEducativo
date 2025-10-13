@@ -14,14 +14,37 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
+/**
+ * Interface for getting the list of assignments.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetListAssignmentUseCase {
+    /**
+     * Executes the process of getting the list of assignments.
+     *
+     * @return A [ModelState] containing the list of assignment names or an error.
+     */
     suspend fun getListAssignment () :ModelState<List<String>?, String?>
 }
 
+/**
+ * Implementation of [GetListAssignmentUseCase].
+ *
+ * @property getListAssignmentRepository The repository for fetching the assignment list.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListAssignmentUseCaseImp(
     private val getListAssignmentRepository: GetListAssignmentRepository,
     private val preference : PreferenceUseCase
 ): GetListAssignmentUseCase {
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun getListAssignment():ModelState<List<String>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -40,12 +63,11 @@ class GetListAssignmentUseCaseImp(
         }
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * @param error in order to validate the code and if is success, return the body
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the assignment repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
         return when(error) {

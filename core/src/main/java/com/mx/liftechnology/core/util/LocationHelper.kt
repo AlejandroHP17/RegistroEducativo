@@ -17,23 +17,40 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
+/**
+ * Helper class for handling location-related operations.
+ *
+ * @property context The application context.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class LocationHelper(private val context: Context) {
 
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(context)
 
-    /** Interface - send the result to the activity
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * Callback interface for location results.
      */
     interface LocationCallback {
+        /**
+         * Called when a location result is available.
+         * @param location The location, or null if not available.
+         */
         fun onLocationResult(location: Location?)
+
+        /**
+         * Called when the location permission is denied.
+         */
         fun onPermissionDenied()
     }
 
-    /** Verify the permissions
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * Requests the device's location, handling permissions as needed.
+     *
+     * @param permissionLauncher The launcher for the permission request.
+     * @param callback The callback to be invoked with the result.
      */
     fun requestLocation(
         permissionLauncher: ActivityResultLauncher<String>,
@@ -44,7 +61,6 @@ class LocationHelper(private val context: Context) {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            /** Permission reject before, show the dialog */
             if (context is Activity) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         context,
@@ -56,11 +72,10 @@ class LocationHelper(private val context: Context) {
                     permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             } else {
-                // Manejo alternativo
+                // Handle non-Activity context
             }
 
         } else {
-            /** Permission accept before, get the location */
             getLastKnownLocation(callback)
         }
     }
@@ -77,6 +92,12 @@ class LocationHelper(private val context: Context) {
             .show()
     }
 
+    /**
+     * Handles the result of a permission request.
+     *
+     * @param isGranted True if the permission was granted, false otherwise.
+     * @param callback The callback to be invoked.
+     */
     fun handlePermissionResult(isGranted: Boolean, callback: LocationCallback) {
         if (isGranted) {
             getLastKnownLocation(callback)
@@ -120,6 +141,13 @@ class LocationHelper(private val context: Context) {
         }
     }
 
+    /**
+     * Gets the current location using a suspend function.
+     *
+     * @return The current [Location], or null if not available.
+     * @throws SecurityException if location permission is not granted.
+     * @throws NullPointerException if the location is null.
+     */
     suspend fun getCurrentLocation(): Location? = suspendCancellableCoroutine { continuation ->
         if (ActivityCompat.checkSelfPermission(
                 context,

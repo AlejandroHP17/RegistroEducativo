@@ -17,11 +17,30 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import java.util.Calendar
 import java.util.Date
 
+/**
+ * Use case for registering a single school.
+ *
+ * @property registerSchoolRepository The repository for school registration.
+ * @property preference The use case for managing user preferences.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterOneSchoolUseCase(
     private val registerSchoolRepository: RegisterSchoolRepository,
     private val preference: PreferenceUseCase,
 ) {
 
+    /**
+     * Executes the school registration process.
+     *
+     * @param cct The CCT of the school.
+     * @param schoolCycleTypeId The ID of the school cycle type.
+     * @param grade The grade.
+     * @param group The group name.
+     * @param cycle The cycle period.
+     * @return A [ModelState] indicating the result of the registration.
+     */
     suspend operator fun invoke(
         cct: String?,
         schoolCycleTypeId: Int?,
@@ -62,11 +81,11 @@ class RegisterOneSchoolUseCase(
         )
     }
 
-    /** handleResponse - Validate the code response, and assign the correct function of that
-     * @author pelkidev
-     * @since 1.0.0
-     * if not return the correct error
-     * @return ModelState
+    /**
+     * Handles error responses from the school registration repository.
+     *
+     * @param error The [FailureService] object representing the error.
+     * @return A [ModelState] representing the specific error.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {
@@ -78,4 +97,3 @@ class RegisterOneSchoolUseCase(
         }
     }
 }
-

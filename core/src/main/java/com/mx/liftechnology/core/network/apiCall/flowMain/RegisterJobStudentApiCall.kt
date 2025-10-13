@@ -7,15 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-
+/**
+ * Interface for the student job registration API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterJobStudentApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to register a student job.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseStudentJobs] data.
+     */
     @POST(Environment.END_POINT_REGISTER_JOB)
     suspend fun callApi(
         @Body request: RequestRegisterJobStudent,
     ): Response<ResponseGeneric<List<ResponseStudentJobs?>?>>
 }
 
+/**
+ * Data model for the student job registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterJobStudent(
     @SerializedName("descripcion")
     val description: String,
@@ -41,6 +57,12 @@ data class RequestRegisterJobStudent(
     val studentJobs: List<RequestStudentJobs>,
 )
 
+/**
+ * Data model for the student jobs in the registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestStudentJobs(
     @SerializedName("alumnoescuelaciclogrupo_id")
     val studentSchoolCycleGroupId: Int,
@@ -50,6 +72,12 @@ data class RequestStudentJobs(
     val comment: String,
 )
 
+/**
+ * Data model for the student jobs response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseStudentJobs(
     @SerializedName("fecha")
     val date: String,
@@ -58,5 +86,3 @@ data class ResponseStudentJobs(
     @SerializedName("resultado")
     val result: String,
 )
-
-

@@ -7,15 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+/**
+ * Interface for the login API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface LoginApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request for login.
+     *
+     * @param request The login request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with [ResponseLogin] data.
+     */
     @POST(Environment.END_POINT_LOGIN)
     suspend fun callApi(
         @Body request: RequestLogin
     ): Response<ResponseGeneric<ResponseLogin>?>
 }
 
-// Modelo para credenciales
+/**
+ * Data model for the login request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestLogin(
     @SerializedName("email")
     val email: String,
@@ -29,6 +45,12 @@ data class RequestLogin(
     val imei: String
 )
 
+/**
+ * Data model for the login response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseLogin(
     @SerializedName("access_token")
     val accessToken: String?,
@@ -40,6 +62,12 @@ data class ResponseLogin(
     val userLogin: UserLogin?
 )
 
+/**
+ * Data model for the user information in the login response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class UserLogin(
     @SerializedName("name")
     val name: String?,

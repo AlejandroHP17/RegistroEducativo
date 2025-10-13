@@ -9,18 +9,37 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the subject registration repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterSubjectRepository{
+    /**
+     * Executes the subject registration request.
+     *
+     * @param request The subject registration request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeRegisterOneSubject(request : RequestRegisterSubject)
     : ResultService<List<String?>?, FailureService>
 }
 
+/**
+ * Implementation of [RegisterSubjectRepository].
+ *
+ * @property registerSubjectApiCall The API call for subject registration.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterSubjectRepositoryImp(
     private val registerSubjectApiCall: RegisterSubjectApiCall
 ) : RegisterSubjectRepository {
 
-    /** Execute the user register
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * {@inheritDoc}
      */
     override suspend fun executeRegisterOneSubject(
         request : RequestRegisterSubject

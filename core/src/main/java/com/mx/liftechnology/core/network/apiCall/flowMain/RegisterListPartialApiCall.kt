@@ -7,16 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-
+/**
+ * Interface for the partial list registration API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterListPartialApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to register a list of partials.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     */
     @POST(Environment.END_POINT_REGISTER_PARTIAL)
     suspend fun callApi(
         @Body request: RequestRegisterPartial
     ): Response<ResponseGeneric<List<String?>?>>
 }
 
-// Modelo para credenciales
+/**
+ * Data model for the partial list registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterPartial(
     @SerializedName("numparciales")
     val numberPartials: Int?,
@@ -30,6 +45,12 @@ data class RequestRegisterPartial(
     val listPartials: List<RequestPartials?>
 )
 
+/**
+ * Data model for a partial in the registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestPartials(
     @SerializedName("descripcion")
     val description: String?,

@@ -7,16 +7,31 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-
+/**
+ * Interface for the student registration API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface RegisterStudentApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to register a student.
+     *
+     * @param request The request data.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     */
     @POST(Environment.END_POINT_REGISTER_STUDENT)
     suspend fun callApi(
         @Body request: RequestRegisterStudent
     ): Response<ResponseGeneric<List<String?>?>>
 }
 
-// Modelo para credenciales
+/**
+ * Data model for the student registration request.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterStudent(
     @SerializedName("nombres")
     val name: String,

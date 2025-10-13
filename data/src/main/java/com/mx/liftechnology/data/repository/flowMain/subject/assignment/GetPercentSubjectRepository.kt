@@ -10,13 +10,36 @@ import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
+/**
+ * Interface for the subject percentage repository.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetPercentSubjectRepository{
+    /**
+     * Executes the request to get the percentage of a subject.
+     *
+     * @param request The request data.
+     * @return A [ResultService] indicating the result of the operation.
+     */
     suspend fun executeGetPercentSubject(request : RequestGetPercentSubjectId): ResultService<List<ResponseGetPercentSubjectId>?, FailureService>
 }
 
+/**
+ * Implementation of [GetPercentSubjectRepository].
+ *
+ * @property getPercentSubjectIdApiCall The API call for getting the subject percentage.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetPercentSubjectRepositoryImp(private val getPercentSubjectIdApiCall: GetPercentSubjectIdApiCall
 ): GetPercentSubjectRepository {
 
+    /**
+     * {@inheritDoc}
+     */
     override suspend fun executeGetPercentSubject(request: RequestGetPercentSubjectId) : ResultService<List<ResponseGetPercentSubjectId>?, FailureService>{
         return try{
             val response = getPercentSubjectIdApiCall.callApi(request)

@@ -7,14 +7,31 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+/**
+ * Interface for the CCT API call.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 fun interface GetCctApiCall {
-    /** Realiza la petición al API */
+    /**
+     * Makes the API request to get school information by CCT.
+     *
+     * @param cct The CCT of the school.
+     * @return A Retrofit [Response] containing a [ResponseGeneric] with [ResponseCctSchool] data.
+     */
     @GET(Environment.END_POINT_GET_CCT)
     suspend fun callApi(
         @Path("cct") cct: String
     ): Response<ResponseGeneric<ResponseCctSchool?>>
 }
 
+/**
+ * Data model for the CCT response.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseCctSchool(
     @SerializedName("cct")
     val cct: String,
