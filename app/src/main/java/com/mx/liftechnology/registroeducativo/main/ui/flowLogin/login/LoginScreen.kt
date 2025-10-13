@@ -32,7 +32,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The Login screen.
+ *
+ * @param navController The navigation controller.
+ * @param loginViewModel The ViewModel for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ * @param onSuccess A lambda to be invoked when the login is successful.
+ */
 @Composable
 fun LoginScreen(
     navController: NavHostController,
@@ -77,6 +84,9 @@ fun LoginScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
+/**
+ * The header of the Login screen.
+ */
 @Composable
 fun HeaderLoginScreen() {
     CustomSpace(dimensionResource(id = R.dimen.margin_top_image))
@@ -89,6 +99,13 @@ fun HeaderLoginScreen() {
     )
 }
 
+/**
+ * The body of the Login screen.
+ *
+ * @param inputState The state of the input fields.
+ * @param callbacks The callbacks for the input fields.
+ * @param navigate A lambda to be invoked to navigate to the "Forget Password" screen.
+ */
 @Composable
 fun BodyLoginScreen(
     inputState: ModelLoginInputsUI,
@@ -123,6 +140,11 @@ fun BodyLoginScreen(
     )
 }
 
+/**
+ * The action button of the Login screen.
+ *
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun ActionLoginScreen(
     validateFieldsCompose: () -> Unit,
@@ -136,6 +158,11 @@ fun ActionLoginScreen(
     )
 }
 
+/**
+ * The footer of the Login screen.
+ *
+ * @param navigate A lambda to be invoked to navigate to the "Register User" screen.
+ */
 @Composable
 fun FooterLoginScreen(
     navigate: () -> Unit,

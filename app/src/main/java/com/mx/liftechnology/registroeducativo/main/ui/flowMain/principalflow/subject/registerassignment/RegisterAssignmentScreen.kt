@@ -43,6 +43,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * The Assignment Registration screen.
+ *
+ * @param navController The navigation controller.
+ * @param backStackEntry The back stack entry for this screen.
+ * @param registerAssignmentViewModel The ViewModel for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ */
 @Composable
 fun RegisterAssignmentScreen(
     navController: NavHostController,
@@ -166,6 +174,12 @@ fun RegisterAssignmentScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
+/**
+ * The header of the Assignment Registration screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param navController The navigation controller.
+ */
 @Composable
 private fun HeaderRegisterAssignment(
     uiState: ModelRegisterAssignmentUiState,
@@ -176,6 +190,14 @@ private fun HeaderRegisterAssignment(
     ) { navController.popBackStack() }
 }
 
+/**
+ * The body of the Assignment Registration screen.
+ *
+ * @param dataState The data state for the screen.
+ * @param dialogState The state of the dialog.
+ * @param onNameJobChanged A lambda to be invoked when the job name changes.
+ * @param showDialog A lambda to be invoked to show the dialog.
+ */
 @Composable
 fun BodyRegisterAssignment(
     dataState: ModelRegisterAssignmentDataState,
@@ -196,6 +218,12 @@ fun BodyRegisterAssignment(
     ) { showDialog() }
 }
 
+/**
+ * The second part of the body of the Assignment Registration screen.
+ *
+ * @param dataState The data state for the screen.
+ * @param onNameAssignmentChanged A lambda to be invoked when the assignment name changes.
+ */
 @Composable
 private fun Body2RegisterAssignment(
     dataState: ModelRegisterAssignmentDataState,
@@ -228,6 +256,12 @@ private fun Body2RegisterAssignment(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * The column for registering the score.
+ *
+ * @param dataState The data state for the screen.
+ * @param onScoreChange A lambda to be invoked when the score changes.
+ */
 @Composable
 private fun ColumnRegisterScore(
     dataState: ModelRegisterAssignmentDataState,
@@ -239,6 +273,11 @@ private fun ColumnRegisterScore(
     )
 }
 
+/**
+ * The action button for the Assignment Registration screen.
+ *
+ * @param onClick A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 private fun ActionRegisterAssignment(
     onClick: () -> Unit,

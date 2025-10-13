@@ -4,10 +4,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileVi
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for profile-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val profileModule = module {
+    /**
+     * Provides an instance of [ProfileViewModel].
+     */
     viewModel { ProfileViewModel(get()) }
 }

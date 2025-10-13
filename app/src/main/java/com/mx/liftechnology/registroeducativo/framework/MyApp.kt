@@ -24,22 +24,26 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import timber.log.Timber
 
-/** MyApp - Start the first and unics elements of the app, plus detect lifecycle from activities
- * @author pelkidev
- * @since 1.0.0
- * */
+/**
+ * Custom [Application] class for the application.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class MyApp : Application() {
 
+    /**
+     * Called when the application is starting, before any other application objects have been created.
+     */
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         initKoin()
     }
 
-    /** initKoin - Start the koin (dependency injection)
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * Initializes Koin for dependency injection.
+     */
     private fun initKoin() {
         startKoin {
             androidContext(this@MyApp)

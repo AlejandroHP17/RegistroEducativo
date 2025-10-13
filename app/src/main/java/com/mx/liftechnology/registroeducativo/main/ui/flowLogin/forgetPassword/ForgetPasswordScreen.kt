@@ -23,7 +23,12 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The "Forget Password" screen.
+ *
+ * @param navController The navigation controller.
+ * @param forgetPasswordViewModel The ViewModel for this screen.
+ */
 @Composable
 fun ForgetPasswordScreen(
     navController: NavHostController,
@@ -49,6 +54,11 @@ fun ForgetPasswordScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
+/**
+ * The header of the "Forget Password" screen.
+ *
+ * @param navigate A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 fun HeaderForgetPasswordScreen(
     navigate: () -> Unit,
@@ -60,6 +70,13 @@ fun HeaderForgetPasswordScreen(
     )
 }
 
+/**
+ * The body of the "Forget Password" screen.
+ *
+ * @param emailState The state of the email input field.
+ * @param onEmailChanged A lambda to be invoked when the email input changes.
+ * @param getRules The rules for forgetting a password.
+ */
 @Composable
 fun BodyForgetPasswordScreen(
     emailState : ModelStateOutFieldText,
@@ -78,7 +95,11 @@ fun BodyForgetPasswordScreen(
     TextBody(getRules)
 }
 
-
+/**
+ * The footer of the "Forget Password" screen.
+ *
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun FooterForgetPasswordScreen(
     validateFieldsCompose: () -> Unit,

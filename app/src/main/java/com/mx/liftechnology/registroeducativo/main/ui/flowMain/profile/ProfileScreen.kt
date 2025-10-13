@@ -20,6 +20,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * The Profile screen.
+ *
+ * @param navController The navigation controller.
+ * @param profileViewModel The ViewModel for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ * @param onCloseSession A lambda to be invoked when the session is closed.
+ */
 @Composable
 fun ProfileScreen(
     navController: NavHostController,
@@ -52,6 +60,11 @@ fun ProfileScreen(
     }
 }
 
+/**
+ * The header of the Profile screen.
+ *
+ * @param navController The navigation controller.
+ */
 @Composable
 fun HeaderProfile(navController: NavHostController){
     ComponentHeaderBack(
@@ -60,6 +73,11 @@ fun HeaderProfile(navController: NavHostController){
     ) { navController.popBackStack() }
 }
 
+/**
+ * The action button of the Profile screen.
+ *
+ * @param closeSessionCompose A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 private fun ActionProfile(
     closeSessionCompose: () -> Unit,

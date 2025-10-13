@@ -15,28 +15,42 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the "Forget Password" screen.
+ *
+ * @property dispatcherProvider The provider for Coroutine dispatchers.
+ * @property validateFieldsUseCase The use case for validating input fields.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class ForgetPasswordViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelLoginStateUI())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelLoginStateUI> = _uiState.asStateFlow()
 
     private val _emailState = MutableStateFlow(ModelStateOutFieldText())
+    /** The state of the email input field. */
     val emailState: StateFlow<ModelStateOutFieldText> = _emailState.asStateFlow()
 
+    /**
+     * Called when the email input changes.
+     *
+     * @param email The new email value.
+     */
     fun onEmailChanged(email: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _emailState.update { email.stringToModelStateOutFieldText() }
         }
     }
 
-    /** Check the inputs and post error or correct states directly on the editexts
-     * In correct case, make the request
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * Validates the input fields and updates their states.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
@@ -45,6 +59,12 @@ class ForgetPasswordViewModel(
         }
     }
 
+    /**
+     * Gets the rules for forgetting a password.
+     *
+     * @param context The application context.
+     * @return A string containing the formatted rules.
+     */
     fun getRules(context: Context): String {
         val listRules = context.resources?.getStringArray(R.array.rules_forget_pass)
         val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()

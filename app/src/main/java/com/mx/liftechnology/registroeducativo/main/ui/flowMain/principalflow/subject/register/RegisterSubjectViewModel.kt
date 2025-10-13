@@ -23,6 +23,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Subject Registration screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterSubjectViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsSubjectUseCase: ValidateFieldsSubjectUseCase,
@@ -31,8 +37,14 @@ class RegisterSubjectViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterSubjectUIState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelRegisterSubjectUIState> = _uiState.asStateFlow()
 
+    /**
+     * Called when the subject name changes.
+     *
+     * @param subject The new subject name.
+     */
     fun onSubjectChanged(subject: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update {
@@ -43,6 +55,11 @@ class RegisterSubjectViewModel(
         }
     }
 
+    /**
+     * Called when the name of a work method changes.
+     *
+     * @param value A pair containing the new assessment type and the index of the item that changed.
+     */
     fun onNameChange(value: Pair<ResponseGetListAssessmentType?, Int>) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update {
@@ -63,6 +80,11 @@ class RegisterSubjectViewModel(
         }
     }
 
+    /**
+     * Called when the percentage of a work method changes.
+     *
+     * @param value A pair containing the new percentage and the index of the item that changed.
+     */
     fun onPercentChange(value: Pair<String, Int>) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update {
@@ -79,6 +101,11 @@ class RegisterSubjectViewModel(
         }
     }
 
+    /**
+     * Called when the number of options changes.
+     *
+     * @param options The new number of options.
+     */
     fun onOptionsChanged(options: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             if (options.toInt() > 0) {
@@ -103,6 +130,9 @@ class RegisterSubjectViewModel(
         }
     }
 
+    /**
+     * Validates the input fields and proceeds to register the subject if they are valid.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch (dispatcherProvider.io){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -177,6 +207,9 @@ class RegisterSubjectViewModel(
         }
     }
 
+    /**
+     * Gets the list of assessment types.
+     */
     fun getListAssessmentType() {
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssessmentTypeUseCase.invoke()
@@ -215,6 +248,11 @@ class RegisterSubjectViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {

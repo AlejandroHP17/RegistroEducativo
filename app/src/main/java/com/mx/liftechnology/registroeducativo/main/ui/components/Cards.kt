@@ -52,6 +52,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 import java.time.LocalDate
 
+/**
+ * A composable function for previewing the cards in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun CustomCardView() {
@@ -132,6 +135,12 @@ fun CustomCardView() {
     }
 }
 
+/**
+ * A custom card component with a title, a number, and a dropdown menu.
+ *
+ * @param item The data for the card.
+ * @param callbacks The callbacks for the card.
+ */
 @Composable
 fun CustomCard(
     item: ModelCustomCard,
@@ -224,6 +233,12 @@ fun CustomCard(
     }
 }
 
+/**
+ * A complex card component with an expandable title and a list of subtitles.
+ *
+ * @param item The data for the card.
+ * @param complexCallbacks The callbacks for the card.
+ */
 @Composable
 fun ComplexCard(
     item: ModelComplexCard?,
@@ -321,17 +336,23 @@ fun ComplexCard(
     }
 }
 
+/**
+ * A grid item component.
+ *
+ * @param item The data for the grid item.
+ * @param onItemClick A lambda to be invoked when the grid item is clicked.
+ */
 @Composable
 fun GridItem(
     item: ModelPrincipalMenuData,
     onItemClick: (ModelPrincipalMenuData) -> Unit,
-) { // Recibe un ID de recurso
+) { 
     Card(
         modifier = Modifier
             .padding(8.dp)
             .clickable { onItemClick(item) },
         colors = CardDefaults.cardColors(
-            containerColor = colorWhite, // Color de fondo
+            containerColor = colorWhite, 
             contentColor = colorWhite
         ),
     ) {
@@ -351,6 +372,13 @@ fun GridItem(
     }
 }
 
+/**
+ * A dialog item component with a radio button.
+ *
+ * @param text The text to display.
+ * @param isSelected Whether the item is selected.
+ * @param onSelected A lambda to be invoked when the item is selected.
+ */
 @Composable
 fun DialogGroupItem(
     text: String,
@@ -378,6 +406,15 @@ fun DialogGroupItem(
     }
 }
 
+/**
+ * An item for displaying an evaluation percentage.
+ *
+ * @param listWorkMethods The list of work methods to choose from.
+ * @param name The name of the evaluation.
+ * @param percent The percentage of the evaluation.
+ * @param onNameChange A lambda to be invoked when the name changes.
+ * @param onPercentChange A lambda to be invoked when the percentage changes.
+ */
 @Composable
 fun EvaluationPercentItem(
     listWorkMethods: List<ResponseGetListAssessmentType?>,
@@ -404,7 +441,6 @@ fun EvaluationPercentItem(
         }
 
         Box(modifier = Modifier.weight(2f)) {
-            // Campo de texto para el porcentaje
             BoxEditTextNumeric(
                 value = percent,
                 enable = true,
@@ -419,6 +455,13 @@ fun EvaluationPercentItem(
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 }
 
+/**
+ * An item for displaying a student's evaluation.
+ *
+ * @param nameStudent The name of the student.
+ * @param score The student's score.
+ * @param onScoreChange A lambda to be invoked when the score changes.
+ */
 @Composable
 fun EvaluationStudentItem(
     nameStudent: ModelStateOutFieldText,
@@ -451,6 +494,13 @@ fun EvaluationStudentItem(
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 }
 
+/**
+ * A list item for registering a partial.
+ *
+ * @param index The index of the item.
+ * @param date The data for the date period.
+ * @param onDateChange A lambda to be invoked when the date changes.
+ */
 @Composable
 fun RegisterPartialListItem(
     index: Int,

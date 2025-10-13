@@ -20,6 +20,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Login screen.
+ *
+ * @property dispatcherProvider The provider for Coroutine dispatchers.
+ * @property loginUseCase The use case for handling login.
+ * @property validateFieldsLoginFlowUseCase The use case for validating input fields.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class LoginViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val loginUseCase: LoginUseCase,
@@ -27,12 +37,19 @@ class LoginViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelLoginStateUI())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelLoginStateUI> = _uiState.asStateFlow()
 
     private val _inputState = MutableStateFlow(ModelLoginInputsUI())
+    /** The state of the input fields. */
     val inputState: StateFlow<ModelLoginInputsUI> = _inputState.asStateFlow()
     private val inputStateVM: ModelLoginInputsUI get() = _inputState.value
 
+    /**
+     * Called when the email input changes.
+     *
+     * @param email The new email value.
+     */
     fun onEmailChanged(email: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -41,6 +58,11 @@ class LoginViewModel(
         }
     }
 
+    /**
+     * Called when the password input changes.
+     *
+     * @param pass The new password value.
+     */
     fun onPassChanged(pass: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -49,6 +71,11 @@ class LoginViewModel(
         }
     }
 
+    /**
+     * Called when the "remember me" checkbox state changes.
+     *
+     * @param remember The new state of the checkbox.
+     */
     fun onRememberChanged(remember: Boolean) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -57,11 +84,9 @@ class LoginViewModel(
         }
     }
 
-    /** Check the inputs and post error or correct states directly on the editexts
-     * In correct case, make the request
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * Validates the input fields and proceeds to login if they are valid.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -78,11 +103,6 @@ class LoginViewModel(
         }
     }
 
-
-    /** Request to Login
-     * @author pelkidev
-     * @since 1.0.0
-     * */
     private suspend fun loginCompose() {
         when (loginUseCase.invoke(
             email = inputStateVM.emailInputState.valueText,
@@ -125,6 +145,11 @@ class LoginViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {

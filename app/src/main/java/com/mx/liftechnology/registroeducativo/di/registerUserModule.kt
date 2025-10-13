@@ -9,22 +9,36 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for user registration-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val registerUserModule = module {
 
+    /**
+     * Provides an instance of [RegisterUserApiCall].
+     */
     factory { get<Retrofit>().create(RegisterUserApiCall::class.java) }
 
+    /**
+     * Provides a singleton instance of [RegisterUserRepository].
+     */
     single<RegisterUserRepository> {
         RegisterUserRepositoryImp(get())
     }
 
+    /**
+     * Provides a singleton instance of [RegisterUserUseCase].
+     */
     single {
         RegisterUserUseCase(get())
     }
 
+    /**
+     * Provides an instance of [RegisterUserViewModel].
+     */
     viewModel {
         RegisterUserViewModel(get(), get(), get())
     }

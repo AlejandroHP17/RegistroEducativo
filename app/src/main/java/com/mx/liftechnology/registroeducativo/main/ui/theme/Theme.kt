@@ -82,7 +82,14 @@ private val darkScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
-
+/**
+ * A data class that holds a family of colors.
+ *
+ * @property color The main color.
+ * @property onColor The color to use for content on top of [color].
+ * @property colorContainer The container color.
+ * @property onColorContainer The color to use for content on top of [colorContainer].
+ */
 @Immutable
 data class ColorFamily(
     val color: Color,
@@ -95,10 +102,16 @@ val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
 
+/**
+ * The main theme for the application.
+ *
+ * @param darkTheme Whether the theme should be dark.
+ * @param dynamicColor Whether to use dynamic color (available on Android 12+).
+ * @param content The content of the theme.
+ */
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable() () -> Unit
 ) {

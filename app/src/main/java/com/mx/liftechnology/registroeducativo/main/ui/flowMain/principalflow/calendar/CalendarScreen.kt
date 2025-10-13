@@ -25,6 +25,12 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.SegmentedContro
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.BodyListGeneric
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * The Calendar screen.
+ *
+ * @param navController The navigation controller.
+ * @param calendarViewModel The ViewModel for this screen.
+ */
 @Composable
 fun CalendarScreen (
     navController: NavHostController,
@@ -82,16 +88,23 @@ fun CalendarScreen (
     }
 }
 
+/**
+ * The header of the Calendar screen.
+ *
+ * @param navigate A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 fun HeaderCalendarScreen(
     navigate : () -> Unit
 ){
     ComponentHeaderBackWithout(
         title = stringResource(R.string.calendar_name),
-        onReturnClick = { navigate()}
-    )
+        onReturnClick = { navigate()})
 }
 
+/**
+ * The body of the Calendar screen.
+ */
 @Composable
 fun BodyCalendarScreen(
 ){
@@ -108,6 +121,12 @@ fun BodyCalendarScreen(
     )
 }
 
+/**
+ * The body of the select screen.
+ *
+ * @param selectedIndex The index of the currently selected option.
+ * @param itemSelected A lambda to be invoked when an option is selected.
+ */
 @Composable
 fun BodySelectScreen(
     selectedIndex : Int,

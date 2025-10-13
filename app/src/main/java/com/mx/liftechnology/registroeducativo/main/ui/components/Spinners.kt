@@ -35,6 +35,9 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 
+/**
+ * A composable function for previewing the spinners in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun SpinnerScreen() {
@@ -70,6 +73,15 @@ fun SpinnerScreen() {
     }
 }
 
+/**
+ * An outlined text field with a dropdown menu.
+ *
+ * @param options The list of options to display.
+ * @param selectedOption The currently selected option.
+ * @param read Whether the text field is read-only.
+ * @param label The label for the text field.
+ * @param onOptionSelected A lambda to be invoked when an option is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerOutlinedTextField(
@@ -79,8 +91,8 @@ fun SpinnerOutlinedTextField(
     label: String,
     onOptionSelected: (ModelCustomSpinner) -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) } // Controla si el menú está abierto
-    var selectedText by remember { mutableStateOf(selectedOption) } // Texto seleccionado
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedOption) }
 
     Column {
         ExposedDropdownMenuBox(
@@ -90,11 +102,11 @@ fun SpinnerOutlinedTextField(
                 if (!read) {
                     expanded = !expanded
                 }
-            } // Abre/cierra el menú al hacer clic
+            }
         ) {
             OutlinedTextField(
                 value = selectedText.valueText,
-                onValueChange = {}, // Deshabilitado para evitar edición manual
+                onValueChange = {}, 
                 enabled = false,
                 label = {
                     Text(
@@ -103,7 +115,7 @@ fun SpinnerOutlinedTextField(
                     )
                 },
                 modifier = Modifier
-                    .menuAnchor() // Ancla el menú al TextField
+                    .menuAnchor()
                     .fillMaxWidth(),
                 trailingIcon = {
                     Icon(
@@ -120,7 +132,7 @@ fun SpinnerOutlinedTextField(
                 ExposedDropdownMenu(
 
                     expanded = expanded,
-                    onDismissRequest = { expanded = false } // Cierra el menú si se toca fuera
+                    onDismissRequest = { expanded = false }
                 ) {
                     options.forEach { option ->
                         DropdownMenuItem(
@@ -128,7 +140,7 @@ fun SpinnerOutlinedTextField(
                             onClick = {
                                 selectedText = option.value.stringToModelStateOutFieldText()
                                 onOptionSelected(option)
-                                expanded = false // Cierra el menú después de seleccionar
+                                expanded = false
                             }
                         )
                     }
@@ -149,7 +161,14 @@ fun SpinnerOutlinedTextField(
     }
 }
 
-
+/**
+ * An outlined text field with a dropdown menu that allows for custom input.
+ *
+ * @param options The list of options to display.
+ * @param selectedOption The currently selected option.
+ * @param label The label for the text field.
+ * @param onOptionSelected A lambda to be invoked when an option is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerMixOutlinedTextField(
@@ -182,7 +201,7 @@ fun SpinnerMixOutlinedTextField(
                         teacherSchoolCycleGroupId = options.firstOrNull()?.teacherSchoolCycleGroupId
                     )
                     )
-                }, // Deshabilitado para evitar edición manual
+                }, 
                 readOnly = !isEditable,
                 label = {
                     Text(
@@ -193,7 +212,7 @@ fun SpinnerMixOutlinedTextField(
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Sentences),
                 modifier = Modifier
-                    .menuAnchor() // Ancla el menú al TextField
+                    .menuAnchor() 
                     .fillMaxWidth()
                     .clickable { expanded = true },
                 trailingIcon = {

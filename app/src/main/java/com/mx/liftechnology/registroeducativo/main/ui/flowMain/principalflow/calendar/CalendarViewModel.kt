@@ -20,9 +20,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/** CalendarViewModel -
- * @author pelkidev
- * @since 1.0.0
+/**
+ * ViewModel for the Calendar screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 class CalendarViewModel(
     private val dispatcherProvider: DispatcherProvider,
@@ -31,15 +33,20 @@ class CalendarViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelMenuStateUI())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelMenuStateUI> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelListSubjectDataState())
+    /** The data state for subjects. */
     val dataState: StateFlow<ModelListSubjectDataState> = _dataState.asStateFlow()
 
     private val _dataState2 = MutableStateFlow(ModelListStudentDataState())
+    /** The data state for students. */
     val dataState2: StateFlow<ModelListStudentDataState> = _dataState2.asStateFlow()
 
-
+    /**
+     * Gets the list of subjects.
+     */
     fun getSubject() {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -74,6 +81,9 @@ class CalendarViewModel(
         }?: emptyList()
     }
 
+    /**
+     * Gets the list of students.
+     */
     fun getListStudent() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -107,7 +117,7 @@ class CalendarViewModel(
             ?.mapIndexed { index, student ->
                 ModelCustomCard(
                     id = student.studentId ?: "",
-                    numberList = (index + 1).toString(), // Numeración comenzando en 1
+                    numberList = (index + 1).toString(),
                     nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()
                 )
             } ?: emptyList()

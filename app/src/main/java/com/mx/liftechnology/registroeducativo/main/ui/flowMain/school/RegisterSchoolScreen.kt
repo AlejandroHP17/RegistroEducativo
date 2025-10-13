@@ -34,7 +34,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The School Registration screen.
+ *
+ * @param navController The navigation controller.
+ * @param sharedViewModel The shared ViewModel.
+ * @param registerSchoolViewModel The ViewModel for this screen.
+ */
 @Composable
 fun RegisterSchoolScreen(
     navController: NavHostController,
@@ -80,7 +86,7 @@ fun RegisterSchoolScreen(
             callbacks = ModelRegisterSchoolUICallbacks(
                 onCycleChanged = {registerSchoolViewModel.onCycleChanged(it)},
                 onGradeChanged = {registerSchoolViewModel.onGradeChanged(it)},
-                onGroupChanged = { registerSchoolViewModel.onGroupChanged(it) }
+                onGroupChanged = {registerSchoolViewModel.onGroupChanged(it) }
             )
         )
 
@@ -95,6 +101,11 @@ fun RegisterSchoolScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
+/**
+ * The header of the School Registration screen.
+ *
+ * @param navController The navigation controller.
+ */
 @Composable
 private fun HeaderRegisterSchool(navController: NavHostController) {
     ComponentHeaderBack(
@@ -103,6 +114,13 @@ private fun HeaderRegisterSchool(navController: NavHostController) {
     ) { navController.popBackStack() }
 }
 
+/**
+ * The body of the School Registration screen.
+ *
+ * @param cct The state of the CCT input field.
+ * @param uiAutomatic The data for semi-automatic fields.
+ * @param onCctChanged A lambda to be invoked when the CCT input changes.
+ */
 @Composable
 private fun BodyRegisterSchool(
     cct: ModelStateOutFieldText,
@@ -129,6 +147,15 @@ private fun BodyRegisterSchool(
     ) {}
 }
 
+/**
+ * The body of the School Registration screen with double fields.
+ *
+ * @param semiAutomatic The data for semi-automatic fields.
+ * @param cycle The state of the cycle input field.
+ * @param grade The state of the grade input field.
+ * @param group The state of the group input field.
+ * @param callbacks The callbacks for the input fields.
+ */
 @Composable
 private fun BodyDoubleRegisterSchool(
     semiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
@@ -188,6 +215,13 @@ private fun BodyDoubleRegisterSchool(
     }
 }
 
+/**
+ * The action button of the School Registration screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ * @param onRecord A lambda to be invoked when the record button is clicked.
+ */
 @Composable
 private fun ActionRegisterSchool(
     uiState: ModelRegisterSchoolUIState,

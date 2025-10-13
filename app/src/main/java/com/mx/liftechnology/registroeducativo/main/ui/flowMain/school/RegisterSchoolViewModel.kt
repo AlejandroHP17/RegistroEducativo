@@ -29,6 +29,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * ViewModel for the School Registration screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterSchoolViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getCctUseCase: GetCctUseCase,
@@ -38,21 +44,27 @@ class RegisterSchoolViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterSchoolUIState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelRegisterSchoolUIState> = _uiState.asStateFlow()
 
     private val _uiSemiAutomaticData = MutableStateFlow(ModelRegisterSchoolUISemiAutomaticData())
+    /** The data state for semi-automatic fields. */
     val uiSemiAutomaticData: StateFlow<ModelRegisterSchoolUISemiAutomaticData> = _uiSemiAutomaticData.asStateFlow()
 
     private val _cct = MutableStateFlow(ModelStateOutFieldText())
+    /** The state of the CCT input field. */
     val cct: StateFlow<ModelStateOutFieldText> = _cct.asStateFlow()
 
     private val _grade = MutableStateFlow(ModelStateOutFieldText())
+    /** The state of the grade input field. */
     val grade: StateFlow<ModelStateOutFieldText> = _grade.asStateFlow()
 
     private val _group = MutableStateFlow(ModelStateOutFieldText())
+    /** The state of the group input field. */
     val group: StateFlow<ModelStateOutFieldText> = _group.asStateFlow()
 
     private val _cycle = MutableStateFlow(ModelStateOutFieldText())
+    /** The state of the cycle input field. */
     val cycle: StateFlow<ModelStateOutFieldText> = _cycle.asStateFlow()
 
     private val resultsObserver = androidx.lifecycle.Observer<List<String>> { results ->
@@ -62,24 +74,44 @@ class RegisterSchoolViewModel(
 
     private var isListening = true
 
+    /**
+     * Called when the cycle input changes.
+     *
+     * @param cycle The new cycle value.
+     */
     fun onCycleChanged(cycle: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _cycle.update { cycle.stringToModelStateOutFieldText() }
         }
     }
 
+    /**
+     * Called when the grade input changes.
+     *
+     * @param grade The new grade value.
+     */
     fun onGradeChanged(grade: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _grade.update { grade.stringToModelStateOutFieldText() }
         }
     }
 
+    /**
+     * Called when the group input changes.
+     *
+     * @param group The new group value.
+     */
     fun onGroupChanged(group: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _group.update { group.stringToModelStateOutFieldText() }
         }
     }
 
+    /**
+     * Called when the CCT input changes.
+     *
+     * @param cct The new CCT value.
+     */
     fun onCctChanged(cct: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             if (cct.length == 10) {
@@ -105,10 +137,6 @@ class RegisterSchoolViewModel(
         }
     }
 
-    /** Go to validate  the cct
-     * @author pelkidev
-     * @since 1.0.0
-     * */
     private suspend fun getSchoolCCT(cct: String) {
         when (val state = getCctUseCase.invoke(cct)) {
             is SuccessState -> {
@@ -166,6 +194,9 @@ class RegisterSchoolViewModel(
         }
     }
 
+    /**
+     * Validates the input fields and proceeds to register the school if they are valid.
+     */
     fun validateFields() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -234,14 +265,18 @@ class RegisterSchoolViewModel(
         }
     }
 
-    /** Seccion para voz */
+    /**
+     * Called when the ViewModel is cleared.
+     */
     override fun onCleared() {
         super.onCleared()
-        // remover observer para evitar duplicados/leaks
         voiceRecognitionManager.resultsLiveData.removeObserver(resultsObserver)
         voiceRecognitionManager.release()
     }
 
+    /**
+     * Toggles the voice recognition listening state.
+     */
     fun change() {
         viewModelScope.launch(dispatcherProvider.main) {
             if (isListening) {
@@ -264,6 +299,11 @@ class RegisterSchoolViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch(dispatcherProvider.main) {
             _uiState.update {

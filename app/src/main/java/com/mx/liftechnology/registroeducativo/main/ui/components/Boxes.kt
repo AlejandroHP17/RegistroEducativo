@@ -43,7 +43,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSecondaryText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 
-
+/**
+ * A composable function for previewing the text fields in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun TestBoxes(){
@@ -107,6 +109,14 @@ fun TestBoxes(){
     }
 }
 
+/**
+ * An outlined text field for email input.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextEmail(
     value:ModelStateOutFieldText,
@@ -144,7 +154,16 @@ fun BoxEditTextEmail(
     }
 }
 
-
+/**
+ * An outlined text field for password input.
+ *
+ * @param value The state of the text field.
+ * @param statePass Whether the password is visible.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ * @param onStatePassChanged A lambda to be invoked when the password visibility state changes.
+ */
 @Composable
 fun BoxEditTextPassword(
     value:ModelStateOutFieldText,
@@ -203,6 +222,14 @@ fun BoxEditTextPassword(
     }
 }
 
+/**
+ * A generic outlined text field that capitalizes the first letter of each word.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextCapitalLetterGeneric(
     value:ModelStateOutFieldText,
@@ -246,6 +273,14 @@ fun BoxEditTextCapitalLetterGeneric(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * A simple generic outlined text field.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextSimpleGeneric(
     value:ModelStateOutFieldText,
@@ -289,6 +324,14 @@ fun BoxEditTextSimpleGeneric(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * A complex generic outlined text field.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextComplexGeneric(
     value:ModelStateOutFieldText,
@@ -332,6 +375,14 @@ fun BoxEditTextComplexGeneric(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * An outlined text field that converts all input to uppercase.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextAllCaps(
     value:ModelStateOutFieldText,
@@ -376,7 +427,15 @@ fun BoxEditTextAllCaps(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
-
+/**
+ * An outlined text field for numeric input.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param maxNumberCharacter The maximum number of characters allowed.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextNumeric(
     value:ModelStateOutFieldText,
@@ -420,6 +479,14 @@ fun BoxEditTextNumeric(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * An outlined text field for score input.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the text field value changes.
+ */
 @Composable
 fun BoxEditTextScore(
     value:ModelStateOutFieldText,
@@ -430,11 +497,10 @@ fun BoxEditTextScore(
     var isEdited by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
 
-    // Detectar el primer enfoque
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect { interaction ->
             if (interaction is FocusInteraction.Focus && !isEdited) {
-                onBoxChanged("") // Limpiar campo
+                onBoxChanged("")
                 isEdited = true
             }
         }
@@ -479,6 +545,14 @@ fun BoxEditTextScore(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * An outlined text field with a calendar icon.
+ *
+ * @param value The state of the text field.
+ * @param enable Whether the text field is enabled.
+ * @param label The label for the text field.
+ * @param onBoxChanged A lambda to be invoked when the calendar icon is clicked.
+ */
 @Composable
 fun BoxEditTextCalendar(
     value:ModelStateOutFieldText,
@@ -531,8 +605,9 @@ fun BoxEditTextCalendar(
 
 }
 
-
-
+/**
+ * A composable function that returns the colors for the text fields.
+ */
 @Composable
 fun personalizeColors(): TextFieldColors {
     return TextFieldDefaults.colors(

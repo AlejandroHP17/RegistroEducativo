@@ -37,6 +37,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
+/**
+ * The Partial Registration screen.
+ *
+ * @param navController The navigation controller.
+ * @param registerPartialViewModel The ViewModel for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ */
 @Composable
 fun RegisterPartialScreen(
     navController: NavHostController,
@@ -109,7 +116,7 @@ fun RegisterPartialScreen(
             modifier = Modifier.constrainAs(action) {
                 bottom.linkTo(parent.bottom)
                 start.linkTo(parent.start)
-                end.linkTo(parent.end)
+                end.linkto(parent.end)
             }
         ) { ActionRegisterPartial (
             isAvailable = uiState.isAvailable,
@@ -129,6 +136,11 @@ fun RegisterPartialScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
+/**
+ * The header of the Partial Registration screen.
+ *
+ * @param navigate A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 private fun HeaderRegisterPartial(
     navigate : () -> Unit
@@ -136,10 +148,15 @@ private fun HeaderRegisterPartial(
     ComponentHeaderBack(
         title = stringResource(R.string.register_partial),
         body = stringResource(R.string.register_subject_name_description_2),
-        onReturnClick = { navigate()}
-    )
+        onReturnClick = { navigate()})
 }
 
+/**
+ * The body of the Partial Registration screen.
+ *
+ * @param uiData The data state for the screen.
+ * @param onPartialChanged A lambda to be invoked when the number of partials changes.
+ */
 @Composable
 private fun BodyRegisterPartial(
     uiData: ModelRegisterPartialUIData,
@@ -174,6 +191,12 @@ private fun BodyRegisterPartial(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+/**
+ * The column of the Partial Registration screen.
+ *
+ * @param uiData The data state for the screen.
+ * @param onDateChange A lambda to be invoked when a date range changes.
+ */
 @Composable
 private fun ColumnRegisterPartial(
     uiData: ModelRegisterPartialUIData,
@@ -186,6 +209,12 @@ private fun ColumnRegisterPartial(
         onDateChange = { onDateChange(it) })
 }
 
+/**
+ * The action button of the Partial Registration screen.
+ *
+ * @param isAvailable Whether the button is enabled.
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 private fun ActionRegisterPartial(
     isAvailable: Boolean,

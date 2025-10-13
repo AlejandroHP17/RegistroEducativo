@@ -3,10 +3,15 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.core.util.LocationHelper
 import org.koin.dsl.module
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for location-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val locationModule = module {
+    /**
+     * Provides a singleton instance of [LocationHelper].
+     */
     single { LocationHelper(get()) }
 }

@@ -43,7 +43,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
-
+/**
+ * A composable function for previewing the buttons in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun TestButton(){
@@ -63,6 +65,13 @@ fun TestButton(){
     }
 }
 
+/**
+ * A segmented control component.
+ *
+ * @param options The list of options to display.
+ * @param selectedIndex The index of the currently selected option.
+ * @param onOptionSelected A lambda to be invoked when an option is selected.
+ */
 @Composable
 fun SegmentedControl(
     options: List<String>,
@@ -108,7 +117,16 @@ fun SegmentedControl(
     }
 }
 
-
+/**
+ * A set of buttons for a calendar dialog.
+ *
+ * @param colorStart The color of the start button.
+ * @param colorEnd The color of the end button.
+ * @param colorContinue The color of the continue button.
+ * @param disabledContinue Whether the continue button is disabled.
+ * @param onActionClick A lambda to be invoked when a button is clicked.
+ * @param onDismiss A lambda to be invoked when the dialog is dismissed.
+ */
 @Composable
 fun ButtonsCalendar(
     colorStart: Color,
@@ -159,6 +177,11 @@ fun ButtonsCalendar(
     }
 }
 
+/**
+ * A back button component.
+ *
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 fun ButtonReturn(
     onReturnClick: () -> Unit,
@@ -178,7 +201,14 @@ fun ButtonReturn(
     }
 }
 
-
+/**
+ * An action button component.
+ *
+ * @param containerColor The color of the button's container.
+ * @param text The text to display on the button.
+ * @param onActionClick A lambda to be invoked when the button is clicked.
+ * @param isAvailable Whether the button is enabled.
+ */
 @Composable
 fun ButtonAction(
     containerColor:Color,
@@ -209,6 +239,13 @@ fun ButtonAction(
     }
 }
 
+/**
+ * A short action button component.
+ *
+ * @param containerColor The color of the button's container.
+ * @param text The text to display on the button.
+ * @param onActionClick A lambda to be invoked when the button is clicked.
+ */
 @Composable
 fun ButtonActionShort(
     containerColor:Color,
@@ -238,6 +275,15 @@ fun ButtonActionShort(
     }
 }
 
+/**
+ * A component with a pair of buttons: one for an action and one for recording.
+ *
+ * @param actionColor The color of the action button.
+ * @param recordColor The color of the record button.
+ * @param text The text to display on the action button.
+ * @param onActionClick A lambda to be invoked when the action button is clicked.
+ * @param onRecordClick A lambda to be invoked when the record button is clicked.
+ */
 @Composable
 fun ButtonPair(
     actionColor:Color,
@@ -253,7 +299,6 @@ fun ButtonPair(
     {
         val (action, spacer, record) = createRefs()
 
-        // Botón de acción
         Button(
             onClick = onActionClick,
             modifier = Modifier
@@ -281,7 +326,6 @@ fun ButtonPair(
                 end.linkTo(record.start)
             })
 
-        // Botón de grabación
         Button(
             onClick = onRecordClick,
             modifier = Modifier
@@ -310,6 +354,13 @@ fun ButtonPair(
     }
 }
 
+/**
+ * A checkbox with text component.
+ *
+ * @param checked The checked state of the checkbox.
+ * @param onCheckedChange A lambda to be invoked when the checked state changes.
+ * @param text The text to display next to the checkbox.
+ */
 @Composable
 fun CheckboxWithText(checked: Boolean, onCheckedChange: (Boolean) -> Unit, text: String) {
     Row(

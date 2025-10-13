@@ -16,6 +16,16 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeader
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
+/**
+ * A generic screen for displaying jobs.
+ *
+ * @param title The title of the screen.
+ * @param description The description of the screen.
+ * @param dataState The data state for the screen.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param complexCallbacks The callbacks for the complex card.
+ * @param onAction A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun GenericJobsScreen(
     title: String,
@@ -46,7 +56,13 @@ fun GenericJobsScreen(
     }
 }
 
-
+/**
+ * The header of the generic jobs screen.
+ *
+ * @param title The title of the header.
+ * @param description The description of the header.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 private fun GenericHeaderAssignment(
     title: String,
@@ -60,6 +76,12 @@ private fun GenericHeaderAssignment(
     )
 }
 
+/**
+ * The body of the generic jobs screen.
+ *
+ * @param dataState The data state for the screen.
+ * @param complexCallbacks The callbacks for the complex card.
+ */
 @Composable
 private fun BodyAssignment(
     dataState: ModelAssignmentDataState,
@@ -75,6 +97,11 @@ private fun BodyAssignment(
     )
 }
 
+/**
+ * The action button of the generic jobs screen.
+ *
+ * @param onActionClick A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 private fun ActionAssignment(
     onActionClick:() -> Unit

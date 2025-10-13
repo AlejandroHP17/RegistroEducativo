@@ -22,6 +22,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
+/**
+ * A composable function for previewing the components in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun TestComponents() {
@@ -41,6 +44,13 @@ fun TestComponents() {
 
 }
 
+/**
+ * A header component with a back button.
+ *
+ * @param title The title of the header.
+ * @param body The body text of the header.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) {
     Column(
@@ -64,6 +74,12 @@ fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) 
     }
 }
 
+/**
+ * A header component with a back button but no body text.
+ *
+ * @param title The title of the header.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
     Column(
@@ -83,6 +99,12 @@ fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
     }
 }
 
+/**
+ * A simple header component.
+ *
+ * @param title The title of the header.
+ * @param body The body text of the header.
+ */
 @Composable
 fun ComponentHeader(title: String, body: String) {
     Column(
@@ -101,9 +123,15 @@ fun ComponentHeader(title: String, body: String) {
     }
 }
 
+/**
+ * A component with a mix of regular and clickable text.
+ *
+ * @param text The regular text.
+ * @param textClick The clickable text.
+ * @param onTextClick A lambda to be invoked when the clickable text is clicked.
+ */
 @Composable
 fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit) {
-    /** Footer - Registrarse  */
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -118,6 +146,13 @@ fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit) {
     }
 }
 
+/**
+ * A component with a checkbox and clickable text.
+ *
+ * @param checkBox The checked state of the checkbox.
+ * @param checkBoxClick A lambda to be invoked when the checkbox is clicked.
+ * @param textClick A lambda to be invoked when the clickable text is clicked.
+ */
 @Composable
 fun ComponentCheckBoxAndText(
     checkBox: Boolean,
@@ -155,6 +190,14 @@ fun ComponentCheckBoxAndText(
     }
 }
 
+/**
+ * A header component for the main menu.
+ *
+ * @param title The title of the header.
+ * @param body The body text of the header.
+ * @param partial The text for the partial.
+ * @param onClick A lambda to be invoked when the header is clicked.
+ */
 @Composable
 fun ComponentHeaderMenu(
     title: String,

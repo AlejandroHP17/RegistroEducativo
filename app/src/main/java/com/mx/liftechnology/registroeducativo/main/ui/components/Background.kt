@@ -39,6 +39,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgFirst
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgSecond
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
+/**
+ * A composable function that returns a vertical gradient brush for the background.
+ */
 @Preview(showBackground = true)
 @Composable
 fun background(): Brush {
@@ -50,6 +53,11 @@ fun background(): Brush {
     )
 }
 
+/**
+ * A composable that shows a loading animation.
+ *
+ * @param isVisible Whether the animation is visible.
+ */
 @Composable
 fun LoadingAnimation(isVisible: Boolean) {
     if (isVisible) {
@@ -59,8 +67,8 @@ fun LoadingAnimation(isVisible: Boolean) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f)) // Fondo semi-transparente
-                .clickable(enabled = false) {} // Evita toques mientras carga
+                .background(Color.Black.copy(alpha = 0.5f))
+                .clickable(enabled = false) {}
         ) {
             LottieAnimation(
                 composition = composition,
@@ -73,6 +81,11 @@ fun LoadingAnimation(isVisible: Boolean) {
     }
 }
 
+/**
+ * A composable that creates a custom space.
+ *
+ * @param dimen The height of the space.
+ */
 @Composable
 fun CustomSpace(dimen: Dp) {
     Spacer(
@@ -82,7 +95,9 @@ fun CustomSpace(dimen: Dp) {
     )
 }
 
-
+/**
+ * A composable that returns a modifier that adapts to the screen orientation.
+ */
 @Composable
 fun ModifierOrientation():Modifier{
     val configuration = LocalConfiguration.current
@@ -100,7 +115,9 @@ fun ModifierOrientation():Modifier{
 
 }
 
-
+/**
+ * A composable function for previewing the empty state view.
+ */
 @Preview(showBackground = true)
 @Composable
 private fun EmptyStateView() {
@@ -112,6 +129,16 @@ private fun EmptyStateView() {
         {}) {}
 }
 
+/**
+ * A composable that shows an empty state view.
+ *
+ * @param image The image to display.
+ * @param title The title of the empty state.
+ * @param description The description of the empty state.
+ * @param button The text for the action button.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param onActionClick A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun EmptyState(
     image: Painter,

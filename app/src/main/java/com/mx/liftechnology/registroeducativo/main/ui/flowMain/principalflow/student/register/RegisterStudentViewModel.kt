@@ -27,6 +27,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * ViewModel for the Student Registration screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
@@ -36,6 +42,7 @@ class RegisterStudentViewModel(
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterStudentUiState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelRegisterStudentUiState> = _uiState.asStateFlow()
     private val myValue: ModelRegisterStudentUiState
         get() = _uiState.value
@@ -48,6 +55,11 @@ class RegisterStudentViewModel(
 
     private var isListening = true
 
+    /**
+     * Called when the name input changes.
+     *
+     * @param name The new name value.
+     */
     fun onChangeName(name: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
@@ -55,6 +67,12 @@ class RegisterStudentViewModel(
             ) }
         }
     }
+
+    /**
+     * Called when the last name input changes.
+     *
+     * @param lastName The new last name value.
+     */
     fun onChangeLastName(lastName: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
@@ -62,6 +80,12 @@ class RegisterStudentViewModel(
             ) }
         }
     }
+
+    /**
+     * Called when the second last name input changes.
+     *
+     * @param secondLastName The new second last name value.
+     */
     fun onChangeSecondLastName(secondLastName: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
@@ -69,6 +93,12 @@ class RegisterStudentViewModel(
             ) }
         }
     }
+
+    /**
+     * Called when the CURP input changes.
+     *
+     * @param curp The new CURP value.
+     */
     fun onChangeCurp(curp: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             validateCurpWithBirthday(curp)
@@ -77,6 +107,7 @@ class RegisterStudentViewModel(
             ) }
         }
     }
+
     private fun validateCurpWithBirthday(curp: String) {
         if (curp.length > 10) {
             val rawDate = curp.substring(4, 10)
@@ -96,7 +127,11 @@ class RegisterStudentViewModel(
         }
     }
 
-
+    /**
+     * Called when the birthday input changes.
+     *
+     * @param birthday The new birthday value.
+     */
     fun onChangeBirthday(birthday: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
@@ -104,6 +139,12 @@ class RegisterStudentViewModel(
             ) }
         }
     }
+
+    /**
+     * Called when the phone number input changes.
+     *
+     * @param phoneNumber The new phone number value.
+     */
     fun onChangePhoneNUmber(phoneNumber: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
@@ -112,6 +153,9 @@ class RegisterStudentViewModel(
         }
     }
 
+    /**
+     * Validates the input fields and proceeds to register the student if they are valid.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch (dispatcherProvider.io){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -166,28 +210,29 @@ class RegisterStudentViewModel(
                 ) }
             }
             is ErrorUserState -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = ModelStateToastUI(
-                            messageToast = R.string.toast_error_register_student,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.ERROR
-                        )
+                _uiState.update { it.copy(
+                    uiState = ModelStateUIEnum.ERROR,
+                    controlToast = ModelStateToastUI(
+                        messageToast = R.string.toast_error_register_student,
+                        showToast = true,
+                        typeToast = ModelStateTypeToastUI.ERROR
                     )
-                }
+                ) }
             }
             else -> {
                 logs(result.toString())
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR
-                    )
-                }
+                _uiState.update { it.copy(
+                    uiState = ModelStateUIEnum.ERROR
+                ) }
             }
         }
     }
 
+    /**
+     * Gets the arguments for the student.
+     *
+     * @param student The student data.
+     */
     fun getArguments(student: ModelStudentDomain) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
@@ -203,14 +248,18 @@ class RegisterStudentViewModel(
         }
     }
 
-    /** Seccion para voz */
+    /**
+     * Called when the ViewModel is cleared.
+     */
     override fun onCleared() {
         super.onCleared()
-        // remover observer para evitar duplicados/leaks
         voiceRecognitionManager.resultsLiveData.removeObserver(resultsObserver)
         voiceRecognitionManager.release()
     }
 
+    /**
+     * Toggles the voice recognition listening state.
+     */
     fun change() {
         viewModelScope.launch (dispatcherProvider.main){
             if (isListening) {
@@ -244,6 +293,11 @@ class RegisterStudentViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {

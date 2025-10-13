@@ -22,20 +22,31 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Student Assignment screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class AssignmentStudentViewModel (
     private val dispatcherProvider: DispatcherProvider,
     private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
     private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ModelAssignmentUiState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelAssignmentUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelAssignmentDataState())
+    /** The data state for the screen. */
     val dataState: StateFlow<ModelAssignmentDataState> = _dataState.asStateFlow()
 
+    /**
+     * Updates the current student.
+     *
+     * @param student The new student.
+     */
     fun updateStudent(student: ModelStudentDomain?) {
-        /*saveIdSubjectSelectedUseCase.invoke(subject?.subjectId)
-        getListAssessmentType(subject)*/
         _uiState.update { it.copy(student =  student) }
     }
 
@@ -74,6 +85,11 @@ class AssignmentStudentViewModel (
         }
     }
 
+    /**
+     * Updates the expanded state of the title card.
+     *
+     * @param expanded True to expand, false to collapse.
+     */
     fun updateExpandedTitle(expanded: Boolean) {
         _dataState.update { currentState ->
             currentState.copy(
@@ -84,6 +100,12 @@ class AssignmentStudentViewModel (
         }
     }
 
+    /**
+     * Updates the expanded state of a subtitle card.
+     *
+     * @param subTitleId The ID of the subtitle to update.
+     * @param expanded True to expand, false to collapse.
+     */
     fun updateExpandedSubTitle(subTitleId: Int, expanded: Boolean) {
         _dataState.update { currentState ->
             currentState.copy(

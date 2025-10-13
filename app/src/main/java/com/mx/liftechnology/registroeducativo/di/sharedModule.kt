@@ -4,12 +4,17 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for shared dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val sharedModule = module {
 
+    /**
+     * Provides an instance of [SharedViewModel].
+     */
     viewModel {
         SharedViewModel()
     }

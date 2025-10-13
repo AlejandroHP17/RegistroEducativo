@@ -12,25 +12,42 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 /**
- * @author pelkidev
- * @since 1.0.0
+ * Koin module for login-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val loginUserModule = module {
 
+    /**
+     * Provides an instance of [LoginApiCall].
+     */
     factory { get<Retrofit>().create(LoginApiCall::class.java) }
 
+    /**
+     * Provides a singleton instance of [LoginRepository].
+     */
     single<LoginRepository> {
         LoginRepositoryImp(get())
     }
 
+    /**
+     * Provides a singleton instance of [LoginUseCase].
+     */
     single {
         LoginUseCase(get(),get(), get())
     }
 
+    /**
+     * Provides a singleton instance of [ValidateFieldsLoginFlowUseCase].
+     */
     single<ValidateFieldsLoginFlowUseCase> {
         ValidateFieldsLoginFlowUseCaseImp()
     }
 
+    /**
+     * Provides an instance of [LoginViewModel].
+     */
     viewModel {
         LoginViewModel(get(), get(), get())
     }

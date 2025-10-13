@@ -22,6 +22,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.Gen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * The Student Assignment screen.
+ *
+ * @param navController The navigation controller.
+ * @param backStackEntry The back stack entry for this screen.
+ * @param assignmentStudentViewModel The ViewModel for this screen.
+ */
 @Composable
 fun AssignmentStudentScreen(
     navController: NavHostController,
@@ -56,7 +63,7 @@ fun AssignmentStudentScreen(
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelAssignmentUiCallbacks(
                 onExpandedTitle = { assignmentStudentViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = { // assignmentSubjectViewModel.updateExpandedSubTitle(it)
+                onExpandedSubTitle = { 
                 },
                 onItemClick = {}
             ),

@@ -21,6 +21,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the User Registration screen.
+ *
+ * @property dispatcherProvider The provider for Coroutine dispatchers.
+ * @property registerUserUseCase The use case for handling user registration.
+ * @property validateFieldsUseCase The use case for validating input fields.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterUserViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val registerUserUseCase: RegisterUserUseCase,
@@ -28,13 +38,19 @@ class RegisterUserViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterUserStateUI())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelRegisterUserStateUI> = _uiState.asStateFlow()
 
     private val _inputState = MutableStateFlow(ModelRegisterUserInputsUI())
+    /** The state of the input fields. */
     val inputState: StateFlow<ModelRegisterUserInputsUI> = _inputState.asStateFlow()
     private val inputStateVM: ModelRegisterUserInputsUI get() = _inputState.value
 
-
+    /**
+     * Called when the email input changes.
+     *
+     * @param email The new email value.
+     */
     fun onEmailChanged(email: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -43,6 +59,11 @@ class RegisterUserViewModel(
         }
     }
 
+    /**
+     * Called when the password input changes.
+     *
+     * @param pass The new password value.
+     */
     fun onPassChanged(pass: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -51,6 +72,11 @@ class RegisterUserViewModel(
         }
     }
 
+    /**
+     * Called when the repeated password input changes.
+     *
+     * @param repeatPass The new repeated password value.
+     */
     fun onRepeatPassChanged(repeatPass: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -59,6 +85,11 @@ class RegisterUserViewModel(
         }
     }
 
+    /**
+     * Called when the activation code input changes.
+     *
+     * @param code The new activation code value.
+     */
     fun onCodeChanged(code: String) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
@@ -67,11 +98,9 @@ class RegisterUserViewModel(
         }
     }
 
-    /** Check the inputs and post error or correct states directly on the editexts
-     * In correct case, make the request
-     * @author pelkidev
-     * @since 1.0.0
-     * */
+    /**
+     * Validates the input fields and proceeds to registration if they are valid.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch (dispatcherProvider.io){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -99,16 +128,18 @@ class RegisterUserViewModel(
         }
     }
 
+    /**
+     * Gets the rules for the password.
+     *
+     * @param context The application context.
+     * @return A string containing the formatted rules.
+     */
     fun getRules(context: Context): String {
         val listRules = context.resources?.getStringArray(R.array.rules_pass)
         val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
         return stringBuilder
     }
 
-    /** Request to register
-     * @author pelkidev
-     * @since 1.0.0
-     * */
     private suspend fun registerCompose() {
         when (registerUserUseCase.invoke(
             email = inputStateVM.emailInputState.valueText,
@@ -151,6 +182,11 @@ class RegisterUserViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {

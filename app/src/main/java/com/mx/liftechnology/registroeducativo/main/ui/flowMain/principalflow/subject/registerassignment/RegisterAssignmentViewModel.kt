@@ -32,6 +32,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Assignment Registration screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterAssignmentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getListStudentUseCase: GetListStudentUseCase,
@@ -44,14 +50,22 @@ class RegisterAssignmentViewModel(
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterAssignmentUiState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelRegisterAssignmentUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelRegisterAssignmentDataState())
+    /** The data state for the screen. */
     val dataState: StateFlow<ModelRegisterAssignmentDataState> = _dataState.asStateFlow()
 
     private val _dialogState = MutableStateFlow(ModelCustomCalendar())
+    /** The state for the date picker dialog. */
     val dialogState: StateFlow<ModelCustomCalendar> = _dialogState.asStateFlow()
 
+    /**
+     * Updates the current subject.
+     *
+     * @param subject The new subject.
+     */
     fun updateSubject(subject: ModelFormatSubjectDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             saveIdSubjectSelectedUseCase.invoke(subject?.subjectId)
@@ -89,6 +103,11 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Called when the name of the job changes.
+     *
+     * @param name The new name.
+     */
     fun onChangeName(name: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dataState.update {
@@ -99,6 +118,11 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Called when the date changes.
+     *
+     * @param date The new date.
+     */
     fun onChangeDate(date: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dialogState.update {
@@ -109,6 +133,11 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Called when the name of the assignment changes.
+     *
+     * @param assignment The new assignment.
+     */
     fun onNameAssignmentChanged(assignment: ModelCustomSpinner) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dataState.update {
@@ -120,6 +149,11 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Called when a student's score changes.
+     *
+     * @param data A pair containing the student ID and the new score.
+     */
     fun onScoreChange(data: Pair<String, String>) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dataState.update { currentState ->
@@ -138,6 +172,9 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Gets the list of students.
+     */
     fun getListStudent() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -180,6 +217,9 @@ class RegisterAssignmentViewModel(
             } ?: emptyList()
     }
 
+    /**
+     * Validates the input fields and proceeds to register the assignment if they are valid.
+     */
     fun validateFields() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -248,6 +288,9 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Updates the date range for the active partial.
+     */
     fun updateDates(){
         viewModelScope.launch(dispatcherProvider.io) {
             val dates = getDatesActivePartialUseCase.invoke()
@@ -270,6 +313,11 @@ class RegisterAssignmentViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {

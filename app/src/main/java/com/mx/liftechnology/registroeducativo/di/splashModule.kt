@@ -4,10 +4,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for splash screen dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val splashModule = module {
+    /**
+     * Provides an instance of [SplashViewModel].
+     */
     viewModel { SplashViewModel(get(), get()) }
 }

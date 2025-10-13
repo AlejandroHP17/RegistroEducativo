@@ -5,11 +5,20 @@ import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.sub
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for assignment-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val assignmentModule = module {
+    /**
+     * Provides an instance of [AssignmentSubjectViewModel].
+     */
     viewModel { AssignmentSubjectViewModel(get(), get(),  get()) }
+
+    /**
+     * Provides an instance of [AssignmentStudentViewModel].
+     */
     viewModel { AssignmentStudentViewModel(get(), get(),  get()) }
 }

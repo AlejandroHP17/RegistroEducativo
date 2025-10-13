@@ -36,7 +36,13 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-
+/**
+ * A dialog for selecting a date range.
+ *
+ * @param showDialog Whether the dialog is shown.
+ * @param onDismiss A lambda to be invoked when the dialog is dismissed.
+ * @param onDateSelected A lambda to be invoked when a date range is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerDialog(
@@ -58,7 +64,6 @@ fun DateRangePickerDialog(
     val year = calendar[Calendar.YEAR]
 
     val datePickerStateStart = rememberDatePickerState(
-        //initialSelectedDateMillis = startDate?.toMillis(),
         yearRange = year - 2 .. year + 2,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
@@ -70,7 +75,6 @@ fun DateRangePickerDialog(
         }
     )
     val datePickerStateEnd = rememberDatePickerState(
-        //initialSelectedDateMillis = endDate?.toMillis(),
         yearRange = year - 2 .. year + 2,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
@@ -146,7 +150,14 @@ fun DateRangePickerDialog(
     }
 }
 
-
+/**
+ * A dialog for selecting a single date.
+ *
+ * @param showDialog Whether the dialog is shown.
+ * @param dialogState The state of the dialog.
+ * @param onDismiss A lambda to be invoked when the dialog is dismissed.
+ * @param onDateSelected A lambda to be invoked when a date is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateSimplePickerDialog(
@@ -176,7 +187,6 @@ fun DateSimplePickerDialog(
         }
     )
 
-    // 👇 Forzamos que el picker abra en "input mode"
     LaunchedEffect(Unit) {
         datePickerState.displayMode = DisplayMode.Input
     }
@@ -217,7 +227,12 @@ fun DateSimplePickerDialog(
     }
 }
 
-
+/**
+ * A screen that displays a date picker.
+ *
+ * @param dialogState The state of the dialog.
+ * @param onDateSelected A lambda to be invoked when a date is selected.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerScreen(
@@ -272,12 +287,18 @@ fun DatePickerScreen(
 
 }
 
+/**
+ * Converts a [LocalDate] to milliseconds.
+ */
 fun LocalDate.toMillis(): Long {
     return this.atStartOfDay(ZoneId.systemDefault())
         .toInstant()
         .toEpochMilli()
 }
 
+/**
+ * Converts a string to a [LocalDate].
+ */
 fun String.toLocalDate(): LocalDate {
     return LocalDate.parse(this, DateTimeFormatter.ISO_LOCAL_DATE)
 }

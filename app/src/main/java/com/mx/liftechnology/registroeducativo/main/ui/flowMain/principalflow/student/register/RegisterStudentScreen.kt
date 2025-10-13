@@ -37,7 +37,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The Student Registration screen.
+ *
+ * @param navController The navigation controller.
+ * @param backStackEntry The back stack entry for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ * @param registerStudentViewModel The ViewModel for this screen.
+ */
 @Composable
 fun RegisterStudentScreen(
     navController: NavHostController,
@@ -114,7 +121,11 @@ fun RegisterStudentScreen(
 
 }
 
-
+/**
+ * The header of the Student Registration screen.
+ *
+ * @param navController The navigation controller.
+ */
 @Composable
 private fun HeaderRegisterStudent(navController: NavHostController) {
     ComponentHeaderBack(
@@ -123,6 +134,12 @@ private fun HeaderRegisterStudent(navController: NavHostController) {
     ) { navController.popBackStack() }
 }
 
+/**
+ * The body of the Student Registration screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param callbacks The callbacks for the input fields.
+ */
 @Composable
 private fun BodyRegisterStudent(
     uiState: ModelRegisterStudentUiState,
@@ -172,6 +189,13 @@ private fun BodyRegisterStudent(
     )
 }
 
+/**
+ * The action button of the Student Registration screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ * @param onRecord A lambda to be invoked when the record button is clicked.
+ */
 @Composable
 private fun ActionRegisterStudent(
     uiState: ModelRegisterStudentUiState,

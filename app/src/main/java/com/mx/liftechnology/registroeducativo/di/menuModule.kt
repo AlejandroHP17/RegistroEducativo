@@ -15,39 +15,70 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for menu-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val menuModule = module {
 
+    /**
+     * Provides an instance of [GroupApiCall].
+     */
     factory { get<Retrofit>().create(GroupApiCall::class.java) }
 
+    /**
+     * Provides a singleton instance of [MenuLocalRepository].
+     */
     single { MenuLocalRepository(androidContext()) }
 
+    /**
+     * Provides a singleton instance of [MenuRepository].
+     */
     single<MenuRepository> {
         MenuRepositoryImp(get())
     }
 
+    /**
+     * Provides a singleton instance of [GetControlMenuUseCase].
+     */
     single {
         GetControlMenuUseCase(get())
     }
+
+    /**
+     * Provides a singleton instance of [GetControlRegisterUseCase].
+     */
     single {
         GetControlRegisterUseCase(get())
     }
 
+    /**
+     * Provides a singleton instance of [UpdateGroupMenuUseCase].
+     */
     single{
         UpdateGroupMenuUseCase(get())
 
     }
+
+    /**
+     * Provides a singleton instance of [GetGroupMenuUseCase].
+     */
     single {
         GetGroupMenuUseCase(get(), get())
     }
 
+    /**
+     * Provides a singleton instance of [GetListPartialMenuUseCase].
+     */
     single {
         GetListPartialMenuUseCase(get(), get())
     }
 
+    /**
+     * Provides an instance of [MenuViewModel].
+     */
     viewModel {
         MenuViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }

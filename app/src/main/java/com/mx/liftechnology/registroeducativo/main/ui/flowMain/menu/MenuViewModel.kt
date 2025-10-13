@@ -31,9 +31,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** MenuViewModel - Control the data of the menu
- * @author pelkidev
- * @since 1.0.0
+/**
+ * ViewModel for the main menu screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 class MenuViewModel(
     private val dispatcherProvider: DispatcherProvider,
@@ -48,17 +50,19 @@ class MenuViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelMenuStateUI())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelMenuStateUI> = _uiState.asStateFlow()
 
     private val _dialogState = MutableStateFlow(ModelMenuDialogUI())
+    /** The state for dialogs. */
     val dialogState: StateFlow<ModelMenuDialogUI> = _dialogState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelMenuDataData())
+    /** The data state for the screen. */
     val dataState: StateFlow<ModelMenuDataData> = _dataState.asStateFlow()
 
-    /** getGroup - Get all the options from menu, or a mistake in case
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * Gets all the options for the menu.
      */
     fun getGroup() {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -105,9 +109,10 @@ class MenuViewModel(
         }
     }
 
-    /** Copy the item selected as principal and go to the partial information
-     * @author Alejandro Hernandez Pelcastre
-     * @since 1.0.0
+    /**
+     * Updates the selected group.
+     *
+     * @param nameItem The selected group.
      */
     fun updateGroup(nameItem: ModelDialogStudentGroupDomain) {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -179,10 +184,8 @@ class MenuViewModel(
         }
     }
 
-
-    /** getControlMenu -
-     * @author pelkidev
-     * @since 1.0.0
+    /**
+     * Gets the control menu items.
      */
     fun getControlMenu() {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -234,7 +237,11 @@ class MenuViewModel(
 
     }
 
-
+    /**
+     * Updates the selected partial.
+     *
+     * @param partialItem The selected partial.
+     */
     fun updatePartial(partialItem: ModelDialogGroupPartialDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dialogState.update {
@@ -249,6 +256,11 @@ class MenuViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch(dispatcherProvider.main) {
             _uiState.update {

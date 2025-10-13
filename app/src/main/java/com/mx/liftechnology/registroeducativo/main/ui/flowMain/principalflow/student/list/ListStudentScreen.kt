@@ -17,7 +17,12 @@ import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The Student List screen.
+ *
+ * @param navController The navigation controller.
+ * @param listStudentViewModel The ViewModel for this screen.
+ */
 @Composable
 fun ListStudentScreen(
     navController: NavHostController,
@@ -27,7 +32,6 @@ fun ListStudentScreen(
     val uiState by listStudentViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by listStudentViewModel.dataState.collectAsStateWithLifecycle()
 
-    // Cargar la lista de estudiantes cuando se monta la pantalla
     LaunchedEffect(Unit) {
         listStudentViewModel.getListStudent()
     }

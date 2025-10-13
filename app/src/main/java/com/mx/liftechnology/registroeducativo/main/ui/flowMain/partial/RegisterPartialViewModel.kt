@@ -24,6 +24,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * ViewModel for the Partial Registration screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsRegisterPartialUseCase: ValidateFieldsRegisterPartialUseCase,
@@ -32,11 +38,18 @@ class RegisterPartialViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelRegisterPartialUIState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelRegisterPartialUIState> = _uiState.asStateFlow()
 
     private val _uiData = MutableStateFlow(ModelRegisterPartialUIData())
+    /** The data state for the screen. */
     val uiData: StateFlow<ModelRegisterPartialUIData> = _uiData.asStateFlow()
 
+    /**
+     * Called when the number of partials changes.
+     *
+     * @param partial The new number of partials.
+     */
     fun onPartialChanged(partial: String) {
         viewModelScope.launch (dispatcherProvider.io){
             if (partial.toInt() > 0) {
@@ -58,6 +71,11 @@ class RegisterPartialViewModel(
         }
     }
 
+    /**
+     * Called when a date range changes.
+     *
+     * @param data A pair containing the date range and the index of the item that changed.
+     */
     fun onDateChange(data: Pair<Pair<LocalDate?, LocalDate?>, Int>) {
         viewModelScope.launch (dispatcherProvider.io){
             _uiData.update { currentState ->
@@ -67,7 +85,6 @@ class RegisterPartialViewModel(
 
                             val startDate = data.first.first?.toString() ?: ""
                             val endDate = data.first.second?.toString() ?: ""
-                            // Guardamos el rango de fechas en formato "YYYY-MM-DD - YYYY-MM-DD"
                             date.copy(
                                 date  = "$startDate / $endDate".stringToModelStateOutFieldText()
                             )
@@ -80,6 +97,9 @@ class RegisterPartialViewModel(
         }
     }
 
+    /**
+     * Validates the input fields and proceeds to register the partials if they are valid.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
 
@@ -135,6 +155,9 @@ class RegisterPartialViewModel(
         }
     }
 
+    /**
+     * Gets the list of partials.
+     */
     fun getListPartialCompose(){
         viewModelScope.launch (dispatcherProvider.io) {
             when(val result = getListPartialUseCase.invoke()){
@@ -165,6 +188,11 @@ class RegisterPartialViewModel(
         }
     }
 
+    /**
+     * Modifies the visibility of the toast message.
+     *
+     * @param show True to show the toast, false to hide it.
+     */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {

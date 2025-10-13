@@ -4,10 +4,15 @@ import com.mx.liftechnology.registroeducativo.main.util.DefaultDispatcherProvide
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import org.koin.dsl.module
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for dispatcher-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val dispatcherModule = module {
+    /**
+     * Provides a singleton instance of [DispatcherProvider].
+     */
     single<DispatcherProvider>{ DefaultDispatcherProvider() }
 }

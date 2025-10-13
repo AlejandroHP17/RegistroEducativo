@@ -25,6 +25,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccessToast
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWarningToast
 import kotlinx.coroutines.delay
 
+/**
+ * A composable that shows a custom animated toast message.
+ *
+ * @param message The message to display.
+ * @param isVisible Whether the toast is visible.
+ * @param durationMillis The duration in milliseconds to show the toast.
+ * @param typeToast The type of toast to show (e.g., success, error, warning, or informative).
+ * @param onDismiss A lambda to be invoked when the toast is dismissed.
+ */
 @Composable
 fun ShowCustomAnimated(
     message: String,
@@ -33,7 +42,6 @@ fun ShowCustomAnimated(
     typeToast: ModelStateTypeToastUI = ModelStateTypeToastUI.SUCCESS,
     onDismiss: () -> Unit,
 ) {
-    // Manejo automático del tiempo de visibilidad
     LaunchedEffect(isVisible) {
         if (isVisible) {
             delay(durationMillis)
@@ -50,7 +58,7 @@ fun ShowCustomAnimated(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .wrapContentHeight()
-                .zIndex(1f) // Asegura que quede arriba
+                .zIndex(1f)
                 .statusBarsPadding()
                 .align(Alignment.TopCenter)
         ) {

@@ -18,6 +18,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
+/**
+ * A composable function for previewing the alert dialogs in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun AlertDialogPreview(){
@@ -29,6 +32,12 @@ fun AlertDialogPreview(){
 
 }
 
+/**
+ * A confirmation dialog.
+ *
+ * @param itemSelectedReturn A lambda to be invoked when an item is selected.
+ * @param dismiss A lambda to be invoked when the dialog is dismissed.
+ */
 @Composable
 fun AlertDialogConfirm(
     itemSelectedReturn: (Boolean) -> Unit,
@@ -72,7 +81,15 @@ fun AlertDialogConfirm(
     }
 }
 
-
+/**
+ * A menu dialog.
+ *
+ * @param uiDialog The state of the dialog.
+ * @param itemSelectedReturn A lambda to be invoked when a group item is selected.
+ * @param itemSelectedPartialReturn A lambda to be invoked when a partial item is selected.
+ * @param selectType Whether the dialog is for selecting a group or a partial.
+ * @param dismiss A lambda to be invoked when the dialog is dismissed.
+ */
 @Composable
 fun AlertDialogMenu(
     uiDialog: ModelMenuDialogUI,

@@ -34,6 +34,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * The Subject Registration screen.
+ *
+ * @param navController The navigation controller.
+ * @param sharedViewModel The shared ViewModel.
+ * @param registerSubjectViewModel The ViewModel for this screen.
+ */
 @Composable
 fun RegisterSubjectScreen(
     navController: NavHostController,
@@ -42,7 +49,7 @@ fun RegisterSubjectScreen(
 ) {
 
     val uiState by registerSubjectViewModel.uiState.collectAsStateWithLifecycle()
-    // Llamadas a servicios cuando se monta la pantalla
+    
     LaunchedEffect(Unit) {
         registerSubjectViewModel.getListAssessmentType()
     }
@@ -111,6 +118,11 @@ fun RegisterSubjectScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
+/**
+ * The header of the Subject Registration screen.
+ *
+ * @param navigate A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 private fun HeaderRegisterSubject(
     navigate: () -> Unit,
@@ -121,6 +133,13 @@ private fun HeaderRegisterSubject(
         onReturnClick = { navigate() })
 }
 
+/**
+ * The body of the Subject Registration screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param onSubjectChanged A lambda to be invoked when the subject name changes.
+ * @param onOptionsChanged A lambda to be invoked when the number of options changes.
+ */
 @Composable
 private fun BodyRegisterSubject(
     uiState: ModelRegisterSubjectUIState,
@@ -165,7 +184,13 @@ private fun BodyRegisterSubject(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
-
+/**
+ * The column of the Subject Registration screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param onNameChange A lambda to be invoked when the name of an item changes.
+ * @param onPercentChange A lambda to be invoked when the percentage of an item changes.
+ */
 @Composable
 private fun ColumnRegisterSubject(
     uiState: ModelRegisterSubjectUIState,
@@ -180,6 +205,11 @@ private fun ColumnRegisterSubject(
     )
 }
 
+/**
+ * The action button of the Subject Registration screen.
+ *
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 private fun ActionRegisterSubject(
     validateFieldsCompose: () -> Unit,

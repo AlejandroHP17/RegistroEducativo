@@ -13,7 +13,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mx.liftechnology.core.util.LocationHelper
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The splash screen of the application.
+ *
+ * @param splashViewModel The ViewModel for this screen.
+ * @param onNavigateToLogin A lambda to be invoked to navigate to the login screen.
+ * @param onNavigateToMain A lambda to be invoked to navigate to the main screen.
+ * @param onPermissionDenied A lambda to be invoked when the location permission is denied.
+ */
 @Composable
 fun SplashScreen(
     splashViewModel: SplashViewModel = koinViewModel(),
@@ -35,7 +42,6 @@ fun SplashScreen(
         }
     }
 
-    // Pedimos permiso cuando entra
     LaunchedEffect(Unit) {
         locationHelper?.requestLocation(permissionLauncher, object : LocationHelper.LocationCallback {
             override fun onLocationResult(location: Location?) {
@@ -48,7 +54,6 @@ fun SplashScreen(
         })
     }
 
-    // Navegación
     val navigate by splashViewModel.navigate.collectAsStateWithLifecycle()
     LaunchedEffect(navigate) {
         when (navigate) {

@@ -16,17 +16,28 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel for the Student List screen.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class ListStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getListStudentUseCase: GetListStudentUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelListStudentUiState())
+    /** The UI state for the screen. */
     val uiState: StateFlow<ModelListStudentUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelListStudentDataState())
+    /** The data state for the screen. */
     val dataState: StateFlow<ModelListStudentDataState> = _dataState.asStateFlow()
 
+    /**
+     * Gets the list of students.
+     */
     fun getListStudent() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
@@ -60,11 +71,17 @@ class ListStudentViewModel(
             ?.mapIndexed { index, student ->
                 ModelCustomCard(
                     id = student.studentId ?: "",
-                    numberList = (index + 1).toString(), // Numeración comenzando en 1
+                    numberList = (index + 1).toString(),
                     nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()
                 )
             } ?: emptyList()
     }
 
+    /**
+     * Gets a student by its ID.
+     *
+     * @param item The custom card model of the student to get.
+     * @return The [ModelStudentDomain] object, or null if not found.
+     */
     fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
 }

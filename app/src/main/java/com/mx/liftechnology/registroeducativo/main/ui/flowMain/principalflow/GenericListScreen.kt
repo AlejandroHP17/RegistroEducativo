@@ -24,6 +24,16 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EmptyState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
+/**
+ * A generic screen for displaying a list of items.
+ *
+ * @param title The title of the screen.
+ * @param textButton The text for the action button.
+ * @param items The list of items to display.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param callbacks The callbacks for the list items.
+ * @param onAction A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun GenericListScreen(
     title: String,
@@ -81,6 +91,16 @@ fun GenericListScreen(
 
 }
 
+/**
+ * A generic screen for displaying an empty state.
+ *
+ * @param image The image to display.
+ * @param title The title of the empty state.
+ * @param description The description of the empty state.
+ * @param button The text for the action button.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param onActionClick A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun GenericEmptyScreen(
     image: Painter,
@@ -108,6 +128,12 @@ fun GenericEmptyScreen(
 
 }
 
+/**
+ * The header of the generic list screen.
+ *
+ * @param title The title of the header.
+ * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 private fun GenericHeaderList(
     title: String,
@@ -119,6 +145,12 @@ private fun GenericHeaderList(
     )
 }
 
+/**
+ * The body of the generic list screen.
+ *
+ * @param items The list of items to display.
+ * @param callbacks The callbacks for the list items.
+ */
 @Composable
 fun BodyListGeneric(
     items: List<ModelCustomCard>,
@@ -141,6 +173,12 @@ fun BodyListGeneric(
     }
 }
 
+/**
+ * The action button of the generic list screen.
+ *
+ * @param textButton The text for the action button.
+ * @param onActionClick A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 private fun ActionListGeneric(
     textButton: String,

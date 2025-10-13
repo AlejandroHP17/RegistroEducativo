@@ -42,6 +42,12 @@ import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
+/**
+ * The main navigation host for the application.
+ *
+ * @param sharedViewModel The shared ViewModel.
+ * @param restoreActivity A lambda to be invoked to restore the activity.
+ */
 @Composable
 fun AppNavHost(
     sharedViewModel: SharedViewModel,
@@ -50,8 +56,6 @@ fun AppNavHost(
     val navigationController = rememberNavController()
     val uiState by sharedViewModel.uiState.collectAsStateWithLifecycle()
     var isBlocked by remember { mutableStateOf(false) }
-
-
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -76,8 +80,6 @@ fun AppNavHost(
                 ) }
             composable(LoginRoutes.FORGET_PASSWORD.route){ ForgetPasswordScreen(navigationController) }
 
-
-
             // Main flow
             composable(
                 route = MainRoutes.Menu.route,
@@ -97,7 +99,6 @@ fun AppNavHost(
             composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
             composable(MainRoutes.Calendar.route){ CalendarScreen(navigationController) }
 
-
             composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel
@@ -114,7 +115,6 @@ fun AppNavHost(
                 sharedViewModel = sharedViewModel,
                 onCloseSession = { restoreActivity() }
             )}
-
 
             composable(
                 route = MainRoutes.RegisterStudent.route,
@@ -185,7 +185,6 @@ fun AppNavHost(
             }
         )
 
-        // 🔒 Overlay bloqueador
         if (isBlocked) {
             Box(
                 modifier = Modifier
@@ -201,27 +200,22 @@ fun AppNavHost(
         }
     }
 
-    // 1) Bloquear inmediatamente cuando cambia el destino
     DisposableEffect(navigationController) {
         val listener = NavController.OnDestinationChangedListener { _, _, _ ->
-            // Al iniciar un cambio de destino, bloquea
             isBlocked = true
         }
         navigationController.addOnDestinationChangedListener(listener)
         onDispose { navigationController.removeOnDestinationChangedListener(listener) }
     }
 
-// 2) Desbloquear cuando el destino actual esté RESUMED
     val currentEntry by navigationController.currentBackStackEntryAsState()
 
     DisposableEffect(currentEntry) {
-        // Estado inicial según el lifecycle actual
         isBlocked = currentEntry?.lifecycle?.currentState != Lifecycle.State.RESUMED
 
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> isBlocked = false
-                // En estos estados mantenemos el bloqueo
                 Lifecycle.Event.ON_CREATE,
                 Lifecycle.Event.ON_START,
                 Lifecycle.Event.ON_PAUSE,

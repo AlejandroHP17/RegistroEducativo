@@ -1,13 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.ui.principal
 
-/**
- * Principal activity, the purpose of the app is to help in the study´s field
- * It contains a Menu with different access to student, school, calendar, subject, etc.
- * All this functionality improve the time and order the data to evaluate an school
- * Also has options, configuration and a zone of export to get the data in other kind of
- * Platform to evaluate an student.
- * */
-
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,12 +15,20 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.background
 import com.mx.liftechnology.registroeducativo.main.ui.theme.AppTheme
 import org.koin.androidx.compose.koinViewModel
 
-/** MainActivity
- * @author pelkidev
- * @since 1.0.0
+/**
+ * The main activity of the application.
+ * This activity hosts the main navigation graph and serves as the entry point for the user interface.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 class MainActivity : AppCompatActivity() {
 
+    /**
+     * Called when the activity is first created.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in [onSaveInstanceState].
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

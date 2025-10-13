@@ -17,6 +17,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 
+/**
+ * A composable function for previewing the text components in this file.
+ */
 @Preview(showBackground = true)
 @Composable
 fun TestText() {
@@ -69,6 +72,11 @@ fun TestText() {
     }
 }
 
+/**
+ * A composable that displays a header text.
+ *
+ * @param title The text to display.
+ */
 @Composable
 fun TextHeader(
     title: String
@@ -81,6 +89,11 @@ fun TextHeader(
     )
 }
 
+/**
+ * A composable that displays a sub-header text.
+ *
+ * @param title The text to display.
+ */
 @Composable
 fun TextSubHeader(
     title: String
@@ -93,6 +106,12 @@ fun TextSubHeader(
     )
 }
 
+/**
+ * A composable that displays a description text.
+ *
+ * @param text The text to display.
+ * @param modifier The modifier to be applied to the component.
+ */
 @Composable
 fun TextDescription(
     text: String,
@@ -106,6 +125,12 @@ fun TextDescription(
     )
 }
 
+/**
+ * A composable that displays a clickable link text.
+ *
+ * @param text The text to display.
+ * @param onTextClick A lambda to be invoked when the text is clicked.
+ */
 @Composable
 fun TextLink(text: String, onTextClick: () -> Unit) {
     Text(
@@ -116,6 +141,11 @@ fun TextLink(text: String, onTextClick: () -> Unit) {
     )
 }
 
+/**
+ * A composable that displays a body text.
+ *
+ * @param text The text to display.
+ */
 @Composable
 fun TextBody(text: String) {
     Text(
@@ -127,6 +157,11 @@ fun TextBody(text: String) {
     )
 }
 
+/**
+ * A composable that displays a title text for a dialog.
+ *
+ * @param text The text to display.
+ */
 @Composable
 fun TextTitleDialog(text: String) {
     Text(

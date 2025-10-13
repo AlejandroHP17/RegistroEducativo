@@ -15,29 +15,58 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for school registration-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val registerSchoolModule = module {
 
+    /**
+     * Provides an instance of [GetCctApiCall].
+     */
     factory { get<Retrofit>().create(GetCctApiCall::class.java) }
+
+    /**
+     * Provides an instance of [RegisterSchoolApiCall].
+     */
     factory { get<Retrofit>().create(RegisterSchoolApiCall::class.java) }
 
+    /**
+     * Provides a singleton instance of [GetCctRepository].
+     */
     single<GetCctRepository> {
         GetCctRepositoryImp(get())
     }
+
+    /**
+     * Provides an instance of [GetCctUseCase].
+     */
     factory{GetCctUseCase(get()) }
 
+    /**
+     * Provides a singleton instance of [RegisterSchoolRepository].
+     */
     single<RegisterSchoolRepository> {
         RegisterSchoolRepositoryImp(get())
     }
+
+    /**
+     * Provides an instance of [RegisterOneSchoolUseCase].
+     */
     factory{RegisterOneSchoolUseCase(get(), get())}
 
+    /**
+     * Provides a singleton instance of [ValidateFieldsRegisterSchoolUseCase].
+     */
     single<ValidateFieldsRegisterSchoolUseCase> {
         ValidateFieldsRegisterSchoolUseCaseImp()
     }
 
+    /**
+     * Provides an instance of [RegisterSchoolViewModel].
+     */
     viewModel {
         RegisterSchoolViewModel(get(), get(), get(), get(), get())
     }

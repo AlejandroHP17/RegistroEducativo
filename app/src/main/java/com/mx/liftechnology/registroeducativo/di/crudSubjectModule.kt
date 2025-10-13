@@ -25,46 +25,101 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-/** DI
- * @author pelkidev
- * @since 1.0.0
+/**
+ * Koin module for subject-related CRUD dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 val crudSubjectModule = module {
 
+    /**
+     * Provides an instance of [RegisterSubjectApiCall].
+     */
     factory { get<Retrofit>().create(RegisterSubjectApiCall::class.java) }
+
+    /**
+     * Provides an instance of [GetListSubjectApiCall].
+     */
     factory { get<Retrofit>().create(GetListSubjectApiCall::class.java) }
+
+    /**
+     * Provides an instance of [GetListEvaluationTypeApiCall].
+     */
     factory { get<Retrofit>().create(GetListEvaluationTypeApiCall::class.java) }
+
+    /**
+     * Provides an instance of [GetListAssessmentTypeApiCall].
+     */
     factory { get<Retrofit>().create(GetListAssessmentTypeApiCall::class.java) }
 
+    /**
+     * Provides a singleton instance of [GetListEvaluationTypeRepository].
+     */
     single<GetListEvaluationTypeRepository> {
         GetListEvaluationTypeRepositoryImp(get())
     }
+
+    /**
+     * Provides a singleton instance of [GetListSubjectRepository].
+     */
     single<GetListSubjectRepository> {
         GetListSubjectRepositoryImp(get())
     }
+
+    /**
+     * Provides a singleton instance of [RegisterSubjectRepository].
+     */
     single<RegisterSubjectRepository> {
         RegisterSubjectRepositoryImp(get())
     }
+
+    /**
+     * Provides a singleton instance of [GetAssessmentTypeRepository].
+     */
     single<GetAssessmentTypeRepository> {
         GetAssessmentTypeRepositoryImp(get())
     }
 
+    /**
+     * Provides a singleton instance of [GetListEvaluationTypeUseCase].
+     */
     single<GetListEvaluationTypeUseCase> {
         GetListEvaluationTypeUseCaseImp(get(), get())
     }
+
+    /**
+     * Provides a singleton instance of [RegisterOneSubjectUseCase].
+     */
     single {RegisterOneSubjectUseCase(get(), get())}
 
+    /**
+     * Provides a singleton instance of [GetListSubjectUseCase].
+     */
     single {GetListSubjectUseCase(get(), get())}
 
+    /**
+     * Provides a singleton instance of [GetListAssessmentTypeUseCase].
+     */
     single {GetListAssessmentTypeUseCase(get(), get())}
 
+    /**
+     * Provides a singleton instance of [ValidateFieldsSubjectUseCase].
+     */
     single<ValidateFieldsSubjectUseCase> {
         ValidateFieldsSubjectUseCaseImp()
     }
 
+    /**
+     * Provides an instance of [RegisterSubjectViewModel].
+     */
     viewModel {
         RegisterSubjectViewModel(get(), get(), get(), get())
     }
+
+    /**
+     * Provides an instance of [ListSubjectViewModel].
+     */
     viewModel {
         ListSubjectViewModel(get(), get())
     }

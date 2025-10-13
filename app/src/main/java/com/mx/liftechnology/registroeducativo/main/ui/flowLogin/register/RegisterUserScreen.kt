@@ -31,7 +31,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * The User Registration screen.
+ *
+ * @param navController The navigation controller.
+ * @param registerUserViewModel The ViewModel for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ */
 @Composable
 fun RegisterUserScreen(
     navController: NavHostController,
@@ -74,7 +80,11 @@ fun RegisterUserScreen(
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
-
+/**
+ * The header of the User Registration screen.
+ *
+ * @param navigate A lambda to be invoked when the back button is clicked.
+ */
 @Composable
 fun HeaderRegisterUserScreen(
     navigate: () -> Unit,
@@ -86,6 +96,13 @@ fun HeaderRegisterUserScreen(
     )
 }
 
+/**
+ * The body of the User Registration screen.
+ *
+ * @param inputState The state of the input fields.
+ * @param callbacks The callbacks for the input fields.
+ * @param getRules The rules for the password.
+ */
 @Composable
 fun BodyRegisterUserScreen(
     inputState: ModelRegisterUserInputsUI,
@@ -140,7 +157,11 @@ fun BodyRegisterUserScreen(
     )
 }
 
-
+/**
+ * The footer of the User Registration screen.
+ *
+ * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ */
 @Composable
 fun FooterRegisterUserScreen(
     validateFieldsCompose: () -> Unit,

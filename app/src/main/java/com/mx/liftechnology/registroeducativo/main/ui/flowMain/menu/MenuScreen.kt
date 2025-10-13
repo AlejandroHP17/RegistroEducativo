@@ -37,10 +37,14 @@ import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
-
-/** Menu screen, show the principal view and control the flows
- * @author Alejandro Hernandez Pelcastre
- * @since 1.0.0
+/**
+ * The main menu screen of the application.
+ *
+ * @param reload Whether to reload the data.
+ * @param navController The navigation controller.
+ * @param menuViewModel The ViewModel for this screen.
+ * @param sharedViewModel The shared ViewModel.
+ * @param onCloseSession A lambda to be invoked when the session is closed.
  */
 @Composable
 fun MenuScreen(
@@ -51,7 +55,6 @@ fun MenuScreen(
     onCloseSession: () -> Unit,
 ) {
 
-    /* Variables locales y en viewmodel */
     val uiState by menuViewModel.uiState.collectAsStateWithLifecycle()
     val dialogState by menuViewModel.dialogState.collectAsStateWithLifecycle()
     val dataState by menuViewModel.dataState.collectAsStateWithLifecycle()
@@ -61,8 +64,8 @@ fun MenuScreen(
 
     LaunchedEffect(reload) {
         if (dialogState.studentGroupItem.itemPartial == null || reload) {
-            menuViewModel.getGroup() //Trae la infomación del listado de grupos correspondientes al profesor
-            menuViewModel.getControlMenu() //Pinta la sección de area de control, no depende de nada
+            menuViewModel.getGroup()
+            menuViewModel.getControlMenu()
         }
     }
 
@@ -112,6 +115,9 @@ fun MenuScreen(
     }
 }
 
+/**
+ * An object that contains constants for the menu screen.
+ */
 object MenuScreenObject {
     const val ADAPTER_CONTROL = "Área de Control"
     const val ADAPTER_CONTROL_REGISTER = "Área de Registro y evaluación"
@@ -119,6 +125,12 @@ object MenuScreenObject {
     const val CONTROL = "control"
 }
 
+/**
+ * The header of the main menu screen.
+ *
+ * @param uiDialog The state of the dialog.
+ * @param onShowDialog A lambda to be invoked when the dialog is shown.
+ */
 @Composable
 private fun HeaderMenuScreen(uiDialog: ModelMenuDialogUI, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
@@ -130,6 +142,13 @@ private fun HeaderMenuScreen(uiDialog: ModelMenuDialogUI, onShowDialog: (Boolean
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 }
 
+/**
+ * The body of the main menu screen.
+ *
+ * @param uiState The UI state for the screen.
+ * @param uiData The data state for the screen.
+ * @param navController A lambda to be invoked to navigate to a different screen.
+ */
 @Composable
 private fun BodyMenuScreen(
     uiState: ModelMenuStateUI,
@@ -163,6 +182,13 @@ private fun BodyMenuScreen(
     }
 }
 
+/**
+ * The register area of the main menu screen.
+ *
+ * @param uiData The data state for the screen.
+ * @param navController A lambda to be invoked to navigate to a different screen.
+ * @param test A lambda for testing purposes.
+ */
 @Composable
 private fun RegisterAreaMenuScreen(
     uiData: ModelMenuDataData,
@@ -191,6 +217,12 @@ private fun RegisterAreaMenuScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 }
 
+/**
+ * The control area of the main menu screen.
+ *
+ * @param uiData The data state for the screen.
+ * @param navController A lambda to be invoked to navigate to a different screen.
+ */
 @Composable
 private fun ControlAreaMenuScreen(
     uiData: ModelMenuDataData,
