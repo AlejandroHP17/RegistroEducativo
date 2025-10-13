@@ -12,7 +12,7 @@ import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
  * @author Pelkidev
  * @version 1.0.0
  */
-class MenuGroupsUseCase(
+class UpdateGroupMenuUseCase(
     private val preference: PreferenceUseCase
 )  {
     /**
