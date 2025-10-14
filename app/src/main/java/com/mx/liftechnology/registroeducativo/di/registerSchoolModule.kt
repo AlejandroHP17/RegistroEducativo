@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneScho
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

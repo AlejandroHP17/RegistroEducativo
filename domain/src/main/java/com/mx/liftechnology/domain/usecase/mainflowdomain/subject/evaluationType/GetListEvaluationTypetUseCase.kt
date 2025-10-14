@@ -64,7 +64,6 @@ class GetListEvaluationTypeUseCaseImp (
             is ResultError -> {
                 handleResponse(result.error)
             }
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 

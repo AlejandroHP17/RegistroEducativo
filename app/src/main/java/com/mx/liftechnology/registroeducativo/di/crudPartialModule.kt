@@ -13,7 +13,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.UpdatePartialU
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial.RegisterPartialViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

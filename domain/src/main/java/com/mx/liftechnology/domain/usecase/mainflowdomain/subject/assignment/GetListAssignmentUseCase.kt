@@ -59,7 +59,6 @@ class GetListAssignmentUseCaseImp(
         return when(val result =  getListAssignmentRepository.executeGetListAssignment(request)){
             is ResultSuccess -> SuccessState(result.data)
             is ResultError -> handleResponse(result.error)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 

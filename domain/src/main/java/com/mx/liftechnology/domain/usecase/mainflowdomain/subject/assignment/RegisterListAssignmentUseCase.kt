@@ -59,7 +59,6 @@ class RegisterListAssignmentUseCaseImp(
         return when(val result =  registerListAssignmentRepository.executeRegisterListAssignment(request)){
             is ResultSuccess -> SuccessState(result.data)
             is ResultError -> handleResponse(result.error)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 

@@ -21,7 +21,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.Reg
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.ValidateFieldsAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.ValidateFieldsAssignmentUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.registerassignment.RegisterAssignmentViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

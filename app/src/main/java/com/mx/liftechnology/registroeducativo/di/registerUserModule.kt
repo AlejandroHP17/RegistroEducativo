@@ -5,7 +5,7 @@ import com.mx.liftechnology.data.repository.flowLogin.register.RegisterUserRepos
 import com.mx.liftechnology.data.repository.flowLogin.register.RegisterUserRepositoryImp
 import com.mx.liftechnology.domain.usecase.loginflowdomain.register.RegisterUserUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register.RegisterUserViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

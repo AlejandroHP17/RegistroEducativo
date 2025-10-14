@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMen
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.UpdateGroupMenuUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 

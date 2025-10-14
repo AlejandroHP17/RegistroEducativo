@@ -32,11 +32,11 @@ subprojects {
 
         }
         extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-            compileSdkVersion(35)
+            compileSdkVersion(36)
 
             defaultConfig {
                 minSdk = 28
-                targetSdk = 35
+                targetSdk = 36
                 versionCode = 1
                 versionName = "0.0.1"
 

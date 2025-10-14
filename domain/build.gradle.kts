@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.junit.test)
+    implementation(libs.bundles.test)
     implementation(libs.bundles.koin)
 
     implementation(project(":core"))

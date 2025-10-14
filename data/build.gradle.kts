@@ -22,7 +22,7 @@ android {
 dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.koin)
-    implementation(libs.bundles.junit.test)
+    implementation(libs.bundles.test)
 
     implementation(project(":core"))
 }

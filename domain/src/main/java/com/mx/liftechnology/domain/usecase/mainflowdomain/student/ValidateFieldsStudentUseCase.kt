@@ -134,19 +134,19 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
     /**
      * {@inheritDoc}
      */
-    override fun validatePhoneNumber(number: String?): ModelStateOutFieldText {
+    override fun validatePhoneNumber(validatePhoneNumber: String?): ModelStateOutFieldText {
         return when {
-            number.isNullOrEmpty() -> number.stringToModelStateOutFieldText(
+            validatePhoneNumber.isNullOrEmpty() -> validatePhoneNumber.stringToModelStateOutFieldText(
                 isError = true,
                 errorMessage = ModelCodeInputs.ET_EMPTY
             )
 
-            number.validPhoneNumber() -> number.stringToModelStateOutFieldText(
+            validatePhoneNumber.validPhoneNumber() -> validatePhoneNumber.stringToModelStateOutFieldText(
                 isError = true,
                 errorMessage = ModelCodeInputs.ET_PHONE_NUMBER_FORMAT_MISTAKE
             )
 
-            else -> number.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            else -> validatePhoneNumber.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

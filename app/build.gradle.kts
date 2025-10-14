@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.gson)
     implementation(libs.bundles.compose.unit)
+    implementation(libs.bundles.test)
 
     /* Libraries */
     implementation(project(":domain"))
