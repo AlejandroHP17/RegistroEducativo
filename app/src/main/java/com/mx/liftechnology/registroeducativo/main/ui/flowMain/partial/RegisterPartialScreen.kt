@@ -116,7 +116,7 @@ fun RegisterPartialScreen(
             modifier = Modifier.constrainAs(action) {
                 bottom.linkTo(parent.bottom)
                 start.linkTo(parent.start)
-                end.linkto(parent.end)
+                end.linkTo(parent.end)
             }
         ) { ActionRegisterPartial (
             isAvailable = uiState.isAvailable,

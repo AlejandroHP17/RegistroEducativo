@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.dokka)
 }
 
 android {
@@ -43,4 +44,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":core"))
+}
+
+// Configuración para generar una documentación unificada
+tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask>().configureEach {
+    outputDirectory.set(buildDir.resolve("dokka")) // Directorio de salida para la documentación de todo el proyecto
+    moduleName.set("Registro Educativo - API Completa") // Título principal de la documentación
 }

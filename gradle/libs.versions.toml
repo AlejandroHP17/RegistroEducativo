@@ -155,10 +155,11 @@ timber = [
 
 
 [plugins]
-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version = "1.9.0" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version = "2.2.20" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dokka = {id = "org.jetbrains.dokka", version = "2.0.0"}
 
