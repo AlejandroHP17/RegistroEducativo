@@ -4,24 +4,24 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
 /**
- * An interface for providing Coroutine dispatchers.
+ * Interfaz para proporcionar despachadores de corutinas, facilitando la inyección de dependencias y los tests.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 interface DispatcherProvider {
-    /** The main dispatcher. */
+    /** Despachador principal para actualizaciones de UI. */
     val main: CoroutineDispatcher
-    /** The I/O dispatcher. */
+    /** Despachador para operaciones de entrada/salida (I/O). */
     val io: CoroutineDispatcher
-    /** The default dispatcher. */
+    /** Despachador para tareas intensivas de CPU. */
     val default: CoroutineDispatcher
-    /** The unconfined dispatcher. */
+    /** Despachador no confinado, para casos de uso específicos. */
     val unconfined: CoroutineDispatcher
 }
 
 /**
- * The default implementation of [DispatcherProvider].
+ * Implementación por defecto de [DispatcherProvider].
  *
  * @author Pelkidev
  * @version 1.0.0

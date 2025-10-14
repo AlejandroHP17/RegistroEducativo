@@ -117,7 +117,7 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
                 errorMessage = ModelCodeInputs.ET_EMPTY
             )
 
-            curp.valid() -> curp.stringToModelStateOutFieldText(
+            curp.isNotValid() -> curp.stringToModelStateOutFieldText(
                 isError = true,
                 errorMessage = ModelCodeInputs.ET_CURP_FORMAT_MISTAKE
             )
@@ -126,9 +126,9 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
         }
     }
 
-    private fun String.valid(): Boolean {
+    private fun String.isNotValid(): Boolean {
         val regex = ModelRegex.CURP
-        return !regex.matches(this)
+        return regex.matches(this)
     }
 
     /**

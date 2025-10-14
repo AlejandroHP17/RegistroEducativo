@@ -1,11 +1,20 @@
 package com.mx.liftechnology.registroeducativo.main.model.ui
 
-
-enum class ModelStateUIEnum{
-    SUCCESS,
-    EMPTY,
-    ERROR,
+/**
+ * Enum que representa los diferentes estados de la UI.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+enum class ModelStateUIEnum {
+    /** Estado de carga. */
     LOADING,
-    NOTHING,
-    UNAUTHORIZED
+    /** Estado de éxito. */
+    SUCCESS,
+    /** Estado de error. */
+    ERROR,
+    /** Estado no autorizado. */
+    UNAUTHORIZED,
+    /** Estado inicial o neutro. */
+    NOTHING
 }

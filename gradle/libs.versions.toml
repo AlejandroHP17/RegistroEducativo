@@ -17,7 +17,7 @@ lottie = "6.1.0"
 timber = "5.0.1"
 datetime = "0.9.0"
 calendar = "2.3.0"
-
+mockk = "1.13.11"
 lifecycleRuntimeKtx = "2.9.2"
 activityCompose = "1.10.1"
 composeBom = "2025.08.00"
@@ -77,6 +77,7 @@ androidx-security-crypto-masterkeys = { group = "androidx.security", name = "sec
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"}
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
@@ -144,6 +145,7 @@ junit-test = [
     "junit",
     "androidx-junit",
     "androidx-espresso-core",
+    "mockk"
 ]
 androidx-basic= [
     "androidx-core-ktx"

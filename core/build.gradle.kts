@@ -25,5 +25,7 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.location)
     implementation(libs.bundles.androidx.security)
+    implementation(libs.bundles.junit.test)
+
     api(libs.bundles.timber)
 }

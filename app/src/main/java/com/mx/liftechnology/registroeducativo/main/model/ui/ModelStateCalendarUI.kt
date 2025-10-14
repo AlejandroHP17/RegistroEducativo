@@ -1,9 +1,14 @@
 package com.mx.liftechnology.registroeducativo.main.model.ui
 
-import java.time.LocalDate
-
+/**
+ * Representa los callbacks para las interacciones con el calendario.
+ *
+ * @property onDateSelected Lambda que se invoca al seleccionar una fecha.
+ * @property onDismiss Lambda que se invoca al descartar el diálogo.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ModelStateCalendarUI(
-    val startDate: LocalDate,
-    val endDate: LocalDate,
-
+    val onDateSelected: (Long) -> Unit,
+    val onDismiss: () -> Unit
 )

@@ -1,26 +1,53 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.login
 
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
+/**
+ * Representa los estados de la UI para la pantalla de registro de usuario.
+ *
+ * @property uiState El estado general de la UI (cargando, éxito, error, etc.).
+ * @property controlToast El estado para la visualización de mensajes toast.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ModelRegisterUserStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false)
+    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
 )
 
+/**
+ * Representa los campos de entrada de la UI para la pantalla de registro de usuario.
+ *
+ * @property emailInputState El estado del campo de entrada del email.
+ * @property passInputState El estado del campo de entrada de la contraseña.
+ * @property repeatPassInputState El estado del campo de entrada para repetir la contraseña.
+ * @property codeInputState El estado del campo de entrada del código de activación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class ModelRegisterUserInputsUI(
+    val emailInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val passInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val repeatPassInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val codeInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
+)
+
+/**
+ * Representa los callbacks para las interacciones de la UI en la pantalla de registro de usuario.
+ *
+ * @property onEmailChanged Lambda que se invoca al cambiar el email.
+ * @property onPassChanged Lambda que se invoca al cambiar la contraseña.
+ * @property onRepeatPassChanged Lambda que se invoca al cambiar la repetición de la contraseña.
+ * @property onCodeChanged Lambda que se invoca al cambiar el código de activación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ModelRegisterUserCallbacksUI(
     val onEmailChanged: (String) -> Unit,
     val onPassChanged: (String) -> Unit,
     val onRepeatPassChanged: (String) -> Unit,
     val onCodeChanged: (String) -> Unit
-)
-
-data class ModelRegisterUserInputsUI(
-    val emailInputState: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val passInputState: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val repeatPassInputState: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
-    val codeInputState: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
 )
