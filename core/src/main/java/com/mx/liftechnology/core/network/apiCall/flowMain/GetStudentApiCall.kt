@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para obtener la lista de estudiantes y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the student list API call.
+ * Interfaz para la llamada a la API de obtención de la lista de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListStudentApiCall {
     /**
-     * Makes the API request to get the list of students.
+     * Realiza la petición a la API para obtener la lista de estudiantes.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGetStudent] data.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de [ResponseGetStudent].
      */
     @POST(Environment.END_POINT_GET_STUDENT)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface GetListStudentApiCall {
 }
 
 /**
- * Data model for the student list request.
+ * Modelo de datos para la petición de la lista de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -42,7 +47,7 @@ data class RequestGetListStudent(
 )
 
 /**
- * Data model for the student response.
+ * Modelo de datos para la respuesta de la lista de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0

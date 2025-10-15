@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para registrar una nueva escuela asociada a un profesor.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import android.os.Build
@@ -18,10 +23,11 @@ import java.util.Calendar
 import java.util.Date
 
 /**
- * Use case for registering a single school.
+ * Caso de uso para registrar una nueva escuela y asociarla a un profesor.
+ * Encapsula la lógica de negocio para construir la petición de registro y manejar la respuesta del repositorio.
  *
- * @property registerSchoolRepository The repository for school registration.
- * @property preference The use case for managing user preferences.
+ * @property registerSchoolRepository El repositorio para las operaciones de registro de escuelas.
+ * @property preference El caso de uso para la gestión de las preferencias de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -32,14 +38,14 @@ class RegisterOneSchoolUseCase(
 ) {
 
     /**
-     * Executes the school registration process.
+     * Ejecuta el proceso de registro de la escuela.
      *
-     * @param cct The CCT of the school.
-     * @param schoolCycleTypeId The ID of the school cycle type.
-     * @param grade The grade.
-     * @param group The group name.
-     * @param cycle The cycle period.
-     * @return A [ModelState] indicating the result of the registration.
+     * @param cct La Clave de Centro de Trabajo de la escuela.
+     * @param schoolCycleTypeId El ID del tipo de ciclo escolar.
+     * @param grade El grado que se va a registrar.
+     * @param group El nombre del grupo.
+     * @param cycle El período del ciclo escolar.
+     * @return Un [ModelState] que indica el resultado de la operación, ya sea un éxito o un error.
      */
     suspend operator fun invoke(
         cct: String?,
@@ -82,10 +88,10 @@ class RegisterOneSchoolUseCase(
     }
 
     /**
-     * Handles error responses from the school registration repository.
+     * Maneja las respuestas de error del repositorio de registro de escuelas.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {

@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio local para la funcionalidad del menú principal.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.menu
 
 import android.content.Context
@@ -5,18 +10,18 @@ import com.mx.liftechnology.data.R
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 
 /**
- * Local repository for accessing menu data from resources.
+ * Repositorio local para acceder a los datos del menú desde los recursos de la aplicación.
+ * Esta clase se encarga de construir la lista de elementos del menú principal.
  *
- * @property context The application context.
- *
+ * @property context El contexto de la aplicación, necesario para acceder a los recursos.
  * @author Pelkidev
  * @version 1.0.0
  */
 class MenuLocalRepository(private val context: Context) {
     /**
-     * Gets the list of control menu items.
+     * Obtiene la lista de ítems para el menú de control.
      *
-     * @return A list of [ModelPrincipalMenuData] for the control menu.
+     * @return Una lista de [ModelPrincipalMenuData] para el menú de control.
      */
     fun getControlMenu(): List<ModelPrincipalMenuData> {
 
@@ -35,9 +40,9 @@ class MenuLocalRepository(private val context: Context) {
     }
 
     /**
-     * Gets the list of register menu items.
+     * Obtiene la lista de ítems para el menú de registro.
      *
-     * @return A list of [ModelPrincipalMenuData] for the register menu.
+     * @return Una lista de [ModelPrincipalMenuData] para el menú de registro.
      */
     fun getControlRegister(): List<ModelPrincipalMenuData> {
         val listMenuItems = context.resources.getStringArray(R.array.menu_items_register)

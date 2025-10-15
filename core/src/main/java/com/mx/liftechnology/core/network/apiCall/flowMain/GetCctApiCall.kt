@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para obtener la información de una escuela a partir de su CCT y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 /**
- * Interface for the CCT API call.
+ * Interfaz para la llamada a la API de obtención de CCT.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetCctApiCall {
     /**
-     * Makes the API request to get school information by CCT.
+     * Realiza la petición a la API para obtener la información de una escuela a partir de su CCT.
      *
-     * @param cct The CCT of the school.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with [ResponseCctSchool] data.
+     * @param cct El CCT de la escuela.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con los datos de [ResponseCctSchool].
      */
     @GET(Environment.END_POINT_GET_CCT)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface GetCctApiCall {
 }
 
 /**
- * Data model for the CCT response.
+ * Modelo de datos para la respuesta de la obtención de CCT.
  *
  * @author Pelkidev
  * @version 1.0.0

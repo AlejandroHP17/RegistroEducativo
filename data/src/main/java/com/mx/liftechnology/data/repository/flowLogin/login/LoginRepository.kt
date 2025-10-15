@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de inicio de sesión.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowLogin.login
 
 import com.mx.liftechnology.core.network.apiCall.flowLogin.LoginApiCall
@@ -11,26 +16,27 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the login repository.
+ * Interfaz del repositorio para el inicio de sesión.
+ * Define el contrato para ejecutar la lógica de inicio de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface LoginRepository{
   /**
-   * Executes the login request.
+   * Ejecuta la petición de inicio de sesión.
    *
-   * @param request The login request data.
-   * @return A [ResultService] indicating the result of the operation.
+   * @param request Los datos de la petición de inicio de sesión.
+   * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeLogin(request: RequestLogin): ResultService<ResponseLogin?, FailureService>
 }
 
 /**
- * Implementation of [LoginRepository].
+ * Implementación de [LoginRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property loginApiCall The API call for login.
- *
+ * @property loginApiCall La llamada a la API para el inicio de sesión.
  * @author Pelkidev
  * @version 1.0.0
  */

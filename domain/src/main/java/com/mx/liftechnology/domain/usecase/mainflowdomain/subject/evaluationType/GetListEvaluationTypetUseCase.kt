@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para obtener la lista de tipos de evaluación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListEvaluationType
@@ -15,25 +20,26 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Interface for getting the list of evaluation types.
+ * Interfaz para el caso de uso que obtiene la lista de tipos de evaluación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListEvaluationTypeUseCase {
     /**
-     * Executes the process of getting the list of evaluation types.
+     * Ejecuta el proceso para obtener la lista de tipos de evaluación.
      *
-     * @return A [ModelState] containing the list of evaluation types or an error.
+     * @return Un [ModelState] que contiene la lista de tipos de evaluación (como `String`) o un estado de error.
      */
     suspend fun getListEvaluationType(): ModelState<List<String>?, String>?
 }
 
 /**
- * Implementation of [GetListEvaluationTypeUseCase].
+ * Implementación de [GetListEvaluationTypeUseCase].
+ * Encapsula la lógica de negocio para solicitar la lista de tipos de evaluación y manejar la respuesta.
  *
- * @property getListEvaluationTypeRepository The repository for fetching evaluation types.
- * @property preference The use case for managing user preferences.
+ * @property getListEvaluationTypeRepository El repositorio para obtener los tipos de evaluación.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -68,10 +74,10 @@ class GetListEvaluationTypeUseCaseImp (
     }
 
     /**
-     * Handles error responses from the evaluation type repository.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String> {
         return when (error) {
@@ -82,7 +88,4 @@ class GetListEvaluationTypeUseCaseImp (
             else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
         }
     }
-
-
-
 }

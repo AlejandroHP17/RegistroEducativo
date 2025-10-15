@@ -1,3 +1,8 @@
+/**
+ * @file Proporciona el caso de uso para validar y procesar los datos de un estudiante a partir de una entrada de voz.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain
 
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
@@ -5,29 +10,35 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 /**
- * Interface for validating and parsing student data from a voice input string.
+ * Interfaz para el caso de uso que valida y procesa los datos de un estudiante a partir de una cadena de texto (voz).
+ * Define el contrato para construir un modelo de estudiante a partir de una entrada de texto plano.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface ValidateVoiceStudentUseCase {
     /**
-     * Builds a map of student data from a raw string.
+     * Construye un mapa de datos de estudiante a partir de una cadena de texto.
+     * La función procesa el texto para extraer y formatear los campos relevantes del estudiante.
      *
-     * @param data The raw string data, likely from voice input.
-     * @return A mutable map containing the parsed student information, or null if input is empty.
+     * @param data La cadena de texto cruda, generalmente proveniente de un reconocimiento de voz.
+     * @return Un mapa mutable que contiene la información del estudiante procesada, o `null` si la entrada es nula o vacía.
      */
     suspend fun buildModelStudent(data: String?): MutableMap<String, String>?
 }
 
 /**
- * Implementation of [ValidateVoiceStudentUseCase].
+ * Implementación de [ValidateVoiceStudentUseCase].
+ * Utiliza expresiones regulares para extraer y formatear los datos del estudiante.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
 
+    /**
+     * Objeto que contiene las expresiones regulares para procesar la entrada de voz.
+     */
     companion object RegexPatterns {
         const val NAME_REGEX = "Nombre\\s+([A-Za-zÁÉÍÓÚáéíóúüÜñÑ]+)"
         const val LAST_NAME_REGEX = "Apellido paterno\\s+([A-Za-zÁÉÍÓÚáéíóúüÜñÑ]+)"
@@ -36,7 +47,6 @@ class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
         const val BIRTHDAY_REGEX = "fecha de nacimiento\\s+([0-9]{1,2} de [A-Za-z]+ de [0-9]{4})"
         const val PHONE_NUMBER_REGEX = "Número de contacto\\s+([0-9 ]+)"
     }
-
 
     /**
      * {@inheritDoc}
@@ -81,18 +91,18 @@ class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
     }
 
     /**
-     * Capitalizes the first letter of each word in a string.
-     * @param input The string to capitalize.
-     * @return The capitalized string.
+     * Capitaliza la primera letra de cada palabra en una cadena de texto.
+     * @param input La cadena a capitalizar.
+     * @return La cadena con la primera letra de cada palabra en mayúscula.
      */
     private fun capitalizeWords(input: String): String {
         return input.lowercase().split(" ").joinToString(" ") { it.replaceFirstChar { c -> c.uppercase() } }
     }
 
     /**
-     * Converts a date string from "d de MMMM de yyyy" format to "yyyy-MM-dd".
-     * @param textDate The date string to convert.
-     * @return The converted date string, or null on failure.
+     * Convierte una fecha en formato "d de MMMM de yyyy" a "yyyy-MM-dd".
+     * @param textDate La fecha en formato de texto.
+     * @return La fecha convertida, o `null` si el formato es inválido.
      */
     private fun convertDate(textDate: String): String? {
         val inputFormat = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
@@ -106,9 +116,9 @@ class ValidateVoiceStudentUseCaseImp : ValidateVoiceStudentUseCase {
     }
 
     /**
-     * Formats a phone number string to be exactly 10 digits.
-     * @param phone The phone number string to format.
-     * @return The formatted 10-digit phone number, or "Número inválido".
+     * Formatea un número de teléfono para que contenga exactamente 10 dígitos.
+     * @param phone El número de teléfono a formatear.
+     * @return El número de 10 dígitos, o "Número inválido" si no cumple con el formato.
      */
     private fun formatPhoneNumber(phone: String): String {
         return phone.filter { it.isDigit() }.takeIf { it.length == 10 } ?: "Número inválido"

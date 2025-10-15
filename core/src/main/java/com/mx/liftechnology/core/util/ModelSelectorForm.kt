@@ -1,34 +1,38 @@
+/**
+ * @file Define un enum para identificar los diferentes campos de un formulario.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.util
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 /**
- * Enum representing the different fields in a form.
- * This is Parcelable to allow it to be passed between Android components.
+ * Enum que representa los diferentes campos de un formulario.
+ * Es `Parcelable` para poder pasarlo entre componentes de Android, como argumentos de navegación.
  *
- * @property value The integer value associated with the form field.
- *
+ * @property value El valor entero asociado a cada campo del formulario.
  * @author Pelkidev
  * @version 1.0.0
  */
 @Parcelize
 enum class ModelSelectorForm(val value: Int) : Parcelable {
-    /** Represents the name field. */
+    /** Representa el campo de nombre. */
     NAME(1),
 
-    /** Represents the last name field. */
+    /** Representa el campo de apellido paterno. */
     LASTNAME(2),
 
-    /** Represents the second last name field. */
+    /** Representa el campo de apellido materno. */
     SECONDLASTNAME(3),
 
-    /** Represents the CURP field. */
+    /** Representa el campo de CURP. */
     CURP(4),
 
-    /** Represents the phone number field. */
+    /** Representa el campo de número de teléfono. */
     PHONE(5),
 
-    /** Represents the birthday field. */
+    /** Representa el campo de fecha de nacimiento. */
     BIRTHDAY(6),
 }

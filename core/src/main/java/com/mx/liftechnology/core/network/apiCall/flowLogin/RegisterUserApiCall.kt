@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para el registro de usuarios y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowLogin
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the user registration API call.
+ * Interfaz para la llamada a la API de registro de usuarios.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterUserApiCall {
     /**
-     * Makes the API request for user registration.
+     * Realiza la petición a la API para el registro de usuarios.
      *
-     * @param request The user registration request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de strings.
      */
     @POST(Environment.END_POINT_REGISTER)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface RegisterUserApiCall {
 }
 
 /**
- * Data model for the user registration request.
+ * Modelo de datos para la petición de registro de usuarios.
  *
  * @author Pelkidev
  * @version 1.0.0

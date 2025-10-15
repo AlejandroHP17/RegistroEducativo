@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para el registro de una lista de parciales y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the partial list registration API call.
+ * Interfaz para la llamada a la API de registro de una lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterListPartialApiCall {
     /**
-     * Makes the API request to register a list of partials.
+     * Realiza la petición a la API para registrar una lista de parciales.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de strings.
      */
     @POST(Environment.END_POINT_REGISTER_PARTIAL)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface RegisterListPartialApiCall {
 }
 
 /**
- * Data model for the partial list registration request.
+ * Modelo de datos para la petición de registro de una lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -46,7 +51,7 @@ data class RequestRegisterPartial(
 )
 
 /**
- * Data model for a partial in the registration request.
+ * Modelo de datos para un parcial en la petición de registro.
  *
  * @author Pelkidev
  * @version 1.0.0

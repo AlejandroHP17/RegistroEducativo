@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para obtener la lista de materias y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the subject list API call.
+ * Interfaz para la llamada a la API de obtención de la lista de materias.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListSubjectApiCall {
     /**
-     * Makes the API request to get the list of subjects.
+     * Realiza la petición a la API para obtener la lista de materias.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGetListSubject] data.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de [ResponseGetListSubject].
      */
     @POST(Environment.END_POINT_GET_SUBJECT)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface GetListSubjectApiCall {
 }
 
 /**
- * Data model for the subject list request.
+ * Modelo de datos para la petición de la lista de materias.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -42,7 +47,7 @@ data class RequestGetListSubject(
 )
 
 /**
- * Data model for the subject response.
+ * Modelo de datos para la respuesta de la lista de materias.
  *
  * @author Pelkidev
  * @version 1.0.0

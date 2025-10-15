@@ -15,25 +15,31 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Interface for getting the list of assignments.
+ * @file Define el caso de uso para obtener la lista de nombres de asignaciones.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Interfaz para el caso de uso que obtiene la lista de asignaciones.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListAssignmentUseCase {
     /**
-     * Executes the process of getting the list of assignments.
+     * Ejecuta el proceso para obtener la lista de nombres de asignaciones.
      *
-     * @return A [ModelState] containing the list of assignment names or an error.
+     * @return Un [ModelState] que contiene una lista de `String` con los nombres de las asignaciones, o un estado de error.
      */
     suspend fun getListAssignment () :ModelState<List<String>?, String?>
 }
 
 /**
- * Implementation of [GetListAssignmentUseCase].
+ * Implementación de [GetListAssignmentUseCase].
  *
- * @property getListAssignmentRepository The repository for fetching the assignment list.
- * @property preference The use case for managing user preferences.
+ * @property getListAssignmentRepository El repositorio para obtener la lista de asignaciones.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -63,10 +69,10 @@ class GetListAssignmentUseCaseImp(
     }
 
     /**
-     * Handles error responses from the assignment repository.
+     * Maneja las respuestas de error del repositorio de asignaciones.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
         return when(error) {

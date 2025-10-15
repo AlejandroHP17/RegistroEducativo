@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de obtención de CCT.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.school
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
@@ -10,26 +15,27 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the CCT repository.
+ * Interfaz del repositorio para la obtención de CCT.
+ * Define el contrato para ejecutar la lógica de obtención de CCT.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetCctRepository{
   /**
-   * Executes the request to get school data by CCT.
+   * Ejecuta la petición para obtener los datos de una escuela a partir de su CCT.
    *
-   * @param cct The CCT of the school.
-   * @return A [ResultService] indicating the result of the operation.
+   * @param cct El CCT de la escuela.
+   * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeGetCct(cct:String): ResultService<ResponseCctSchool?, FailureService>
 }
 
 /**
- * Implementation of [GetCctRepository].
+ * Implementación de [GetCctRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property cctApiCall The API call for getting school data.
- *
+ * @property cctApiCall La llamada a la API para obtener los datos de la escuela.
  * @author Pelkidev
  * @version 1.0.0
  */

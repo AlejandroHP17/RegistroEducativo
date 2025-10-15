@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de obtención de tipos de evaluación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.subject.assessment
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListAssessmentTypeApiCall
@@ -11,27 +16,28 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the assessment type repository.
+ * Interfaz del repositorio para la obtención de tipos de evaluación.
+ * Define el contrato para ejecutar la lógica de obtención de tipos de evaluación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetAssessmentTypeRepository{
     /**
-     * Executes the request to get the list of assessment types.
+     * Ejecuta la petición para obtener la lista de tipos de evaluación.
      *
-     * @param request The request data.
-     * @return A [ResultService] indicating the result of the operation.
+     * @param request Los datos de la petición.
+     * @return Un [ResultService] que indica el resultado de la operación.
      */
     suspend fun executeGetListAssessment(request : RequestGetListAssessmentType)
             : ResultService<List<ResponseGetListAssessmentType?>?, FailureService>
 }
 
 /**
- * Implementation of [GetAssessmentTypeRepository].
+ * Implementación de [GetAssessmentTypeRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getListAssessmentTypeApiCall The API call for getting the assessment type list.
- *
+ * @property getListAssessmentTypeApiCall La llamada a la API para obtener la lista de tipos de evaluación.
  * @author Pelkidev
  * @version 1.0.0
  */

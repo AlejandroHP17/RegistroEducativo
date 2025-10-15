@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para obtener la lista de parciales y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the partial list API call.
+ * Interfaz para la llamada a la API de obtención de la lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListPartialApiCall {
     /**
-     * Makes the API request to get the list of partials.
+     * Realiza la petición a la API para obtener la lista de parciales.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseGetPartial] data.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de [ResponseGetPartial].
      */
     @POST(Environment.END_POINT_GET_PARTIAL)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface GetListPartialApiCall {
 }
 
 /**
- * Data model for the partial list request.
+ * Modelo de datos para la petición de la lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -42,14 +47,14 @@ data class RequestGetPartial(
 )
 
 /**
- * Data model for the partial response.
+ * Modelo de datos para la respuesta de la lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 data class ResponseGetPartial(
     @SerializedName("parcialciclogrupo_id")
-    val partialCycleGroupId: Int,
+    val partialCycleGroupId: Int?,
     @SerializedName("descripcion")
     val description: String,
     @SerializedName("fechainicio")

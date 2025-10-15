@@ -1,3 +1,8 @@
+/**
+ * @file Contiene el módulo de Koin para las dependencias de red.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network
 
 import com.mx.liftechnology.core.network.enviroment.Environment
@@ -8,7 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Koin module for network-related dependencies.
+ * Módulo de Koin para las dependencias relacionadas con la red, como Retrofit y OkHttpClient.
+ * Configura e inyecta las instancias necesarias para la comunicación con la API.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -16,12 +22,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 val networkModule = module {
 
     /**
-     * Provides a singleton instance of [TokenProvider].
+     * Provee una instancia singleton de [TokenProvider].
      */
     single { TokenProvider(get()) }
 
     /**
-     * Provides a singleton instance of [HttpLoggingInterceptor].
+     * Provee una instancia singleton de [HttpLoggingInterceptor] para el registro de las peticiones.
      */
     single {
         val logging = HttpLoggingInterceptor { message ->
@@ -35,12 +41,12 @@ val networkModule = module {
     }
 
     /**
-     * Provides a singleton instance of [AuthInterceptor].
+     * Provee una instancia singleton de [AuthInterceptor] para la autenticación.
      */
     single { AuthInterceptor(get()) }
 
     /**
-     * Provides a singleton instance of [OkHttpClient].
+     * Provee una instancia singleton de [OkHttpClient], configurado con los interceptores.
      */
     single {
         OkHttpClient.Builder()
@@ -50,7 +56,7 @@ val networkModule = module {
     }
 
     /**
-     * Provides a singleton instance of [Retrofit].
+     * Provee una instancia singleton de [Retrofit].
      */
     single {
         Retrofit.Builder()

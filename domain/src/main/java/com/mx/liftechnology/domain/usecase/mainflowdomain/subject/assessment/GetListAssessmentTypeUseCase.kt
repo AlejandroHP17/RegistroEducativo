@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para obtener la lista de tipos de evaluación disponibles.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assessment
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListAssessmentType
@@ -16,10 +21,11 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Use case for getting the list of assessment types.
+ * Caso de uso para obtener la lista de tipos de evaluación.
+ * Encapsula la lógica de negocio para solicitar los tipos de evaluación desde el repositorio y manejar la respuesta.
  *
- * @property getAssessmentTypeRepository The repository for fetching assessment types.
- * @property preference The use case for managing user preferences.
+ * @property getAssessmentTypeRepository El repositorio para obtener los datos de los tipos de evaluación.
+ * @property preference El caso de uso para acceder a las preferencias del usuario (IDs de sesión, etc.).
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -29,11 +35,13 @@ class GetListAssessmentTypeUseCase(
     private val preference : PreferenceUseCase
 ) {
     /**
-     * Executes the process of getting the list of assessment types.
+     * Ejecuta el proceso para obtener la lista de tipos de evaluación.
+     * Construye la petición, la envía al repositorio y transforma la respuesta en un [ModelState].
      *
-     * @return A [ModelState] containing the list of assessment types or an error.
+     * @return Un [ModelState] que contiene la lista de [ResponseGetListAssessmentType] en caso de éxito,
+     * o un estado de error específico en caso de fallo.
      */
-    suspend operator fun invoke():ModelState<List<ResponseGetListAssessmentType?>, String?> {
+    suspend operator fun invoke(): ModelState<List<ResponseGetListAssessmentType?>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -49,7 +57,7 @@ class GetListAssessmentTypeUseCase(
                 when (result) {
                     is ResultSuccess -> {
                         result.data?.let {
-                            SuccessState(result.data!!)
+                            SuccessState(result.data)
                         }?: ErrorState(ModelCodeError.ERROR_UNKNOWN)
                     }
 
@@ -63,12 +71,12 @@ class GetListAssessmentTypeUseCase(
     }
 
     /**
-     * Handles error responses from the assessment type repository.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<ResponseGetListAssessmentType?>, String?> {
+    private fun handleResponse(error: FailureService): ModelState<List<ResponseGetListAssessmentType?>?, String?> {
         return when(error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)

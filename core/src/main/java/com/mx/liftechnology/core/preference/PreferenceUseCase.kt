@@ -1,79 +1,84 @@
+/**
+ * @file Define el caso de uso para gestionar las preferencias de la aplicación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.preference
 
 /**
- * Use case for managing access to SharedPreferences.
+ * Caso de uso para gestionar el acceso a SharedPreferences.
+ * Esta clase abstrae la lógica para guardar y obtener diferentes tipos de datos de las preferencias.
  *
- * @property preference The repository for accessing preferences.
- *
+ * @property preference El repositorio para acceder a las preferencias.
  * @author Pelkidev
  * @version 1.0.0
  */
 class PreferenceUseCase(private val preference: PreferenceRepository) {
 
     /**
-     * Saves a boolean value to preferences.
+     * Guarda un valor booleano en las preferencias.
      *
-     * @param name The name of the preference to save.
-     * @param value The value to save.
+     * @param name El nombre de la preferencia a guardar.
+     * @param value El valor a guardar.
      */
     fun savePreferenceBoolean(name: String, value: Boolean) {
         preference.savePreference(name, value)
     }
 
     /**
-     * Gets a boolean value from preferences.
+     * Obtiene un valor booleano de las preferencias.
      *
-     * @param name The name of the preference to get.
-     * @return The saved boolean value, or false if not found.
+     * @param name El nombre de la preferencia a obtener.
+     * @return El valor booleano guardado, o `false` si no se encuentra.
      */
     fun getPreferenceBoolean(name: String): Boolean {
         return preference.getPreference(name, false)
     }
 
     /**
-     * Saves a string value to preferences.
+     * Guarda un valor de tipo String en las preferencias.
      *
-     * @param name The name of the preference to save.
-     * @param value The value to save.
+     * @param name El nombre de la preferencia a guardar.
+     * @param value El valor a guardar.
      */
     fun savePreferenceString(name: String, value: String?) {
         preference.savePreference(name, value)
     }
 
     /**
-     * Gets a string value from preferences.
+     * Obtiene un valor de tipo String de las preferencias.
      *
-     * @param name The name of the preference to get.
-     * @return The saved string value, or null if not found.
+     * @param name El nombre de la preferencia a obtener.
+     * @return El valor de tipo String guardado, o `null` si no se encuentra.
      */
     fun getPreferenceString(name: String): String? {
         return preference.getPreference(name, null)
     }
 
     /**
-     * Saves an integer value to preferences.
+     * Guarda un valor entero en las preferencias.
      *
-     * @param name The name of the preference to save.
-     * @param value The value to save.
+     * @param name El nombre de la preferencia a guardar.
+     * @param value El valor a guardar.
      */
     fun savePreferenceInt(name: String, value: Int?) {
         preference.savePreference(name, value)
     }
 
     /**
-     * Gets an integer value from preferences.
+     * Obtiene un valor entero de las preferencias.
      *
-     * @param name The name of the preference to get.
-     * @return The saved integer value, or -1 if not found.
+     * @param name El nombre de la preferencia a obtener.
+     * @return El valor entero guardado, o `-1` si no se encuentra.
      */
     fun getPreferenceInt(name: String): Int? {
         return preference.getPreference(name, -1)
     }
 
     /**
-     * Clears all preferences.
+     * Limpia todas las preferencias guardadas.
      *
-     * @return True if the preferences were cleared successfully, false otherwise.
+     * @return `true` si las preferencias se limpiaron correctamente, `false` en caso contrario.
      */
     fun cleanPreference(): Boolean {
         return preference.cleanPreference()

@@ -1,33 +1,36 @@
+/**
+ * @file Centraliza todas las expresiones regulares utilizadas en la aplicación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.model.generic
 
 /**
- * Object that contains regular expressions for input validation across the application.
+ * Objeto que contiene las expresiones regulares para la validación de campos.
+ * El uso de este objeto asegura que las validaciones sean consistentes en toda la aplicación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 object ModelRegex {
-    /** Regex for simple text, allowing alphanumeric characters and spaces. */
-    val SIMPLE_TEXT = Regex("^[A-ZÁÉÍÓÚÑa-z0-9áéíóúñ ]+$")
+    /** Expresión regular para validar un nombre de usuario (formato de email). */
+    val EMAIL = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.mx$")
 
-    /** Regex for more complex text, allowing alphanumeric characters, spaces, and some punctuation. */
-    val COMPLEX_TEXT = Regex("^[A-ZÁÉÍÓÚÑa-z0-9áéíóúñ ,.\\-/]+$")
-
-    /** Regex for validating a Mexican CURP (Clave Única de Registro de Población). */
-    val CURP = Regex("""^[A-Z]{4}\\d{6}[HM][A-Z]{5}[A-Z\\d]\\d$""")
-
-    /** Regex for validating a 10-digit phone number. */
-    val PHONE_NUMBER = Regex("""^\\d{10}$""")
-
-    /** Regex for validating a standard email address format. */
-    val EMAIL = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-
-    /** Regex for password validation. Requires at least one lowercase letter, one uppercase letter, one digit, and a minimum of 8 characters. */
+    /** Expresión regular para validar una contraseña (al menos una mayúscula, una minúscula, un número y 8 caracteres). */
     val PASS = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")
 
-    /** Regex for CCT (Clave de Centro de Trabajo) validation. */
-    val CCT = Regex("^[A-ZÑ0-9&]$")
+    /** Expresión regular para validar una CURP. */
+    val CURP = Regex("^[A-Z]{4}\\d{6}[HM][A-Z]{5}[A-Z0-9]{2}$")
 
-    /** Regex for validating a score, allowing integers from 0-10 and decimals. */
-    val SCORE = Regex("^(10([.,]0)?|10[.,]?|[0-9]([.,]\\d?)?)$")
+    /** Expresión regular para validar un número de teléfono de 10 dígitos. */
+    val PHONE_NUMBER = Regex("^\\d{10}$")
+
+    /** Expresión regular para validar una calificación (números y un punto decimal opcional). */
+    val SCORE = Regex("^[0-9]*\\.?[0-9]*$")
+
+    /** Expresión regular para texto simple (letras y espacios). */
+    val SIMPLE_TEXT = Regex("^[A-Za-z ]+$")
+
+    /** Expresión regular para texto complejo (letras, números, espacios y caracteres comunes). */
+    val COMPLEX_TEXT = Regex("^[A-Za-z0-9 .,_\\-áéíóúÁÉÍÓÚñÑ]+$")
 }

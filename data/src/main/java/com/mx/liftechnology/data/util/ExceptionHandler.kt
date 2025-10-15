@@ -1,17 +1,23 @@
+/**
+ * @file Proporciona un manejador de excepciones para convertir errores en un formato de servicio de fallo definido.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.util
 
 /**
- * An object that handles exceptions and converts them into a [FailureService].
+ * Objeto que gestiona las excepciones y las convierte en un [FailureService].
+ * Centraliza el manejo de errores de red y de servidor, traduciéndolos a un modelo de error unificado.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 object ExceptionHandler {
     /**
-     * Handles a given [Throwable] and converts it into a [FailureService].
+     * Gestiona una [Throwable] y la convierte en un [FailureService].
      *
-     * @param exception The exception to handle.
-     * @return A [FailureService] representing the handled exception.
+     * @param exception La excepción a gestionar.
+     * @return Un [FailureService] que representa la excepción gestionada.
      */
     fun handleException(exception: Throwable): FailureService {
         return when (exception) {

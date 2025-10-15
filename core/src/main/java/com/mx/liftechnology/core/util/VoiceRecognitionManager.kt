@@ -16,21 +16,21 @@ import androidx.lifecycle.MutableLiveData
 import java.util.Locale
 
 /**
- * Manages voice recognition functionality.
+ * Gestiona la funcionalidad de reconocimiento de voz.
+ * Esta clase encapsula la lógica para iniciar, detener y procesar los resultados del `SpeechRecognizer`.
  *
- * @property context The application context.
- *
+ * @property context El contexto de la aplicación, necesario para acceder a los servicios de reconocimiento de voz.
  * @author Pelkidev
  * @version 1.0.0
  */
 class VoiceRecognitionManager(private val context: Context) {
 
     private val _resultsLiveData = MutableLiveData<List<String>>()
-    /** LiveData that emits the recognition results. */
+    /** LiveData que emite los resultados del reconocimiento. */
     val resultsLiveData: LiveData<List<String>> get() = _resultsLiveData
 
     private val _errorLiveData = MutableLiveData<String>()
-    /** LiveData that emits recognition errors. */
+    /** LiveData que emite los errores del reconocimiento. */
     val errorLiveData: LiveData<String> get() = _errorLiveData
 
     private var speechRecognizer: SpeechRecognizer? = null
@@ -119,7 +119,7 @@ class VoiceRecognitionManager(private val context: Context) {
     }
 
     /**
-     * Starts listening for voice input.
+     * Inicia la escucha de la entrada de voz.
      */
     fun startListening() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
@@ -150,7 +150,7 @@ class VoiceRecognitionManager(private val context: Context) {
     }
 
     /**
-     * Stops listening for voice input.
+     * Detiene la escucha de la entrada de voz.
      */
     fun stopListening() {
         try {
@@ -177,7 +177,7 @@ class VoiceRecognitionManager(private val context: Context) {
     }
 
     /**
-     * Releases the resources used by the speech recognizer.
+     * Libera los recursos utilizados por el reconocedor de voz.
      */
     fun release() {
         handler.removeCallbacksAndMessages(null)

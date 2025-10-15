@@ -2,8 +2,13 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.subject
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.subject.RegisterSubjectRepository
+import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -13,7 +18,7 @@ import org.junit.Test
 
 /**
  * Tests para [RegisterOneSubjectUseCase].
- * Esta clase contiene los tests unitarios para el caso de uso que registra una nueva materia.
+ * Verifica el comportamiento del caso de uso de registro de materia en diferentes escenarios.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -26,7 +31,6 @@ class RegisterOneSubjectUseCaseTest {
 
     /**
      * Configuración inicial para los tests.
-     * Se ejecuta antes de cada test para inicializar el [RegisterOneSubjectUseCase] y sus dependencias.
      */
     @Before
     fun setUp() {
@@ -34,17 +38,35 @@ class RegisterOneSubjectUseCaseTest {
     }
 
     /**
-     * Test para verificar el caso de éxito del registro de una materia.
+     * Test para el flujo de registro de materia exitoso.
      */
     @Test
-    fun `invoke con respuesta exitosa`() = runBlocking {
-        // Preparamos una respuesta exitosa mockeada
-        coEvery { registerSubjectRepository.executeRegisterOneSubject(any()) } returns ResultSuccess(emptyList())
+    fun `invoke con datos validos debe devolver SuccessState`() = runBlocking {
+        // Preparamos el mock
+        val workMethods = mutableListOf(
+            ModelSpinnersWorkMethods(1, 101, 1, ModelStateOutFieldText("Examen"), ModelStateOutFieldText("50"))
+        )
+        coEvery { registerSubjectRepository.executeRegisterOneSubject(any()) } returns ResultSuccess(listOf("Registro exitoso"))
 
-        // Ejecutamos el método a probar
-        val result = registerOneSubjectUseCase.invoke(mutableListOf(), "Matemáticas")
+        // Ejecutamos el caso de uso
+        val result = registerOneSubjectUseCase.invoke(workMethods, "Matemáticas")
 
         // Verificamos el resultado
         assertTrue(result is SuccessState)
+    }
+
+    /**
+     * Test para el flujo de registro de materia con error.
+     */
+    @Test
+    fun `invoke con error del repositorio debe devolver ErrorState`() = runBlocking {
+        // Preparamos el mock
+        coEvery { registerSubjectRepository.executeRegisterOneSubject(any()) } returns ResultError(FailureService.ServerError)
+
+        // Ejecutamos el caso de uso
+        val result = registerOneSubjectUseCase.invoke(null, "Matemáticas")
+
+        // Verificamos el resultado
+        assertTrue(result is ErrorState)
     }
 }

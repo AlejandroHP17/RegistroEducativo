@@ -3,15 +3,16 @@ package com.mx.liftechnology.domain.model.subject
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 /**
- * Data model representing the format of an assignment in the domain layer.
+ * Modelo de datos que representa el formato de una asignación o trabajo en la capa de dominio.
+ * Contiene toda la información necesaria para gestionar una asignación, incluyendo su ponderación y descripción.
  *
- * @property id The ID of the format.
- * @property percent The percentage value of the assignment.
- * @property subjectSchoolCycleGroupId The ID of the subject-school-cycle group.
- * @property description The state of the description input field.
- * @property teacherSchoolCycleGroupId The ID of the teacher-school-cycle group.
- * @property assignmentId The ID of the assignment.
- * @property assignmentName The state of the assignment name input field.
+ * @property id El identificador único del formato de la asignación.
+ * @property percent El valor porcentual de la asignación sobre la calificación final.
+ * @property subjectSchoolCycleGroupId El ID que relaciona la materia con el grupo y ciclo escolar.
+ * @property description El estado del campo de texto para la descripción de la asignación.
+ * @property teacherSchoolCycleGroupId El ID que relaciona al profesor con el grupo y ciclo escolar.
+ * @property assignmentId El ID único de la asignación.
+ * @property assignmentName El estado del campo de texto para el nombre de la asignación.
  *
  * @author Pelkidev
  * @version 1.0.0

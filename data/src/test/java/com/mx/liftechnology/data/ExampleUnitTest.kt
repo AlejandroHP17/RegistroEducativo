@@ -5,11 +5,16 @@ import org.junit.Test
 import org.junit.Assert.*
 
 /**
- * Example local unit test, which will execute on the development machine (host).
+ * Test unitario de ejemplo para la capa de datos.
+ * Esta clase sirve como un placeholder y demuestra cómo se pueden realizar tests unitarios básicos.
  *
- * See [testing documentation](http://d.android.com/tools/testing).
+ * @author Pelkidev
+ * @version 1.0.0
  */
 class ExampleUnitTest {
+    /**
+     * Test de ejemplo que verifica que una suma simple es correcta.
+     */
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)

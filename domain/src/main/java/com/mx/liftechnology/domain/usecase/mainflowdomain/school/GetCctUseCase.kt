@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para validar una CCT (Clave de Centro de Trabajo) y obtener la información de la escuela.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
@@ -15,10 +20,11 @@ import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 
 /**
- * Use case for validating a CCT (Clave de Centro de Trabajo) and retrieving school information.
+ * Caso de uso para validar una CCT y obtener la información de una escuela.
+ * Encapsula la lógica de negocio para interactuar con el repositorio y procesar la respuesta,
+ * incluyendo la construcción de los datos para los spinners de la UI.
  *
- * @property getCctRepository The repository for CCT validation.
- *
+ * @property getCctRepository El repositorio para la validación de la CCT.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -27,10 +33,10 @@ class GetCctUseCase(
 ) {
 
     /**
-     * Executes the CCT validation process.
+     * Ejecuta el proceso de validación de la CCT.
      *
-     * @param cct The CCT string to validate.
-     * @return A [ModelState] containing the school information or an error.
+     * @param cct La Clave de Centro de Trabajo a validar.
+     * @return Un [ModelState] que contiene la información de la escuela o un estado de error.
      */
     suspend operator fun invoke(cct: String): ModelState<ModelResultSchoolDomain?, String> {
         return runCatching { getCctRepository.executeGetCct(cct) }.fold(
@@ -55,10 +61,10 @@ class GetCctUseCase(
     }
 
     /**
-     * Handles error responses from the CCT repository.
+     * Maneja las respuestas de error del repositorio de CCT.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico.
      */
     private fun handleResponseCompose(error: FailureService): ModelState<ModelResultSchoolDomain?, String> {
         return when (error) {
@@ -71,11 +77,11 @@ class GetCctUseCase(
     }
 
     /**
-     * Builds the data models for spinners based on the school information.
-     * It generates lists for school cycle, grade, and group based on the school type.
+     * Construye los modelos de datos para los spinners basándose en la información de la escuela.
+     * Genera listas para el ciclo escolar, el grado y el grupo según el tipo de escuela.
      *
-     * @param data The [ResponseCctSchool] data received from the repository.
-     * @return A [ModelSpinnerSchoolDomain] containing lists of strings for the spinners.
+     * @param data Los datos de [ResponseCctSchool] recibidos del repositorio.
+     * @return Un [ModelSpinnerSchoolDomain] que contiene las listas de strings para los spinners.
      */
     private fun buildLogicSpinner(data: ResponseCctSchool?): ModelSpinnerSchoolDomain {
         val cycle = data?.schoolCycleType.let { cycle ->

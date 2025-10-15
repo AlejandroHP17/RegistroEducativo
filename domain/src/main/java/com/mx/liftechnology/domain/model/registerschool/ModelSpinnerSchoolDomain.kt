@@ -1,12 +1,11 @@
 package com.mx.liftechnology.domain.model.registerschool
 
 /**
- * Data model for populating spinners in the school registration form.
+ * Modelo de datos para poblar los spinners en el formulario de registro de escuela.
  *
- * @property cycle The list of available school cycles.
- * @property grade The list of available grades.
- * @property group The list of available groups.
- *
+ * @property cycle La lista de ciclos escolares disponibles.
+ * @property grade La lista de grados disponibles.
+ * @property group La lista de grupos disponibles.
  * @author Pelkidev
  * @version 1.0.0
  */

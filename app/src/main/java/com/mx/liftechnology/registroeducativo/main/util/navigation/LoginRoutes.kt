@@ -1,20 +1,20 @@
 package com.mx.liftechnology.registroeducativo.main.util.navigation
 
 /**
- * An enum that represents the routes for the login flow.
+ * Enum que representa las rutas para el flujo de login.
+ * Cada ruta corresponde a una pantalla específica dentro de este flujo.
  *
- * @property route The route string.
- *
+ * @property route La ruta como un String, utilizada por el `NavController`.
  * @author Pelkidev
  * @version 1.0.0
  */
 enum class LoginRoutes(val route: String) {
-    /** The login screen. */
+    /** La pantalla de inicio de sesión. */
     LOGIN("login"),
 
-    /** The "forget password" screen. */
+    /** La pantalla de recuperación de contraseña. */
     FORGET_PASSWORD("forgetPassword"),
 
-    /** The user registration screen. */
+    /** La pantalla de registro de usuario. */
     REGISTER_USER("registerUser")
 }

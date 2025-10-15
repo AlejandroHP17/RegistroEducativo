@@ -1,33 +1,29 @@
+/**
+ * @file Define el modelo de datos para los métodos de trabajo en un spinner.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.model.subject
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 /**
- * Data model for spinners in the work methods section.
+ * Modelo de datos para un ítem en un spinner de métodos de trabajo.
+ * Representa un método de evaluación con su nombre, porcentaje y IDs asociados.
  *
- * @property position The position of the item in a list.
- * @property assessmentTypeId The ID of the assessment type.
- * @property teacherSchoolCycleGroupId The ID of the teacher-school-cycle group.
- * @property name The state of the name input field.
- * @property percent The state of the percent input field.
+ * @property position La posición del ítem en la lista.
+ * @property teacherSchoolCycleGroupId El ID que relaciona al profesor con el grupo y ciclo escolar.
+ * @property assessmentTypeId El ID del tipo de evaluación.
+ * @property name El estado del campo de texto para el nombre del método de trabajo.
+ * @property percent El estado del campo de texto para el porcentaje del método de trabajo.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 data class ModelSpinnersWorkMethods(
-    val position:Int,
-    val assessmentTypeId : Int?,
-    val teacherSchoolCycleGroupId : Int?,
-    val name: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            valueText = "",
-            isError = false,
-            errorMessage = ""
-        ),
-    val percent: ModelStateOutFieldText =
-        ModelStateOutFieldText(
-            valueText = "",
-            isError = false,
-            errorMessage = ""
-        ),
+    val position: Int,
+    val teacherSchoolCycleGroupId: Int?,
+    val assessmentTypeId: Int?,
+    val name: ModelStateOutFieldText,
+    val percent: ModelStateOutFieldText,
 )

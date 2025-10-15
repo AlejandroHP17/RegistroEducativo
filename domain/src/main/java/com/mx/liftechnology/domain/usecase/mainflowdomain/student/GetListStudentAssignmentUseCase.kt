@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para obtener la lista de estudiantes para una asignación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListStudent
@@ -16,10 +21,26 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.student.ModelStudentRegisterAssignmentDomain
 import com.mx.liftechnology.domain.model.student.toModelStudentRegisterAssignmentList
 
+/**
+ * Caso de uso para obtener la lista de estudiantes para el registro de una nueva asignación.
+ * Encapsula la lógica de negocio para solicitar la lista de estudiantes, procesarla y manejar los errores.
+ *
+ * @property getStudentRepository El repositorio para obtener la lista de estudiantes.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListStudentAssignmentUseCase (
     private val getStudentRepository: GetStudentRepository,
     private val preference: PreferenceUseCase
 ){
+    /**
+     * Ejecuta el proceso para obtener la lista de estudiantes de una asignación.
+     *
+     * @return Un [ModelState] que contiene la lista de estudiantes formateada para el registro de asignación,
+     * o un estado de error si la operación falla.
+     */
     suspend operator fun invoke(): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
@@ -49,6 +70,12 @@ class GetListStudentAssignmentUseCase (
         )
     }
 
+    /**
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
+     *
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
+     */
     private fun handleResponseAssignment(error: FailureService): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)

@@ -144,12 +144,12 @@ androidx-security = [
     "androidx-security-crypto-masterkeys"
 ]
 junit-test = [
-    "junit",
     "androidx-junit",
     "androidx-espresso-core"
 
 ]
 test = [
+    "junit",
     "mockk"
 ]
 androidx-basic= [
@@ -169,4 +169,3 @@ kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dokka = {id = "org.jetbrains.dokka", version = "2.0.0"}
-

@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para obtener la lista de tipos de evaluación y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the evaluation type list API call.
+ * Interfaz para la llamada a la API de obtención de la lista de tipos de evaluación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListEvaluationTypeApiCall{
     /**
-     * Makes the API request to get the list of evaluation types.
+     * Realiza la petición a la API para obtener la lista de tipos de evaluación.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de strings.
      */
     @POST(Environment.END_POINT_GET_EVALUATION_TYPE)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface GetListEvaluationTypeApiCall{
 }
 
 /**
- * Data model for the evaluation type list request.
+ * Modelo de datos para la petición de la lista de tipos de evaluación.
  *
  * @author Pelkidev
  * @version 1.0.0

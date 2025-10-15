@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de obtención del porcentaje de una materia.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.subject.assignment
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetPercentSubjectIdApiCall
@@ -11,26 +16,27 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the subject percentage repository.
+ * Interfaz del repositorio para la obtención del porcentaje de una materia.
+ * Define el contrato para ejecutar la lógica de obtención del porcentaje de una materia.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetPercentSubjectRepository{
     /**
-     * Executes the request to get the percentage of a subject.
+     * Ejecuta la petición para obtener el porcentaje de una materia.
      *
-     * @param request The request data.
-     * @return A [ResultService] indicating the result of the operation.
+     * @param request Los datos de la petición.
+     * @return Un [ResultService] que indica el resultado de la operación.
      */
     suspend fun executeGetPercentSubject(request : RequestGetPercentSubjectId): ResultService<List<ResponseGetPercentSubjectId>?, FailureService>
 }
 
 /**
- * Implementation of [GetPercentSubjectRepository].
+ * Implementación de [GetPercentSubjectRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getPercentSubjectIdApiCall The API call for getting the subject percentage.
- *
+ * @property getPercentSubjectIdApiCall La llamada a la API para obtener el porcentaje de una materia.
  * @author Pelkidev
  * @version 1.0.0
  */

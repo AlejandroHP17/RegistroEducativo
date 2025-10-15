@@ -18,11 +18,12 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Use case for handling user login.
+ * Caso de uso para gestionar el inicio de sesión de un usuario.
+ * Encapsula la lógica de negocio para validar credenciales, obtener la ubicación, interactuar con el repositorio y guardar las preferencias de sesión.
  *
- * @property repositoryLogin The repository for login operations.
- * @property locationHelper Helper to get the current device location.
- * @property preference Use case for managing user preferences.
+ * @property repositoryLogin El repositorio para las operaciones de inicio de sesión.
+ * @property locationHelper Utilidad para obtener la ubicación actual del dispositivo.
+ * @property preference Caso de uso para la gestión de las preferencias de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -34,12 +35,12 @@ class LoginUseCase(
 ) {
 
     /**
-     * Executes the login process.
+     * Ejecuta el proceso de inicio de sesión.
      *
-     * @param email The user's email.
-     * @param pass The user's password.
-     * @param remember Whether to save the user's session.
-     * @return A [ModelState] representing the result of the login attempt.
+     * @param email El correo electrónico del usuario.
+     * @param pass La contraseña del usuario.
+     * @param remember Indica si la sesión del usuario debe ser recordada.
+     * @return Un [ModelState] que representa el resultado del intento de inicio de sesión, ya sea un éxito con los datos del usuario o un error.
      */
     suspend operator fun invoke (email: String?, pass: String?, remember: Boolean): ModelState<UserLogin?, String> {
         val location = locationHelper.getCurrentLocation()
@@ -74,11 +75,11 @@ class LoginUseCase(
     }
 
     /**
-     * Saves user preferences after a successful login.
+     * Guarda las preferencias del usuario después de un inicio de sesión exitoso.
      *
-     * @param result The login response data.
-     * @param remember Whether to save the login session.
-     * @return True if the preferences were saved successfully, false otherwise.
+     * @param result Los datos de la respuesta de inicio de sesión.
+     * @param remember Indica si se debe guardar la sesión.
+     * @return `true` si las preferencias se guardaron correctamente, `false` en caso contrario.
      */
     private fun savePreferences(result: ResponseLogin?, remember:Boolean): Boolean {
         return result?.userLogin?.let { data ->
@@ -95,10 +96,10 @@ class LoginUseCase(
     }
 
     /**
-     * Handles error responses from the login repository.
+     * Maneja las respuestas de error del repositorio de inicio de sesión.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico.
      */
     private fun handleResponse(error: FailureService): ModelState<UserLogin?, String> {
         return when(error) {

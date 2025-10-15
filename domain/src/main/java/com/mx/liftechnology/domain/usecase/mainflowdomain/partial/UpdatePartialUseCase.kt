@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para actualizar el parcial seleccionado.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
 import com.mx.liftechnology.core.preference.ModelPreference
@@ -5,10 +10,10 @@ import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 
 /**
- * Use case for updating the selected partial in user preferences.
+ * Caso de uso para actualizar el parcial seleccionado.
+ * Encapsula la lógica para guardar el ID del parcial seleccionado en las preferencias.
  *
- * @property preference The use case for managing user preferences.
- *
+ * @property preference El caso de uso para gestionar las preferencias.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -17,9 +22,9 @@ class UpdatePartialUseCase(
 ) {
 
     /**
-     * Updates the selected partial in preferences.
+     * Actualiza el parcial seleccionado en las preferences.
      *
-     * @param partial The [ModelDialogGroupPartialDomain] object representing the selected partial.
+     * @param partial de [ModelDialogGroupPartialDomain] representa el parcial seleccionado.
      */
     operator fun invoke(partial: ModelDialogGroupPartialDomain?) {
         preference.savePreferenceInt(

@@ -16,10 +16,17 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Use case for registering an assignment.
+ * @file Define el caso de uso para registrar una nueva asignación (trabajo) de un estudiante.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Caso de uso para registrar una nueva asignación.
+ * Encapsula la lógica de negocio para construir la petición de registro de una asignación y manejar la respuesta.
  *
- * @property registerAssignmentRepository The repository for assignment registration.
- * @property preference The use case for managing user preferences.
+ * @property registerAssignmentRepository El repositorio para las operaciones de registro de asignaciones.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,13 +37,13 @@ class RegisterAssignmentUseCase (
 ){
 
     /**
-     * Executes the assignment registration process.
+     * Ejecuta el proceso de registro de una asignación.
      *
-     * @param nameJob The name of the job.
-     * @param typeJob The type of the job.
-     * @param date The date of the assignment.
-     * @param studentListUI The list of students and their job-related data.
-     * @return A [ModelState] indicating the result of the registration.
+     * @param nameJob El nombre del trabajo o asignación.
+     * @param typeJob El tipo de trabajo (ID).
+     * @param date La fecha de la asignación.
+     * @param studentListUI La lista de estudiantes y sus datos relacionados con el trabajo.
+     * @return Un [ModelState] que indica el resultado de la operación de registro.
      */
     suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<RequestStudentJobs>): ModelState<List<ResponseStudentJobs?>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -78,10 +85,10 @@ class RegisterAssignmentUseCase (
     }
 
     /**
-     * Handles error responses from the assignment repository.
+     * Maneja las respuestas de error del repositorio de registro de asignaciones.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ResponseStudentJobs?>?, String> {
         return when(error) {

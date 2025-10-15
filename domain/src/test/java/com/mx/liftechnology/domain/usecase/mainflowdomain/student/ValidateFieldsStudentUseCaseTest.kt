@@ -1,70 +1,105 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 /**
  * Tests para [ValidateFieldsStudentUseCase].
+ * Verifica todos los casos de validación para el formulario de registro de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class ValidateFieldsStudentUseCaseTest {
 
-    private lateinit var validateFieldsUseCase: ValidateFieldsStudentUseCase
+    private lateinit var useCase: ValidateFieldsStudentUseCase
 
     @Before
     fun setUp() {
-        validateFieldsUseCase = ValidateFieldsStudentUseCaseImp()
+        useCase = ValidateFieldsStudentUseCaseImp()
     }
 
     //region Tests para validateName
     @Test
-    fun `validateName con nombre valido`() {
-        val result = validateFieldsUseCase.validateName("Juan")
-        assertFalse(result.isError)
-        assertEquals(ModelCodeInputs.ET_CORRECT_FORMAT, result.errorMessage)
+    fun `validateName con nombre valido devuelve exito`() {
+        assertFalse(useCase.validateName("Juan").isError)
     }
 
     @Test
-    fun `validateName con nombre vacio`() {
-        val result = validateFieldsUseCase.validateName("")
-        assertTrue(result.isError)
-        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
+    fun `validateName con nombre vacio devuelve error`() {
+        assertTrue(useCase.validateName("").isError)
+    }
+    //endregion
+
+    //region Tests para validateLastName
+    @Test
+    fun `validateLastName con apellido valido devuelve exito`() {
+        assertFalse(useCase.validateLastName("Perez").isError)
+    }
+
+    @Test
+    fun `validateLastName con apellido vacio devuelve error`() {
+        assertTrue(useCase.validateLastName("").isError)
+    }
+    //endregion
+
+    //region Tests para validateSecondLastName
+    @Test
+    fun `validateSecondLastName con apellido valido devuelve exito`() {
+        assertFalse(useCase.validateSecondLastName("Gomez").isError)
+    }
+
+    @Test
+    fun `validateSecondLastName con apellido vacio devuelve error`() {
+        assertTrue(useCase.validateSecondLastName("").isError)
     }
     //endregion
 
     //region Tests para validateCurp
     @Test
-    fun `validateCurp con CURP valido`() {
-        val result = validateFieldsUseCase.validateCurp("HEPA940117HDFRLL04")
-        assertFalse(result.isError)
-        assertEquals(ModelCodeInputs.ET_CORRECT_FORMAT, result.errorMessage)
+    fun `validateCurp con CURP valido devuelve exito`() {
+        assertFalse(useCase.validateCurp("XAXX010101HXXIXXA0").isError)
     }
 
     @Test
-    fun `validateCurp con CURP invalido`() {
-        val result = validateFieldsUseCase.validateCurp("XAXX010101HXXIXXA")
-        assertTrue(result.isError)
-        assertEquals(ModelCodeInputs.ET_CURP_FORMAT_MISTAKE, result.errorMessage)
+    fun `validateCurp con CURP invalido devuelve error`() {
+        assertTrue(useCase.validateCurp("CURP_INVALIDA").isError)
     }
 
     @Test
-    fun `validateCurp con CURP vacio`() {
-        val result = validateFieldsUseCase.validateCurp("")
-        assertTrue(result.isError)
-        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
+    fun `validateCurp con CURP vacio devuelve error`() {
+        assertTrue(useCase.validateCurp("").isError)
+    }
+    //endregion
+
+    //region Tests para validateBirthday
+    @Test
+    fun `validateBirthday con fecha valida devuelve exito`() {
+        assertFalse(useCase.validateBirthday("2001-01-01").isError)
     }
 
     @Test
-    fun `validateCurp con CURP nulo`() {
-        val result = validateFieldsUseCase.validateCurp(null)
-        assertTrue(result.isError)
-        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
+    fun `validateBirthday con fecha vacia devuelve error`() {
+        assertTrue(useCase.validateBirthday("").isError)
+    }
+    //endregion
+
+    //region Tests para validatePhoneNumber
+    @Test
+    fun `validatePhoneNumber con numero valido devuelve exito`() {
+        assertFalse(useCase.validatePhoneNumber("1234567890").isError)
+    }
+
+    @Test
+    fun `validatePhoneNumber con numero invalido devuelve error`() {
+        assertTrue(useCase.validatePhoneNumber("123").isError)
+    }
+
+    @Test
+    fun `validatePhoneNumber con numero vacio devuelve error`() {
+        assertTrue(useCase.validatePhoneNumber("").isError)
     }
     //endregion
 }

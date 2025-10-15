@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para guardar el parcial activo en las preferencias del usuario.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
 import com.mx.liftechnology.core.preference.ModelPreference
@@ -7,10 +12,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
- * Use case for saving the current partial in user preferences.
+ * Caso de uso para guardar el parcial actual en las preferencias del usuario.
+ * Su lógica principal es determinar cuál es el parcial activo basado en la fecha actual
+ * y persistir su información para ser usada en otras partes de la aplicación.
  *
- * @property preference The use case for managing user preferences.
- *
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -18,11 +24,13 @@ class SavePartialUseCase (
     private val preference: PreferenceUseCase
 )  {
     /**
-     * Saves the current partial based on the current date and the provided list of partials.
-     * It finds the partial that contains the current date, or the last one if none match.
+     * Guarda el parcial actual.
+     * Busca en la lista de parciales cuál contiene la fecha actual. Si ninguno coincide,
+     * selecciona el último parcial de la lista como el activo por defecto.
+     * Si se encuentra un parcial, guarda su ID y rango de fechas en las preferencias.
      *
-     * @param listPartial The list of available partials.
-     * @return The selected [ModelDialogGroupPartialDomain], or null if the list is empty.
+     * @param listPartial La lista de parciales disponibles para la selección.
+     * @return El [ModelDialogGroupPartialDomain] que fue seleccionado como activo, o `null` si la lista es nula o vacía.
      */
     operator fun invoke (
         listPartial :
@@ -32,6 +40,8 @@ class SavePartialUseCase (
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
+        // Intenta encontrar el parcial cuyo rango de fechas contenga la fecha actual.
+        // Si no encuentra ninguno, toma el último de la lista como fallback.
         val element = listPartial?.firstOrNull { item ->
             val start = LocalDate.parse(item.startDate, formatter)
             val end = LocalDate.parse(item.endDate, formatter)

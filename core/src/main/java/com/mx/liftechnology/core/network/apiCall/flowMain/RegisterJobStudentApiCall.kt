@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para el registro de trabajos de estudiantes y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the student job registration API call.
+ * Interfaz para la llamada a la API de registro de trabajos de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterJobStudentApiCall {
     /**
-     * Makes the API request to register a student job.
+     * Realiza la petición a la API para registrar un trabajo de estudiante.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of [ResponseStudentJobs] data.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de [ResponseStudentJobs].
      */
     @POST(Environment.END_POINT_REGISTER_JOB)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface RegisterJobStudentApiCall {
 }
 
 /**
- * Data model for the student job registration request.
+ * Modelo de datos para la petición de registro de trabajos de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -58,7 +63,7 @@ data class RequestRegisterJobStudent(
 )
 
 /**
- * Data model for the student jobs in the registration request.
+ * Modelo de datos para los trabajos de los estudiantes en la petición de registro.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -73,7 +78,7 @@ data class RequestStudentJobs(
 )
 
 /**
- * Data model for the student jobs response.
+ * Modelo de datos para la respuesta de los trabajos de los estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0

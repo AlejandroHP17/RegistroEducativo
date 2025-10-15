@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para obtener la lista de asignaciones (trabajos) por materia.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPercentSubjectId
@@ -18,10 +23,11 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 
 /**
- * Use case for getting the list of assignments per subject.
+ * Caso de uso para obtener la lista de asignaciones (trabajos) por materia.
+ * Encapsula la lógica de negocio para solicitar la información desde el repositorio y transformarla para la UI.
  *
- * @property getPercentSubjectRepository The repository for fetching the assignments.
- * @property preference The use case for managing user preferences.
+ * @property getPercentSubjectRepository El repositorio para obtener los datos de las asignaciones.
+ * @property preference El caso de uso para acceder a las preferencias del usuario (IDs de sesión, etc.).
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -31,9 +37,11 @@ class GetListAssignmentPerSubjectUseCase (
     private val preference : PreferenceUseCase
 ) {
     /**
-     * Executes the process of getting the list of assignments per subject.
+     * Ejecuta el proceso para obtener la lista de asignaciones por materia.
+     * Construye la petición, la envía al repositorio, mapea la respuesta y maneja los errores.
      *
-     * @return A [ModelState] containing the list of assignments or an error.
+     * @return Un [ModelState] que contiene la lista de [ModelFormatAssignment] en caso de éxito,
+     * o un estado de error específico en caso de fallo.
      */
     suspend operator fun invoke(): ModelState<List<ModelFormatAssignment>?, String?>{
 
@@ -54,8 +62,8 @@ class GetListAssignmentPerSubjectUseCase (
                 when(result) {
                     is ResultSuccess -> {
                         val data = result.data.toModelUseCase()
-                        if(data.isNotEmpty())SuccessState(data)
-                        else ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                        if(data.isNotEmpty()) SuccessState(data)
+                        else ErrorState(ModelCodeError.ERROR_EMPTY) // Devuelve un error específico si la lista está vacía.
                     }
                     is ResultError -> handleResponse(result.error)
                 }
@@ -64,6 +72,12 @@ class GetListAssignmentPerSubjectUseCase (
         )
     }
 
+    /**
+     * Convierte una lista de [ResponseGetPercentSubjectId] a una lista de [ModelFormatAssignment].
+     *
+     * @receiver Lista de respuestas de la API.
+     * @return Lista de modelos de dominio formateados.
+     */
     private fun List<ResponseGetPercentSubjectId>?.toModelUseCase() : List<ModelFormatAssignment> {
         return this?.map {
             ModelFormatAssignment(
@@ -79,10 +93,10 @@ class GetListAssignmentPerSubjectUseCase (
     }
 
     /**
-     * Handles error responses from the repository.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelFormatAssignment>?, String?> {
         return when(error) {

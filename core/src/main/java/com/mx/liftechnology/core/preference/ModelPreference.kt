@@ -1,31 +1,37 @@
+/**
+ * @file Define las claves constantes para acceder a SharedPreferences.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.preference
 
 /**
- * Object containing constant keys for accessing SharedPreferences.
+ * Objeto que contiene las claves constantes para acceder a los valores guardados en SharedPreferences.
+ * Centralizar estas claves aquí ayuda a evitar errores tipográficos y facilita el mantenimiento.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 object ModelPreference {
-    /** Key for storing the user's login status. */
+    /** Clave para almacenar el estado de inicio de sesión del usuario. */
     const val LOGIN = "LOGIN"
-    /** Key for storing the user's access token. */
+    /** Clave para almacenar el token de acceso del usuario. */
     const val ACCESS_TOKEN = "ACCESS_TOKEN"
 
-    /** Key for storing the global user ID. */
+    /** Clave para almacenar el ID de usuario global. */
     const val ID_USER = "ID_USER"
-    /** Key for storing the user's role (e.g., "teacher" or "student"). */
+    /** Clave para almacenar el rol del usuario (ej: "profesor" o "alumno"). */
     const val USER_ROLE = "USER_ROLE"
-    /** Key for storing the unique ID associated with the user's role. */
+    /** Clave para almacenar el ID único asociado al rol del usuario. */
     const val ID_ROLE = "ID_ROLE"
 
-    /** Key for storing the ID of the selected group. */
+    /** Clave para almacenar el ID del grupo seleccionado. */
     const val ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"
-    /** Key for storing the ID of the selected partial. */
+    /** Clave para almacenar el ID del parcial seleccionado. */
     const val ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP"
-    /** Key for storing the ID of the selected subject. */
+    /** Clave para almacenar el ID de la materia seleccionada. */
     const val ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP"
 
-    /** Key for storing the date range of the active partial. */
+    /** Clave para almacenar el rango de fechas del parcial activo. */
     const val RANGE_DATES_PARTIAL= "RANGE_DATES_PARTIAL"
 }

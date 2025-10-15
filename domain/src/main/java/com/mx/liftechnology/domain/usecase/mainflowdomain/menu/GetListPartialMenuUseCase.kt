@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para obtener la lista de parciales del menú.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
@@ -17,10 +22,11 @@ import com.mx.liftechnology.domain.model.menu.ListPartialToConvertModelDialogGro
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 
 /**
- * Use case for getting the list of partials for the menu.
+ * Caso de uso para obtener la lista de parciales del menú.
+ * Encapsula la lógica de negocio para solicitar la lista de parciales, procesarla y manejar los posibles errores.
  *
- * @property getListPartialRepository The repository for fetching the list of partials.
- * @property preference The use case for managing user preferences.
+ * @property getListPartialRepository El repositorio para obtener la lista de parciales desde la fuente de datos.
+ * @property preference El caso de uso para gestionar las preferencias del usuario, como IDs de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,9 +36,11 @@ class GetListPartialMenuUseCase (
     private val preference: PreferenceUseCase
 )  {
     /**
-     * Executes the process of getting the list of partials.
+     * Ejecuta el proceso para obtener la lista de parciales.
+     * Construye la petición, la envía a través del repositorio y transforma la respuesta en un estado de la UI.
      *
-     * @return A [ModelState] containing the list of partials or an error.
+     * @return Un [ModelState] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
+     * o un estado de error específico en caso de fallo.
      */
      suspend operator fun invoke(): ModelState<List<ModelDialogGroupPartialDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -65,10 +73,10 @@ class GetListPartialMenuUseCase (
     }
 
     /**
-     * Handles error responses from the partials repository.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelDialogGroupPartialDomain>?, String> {
         return when (error) {

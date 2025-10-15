@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para validar los campos del formulario de registro de parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
@@ -6,36 +11,38 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 /**
- * Interface for validating fields in the partial registration form.
+ * Interfaz para el caso de uso que valida los campos del formulario de registro de parciales.
+ * Define los contratos para validar el número de períodos y la lista de fechas de los parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 interface ValidateFieldsRegisterPartialUseCase{
     /**
-     * Validates the period field.
-     * @param period The period to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida el campo del número de períodos.
+     * @param period El número de períodos a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validatePeriod(period: String?): ModelStateOutFieldText
 
     /**
-     * Validates a list of date periods from the adapter.
-     * @param adapterPeriods The list of date periods to validate.
-     * @return The list of date periods with updated validation states, or null.
+     * Valida una lista de períodos de fechas del adaptador.
+     * Marca como erróneos los períodos que no tienen una fecha asignada.
+     * @param adapterPeriods La lista de períodos de fechas a validar.
+     * @return La lista de períodos con sus estados de validación actualizados, o `null` si la entrada es nula.
      */
     fun validateAdapter(adapterPeriods: List<ModelDatePeriodDomain>?):  List<ModelDatePeriodDomain>?
 
     /**
-     * Checks if there are any errors in the list of adapter periods.
-     * @param adapterPeriods The list of date periods to check.
-     * @return A [ModelStateOutFieldText] indicating if there is an error.
+     * Comprueba si hay algún error en la lista de períodos del adaptador.
+     * @param adapterPeriods La lista de períodos a comprobar.
+     * @return Un [ModelStateOutFieldText] que indica si se encontró algún error en la lista.
      */
     fun validateAdapterError(adapterPeriods: List<ModelDatePeriodDomain>?): ModelStateOutFieldText
 }
 
 /**
- * Implementation of [ValidateFieldsRegisterPartialUseCase].
+ * Implementación de [ValidateFieldsRegisterPartialUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -46,7 +53,7 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
      */
     override fun validatePeriod(period: String?): ModelStateOutFieldText {
         return when {
-            (period?.toIntOrNull() ?: 0) < 1 -> period.stringToModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.SP_NOT_OPTION)
+            (period?.toIntOrNull() ?: 0) < 1 -> period.stringToModelStateOutFieldText(isError = true,  errorMessage = ModelCodeInputs.ET_EMPTY)
             else -> period.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
@@ -60,7 +67,7 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
             item.copy(
                 date = item.date.copy(
                     isError = isDateInvalid,
-                    errorMessage = if (isDateInvalid) ModelCodeInputs.ET_EMPTY else ""
+                    errorMessage = if (isDateInvalid) ModelCodeInputs.SP_NOT_OPTION else ""
                 )
             )
         }

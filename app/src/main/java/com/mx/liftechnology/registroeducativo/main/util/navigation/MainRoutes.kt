@@ -6,56 +6,56 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 
 /**
- * A sealed class that represents the routes for the main flow.
+ * Clase sellada que representa las rutas para el flujo principal de la aplicación.
+ * Cada objeto define una ruta específica y, en algunos casos, funciones para construir la ruta con parámetros.
  *
- * @property route The route string.
- *
+ * @property route La ruta base como un String.
  * @author Pelkidev
  * @version 1.0.0
  */
 sealed class MainRoutes (val route: String) {
 
-    /** The main menu screen. */
+    /** Ruta para la pantalla del menú principal. */
     data object Menu : MainRoutes("menu?reload={reload}") {
         /**
-         * Creates the route for the main menu screen.
+         * Crea la ruta para la pantalla del menú, con la opción de forzar la recarga de datos.
          *
-         * @param reload Whether to reload the data.
-         * @return The route string.
+         * @param reload Si es `true`, la pantalla recargará sus datos.
+         * @return La ruta completa con el parámetro de recarga.
          */
         fun withReload(reload: Boolean = false): String {
             return "menu?reload=$reload"
         }
     }
 
-    /** The school registration screen. */
+    /** Ruta para la pantalla de registro de escuela. */
     data object RegisterSchool: MainRoutes("registerSchool")
 
-    /** The student list screen. */
+    /** Ruta para la pantalla de lista de estudiantes. */
     data object ListStudent: MainRoutes("listStudent")
 
-    /** The subject registration screen. */
+    /** Ruta para la pantalla de registro de materia. */
     data object RegisterSubject: MainRoutes("registerSubject")
 
-    /** The subject list screen. */
+    /** Ruta para la pantalla de lista de materias. */
     data object ListSubject: MainRoutes("listSubject")
 
-    /** The partial registration screen. */
+    /** Ruta para la pantalla de registro de parciales. */
     data object RegisterPartial: MainRoutes("registerPartial")
 
-    /** The calendar screen. */
+    /** Ruta para la pantalla de calendario. */
     data object Calendar: MainRoutes("calendar")
 
-    /** The profile screen. */
+    /** Ruta para la pantalla de perfil de usuario. */
     data object Profile: MainRoutes("profile")
 
-    /** The student registration screen. */
+    /** Ruta para la pantalla de registro de estudiante. */
     data object RegisterStudent : MainRoutes("registerStudent?student={student}") {
         /**
-         * Creates the route for the student registration screen.
+         * Crea la ruta para la pantalla de registro de estudiante, pasando un objeto [ModelStudentDomain] como parámetro.
          *
-         * @param student The student data.
-         * @return The route string.
+         * @param student El objeto estudiante a pasar (opcional, para edición).
+         * @return La ruta completa con el estudiante serializado en formato JSON.
          */
         fun createRoutes(student: ModelStudentDomain?): String {
             val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
@@ -63,13 +63,13 @@ sealed class MainRoutes (val route: String) {
         }
     }
 
-    /** The student assignment screen. */
+    /** Ruta para la pantalla de asignación de estudiante. */
     data object AssignmentStudent: MainRoutes("assignment?student={student}") {
         /**
-         * Creates the route for the student assignment screen.
+         * Crea la ruta para la pantalla de asignación de estudiante, pasando un objeto [ModelStudentDomain] como parámetro.
          *
-         * @param student The student data.
-         * @return The route string.
+         * @param student El objeto estudiante a pasar.
+         * @return La ruta completa con el estudiante serializado en formato JSON.
          */
         fun createRoutes(student: ModelStudentDomain?): String {
             val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
@@ -77,13 +77,13 @@ sealed class MainRoutes (val route: String) {
         }
     }
 
-    /** The subject assignment screen. */
+    /** Ruta para la pantalla de asignación de materia. */
     data object AssignmentSubject : MainRoutes("assignment?subject={subject}") {
         /**
-         * Creates the route for the subject assignment screen.
+         * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [ModelFormatSubjectDomain] como parámetro.
          *
-         * @param subject The subject data.
-         * @return The route string.
+         * @param subject El objeto materia a pasar.
+         * @return La ruta completa con la materia serializada en formato JSON.
          */
         fun createRoutes(subject: ModelFormatSubjectDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
@@ -91,13 +91,13 @@ sealed class MainRoutes (val route: String) {
         }
     }
 
-    /** The assignment registration screen. */
+    /** Ruta para la pantalla de registro de asignación. */
     data object RegisterAssignment : MainRoutes("registerassignment?subject={subject}") {
         /**
-         * Creates the route for the assignment registration screen.
+         * Crea la ruta para la pantalla de registro de asignación, pasando un objeto [ModelFormatSubjectDomain] como parámetro.
          *
-         * @param subject The subject data.
-         * @return The route string.
+         * @param subject El objeto materia a pasar.
+         * @return La ruta completa con la materia serializada en formato JSON.
          */
         fun createRoutes(subject: ModelFormatSubjectDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""

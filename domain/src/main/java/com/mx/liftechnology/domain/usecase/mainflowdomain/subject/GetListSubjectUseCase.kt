@@ -17,10 +17,17 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.toModelSubjectList
 
 /**
- * Use case for getting the list of subjects.
+ * @file Define el caso de uso para obtener la lista de materias.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Caso de uso para obtener la lista de materias.
+ * Encapsula la lógica de negocio para solicitar la lista de materias, procesarla y manejar los errores.
  *
- * @property getListSubjectRepository The repository for fetching the subject list.
- * @property preference The use case for managing user preferences.
+ * @property getListSubjectRepository El repositorio para obtener la lista de materias.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,9 +37,9 @@ class GetListSubjectUseCase (
     private val preference: PreferenceUseCase
 ) {
     /**
-     * Executes the process of getting the list of subjects.
+     * Ejecuta el proceso para obtener la lista de materias.
      *
-     * @return A [ModelState] containing the list of subjects or an error.
+     * @return Un [ModelState] que contiene la lista de materias o un estado de error.
      */
     suspend operator fun invoke(): ModelState<List<ModelFormatSubjectDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -62,10 +69,10 @@ class GetListSubjectUseCase (
     }
 
     /**
-     * Handles error responses from the subject repository.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelFormatSubjectDomain>?, String> {
         return when (error) {

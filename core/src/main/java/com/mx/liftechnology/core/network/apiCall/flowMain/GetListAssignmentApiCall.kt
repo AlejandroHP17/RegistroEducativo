@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para obtener la lista de asignaciones y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the assignment list API call.
+ * Interfaz para la llamada a la API de obtención de la lista de asignaciones.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListAssignmentApiCall{
     /**
-     * Makes the API request to get the list of assignments.
+     * Realiza la petición a la API para obtener la lista de asignaciones.
      *
-     * @param request The request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with a list of strings.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de strings.
      */
     @POST(Environment.END_POINT_REGISTER_ASSIGNMENT)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface GetListAssignmentApiCall{
 }
 
 /**
- * Data model for the assignment list request.
+ * Modelo de datos para la petición de la lista de asignaciones.
  *
  * @author Pelkidev
  * @version 1.0.0

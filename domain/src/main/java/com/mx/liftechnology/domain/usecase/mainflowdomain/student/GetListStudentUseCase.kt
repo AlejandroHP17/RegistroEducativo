@@ -17,10 +17,11 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.student.toModelStudentList
 
 /**
- * Use case for getting the list of students.
+ * Caso de uso para obtener la lista de estudiantes.
+ * Encapsula la lógica de negocio para solicitar la lista de estudiantes, procesarla y manejar los errores.
  *
- * @property getStudentRepository The repository for fetching the student list.
- * @property preference The use case for managing user preferences.
+ * @property getStudentRepository El repositorio para obtener la lista de estudiantes.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,9 +31,9 @@ class GetListStudentUseCase(
     private val preference: PreferenceUseCase
 )  {
     /**
-     * Executes the process of getting the list of students.
+     * Ejecuta el proceso para obtener la lista de estudiantes.
      *
-     * @return A [ModelState] containing the list of students or an error.
+     * @return Un [ModelState] que contiene la lista de estudiantes o un estado de error.
      */
     suspend operator fun invoke(): ModelState<List<ModelStudentDomain>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
@@ -61,10 +62,10 @@ class GetListStudentUseCase(
     }
 
     /**
-     * Handles error responses from the student repository.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<ModelStudentDomain>?, String> {
         return when (error) {

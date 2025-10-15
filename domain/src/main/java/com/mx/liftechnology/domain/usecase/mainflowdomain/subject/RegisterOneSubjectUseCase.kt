@@ -17,10 +17,17 @@ import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 /**
- * Use case for registering a single subject.
+ * @file Define el caso de uso para registrar una nueva materia.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Caso de uso para registrar una única materia.
+ * Encapsula la lógica de negocio para construir la petición de registro y manejar la respuesta del repositorio.
  *
- * @property registerSubjectRepository The repository for subject registration.
- * @property preference The use case for managing user preferences.
+ * @property registerSubjectRepository El repositorio para las operaciones de registro de materias.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,11 +37,11 @@ class RegisterOneSubjectUseCase(
     private val preference: PreferenceUseCase
 ) {
     /**
-     * Executes the subject registration process.
+     * Ejecuta el proceso de registro de una materia.
      *
-     * @param updatedList The list of work methods and their percentages.
-     * @param name The name of the subject.
-     * @return A [ModelState] indicating the result of the registration.
+     * @param updatedList La lista de métodos de trabajo y sus porcentajes.
+     * @param name El nombre de la materia.
+     * @return Un [ModelState] que indica el resultado de la operación de registro.
      */
     suspend operator fun invoke(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
@@ -81,10 +88,10 @@ class RegisterOneSubjectUseCase(
     }
 
     /**
-     * Handles error responses from the subject repository.
+     * Maneja las respuestas de error del repositorio de registro de materias.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {

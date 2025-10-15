@@ -1,0 +1,78 @@
+package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
+
+import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.data.repository.flowMain.menu.MenuLocalRepository
+import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.SuccessState
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+
+/**
+ * Tests para [GetControlRegisterUseCase].
+ * Verifica el comportamiento del caso de uso en diferentes escenarios.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class GetControlRegisterUseCaseTest {
+
+    private lateinit var getControlRegisterUseCase: GetControlRegisterUseCase
+    private val localRepository: MenuLocalRepository = mockk()
+
+    /**
+     * Configuración inicial para los tests.
+     */
+    @Before
+    fun setUp() {
+        getControlRegisterUseCase = GetControlRegisterUseCase(localRepository)
+    }
+
+    /**
+     * Test para verificar que se devuelve [SuccessState] cuando el repositorio retorna una lista no vacía.
+     */
+    @Test
+    fun `invoke con lista no vacia devuelve SuccessState`() {
+        // Preparamos el mock
+        val menuList = listOf(ModelPrincipalMenuData("id", 1, "title"))
+        every { localRepository.getControlRegister() } returns menuList
+
+        // Ejecutamos el caso de uso
+        val result = getControlRegisterUseCase.invoke()
+
+        // Verificamos el resultado
+        assertTrue(result is SuccessState)
+    }
+
+    /**
+     * Test para verificar que se devuelve [ErrorState] cuando el repositorio retorna una lista vacía.
+     */
+    @Test
+    fun `invoke con lista vacia devuelve ErrorState`() {
+        // Preparamos el mock
+        every { localRepository.getControlRegister() } returns emptyList()
+
+        // Ejecutamos el caso de uso
+        val result = getControlRegisterUseCase.invoke()
+
+        // Verificamos el resultado
+        assertTrue(result is ErrorState)
+    }
+
+    /**
+     * Test para verificar que se devuelve [ErrorState] cuando el repositorio lanza una excepción.
+     */
+    @Test
+    fun `invoke cuando el repositorio lanza excepcion devuelve ErrorState`() {
+        // Preparamos el mock
+        every { localRepository.getControlRegister() } throws RuntimeException("Error de base de datos")
+
+        // Ejecutamos el caso de uso
+        val result = getControlRegisterUseCase.invoke()
+
+        // Verificamos el resultado
+        assertTrue(result is ErrorState)
+    }
+}

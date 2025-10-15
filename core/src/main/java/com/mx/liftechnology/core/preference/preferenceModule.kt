@@ -1,3 +1,8 @@
+/**
+ * @file Contiene el módulo de Koin para las dependencias relacionadas con las preferencias.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.preference
 
 import android.content.Context
@@ -6,7 +11,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 /**
- * Koin module for SharedPreferences and related dependencies.
+ * Módulo de Koin para las dependencias de SharedPreferences.
+ * Este módulo se encarga de proveer las instancias de [SharedPreferences], [PreferenceRepository] y [PreferenceUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -14,21 +20,21 @@ import org.koin.dsl.module
 val preferenceModule = module {
 
     /**
-     * Provides a singleton instance of [SharedPreferences].
+     * Provee una instancia singleton de [SharedPreferences].
      */
     single<SharedPreferences> {
         androidContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
     }
 
     /**
-     * Provides a singleton instance of [PreferenceRepository].
+     * Provee una instancia singleton de [PreferenceRepository].
      */
     single<PreferenceRepository> {
         PreferenceRepositoryImpl(get())
     }
 
     /**
-     * Provides a singleton instance of [PreferenceUseCase].
+     * Provee una instancia singleton de [PreferenceUseCase].
      */
     single {
         PreferenceUseCase(get())

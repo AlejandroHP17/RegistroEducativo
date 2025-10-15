@@ -63,7 +63,7 @@ fun AssignmentSubjectScreen(
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelAssignmentUiCallbacks(
                 onExpandedTitle = { assignmentSubjectViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = { 
+                onExpandedSubTitle = {
                 },
                 onItemClick = {}
             ),

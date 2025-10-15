@@ -1,3 +1,8 @@
+/**
+ * @file Define la llamada a la API para el inicio de sesión y los modelos de datos asociados.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.network.apiCall.flowLogin
 
 import com.google.gson.annotations.SerializedName
@@ -8,17 +13,17 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 /**
- * Interface for the login API call.
+ * Interfaz para la llamada a la API de inicio de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface LoginApiCall {
     /**
-     * Makes the API request for login.
+     * Realiza la petición a la API para el inicio de sesión.
      *
-     * @param request The login request data.
-     * @return A Retrofit [Response] containing a [ResponseGeneric] with [ResponseLogin] data.
+     * @param request Los datos de la petición.
+     * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con los datos de [ResponseLogin].
      */
     @POST(Environment.END_POINT_LOGIN)
     suspend fun callApi(
@@ -27,7 +32,7 @@ fun interface LoginApiCall {
 }
 
 /**
- * Data model for the login request.
+ * Modelo de datos para la petición de inicio de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -46,7 +51,7 @@ data class RequestLogin(
 )
 
 /**
- * Data model for the login response.
+ * Modelo de datos para la respuesta de inicio de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -63,7 +68,7 @@ data class ResponseLogin(
 )
 
 /**
- * Data model for the user information in the login response.
+ * Modelo de datos para la información del usuario en la respuesta de inicio de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0

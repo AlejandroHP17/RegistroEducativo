@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de registro de escuelas.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.school
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSchoolApiCall
@@ -10,17 +15,18 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the school registration repository.
+ * Interfaz del repositorio para el registro de escuelas.
+ * Define el contrato para ejecutar la lógica de registro de escuelas.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterSchoolRepository{
   /**
-   * Executes the school registration request.
+   * Ejecuta la petición de registro de una escuela.
    *
-   * @param request The school registration request data.
-   * @return A [ResultService] indicating the result of the operation.
+   * @param request Los datos de la petición de registro.
+   * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeRegisterOneSchool(
       request : RequestRegisterSchool
@@ -28,10 +34,10 @@ fun interface RegisterSchoolRepository{
 }
 
 /**
- * Implementation of [RegisterSchoolRepository].
+ * Implementación de [RegisterSchoolRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property registerSchoolApiCall The API call for school registration.
- *
+ * @property registerSchoolApiCall La llamada a la API para el registro de escuelas.
  * @author Pelkidev
  * @version 1.0.0
  */

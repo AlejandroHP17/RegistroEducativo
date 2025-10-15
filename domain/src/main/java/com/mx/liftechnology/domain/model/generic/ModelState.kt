@@ -1,11 +1,16 @@
+/**
+ * @file Define el modelo de estado genérico para gestionar los resultados de las operaciones.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.model.generic
 
 /**
- * A sealed class representing the state of an operation, which can be a success or various types of errors.
- * This generic class is used to handle responses from use cases and repositories.
+ * Clase sellada que representa el estado de una operación, que puede ser un éxito o varios tipos de errores.
+ * Esta clase genérica se utiliza para manejar las respuestas de los casos de uso y repositorios.
  *
- * @param S The type of data returned on a successful operation.
- * @param E The type of data returned on a failed operation.
+ * @param S El tipo de datos devuelto en una operación exitosa.
+ * @param E El tipo de datos devuelto en una operación fallida.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -13,25 +18,25 @@ package com.mx.liftechnology.domain.model.generic
 sealed class ModelState<S, E>
 
 /**
- * Represents a successful operation.
- * @param result The data returned from the successful operation.
+ * Representa una operación exitosa.
+ * @param result Los datos devueltos por la operación exitosa.
  */
 class SuccessState<S, E>(val result: S) : ModelState<S, E>()
 
 /**
- * Represents a generic error.
- * @param result The error data.
+ * Representa un error genérico.
+ * @param result Los datos del error.
  */
 class ErrorState<S, E>(val result: E) : ModelState<S, E>()
 
 /**
- * Represents an error related to user input or validation.
- * @param result The error data, typically containing a message for the user.
+ * Representa un error relacionado con la entrada o validación del usuario.
+ * @param result Los datos del error, que normalmente contienen un mensaje para el usuario.
  */
 class ErrorUserState<S, E>(val result: E) : ModelState<S, E>()
 
 /**
- * Represents an authorization error (e.g., 401 Unauthorized).
- * @param result The error data.
+ * Representa un error de autorización (ej: 401 No Autorizado).
+ * @param result Los datos del error.
  */
 class ErrorUnauthorizedState<S, E>(val result: E) : ModelState<S, E>()

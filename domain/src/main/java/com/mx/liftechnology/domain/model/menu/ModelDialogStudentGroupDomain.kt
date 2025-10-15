@@ -1,17 +1,22 @@
+/**
+ * @file Define los modelos de datos para los diálogos de selección de grupo y parcial.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
 package com.mx.liftechnology.domain.model.menu
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
 
 /**
- * Data model for a student group dialog in the domain layer.
+ * Modelo de datos que representa un grupo de estudiantes en un diálogo de selección.
  *
- * @property selected Indicates whether the item is selected.
- * @property item The [ResponseGroupTeacher] object associated with this dialog item.
- * @property nameItem The display name of the item.
- * @property listItemPartial A list of partials associated with the group.
- * @property itemPartial The currently selected partial.
- * @property namePartial The name of the selected partial.
- *
+ * @property selected Indica si el grupo está seleccionado.
+ * @property item La información del grupo obtenida de la respuesta de la API.
+ * @property nameItem El nombre del ítem a mostrar en la UI.
+ * @property listItemPartial La lista de parciales asociados a este grupo.
+ * @property itemPartial El parcial actualmente seleccionado.
+ * @property namePartial El nombre del parcial seleccionado.
  * @author Pelkidev
  * @version 1.0.0
  */

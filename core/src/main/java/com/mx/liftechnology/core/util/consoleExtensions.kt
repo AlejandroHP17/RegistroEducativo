@@ -1,13 +1,18 @@
+/**
+ * @file Proporciona funciones de extensión para logging, facilitando el registro de eventos en la consola.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.util
 
 import timber.log.Timber
 
 /**
- * Logs a message using Timber, with the class name as the tag.
+ * Registra un mensaje en la consola utilizando Timber.
+ * Esta función de extensión toma el nombre de la clase como tag para una fácil identificación.
  *
- * @param message The message to log.
- * @param name A prefix for the message (defaults to "Desarrollo: ").
- *
+ * @param message El mensaje a registrar.
+ * @param name Un prefijo opcional para el mensaje (por defecto: "Desarrollo: ").
  * @author Pelkidev
  * @version 1.0.0
  */

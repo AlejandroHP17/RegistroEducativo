@@ -1,47 +1,55 @@
+/**
+ * @file Define los códigos y mensajes de error estandarizados para toda la aplicación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.model.generic
 
 /**
- * Object that contains constants for error messages used throughout the application.
+ * Objeto que centraliza los mensajes de error constantes utilizados en la aplicación.
+ * Esto asegura la consistencia en la comunicación de errores tanto a nivel de sistema como de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 object ModelCodeError {
-    // Service Errors
-    /** Error message for exceptions caught in a catch block. */
+    //region Errores de Servicio
+    /** Mensaje para excepciones genéricas capturadas en un bloque catch. */
     const val ERROR_CATCH: String = "Error que entra al catch"
 
-    /** Error message for incomplete data. */
+    /** Mensaje para indicar que los datos recibidos o procesados están incompletos. */
     const val ERROR_INCOMPLETE_DATA: String = "Datos incompletos"
 
-    /** Error message for a timeout. */
+    /** Mensaje para errores de tiempo de espera (timeout) en las peticiones. */
     const val ERROR_TIMEOUT: String = "TiemOut"
 
-    /** Error message for an expired token. */
+    /** Mensaje para errores de autorización, comúnmente por token expirado. */
     const val ERROR_UNAUTHORIZED: String = "Token expirado"
 
-    /** Error message for a CRUD operation error. */
+    /** Mensaje para errores genéricos en operaciones CRUD (Crear, Leer, Actualizar, Eliminar). */
     const val ERROR_DATA: String = "Error CRUD"
 
-    /** Error message for an unexpected error. */
+    /** Mensaje para errores inesperados o no clasificados. */
     const val ERROR_UNKNOWN: String = "Error inesperado"
 
-    /** Error message for an empty list. */
+    /** Mensaje para indicar que una lista o conjunto de datos está vacío. */
     const val ERROR_EMPTY: String = "Lista vacia"
+    //endregion
 
-    // User-facing Errors
-    /** Critical error message for the user. */
+    //region Errores para el Usuario
+    /** Mensaje de error crítico mostrado al usuario, sugiriendo reintentar más tarde. */
     const val ERROR_CRITICAL: String = "Ha ocurrido un error, intente más tarde"
 
-    /** Error message for incorrect login credentials. */
+    /** Mensaje para credenciales de inicio de sesión incorrectas. */
     const val ERROR_VALIDATION_LOGIN: String = "Usuario o contraseña incorrectos, por favor valide nuevamente su información"
 
-    /** Error message for a failed user registration. */
+    /** Mensaje cuando falla el registro de un nuevo usuario. */
     const val ERROR_VALIDATION_REGISTER_USER: String = "No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos"
 
-    /** Error message for incorrect registration info (email or code). */
+    /** Mensaje para email o código de activación incorrectos durante el registro. */
     const val ERROR_VALIDATION_REGISTER_INFO: String = "Correo o código incorrectos, verifique su información"
 
-    /** Error message for a failed data update. */
+    /** Mensaje genérico cuando una actualización de datos falla. */
     const val ERROR_VALIDATION: String = "No se logro actualizar la información, intente más tarde"
+    //endregion
 }

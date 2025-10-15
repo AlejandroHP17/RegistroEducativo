@@ -27,9 +27,10 @@ import org.koin.androidx.compose.koinViewModel
 class MainActivity : AppCompatActivity() {
 
     /**
-     * Se llama cuando se crea la actividad por primera vez.
+     * Se llama cuando la actividad se crea por primera vez. Se encarga de configurar el contenido de la UI.
      *
-     * @param savedInstanceState Si la actividad se está reinicializando después de haber sido cerrada, este Bundle contiene los datos más recientes que suministró en [onSaveInstanceState].
+     * @param savedInstanceState Si la actividad se está reinicializando después de haber sido cerrada,
+     * este Bundle contiene los datos más recientes que suministró en [onSaveInstanceState].
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Reinicia la actividad actual. Útil para aplicar cambios de estado globales, como el cierre de sesión.
+     */
     private fun restoreActivity(){
         val intent = intent
         finish()

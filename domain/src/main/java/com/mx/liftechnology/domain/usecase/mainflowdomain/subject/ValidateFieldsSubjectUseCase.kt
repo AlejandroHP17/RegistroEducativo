@@ -6,43 +6,51 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 
 /**
- * Interface for validating fields related to a subject.
+ * @file Define el caso de uso para la validación de campos relacionados con una materia.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Interfaz para el caso de uso que valida los campos de una materia.
+ * Define los contratos para validar el nombre, las opciones y la lista de métodos de trabajo.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 interface ValidateFieldsSubjectUseCase {
     /**
-     * Validates the subject name.
-     * @param nameSubject The name of the subject to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida el nombre de la materia.
+     * @param nameSubject El nombre de la materia a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText
 
     /**
-     * Validates a selected option.
-     * @param option The option to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida una opción seleccionada (ej: número de trabajos).
+     * @param option La opción a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateOptionCompose(option: String?): ModelStateOutFieldText
 
     /**
-     * Validates a list of work methods (jobs).
-     * @param listJobs The list of work methods to validate.
-     * @return A mutable list with updated validation states, or null.
+     * Valida una lista de métodos de trabajo (tareas, exámenes, etc.).
+     * Marca como erróneos los campos de nombre o porcentaje que estén vacíos.
+     * @param listJobs La lista de métodos de trabajo a validar.
+     * @return Una lista mutable con los estados de validación actualizados, o nulo si la entrada es nula.
      */
     fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>?
 
     /**
-     * Validates that the sum of percentages for all work methods is 100.
-     * @param listJobs The list of work methods to validate.
-     * @return A [ModelStateOutFieldText] indicating if the sum is correct.
+     * Valida que la suma de los porcentajes de todos los métodos de trabajo sea igual a 100.
+     * @param listJobs La lista de métodos de trabajo a validar.
+     * @return Un [ModelStateOutFieldText] que indica si la suma de porcentajes es correcta.
      */
     fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText
 }
 
 /**
- * Implementation of [ValidateFieldsSubjectUseCase].
+ * Implementación de [ValidateFieldsSubjectUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -105,9 +113,8 @@ class ValidateFieldsSubjectUseCaseImp : ValidateFieldsSubjectUseCase {
     override fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText {
         return when {
             listJobs?.let { jobs ->
-                jobs.all {
-                    (it.percent.valueText.toIntOrNull() ?: 0) > 0
-                } && jobs.sumOf { it.percent.valueText.toIntOrNull() ?: 0 } == 100
+                jobs.all { (it.percent.valueText.toIntOrNull() ?: 0) > 0 } 
+                && jobs.sumOf { it.percent.valueText.toIntOrNull() ?: 0 } == 100
             } ?: false -> ModelStateOutFieldText(
                 valueText = listJobs?.size.toString(),
                 isError = false,

@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para registrar un nuevo estudiante.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterStudent
@@ -15,10 +20,11 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Use case for registering a single student.
+ * Caso de uso para registrar un único estudiante.
+ * Encapsula la lógica de negocio para construir la petición de registro y manejar la respuesta del repositorio.
  *
- * @property crudStudentRepository The repository for student CRUD operations.
- * @property preference The use case for managing user preferences.
+ * @property crudStudentRepository El repositorio para las operaciones CRUD de estudiantes.
+ * @property preference El caso de uso para la gestión de las preferencias de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -29,15 +35,15 @@ class RegisterOneStudentUseCase(
 ) {
 
     /**
-     * Executes the student registration process.
+     * Ejecuta el proceso de registro de un estudiante.
      *
-     * @param name The student's name.
-     * @param lastName The student's last name.
-     * @param secondLastName The student's second last name.
-     * @param curp The student's CURP.
-     * @param birthday The student's birthday.
-     * @param phoneNumber The student's phone number.
-     * @return A [ModelState] indicating the result of the registration.
+     * @param name El nombre del estudiante.
+     * @param lastName El apellido paterno del estudiante.
+     * @param secondLastName El apellido materno del estudiante.
+     * @param curp La CURP del estudiante.
+     * @param birthday La fecha de nacimiento del estudiante.
+     * @param phoneNumber El número de teléfono del estudiante.
+     * @return Un [ModelState] que indica el resultado de la operación de registro.
      */
     suspend operator fun invoke(
         name: String,
@@ -81,10 +87,10 @@ class RegisterOneStudentUseCase(
 
 
     /**
-     * Handles error responses from the student registration repository.
+     * Maneja las respuestas de error del repositorio de registro de estudiantes.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {

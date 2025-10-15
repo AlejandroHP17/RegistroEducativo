@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de obtención de la lista de tipos de evaluación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListEvaluationTypeApiCall
@@ -10,26 +15,27 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the evaluation type list repository.
+ * Interfaz del repositorio para la obtención de la lista de tipos de evaluación.
+ * Define el contrato para ejecutar la lógica de obtención de la lista de tipos de evaluación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListEvaluationTypeRepository {
     /**
-     * Executes the request to get the list of evaluation types.
+     * Ejecuta la petición para obtener la lista de tipos de evaluación.
      *
-     * @param request The request data.
-     * @return A [ResultService] indicating the result of the operation.
+     * @param request Los datos de la petición.
+     * @return Un [ResultService] que indica el resultado de la operación.
      */
     suspend fun executeGetListEvaluationType( request: RequestGetListEvaluationType) : ResultService<List<String>?, FailureService>
 }
 
 /**
- * Implementation of [GetListEvaluationTypeRepository].
+ * Implementación de [GetListEvaluationTypeRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getListEvaluationTypeApiCall The API call for getting the evaluation type list.
- *
+ * @property getListEvaluationTypeApiCall La llamada a la API para obtener la lista de tipos de evaluación.
  * @author Pelkidev
  * @version 1.0.0
  */

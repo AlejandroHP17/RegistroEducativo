@@ -63,7 +63,7 @@ fun AssignmentStudentScreen(
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelAssignmentUiCallbacks(
                 onExpandedTitle = { assignmentStudentViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = { 
+                onExpandedSubTitle = {
                 },
                 onItemClick = {}
             ),

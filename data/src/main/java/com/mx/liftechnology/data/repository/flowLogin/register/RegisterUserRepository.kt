@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de registro de usuarios.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowLogin.register
 
 import com.mx.liftechnology.core.network.apiCall.flowLogin.RegisterUserApiCall
@@ -10,27 +15,28 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the user registration repository.
+ * Interfaz del repositorio para el registro de usuarios.
+ * Define el contrato para ejecutar la lógica de registro.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterUserRepository{
   /**
-   * Executes the user registration request.
+   * Ejecuta la petición de registro de usuario.
    *
-   * @param request The user registration request data.
-   * @return A [ResultService] indicating the result of the operation.
+   * @param request Los datos de la petición de registro.
+   * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeRegisterUser(request: RequestRegisterUser)
   : ResultService<List<String>?, FailureService>
 }
 
 /**
- * Implementation of [RegisterUserRepository].
+ * Implementación de [RegisterUserRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property registerUserApiCall The API call for user registration.
- *
+ * @property registerUserApiCall La llamada a la API para el registro de usuarios.
  * @author Pelkidev
  * @version 1.0.0
  */

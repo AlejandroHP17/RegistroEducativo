@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para validar los campos del formulario de registro de escuela.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
@@ -5,43 +10,44 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 /**
- * Interface for validating fields in the school registration form.
+ * Interfaz para el caso de uso que valida los campos del formulario de registro de escuela.
+ * Define los contratos para validar el grado, el grupo, el ciclo y la CCT.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 interface ValidateFieldsRegisterSchoolUseCase {
     /**
-     * Validates the grade field.
-     * @param grade The grade to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida el campo del grado.
+     * @param grade El grado a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateGradeCompose(grade: String?): ModelStateOutFieldText
 
     /**
-     * Validates the group field.
-     * @param group The group to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida el campo del grupo.
+     * @param group El grupo a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateGroupCompose(group: String?): ModelStateOutFieldText
 
     /**
-     * Validates the cycle field.
-     * @param cycle The cycle to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida el campo del ciclo.
+     * @param cycle El ciclo a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateCycleCompose(cycle: String?): ModelStateOutFieldText
 
     /**
-     * Validates the CCT field.
-     * @param cct The CCT to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida el campo de la CCT.
+     * @param cct La CCT a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateCctCompose(cct: String?): ModelStateOutFieldText
 }
 
 /**
- * Implementation of [ValidateFieldsRegisterSchoolUseCase].
+ * Implementación de [ValidateFieldsRegisterSchoolUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0

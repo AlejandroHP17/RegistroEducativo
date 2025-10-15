@@ -10,6 +10,21 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.toModelCustomSpinner
 
+
+/**
+ * Representa el estado de la UI para la pantalla de registro de materias.
+ *
+ * @property uiState El estado general de la UI.
+ * @property subject El estado del campo de entrada del nombre de la materia.
+ * @property options El estado del campo de entrada de las opciones.
+ * @property listOptions La lista de opciones para el número de métodos de trabajo.
+ * @property listWorkMethods La lista de métodos de trabajo disponibles.
+ * @property listAdapter La lista de métodos de trabajo seleccionados.
+ * @property controlToast El estado para la visualización de mensajes toast.
+ * @property read Indica si los campos son de solo lectura.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ModelRegisterSubjectUIState(
     val showControl: Boolean = false,
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,

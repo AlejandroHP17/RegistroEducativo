@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad del menú principal.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.menu
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GroupApiCall
@@ -11,17 +16,18 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the menu repository.
+ * Interfaz del repositorio para el menú principal.
+ * Define el contrato para obtener la lista de grupos.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface MenuRepository{
     /**
-     * Executes the request to get the group list for the menu.
+     * Ejecuta la petición para obtener la lista de grupos.
      *
-     * @param request The request data.
-     * @return A [ResultService] indicating the result of the operation.
+     * @param request Los datos de la petición.
+     * @return Un [ResultService] que indica el resultado de la operación.
      */
     suspend fun executeGetGroup(
         request: RequestGroup
@@ -29,10 +35,10 @@ fun interface MenuRepository{
 }
 
 /**
- * Implementation of [MenuRepository].
+ * Implementación de [MenuRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property groupApiCall The API call for getting the group list.
- *
+ * @property groupApiCall La llamada a la API para obtener la lista de grupos.
  * @author Pelkidev
  * @version 1.0.0
  */

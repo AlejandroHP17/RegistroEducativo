@@ -43,10 +43,13 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
 /**
- * The main navigation host for the application.
+ * Host de navegación principal de la aplicación.
+ * Define el grafo de navegación y las pantallas correspondientes a cada ruta.
  *
- * @param sharedViewModel The shared ViewModel.
- * @param restoreActivity A lambda to be invoked to restore the activity.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas.
+ * @param restoreActivity Lambda para reiniciar la actividad principal, útil para flujos como el cierre de sesión.
+ * @author Pelkidev
+ * @version 1.0.0
  */
 @Composable
 fun AppNavHost(
@@ -68,7 +71,7 @@ fun AppNavHost(
                 )
             }
 
-            // Login flow
+            // Flujo de Login
             composable(LoginRoutes.LOGIN.route){ LoginScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
@@ -80,7 +83,7 @@ fun AppNavHost(
                 ) }
             composable(LoginRoutes.FORGET_PASSWORD.route){ ForgetPasswordScreen(navigationController) }
 
-            // Main flow
+            // Flujo Principal
             composable(
                 route = MainRoutes.Menu.route,
                 arguments = listOf(

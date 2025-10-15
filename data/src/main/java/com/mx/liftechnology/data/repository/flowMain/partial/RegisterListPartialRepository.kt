@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de registro de una lista de parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.partial
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListPartialApiCall
@@ -10,27 +15,28 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the partial list registration repository.
+ * Interfaz del repositorio para el registro de una lista de parciales.
+ * Define el contrato para ejecutar la lógica de registro de una lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterListPartialRepository{
   /**
-   * Executes the request to register a list of partials.
+   * Ejecuta la petición de registro de una lista de parciales.
    *
-   * @param request The request data.
-   * @return A [ResultService] indicating the result of the operation.
+   * @param request Los datos de la petición de registro.
+   * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeRegisterListPartial(request : RequestRegisterPartial
   ): ResultService<List<String?>?, FailureService>
 }
 
 /**
- * Implementation of [RegisterListPartialRepository].
+ * Implementación de [RegisterListPartialRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property registerListPartialApiCall The API call for registering a list of partials.
- *
+ * @property registerListPartialApiCall La llamada a la API para el registro de una lista de parciales.
  * @author Pelkidev
  * @version 1.0.0
  */

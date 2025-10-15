@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para modificar la información de un estudiante.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
@@ -5,22 +10,23 @@ import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepo
 import com.mx.liftechnology.domain.model.generic.ModelState
 
 /**
- * Interface for modifying a single student's information.
+ * Interfaz para el caso de uso que modifica la información de un solo estudiante.
+ * Define el contrato para la lógica de negocio de la modificación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface ModifyOneStudentUseCase{
     /**
-     * Modifies the information of a single student.
+     * Modifica la información de un estudiante existente.
      *
-     * @param name The student's name.
-     * @param lastName The student's last name.
-     * @param secondLastName The student's second last name.
-     * @param curp The student's CURP.
-     * @param birthday The student's birthday.
-     * @param phoneNumber The student's phone number.
-     * @return A [ModelState] indicating the result of the modification, or null.
+     * @param name El nuevo nombre del estudiante.
+     * @param lastName El nuevo apellido paterno del estudiante.
+     * @param secondLastName El nuevo apellido materno del estudiante.
+     * @param curp La nueva CURP del estudiante.
+     * @param birthday La nueva fecha de nacimiento del estudiante.
+     * @param phoneNumber El nuevo número de teléfono del estudiante.
+     * @return Un [ModelState] que indica el resultado de la operación de modificación.
      */
     suspend fun modifyOneStudent(
         name: String,
@@ -33,10 +39,10 @@ fun interface ModifyOneStudentUseCase{
 }
 
 /**
- * Implementation of [ModifyOneStudentUseCase].
+ * Implementación de [ModifyOneStudentUseCase].
  *
- * @property crudStudentRepository The repository for student CRUD operations.
- * @property preference The use case for managing user preferences.
+ * @property crudStudentRepository El repositorio para las operaciones CRUD de estudiantes.
+ * @property preference El caso de uso para la gestión de preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -56,7 +62,7 @@ class ModifyOneStudentUseCaseImp (
         birthday: String,
         phoneNumber: String,
     ): ModelState<List<String?>?, String>? {
-        TODO("Not yet implemented")
+        TODO("Aún no implementado")
     }
 
 }

@@ -1,3 +1,8 @@
+/**
+ * @file Proporciona el caso de uso para la validación de campos en los flujos de login y registro.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.loginflowdomain
 
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
@@ -6,51 +11,52 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
 /**
- * Interface for validating fields in the login and registration flows.
+ * Interfaz para el caso de uso que valida los campos de los flujos de login y registro.
+ * Define el contrato para las diferentes validaciones de email, contraseña y códigos.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 interface ValidateFieldsLoginFlowUseCase {
     /**
-     * Validates an email address.
-     * @param email The email to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida una dirección de correo electrónico.
+     * @param email El email a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateEmailCompose(email: String?): ModelStateOutFieldText
 
     /**
-     * Validates a password for login.
-     * @param pass The password to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida una contraseña para el inicio de sesión.
+     * @param pass La contraseña a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validatePassCompose(pass: String?): ModelStateOutFieldText
 
     /**
-     * Validates a password for registration.
-     * @param pass The password to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida una contraseña para el registro de un nuevo usuario.
+     * @param pass La contraseña a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validatePassRegisterCompose(pass: String?): ModelStateOutFieldText
 
     /**
-     * Validates that two passwords match.
-     * @param pass The original password.
-     * @param repeatPass The password to compare against.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida que dos contraseñas coincidan.
+     * @param pass La contraseña original.
+     * @param repeatPass La contraseña con la que se debe comparar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateRepeatPassCompose(pass: String?, repeatPass: String?): ModelStateOutFieldText
 
     /**
-     * Validates an activation code.
-     * @param code The code to validate.
-     * @return A [ModelStateOutFieldText] with the validation result.
+     * Valida un código de activación.
+     * @param code El código a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
     fun validateCodeCompose(code: String?): ModelStateOutFieldText
 }
 
 /**
- * Implementation of [ValidateFieldsLoginFlowUseCase].
+ * Implementación de [ValidateFieldsLoginFlowUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0

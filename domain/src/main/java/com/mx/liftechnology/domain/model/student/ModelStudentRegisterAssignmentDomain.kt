@@ -1,15 +1,20 @@
+/**
+ * @file Define el modelo de dominio para el registro de asignaciones de un estudiante y su mapeo desde la capa de datos.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.model.student
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
 
 /**
- * Data model representing a student for assignment registration in the domain layer.
+ * Modelo de datos que representa a un estudiante para el registro de una asignación en la capa de dominio.
  *
- * @property studentId The student's ID.
- * @property curp The student's CURP.
- * @property completeName The student's full name.
- * @property qualification The student's qualification for the assignment.
- * @property listNumber The student's number in the list.
+ * @property studentId El ID del estudiante.
+ * @property curp La CURP del estudiante.
+ * @property completeName El nombre completo del estudiante.
+ * @property qualification La calificación del estudiante para la asignación (inicialmente nula).
+ * @property listNumber El número del estudiante en la lista ordenada.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -23,28 +28,28 @@ data class ModelStudentRegisterAssignmentDomain (
 )
 
 /**
- * Extension function to convert a list of [ResponseGetStudent] to a list of [ModelStudentRegisterAssignmentDomain].
- * The list is sorted by the student's full name.
+ * Función de extensión para convertir una lista de [ResponseGetStudent] (modelo de red)
+ * a una lista de [ModelStudentRegisterAssignmentDomain] (modelo de dominio).
+ * La lista resultante está ordenada alfabéticamente por el nombre completo del estudiante.
  *
- * @receiver A nullable list of [ResponseGetStudent] objects.
- * @return A list of [ModelStudentRegisterAssignmentDomain] objects.
+ * @receiver Una lista nulable de objetos [ResponseGetStudent].
+ * @return Una lista de [ModelStudentRegisterAssignmentDomain]. Si la lista de entrada es nula, vacía o contiene solo nulos, devuelve una lista vacía.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun List<ResponseGetStudent?>?.toModelStudentRegisterAssignmentList(): List<ModelStudentRegisterAssignmentDomain> {
-
     return this
-        ?.filterNotNull() // Elimina nulos antes de mapear
-        ?.sortedBy { "${it.lastName} ${it.secondLastName} ${it.name}" } // Ordena por nombre completo
+        ?.filterNotNull() // Elimina elementos nulos para seguridad.
+        ?.sortedBy { "${it.lastName} ${it.secondLastName} ${it.name}" } // Ordena la lista por nombre completo.
         ?.mapIndexed { index, response ->
             val completeName = "${response.lastName} ${response.secondLastName} ${response.name}"
             ModelStudentRegisterAssignmentDomain(
                 studentId = response.studentId,
                 curp = response.curp,
                 completeName = completeName,
-                qualification = null,
-                listNumber = index + 1 // Asigna el número de lista basado en la posición
+                qualification = null, // La calificación se establece posteriormente.
+                listNumber = index + 1 // Asigna el número de lista basado en la posición ordenada.
             )
-        } ?: emptyList()
+        } ?: emptyList() // Devuelve una lista vacía si la lista original es nula.
 }

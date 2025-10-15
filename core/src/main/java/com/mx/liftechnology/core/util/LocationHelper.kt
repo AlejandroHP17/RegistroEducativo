@@ -18,10 +18,9 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 /**
- * Helper class for handling location-related operations.
+ * Clase de ayuda para gestionar operaciones relacionadas con la ubicación, como la obtención de permisos y la última localización conocida.
  *
- * @property context The application context.
- *
+ * @property context El contexto de la aplicación, necesario para acceder a los servicios de ubicación.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -31,26 +30,26 @@ class LocationHelper(private val context: Context) {
         LocationServices.getFusedLocationProviderClient(context)
 
     /**
-     * Callback interface for location results.
+     * Interfaz de callback para notificar el resultado de la obtención de la ubicación.
      */
     interface LocationCallback {
         /**
-         * Called when a location result is available.
-         * @param location The location, or null if not available.
+         * Se llama cuando se obtiene un resultado de ubicación.
+         * @param location La ubicación obtenida, o `null` si no está disponible.
          */
         fun onLocationResult(location: Location?)
 
         /**
-         * Called when the location permission is denied.
+         * Se llama si el permiso de ubicación es denegado por el usuario.
          */
         fun onPermissionDenied()
     }
 
     /**
-     * Requests the device's location, handling permissions as needed.
+     * Solicita la ubicación del dispositivo, gestionando los permisos necesarios.
      *
-     * @param permissionLauncher The launcher for the permission request.
-     * @param callback The callback to be invoked with the result.
+     * @param permissionLauncher El `ActivityResultLauncher` para la solicitud de permisos.
+     * @param callback El callback para notificar el resultado.
      */
     fun requestLocation(
         permissionLauncher: ActivityResultLauncher<String>,
@@ -72,7 +71,7 @@ class LocationHelper(private val context: Context) {
                     permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                 }
             } else {
-                // Handle non-Activity context
+                // Manejo alternativo si el contexto no es una Actividad
             }
 
         } else {
@@ -93,17 +92,17 @@ class LocationHelper(private val context: Context) {
     }
 
     /**
-     * Handles the result of a permission request.
+     * Gestiona el resultado de una solicitud de permiso.
      *
-     * @param isGranted True if the permission was granted, false otherwise.
-     * @param callback The callback to be invoked.
+     * @param isGranted `true` si el permiso fue concedido, `false` en caso contrario.
+     * @param callback El callback para notificar el resultado.
      */
     fun handlePermissionResult(isGranted: Boolean, callback: LocationCallback) {
         if (isGranted) {
             getLastKnownLocation(callback)
         } else {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(
-                    context as Activity,
+            if (context is Activity && !ActivityCompat.shouldShowRequestPermissionRationale(
+                    context,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
@@ -142,11 +141,11 @@ class LocationHelper(private val context: Context) {
     }
 
     /**
-     * Gets the current location using a suspend function.
+     * Obtiene la ubicación actual utilizando una función suspendida, ideal para corutinas.
      *
-     * @return The current [Location], or null if not available.
-     * @throws SecurityException if location permission is not granted.
-     * @throws NullPointerException if the location is null.
+     * @return La [Location] actual, o `null` si no está disponible.
+     * @throws SecurityException si el permiso de ubicación no ha sido concedido.
+     * @throws NullPointerException si la ubicación es nula.
      */
     suspend fun getCurrentLocation(): Location? = suspendCancellableCoroutine { continuation ->
         if (ActivityCompat.checkSelfPermission(
@@ -154,7 +153,7 @@ class LocationHelper(private val context: Context) {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            continuation.resumeWithException(SecurityException("Location permission not granted"))
+            continuation.resumeWithException(SecurityException("Permiso de ubicación no concedido"))
             return@suspendCancellableCoroutine
         }
 
@@ -162,7 +161,7 @@ class LocationHelper(private val context: Context) {
             if (location != null) {
                 continuation.resume(location)
             } else {
-                continuation.resumeWithException(NullPointerException("Location is null"))
+                continuation.resumeWithException(NullPointerException("La ubicación es nula"))
             }
         }.addOnFailureListener { exception ->
             continuation.resumeWithException(exception)

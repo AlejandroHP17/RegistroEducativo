@@ -1,3 +1,8 @@
+/**
+ * @file Define el caso de uso para registrar una lista de parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestPartials
@@ -17,10 +22,11 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Use case for registering a list of partials.
+ * Caso de uso para registrar una lista de parciales.
+ * Encapsula la lógica de negocio para construir la petición y enviarla al repositorio para su registro.
  *
- * @property registerListPartialRepository The repository for registering a list of partials.
- * @property preference The use case for managing user preferences.
+ * @property registerListPartialRepository El repositorio para registrar la lista de parciales.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,11 +36,11 @@ class RegisterListPartialUseCase(
     private val preference: PreferenceUseCase
 ) {
     /**
-     * Executes the process of registering a list of partials.
+     * Ejecuta el proceso de registro de una lista de parciales.
      *
-     * @param periodNumber The number of periods.
-     * @param adapterPeriods The list of date periods to register.
-     * @return A [ModelState] indicating the result of the registration.
+     * @param periodNumber El número de períodos a registrar.
+     * @param adapterPeriods La lista de períodos de fechas a registrar.
+     * @return Un [ModelState] que indica el resultado de la operación.
      */
     suspend operator fun invoke(
         periodNumber: Int?,
@@ -81,10 +87,10 @@ class RegisterListPartialUseCase(
     }
 
     /**
-     * Handles error responses from the partials repository.
+     * Maneja las respuestas de error del repositorio de registro de parciales.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
         return when (error) {

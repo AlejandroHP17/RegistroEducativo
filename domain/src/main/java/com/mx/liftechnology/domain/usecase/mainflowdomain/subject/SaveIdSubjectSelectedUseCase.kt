@@ -4,9 +4,16 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 
 /**
- * Use case for saving the ID of the selected subject in user preferences.
+ * @file Define el caso de uso para guardar el ID de la materia seleccionada.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Caso de uso para guardar el ID de la materia seleccionada en las preferencias del usuario.
+ * Encapsula la lógica para persistir el ID de la materia para su uso posterior en la aplicación.
  *
- * @property preference The use case for managing user preferences.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -15,11 +22,11 @@ class SaveIdSubjectSelectedUseCase (
     private val preference: PreferenceUseCase
 ){
     /**
-     * Saves the ID of the selected subject.
+     * Guarda el ID de la materia seleccionada en las preferencias.
      *
-     * @param id The ID of the subject to save.
+     * @param id El ID de la materia a guardar. Si es nulo, se guarda un valor por defecto (-1).
      */
-    fun invoke(id: Int?) {
+    operator fun invoke(id: Int?) {
         preference.savePreferenceInt(
             ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP,
             id?:-1

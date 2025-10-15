@@ -15,25 +15,31 @@ import com.mx.liftechnology.domain.model.generic.ModelState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 
 /**
- * Interface for registering a list of assignments.
+ * @file Define el caso de uso para registrar una lista de asignaciones.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+/**
+ * Interfaz para el caso de uso que registra una lista de asignaciones.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface RegisterListAssignmentUseCase {
     /**
-     * Executes the process of registering a list of assignments.
+     * Ejecuta el proceso de registro de una lista de asignaciones.
      *
-     * @return A [ModelState] indicating the result of the registration.
+     * @return Un [ModelState] que indica el resultado del registro.
      */
     suspend fun registerListAssignment () :ModelState<List<String>?, String?>
 }
 
 /**
- * Implementation of [RegisterListAssignmentUseCase].
+ * Implementación de [RegisterListAssignmentUseCase].
  *
- * @property registerListAssignmentRepository The repository for registering a list of assignments.
- * @property preference The use case for managing user preferences.
+ * @property registerListAssignmentRepository El repositorio para registrar la lista de asignaciones.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -63,10 +69,10 @@ class RegisterListAssignmentUseCaseImp(
     }
 
     /**
-     * Handles error responses from the assignment repository.
+     * Maneja las respuestas de error del repositorio de asignaciones.
      *
-     * @param error The [FailureService] object representing the error.
-     * @return A [ModelState] representing the specific error.
+     * @param error El objeto [FailureService] que representa el error.
+     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
     private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
         return when(error) {

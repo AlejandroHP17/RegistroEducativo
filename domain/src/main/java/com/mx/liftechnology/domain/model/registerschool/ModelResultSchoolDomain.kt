@@ -3,10 +3,10 @@ package com.mx.liftechnology.domain.model.registerschool
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
 
 /**
- * Data model representing the result of a school search in the domain layer.
+ * Modelo de datos que representa el resultado de la búsqueda de una escuela en la capa de dominio.
  *
- * @property spinners The data required for the spinners in the school registration form.
- * @property result The raw school data received from the API.
+ * @property spinners Los datos necesarios para los spinners del formulario de registro de escuela.
+ * @property result Los datos brutos de la escuela recibidos de la API.
  *
  * @author Pelkidev
  * @version 1.0.0

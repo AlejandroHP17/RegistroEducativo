@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de obtención de la lista de estudiantes.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.student
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
@@ -11,27 +16,28 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the student list repository.
+ * Interfaz del repositorio para la obtención de la lista de estudiantes.
+ * Define el contrato para ejecutar la lógica de obtención de la lista de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetStudentRepository{
     /**
-     * Executes the request to get the list of students.
+     * Ejecuta la petición para obtener la lista de estudiantes.
      *
-     * @param request The request data.
-     * @return A [ResultService] indicating the result of the operation.
+     * @param request Los datos de la petición.
+     * @return Un [ResultService] que indica el resultado de la operación.
      */
     suspend fun executeGetListStudent(request: RequestGetListStudent)
     : ResultService<List<ResponseGetStudent?>?, FailureService>
 }
 
 /**
- * Implementation of [GetStudentRepository].
+ * Implementación de [GetStudentRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getListStudentApiCall The API call for getting the student list.
- *
+ * @property getListStudentApiCall La llamada a la API para obtener la lista de estudiantes.
  * @author Pelkidev
  * @version 1.0.0
  */

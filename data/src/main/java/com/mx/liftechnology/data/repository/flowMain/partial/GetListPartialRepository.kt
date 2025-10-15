@@ -1,3 +1,8 @@
+/**
+ * @file Define el repositorio para la funcionalidad de obtención de la lista de parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.data.repository.flowMain.partial
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListPartialApiCall
@@ -11,17 +16,18 @@ import com.mx.liftechnology.data.util.ResultSuccess
 import retrofit2.HttpException
 
 /**
- * Interface for the partial list repository.
+ * Interfaz del repositorio para la obtención de la lista de parciales.
+ * Define el contrato para ejecutar la lógica de obtención de la lista de parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 fun interface GetListPartialRepository{
   /**
-   * Executes the request to get the list of partials.
+   * Ejecuta la petición para obtener la lista de parciales.
    *
-   * @param request The request data.
-   * @return A [ResultService] indicating the result of the operation.
+   * @param request Los datos de la petición.
+   * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeGetListPartial(
       request : RequestGetPartial
@@ -29,10 +35,10 @@ fun interface GetListPartialRepository{
 }
 
 /**
- * Implementation of [GetListPartialRepository].
+ * Implementación de [GetListPartialRepository].
+ * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getListPartialApiCall The API call for getting the partial list.
- *
+ * @property getListPartialApiCall La llamada a la API para obtener la lista de parciales.
  * @author Pelkidev
  * @version 1.0.0
  */
