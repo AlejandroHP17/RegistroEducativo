@@ -215,8 +215,8 @@ class RegisterSubjectViewModel(
             when (val result = getListAssessmentTypeUseCase.invoke()
             ) {
                 is SuccessState -> {
-                    val list = result.result.toMutableList()
-                    list.add(
+                    val list = result.result?.toMutableList()
+                    list?.add(
                         ResponseGetListAssessmentType(
                             assessmentTypeId = -1,
                             description = "Nuevo",
@@ -225,7 +225,7 @@ class RegisterSubjectViewModel(
                     )
                     _uiState.update {
                         it.copy(
-                            listWorkMethods = list
+                            listWorkMethods = list!!
                         )
                     }
                 }
