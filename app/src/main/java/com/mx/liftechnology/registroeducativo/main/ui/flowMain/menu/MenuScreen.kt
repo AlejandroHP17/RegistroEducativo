@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -27,7 +28,6 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderMenu
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
 import com.mx.liftechnology.registroeducativo.main.ui.components.MyGridScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextSubHeader
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuScreenObject.CONTROL
@@ -78,7 +78,9 @@ fun MenuScreen(
     }
 
     Column(
-        modifier = ModifierOrientation()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
         HeaderMenuScreen(
             uiDialog = dialogState,
