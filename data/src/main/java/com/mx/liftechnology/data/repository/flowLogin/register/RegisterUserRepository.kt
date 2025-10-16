@@ -9,6 +9,7 @@ import com.mx.liftechnology.core.network.apiCall.flowLogin.RegisterUserApiCall
 import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestRegisterUser
 import com.mx.liftechnology.data.util.ExceptionHandler
 import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.MessageError
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -29,7 +30,7 @@ fun interface RegisterUserRepository{
    * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeRegisterUser(request: RequestRegisterUser)
-  : ResultService<List<String>?, FailureService>
+  : ResultService<List<String?>, FailureService>
 }
 
 /**
@@ -49,10 +50,22 @@ class RegisterUserRepositoryImp(
      */
     override suspend fun executeRegisterUser(
         request: RequestRegisterUser
-    ): ResultService<List<String>?, FailureService> {
+    ): ResultService<List<String?>, FailureService> {
         return try {
             val response = registerUserApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    if (!it.isNullOrEmpty()) {
+                        ResultSuccess(it)
+                    } else {
+                        val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
+                        ResultError(ExceptionHandler.handleException(exception))
+                    }
+                } ?: run {
+                    val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
+                    ResultError(ExceptionHandler.handleException(exception))
+                }
+            }
             else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
             ResultError(ExceptionHandler.handleException(e))

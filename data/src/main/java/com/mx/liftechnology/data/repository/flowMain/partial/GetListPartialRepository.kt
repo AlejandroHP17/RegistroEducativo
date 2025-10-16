@@ -10,6 +10,7 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPartial
 import com.mx.liftechnology.data.util.ExceptionHandler
 import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.MessageError
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -51,10 +52,22 @@ class GetListPartialRepositoryImp(
      */
     override suspend fun executeGetListPartial(
         request : RequestGetPartial
-    ): ResultService<List<ResponseGetPartial?>?, FailureService> {
+    ): ResultService<List<ResponseGetPartial>, FailureService> {
         return try {
             val response = getListPartialApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
+            if (response.isSuccessful || response.body()?.data != null) {
+                response.body()?.data?.let { res ->
+                    val data = res.filterNotNull()
+                    if(data.isNotEmpty()) ResultSuccess(data)
+                    else {
+                        val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
+                        ResultError(ExceptionHandler.handleException(exception))
+                    }
+                } ?: run {
+                    val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
+                    ResultError(ExceptionHandler.handleException(exception))
+                }
+            }
             else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
             ResultError(ExceptionHandler.handleException(e))

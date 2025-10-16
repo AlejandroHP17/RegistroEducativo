@@ -28,7 +28,7 @@ fun interface RegisterUserApiCall {
     @POST(Environment.END_POINT_REGISTER)
     suspend fun callApi(
         @Body request: RequestRegisterUser
-    ): Response<ResponseGeneric<List<String>?>?>
+    ): Response<ResponseGeneric<List<String?>?>?>
 }
 
 /**

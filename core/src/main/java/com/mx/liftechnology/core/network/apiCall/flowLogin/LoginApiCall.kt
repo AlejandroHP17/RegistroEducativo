@@ -28,7 +28,7 @@ fun interface LoginApiCall {
     @POST(Environment.END_POINT_LOGIN)
     suspend fun callApi(
         @Body request: RequestLogin
-    ): Response<ResponseGeneric<ResponseLogin>?>
+    ): Response<ResponseGeneric<ResponseLogin?>?>
 }
 
 /**
@@ -60,7 +60,7 @@ data class ResponseLogin(
     @SerializedName("access_token")
     val accessToken: String?,
     @SerializedName("expires_in")
-    val expiresToken: Int,
+    val expiresToken: Int?,
     @SerializedName("token_type")
     val typeToken: String?,
     @SerializedName("user")

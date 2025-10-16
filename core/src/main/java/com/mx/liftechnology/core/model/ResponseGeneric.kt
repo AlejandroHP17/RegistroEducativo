@@ -28,7 +28,6 @@ class ResponseGeneric<T>(
  *
  * @property code El código de respuesta HTTP.
  * @property message El mensaje asociado a la respuesta.
- * @property validation Una lista de errores de validación, si los hubiera.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -36,7 +35,5 @@ data class ResponseBasic(
     @SerializedName("code")
     val code: Int,
     @SerializedName("msg")
-    val message: String,
-    @SerializedName("validation")
-    val validation: List<Any>?
+    val message: String
 )

@@ -34,23 +34,26 @@ class RegisterUserUseCase(
      *
      * @param email El correo electrónico del usuario.
      * @param pass La contraseña del usuario.
-     * @param activatationCode El código de activación para la cuenta.
+     * @param activationCode El código de activación para la cuenta.
      * @return Un [ModelState] que representa el resultado del intento de registro.
      */
-    suspend operator fun invoke(email: String, pass: String, activatationCode: String): ModelState<List<String>?, String> {
+    suspend operator fun invoke(email: String?, pass: String?, activationCode: String?): ModelState<List<String?>, String> {
+        if(email.isNullOrEmpty() || pass.isNullOrEmpty() || activationCode.isNullOrEmpty()) return ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+
         val request = RequestRegisterUser(
             email = email.lowercase(),
             password = pass,
-            activationCode = activatationCode
+            activationCode = activationCode
         )
-        return when (val result =  registerUserRepository.executeRegisterUser(request)) {
-            is ResultSuccess -> {
-                SuccessState(result.data)
-            }
-            is ResultError -> {
-                handleResponse(result.error)
-            }
-        }
+        return runCatching{ registerUserRepository.executeRegisterUser(request) } .fold(
+            onSuccess = { result ->
+                when (result){
+                    is ResultSuccess -> SuccessState(result.data)
+                    is ResultError -> handleResponse(result.error)
+                }
+            },
+            onFailure = { ErrorState(ModelCodeError.ERROR_CRITICAL)}
+        )
     }
 
     /**
@@ -59,7 +62,7 @@ class RegisterUserUseCase(
      * @param error El objeto [FailureService] que representa el error.
      * @return Un [ModelState] que representa el error específico.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<String>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<String?>, String> {
         return when(error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)

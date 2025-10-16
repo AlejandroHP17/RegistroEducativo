@@ -114,7 +114,6 @@ class GetGroupMenuUseCase(
         return modelResponse
     }
 
-
     /**
      * Maneja las respuestas de error del repositorio del menú.
      *

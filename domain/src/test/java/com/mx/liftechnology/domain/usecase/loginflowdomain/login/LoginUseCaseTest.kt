@@ -9,6 +9,7 @@ import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.domain.model.generic.ErrorUserState
 import com.mx.liftechnology.domain.model.generic.SuccessState
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -72,6 +73,6 @@ class LoginUseCaseTest {
         val result = loginUseCase.invoke("wrong@test.com", "wrong", false)
 
         // Verificamos el resultado
-        assertTrue(result is com.mx.liftechnology.domain.model.generic.ErrorUserState)
+        assertTrue(result is ErrorUserState)
     }
 }

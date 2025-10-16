@@ -42,10 +42,12 @@ class GetListPartialMenuUseCase (
      * @return Un [ModelState] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-     suspend operator fun invoke(): ModelState<List<ModelDialogGroupPartialDomain>?, String> {
+     suspend operator fun invoke(): ModelState<List<ModelDialogGroupPartialDomain>, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+
+        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorState(ModelCodeError.ERROR_UNKNOWN)
 
         val request = RequestGetPartial(
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
@@ -78,7 +80,7 @@ class GetListPartialMenuUseCase (
      * @param error El objeto [FailureService] que representa el error de la capa de datos.
      * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<ModelDialogGroupPartialDomain>?, String> {
+    private fun handleResponse(error: FailureService): ModelState<List<ModelDialogGroupPartialDomain>, String> {
         return when (error) {
             is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
             is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)

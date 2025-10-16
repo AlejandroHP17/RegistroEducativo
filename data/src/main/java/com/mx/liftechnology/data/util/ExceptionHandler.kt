@@ -4,7 +4,6 @@
  * @version 1.0.0
  */
 package com.mx.liftechnology.data.util
-
 /**
  * Objeto que gestiona las excepciones y las convierte en un [FailureService].
  * Centraliza el manejo de errores de red y de servidor, traduciéndolos a un modelo de error unificado.
@@ -29,11 +28,11 @@ object ExceptionHandler {
                     401 -> FailureService.Unauthorized
                     404 -> FailureService.NotFound
                     500 -> FailureService.Timeout
-                    else -> FailureService.UnknownError("Código de error: ${exception.code()}")
+                    else -> FailureService.UnknownError(MessageError.CODE_ERROR_MESSAGE + "${exception.code()}")
                 }
             }
 
-            else -> FailureService.UnknownError(exception.localizedMessage ?: "Error desconocido")
+            else -> FailureService.UnknownError(exception.localizedMessage ?: MessageError.UNKNOWN_ERROR_MESSAGE)
         }
     }
 }

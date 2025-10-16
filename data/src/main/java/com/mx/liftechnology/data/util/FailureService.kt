@@ -15,22 +15,22 @@ package com.mx.liftechnology.data.util
  */
 sealed class FailureService(val message: String) {
     /** Representa un error de conexión a la red. */
-    data object NetworkError : FailureService("Error de conexión a Internet")
+    data object NetworkError : FailureService(MessageError.CONNECTION_INTERNET_ERROR_MESSAGE)
 
     /** Representa un error interno del servidor. */
-    data object ServerError : FailureService("Error en el servidor, intenta más tarde")
+    data object ServerError : FailureService(MessageError.SERVER_ERROR_MESSAGE)
 
     /** Representa un error de "No Encontrado" (ej: 404). */
-    data object NotFound : FailureService("El recurso solicitado no existe")
+    data object NotFound : FailureService(MessageError.NOT_FOUND_ERROR_MESSAGE)
 
     /** Representa un error de "No Autorizado" (ej: 401). */
-    data object Unauthorized : FailureService("No tienes permisos para realizar esta acción")
+    data object Unauthorized : FailureService(MessageError.UNAUTHORIZED_ERROR_MESSAGE)
 
     /** Representa un error de "Solicitud Incorrecta" (ej: 400). */
-    data object BadRequest : FailureService("Solicitud incorrecta, revisa los datos enviados")
+    data object BadRequest : FailureService(MessageError.INCORRECT_REQUEST_ERROR_MESSAGE)
 
     /** Representa un error de tiempo de espera agotado. */
-    data object Timeout : FailureService("La solicitud tardó demasiado en responder")
+    data object Timeout : FailureService(MessageError.TIMEOUT_ERROR_MESSAGE)
 
     /**
      * Representa un error desconocido o inesperado.

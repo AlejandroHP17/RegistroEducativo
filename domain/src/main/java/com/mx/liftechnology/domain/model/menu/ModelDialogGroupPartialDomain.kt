@@ -39,8 +39,8 @@ val List<ResponseGetPartial?>?.ListPartialToConvertModelDialogGroupPartialDomain
         partial?.let {
             ModelDialogGroupPartialDomain(
                 partialId = it.partialCycleGroupId,
-                startDate = it.startDate,
-                endDate = it.endDate,
+                startDate = it.startDate ?: "",
+                endDate = it.endDate?: "",
                 name = "Parcial ${index + 1}",
             )
         }

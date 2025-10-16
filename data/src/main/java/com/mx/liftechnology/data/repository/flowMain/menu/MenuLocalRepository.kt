@@ -49,8 +49,8 @@ class MenuLocalRepository(private val context: Context) {
         val imageResources = arrayOf(
             R.drawable.ic_students,
             R.drawable.ic_subject,
-            R.drawable.ic_partial,
             R.drawable.ic_calendars,
+            R.drawable.ic_partial,
             R.drawable.ic_export
         )
         return listMenuItems.mapIndexed { index, description ->

@@ -1,7 +1,9 @@
 package com.mx.liftechnology.domain.usecase.loginflowdomain
 
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -71,6 +73,13 @@ class ValidateFieldsLoginFlowUseCaseTest {
         assertTrue(result.isError)
         assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
     }
+
+    @Test
+    fun `validatePassRegisterCompose con password nulo devuelve error de campo vacio`() {
+        val result = useCase.validatePassRegisterCompose(null)
+        assertTrue(result.isError)
+        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
+    }
     //endregion
 
     //region Tests para validateRepeatPassCompose
@@ -81,10 +90,24 @@ class ValidateFieldsLoginFlowUseCaseTest {
     }
 
     @Test
-    fun `validateRepeatPassCompose con passwords que no coinciden devuelve error de contraseñas diferentes`() {
+    fun `validateRepeatPassCompose con passwords que no coinciden devuelve error de passwords diferentes`() {
         val result = useCase.validateRepeatPassCompose("Password123", "Password456")
         assertTrue(result.isError)
         assertEquals(ModelCodeInputs.ET_PASS_DIFFERENT_MISTAKE, result.errorMessage)
+    }
+
+    @Test
+    fun `validateRepeatPassCompose con passwords vacio devuelve error de campo vacio`() {
+        val result = useCase.validateRepeatPassCompose("Password123", "")
+        assertTrue(result.isError)
+        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
+    }
+
+    @Test
+    fun `validateRepeatPassCompose con passwords nulo devuelve error de campo vacio`() {
+        val result = useCase.validateRepeatPassCompose("Password123", null)
+        assertTrue(result.isError)
+        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
     }
     //endregion
 
@@ -98,6 +121,13 @@ class ValidateFieldsLoginFlowUseCaseTest {
     @Test
     fun `validateCodeCompose con codigo vacio devuelve error de campo vacio`() {
         val result = useCase.validateCodeCompose("")
+        assertTrue(result.isError)
+        assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
+    }
+
+    @Test
+    fun `validateCodeCompose con codigo nulo devuelve error de campo vacio`() {
+        val result = useCase.validateCodeCompose(null)
         assertTrue(result.isError)
         assertEquals(ModelCodeInputs.ET_EMPTY, result.errorMessage)
     }

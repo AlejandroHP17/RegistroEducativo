@@ -42,8 +42,8 @@ class RegisterUserRepositoryTest {
     @Test
     fun `executeRegisterUser con respuesta exitosa`() = runBlocking {
         // Preparamos una respuesta exitosa mockeada
-        val mockBody: ResponseGeneric<List<String>?> = ResponseGeneric(listOf("Registro exitoso"), mockk())
-        val mockResponse: Response<ResponseGeneric<List<String>?>?> = Response.success(mockBody)
+        val mockBody: ResponseGeneric<List<String?>?> = ResponseGeneric(listOf("Registro exitoso"), mockk())
+        val mockResponse: Response<ResponseGeneric<List<String?>?>?> = Response.success(mockBody)
         
         coEvery { registerUserApiCall.callApi(any()) } returns mockResponse
 
@@ -55,13 +55,31 @@ class RegisterUserRepositoryTest {
     }
 
     /**
+     * Test para verificar el caso de éxito pero respuesta vacía del registro de usuario.
+     */
+    @Test
+    fun `executeRegisterUser con respuesta exitosa pero vacia`() = runBlocking {
+        // Preparamos una respuesta exitosa mockeada
+        val mockBody: ResponseGeneric<List<String?>?> = ResponseGeneric(null, mockk())
+        val mockResponse: Response<ResponseGeneric<List<String?>?>?> = Response.success(mockBody)
+
+        coEvery { registerUserApiCall.callApi(any()) } returns mockResponse
+
+        // Ejecutamos el método a probar
+        val result = registerUserRepository.executeRegisterUser(RequestRegisterUser("", "", ""))
+
+        // Verificamos el resultado
+        assertTrue(result is ResultError)
+    }
+
+    /**
      * Test para verificar el caso de error del registro de usuario.
      */
     @Test
     fun `executeRegisterUser con respuesta de error`() = runBlocking {
         // Preparamos una respuesta de error mockeada
         val mockResponseBody: ResponseBody = mockk(relaxed = true)
-        val mockResponse: Response<ResponseGeneric<List<String>?>?> = Response.error(400, mockResponseBody)
+        val mockResponse: Response<ResponseGeneric<List<String?>?>?> = Response.error(400, mockResponseBody)
         
         coEvery { registerUserApiCall.callApi(any()) } returns mockResponse
 

@@ -10,6 +10,7 @@ import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestLogin
 import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseLogin
 import com.mx.liftechnology.data.util.ExceptionHandler
 import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.MessageError
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -22,14 +23,14 @@ import retrofit2.HttpException
  * @author Pelkidev
  * @version 1.0.0
  */
-fun interface LoginRepository{
-  /**
-   * Ejecuta la petición de inicio de sesión.
-   *
-   * @param request Los datos de la petición de inicio de sesión.
-   * @return Un [ResultService] que indica el resultado de la operación.
-   */
-  suspend fun executeLogin(request: RequestLogin): ResultService<ResponseLogin?, FailureService>
+fun interface LoginRepository {
+    /**
+     * Ejecuta la petición de inicio de sesión.
+     *
+     * @param request Los datos de la petición de inicio de sesión.
+     * @return Un [ResultService] que indica el resultado de la operación.
+     */
+    suspend fun executeLogin(request: RequestLogin): ResultService<ResponseLogin, FailureService>
 }
 
 /**
@@ -41,21 +42,31 @@ fun interface LoginRepository{
  * @version 1.0.0
  */
 class LoginRepositoryImp(
-    private val loginApiCall: LoginApiCall
+    private val loginApiCall: LoginApiCall,
 ) : LoginRepository {
 
     /**
-     * {@inheritDoc}
+     * Realiza la llamada de red para el inicio de sesión y gestiona la respuesta.
+     *
+     * La anotación `{@inheritDoc}` indica que esta documentación hereda y cumple
+     * el contrato definido en [LoginRepository.executeLogin].
      */
     override suspend fun executeLogin(
-        request: RequestLogin
-    ): ResultService<ResponseLogin?, FailureService> {
+        request: RequestLogin,
+    ): ResultService<ResponseLogin, FailureService> {
         return try {
             val response = loginApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    ResultSuccess(it)
+                } ?: run {
+                    val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
+                    ResultError(ExceptionHandler.handleException(exception))
+                }
+            } else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
             ResultError(ExceptionHandler.handleException(e))
         }
     }
 }
+

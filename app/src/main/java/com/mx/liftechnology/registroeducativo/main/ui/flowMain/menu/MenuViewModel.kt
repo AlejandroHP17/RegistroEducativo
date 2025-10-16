@@ -173,7 +173,6 @@ class MenuViewModel(
             else -> {
                 withContext(dispatcherProvider.io) {
                     savePartialUseCase.invoke(null)
-                    logs(state.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

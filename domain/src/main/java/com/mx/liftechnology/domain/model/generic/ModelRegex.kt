@@ -14,7 +14,7 @@ package com.mx.liftechnology.domain.model.generic
  */
 object ModelRegex {
     /** Expresión regular para validar un nombre de usuario (formato de email). */
-    val EMAIL = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.mx$")
+    val EMAIL = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
 
     /** Expresión regular para validar una contraseña (al menos una mayúscula, una minúscula, un número y 8 caracteres). */
     val PASS = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")

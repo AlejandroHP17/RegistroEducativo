@@ -47,6 +47,8 @@ class GetListPartialUseCase(
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
+        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorState(ModelCodeError.ERROR_UNKNOWN)
+
         val request = RequestGetPartial(
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
             userId = userId,

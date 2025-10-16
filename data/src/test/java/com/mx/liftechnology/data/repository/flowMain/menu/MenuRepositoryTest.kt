@@ -54,6 +54,42 @@ class MenuRepositoryTest {
     }
 
     /**
+     * Test para verificar el caso de éxito de la obtención de grupos.
+     */
+    @Test
+    fun `executeGetGroup con respuesta exitosa con nulo de datos`() = runBlocking {
+        // Preparamos una respuesta exitosa mockeada
+        val mockBody: ResponseGeneric<List<ResponseGroupTeacher?>?> = ResponseGeneric(null, mockk())
+        val mockResponse: Response<ResponseGeneric<List<ResponseGroupTeacher?>?>> = Response.success(mockBody)
+
+        coEvery { groupApiCall.callApi(any()) } returns mockResponse
+
+        // Ejecutamos el método a probar
+        val result = menuRepository.executeGetGroup(mockk())
+
+        // Verificamos el resultado
+        assertTrue(result is ResultError)
+    }
+
+    /**
+     * Test para verificar el caso de éxito de la obtención de grupos.
+     */
+    @Test
+    fun `executeGetGroup con respuesta exitosa con lista nula`() = runBlocking {
+        // Preparamos una respuesta exitosa mockeada
+        val mockBody: ResponseGeneric<List<ResponseGroupTeacher?>?> = ResponseGeneric(listOf(null), mockk())
+        val mockResponse: Response<ResponseGeneric<List<ResponseGroupTeacher?>?>> = Response.success(mockBody)
+
+        coEvery { groupApiCall.callApi(any()) } returns mockResponse
+
+        // Ejecutamos el método a probar
+        val result = menuRepository.executeGetGroup(mockk())
+
+        // Verificamos el resultado
+        assertTrue(result is ResultError)
+    }
+
+    /**
      * Test para verificar el caso de error de la obtención de grupos.
      */
     @Test

@@ -144,7 +144,7 @@ class RegisterUserViewModel(
         when (registerUserUseCase.invoke(
             email = inputStateVM.emailInputState.valueText,
             pass = inputStateVM.passInputState.valueText,
-            activatationCode = inputStateVM.codeInputState.valueText
+            activationCode = inputStateVM.codeInputState.valueText
         )) {
             is SuccessState -> {
                 _uiState.update {

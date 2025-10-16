@@ -39,11 +39,11 @@ fun interface GetListPartialApiCall {
  */
 data class RequestGetPartial(
     @SerializedName("profesorescuelaciclogrupo_id")
-    val teacherSchoolCycleGroupId: Int?,
+    val teacherSchoolCycleGroupId: Int,
     @SerializedName("user_id")
-    val userId: Int?,
+    val userId: Int,
     @SerializedName("profesor_id")
-    val teacherId: Int?,
+    val teacherId: Int,
 )
 
 /**
@@ -56,11 +56,11 @@ data class ResponseGetPartial(
     @SerializedName("parcialciclogrupo_id")
     val partialCycleGroupId: Int?,
     @SerializedName("descripcion")
-    val description: String,
+    val description: String?,
     @SerializedName("fechainicio")
-    val startDate: String,
+    val startDate: String?,
     @SerializedName("fechafinal")
-    val endDate: String,
+    val endDate: String?,
     @SerializedName("profesorescuelaciclogrupo_id")
-    val teacherSchoolCycleGroupId: Int,
+    val teacherSchoolCycleGroupId: Int?,
 )

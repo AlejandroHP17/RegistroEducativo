@@ -42,14 +42,16 @@ class LoginUseCase(
      * @param remember Indica si la sesión del usuario debe ser recordada.
      * @return Un [ModelState] que representa el resultado del intento de inicio de sesión, ya sea un éxito con los datos del usuario o un error.
      */
-    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean): ModelState<UserLogin?, String> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelState<UserLogin?, String> {
         val location = locationHelper.getCurrentLocation()
         val latitude = location?.latitude
         val longitude = location?.longitude
 
+        if (email.isNullOrEmpty() || pass.isNullOrEmpty()) return ErrorState(ModelCodeError.ERROR_VALIDATION_LOGIN)
+
         val request = RequestLogin(
-            email = email?.lowercase().orEmpty(),
-            password = pass.orEmpty(),
+            email = email.lowercase(),
+            password = pass,
             latitude = latitude?.toString().orEmpty(),
             longitude = longitude?.toString().orEmpty(),
             imei = Build.FINGERPRINT + Build.ID
@@ -59,15 +61,14 @@ class LoginUseCase(
             onSuccess = { result ->
                 when (result){
                     is ResultSuccess -> {
-                        result.data?.accessToken?.let {
-                            if(savePreferences(result.data, remember)) SuccessState(result.data?.userLogin)
+                        result.data.accessToken?.let {
+                            if(savePreferences(result.data, remember)) SuccessState(result.data.userLogin)
                             else ErrorState(ModelCodeError.ERROR_CRITICAL)
                         }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
                     }
                     is ResultError -> {
                         handleResponse(result.error)
                     }
-
                 }
             },
             onFailure = { ErrorState(ModelCodeError.ERROR_CRITICAL) }
