@@ -118,6 +118,9 @@ fun MenuScreen(
 /**
  * An object that contains constants for the menu screen.
  */
+
+
+
 object MenuScreenObject {
     const val ADAPTER_CONTROL = "Área de Control"
     const val ADAPTER_CONTROL_REGISTER = "Área de Registro y evaluación"

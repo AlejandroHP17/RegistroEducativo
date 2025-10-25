@@ -14,6 +14,7 @@ package com.mx.liftechnology.data.util
  * @author Pelkidev
  * @version 1.0.0
  */
+@Deprecated("cambiar por result  model")
 sealed class ResultService<out S, out E>
 
 /**

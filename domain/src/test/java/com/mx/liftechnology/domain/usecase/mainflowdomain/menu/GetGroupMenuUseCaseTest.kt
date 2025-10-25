@@ -6,8 +6,8 @@ import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -39,7 +39,7 @@ class GetGroupMenuUseCaseTest {
     }
 
     /**
-     * Test para verificar que el caso de uso devuelve [SuccessState] cuando el repositorio
+     * Test para verificar que el caso de uso devuelve [SuccessResult] cuando el repositorio
      * proporciona una lista válida y no vacía de grupos.
      */
     @Test
@@ -67,11 +67,12 @@ class GetGroupMenuUseCaseTest {
         val result = getGroupMenuUseCase.invoke()
 
         // Verificamos que el resultado sea exitoso
-        assertTrue("El resultado debería ser SuccessState, pero fue ${result::class.simpleName}", result is SuccessState)
+        assertTrue("El resultado debería ser" +
+                " SuccessState, pero fue ${result::class.simpleName}", result is SuccessResult)
     }
 
     /**
-     * Test para verificar que el caso de uso devuelve [ErrorState] cuando el repositorio
+     * Test para verificar que el caso de uso devuelve [ErrorResult] cuando el repositorio
      * falla y retorna un [ResultError].
      */
     @Test
@@ -83,11 +84,11 @@ class GetGroupMenuUseCaseTest {
         val result = getGroupMenuUseCase.invoke()
 
         // Verificamos que el resultado sea un estado de error
-        assertTrue("El resultado debería ser ErrorState, pero fue ${result::class.simpleName}", result is ErrorState)
+        assertTrue("El resultado debería ser ErrorState, pero fue ${result::class.simpleName}", result is ErrorResult)
     }
 
     /**
-     * Test para verificar que el caso de uso devuelve [ErrorState] cuando el repositorio
+     * Test para verificar que el caso de uso devuelve [ErrorResult] cuando el repositorio
      * retorna una lista vacía, ya que se considera un estado inválido para este caso de uso.
      */
     @Test
@@ -99,6 +100,6 @@ class GetGroupMenuUseCaseTest {
         val result = getGroupMenuUseCase.invoke()
 
         // Verificamos que el resultado sea un estado de error
-        assertTrue("El resultado debería ser ErrorState, pero fue ${result::class.simpleName}", result is ErrorState)
+        assertTrue("El resultado debería ser ErrorState, pero fue ${result::class.simpleName}", result is ErrorResult)
     }
 }

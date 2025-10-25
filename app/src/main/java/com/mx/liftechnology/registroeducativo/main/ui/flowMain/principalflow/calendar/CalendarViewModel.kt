@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.ca
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logs
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
@@ -52,7 +52,7 @@ class CalendarViewModel(
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
             when(val result = getListSubjectUseCase.invoke()){
-                is SuccessState -> {
+                is SuccessResult -> {
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
                         subjectList = result.result,
@@ -89,7 +89,7 @@ class CalendarViewModel(
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
             when(val result = getListStudentUseCase.invoke()){
-                is SuccessState -> {
+                is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }

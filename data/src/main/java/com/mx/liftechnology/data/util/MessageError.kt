@@ -1,5 +1,6 @@
 package com.mx.liftechnology.data.util
 
+@Deprecated("seran en resources string")
 object MessageError{
     /**
      * Mensaje de error para el log cuando una respuesta 200 OK llega con un cuerpo
@@ -31,6 +32,11 @@ object MessageError{
      * Mensaje de error para el log cuando hay error de "Solicitud Incorrecta" (ej: 400).
      */
     const val INCORRECT_REQUEST_ERROR_MESSAGE = "Solicitud incorrecta, revisa los datos enviados"
+
+    /**
+     * Mensaje de error para el log cuando hay error de "Solicitud Incorrecta" (ej: 400).
+     */
+    const val TOO_MANY_REQUESTS = "Muchas peticiones"
 
     /**
      * Mensaje de error para el log cuando hay error de tiempo de espera agotado.

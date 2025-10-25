@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestStudentJobs
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
@@ -81,7 +81,7 @@ class RegisterAssignmentViewModel(
     private fun getListAssessmentType() {
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
-                is SuccessState -> {
+                is SuccessResult -> {
                     val convertData = result.result.toCustomSpinnerList()
                     onNameAssignmentChanged(convertData?.first()!!)
                     _dataState.update {
@@ -179,7 +179,7 @@ class RegisterAssignmentViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             when(val result = getListStudentUseCase.invoke()){
-                is SuccessState -> {
+                is SuccessResult -> {
                     _dataState.update {
                         it.copy(
                             studentList = result.result,
@@ -190,7 +190,7 @@ class RegisterAssignmentViewModel(
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
                 }
-                is ErrorUserState -> {
+                is ErrorUserResult -> {
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                 }
                 else -> {
@@ -251,7 +251,7 @@ class RegisterAssignmentViewModel(
             date = _dialogState.value.date.valueText,
             studentListUI = _dataState.value.studentListUI.toCredentialStudent()
         )) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
@@ -264,7 +264,7 @@ class RegisterAssignmentViewModel(
                 }
             }
 
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR,

@@ -7,11 +7,11 @@ import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.menu.ModelInfoStudentGroupDomain
 import com.mx.liftechnology.domain.model.menu.RGTtoConvertModelDialogStudentGroupDomains
@@ -33,9 +33,9 @@ class GetGroupMenuUseCase(
     /**
      * Ejecuta el proceso de obtención de grupos, selección de uno por defecto y procesamiento de la información.
      *
-     * @return Un [ModelState] que contiene la información del grupo o un error.
+     * @return Un [ResultModel] que contiene la información del grupo o un error.
      */
-    suspend operator fun invoke(): ModelState<ModelInfoStudentGroupDomain, String> {
+    suspend operator fun invoke(): ResultModel<ModelInfoStudentGroupDomain, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
 
@@ -50,21 +50,21 @@ class GetGroupMenuUseCase(
                     is ResultSuccess -> {
                         val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
                         if (convertedResult.isNotEmpty()) {
-                            SuccessState(
+                            SuccessResult(
                                 ModelInfoStudentGroupDomain(
                                     listSchool = convertedResult,
                                     infoSchoolSelected = selectOneGroup(convertedResult)
                                 )
                             )
                         } else {
-                            ErrorState(ModelCodeError.ERROR_CRITICAL)
+                            ErrorResult(ModelCodeError.ERROR_CRITICAL)
                         }
                     }
 
                     is ResultError -> handleResponse(result.error)
                 }
             },
-            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN) }
+            onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN) }
         )
 
     }
@@ -118,19 +118,19 @@ class GetGroupMenuUseCase(
      * Maneja las respuestas de error del repositorio del menú.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico.
+     * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponse(error: FailureService): ModelState<ModelInfoStudentGroupDomain, String> {
+    private fun handleResponse(error: FailureService): ResultModel<ModelInfoStudentGroupDomain, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorState(ModelCodeError.ERROR_INCOMPLETE_DATA)
+            is FailureService.BadRequest -> ErrorResult(ModelCodeError.ERROR_INCOMPLETE_DATA)
             is FailureService.Unauthorized -> {
                 preference.cleanPreference()
-                ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
+                ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
             }
 
-            is FailureService.NotFound -> ErrorState(ModelCodeError.ERROR_DATA)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.NotFound -> ErrorResult(ModelCodeError.ERROR_DATA)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

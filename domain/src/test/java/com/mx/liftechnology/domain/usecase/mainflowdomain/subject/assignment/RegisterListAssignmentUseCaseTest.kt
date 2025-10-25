@@ -5,8 +5,8 @@ import com.mx.liftechnology.data.repository.flowMain.subject.assignment.Register
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -47,7 +47,7 @@ class RegisterListAssignmentUseCaseTest {
         val result = registerListAssignmentUseCase.registerListAssignment()
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
@@ -62,6 +62,6 @@ class RegisterListAssignmentUseCaseTest {
         val result = registerListAssignmentUseCase.registerListAssignment()
 
         // Verificamos el resultado
-        assertTrue(result is ErrorState)
+        assertTrue(result is ErrorResult)
     }
 }

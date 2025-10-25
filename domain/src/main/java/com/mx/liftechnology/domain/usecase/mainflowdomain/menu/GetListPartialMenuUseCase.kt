@@ -12,12 +12,12 @@ import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepos
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.menu.ListPartialToConvertModelDialogGroupPartialDomains
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 
@@ -39,15 +39,15 @@ class GetListPartialMenuUseCase (
      * Ejecuta el proceso para obtener la lista de parciales.
      * Construye la petición, la envía a través del repositorio y transforma la respuesta en un estado de la UI.
      *
-     * @return Un [ModelState] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
+     * @return Un [ResultModel] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-     suspend operator fun invoke(): ModelState<List<ModelDialogGroupPartialDomain>, String> {
+     suspend operator fun invoke(): ResultModel<List<ModelDialogGroupPartialDomain>, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorResult(ModelCodeError.ERROR_UNKNOWN)
 
         val request = RequestGetPartial(
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
@@ -61,32 +61,32 @@ class GetListPartialMenuUseCase (
                      is ResultSuccess -> {
                          val convertedResult = result.data.ListPartialToConvertModelDialogGroupPartialDomains
                          if (convertedResult.isNotEmpty()) {
-                             SuccessState(convertedResult)
+                             SuccessResult(convertedResult)
                          }
-                         else ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                         else ErrorResult(ModelCodeError.ERROR_UNKNOWN)
                      }
                      is ResultError -> {
                          handleResponse(result.error)
                      }
                  }
              },
-             onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+             onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
          )
     }
 
     /**
-     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ResultModel] específico.
      *
      * @param error El objeto [FailureService] que representa el error de la capa de datos.
-     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
+     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<ModelDialogGroupPartialDomain>, String> {
+    private fun handleResponse(error: FailureService): ResultModel<List<ModelDialogGroupPartialDomain>, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

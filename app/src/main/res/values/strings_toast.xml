@@ -11,6 +11,8 @@
 
 
     <!--- Error -->
+    <string name="toast_error_generic">Por favor intente mas tarde, estamos teniendo problemas en la plataforma</string>
+
     <string name="toast_error_validate_fields">Favor de verificar que todos los campos esten correctos</string>
     <string name="toast_error_login_user">Usuario o contraseña incorrectos, por favor valide nuevamente su información</string>
     <string name="toast_error_register_user">No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos</string>

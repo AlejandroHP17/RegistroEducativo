@@ -8,14 +8,12 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult
 
 /**
  * Caso de uso para gestionar el inicio de sesión de un usuario.
@@ -36,18 +34,25 @@ class LoginUseCase(
 
     /**
      * Ejecuta el proceso de inicio de sesión.
+     * Primero, valida las entradas locales. Si son válidas, procede a hacer la llamada de red.
      *
      * @param email El correo electrónico del usuario.
      * @param pass La contraseña del usuario.
      * @param remember Indica si la sesión del usuario debe ser recordada.
-     * @return Un [ModelState] que representa el resultado del intento de inicio de sesión, ya sea un éxito con los datos del usuario o un error.
+     * @return Un [ModelResult] que puede ser:
+     * - [SuccessResult<UserLogin>] si el inicio de sesión es exitoso.
+     * - [ErrorResult<LocalError>] si hay un error de validación local (campos vacíos).
+     * - [ErrorResult<NetworkError>] si hay un error de red o del servidor.
      */
-    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelState<UserLogin?, String> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<UserLogin, Error> {
+        // 1. Validación de Lógica de Negocio (Local)
+        if (email.isNullOrBlank() || pass.isNullOrBlank()) {
+            return ErrorResult(LocalError.USER_INCOMPLETE_DATA)
+        }
+
         val location = locationHelper.getCurrentLocation()
         val latitude = location?.latitude
         val longitude = location?.longitude
-
-        if (email.isNullOrEmpty() || pass.isNullOrEmpty()) return ErrorState(ModelCodeError.ERROR_VALIDATION_LOGIN)
 
         val request = RequestLogin(
             email = email.lowercase(),
@@ -57,21 +62,24 @@ class LoginUseCase(
             imei = Build.FINGERPRINT + Build.ID
         )
 
+        // 2. Ejecución de la llamada de red
         return runCatching { repositoryLogin.executeLogin(request) }.fold(
             onSuccess = { result ->
-                when (result){
-                    is ResultSuccess -> {
-                        result.data.accessToken?.let {
-                            if(savePreferences(result.data, remember)) SuccessState(result.data.userLogin)
-                            else ErrorState(ModelCodeError.ERROR_CRITICAL)
-                        }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
+                when (result) {
+                    is SuccessResult -> {
+                        val userLogin = result.data.userLogin
+                        if (userLogin != null && savePreferences(result.data, remember)) {
+                            SuccessResult(userLogin)
+                        } else {
+                            ErrorResult(LocalError.RESPONSE_INCOMPLETE_DATA) // Error si no se pueden guardar las preferencias o el usuario es nulo
+                        }
                     }
-                    is ResultError -> {
-                        handleResponse(result.error)
+                    is ErrorResult -> {
+                        ErrorResult(result.error) // Mapea el error de la capa de datos al dominio
                     }
                 }
             },
-            onFailure = { ErrorState(ModelCodeError.ERROR_CRITICAL) }
+            onFailure = { ErrorResult(NetworkError.UNKNOWN) } // Captura excepciones como problemas de conectividad
         )
     }
 
@@ -82,34 +90,17 @@ class LoginUseCase(
      * @param remember Indica si se debe guardar la sesión.
      * @return `true` si las preferencias se guardaron correctamente, `false` en caso contrario.
      */
-    private fun savePreferences(result: ResponseLogin?, remember:Boolean): Boolean {
-        return result?.userLogin?.let { data ->
+    private fun savePreferences(result: ResponseLogin, remember:Boolean): Boolean {
+        return result.userLogin?.let {
             preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
-            preference.savePreferenceInt(ModelPreference.ID_USER, data.userId)
+            preference.savePreferenceInt(ModelPreference.ID_USER, it.userId)
             preference.savePreferenceInt(ModelPreference.ID_ROLE,
-                if (data.teacherId == null) data.studentId
-                else data.teacherId
+                if (it.teacherId == null) it.studentId
+                else it.teacherId
             )
-            preference.savePreferenceString(ModelPreference.USER_ROLE, data.role)
+            preference.savePreferenceString(ModelPreference.USER_ROLE, it.role)
             preference.savePreferenceBoolean(ModelPreference.LOGIN, remember)
             true
-        }?: false
+        } ?: false
     }
-
-    /**
-     * Maneja las respuestas de error del repositorio de inicio de sesión.
-     *
-     * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico.
-     */
-    private fun handleResponse(error: FailureService): ModelState<UserLogin?, String> {
-        return when(error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
-
 }

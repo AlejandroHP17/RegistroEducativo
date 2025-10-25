@@ -33,4 +33,7 @@ object ModelRegex {
 
     /** Expresión regular para texto complejo (letras, números, espacios y caracteres comunes). */
     val COMPLEX_TEXT = Regex("^[A-Za-z0-9 .,_\\-áéíóúÁÉÍÓÚñÑ]+$")
+
+    /** Expresión regular para texto simple con numeros. */
+    val TEXT_WITH_NUMBERS = Regex("^[a-zA-Z0-9ñÑ]+$")
 }

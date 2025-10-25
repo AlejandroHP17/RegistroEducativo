@@ -11,6 +11,7 @@ package com.mx.liftechnology.data.util
  * @author Pelkidev
  * @version 1.0.0
  */
+@Deprecated("Use NetworkException instead")
 object ExceptionHandler {
     /**
      * Gestiona una [Throwable] y la convierte en un [FailureService].
@@ -27,12 +28,48 @@ object ExceptionHandler {
                     400 -> FailureService.BadRequest
                     401 -> FailureService.Unauthorized
                     404 -> FailureService.NotFound
+                    429 -> FailureService.TooManyRequest
                     500 -> FailureService.Timeout
                     else -> FailureService.UnknownError(MessageError.CODE_ERROR_MESSAGE + "${exception.code()}")
                 }
             }
 
             else -> FailureService.UnknownError(exception.localizedMessage ?: MessageError.UNKNOWN_ERROR_MESSAGE)
+        }
+    }
+}
+
+/**
+ * Objeto que gestiona las excepciones y las convierte en un [com.mx.liftechnology.domain.util.NetworkError].
+ * Centraliza el manejo de errores de red y de servidor, traduciéndolos a un modelo de error unificado.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
+object NetworkException {
+    /**
+     * Gestiona una [Throwable] y la convierte en un [com.mx.liftechnology.domain.util.NetworkError].
+     *
+     * @param exception La excepción a gestionar.
+     * @return Un [com.mx.liftechnology.domain.util.NetworkError] que representa la excepción gestionada.
+     */
+    fun handleException(exception: Throwable): NetworkError {
+        return when (exception) {
+            is java.net.UnknownHostException -> NetworkError.NO_INTERNET  // No hay conexión a Internet
+            is java.net.SocketTimeoutException -> NetworkError.TIMEOUT // Timeout de conexión
+            is retrofit2.HttpException -> {
+                when (exception.code()) {
+                    400 -> NetworkError.BAD_REQUEST
+                    401 -> NetworkError.UNAUTHORIZED
+                    404 -> NetworkError.NOT_FOUND
+                    429 -> NetworkError.TOO_MANY_REQUESTS
+                    500 -> NetworkError.TIMEOUT
+                    else -> NetworkError.UNKNOWN
+                }
+            }
+
+            else -> NetworkError.UNKNOWN
         }
     }
 }

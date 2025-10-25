@@ -12,12 +12,12 @@ import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepositor
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentRegisterAssignmentDomain
 import com.mx.liftechnology.domain.model.student.toModelStudentRegisterAssignmentList
 
@@ -38,10 +38,10 @@ class GetListStudentAssignmentUseCase (
     /**
      * Ejecuta el proceso para obtener la lista de estudiantes de una asignación.
      *
-     * @return Un [ModelState] que contiene la lista de estudiantes formateada para el registro de asignación,
+     * @return Un [ResultModel] que contiene la lista de estudiantes formateada para el registro de asignación,
      * o un estado de error si la operación falla.
      */
-    suspend operator fun invoke(): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String> {
+    suspend operator fun invoke(): ResultModel<List<ModelStudentRegisterAssignmentDomain>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg =
@@ -57,8 +57,8 @@ class GetListStudentAssignmentUseCase (
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {
-                        if (result.data.isNullOrEmpty()) ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-                        else SuccessState(result.data?.toModelStudentRegisterAssignmentList())
+                        if (result.data.isNullOrEmpty()) ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+                        else SuccessResult(result.data?.toModelStudentRegisterAssignmentList())
                     }
 
                     is ResultError -> {
@@ -66,23 +66,23 @@ class GetListStudentAssignmentUseCase (
                     }
                 }
             },
-            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+            onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
         )
     }
 
     /**
-     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ModelState] específico.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ResultModel] específico.
      *
      * @param error El objeto [FailureService] que representa el error de la capa de datos.
-     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
+     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponseAssignment(error: FailureService): ModelState<List<ModelStudentRegisterAssignmentDomain>?, String> {
+    private fun handleResponseAssignment(error: FailureService): ResultModel<List<ModelStudentRegisterAssignmentDomain>?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

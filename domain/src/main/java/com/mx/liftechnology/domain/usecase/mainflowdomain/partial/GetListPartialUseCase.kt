@@ -13,13 +13,13 @@ import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
+import com.mx.liftechnology.domain.model.generic.ResultModel
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * Caso de uso para obtener la lista de parciales.
@@ -39,15 +39,15 @@ class GetListPartialUseCase(
      * Ejecuta el proceso de obtención de la lista de parciales.
      * Construye la petición, la envía a través del repositorio y transforma la respuesta en un estado de la UI.
      *
-     * @return Un [ModelState] que contiene una lista mutable de [ModelDatePeriodDomain] en caso de éxito,
+     * @return Un [ResultModel] que contiene una lista mutable de [ModelDatePeriodDomain] en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-    suspend operator fun invoke(): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
+    suspend operator fun invoke(): ResultModel<MutableList<ModelDatePeriodDomain>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
-        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorState(ModelCodeError.ERROR_UNKNOWN)
+        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorResult(ModelCodeError.ERROR_UNKNOWN)
 
         val request = RequestGetPartial(
             teacherSchoolCycleGroupId = profSchoolCycleGroupId,
@@ -70,14 +70,14 @@ class GetListPartialUseCase(
                             )
                         } ?.toMutableList()
                         if (listDate?.size!! > 0) {
-                            SuccessState(listDate)
+                            SuccessResult(listDate)
                         }
-                        else ErrorState(ModelCodeError.ERROR_UNKNOWN)
+                        else ErrorResult(ModelCodeError.ERROR_UNKNOWN)
                     }
                     is ResultError -> { handleResponse(result.error) }
                 }
             },
-            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+            onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
         )
     }
 
@@ -85,15 +85,15 @@ class GetListPartialUseCase(
      * Maneja las respuestas de error del repositorio de parciales.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico.
+     * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponse(error: FailureService): ModelState<MutableList<ModelDatePeriodDomain>?, String> {
+    private fun handleResponse(error: FailureService): ResultModel<MutableList<ModelDatePeriodDomain>?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

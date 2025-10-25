@@ -12,12 +12,12 @@ import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepo
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * Caso de uso para registrar un único estudiante.
@@ -43,7 +43,7 @@ class RegisterOneStudentUseCase(
      * @param curp La CURP del estudiante.
      * @param birthday La fecha de nacimiento del estudiante.
      * @param phoneNumber El número de teléfono del estudiante.
-     * @return Un [ModelState] que indica el resultado de la operación de registro.
+     * @return Un [ResultModel] que indica el resultado de la operación de registro.
      */
     suspend operator fun invoke(
         name: String,
@@ -52,7 +52,7 @@ class RegisterOneStudentUseCase(
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ModelState<List<String?>?, String> {
+    ): ResultModel<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -73,7 +73,7 @@ class RegisterOneStudentUseCase(
             onSuccess = { result ->
                 when (result) {
                     is ResultSuccess -> {
-                        SuccessState(result.data)
+                        SuccessResult(result.data)
                     }
 
                     is ResultError -> {
@@ -81,7 +81,7 @@ class RegisterOneStudentUseCase(
                     }
                 }
                         },
-            onFailure = {ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+            onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
         )
     }
 
@@ -90,15 +90,15 @@ class RegisterOneStudentUseCase(
      * Maneja las respuestas de error del repositorio de registro de estudiantes.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
+     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
+    private fun handleResponse(error: FailureService): ResultModel<List<String?>?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

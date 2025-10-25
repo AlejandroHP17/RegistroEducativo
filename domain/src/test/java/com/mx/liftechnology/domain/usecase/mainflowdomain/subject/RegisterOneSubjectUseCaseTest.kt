@@ -5,9 +5,9 @@ import com.mx.liftechnology.data.repository.flowMain.subject.RegisterSubjectRepo
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -52,7 +52,7 @@ class RegisterOneSubjectUseCaseTest {
         val result = registerOneSubjectUseCase.invoke(workMethods, "Matemáticas")
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
@@ -67,6 +67,6 @@ class RegisterOneSubjectUseCaseTest {
         val result = registerOneSubjectUseCase.invoke(null, "Matemáticas")
 
         // Verificamos el resultado
-        assertTrue(result is ErrorState)
+        assertTrue(result is ErrorResult)
     }
 }

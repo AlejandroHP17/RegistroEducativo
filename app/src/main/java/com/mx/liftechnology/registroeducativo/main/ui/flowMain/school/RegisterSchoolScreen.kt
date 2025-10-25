@@ -1,3 +1,8 @@
+/**
+ * @file Define la pantalla para el registro de una nueva escuela por parte de un profesor.
+ * @author PelkiDev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.registroeducativo.main.ui.flowMain.school
 
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +21,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolInputsUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUICallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUISemiAutomaticData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUIState
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSimpleGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
@@ -35,11 +40,15 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The School Registration screen.
+ * Pantalla para el registro de una escuela.
+ * Este Composable maneja la lógica de la UI para que un profesor pueda registrar una escuela
+ * introduciendo una CCT y seleccionando el grado, grupo y ciclo.
  *
- * @param navController The navigation controller.
- * @param sharedViewModel The shared ViewModel.
- * @param registerSchoolViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param registerSchoolViewModel El ViewModel específico para esta pantalla.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 fun RegisterSchoolScreen(
@@ -49,10 +58,7 @@ fun RegisterSchoolScreen(
 ) {
     val uiState by registerSchoolViewModel.uiState.collectAsStateWithLifecycle()
     val uiSemiAutomaticData by registerSchoolViewModel.uiSemiAutomaticData.collectAsStateWithLifecycle()
-    val cct by registerSchoolViewModel.cct.collectAsStateWithLifecycle()
-    val grade by registerSchoolViewModel.grade.collectAsStateWithLifecycle()
-    val group by registerSchoolViewModel.group.collectAsStateWithLifecycle()
-    val cycle by registerSchoolViewModel.cycle.collectAsStateWithLifecycle()
+    val inputState by registerSchoolViewModel.inputState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.uiState) {
         if (uiState.uiState == ModelStateUIEnum.SUCCESS)navController.navigate(MainRoutes.Menu.withReload(true)) {
@@ -73,16 +79,14 @@ fun RegisterSchoolScreen(
         HeaderRegisterSchool(navController = navController)
 
         BodyRegisterSchool(
-            cct = cct,
+            inputState = inputState,
             uiAutomatic = uiSemiAutomaticData,
             onCctChanged =  { registerSchoolViewModel.onCctChanged(it) }
         )
 
         BodyDoubleRegisterSchool(
             semiAutomatic = uiSemiAutomaticData,
-            cycle = cycle,
-            grade = grade,
-            group = group,
+            inputState = inputState,
             callbacks = ModelRegisterSchoolUICallbacks(
                 onCycleChanged = {registerSchoolViewModel.onCycleChanged(it)},
                 onGradeChanged = {registerSchoolViewModel.onGradeChanged(it)},
@@ -102,9 +106,11 @@ fun RegisterSchoolScreen(
 }
 
 /**
- * The header of the School Registration screen.
+ * Encabezado de la pantalla de Registro de Escuela.
  *
- * @param navController The navigation controller.
+ * @param navController El controlador de navegación para manejar la acción de retroceso.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 private fun HeaderRegisterSchool(navController: NavHostController) {
@@ -115,20 +121,23 @@ private fun HeaderRegisterSchool(navController: NavHostController) {
 }
 
 /**
- * The body of the School Registration screen.
+ * Cuerpo principal de la pantalla de Registro de Escuela.
+ * Contiene los campos de texto para la CCT y los datos autocompletados de la escuela.
  *
- * @param cct The state of the CCT input field.
- * @param uiAutomatic The data for semi-automatic fields.
- * @param onCctChanged A lambda to be invoked when the CCT input changes.
+ * @param inputState El estado de los campos de entrada controlados por el usuario (ej: CCT).
+ * @param uiAutomatic Los datos que se rellenan de forma semi-automática tras validar la CCT.
+ * @param onCctChanged Lambda que se invoca cuando el valor del campo CCT cambia.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 private fun BodyRegisterSchool(
-    cct: ModelStateOutFieldText,
+    inputState: ModelRegisterSchoolInputsUI,
     uiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
     onCctChanged: (String) -> Unit,
 ) {
     BoxEditTextAllCaps (
-        value = cct,
+        value = inputState.cct,
         enable = true,
         label = stringResource(id = R.string.form_school_cct),
         onBoxChanged = { onCctChanged(it) }
@@ -148,20 +157,19 @@ private fun BodyRegisterSchool(
 }
 
 /**
- * The body of the School Registration screen with double fields.
+ * Cuerpo secundario de la pantalla con campos dobles (spinners).
+ * Contiene los campos para seleccionar tipo, ciclo, grado y grupo.
  *
- * @param semiAutomatic The data for semi-automatic fields.
- * @param cycle The state of the cycle input field.
- * @param grade The state of the grade input field.
- * @param group The state of the group input field.
- * @param callbacks The callbacks for the input fields.
+ * @param semiAutomatic Los datos semi-automáticos, incluyendo las listas para los spinners.
+ * @param inputState El estado de los campos de entrada seleccionados por el usuario (ciclo, grado, grupo).
+ * @param callbacks Los callbacks para manejar los cambios en los spinners.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 private fun BodyDoubleRegisterSchool(
     semiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
-    cycle: ModelStateOutFieldText,
-    grade: ModelStateOutFieldText,
-    group: ModelStateOutFieldText,
+    inputState: ModelRegisterSchoolInputsUI,
     callbacks: ModelRegisterSchoolUICallbacks
 ) {
     Row(
@@ -179,7 +187,7 @@ private fun BodyDoubleRegisterSchool(
         Box(modifier = Modifier.weight(1f)) {
             SpinnerOutlinedTextField(
                 options = semiAutomatic.spinner?.cycle ?: emptyList(),
-                selectedOption = cycle,
+                selectedOption = inputState.cycle,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_term),
                 onOptionSelected = { callbacks.onCycleChanged(it.value.toString()) }
@@ -196,7 +204,7 @@ private fun BodyDoubleRegisterSchool(
         Box(modifier = Modifier.weight(1f)) {
             SpinnerOutlinedTextField(
                 options = semiAutomatic.spinner?.grade ?: emptyList(),
-                selectedOption = grade,
+                selectedOption = inputState.grade,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_grade),
                 onOptionSelected = { callbacks.onGradeChanged(it.value.toString()) }
@@ -206,7 +214,7 @@ private fun BodyDoubleRegisterSchool(
         Box(modifier = Modifier.weight(1f)) {
             SpinnerOutlinedTextField(
                 options = semiAutomatic.spinner?.group ?: emptyList(),
-                selectedOption = group,
+                selectedOption = inputState.group,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_group),
                 onOptionSelected = { callbacks.onGroupChanged(it.value.toString()) }
@@ -216,15 +224,17 @@ private fun BodyDoubleRegisterSchool(
 }
 
 /**
- * The action button of the School Registration screen.
+ * Botones de acción para la pantalla de Registro de Escuela.
  *
- * @param uiState The UI state for the screen.
- * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
- * @param onRecord A lambda to be invoked when the record button is clicked.
+ * @param uiState El estado de la UI, usado para determinar el color de uno de los botones.
+ * @param validateFieldsCompose Lambda que se invoca para validar los campos antes de la acción principal.
+ * @param onRecord Lambda que se invoca al pulsar el botón de grabación/acción.
+ * @author Pelkidev
+ * @version 1.0.0
  */
 @Composable
 private fun ActionRegisterSchool(
-    uiState: ModelRegisterSchoolUIState,
+    uiState: ModelRegisterSchoolStateUI,
     validateFieldsCompose: () -> Unit,
     onRecord: () -> Unit,
 ) {

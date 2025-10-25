@@ -28,7 +28,7 @@ fun interface GetCctApiCall {
     @GET(Environment.END_POINT_GET_CCT)
     suspend fun callApi(
         @Path("cct") cct: String
-    ): Response<ResponseGeneric<ResponseCctSchool?>>
+    ): Response<ResponseGeneric<ResponseCctSchool?>?>
 }
 
 /**

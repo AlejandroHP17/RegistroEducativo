@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
@@ -199,7 +199,7 @@ class RegisterStudentViewModel(
                 myValue.birthday.valueText,
                 myValue.phoneNumber.valueText
             )){
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
                     controlToast = ModelStateToastUI(
@@ -209,7 +209,7 @@ class RegisterStudentViewModel(
                     )
                 ) }
             }
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.ERROR,
                     controlToast = ModelStateToastUI(

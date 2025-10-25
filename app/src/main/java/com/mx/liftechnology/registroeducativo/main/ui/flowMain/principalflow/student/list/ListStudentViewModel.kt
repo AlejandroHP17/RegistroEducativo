@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.st
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -43,7 +43,7 @@ class ListStudentViewModel(
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
             when(val result = getListStudentUseCase.invoke()){
-                is SuccessState -> {
+                is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }

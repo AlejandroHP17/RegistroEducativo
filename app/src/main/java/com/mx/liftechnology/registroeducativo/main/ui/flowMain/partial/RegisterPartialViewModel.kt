@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
@@ -126,7 +126,7 @@ class RegisterPartialViewModel(
             _uiData.value.numberPartials.valueText.toInt(),
             _uiData.value.listCalendar!!
         )){
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
                     controlToast = ModelStateToastUI(
@@ -136,7 +136,7 @@ class RegisterPartialViewModel(
                     )
                 ) }
             }
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.ERROR,
                     controlToast = ModelStateToastUI(
@@ -161,7 +161,7 @@ class RegisterPartialViewModel(
     fun getListPartialCompose(){
         viewModelScope.launch (dispatcherProvider.io) {
             when(val result = getListPartialUseCase.invoke()){
-                is SuccessState -> {
+                is SuccessResult -> {
                     _uiState.update { item ->
                         item.copy(
                             isAvailable = false

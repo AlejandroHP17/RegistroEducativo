@@ -14,12 +14,12 @@ import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * Caso de uso para registrar una lista de parciales.
@@ -40,12 +40,12 @@ class RegisterListPartialUseCase(
      *
      * @param periodNumber El número de períodos a registrar.
      * @param adapterPeriods La lista de períodos de fechas a registrar.
-     * @return Un [ModelState] que indica el resultado de la operación.
+     * @return Un [ResultModel] que indica el resultado de la operación.
      */
     suspend operator fun invoke(
         periodNumber: Int?,
         adapterPeriods: List<ModelDatePeriodDomain>
-    ): ModelState<List<String?>?, String> {
+    ): ResultModel<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -75,14 +75,14 @@ class RegisterListPartialUseCase(
                 when(result){
                     is ResultSuccess -> {
                         result.data?.let {
-                            if(it.isNotEmpty()) SuccessState(result.data)
-                            else ErrorState(ModelCodeError.ERROR_CRITICAL)
-                        }?:ErrorState(ModelCodeError.ERROR_CRITICAL)
+                            if(it.isNotEmpty()) SuccessResult(result.data)
+                            else ErrorResult(ModelCodeError.ERROR_CRITICAL)
+                        }?:ErrorResult(ModelCodeError.ERROR_CRITICAL)
                     }
                     is ResultError -> { handleResponse(result.error)}
                 }
             },
-            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN)}
+            onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
         )
     }
 
@@ -90,15 +90,15 @@ class RegisterListPartialUseCase(
      * Maneja las respuestas de error del repositorio de registro de parciales.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico.
+     * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<String?>?, String> {
+    private fun handleResponse(error: FailureService): ResultModel<List<String?>?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

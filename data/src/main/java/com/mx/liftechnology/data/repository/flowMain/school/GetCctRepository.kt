@@ -9,10 +9,10 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
 import com.mx.liftechnology.data.util.ExceptionHandler
 import com.mx.liftechnology.data.util.FailureService
+import com.mx.liftechnology.data.util.MessageError
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.ResultSuccess
-import retrofit2.HttpException
 
 /**
  * Interfaz del repositorio para la obtención de CCT.
@@ -49,8 +49,12 @@ class GetCctRepositoryImp(
     override suspend fun executeGetCct(cct:String): ResultService<ResponseCctSchool?, FailureService> {
         return try {
             val response = cctApiCall.callApi(cct)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            response.body()?.data?.let {
+                ResultSuccess(it)
+            } ?: run {
+                val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
+                ResultError(ExceptionHandler.handleException(exception))
+            }
         } catch (e: Exception) {
             ResultError(ExceptionHandler.handleException(e))
         }

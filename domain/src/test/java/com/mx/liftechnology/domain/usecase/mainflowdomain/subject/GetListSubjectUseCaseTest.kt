@@ -6,8 +6,8 @@ import com.mx.liftechnology.data.repository.flowMain.subject.GetListSubjectRepos
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -49,7 +49,7 @@ class GetListSubjectUseCaseTest {
         val result = getListSubjectUseCase.invoke()
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
@@ -64,7 +64,7 @@ class GetListSubjectUseCaseTest {
         val result = getListSubjectUseCase.invoke()
 
         // Verificamos el resultado
-        assertTrue(result is ErrorUserState)
+        assertTrue(result is ErrorUserResult)
     }
 
     /**
@@ -79,6 +79,6 @@ class GetListSubjectUseCaseTest {
         val result = getListSubjectUseCase.invoke()
 
         // Verificamos el resultado
-        assertTrue(result is ErrorUserState)
+        assertTrue(result is ErrorUserResult)
     }
 }

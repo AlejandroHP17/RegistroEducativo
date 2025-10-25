@@ -3,9 +3,11 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.data.util.UserError
+import com.mx.liftechnology.data.util.convertToUI
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.register.RegisterUserUseCase
 import com.mx.liftechnology.registroeducativo.R
@@ -141,12 +143,12 @@ class RegisterUserViewModel(
     }
 
     private suspend fun registerCompose() {
-        when (registerUserUseCase.invoke(
+        when (val result = registerUserUseCase.invoke(
             email = inputStateVM.emailInputState.valueText,
             pass = inputStateVM.passInputState.valueText,
             activationCode = inputStateVM.codeInputState.valueText
         )) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
@@ -159,24 +161,35 @@ class RegisterUserViewModel(
                 }
             }
 
-            is ErrorUserState -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = ModelStateToastUI(
-                            messageToast = R.string.toast_error_register_user,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.ERROR
-                        )
-                    )
-                }
-            }
-
-            else -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR
-                    )
+            is ErrorResult -> {
+                when(result.error.convertToUI()){
+                    UserError.SHOW_GENERIC_ERROR -> {
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = ModelStateToastUI(
+                                    messageToast = R.string.toast_error_generic,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.ERROR
+                                )
+                            )
+                        }
+                    }
+                    UserError.SHOW_SPECIFIC_ERROR -> {
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = ModelStateToastUI(
+                                    messageToast = R.string.toast_error_register_user,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.ERROR
+                                )
+                            )
+                        }
+                    }
+                    else -> {
+                        _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                    }
                 }
             }
         }

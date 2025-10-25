@@ -9,11 +9,11 @@ import com.mx.liftechnology.data.repository.flowMain.subject.assignment.Register
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * @file Define el caso de uso para registrar una nueva asignación (trabajo) de un estudiante.
@@ -43,9 +43,9 @@ class RegisterAssignmentUseCase (
      * @param typeJob El tipo de trabajo (ID).
      * @param date La fecha de la asignación.
      * @param studentListUI La lista de estudiantes y sus datos relacionados con el trabajo.
-     * @return Un [ModelState] que indica el resultado de la operación de registro.
+     * @return Un [ResultModel] que indica el resultado de la operación de registro.
      */
-    suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<RequestStudentJobs>): ModelState<List<ResponseStudentJobs?>?, String> {
+    suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<RequestStudentJobs>): ResultModel<List<ResponseStudentJobs?>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val profSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -71,8 +71,8 @@ class RegisterAssignmentUseCase (
                 when (result){
                     is ResultSuccess -> {
                         result.data?.let {
-                            SuccessState(result.data)
-                        }?: ErrorState(ModelCodeError.ERROR_CRITICAL)
+                            SuccessResult(result.data)
+                        }?: ErrorResult(ModelCodeError.ERROR_CRITICAL)
                     }
                     is ResultError -> {
                         handleResponse(result.error)
@@ -80,7 +80,7 @@ class RegisterAssignmentUseCase (
 
                 }
             },
-            onFailure = { ErrorState(ModelCodeError.ERROR_CRITICAL) }
+            onFailure = { ErrorResult(ModelCodeError.ERROR_CRITICAL) }
         )
     }
 
@@ -88,15 +88,15 @@ class RegisterAssignmentUseCase (
      * Maneja las respuestas de error del repositorio de registro de asignaciones.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
+     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<ResponseStudentJobs?>?, String> {
+    private fun handleResponse(error: FailureService): ResultModel<List<ResponseStudentJobs?>?, String> {
         return when(error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            is FailureService.Unauthorized -> ErrorState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_LOGIN)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            is FailureService.Unauthorized -> ErrorResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_LOGIN)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

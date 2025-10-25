@@ -1,3 +1,8 @@
+/**
+ * @file Define la pantalla para el registro de un nuevo usuario.
+ * @author PelkiDev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register
 
 import androidx.compose.foundation.layout.Column
@@ -32,11 +37,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The User Registration screen.
+ * Pantalla para el registro de un nuevo usuario.
+ * Este Composable maneja la UI y la lógica para que un nuevo usuario pueda crear una cuenta.
  *
- * @param navController The navigation controller.
- * @param registerUserViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param registerUserViewModel El ViewModel específico para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 fun RegisterUserScreen(
@@ -81,9 +89,11 @@ fun RegisterUserScreen(
 }
 
 /**
- * The header of the User Registration screen.
+ * Encabezado de la pantalla de Registro de Usuario.
  *
- * @param navigate A lambda to be invoked when the back button is clicked.
+ * @param navigate Lambda que se invoca cuando el botón de retroceso es pulsado.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 fun HeaderRegisterUserScreen(
@@ -97,11 +107,13 @@ fun HeaderRegisterUserScreen(
 }
 
 /**
- * The body of the User Registration screen.
+ * Cuerpo de la pantalla de Registro de Usuario.
  *
- * @param inputState The state of the input fields.
- * @param callbacks The callbacks for the input fields.
- * @param getRules The rules for the password.
+ * @param inputState El estado de los campos de entrada.
+ * @param callbacks Los callbacks para los cambios en los campos de entrada.
+ * @param getRules El texto que contiene las reglas para la contraseña.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 fun BodyRegisterUserScreen(
@@ -127,9 +139,7 @@ fun BodyRegisterUserScreen(
         enable = true,
         label = stringResource(id = R.string.form_generic_password),
         onBoxChanged = { callbacks.onPassChanged(it) },
-        onStatePassChanged = {
-            passwordVisible = it
-        }
+        onStatePassChanged = { passwordVisible = it }
     )
 
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
@@ -158,9 +168,11 @@ fun BodyRegisterUserScreen(
 }
 
 /**
- * The footer of the User Registration screen.
+ * Pie de página de la pantalla de Registro de Usuario.
  *
- * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ * @param validateFieldsCompose Lambda que se invoca para iniciar la validación de los campos.
+ * @author PelkiDev
+ * @version 1.0.0
  */
 @Composable
 fun FooterRegisterUserScreen(

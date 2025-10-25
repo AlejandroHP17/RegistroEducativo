@@ -393,7 +393,7 @@ fun BoxEditTextAllCaps(
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
-            if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
+            if (newValue.isEmpty() || ModelRegex.TEXT_WITH_NUMBERS.matches(newValue)) {
                 onBoxChanged(newValue.uppercase())
             } },
 

@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.logs
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetControlMenuUseCase
@@ -68,7 +68,7 @@ class MenuViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             when (val state = getGroupMenuUseCase.invoke()) {
-                is SuccessState -> {
+                is SuccessResult -> {
                     _dialogState.update {
                         it.copy(
                             studentGroupItem = state.result.infoSchoolSelected,
@@ -83,7 +83,7 @@ class MenuViewModel(
 
                 }
 
-                is ErrorUnauthorizedState -> {
+                is ErrorUnauthorizedResult -> {
                     preference.cleanPreference()
                     _uiState.update {
                         it.copy(
@@ -124,7 +124,7 @@ class MenuViewModel(
 
     private suspend fun getListPartialCompose() {
         when (val state = getListPartialMenuUseCase.invoke()) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 withContext(dispatcherProvider.io) {
                     val itemSelected = savePartialUseCase.invoke(state.result)
                     val studentGroupItem =  _dialogState.value.studentGroupItem.copy(
@@ -154,7 +154,7 @@ class MenuViewModel(
                 }
             }
 
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 withContext(dispatcherProvider.io) {
                     savePartialUseCase.invoke(null)
                     _uiState.update {
@@ -189,7 +189,7 @@ class MenuViewModel(
     fun getControlMenu() {
         viewModelScope.launch(dispatcherProvider.io) {
             when (val state = getControlMenuUseCase.invoke()) {
-                is SuccessState -> {
+                is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
@@ -212,7 +212,7 @@ class MenuViewModel(
 
     private fun showGetControlRegister() {
         when (val state = getControlRegisterUseCase.invoke()) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update {
                     it.copy(
                         showControl = true,

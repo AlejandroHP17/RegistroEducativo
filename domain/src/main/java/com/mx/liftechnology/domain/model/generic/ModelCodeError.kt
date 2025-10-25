@@ -29,12 +29,17 @@ object ModelCodeError {
     /** Mensaje para errores genéricos en operaciones CRUD (Crear, Leer, Actualizar, Eliminar). */
     const val ERROR_DATA: String = "Error CRUD"
 
+    /** Mensaje para errores genéricos en operaciones CRUD (Crear, Leer, Actualizar, Eliminar). */
+    const val ERROR_TOO_MANY_REQUESTS: String = "Muchas peticiones"
+
     /** Mensaje para errores inesperados o no clasificados. */
     const val ERROR_UNKNOWN: String = "Error inesperado"
 
     /** Mensaje para indicar que una lista o conjunto de datos está vacío. */
     const val ERROR_EMPTY: String = "Lista vacia"
     //endregion
+
+
 
     //region Errores para el Usuario
     /** Mensaje de error crítico mostrado al usuario, sugiriendo reintentar más tarde. */

@@ -5,8 +5,8 @@ import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepo
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -47,7 +47,7 @@ class RegisterOneStudentUseCaseTest {
         val result = registerOneStudentUseCase.invoke("Juan", "Perez", "Gomez", "XAXX010101HXXIXXA0", "2001-01-01", "1234567890")
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
@@ -62,6 +62,6 @@ class RegisterOneStudentUseCaseTest {
         val result = registerOneStudentUseCase.invoke("Juan", "Perez", "Gomez", "XAXX010101HXXIXXA0", "2001-01-01", "1234567890")
 
         // Verificamos el resultado
-        assertTrue(result is ErrorUserState)
+        assertTrue(result is ErrorUserResult)
     }
 }

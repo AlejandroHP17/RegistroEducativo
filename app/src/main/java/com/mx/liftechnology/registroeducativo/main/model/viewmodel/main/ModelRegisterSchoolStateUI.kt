@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterSchoolUIState(
+data class ModelRegisterSchoolStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
     val buttonColor: Color = colorSuccess
@@ -59,8 +59,34 @@ data class ModelRegisterSchoolUICallbacks(
     val onGroupChanged: (String) -> Unit
 )
 
+/**
+ * Modelo de datos que contiene las listas de opciones para los spinners del formulario de registro de escuela.
+ *
+ * @property cycle La lista de opciones para el spinner de ciclo escolar.
+ * @property grade La lista de opciones para el spinner de grado.
+ * @property group La lista de opciones para el spinner de grupo.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ModelSpinnerSchoolUi(
     val cycle: List<ModelCustomSpinner>?,
     val grade: List<ModelCustomSpinner>?,
     val group: List<ModelCustomSpinner>?
+)
+
+/**
+ * Representa el estado de los campos de entrada del usuario en el formulario de registro de escuela.
+ *
+ * @property cct El estado del campo de texto para la Clave de Centro de Trabajo (CCT).
+ * @property grade El estado que almacena el valor del grado seleccionado en el spinner.
+ * @property group El estado que almacena el valor del grupo seleccionado en el spinner.
+ * @property cycle El estado que almacena el valor del ciclo seleccionado en el spinner.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class ModelRegisterSchoolInputsUI(
+    val cct: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val grade: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val group: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val cycle: ModelStateOutFieldText = ModelStateOutFieldText()
 )

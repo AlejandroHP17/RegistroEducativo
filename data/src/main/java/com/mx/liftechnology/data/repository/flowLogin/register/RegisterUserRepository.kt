@@ -7,12 +7,12 @@ package com.mx.liftechnology.data.repository.flowLogin.register
 
 import com.mx.liftechnology.core.network.apiCall.flowLogin.RegisterUserApiCall
 import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestRegisterUser
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.MessageError
-import com.mx.liftechnology.data.util.ResultError
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -30,7 +30,7 @@ fun interface RegisterUserRepository{
    * @return Un [ResultService] que indica el resultado de la operación.
    */
   suspend fun executeRegisterUser(request: RequestRegisterUser)
-  : ResultService<List<String?>, FailureService>
+  : ModelResult<List<String?>, NetworkError>
 }
 
 /**
@@ -46,29 +46,24 @@ class RegisterUserRepositoryImp(
 ) : RegisterUserRepository {
 
     /**
-     * {@inheritDoc}
+     * Realiza la llamada de red para el registro de usuario
+     *
+     * La anotación `{@inheritDoc}` indica que esta documentación hereda y cumple
+     * el contrato definido en [RegisterUserRepository.executeRegisterUser].
      */
     override suspend fun executeRegisterUser(
         request: RequestRegisterUser
-    ): ResultService<List<String?>, FailureService> {
+    ): ModelResult<List<String?>, NetworkError> {
         return try {
             val response = registerUserApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    if (!it.isNullOrEmpty()) {
-                        ResultSuccess(it)
-                    } else {
-                        val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
-                        ResultError(ExceptionHandler.handleException(exception))
-                    }
-                } ?: run {
-                    val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
-                    ResultError(ExceptionHandler.handleException(exception))
-                }
+                    SuccessResult(it)
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             }
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            else  ErrorResult(NetworkException.handleException(HttpException(response)))
         } catch (e: Exception) {
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkError.UNKNOWN)
         }
     }
 }

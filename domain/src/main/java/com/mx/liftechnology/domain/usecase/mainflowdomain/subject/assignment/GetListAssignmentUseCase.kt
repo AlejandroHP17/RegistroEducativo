@@ -7,12 +7,12 @@ import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListA
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * @file Define el caso de uso para obtener la lista de nombres de asignaciones.
@@ -30,9 +30,9 @@ fun interface GetListAssignmentUseCase {
     /**
      * Ejecuta el proceso para obtener la lista de nombres de asignaciones.
      *
-     * @return Un [ModelState] que contiene una lista de `String` con los nombres de las asignaciones, o un estado de error.
+     * @return Un [ResultModel] que contiene una lista de `String` con los nombres de las asignaciones, o un estado de error.
      */
-    suspend fun getListAssignment () :ModelState<List<String>?, String?>
+    suspend fun getListAssignment () :ResultModel<List<String>?, String?>
 }
 
 /**
@@ -51,7 +51,7 @@ class GetListAssignmentUseCaseImp(
     /**
      * {@inheritDoc}
      */
-    override suspend fun getListAssignment():ModelState<List<String>?, String?> {
+    override suspend fun getListAssignment():ResultModel<List<String>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
@@ -63,7 +63,7 @@ class GetListAssignmentUseCaseImp(
         )
 
         return when(val result =  getListAssignmentRepository.executeGetListAssignment(request)){
-            is ResultSuccess -> SuccessState(result.data)
+            is ResultSuccess -> SuccessResult(result.data)
             is ResultError -> handleResponse(result.error)
         }
     }
@@ -72,15 +72,15 @@ class GetListAssignmentUseCaseImp(
      * Maneja las respuestas de error del repositorio de asignaciones.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico para la capa de dominio/UI.
+     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ModelState<List<String>?, String?> {
+    private fun handleResponse(error: FailureService): ResultModel<List<String>?, String?> {
         return when(error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 }

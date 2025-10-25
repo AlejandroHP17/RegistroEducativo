@@ -9,8 +9,8 @@ import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -57,7 +57,7 @@ class LoginUseCaseTest {
         val result = loginUseCase.invoke("test@test.com", "password", true)
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
@@ -73,6 +73,6 @@ class LoginUseCaseTest {
         val result = loginUseCase.invoke("wrong@test.com", "wrong", false)
 
         // Verificamos el resultado
-        assertTrue(result is ErrorUserState)
+        assertTrue(result is ErrorUserResult)
     }
 }

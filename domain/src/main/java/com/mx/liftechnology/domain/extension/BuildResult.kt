@@ -19,3 +19,4 @@ import com.mx.liftechnology.data.util.ResultSuccess
 fun <T> T.buildResult(): ResultService<T?, FailureService> {
     return this?.let { ResultSuccess(it) } ?: ResultError(FailureService.ServerError)
 }
+

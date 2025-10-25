@@ -10,12 +10,12 @@ import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ModelState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 
@@ -36,9 +36,9 @@ class GetCctUseCase(
      * Ejecuta el proceso de validación de la CCT.
      *
      * @param cct La Clave de Centro de Trabajo a validar.
-     * @return Un [ModelState] que contiene la información de la escuela o un estado de error.
+     * @return Un [ResultModel] que contiene la información de la escuela o un estado de error.
      */
-    suspend operator fun invoke(cct: String): ModelState<ModelResultSchoolDomain?, String> {
+    suspend operator fun invoke(cct: String): ResultModel<ModelResultSchoolDomain?, String> {
         return runCatching { getCctRepository.executeGetCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
@@ -48,7 +48,7 @@ class GetCctUseCase(
                             result.data
                         )
 
-                        SuccessState(response)
+                        SuccessResult(response)
                     }
 
                     is ResultError -> {
@@ -56,7 +56,7 @@ class GetCctUseCase(
                     }
                 }
             },
-            onFailure = { ErrorState(ModelCodeError.ERROR_UNKNOWN) }
+            onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN) }
         )
     }
 
@@ -64,15 +64,15 @@ class GetCctUseCase(
      * Maneja las respuestas de error del repositorio de CCT.
      *
      * @param error El objeto [FailureService] que representa el error.
-     * @return Un [ModelState] que representa el error específico.
+     * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponseCompose(error: FailureService): ModelState<ModelResultSchoolDomain?, String> {
+    private fun handleResponseCompose(error: FailureService): ResultModel<ModelResultSchoolDomain?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedState(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserState(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Timeout -> ErrorState(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorState(ModelCodeError.ERROR_UNKNOWN)
+            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }
 

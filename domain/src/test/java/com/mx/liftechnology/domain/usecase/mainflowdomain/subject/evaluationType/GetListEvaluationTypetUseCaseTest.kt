@@ -5,8 +5,8 @@ import com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype.GetL
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -47,7 +47,7 @@ class GetListEvaluationTypetUseCaseTest {
         val result = getListEvaluationTypeUseCase.getListEvaluationType()
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
@@ -62,7 +62,7 @@ class GetListEvaluationTypetUseCaseTest {
         val result = getListEvaluationTypeUseCase.getListEvaluationType()
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState) // Una lista vacía es un resultado válido.
+        assertTrue(result is SuccessResult) // Una lista vacía es un resultado válido.
     }
 
     /**
@@ -77,6 +77,6 @@ class GetListEvaluationTypetUseCaseTest {
         val result = getListEvaluationTypeUseCase.getListEvaluationType()
 
         // Verificamos el resultado
-        assertTrue(result is ErrorState)
+        assertTrue(result is ErrorResult)
     }
 }

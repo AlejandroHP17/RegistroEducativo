@@ -13,6 +13,7 @@ package com.mx.liftechnology.data.util
  * @author Pelkidev
  * @version 1.0.0
  */
+@Deprecated("cambia por network error")
 sealed class FailureService(val message: String) {
     /** Representa un error de conexión a la red. */
     data object NetworkError : FailureService(MessageError.CONNECTION_INTERNET_ERROR_MESSAGE)
@@ -28,6 +29,9 @@ sealed class FailureService(val message: String) {
 
     /** Representa un error de "Solicitud Incorrecta" (ej: 400). */
     data object BadRequest : FailureService(MessageError.INCORRECT_REQUEST_ERROR_MESSAGE)
+
+  /** Representa un error de "Solicitud Incorrecta" (ej: 400). */
+    data object TooManyRequest: FailureService(MessageError.TOO_MANY_REQUESTS)
 
     /** Representa un error de tiempo de espera agotado. */
     data object Timeout : FailureService(MessageError.TIMEOUT_ERROR_MESSAGE)

@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.st
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logs
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
@@ -53,7 +53,7 @@ class AssignmentStudentViewModel (
     private fun getListAssessmentType(subject: ModelFormatSubjectDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
-                is SuccessState -> {
+                is SuccessResult -> {
                     val convertData = subject?.toModelComplexCard()
                    fillModel(result.result, convertData)
                 }

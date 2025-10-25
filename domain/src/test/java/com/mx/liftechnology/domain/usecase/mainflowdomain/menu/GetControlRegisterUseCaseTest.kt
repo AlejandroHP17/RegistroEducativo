@@ -2,8 +2,8 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.data.repository.flowMain.menu.MenuLocalRepository
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertTrue
@@ -31,7 +31,7 @@ class GetControlRegisterUseCaseTest {
     }
 
     /**
-     * Test para verificar que se devuelve [SuccessState] cuando el repositorio retorna una lista no vacía.
+     * Test para verificar que se devuelve [SuccessResult] cuando el repositorio retorna una lista no vacía.
      */
     @Test
     fun `invoke con lista no vacia devuelve SuccessState`() {
@@ -43,11 +43,11 @@ class GetControlRegisterUseCaseTest {
         val result = getControlRegisterUseCase.invoke()
 
         // Verificamos el resultado
-        assertTrue(result is SuccessState)
+        assertTrue(result is SuccessResult)
     }
 
     /**
-     * Test para verificar que se devuelve [ErrorState] cuando el repositorio retorna una lista vacía.
+     * Test para verificar que se devuelve [ErrorResult] cuando el repositorio retorna una lista vacía.
      */
     @Test
     fun `invoke con lista vacia devuelve ErrorState`() {
@@ -58,11 +58,11 @@ class GetControlRegisterUseCaseTest {
         val result = getControlRegisterUseCase.invoke()
 
         // Verificamos el resultado
-        assertTrue(result is ErrorState)
+        assertTrue(result is ErrorResult)
     }
 
     /**
-     * Test para verificar que se devuelve [ErrorState] cuando el repositorio lanza una excepción.
+     * Test para verificar que se devuelve [ErrorResult] cuando el repositorio lanza una excepción.
      */
     @Test
     fun `invoke cuando el repositorio lanza excepcion devuelve ErrorState`() {
@@ -73,6 +73,6 @@ class GetControlRegisterUseCaseTest {
         val result = getControlRegisterUseCase.invoke()
 
         // Verificamos el resultado
-        assertTrue(result is ErrorState)
+        assertTrue(result is ErrorResult)
     }
 }

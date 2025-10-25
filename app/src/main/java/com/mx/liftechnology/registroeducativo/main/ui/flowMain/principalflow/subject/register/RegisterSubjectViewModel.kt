@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCase
@@ -174,7 +174,7 @@ class RegisterSubjectViewModel(
                 _uiState.value.subject.valueText
             )){
 
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
                     controlToast = ModelStateToastUI(
@@ -184,7 +184,7 @@ class RegisterSubjectViewModel(
                     )
                 ) }
             }
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR,
@@ -214,7 +214,7 @@ class RegisterSubjectViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssessmentTypeUseCase.invoke()
             ) {
-                is SuccessState -> {
+                is SuccessResult -> {
                     val list = result.result?.toMutableList()
                     list?.add(
                         ResponseGetListAssessmentType(

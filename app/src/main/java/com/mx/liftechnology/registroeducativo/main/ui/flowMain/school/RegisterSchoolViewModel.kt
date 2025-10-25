@@ -1,3 +1,8 @@
+/**
+ * @file Define el ViewModel para la pantalla de registro de una escuela.
+ * @author PelkiDev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.registroeducativo.main.ui.flowMain.school
 
 import androidx.lifecycle.ViewModel
@@ -5,10 +10,10 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.core.util.logs
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
@@ -16,8 +21,9 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolInputsUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUISemiAutomaticData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUIState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.toUi
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
@@ -30,9 +36,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the School Registration screen.
+ * ViewModel para la pantalla de Registro de Escuela.
+ * Gestiona el estado de la UI, la lógica de validación y la comunicación con los casos de uso
+ * para buscar una CCT (Clave de Centro de Trabajo) y registrar una nueva escuela.
  *
- * @author Pelkidev
+ * @property dispatcherProvider Proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getCctUseCase Caso de uso para obtener la información de una escuela a partir de su CCT.
+ * @property validateFieldsUseCase Caso de uso para validar los campos del formulario.
+ * @property registerOneSchoolUseCase Caso de uso para registrar la nueva escuela.
+ * @property voiceRecognitionManager Gestor para el reconocimiento de voz.
+ * @author PelkiDev
  * @version 1.0.0
  */
 class RegisterSchoolViewModel(
@@ -43,29 +56,19 @@ class RegisterSchoolViewModel(
     private val voiceRecognitionManager: VoiceRecognitionManager,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterSchoolUIState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelRegisterSchoolUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelRegisterSchoolStateUI())
+    /** Estado de la UI que contiene eventos generales como carga, éxito o error. */
+    val uiState: StateFlow<ModelRegisterSchoolStateUI> = _uiState.asStateFlow()
 
     private val _uiSemiAutomaticData = MutableStateFlow(ModelRegisterSchoolUISemiAutomaticData())
-    /** The data state for semi-automatic fields. */
+    /** Estado que almacena los datos de la escuela que se rellenan automáticamente tras una búsqueda de CCT exitosa. */
     val uiSemiAutomaticData: StateFlow<ModelRegisterSchoolUISemiAutomaticData> = _uiSemiAutomaticData.asStateFlow()
 
-    private val _cct = MutableStateFlow(ModelStateOutFieldText())
-    /** The state of the CCT input field. */
-    val cct: StateFlow<ModelStateOutFieldText> = _cct.asStateFlow()
+    private val _inputState = MutableStateFlow(ModelRegisterSchoolInputsUI())
+    /** Estado que contiene los valores de los campos de entrada del usuario (CCT, grado, grupo, ciclo). */
+    val inputState: StateFlow<ModelRegisterSchoolInputsUI> = _inputState.asStateFlow()
+    private val inputStateVM: ModelRegisterSchoolInputsUI get() = _inputState.value
 
-    private val _grade = MutableStateFlow(ModelStateOutFieldText())
-    /** The state of the grade input field. */
-    val grade: StateFlow<ModelStateOutFieldText> = _grade.asStateFlow()
-
-    private val _group = MutableStateFlow(ModelStateOutFieldText())
-    /** The state of the group input field. */
-    val group: StateFlow<ModelStateOutFieldText> = _group.asStateFlow()
-
-    private val _cycle = MutableStateFlow(ModelStateOutFieldText())
-    /** The state of the cycle input field. */
-    val cycle: StateFlow<ModelStateOutFieldText> = _cycle.asStateFlow()
 
     private val resultsObserver = androidx.lifecycle.Observer<List<String>> { results ->
         logs(results.toString())
@@ -75,42 +78,67 @@ class RegisterSchoolViewModel(
     private var isListening = true
 
     /**
-     * Called when the cycle input changes.
+     * Se invoca cuando el valor del spinner de ciclo cambia.
+     * Actualiza el estado del campo de ciclo en [inputState].
      *
-     * @param cycle The new cycle value.
+     * @param cycle El nuevo valor del ciclo seleccionado.
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun onCycleChanged(cycle: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _cycle.update { cycle.stringToModelStateOutFieldText() }
+            _inputState.update {
+                it.copy(
+                    cycle = cycle.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     /**
-     * Called when the grade input changes.
+     * Se invoca cuando el valor del spinner de grado cambia.
+     * Actualiza el estado del campo de grado en [inputState].
      *
-     * @param grade The new grade value.
+     * @param grade El nuevo valor del grado seleccionado.
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun onGradeChanged(grade: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _grade.update { grade.stringToModelStateOutFieldText() }
+            _inputState.update {
+                it.copy(
+                    grade = grade.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     /**
-     * Called when the group input changes.
+     * Se invoca cuando el valor del spinner de grupo cambia.
+     * Actualiza el estado del campo de grupo en [inputState].
      *
-     * @param group The new group value.
+     * @param group El nuevo valor del grupo seleccionado.
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun onGroupChanged(group: String) {
         viewModelScope.launch(dispatcherProvider.io) {
-            _group.update { group.stringToModelStateOutFieldText() }
+            _inputState.update {
+                it.copy(
+                    group = group.stringToModelStateOutFieldText()
+                )
+            }
         }
     }
 
     /**
-     * Called when the CCT input changes.
+     * Se invoca cuando el valor del campo de texto de la CCT cambia.
+     * Si la CCT tiene 10 caracteres, inicia el proceso de carga y búsqueda de la escuela.
+     * Si no, limpia los campos de la escuela y actualiza el estado del campo de CCT.
      *
-     * @param cct The new CCT value.
+     * @param cct El nuevo valor de la CCT introducido por el usuario.
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun onCctChanged(cct: String) {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -118,12 +146,17 @@ class RegisterSchoolViewModel(
                 _uiState.update {
                     it.copy(uiState = ModelStateUIEnum.LOADING)
                 }
-                _cct.update { cct.uppercase().stringToModelStateOutFieldText() }
+                _inputState.update {
+                    it.copy(
+                        cct = cct.uppercase().stringToModelStateOutFieldText()
+                    )
+                }
                 getSchoolCCT(cct.uppercase())
             } else {
-                _cct.update {
-                    cct.uppercase()
-                        .stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND)
+                _inputState.update {
+                    it.copy(
+                        cct = cct.uppercase().stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND)
+                    )
                 }
                 _uiSemiAutomaticData.update {
                     it.copy(
@@ -139,7 +172,7 @@ class RegisterSchoolViewModel(
 
     private suspend fun getSchoolCCT(cct: String) {
         when (val state = getCctUseCase.invoke(cct)) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 withContext(dispatcherProvider.main){
                     _uiState.update {
                         it.copy(
@@ -159,7 +192,7 @@ class RegisterSchoolViewModel(
                 }
             }
 
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.NOTHING,
@@ -174,11 +207,13 @@ class RegisterSchoolViewModel(
                         read = true
                     )
                 }
-                _cct.update {
-                    ModelStateOutFieldText(
-                        valueText = it.valueText,
-                        isError = true,
-                        errorMessage = ModelCodeInputs.ET_NOT_FOUND
+                _inputState.update {
+                    it.copy(
+                        cct = ModelStateOutFieldText(
+                            valueText = it.cct.valueText,
+                            isError = true,
+                            errorMessage = ModelCodeInputs.ET_NOT_FOUND
+                        )
                     )
                 }
             }
@@ -195,22 +230,28 @@ class RegisterSchoolViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to register the school if they are valid.
+     * Inicia la validación de todos los campos de entrada del formulario.
+     * Actualiza el estado de los campos con los resultados de la validación y, si todos son válidos,
+     * procede a registrar la escuela.
+     *
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun validateFields() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            val cctState = validateFieldsUseCase.validateCctCompose(_cct.value.valueText)
-            val gradeState = validateFieldsUseCase.validateGradeCompose(_grade.value.valueText)
-            val groupState = validateFieldsUseCase.validateGroupCompose(_group.value.valueText)
-            val cycleState = validateFieldsUseCase.validateCycleCompose(_cycle.value.valueText)
+            val cctState = validateFieldsUseCase.validateCctCompose(inputStateVM.cct.valueText)
+            val gradeState = validateFieldsUseCase.validateGradeCompose(inputStateVM.grade.valueText)
+            val groupState = validateFieldsUseCase.validateGroupCompose(inputStateVM.group.valueText)
+            val cycleState = validateFieldsUseCase.validateCycleCompose(inputStateVM.cycle.valueText)
 
-            _grade.update { gradeState }
-            _group.update { groupState }
-            _cycle.update { cycleState }
-            _cct.update { cctState }
-
+            _inputState.update { it.copy(
+                cct = cctState,
+                grade = gradeState,
+                group = groupState,
+                cycle = cycleState
+            )}
 
             if (!(cctState.isError || gradeState.isError || groupState.isError || cycleState.isError)) {
                 registerOneSchool()
@@ -221,14 +262,14 @@ class RegisterSchoolViewModel(
     }
 
     private suspend fun registerOneSchool() {
-        when (val result = registerOneSchoolUseCase.invoke(
-            cct = _cct.value.valueText,
+        when (registerOneSchoolUseCase.invoke(
+            cct = inputStateVM.cct.valueText,
             schoolCycleTypeId = _uiSemiAutomaticData.value.schoolCycleTypeId,
-            grade = _grade.value.valueText.toInt(),
-            group = _group.value.valueText,
-            cycle = _cycle.value.valueText.toInt()
+            grade = inputStateVM.grade.valueText.toInt(),
+            group = inputStateVM.group.valueText,
+            cycle = inputStateVM.cycle.valueText.toInt()
         )) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
@@ -241,7 +282,7 @@ class RegisterSchoolViewModel(
                 }
             }
 
-            is ErrorUserState -> {
+            is ErrorUserResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR,
@@ -255,7 +296,6 @@ class RegisterSchoolViewModel(
             }
 
             else -> {
-                logs(result.toString())
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR
@@ -266,7 +306,11 @@ class RegisterSchoolViewModel(
     }
 
     /**
-     * Called when the ViewModel is cleared.
+     * Se llama cuando el ViewModel está a punto de ser destruido.
+     * Libera los recursos utilizados por el [voiceRecognitionManager] para evitar fugas de memoria.
+     *
+     * @author PelkiDev
+     * @version 1.0.0
      */
     override fun onCleared() {
         super.onCleared()
@@ -275,7 +319,11 @@ class RegisterSchoolViewModel(
     }
 
     /**
-     * Toggles the voice recognition listening state.
+     * Activa o desactiva el reconocimiento de voz.
+     * Cambia el color del botón para dar feedback visual al usuario sobre el estado de la escucha.
+     *
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun change() {
         viewModelScope.launch(dispatcherProvider.main) {
@@ -295,14 +343,17 @@ class RegisterSchoolViewModel(
         viewModelScope.launch {
             val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
             onCctChanged(result ?: "")
-            _cct.update { it.copy(valueText = result ?: "") }
+            _inputState.update { it.copy(cct = result?.uppercase().stringToModelStateOutFieldText()
+            ) }
         }
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast en la UI.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
+     * @author PelkiDev
+     * @version 1.0.0
      */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch(dispatcherProvider.main) {

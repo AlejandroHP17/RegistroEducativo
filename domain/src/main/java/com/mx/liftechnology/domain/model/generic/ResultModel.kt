@@ -15,28 +15,34 @@ package com.mx.liftechnology.domain.model.generic
  * @author Pelkidev
  * @version 1.0.0
  */
-sealed class ModelState<S, E>
+sealed class ResultDomain<out S, out E: Error>
+
+data class Success<D>(val data: D) : ResultModel<D, Nothing>()
+data class Failure<E : Error>(val error: E) : ResultModel<Nothing, E>()
+
+
+sealed class ResultModel<out S, out E>
 
 /**
  * Representa una operación exitosa.
  * @param result Los datos devueltos por la operación exitosa.
  */
-class SuccessState<S, E>(val result: S) : ModelState<S, E>()
+data class SuccessResult<S, E>(val result: S) : ResultModel<S, E>()
 
 /**
  * Representa un error genérico.
  * @param result Los datos del error.
  */
-class ErrorState<S, E>(val result: E) : ModelState<S, E>()
+data class ErrorResult<S, E>(val result: E) : ResultModel<S, E>()
 
 /**
  * Representa un error relacionado con la entrada o validación del usuario.
  * @param result Los datos del error, que normalmente contienen un mensaje para el usuario.
  */
-class ErrorUserState<S, E>(val result: E) : ModelState<S, E>()
+data class ErrorUserResult<S, E>(val result: E) : ResultModel<S, E>()
 
 /**
  * Representa un error de autorización (ej: 401 No Autorizado).
  * @param result Los datos del error.
  */
-class ErrorUnauthorizedState<S, E>(val result: E) : ModelState<S, E>()
+data class ErrorUnauthorizedResult<S, E>(val result: E) : ResultModel<S, E>()

@@ -2,9 +2,11 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.data.util.UserError
+import com.mx.liftechnology.data.util.convertToUI
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
 import com.mx.liftechnology.registroeducativo.R
@@ -21,11 +23,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel for the Login screen.
+ * ViewModel para la pantalla de Inicio de Sesión.
+ * Gestiona el estado de la UI, la lógica de validación de campos y la comunicación con los casos de uso.
  *
- * @property dispatcherProvider The provider for Coroutine dispatchers.
- * @property loginUseCase The use case for handling login.
- * @property validateFieldsLoginFlowUseCase The use case for validating input fields.
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property loginUseCase El caso de uso para manejar la lógica de inicio de sesión.
+ * @property validateFieldsLoginFlowUseCase El caso de uso para validar los campos de entrada.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -37,18 +40,18 @@ class LoginViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelLoginStateUI())
-    /** The UI state for the screen. */
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
     val uiState: StateFlow<ModelLoginStateUI> = _uiState.asStateFlow()
 
     private val _inputState = MutableStateFlow(ModelLoginInputsUI())
-    /** The state of the input fields. */
+    /** El estado que contiene los valores de los campos de entrada del usuario. */
     val inputState: StateFlow<ModelLoginInputsUI> = _inputState.asStateFlow()
     private val inputStateVM: ModelLoginInputsUI get() = _inputState.value
 
     /**
-     * Called when the email input changes.
+     * Se invoca cuando el valor del campo de email cambia.
      *
-     * @param email The new email value.
+     * @param email El nuevo valor del email.
      */
     fun onEmailChanged(email: String) {
         viewModelScope.launch (dispatcherProvider.io){
@@ -59,9 +62,9 @@ class LoginViewModel(
     }
 
     /**
-     * Called when the password input changes.
+     * Se invoca cuando el valor del campo de contraseña cambia.
      *
-     * @param pass The new password value.
+     * @param pass El nuevo valor de la contraseña.
      */
     fun onPassChanged(pass: String) {
         viewModelScope.launch (dispatcherProvider.io){
@@ -72,9 +75,9 @@ class LoginViewModel(
     }
 
     /**
-     * Called when the "remember me" checkbox state changes.
+     * Se invoca cuando el estado del checkbox "recordarme" cambia.
      *
-     * @param remember The new state of the checkbox.
+     * @param remember El nuevo estado del checkbox.
      */
     fun onRememberChanged(remember: Boolean) {
         viewModelScope.launch (dispatcherProvider.io){
@@ -85,7 +88,7 @@ class LoginViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to login if they are valid.
+     * Valida los campos de entrada y, si son válidos, procede con el inicio de sesión.
      */
     fun validateFieldsCompose() {
         viewModelScope.launch(dispatcherProvider.io) {
@@ -104,12 +107,12 @@ class LoginViewModel(
     }
 
     private suspend fun loginCompose() {
-        when (loginUseCase.invoke(
+        when (val result = loginUseCase.invoke(
             email = inputStateVM.emailInputState.valueText,
             pass = inputStateVM.passInputState.valueText,
             remember = inputStateVM.isRemember
         )) {
-            is SuccessState -> {
+            is SuccessResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
@@ -122,33 +125,44 @@ class LoginViewModel(
                 }
             }
 
-            is ErrorUserState -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = ModelStateToastUI(
-                            messageToast = R.string.toast_error_login_user,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.ERROR
-                        )
-                    )
-                }
-            }
-
-            else -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR
-                    )
+            is ErrorResult -> {
+                when(result.error.convertToUI()){
+                    UserError.SHOW_GENERIC_ERROR ->{
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = ModelStateToastUI(
+                                    messageToast = R.string.toast_error_generic,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.ERROR
+                                )
+                            )
+                        }
+                    }
+                    UserError.SHOW_SPECIFIC_ERROR -> {
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = ModelStateToastUI(
+                                    messageToast = R.string.toast_error_login_user,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.ERROR
+                                )
+                            )
+                        }
+                    }
+                    else -> {
+                        _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                    }
                 }
             }
         }
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         viewModelScope.launch (dispatcherProvider.main){

@@ -5,9 +5,9 @@ import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.generic.ErrorState
-import com.mx.liftechnology.domain.model.generic.ErrorUserState
-import com.mx.liftechnology.domain.model.generic.SuccessState
+import com.mx.liftechnology.domain.model.generic.ErrorResult
+import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -55,8 +55,8 @@ class GetCctUseCaseTest {
         val result = getCctUseCase.invoke("1234567890")
 
         // Verificamos que el resultado sea exitoso
-        assertTrue(result is SuccessState)
-        val successData = (result as SuccessState).result
+        assertTrue(result is SuccessResult)
+        val successData = (result as SuccessResult).result
 
         // Verificamos los datos de la escuela
         assertEquals("Escuela Primaria Test", successData?.result?.schoolName)
@@ -79,7 +79,7 @@ class GetCctUseCaseTest {
         val result = getCctUseCase.invoke("0000000000")
 
         // Verificamos que se devuelve el estado de error de usuario correcto
-        assertTrue(result is ErrorUserState)
+        assertTrue(result is ErrorUserResult)
     }
 
     /**
@@ -94,6 +94,6 @@ class GetCctUseCaseTest {
         val result = getCctUseCase.invoke("1234567890")
 
         // Verificamos que se devuelve un estado de error genérico
-        assertTrue(result is ErrorState)
+        assertTrue(result is ErrorResult)
     }
 }
