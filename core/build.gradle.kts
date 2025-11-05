@@ -28,4 +28,5 @@ dependencies {
     implementation(libs.bundles.test)
 
     api(libs.bundles.timber)
+    testImplementation(kotlin("test"))
 }

@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -47,13 +49,17 @@ class RegisterStudentViewModel(
     private val myValue: ModelRegisterStudentUiState
         get() = _uiState.value
 
-
-    private val resultsObserver = androidx.lifecycle.Observer<List<String>> { results ->
-        logs(results.toString())
-        validateDataRecord(results)
-    }
-
     private var isListening = true
+
+    init {
+        // Observa los resultados del reconocimiento de voz usando StateFlow
+        voiceRecognitionManager.resultsStateFlow
+            .onEach { results ->
+                logs(results.toString())
+                validateDataRecord(results)
+            }
+            .launchIn(viewModelScope)
+    }
 
     /**
      * Called when the name input changes.
@@ -253,7 +259,6 @@ class RegisterStudentViewModel(
      */
     override fun onCleared() {
         super.onCleared()
-        voiceRecognitionManager.resultsLiveData.removeObserver(resultsObserver)
         voiceRecognitionManager.release()
     }
 

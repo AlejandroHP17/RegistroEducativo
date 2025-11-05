@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -14,5 +15,5 @@ val splashModule = module {
     /**
      * Provides an instance of [SplashViewModel].
      */
-    viewModel { SplashViewModel(get(), get()) }
+    viewModelOf(::SplashViewModel)
 }

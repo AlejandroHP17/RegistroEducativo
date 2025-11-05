@@ -47,6 +47,7 @@ interface PreferenceRepository {
 /**
  * Implementación de [PreferenceRepository] que utiliza [EncryptedSharedPreferences] para el almacenamiento seguro.
  * Se encarga de inicializar las preferencias encriptadas y de gestionar las operaciones de lectura y escritura.
+ * Thread-safe mediante lazy initialization.
  *
  * @property applicationContext El contexto de la aplicación.
  * @author Pelkidev
@@ -56,16 +57,29 @@ class PreferenceRepositoryImpl(
     private val applicationContext: Context,
 ) : PreferenceRepository {
 
-    init {
-        initPreferences()
+    companion object {
+        private const val PREFS_FILENAME = "secure_prefs"
     }
 
-    private fun initPreferences() {
-        try {
+    /**
+     * SharedPreferences thread-safe mediante lazy initialization.
+     * Se inicializa la primera vez que se accede.
+     */
+    private val securePrefs: SharedPreferences by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        initializePreferences()
+    }
+
+    /**
+     * Inicializa las preferencias encriptadas de forma thread-safe.
+     *
+     * @return La instancia de SharedPreferences encriptada.
+     */
+    private fun initializePreferences(): SharedPreferences {
+        return try {
             val masterKey = MasterKey.Builder(applicationContext)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
-            securePrefs = EncryptedSharedPreferences.create(
+            EncryptedSharedPreferences.create(
                 applicationContext,
                 PREFS_FILENAME,
                 masterKey,
@@ -73,6 +87,7 @@ class PreferenceRepositoryImpl(
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         } catch (e: Exception) {
+            // Si falla la creación encriptada, limpia las preferencias antiguas y reintenta
             applicationContext.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
                 .edit {
                     clear()
@@ -82,7 +97,7 @@ class PreferenceRepositoryImpl(
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
 
-            securePrefs = EncryptedSharedPreferences.create(
+            EncryptedSharedPreferences.create(
                 applicationContext,
                 PREFS_FILENAME,
                 masterKey,
@@ -90,11 +105,6 @@ class PreferenceRepositoryImpl(
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         }
-    }
-
-    companion object {
-        private const val PREFS_FILENAME = "secure_prefs"
-        private lateinit var securePrefs: SharedPreferences
     }
 
     /**

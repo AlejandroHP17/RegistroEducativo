@@ -7,7 +7,7 @@ package com.mx.liftechnology.core.network.apiCall.flowLogin
 
 import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.enviroment.Environment
+import com.mx.liftechnology.core.network.environment.Environment
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

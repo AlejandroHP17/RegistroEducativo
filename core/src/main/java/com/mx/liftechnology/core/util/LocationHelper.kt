@@ -15,7 +15,15 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
+
+/**
+ * Resultado de una operación de ubicación.
+ * Puede ser un éxito con una [Location] o un error con un mensaje.
+ */
+sealed class LocationResult {
+    data class Success(val location: Location) : LocationResult()
+    data class Error(val message: String) : LocationResult()
+}
 
 /**
  * Clase de ayuda para gestionar operaciones relacionadas con la ubicación, como la obtención de permisos y la última localización conocida.
@@ -142,29 +150,29 @@ class LocationHelper(private val context: Context) {
 
     /**
      * Obtiene la ubicación actual utilizando una función suspendida, ideal para corutinas.
+     * Retorna un [LocationResult] que encapsula el resultado de la operación.
      *
-     * @return La [Location] actual, o `null` si no está disponible.
-     * @throws SecurityException si el permiso de ubicación no ha sido concedido.
-     * @throws NullPointerException si la ubicación es nula.
+     * @return [LocationResult.Success] con la ubicación si está disponible,
+     *         [LocationResult.Error] si hay un error (permiso denegado, ubicación nula, etc.).
      */
-    suspend fun getCurrentLocation(): Location? = suspendCancellableCoroutine { continuation ->
+    suspend fun getCurrentLocation(): LocationResult = suspendCancellableCoroutine { continuation ->
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            continuation.resumeWithException(SecurityException("Permiso de ubicación no concedido"))
+            continuation.resume(LocationResult.Error("Permiso de ubicación no concedido"))
             return@suspendCancellableCoroutine
         }
 
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
-                continuation.resume(location)
+                continuation.resume(LocationResult.Success(location))
             } else {
-                continuation.resumeWithException(NullPointerException("La ubicación es nula"))
+                continuation.resume(LocationResult.Error("La ubicación no está disponible"))
             }
         }.addOnFailureListener { exception ->
-            continuation.resumeWithException(exception)
+            continuation.resume(LocationResult.Error("Error al obtener ubicación: ${exception.message ?: "Error desconocido"}"))
         }
     }
 }

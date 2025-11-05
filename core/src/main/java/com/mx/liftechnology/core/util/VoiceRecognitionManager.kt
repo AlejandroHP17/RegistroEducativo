@@ -11,8 +11,9 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
 
 /**
@@ -25,19 +26,32 @@ import java.util.Locale
  */
 class VoiceRecognitionManager(private val context: Context) {
 
-    private val _resultsLiveData = MutableLiveData<List<String>>()
-    /** LiveData que emite los resultados del reconocimiento. */
-    val resultsLiveData: LiveData<List<String>> get() = _resultsLiveData
+    companion object {
+        /** Número máximo de reintentos cuando hay errores de reconocimiento. */
+        private const val MAX_RESTART_ATTEMPTS = 5
 
-    private val _errorLiveData = MutableLiveData<String>()
-    /** LiveData que emite los errores del reconocimiento. */
-    val errorLiveData: LiveData<String> get() = _errorLiveData
+        /** Delay en milisegundos antes de reintentar el reconocimiento después de un error. */
+        private const val RESTART_DELAY_MS = 350L
+
+        /** Número máximo de resultados a devolver. */
+        private const val MAX_RESULTS = 3
+
+        /** Mensaje de error cuando se alcanzan los máximos reintentos. */
+        private const val MAX_RETRIES_MESSAGE = "Máximos reintentos alcanzados."
+    }
+
+    private val _resultsStateFlow = MutableStateFlow<List<String>>(emptyList())
+    /** StateFlow que emite los resultados del reconocimiento. */
+    val resultsStateFlow: StateFlow<List<String>> = _resultsStateFlow.asStateFlow()
+
+    private val _errorStateFlow = MutableStateFlow<String?>(null)
+    /** StateFlow que emite los errores del reconocimiento. */
+    val errorStateFlow: StateFlow<String?> = _errorStateFlow.asStateFlow()
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var recognizerIntent: Intent? = null
 
     private var restartAttempts = 0
-    private val maxRestartAttempts = 5
     private val handler = Handler(Looper.getMainLooper())
 
     private var isListening = false
@@ -59,17 +73,17 @@ class VoiceRecognitionManager(private val context: Context) {
 
         override fun onError(error: Int) {
             val msg = getErrorText(error)
-            _errorLiveData.postValue(msg)
+            _errorStateFlow.value = msg
             isListening = false
 
             when (error) {
                 SpeechRecognizer.ERROR_NO_MATCH,
                 SpeechRecognizer.ERROR_SPEECH_TIMEOUT -> {
-                    if (restartAttempts < maxRestartAttempts) {
+                    if (restartAttempts < MAX_RESTART_ATTEMPTS) {
                         restartAttempts++
-                        handler.postDelayed({ startListening() }, 350)
+                        handler.postDelayed({ startListening() }, RESTART_DELAY_MS)
                     } else {
-                        _errorLiveData.postValue("Máximos reintentos alcanzados.")
+                        _errorStateFlow.value = MAX_RETRIES_MESSAGE
                     }
                 }
                 SpeechRecognizer.ERROR_CLIENT,
@@ -88,7 +102,7 @@ class VoiceRecognitionManager(private val context: Context) {
             restartAttempts = 0
             isListening = false
             val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-            _resultsLiveData.postValue(matches ?: emptyList())
+            _resultsStateFlow.value = matches ?: emptyList()
         }
 
         override fun onPartialResults(partialResults: Bundle?) {
@@ -110,11 +124,11 @@ class VoiceRecognitionManager(private val context: Context) {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
                 putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3)
+                putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, MAX_RESULTS)
                 putExtra(RecognizerIntent.EXTRA_PROMPT, "Habla ahora...")
             }
         } catch (e: Exception) {
-            _errorLiveData.postValue("Error al configurar el recognizer: ${e.message}")
+            _errorStateFlow.value = "Error al configurar el recognizer: ${e.message}"
         }
     }
 
@@ -125,7 +139,7 @@ class VoiceRecognitionManager(private val context: Context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
             != PackageManager.PERMISSION_GRANTED
         ) {
-            _errorLiveData.postValue("Permiso RECORD_AUDIO no concedido")
+            _errorStateFlow.value = "Permiso RECORD_AUDIO no concedido"
             return
         }
 
@@ -144,7 +158,7 @@ class VoiceRecognitionManager(private val context: Context) {
             speechRecognizer?.startListening(recognizerIntent)
             isListening = true
         } catch (e: Exception) {
-            _errorLiveData.postValue("No se pudo iniciar: ${e.message}")
+            _errorStateFlow.value = "No se pudo iniciar: ${e.message}"
             resetRecognizer()
         }
     }

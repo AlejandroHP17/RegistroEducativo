@@ -50,15 +50,23 @@ class LoginUseCase(
             return ErrorResult(LocalError.USER_INCOMPLETE_DATA)
         }
 
-        val location = locationHelper.getCurrentLocation()
-        val latitude = location?.latitude
-        val longitude = location?.longitude
+        // Obtener ubicación usando LocationResult
+        val locationResult = locationHelper.getCurrentLocation()
+        val (latitude, longitude) = when (locationResult) {
+            is com.mx.liftechnology.core.util.LocationResult.Success -> {
+                locationResult.location.latitude to locationResult.location.longitude
+            }
+            is com.mx.liftechnology.core.util.LocationResult.Error -> {
+                // Si no se puede obtener la ubicación, usar valores por defecto
+                0.0 to 0.0
+            }
+        }
 
         val request = RequestLogin(
             email = email.lowercase(),
             password = pass,
-            latitude = latitude?.toString().orEmpty(),
-            longitude = longitude?.toString().orEmpty(),
+            latitude = latitude.toString(),
+            longitude = longitude.toString(),
             imei = Build.FINGERPRINT + Build.ID
         )
 

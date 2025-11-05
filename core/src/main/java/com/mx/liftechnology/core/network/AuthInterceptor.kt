@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.core.network
 
-import com.mx.liftechnology.core.network.enviroment.Environment
+import com.mx.liftechnology.core.network.environment.Environment
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

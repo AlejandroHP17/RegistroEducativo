@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -15,7 +15,5 @@ val sharedModule = module {
     /**
      * Provides an instance of [SharedViewModel].
      */
-    viewModel {
-        SharedViewModel()
-    }
+    viewModelOf(::SharedViewModel)
 }

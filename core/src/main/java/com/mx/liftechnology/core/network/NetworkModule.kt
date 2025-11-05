@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.core.network
 
-import com.mx.liftechnology.core.network.enviroment.Environment
+import com.mx.liftechnology.core.network.environment.Environment
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
@@ -32,7 +32,7 @@ val networkModule = module {
     single {
         val logging = HttpLoggingInterceptor { message ->
             if (!message.startsWith("<!DOCTYPE html>")) {
-                println(message)
+                timber.log.Timber.d(message)
             }
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY

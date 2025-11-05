@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.network.enviroment
+package com.mx.liftechnology.core.network.environment
 
 import android.os.Build
 
