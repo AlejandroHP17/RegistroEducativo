@@ -2,6 +2,8 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.util.DefaultDispatcherProvider
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -14,5 +16,7 @@ val dispatcherModule = module {
     /**
      * Provides a singleton instance of [DispatcherProvider].
      */
-    single<DispatcherProvider>{ DefaultDispatcherProvider() }
+    singleOf(::DefaultDispatcherProvider) {
+        bind<DispatcherProvider>()
+    }
 }

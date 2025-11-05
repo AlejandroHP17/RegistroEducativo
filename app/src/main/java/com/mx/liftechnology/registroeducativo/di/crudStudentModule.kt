@@ -16,7 +16,9 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFields
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -41,59 +43,55 @@ val crudStudentModule = module {
     /**
      * Provides a singleton instance of [RegisterStudentRepository].
      */
-    single<RegisterStudentRepository> {
-        RegisterStudentRepositoryImp(get())
+    singleOf(::RegisterStudentRepositoryImp) {
+        bind<RegisterStudentRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetStudentRepository].
      */
-    single<GetStudentRepository> {
-        GetStudentRepositoryImp(get())
+    singleOf(::GetStudentRepositoryImp) {
+        bind<GetStudentRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterOneStudentUseCase].
      */
-    single {RegisterOneStudentUseCase(get(), get())}
+    singleOf(::RegisterOneStudentUseCase)
 
     /**
      * Provides a singleton instance of [GetListStudentUseCase].
      */
-    single{GetListStudentUseCase(get(), get())}
+    singleOf(::GetListStudentUseCase)
 
     /**
      * Provides a singleton instance of [ModifyOneStudentUseCase].
      */
-    single<ModifyOneStudentUseCase> {
-        ModifyOneStudentUseCaseImp(get(), get())
+    singleOf(::ModifyOneStudentUseCaseImp) {
+        bind<ModifyOneStudentUseCase>()
     }
 
     /**
      * Provides a singleton instance of [ValidateVoiceStudentUseCase].
      */
-    single<ValidateVoiceStudentUseCase> {
-        ValidateVoiceStudentUseCaseImp()
+    singleOf(::ValidateVoiceStudentUseCaseImp) {
+        bind<ValidateVoiceStudentUseCase>()
     }
 
     /**
      * Provides a singleton instance of [ValidateFieldsStudentUseCase].
      */
-    single<ValidateFieldsStudentUseCase> {
-        ValidateFieldsStudentUseCaseImp()
+    singleOf(::ValidateFieldsStudentUseCaseImp) {
+        bind<ValidateFieldsStudentUseCase>()
     }
 
     /**
      * Provides an instance of [RegisterStudentViewModel].
      */
-    viewModel {
-        RegisterStudentViewModel(get(), get(), get(), get(), get())
-    }
+    viewModelOf(::RegisterStudentViewModel)
 
     /**
      * Provides an instance of [ListStudentViewModel].
      */
-    viewModel {
-        ListStudentViewModel(get(), get())
-    }
+    viewModelOf(::ListStudentViewModel)
 }

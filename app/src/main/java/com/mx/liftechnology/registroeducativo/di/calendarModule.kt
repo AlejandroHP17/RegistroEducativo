@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.calendar.CalendarViewModel
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 
 import org.koin.dsl.module
 
@@ -15,5 +16,5 @@ val calendarModule = module {
     /**
      * Provides an instance of [CalendarViewModel].
      */
-    viewModel { CalendarViewModel(get(), get(), get()) }
+    viewModelOf(::CalendarViewModel)
 }

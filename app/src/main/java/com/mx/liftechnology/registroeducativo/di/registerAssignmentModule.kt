@@ -4,12 +4,12 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.GetListAssignmentApiCa
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetPercentSubjectIdApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterJobStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListAssignmentApiCall
-import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepositoryImp
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepository
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepositoryImp
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepository
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepository
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepositoryImp
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepository
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepositoryImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
@@ -21,7 +21,9 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.Reg
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.ValidateFieldsAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.ValidateFieldsAssignmentUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.registerassignment.RegisterAssignmentViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -56,67 +58,67 @@ val registerAssignmentModule = module {
     /**
      * Provides a singleton instance of [GetPercentSubjectRepository].
      */
-    single<GetPercentSubjectRepository> {
-        GetPercentSubjectRepositoryImp(get())
+    singleOf(::GetPercentSubjectRepositoryImp) {
+        bind<GetPercentSubjectRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterListAssignmentRepository].
      */
-    single<RegisterListAssignmentRepository> {
-        RegisterListAssignmentRepositoryImp(get())
+    singleOf(::RegisterListAssignmentRepositoryImp) {
+        bind<RegisterListAssignmentRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetListAssignmentRepository].
      */
-    single<GetListAssignmentRepository> {
-        GetListAssignmentRepositoryImp(get())
+    singleOf(::GetListAssignmentRepositoryImp) {
+        bind<GetListAssignmentRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterAssignmentRepository].
      */
-    single<RegisterAssignmentRepository> {
-        RegisterAssignmentRepositoryImp(get())
+    singleOf(::RegisterAssignmentRepositoryImp) {
+        bind<RegisterAssignmentRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterListAssignmentUseCase].
      */
-    single<RegisterListAssignmentUseCase> {
-        RegisterListAssignmentUseCaseImp(get(), get())
+    singleOf(::RegisterListAssignmentUseCaseImp) {
+        bind<RegisterListAssignmentUseCase>()
     }
 
     /**
      * Provides a singleton instance of [ValidateFieldsAssignmentUseCase].
      */
-    single<ValidateFieldsAssignmentUseCase> {
-        ValidateFieldsAssignmentUseCaseImp()
+    singleOf(::ValidateFieldsAssignmentUseCaseImp) {
+        bind<ValidateFieldsAssignmentUseCase>()
     }
 
     /**
      * Provides a singleton instance of [SaveIdSubjectSelectedUseCase].
      */
-    single { SaveIdSubjectSelectedUseCase(get()) }
+    singleOf(::SaveIdSubjectSelectedUseCase)
 
     /**
      * Provides a singleton instance of [GetListAssignmentPerSubjectUseCase].
      */
-    single { GetListAssignmentPerSubjectUseCase(get(),get()) }
+    singleOf(::GetListAssignmentPerSubjectUseCase)
 
     /**
      * Provides a singleton instance of [RegisterAssignmentUseCase].
      */
-    single { RegisterAssignmentUseCase(get(), get()) }
+    singleOf(::RegisterAssignmentUseCase)
 
     /**
      * Provides a singleton instance of [GetDatesActivePartialUseCase].
      */
-    single { GetDatesActivePartialUseCase(get()) }
+    singleOf(::GetDatesActivePartialUseCase)
 
     /**
      * Provides an instance of [RegisterAssignmentViewModel].
      */
-    viewModel { RegisterAssignmentViewModel(get(), get(),get(), get(), get(), get(), get()) }
+    viewModelOf(::RegisterAssignmentViewModel)
 }

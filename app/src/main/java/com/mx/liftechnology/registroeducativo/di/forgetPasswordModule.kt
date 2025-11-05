@@ -6,7 +6,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.forgetPassword.ForgetPasswordViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -21,5 +21,5 @@ val forgetPasswordModule = module {
     /**
      * Provee una instancia de [ForgetPasswordViewModel].
      */
-    viewModel { ForgetPasswordViewModel(get(), get()) }
+    viewModelOf(::ForgetPasswordViewModel)
 }

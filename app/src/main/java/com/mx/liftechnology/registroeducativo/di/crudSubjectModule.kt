@@ -21,7 +21,9 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.evaluationType.GetListEvaluationTypeUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.list.ListSubjectViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.register.RegisterSubjectViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -56,71 +58,67 @@ val crudSubjectModule = module {
     /**
      * Provides a singleton instance of [GetListEvaluationTypeRepository].
      */
-    single<GetListEvaluationTypeRepository> {
-        GetListEvaluationTypeRepositoryImp(get())
+    singleOf(::GetListEvaluationTypeRepositoryImp) {
+        bind<GetListEvaluationTypeRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetListSubjectRepository].
      */
-    single<GetListSubjectRepository> {
-        GetListSubjectRepositoryImp(get())
+    singleOf(::GetListSubjectRepositoryImp) {
+        bind<GetListSubjectRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterSubjectRepository].
      */
-    single<RegisterSubjectRepository> {
-        RegisterSubjectRepositoryImp(get())
+    singleOf(::RegisterSubjectRepositoryImp) {
+        bind<RegisterSubjectRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetAssessmentTypeRepository].
      */
-    single<GetAssessmentTypeRepository> {
-        GetAssessmentTypeRepositoryImp(get())
+    singleOf(::GetAssessmentTypeRepositoryImp) {
+        bind<GetAssessmentTypeRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetListEvaluationTypeUseCase].
      */
-    single<GetListEvaluationTypeUseCase> {
-        GetListEvaluationTypeUseCaseImp(get(), get())
+    singleOf(::GetListEvaluationTypeUseCaseImp) {
+        bind<GetListEvaluationTypeUseCase>()
     }
 
     /**
      * Provides a singleton instance of [RegisterOneSubjectUseCase].
      */
-    single {RegisterOneSubjectUseCase(get(), get())}
+    singleOf(::RegisterOneSubjectUseCase)
 
     /**
      * Provides a singleton instance of [GetListSubjectUseCase].
      */
-    single {GetListSubjectUseCase(get(), get())}
+    singleOf(::GetListSubjectUseCase)
 
     /**
      * Provides a singleton instance of [GetListAssessmentTypeUseCase].
      */
-    single {GetListAssessmentTypeUseCase(get(), get())}
+    singleOf(::GetListAssessmentTypeUseCase)
 
     /**
      * Provides a singleton instance of [ValidateFieldsSubjectUseCase].
      */
-    single<ValidateFieldsSubjectUseCase> {
-        ValidateFieldsSubjectUseCaseImp()
+    singleOf(::ValidateFieldsSubjectUseCaseImp) {
+        bind<ValidateFieldsSubjectUseCase>()
     }
 
     /**
      * Provides an instance of [RegisterSubjectViewModel].
      */
-    viewModel {
-        RegisterSubjectViewModel(get(), get(), get(), get())
-    }
+    viewModelOf(::RegisterSubjectViewModel)
 
     /**
      * Provides an instance of [ListSubjectViewModel].
      */
-    viewModel {
-        ListSubjectViewModel(get(), get())
-    }
+    viewModelOf(::ListSubjectViewModel)
 }

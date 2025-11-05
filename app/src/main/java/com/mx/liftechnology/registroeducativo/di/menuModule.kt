@@ -11,7 +11,9 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetListPartialMen
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.UpdateGroupMenuUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -36,50 +38,37 @@ val menuModule = module {
     /**
      * Provides a singleton instance of [MenuRepository].
      */
-    single<MenuRepository> {
-        MenuRepositoryImp(get())
+    singleOf(::MenuRepositoryImp) {
+        bind<MenuRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetControlMenuUseCase].
      */
-    single {
-        GetControlMenuUseCase(get())
-    }
+    singleOf(::GetControlMenuUseCase)
 
     /**
      * Provides a singleton instance of [GetControlRegisterUseCase].
      */
-    single {
-        GetControlRegisterUseCase(get())
-    }
+    singleOf(::GetControlRegisterUseCase)
 
     /**
      * Provides a singleton instance of [UpdateGroupMenuUseCase].
      */
-    single{
-        UpdateGroupMenuUseCase(get())
-
-    }
+    singleOf(::UpdateGroupMenuUseCase)
 
     /**
      * Provides a singleton instance of [GetGroupMenuUseCase].
      */
-    single {
-        GetGroupMenuUseCase(get(), get())
-    }
+    singleOf(::GetGroupMenuUseCase)
 
     /**
      * Provides a singleton instance of [GetListPartialMenuUseCase].
      */
-    single {
-        GetListPartialMenuUseCase(get(), get())
-    }
+    singleOf(::GetListPartialMenuUseCase)
 
     /**
      * Provides an instance of [MenuViewModel].
      */
-    viewModel {
-        MenuViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get())
-    }
+    viewModelOf(::MenuViewModel)
 }

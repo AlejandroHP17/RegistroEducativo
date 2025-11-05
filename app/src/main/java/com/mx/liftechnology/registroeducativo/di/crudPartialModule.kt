@@ -13,7 +13,9 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.UpdatePartialU
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial.RegisterPartialViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -38,48 +40,45 @@ val crudPartialModule = module {
     /**
      * Provides a singleton instance of [RegisterListPartialRepository].
      */
-    single<RegisterListPartialRepository> {
-        RegisterListPartialRepositoryImp(get())
+    singleOf(::RegisterListPartialRepositoryImp){
+        bind<RegisterListPartialRepository>()
     }
-
     /**
      * Provides a singleton instance of [GetListPartialRepository].
      */
-    single<GetListPartialRepository> {
-        GetListPartialRepositoryImp(get())
+    singleOf(::GetListPartialRepositoryImp){
+        bind<GetListPartialRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterListPartialUseCase].
      */
-    single { RegisterListPartialUseCase(get(), get()) }
+    singleOf(::RegisterListPartialUseCase)
 
     /**
      * Provides a singleton instance of [GetListPartialUseCase].
      */
-    single { GetListPartialUseCase(get(), get()) }
+    singleOf(::GetListPartialUseCase)
 
     /**
      * Provides a singleton instance of [ValidateFieldsRegisterPartialUseCase].
      */
-    single<ValidateFieldsRegisterPartialUseCase> {
-        ValidateFieldsRegisterPartialUseCaseImp()
+    singleOf(::ValidateFieldsRegisterPartialUseCaseImp) {
+        bind<ValidateFieldsRegisterPartialUseCase>()
     }
 
     /**
      * Provides a singleton instance of [SavePartialUseCase].
      */
-    single { SavePartialUseCase(get()) }
+    singleOf(::SavePartialUseCase)
 
     /**
      * Provides a singleton instance of [UpdatePartialUseCase].
      */
-    single { UpdatePartialUseCase(get()) }
+    singleOf(::UpdatePartialUseCase)
 
     /**
      * Provides an instance of [RegisterPartialViewModel].
      */
-    viewModel {
-        RegisterPartialViewModel(get(), get(), get(), get())
-    }
+    viewModelOf(::RegisterPartialViewModel)
 }

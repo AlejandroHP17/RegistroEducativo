@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment.AssignmentStudentViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.assignment.AssignmentSubjectViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -15,10 +15,10 @@ val assignmentModule = module {
     /**
      * Provides an instance of [AssignmentSubjectViewModel].
      */
-    viewModel { AssignmentSubjectViewModel(get(), get(),  get()) }
+    viewModelOf(::AssignmentSubjectViewModel)
 
     /**
      * Provides an instance of [AssignmentStudentViewModel].
      */
-    viewModel { AssignmentStudentViewModel(get(), get(),  get()) }
+    viewModelOf(::AssignmentStudentViewModel)
 }
