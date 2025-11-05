@@ -2,8 +2,7 @@
 
 ## 📋 Resumen Ejecutivo
 
-Este documento presenta un análisis detallado del módulo `app` basado en las mejores prácticas de Android, 
-Clean Architecture y MVVM. Se evalúan la estructura, nomenclaturas, patrones arquitectónicos y áreas de mejora.
+Este documento presenta un análisis detallado del módulo `app` basado en las mejores prácticas de Android, Clean Architecture y MVVM. Se evalúan la estructura, nomenclaturas, patrones arquitectónicos y áreas de mejora.
 
 ---
 
@@ -19,7 +18,7 @@ com.mx.liftechnology.registroeducativo/
 │   ├── loginUserModule.kt
 │   ├── menuModule.kt
 │   ├── registerSchoolModule.kt
-│   └── ... (17 módulos)
+│   └── ... (17 módulos DI)
 ├── framework/                   # Configuración de la aplicación
 │   └── MyApp.kt
 ├── main/
@@ -29,7 +28,13 @@ com.mx.liftechnology.registroeducativo/
 │   ├── model/                   # Modelos de UI
 │   │   ├── ModelShareUIState.kt
 │   │   ├── ui/                  # Modelos de estado UI
+│   │   │   ├── ModelLoginStateUI.kt
+│   │   │   ├── ModelRegisterStudentStateUI.kt
+│   │   │   ├── ModelRegisterAssignmentStateUI.kt
+│   │   │   └── ... (otros estados UI)
 │   │   └── viewmodel/           # Modelos de ViewModel
+│   │       ├── ModelRegisterStudentCallbacksUI.kt
+│   │       └── ... (otros callbacks)
 │   ├── ui/                      # Pantallas y componentes Compose
 │   │   ├── components/          # Componentes reutilizables
 │   │   ├── flowLogin/           # Flujo de login
@@ -50,12 +55,13 @@ com.mx.liftechnology.registroeducativo/
 3. **Separación UI/ViewModel**: Cada pantalla tiene su ViewModel correspondiente
 4. **Mappers dedicados**: Separación de lógica de mapeo
 5. **Módulos DI bien organizados**: Cada flujo tiene su módulo de Koin
+6. ✅ **Nomenclatura unificada**: `Model*StateUI` estandarizado en lugar de `Model*UiState`
 
 ### ⚠️ Áreas de Mejora Estructural
 
 1. **Mezcla de responsabilidades en util**: `DispatcherProvider` y navegación están juntos
 2. **Falta de capa de presentación**: No hay una capa intermedia entre UI y ViewModel
-3. **Modelos duplicados**: Modelos de UI y ViewModel podrían estar mejor organizados
+3. **Mappers incompletos**: Solo existe `MappersMenuUI.kt`, otros mappers están en ViewModels
 4. **Navegación**: Las rutas están en `util/navigation` cuando deberían estar más cerca de la UI
 
 ---
@@ -69,7 +75,7 @@ El módulo `app` implementa la capa de **Presentation** de Clean Architecture:
 #### ✅ Aplicación Correcta
 
 1. **Separación de capas**:
-   - **Presentation Layer**: `ui/`, `model/`, `viewmodel/`
+   - **Presentation Layer**: `ui/`, `model/`, ViewModels
    - **DI Layer**: `di/`
    - **Framework Layer**: `framework/`
 
@@ -87,6 +93,8 @@ El módulo `app` implementa la capa de **Presentation** de Clean Architecture:
    // MappersMenuUI.kt - Convierte modelos de dominio a UI
    ```
 
+4. ✅ **Dependencias correctas**: ViewModels usan `ResultModel` de `domain` en lugar de `data.util`
+
 #### ⚠️ Mejoras Necesarias
 
 1. **Falta de abstracción de UI State**:
@@ -96,10 +104,6 @@ El módulo `app` implementa la capa de **Presentation** de Clean Architecture:
 2. **Mappers incompletos**:
    - Solo existe `MappersMenuUI.kt`, otros mappers están en ViewModels
    - Debería haber mappers centralizados
-
-3. **Dependencias directas**:
-   - ViewModels importan directamente de `data.util` en lugar de `domain`
-   - Ejemplo: `import com.mx.liftechnology.data.util.ErrorResult`
 
 ### MVVM (Model-View-ViewModel)
 
@@ -115,8 +119,8 @@ El módulo `app` implementa correctamente MVVM:
 
 2. **Separación de estados**:
    - `_uiState`: Estado general de la pantalla
-   - `_inputState`: Estado de los campos de entrada
-   - `_dataState`: Estado de los datos (en algunos ViewModels)
+   - `_inputState`: Estado de los campos de entrada (en algunos ViewModels)
+   - Estados bien definidos con `Model*StateUI`
 
 3. **Compose UI**:
    - Pantallas usando Jetpack Compose
@@ -126,18 +130,33 @@ El módulo `app` implementa correctamente MVVM:
    - Control explícito de hilos de ejecución
    - Uso correcto de `viewModelScope`
 
+5. ✅ **StateFlow en utilidades**: `VoiceRecognitionManager` actualizado a `StateFlow`:
+   ```kotlin
+   // RegisterSchoolViewModel.kt, RegisterStudentViewModel.kt
+   init {
+       voiceRecognitionManager.resultsStateFlow
+           .onEach { results -> handleVoiceResults(results) }
+           .launchIn(viewModelScope)
+   }
+   ```
+
+6. ✅ **Nomenclatura estandarizada**: Funciones renombradas a `on*Changed()`:
+   ```kotlin
+   // ✅ Estandarizado
+   fun onNameChanged(name: String)
+   fun onEmailChanged(email: String)
+   // ❌ Eliminado
+   // fun onChangeName(name: String)
+   ```
+
 #### ⚠️ Mejoras para MVVM
 
 1. **Inconsistencia en estados**:
    - Algunos ViewModels tienen `_uiState`, `_inputState`, `_dataState`
    - Otros solo tienen `_uiState`
-   - Falta estandarización
+   - Falta estandarización completa
 
-2. **Lógica de negocio en ViewModels**:
-   - Algunos ViewModels tienen lógica que debería estar en UseCases
-   - Ejemplo: Validaciones en ViewModel en lugar de UseCase
-
-3. **Manejo de errores**:
+2. **Manejo de errores**:
    - Cada ViewModel maneja errores de forma diferente
    - Falta un patrón unificado para mostrar errores en UI
 
@@ -156,35 +175,36 @@ El módulo `app` implementa correctamente MVVM:
 
 2. **ViewModels**:
    - `*ViewModel` para ViewModels
-   - `on*Changed()` para callbacks de cambios
+   - ✅ **`on*Changed()`** para callbacks de cambios (estandarizado)
    - `validate*()` para validaciones
 
 3. **Estados**:
-   - `Model*StateUI` para estados de UI
-   - `Model*InputsUI` para inputs
+   - ✅ **`Model*StateUI`** para estados de UI (estandarizado)
+   - ✅ **`Model*CallbacksUI`** para callbacks de UI
    - `_*State` para MutableStateFlow privados
 
 4. **Pantallas**:
    - `*Screen.kt` para pantallas Compose
    - Nombres descriptivos: `LoginScreen`, `RegisterStudentScreen`
 
+#### ✅ Mejoras Implementadas
+
+1. ✅ **Nomenclatura de funciones en ViewModels**: `on*Changed()` estandarizado
+   - ✅ `onNameChanged()`, `onEmailChanged()`, `onLastNameChanged()`
+   - ❌ Eliminado: `onChangeName()`, `onChangeEmail()`
+
+2. ✅ **Nomenclatura de modelos**: `Model*StateUI` estandarizado
+   - ✅ `ModelLoginStateUI`, `ModelRegisterStudentStateUI`, `ModelRegisterAssignmentStateUI`
+   - ✅ `ModelAssignmentStateUI`, `ModelListSubjectStateUI`, `ModelListStudentStateUI`
+   - ❌ Eliminado: `Model*UiState`, `Model*UIState`
+
 #### ⚠️ Inconsistencias y Mejoras
 
-1. **Nomenclatura de funciones en ViewModels**:
-   - Mezcla de `on*Changed()` y `onChange*()`
-   - Ejemplo: `onEmailChanged()` vs `onChangeName()`
-   - Debería ser consistente
-
-2. **Nomenclatura de modelos**:
-   - `Model*StateUI` vs `Model*UiState`
-   - Ejemplo: `ModelLoginStateUI` vs `ModelRegisterStudentUiState`
-   - Falta estandarización en mayúsculas/minúsculas
-
-3. **Nomenclatura de componentes**:
+1. **Nomenclatura de componentes**:
    - Algunos archivos son genéricos: `Components.kt`, `Boxes.kt`
    - Deberían ser más específicos o mejor organizados
 
-4. **Nomenclatura de módulos DI**:
+2. **Nomenclatura de módulos DI**:
    - `loginUserModule.kt` vs `registerUserModule.kt`
    - Inconsistencia en singular/plural
 
@@ -222,34 +242,36 @@ El módulo `app` implementa correctamente MVVM:
    - Lógica de negocio en UseCases
    - UI solo renderiza
 
-### ⚠️ Prácticas a Mejorar
-
-1. **Dependencias directas de data**:
+7. ✅ **StateFlow en utilidades**: Integración correcta con `VoiceRecognitionManager`:
    ```kotlin
-   // ❌ ViewModel importa de data
-   import com.mx.liftechnology.data.util.ErrorResult
-   
-   // ✅ Debería importar de domain
-   import com.mx.liftechnology.domain.model.generic.ErrorResult
+   voiceRecognitionManager.resultsStateFlow
+       .onEach { results -> handleVoiceResults(results) }
+       .launchIn(viewModelScope)
    ```
 
-2. **Manejo de errores inconsistente**:
+8. ✅ **Dependencias correctas**: ViewModels usan `ResultModel` de `domain`:
+   ```kotlin
+   // ✅ Correcto
+   import com.mx.liftechnology.domain.model.generic.ResultModel
+   // ❌ Eliminado
+   // import com.mx.liftechnology.data.util.ErrorResult
+   ```
+
+### ⚠️ Prácticas a Mejorar
+
+1. **Manejo de errores inconsistente**:
    - Cada ViewModel maneja errores diferente
    - Falta un patrón unificado
 
-3. **Validaciones en ViewModel**:
+2. **Validaciones en ViewModel**:
    - Algunas validaciones están en ViewModel
    - Deberían estar en UseCases
 
-4. **Falta de estados estándar**:
+3. **Falta de estados estándar**:
    - No hay un modelo base para Loading/Success/Error
    - Cada ViewModel define su propio `ModelStateUIEnum`
 
-5. **Logging**:
-   - Uso de `logs()` deprecado en algunos ViewModels
-   - Debería usar `logInfo()` o `logDebug()`
-
-6. **Testing**:
+4. **Testing**:
    - No se ven tests para ViewModels
    - Falta cobertura de tests
 
@@ -264,12 +286,14 @@ El módulo `app` implementa correctamente MVVM:
 - Separación de estados (UI, Input, Data)
 - Uso de DispatcherProvider
 - Documentación presente
+- ✅ **Nomenclatura estandarizada**: `on*Changed()` implementado
+- ✅ **Modelos estandarizados**: `Model*StateUI` implementado
+- ✅ **Integración con StateFlow**: `VoiceRecognitionManager` actualizado
 
 #### ⚠️ Mejoras
-- **Inconsistencia en nombres**: `on*Changed()` vs `onChange*()`
-- **Dependencias de data**: Deberían usar solo domain
 - **Falta de tests**: No hay tests unitarios
 - **Lógica en ViewModels**: Algunas validaciones deberían estar en UseCases
+- **Manejo de errores**: Falta patrón unificado
 
 ### 2. UI (Compose)
 
@@ -278,6 +302,7 @@ El módulo `app` implementa correctamente MVVM:
 - Temas centralizados
 - Separación por flujos
 - Uso moderno de Compose
+- ✅ **Referencias actualizadas**: Pantallas actualizadas a `Model*StateUI`
 
 #### ⚠️ Mejoras
 - **Archivos genéricos**: `Components.kt`, `Boxes.kt` muy genéricos
@@ -290,9 +315,10 @@ El módulo `app` implementa correctamente MVVM:
 - Separación clara entre modelos de UI y ViewModel
 - Modelos inmutables (data class)
 - Estados bien definidos
+- ✅ **Nomenclatura estandarizada**: `Model*StateUI` y `Model*CallbacksUI`
 
 #### ⚠️ Mejoras
-- **Inconsistencia en nombres**: `Model*StateUI` vs `Model*UiState`
+- ✅ **Nomenclatura unificada**: Completado ✅
 - **Falta de modelo base**: No hay un modelo base para estados comunes
 - **Duplicación**: Algunos modelos tienen campos similares
 
@@ -302,6 +328,7 @@ El módulo `app` implementa correctamente MVVM:
 - Módulos bien organizados por flujo
 - Separación clara de dependencias
 - Uso correcto de Koin
+- ✅ **Referencias actualizadas**: Módulos DI actualizados a `*RepositoryImpl`
 
 #### ⚠️ Mejoras
 - **Nomenclatura inconsistente**: `loginUserModule` vs `registerUserModule`
@@ -325,7 +352,7 @@ El módulo `app` implementa correctamente MVVM:
 ### Dependencias
 - ✅ Uso de librerías modernas (Compose, StateFlow, Koin)
 - ✅ Versiones actualizadas
-- ⚠️ Dependencias directas de `data` en ViewModels
+- ✅ **Dependencias correctas**: ViewModels usan `domain` en lugar de `data.util`
 
 ---
 
@@ -333,8 +360,8 @@ El módulo `app` implementa correctamente MVVM:
 
 ### 🔴 Alta Prioridad
 
-1. **Eliminar dependencias de data en ViewModels**: Usar solo domain
-2. **Estandarizar nomenclaturas**: Unificar `on*Changed()` vs `onChange*()`
+1. ✅ **Eliminar dependencias de data en ViewModels**: Completado ✅
+2. ✅ **Estandarizar nomenclaturas**: `on*Changed()` y `Model*StateUI` completado ✅
 3. **Crear modelo base para estados**: Loading/Success/Error estándar
 4. **Agregar tests**: Tests unitarios para ViewModels
 
@@ -365,30 +392,32 @@ El módulo `app` implementa correctamente MVVM:
 - ✅ Separación por flujos (`flowLogin`, `flowMain`)
 - ✅ Uso de StateFlow para estados
 - ✅ DispatcherProvider para control de hilos
+- ✅ Nomenclatura estandarizada: `on*Changed()`, `Model*StateUI`
 
 ---
 
 ## 📝 Conclusión
 
-El módulo `app` muestra una **buena implementación de MVVM** con Jetpack Compose. Las principales fortalezas son:
+El módulo `app` muestra una **excelente implementación de MVVM** con Jetpack Compose. Las principales fortalezas son:
 
 1. ✅ Separación clara de ViewModels y UI
 2. ✅ Uso moderno de StateFlow y Compose
 3. ✅ Componentes reutilizables bien estructurados
 4. ✅ Módulos DI bien organizados
+5. ✅ **Mejoras implementadas**: Nomenclatura estandarizada, dependencias correctas, StateFlow en utilidades
 
 Las áreas de mejora principales son:
 
-1. ⚠️ Dependencias directas de `data` en ViewModels
-2. ⚠️ Inconsistencias en nomenclaturas
-3. ⚠️ Falta de tests unitarios
-4. ⚠️ Falta de modelo base para estados
+1. ✅ **Dependencias directas de `data` en ViewModels**: Corregido ✅
+2. ✅ **Inconsistencias en nomenclaturas**: Corregido ✅
+3. ⚠️ Falta de tests unitarios (pendiente)
+4. ⚠️ Falta de modelo base para estados (pendiente)
 
-Con estas mejoras, el módulo `app` estará completamente alineado con las mejores prácticas de Android.
+Con las mejoras implementadas, el módulo `app` está muy bien alineado con las mejores prácticas de Android.
 
 ---
 
 **Fecha de análisis**: 2025-01-13  
 **Autor**: Análisis Automatizado  
-**Versión del módulo**: 1.0.0
-
+**Versión del módulo**: 1.0.0  
+**Última actualización**: 2025-01-13

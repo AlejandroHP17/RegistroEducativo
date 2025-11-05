@@ -32,7 +32,7 @@ class GetCctRepositoryTest {
      */
     @Before
     fun setUp() {
-        getCctRepository = GetCctRepositoryImp(getCctApiCall)
+        getCctRepository = GetCctRepositoryImpl(getCctApiCall)
     }
 
     /**

@@ -31,7 +31,7 @@ class RegisterSubjectRepositoryTest {
      */
     @Before
     fun setUp() {
-        registerSubjectRepository = RegisterSubjectRepositoryImp(registerSubjectApiCall)
+        registerSubjectRepository = RegisterSubjectRepositoryImpl(registerSubjectApiCall)
     }
 
     /**

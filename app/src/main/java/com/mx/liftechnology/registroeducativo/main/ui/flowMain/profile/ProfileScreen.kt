@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
@@ -41,7 +41,7 @@ fun ProfileScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Screen profile")
+        logInfo("Screen profile")
         HeaderProfile(navController = navController)
 
 

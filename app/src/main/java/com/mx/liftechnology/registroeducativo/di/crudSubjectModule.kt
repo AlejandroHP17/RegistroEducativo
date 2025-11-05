@@ -5,13 +5,13 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.GetListEvaluationTypeA
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListSubjectApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSubjectApiCall
 import com.mx.liftechnology.data.repository.flowMain.subject.GetListSubjectRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.GetListSubjectRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.GetListSubjectRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.subject.RegisterSubjectRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.RegisterSubjectRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.RegisterSubjectRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.subject.assessment.GetAssessmentTypeRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.assessment.GetAssessmentTypeRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.assessment.GetAssessmentTypeRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype.GetListEvaluationTypeRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype.GetListEvaluationTypeRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype.GetListEvaluationTypeRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.RegisterOneSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.ValidateFieldsSubjectUseCase
@@ -58,28 +58,28 @@ val crudSubjectModule = module {
     /**
      * Provides a singleton instance of [GetListEvaluationTypeRepository].
      */
-    singleOf(::GetListEvaluationTypeRepositoryImp) {
+    singleOf(::GetListEvaluationTypeRepositoryImpl) {
         bind<GetListEvaluationTypeRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetListSubjectRepository].
      */
-    singleOf(::GetListSubjectRepositoryImp) {
+    singleOf(::GetListSubjectRepositoryImpl) {
         bind<GetListSubjectRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterSubjectRepository].
      */
-    singleOf(::RegisterSubjectRepositoryImp) {
+    singleOf(::RegisterSubjectRepositoryImpl) {
         bind<RegisterSubjectRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetAssessmentTypeRepository].
      */
-    singleOf(::GetAssessmentTypeRepositoryImp) {
+    singleOf(::GetAssessmentTypeRepositoryImpl) {
         bind<GetAssessmentTypeRepository>()
     }
 

@@ -3,9 +3,9 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
 import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
-import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
-import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
@@ -43,14 +43,14 @@ val crudStudentModule = module {
     /**
      * Provides a singleton instance of [RegisterStudentRepository].
      */
-    singleOf(::RegisterStudentRepositoryImp) {
+    singleOf(::RegisterStudentRepositoryImpl) {
         bind<RegisterStudentRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetStudentRepository].
      */
-    singleOf(::GetStudentRepositoryImp) {
+    singleOf(::GetStudentRepositoryImpl) {
         bind<GetStudentRepository>()
     }
 

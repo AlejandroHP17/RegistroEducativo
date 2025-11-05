@@ -32,7 +32,7 @@ class MenuRepositoryTest {
      */
     @Before
     fun setUp() {
-        menuRepository = MenuRepositoryImp(groupApiCall)
+        menuRepository = MenuRepositoryImpl(groupApiCall)
     }
 
     /**

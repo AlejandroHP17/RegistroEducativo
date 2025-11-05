@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.core.network.apiCall.flowMain.GroupApiCall
 import com.mx.liftechnology.data.repository.flowMain.menu.MenuLocalRepository
 import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
-import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetControlMenuUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetControlRegisterUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetGroupMenuUseCase
@@ -38,7 +38,7 @@ val menuModule = module {
     /**
      * Provides a singleton instance of [MenuRepository].
      */
-    singleOf(::MenuRepositoryImp) {
+    singleOf(::MenuRepositoryImpl) {
         bind<MenuRepository>()
     }
 

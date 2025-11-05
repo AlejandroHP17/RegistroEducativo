@@ -10,9 +10,9 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
@@ -73,13 +73,13 @@ class RegisterListPartialUseCase(
         return runCatching { registerListPartialRepository.executeRegisterListPartial(request) }.fold(
             onSuccess = { result ->
                 when(result){
-                    is ResultSuccess -> {
+                    is DataSuccessResult -> {
                         result.data?.let {
                             if(it.isNotEmpty()) SuccessResult(result.data)
                             else ErrorResult(ModelCodeError.ERROR_CRITICAL)
                         }?:ErrorResult(ModelCodeError.ERROR_CRITICAL)
                     }
-                    is ResultError -> { handleResponse(result.error)}
+                    is DataErrorResult -> { handleResponse(result.error)}
                 }
             },
             onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
@@ -89,15 +89,15 @@ class RegisterListPartialUseCase(
     /**
      * Maneja las respuestas de error del repositorio de registro de parciales.
      *
-     * @param error El objeto [FailureService] que representa el error.
+     * @param error El objeto [NetworkError] que representa el error.
      * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponse(error: FailureService): ResultModel<List<String?>?, String> {
+    private fun handleResponse(error: NetworkError): ResultModel<List<String?>?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
-            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
+            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }

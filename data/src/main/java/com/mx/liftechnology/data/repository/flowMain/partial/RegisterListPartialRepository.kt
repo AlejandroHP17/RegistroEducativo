@@ -7,11 +7,11 @@ package com.mx.liftechnology.data.repository.flowMain.partial
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListPartialApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterPartial
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -26,10 +26,10 @@ fun interface RegisterListPartialRepository{
    * Ejecuta la petición de registro de una lista de parciales.
    *
    * @param request Los datos de la petición de registro.
-   * @return Un [ResultService] que indica el resultado de la operación.
+   * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeRegisterListPartial(request : RequestRegisterPartial
-  ): ResultService<List<String?>?, FailureService>
+  ): ModelResult<List<String?>?, NetworkError>
 }
 
 /**
@@ -40,7 +40,7 @@ fun interface RegisterListPartialRepository{
  * @author Pelkidev
  * @version 1.0.0
  */
-class RegisterListPartialRepositoryImp(
+class RegisterListPartialRepositoryImpl(
     private val registerListPartialApiCall: RegisterListPartialApiCall,
 ) : RegisterListPartialRepository {
 
@@ -49,13 +49,18 @@ class RegisterListPartialRepositoryImp(
      */
     override suspend fun executeRegisterListPartial(
         request : RequestRegisterPartial
-    ): ResultService<List<String?>?, FailureService> {
+    ): ModelResult<List<String?>?, NetworkError> {
         return try {
             val response = registerListPartialApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    SuccessResult(it)
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
+            }
         } catch (e: Exception) {
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

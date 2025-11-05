@@ -33,7 +33,7 @@ class RegisterUserRepositoryTest {
      */
     @Before
     fun setUp() {
-        registerUserRepository = RegisterUserRepositoryImp(registerUserApiCall)
+        registerUserRepository = RegisterUserRepositoryImpl(registerUserApiCall)
     }
 
     /**

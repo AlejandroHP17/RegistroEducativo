@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
@@ -14,8 +14,8 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialUIData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialUIState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,9 +37,9 @@ class RegisterPartialViewModel(
     private val getListPartialUseCase: GetListPartialUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterPartialUIState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelRegisterPartialUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelRegisterPartialStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelRegisterPartialStateUI> = _uiState.asStateFlow()
 
     private val _uiData = MutableStateFlow(ModelRegisterPartialUIData())
     /** The data state for the screen. */
@@ -147,7 +147,7 @@ class RegisterPartialViewModel(
                 ) }
             }
             else -> {
-                logs(result.toString())
+                logInfo(result.toString())
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.ERROR
                 ) }
@@ -177,7 +177,7 @@ class RegisterPartialViewModel(
                     }
                 }
                 else -> {
-                    logs(result.toString())
+                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

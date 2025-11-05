@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.apiCall.flowLogin.LoginApiCall
 import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
-import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepositoryImp
+import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepositoryImpl
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCaseImp
 import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
@@ -29,7 +29,7 @@ val loginUserModule = module {
     /**
      * Provides a singleton instance of [LoginRepository].
      */
-    singleOf(::LoginRepositoryImp) {
+    singleOf(::LoginRepositoryImpl) {
         bind<LoginRepository>()
     }
 

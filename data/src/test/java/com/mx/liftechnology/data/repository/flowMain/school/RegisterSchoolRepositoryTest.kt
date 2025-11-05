@@ -32,7 +32,7 @@ class RegisterSchoolRepositoryTest {
      */
     @Before
     fun setUp() {
-        registerSchoolRepository = RegisterSchoolRepositoryImp(registerSchoolApiCall)
+        registerSchoolRepository = RegisterSchoolRepositoryImpl(registerSchoolApiCall)
     }
 
     /**

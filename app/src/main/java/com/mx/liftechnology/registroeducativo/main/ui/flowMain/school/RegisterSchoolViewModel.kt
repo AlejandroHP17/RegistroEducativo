@@ -8,7 +8,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.school
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
@@ -31,9 +31,9 @@ import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -77,7 +77,7 @@ class RegisterSchoolViewModel(
         // Observa los resultados del reconocimiento de voz usando StateFlow
         voiceRecognitionManager.resultsStateFlow
             .onEach { results ->
-                logs(results.toString())
+                logInfo(results.toString())
                 validateData(results)
             }
             .launchIn(viewModelScope)
@@ -225,7 +225,7 @@ class RegisterSchoolViewModel(
             }
 
             else -> {
-                logs(state.toString())
+                logInfo(state.toString())
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR

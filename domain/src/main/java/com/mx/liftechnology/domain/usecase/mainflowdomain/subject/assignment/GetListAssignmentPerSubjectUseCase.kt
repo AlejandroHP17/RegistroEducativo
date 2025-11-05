@@ -10,9 +10,9 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPercentSubj
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
@@ -60,12 +60,12 @@ class GetListAssignmentPerSubjectUseCase (
         return runCatching { getPercentSubjectRepository.executeGetPercentSubject(request) }.fold(
             onSuccess = { result->
                 when(result) {
-                    is ResultSuccess -> {
+                    is DataSuccessResult -> {
                         val data = result.data.toModelUseCase()
                         if(data.isNotEmpty()) SuccessResult(data)
                         else ErrorResult(ModelCodeError.ERROR_EMPTY) // Devuelve un error específico si la lista está vacía.
                     }
-                    is ResultError -> handleResponse(result.error)
+                    is DataErrorResult -> handleResponse(result.error)
                 }
             },
             onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
@@ -93,17 +93,17 @@ class GetListAssignmentPerSubjectUseCase (
     }
 
     /**
-     * Maneja las respuestas de error del repositorio, convirtiendo un [FailureService] en un [ResultModel] específico.
+     * Maneja las respuestas de error del repositorio, convirtiendo un [NetworkError] en un [ResultModel] específico.
      *
-     * @param error El objeto [FailureService] que representa el error de la capa de datos.
+     * @param error El objeto [NetworkError] que representa el error de la capa de datos.
      * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ResultModel<List<ModelFormatAssignment>?, String?> {
+    private fun handleResponse(error: NetworkError): ResultModel<List<ModelFormatAssignment>?, String?> {
         return when(error) {
-            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
-            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
+            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }

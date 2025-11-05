@@ -32,7 +32,7 @@ class GetListPartialRepositoryTest {
      */
     @Before
     fun setUp() {
-        getListPartialRepository = GetListPartialRepositoryImp(getListPartialApiCall)
+        getListPartialRepository = GetListPartialRepositoryImpl(getListPartialApiCall)
     }
 
     /**

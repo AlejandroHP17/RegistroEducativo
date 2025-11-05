@@ -18,12 +18,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentCallbacksUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentStateUI
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCapitalLetterGeneric
@@ -83,17 +83,17 @@ fun RegisterStudentScreen(
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     )
     {
-        logs("Screen register student")
+        logInfo("Screen register student")
         HeaderRegisterStudent(navController = navController)
 
         BodyRegisterStudent(
             uiState = uiState,
-            callbacks = ModelRegisterStudentUiCallbacks(
-                onNameChanged = { registerStudentViewModel.onChangeName(it) },
-                onLastNameChanged = { registerStudentViewModel.onChangeLastName(it) },
-                onSecondLastNameChanged = { registerStudentViewModel.onChangeSecondLastName(it) },
-                onCurpChanged = { registerStudentViewModel.onChangeCurp(it) },
-                onPhoneNumberChanged = { registerStudentViewModel.onChangePhoneNUmber(it) },
+            callbacks = ModelRegisterStudentCallbacksUI(
+                onNameChanged = { registerStudentViewModel.onNameChanged(it) },
+                onLastNameChanged = { registerStudentViewModel.onLastNameChanged(it) },
+                onSecondLastNameChanged = { registerStudentViewModel.onSecondLastNameChanged(it) },
+                onCurpChanged = { registerStudentViewModel.onCurpChanged(it) },
+                onPhoneNumberChanged = { registerStudentViewModel.onPhoneNumberChanged(it) },
                 onBirthdayChanged = {
                     showDialog.value = true
                 },
@@ -113,7 +113,7 @@ fun RegisterStudentScreen(
             showDialog = true,
             dialogState = null,
             onDismiss = { showDialog.value = false },
-            onDateSelected = { registerStudentViewModel.onChangeBirthday(it.toString()) }
+            onDateSelected = { registerStudentViewModel.onBirthdayChanged(it.toString()) }
         )
     }
 
@@ -142,8 +142,8 @@ private fun HeaderRegisterStudent(navController: NavHostController) {
  */
 @Composable
 private fun BodyRegisterStudent(
-    uiState: ModelRegisterStudentUiState,
-    callbacks: ModelRegisterStudentUiCallbacks,
+    uiState: ModelRegisterStudentStateUI,
+    callbacks: ModelRegisterStudentCallbacksUI,
 ) {
     BoxEditTextCapitalLetterGeneric(
         value = uiState.name,
@@ -198,7 +198,7 @@ private fun BodyRegisterStudent(
  */
 @Composable
 private fun ActionRegisterStudent(
-    uiState: ModelRegisterStudentUiState,
+    uiState: ModelRegisterStudentStateUI,
     validateFieldsCompose: () -> Unit,
     onRecord: () -> Unit,
 ) {

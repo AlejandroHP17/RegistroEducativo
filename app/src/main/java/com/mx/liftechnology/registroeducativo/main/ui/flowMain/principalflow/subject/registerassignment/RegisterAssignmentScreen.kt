@@ -21,12 +21,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
@@ -92,7 +92,7 @@ fun RegisterAssignmentScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Screen list student assignment")
+        logInfo("Screen list student assignment")
         val (header, body, body2, column, action) = createRefs()
 
         Column(
@@ -116,7 +116,7 @@ fun RegisterAssignmentScreen(
             BodyRegisterAssignment(
                 dataState = dataState,
                 dialogState = dialogState,
-                onNameJobChanged = { registerAssignmentViewModel.onChangeName(it) },
+                onNameJobChanged = { registerAssignmentViewModel.onNameChanged(it) },
                 showDialog = {
                     registerAssignmentViewModel.updateDates()
                     showDialog.value = true
@@ -168,7 +168,7 @@ fun RegisterAssignmentScreen(
             showDialog = true,
             dialogState = dialogState,
             onDismiss = { showDialog.value = false },
-            onDateSelected = { registerAssignmentViewModel.onChangeDate(it.toString()) }
+            onDateSelected = { registerAssignmentViewModel.onDateChanged(it.toString()) }
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -182,7 +182,7 @@ fun RegisterAssignmentScreen(
  */
 @Composable
 private fun HeaderRegisterAssignment(
-    uiState: ModelRegisterAssignmentUiState,
+    uiState: ModelRegisterAssignmentStateUI,
     navController: NavHostController,
 ) {
     ComponentHeaderBackWithout(

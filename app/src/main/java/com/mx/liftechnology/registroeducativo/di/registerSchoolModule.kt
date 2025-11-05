@@ -4,9 +4,9 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSchoolApiCall
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
-import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepository
-import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
@@ -44,14 +44,14 @@ val registerSchoolModule = module {
     /**
      * Provides a singleton instance of [GetCctRepository].
      */
-    singleOf(::GetCctRepositoryImp){
+    singleOf(::GetCctRepositoryImpl){
         bind<GetCctRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterSchoolRepository].
      */
-    singleOf(::RegisterSchoolRepositoryImp){
+    singleOf(::RegisterSchoolRepositoryImpl){
         bind<RegisterSchoolRepository>()
     }
 

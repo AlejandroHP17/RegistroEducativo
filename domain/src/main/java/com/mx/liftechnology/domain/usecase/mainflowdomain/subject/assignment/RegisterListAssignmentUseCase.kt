@@ -4,9 +4,9 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterAssignm
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
@@ -63,23 +63,23 @@ class RegisterListAssignmentUseCaseImp(
         )
 
         return when(val result =  registerListAssignmentRepository.executeRegisterListAssignment(request)){
-            is ResultSuccess -> SuccessResult(result.data)
-            is ResultError -> handleResponse(result.error)
+            is DataSuccessResult -> SuccessResult(result.data)
+            is DataErrorResult -> handleResponse(result.error)
         }
     }
 
     /**
      * Maneja las respuestas de error del repositorio de asignaciones.
      *
-     * @param error El objeto [FailureService] que representa el error.
+     * @param error El objeto [NetworkError] que representa el error.
      * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
      */
-    private fun handleResponse(error: FailureService): ResultModel<List<String>?, String?> {
+    private fun handleResponse(error: NetworkError): ResultModel<List<String>?, String?> {
         return when(error) {
-            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
-            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_INFO)
+            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }

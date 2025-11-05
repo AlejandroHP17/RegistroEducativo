@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.su
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestStudentJobs
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
@@ -20,7 +20,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
@@ -49,9 +49,9 @@ class RegisterAssignmentViewModel(
 
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterAssignmentUiState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelRegisterAssignmentUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelRegisterAssignmentStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelRegisterAssignmentStateUI> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelRegisterAssignmentDataState())
     /** The data state for the screen. */
@@ -92,7 +92,7 @@ class RegisterAssignmentViewModel(
                 }
 
                 else -> {
-                    logs(result.toString())
+                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR
@@ -108,7 +108,7 @@ class RegisterAssignmentViewModel(
      *
      * @param name The new name.
      */
-    fun onChangeName(name: String) {
+    fun onNameChanged(name: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dataState.update {
                 it.copy(
@@ -123,7 +123,7 @@ class RegisterAssignmentViewModel(
      *
      * @param date The new date.
      */
-    fun onChangeDate(date: String) {
+    fun onDateChanged(date: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dialogState.update {
                 it.copy(
@@ -278,7 +278,7 @@ class RegisterAssignmentViewModel(
             }
 
             else -> {
-                logs(result.toString())
+                logInfo(result.toString())
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR

@@ -25,7 +25,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.to
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterSubjectUIState(
+data class ModelRegisterSubjectStateUI(
     val showControl: Boolean = false,
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val read: Boolean = false,

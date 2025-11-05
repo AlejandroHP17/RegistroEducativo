@@ -11,7 +11,6 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.NetworkException
-import com.mx.liftechnology.data.util.ResultService
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -27,7 +26,7 @@ fun interface RegisterUserRepository{
    * Ejecuta la petición de registro de usuario.
    *
    * @param request Los datos de la petición de registro.
-   * @return Un [ResultService] que indica el resultado de la operación.
+   * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeRegisterUser(request: RequestRegisterUser)
   : ModelResult<List<String?>, NetworkError>
@@ -41,7 +40,7 @@ fun interface RegisterUserRepository{
  * @author Pelkidev
  * @version 1.0.0
  */
-class RegisterUserRepositoryImp(
+class RegisterUserRepositoryImpl(
     private val registerUserApiCall: RegisterUserApiCall
 ) : RegisterUserRepository {
 

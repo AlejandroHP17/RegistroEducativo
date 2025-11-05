@@ -32,7 +32,7 @@ class GetStudentRepositoryTest {
      */
     @Before
     fun setUp() {
-        getStudentRepository = GetStudentRepositoryImp(getListStudentApiCall)
+        getStudentRepository = GetStudentRepositoryImpl(getListStudentApiCall)
     }
 
     /**

@@ -7,7 +7,7 @@ package com.mx.liftechnology.domain.model.generic
 
 /**
  * Clase sellada que representa el estado de una operación, que puede ser un éxito o varios tipos de errores.
- * Esta clase genérica se utiliza para manejar las respuestas de los casos de uso y repositorios.
+ * Esta clase genérica se utiliza para manejar las respuestas de los casos de uso y repositorios en la capa de dominio.
  *
  * @param S El tipo de datos devuelto en una operación exitosa.
  * @param E El tipo de datos devuelto en una operación fallida.
@@ -15,12 +15,6 @@ package com.mx.liftechnology.domain.model.generic
  * @author Pelkidev
  * @version 1.0.0
  */
-sealed class ResultDomain<out S, out E: Error>
-
-data class Success<D>(val data: D) : ResultModel<D, Nothing>()
-data class Failure<E : Error>(val error: E) : ResultModel<Nothing, E>()
-
-
 sealed class ResultModel<out S, out E>
 
 /**

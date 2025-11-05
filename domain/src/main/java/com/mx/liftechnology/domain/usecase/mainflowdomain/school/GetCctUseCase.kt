@@ -7,9 +7,9 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
@@ -42,7 +42,7 @@ class GetCctUseCase(
         return runCatching { getCctRepository.executeGetCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
-                    is ResultSuccess -> {
+                    is DataSuccessResult -> {
                         val response = ModelResultSchoolDomain(
                             buildLogicSpinner(result.data),
                             result.data
@@ -51,7 +51,7 @@ class GetCctUseCase(
                         SuccessResult(response)
                     }
 
-                    is ResultError -> {
+                    is DataErrorResult -> {
                         handleResponseCompose(result.error)
                     }
                 }
@@ -63,15 +63,15 @@ class GetCctUseCase(
     /**
      * Maneja las respuestas de error del repositorio de CCT.
      *
-     * @param error El objeto [FailureService] que representa el error.
+     * @param error El objeto [NetworkError] que representa el error.
      * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponseCompose(error: FailureService): ResultModel<ModelResultSchoolDomain?, String> {
+    private fun handleResponseCompose(error: NetworkError): ResultModel<ModelResultSchoolDomain?, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Unauthorized -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            is FailureService.NotFound -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
+            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
+            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }

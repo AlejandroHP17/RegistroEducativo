@@ -2,13 +2,13 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.su
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListSubjectDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListSubjectUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListSubjectStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +28,9 @@ class ListSubjectViewModel(
     private val getListSubjectUseCase: GetListSubjectUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelListSubjectUiState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelListSubjectUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelListSubjectStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelListSubjectStateUI> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelListSubjectDataState())
     /** The data state for the screen. */
@@ -52,7 +52,7 @@ class ListSubjectViewModel(
                     ) }
                 }
                 else -> {
-                    logs(result.toString())
+                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,

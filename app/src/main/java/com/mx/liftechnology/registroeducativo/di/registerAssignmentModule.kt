@@ -5,13 +5,13 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.GetPercentSubjectIdApi
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterJobStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListAssignmentApiCall
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetListAssignmentRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPercentSubjectRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterListAssignmentRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
@@ -58,28 +58,28 @@ val registerAssignmentModule = module {
     /**
      * Provides a singleton instance of [GetPercentSubjectRepository].
      */
-    singleOf(::GetPercentSubjectRepositoryImp) {
+    singleOf(::GetPercentSubjectRepositoryImpl) {
         bind<GetPercentSubjectRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterListAssignmentRepository].
      */
-    singleOf(::RegisterListAssignmentRepositoryImp) {
+    singleOf(::RegisterListAssignmentRepositoryImpl) {
         bind<RegisterListAssignmentRepository>()
     }
 
     /**
      * Provides a singleton instance of [GetListAssignmentRepository].
      */
-    singleOf(::GetListAssignmentRepositoryImp) {
+    singleOf(::GetListAssignmentRepositoryImpl) {
         bind<GetListAssignmentRepository>()
     }
 
     /**
      * Provides a singleton instance of [RegisterAssignmentRepository].
      */
-    singleOf(::RegisterAssignmentRepositoryImp) {
+    singleOf(::RegisterAssignmentRepositoryImpl) {
         bind<RegisterAssignmentRepository>()
     }
 

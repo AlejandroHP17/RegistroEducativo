@@ -3,9 +3,9 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListPartialApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListPartialApiCall
 import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepository
-import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepositoryImp
+import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.SavePartialUseCase
@@ -40,13 +40,13 @@ val crudPartialModule = module {
     /**
      * Provides a singleton instance of [RegisterListPartialRepository].
      */
-    singleOf(::RegisterListPartialRepositoryImp){
+    singleOf(::RegisterListPartialRepositoryImpl){
         bind<RegisterListPartialRepository>()
     }
     /**
      * Provides a singleton instance of [GetListPartialRepository].
      */
-    singleOf(::GetListPartialRepositoryImp){
+    singleOf(::GetListPartialRepositoryImpl){
         bind<GetListPartialRepository>()
     }
 

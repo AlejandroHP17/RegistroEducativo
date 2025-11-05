@@ -14,7 +14,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelListSubjectUiState(
+data class ModelListSubjectStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
 )

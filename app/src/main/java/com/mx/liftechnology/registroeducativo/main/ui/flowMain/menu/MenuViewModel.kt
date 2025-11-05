@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
@@ -98,7 +98,7 @@ class MenuViewModel(
                 }
 
                 else -> {
-                    logs(state.toString())
+                    logInfo(state.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

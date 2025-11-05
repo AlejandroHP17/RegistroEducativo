@@ -7,7 +7,7 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,9 +27,9 @@ class ListStudentViewModel(
     private val getListStudentUseCase: GetListStudentUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelListStudentUiState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelListStudentUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelListStudentStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelListStudentStateUI> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelListStudentDataState())
     /** The data state for the screen. */

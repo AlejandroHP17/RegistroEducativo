@@ -31,7 +31,7 @@ class GetListAssignmentRepositoryTest {
      */
     @Before
     fun setUp() {
-        getListAssignmentRepository = GetListAssignmentRepositoryImp(getListAssignmentApiCall)
+        getListAssignmentRepository = GetListAssignmentRepositoryImpl(getListAssignmentApiCall)
     }
 
     /**

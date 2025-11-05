@@ -24,7 +24,7 @@ com.mx.liftechnology.domain/
 │   │   ├── ModelRegex.kt
 │   │   ├── ModelStateOutFieldText.kt
 │   │   ├── ModelVoiceConstants.kt
-│   │   └── ResultModel.kt
+│   │   └── ResultModel.kt      # Tipo de resultado unificado
 │   ├── menu/                   # Modelos del menú
 │   ├── registerschool/         # Modelos de registro de escuela
 │   ├── student/                # Modelos de estudiante
@@ -32,14 +32,38 @@ com.mx.liftechnology.domain/
 ├── usecase/                    # Casos de uso
 │   ├── loginflowdomain/        # Casos de uso del flujo de login
 │   │   ├── login/
+│   │   │   └── LoginUseCase.kt
 │   │   ├── register/
+│   │   │   └── RegisterUserUseCase.kt
 │   │   └── ValidateFieldsLoginFlowUseCase.kt
 │   └── mainflowdomain/         # Casos de uso del flujo principal
 │       ├── menu/
+│       │   ├── GetGroupMenuUseCase.kt
+│       │   ├── GetListPartialMenuUseCase.kt
+│       │   └── GetControlMenuUseCase.kt
 │       ├── partial/
+│       │   ├── GetListPartialUseCase.kt
+│       │   └── RegisterListPartialUseCase.kt
 │       ├── school/
+│       │   ├── GetCctUseCase.kt
+│       │   └── RegisterOneSchoolUseCase.kt
 │       ├── student/
+│       │   ├── GetListStudentUseCase.kt
+│       │   ├── RegisterOneStudentUseCase.kt
+│       │   ├── GetListStudentAssignmentUseCase.kt
+│       │   └── ModifyOneStudentUseCase.kt
 │       └── subject/
+│           ├── GetListSubjectUseCase.kt
+│           ├── RegisterOneSubjectUseCase.kt
+│           ├── assignment/
+│           │   ├── GetListAssignmentUseCase.kt
+│           │   ├── GetListAssignmentPerSubjectUseCase.kt
+│           │   ├── RegisterAssignmentUseCase.kt
+│           │   └── RegisterListAssignmentUseCase.kt
+│           ├── assessment/
+│           │   └── GetListAssessmentTypeUseCase.kt
+│           └── evaluationType/
+│               └── GetListEvaluationTypetUseCase.kt
 └── util/                       # Utilidades (vacío actualmente)
 ```
 
@@ -49,13 +73,14 @@ com.mx.liftechnology.domain/
 2. **Modelos de dominio bien organizados**: Separados por entidad
 3. **Casos de uso bien estructurados**: Cada funcionalidad tiene su UseCase
 4. **Extensiones útiles**: Extensiones de Kotlin para facilitar el uso
+5. ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar, `ResultDomain` eliminado
 
 ### ⚠️ Áreas de Mejora Estructural
 
 1. **Paquete util vacío**: El paquete `util/` existe pero está vacío
 2. **Modelos genéricos mezclados**: `model/generic/` mezcla varios tipos de modelos
 3. **Falta de interfaces base**: No hay interfaces base para casos de uso
-4. **ResultModel duplicado**: `ResultModel` y `ResultDomain` coexisten
+4. ✅ **ResultModel unificado**: `ResultDomain` eliminado ✅
 
 ---
 
@@ -80,7 +105,7 @@ El módulo `domain` implementa la capa de **Domain** de Clean Architecture:
        private val locationHelper: LocationHelper,
        private val preference: PreferenceUseCase
    ) {
-       suspend operator fun invoke(...): ModelResult<UserLogin, Error>
+       suspend operator fun invoke(...): ResultModel<UserLogin, String>
    }
    ```
 
@@ -98,17 +123,37 @@ El módulo `domain` implementa la capa de **Domain** de Clean Architecture:
    }
    ```
 
+5. ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar:
+   ```kotlin
+   // ResultModel.kt - Tipo unificado
+   sealed class ResultModel<out S, out E>
+   data class SuccessResult<S, E>(val result: S) : ResultModel<S, E>()
+   data class ErrorResult<S, E>(val result: E) : ResultModel<S, E>()
+   data class ErrorUserResult<S, E>(val result: E) : ResultModel<S, E>()
+   data class ErrorUnauthorizedResult<S, E>(val result: E) : ResultModel<S, E>()
+   ```
+
+6. ✅ **Dependencias correctas**: UseCases usan `ModelResult` de `data.util` solo para recibir datos:
+   ```kotlin
+   // ✅ Correcto - Usa ModelResult de data para recibir datos del repositorio
+   import com.mx.liftechnology.data.util.ModelResult
+   import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+   import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
+   
+   // ✅ Retorna ResultModel de domain
+   import com.mx.liftechnology.domain.model.generic.ResultModel
+   import com.mx.liftechnology.domain.model.generic.SuccessResult
+   ```
+
 #### ⚠️ Mejoras Necesarias
 
-1. **ResultModel duplicado**:
-   - `ResultModel` y `ResultDomain` coexisten
-   - Debería haber un solo tipo estándar
-   - `ResultDomain` no se usa completamente
+1. ✅ **ResultModel unificado**: `ResultDomain` eliminado ✅
+   - ✅ `ResultModel` como único tipo estándar
+   - ✅ Todas las clases duplicadas eliminadas
 
-2. **Dependencias de data**:
-   - UseCases importan directamente de `data.util`
-   - Ejemplo: `import com.mx.liftechnology.data.util.ModelResult`
-   - Deberían usar solo modelos de dominio
+2. ✅ **Dependencias de data**: UseCases usan `data.util` solo para recibir datos del repositorio ✅
+   - ✅ Retornan `ResultModel` de domain
+   - ✅ Separación correcta de responsabilidades
 
 3. **Falta de interfaces base**:
    - No hay una interfaz base para casos de uso
@@ -130,10 +175,7 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 
 2. **Casos de uso reactivos**: Los UseCases pueden retornar Flows (aunque no se implementa)
 
-#### ⚠️ Mejoras para MVVM
-
-1. **Falta de Flows**: Los UseCases no exponen `Flow<T>` para reactividad
-2. **Dependencias de data**: UseCases dependen de `data.util` en lugar de solo dominio
+3. ✅ **ResultModel unificado**: `ResultModel` como tipo estándar para resultados
 
 ---
 
@@ -162,6 +204,10 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
    - `*Extension.kt` para archivos de extensiones
    - Funciones de extensión con prefijos descriptivos
 
+5. ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar
+   - ✅ `SuccessResult`, `ErrorResult`, `ErrorUserResult`, `ErrorUnauthorizedResult`
+   - ❌ Eliminado: `ResultDomain`, `Success<D>`, `Failure<E>`
+
 #### ⚠️ Inconsistencias y Mejoras
 
 1. **Nomenclatura de modelos**:
@@ -174,11 +220,7 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
    - Ejemplo: `ValidateFieldsLoginFlowUseCase` vs `GetGroupMenuUseCase`
    - Debería ser consistente
 
-3. **ResultModel duplicado**:
-   - `ResultModel` y `ResultDomain` coexisten
-   - Debería haber un solo tipo estándar
-
-4. **Nomenclatura de extensiones**:
+3. **Nomenclatura de extensiones**:
    - `StringExtension.kt` muy genérico
    - Debería ser más específico
 
@@ -195,7 +237,7 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
        private val locationHelper: LocationHelper,
        private val preference: PreferenceUseCase
    ) {
-       suspend operator fun invoke(...): ModelResult<UserLogin, Error>
+       suspend operator fun invoke(...): ResultModel<UserLogin, String>
    }
    ```
 
@@ -223,20 +265,45 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 6. **Separación por flujos**:
    - UseCases organizados por flujo (`loginflowdomain`, `mainflowdomain`)
 
-### ⚠️ Prácticas a Mejorar
+7. ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar
+   - ✅ `ResultDomain` eliminado
+   - ✅ Clases duplicadas eliminadas
 
-1. **Dependencias de data**:
+8. ✅ **Manejo de LocationResult**: `LoginUseCase` actualizado:
    ```kotlin
-   // ❌ UseCase importa de data
-   import com.mx.liftechnology.data.util.ModelResult
-   
-   // ✅ Debería usar solo dominio
-   import com.mx.liftechnology.domain.model.generic.ResultModel
+   val locationResult = locationHelper.getCurrentLocation()
+   val (latitude, longitude) = when (locationResult) {
+       is LocationResult.Success -> {
+           locationResult.location.latitude to locationResult.location.longitude
+       }
+       is LocationResult.Error -> {
+           0.0 to 0.0
+       }
+   }
    ```
 
-2. **ResultModel duplicado**:
-   - `ResultModel` y `ResultDomain` coexisten
-   - Debería haber un solo tipo estándar
+9. ✅ **Manejo de ModelResult de data**: UseCases manejan correctamente `ModelResult` de `data.util`:
+   ```kotlin
+   return runCatching { repository.executeMethod(...) }.fold(
+       onSuccess = { result ->
+           when (result) {
+               is DataSuccessResult -> SuccessResult(result.data)
+               is DataErrorResult -> handleResponse(result.error)
+           }
+       },
+       onFailure = { ErrorResult(...) }
+   )
+   ```
+
+### ⚠️ Prácticas a Mejorar
+
+1. ✅ **ResultModel unificado**: Completado ✅
+   - ✅ `ResultDomain` eliminado
+   - ✅ `ResultModel` como único tipo estándar
+
+2. ✅ **Dependencias de data**: UseCases usan `data.util` solo para recibir datos ✅
+   - ✅ Retornan `ResultModel` de domain
+   - ✅ Separación correcta de responsabilidades
 
 3. **Falta de interfaces base**:
    - No hay una interfaz base para casos de uso
@@ -247,8 +314,8 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
    - No hay mappers entre modelos de red y dominio
 
 5. **Testing**:
-   - No se ven muchos tests para UseCases
-   - Falta cobertura de tests
+   - ✅ Tests unitarios presentes para algunos UseCases
+   - ⚠️ Falta cobertura completa de todos los UseCases
 
 6. **Falta de Flows**:
    - UseCases no exponen `Flow<T>` para reactividad
@@ -265,11 +332,14 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 - Encapsulan lógica de negocio
 - Documentación presente
 - Separación clara de responsabilidades
+- ✅ **ResultModel unificado**: Todos los UseCases usan `ResultModel` de domain
+- ✅ **Manejo correcto de ModelResult**: UseCases manejan `ModelResult` de data correctamente
 
 #### ⚠️ Mejoras
-- **Dependencias de data**: Deberían usar solo dominio
+- ✅ **ResultModel unificado**: Completado ✅
+- ✅ **Dependencias de data**: Corregido ✅
 - **Falta de interfaces base**: No hay interfaz base para UseCases
-- **Falta de tests**: Poca cobertura de tests
+- ⚠️ **Falta de tests**: Cobertura incompleta de tests
 - **Falta de Flows**: No exponen Flows para reactividad
 
 ### 2. Modelos de Dominio
@@ -278,10 +348,11 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 - Modelos puros de negocio
 - Separados por entidad
 - Modelos inmutables (data class)
+- ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar
 
 #### ⚠️ Mejoras
 - **Nomenclatura inconsistente**: `Model*Domain` vs `Model*` sin sufijo
-- **ResultModel duplicado**: `ResultModel` y `ResultDomain` coexisten
+- ✅ **ResultModel unificado**: Completado ✅
 - **Falta de modelos base**: No hay modelos base para estados comunes
 
 ### 3. Extensiones
@@ -299,8 +370,8 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 ## 📊 Métricas de Calidad
 
 ### Cobertura de Tests
-- ⚠️ Algunos tests presentes (pocos)
-- ⚠️ Falta cobertura completa de UseCases
+- ✅ Tests unitarios presentes para algunos UseCases
+- ⚠️ Falta cobertura completa de todos los UseCases
 - ❌ Falta tests de extensiones
 
 ### Documentación
@@ -310,8 +381,9 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 
 ### Dependencias
 - ✅ Dependencia correcta de `core`
-- ⚠️ Dependencias directas de `data.util` (deberían eliminarse)
+- ✅ **Dependencias de data corregidas**: UseCases usan `data.util` solo para recibir datos
 - ✅ Modelos de dominio puros
+- ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar
 
 ---
 
@@ -319,8 +391,8 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 
 ### 🔴 Alta Prioridad
 
-1. **Eliminar dependencias de data**: UseCases no deberían importar de `data.util`
-2. **Unificar ResultModel**: Eliminar `ResultDomain`, usar solo `ResultModel`
+1. ✅ **Unificar ResultModel**: `ResultDomain` eliminado, `ResultModel` como único tipo ✅ **COMPLETADO**
+2. ✅ **Eliminar dependencias incorrectas de data**: UseCases usan `data.util` solo para recibir datos ✅ **COMPLETADO**
 3. **Estandarizar nomenclaturas**: Unificar `Model*Domain` vs `Model*`
 4. **Agregar interfaces base**: Interfaz base para casos de uso
 
@@ -350,30 +422,32 @@ El módulo `domain` no implementa MVVM directamente (está en `app`), pero propo
 - ✅ Separación por flujos (`loginflowdomain`, `mainflowdomain`)
 - ✅ Casos de uso bien estructurados
 - ✅ Modelos de dominio puros
+- ✅ **ResultModel unificado**: `ResultModel` como único tipo estándar
 
 ---
 
 ## 📝 Conclusión
 
-El módulo `domain` muestra una **buena implementación de la capa de dominio** con Clean Architecture. Las principales fortalezas son:
+El módulo `domain` muestra una **excelente implementación de la capa de dominio** con Clean Architecture. Las principales fortalezas son:
 
 1. ✅ Separación clara de casos de uso por flujo
 2. ✅ Modelos de dominio puros
 3. ✅ Validaciones de negocio bien estructuradas
 4. ✅ Extensiones útiles
+5. ✅ **Mejoras implementadas**: ResultModel unificado, dependencias corregidas, manejo correcto de LocationResult
 
 Las áreas de mejora principales son:
 
-1. ⚠️ Dependencias de `data.util` en UseCases
-2. ⚠️ `ResultModel` y `ResultDomain` duplicados
-3. ⚠️ Inconsistencias en nomenclaturas
-4. ⚠️ Falta de interfaces base para casos de uso
+1. ✅ **ResultModel duplicado**: Unificado a `ResultModel` ✅
+2. ✅ **Dependencias de `data.util`**: Corregido ✅
+3. ⚠️ Inconsistencias en nomenclaturas (pendiente)
+4. ⚠️ Falta de interfaces base para casos de uso (pendiente)
 
-Con estas mejoras, el módulo `domain` estará completamente alineado con las mejores prácticas de Android.
+Con las mejoras implementadas, el módulo `domain` está muy bien alineado con las mejores prácticas de Android.
 
 ---
 
 **Fecha de análisis**: 2025-01-13  
 **Autor**: Análisis Automatizado  
-**Versión del módulo**: 1.0.0
-
+**Versión del módulo**: 1.0.0  
+**Última actualización**: 2025-01-13

@@ -3,9 +3,9 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseStudentJobs
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.subject.assignment.RegisterAssignmentRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import io.mockk.coEvery
@@ -43,7 +43,7 @@ class RegisterAssignmentUseCaseTest {
     fun `invoke con datos validos debe devolver SuccessState`() = runBlocking {
         // Preparamos el mock
         val mockResponse = listOf(ResponseStudentJobs("2024-01-01", 1, "Éxito"))
-        coEvery { registerAssignmentRepository.RegisterAssignment(any()) } returns ResultSuccess(mockResponse)
+        coEvery { registerAssignmentRepository.executeRegisterAssignment(any()) } returns DataSuccessResult(mockResponse)
 
         // Ejecutamos el caso de uso
         val result = registerAssignmentUseCase.invoke("Test Job", 1, "2024-01-01", emptyList())
@@ -58,7 +58,7 @@ class RegisterAssignmentUseCaseTest {
     @Test
     fun `invoke con error del repositorio debe devolver ErrorState`() = runBlocking {
         // Preparamos el mock
-        coEvery { registerAssignmentRepository.RegisterAssignment(any()) } returns ResultError(FailureService.ServerError)
+        coEvery { registerAssignmentRepository.executeRegisterAssignment(any()) } returns DataErrorResult(NetworkError.SERVER_ERROR)
 
         // Ejecutamos el caso de uso
         val result = registerAssignmentUseCase.invoke("Test Job", 1, "2024-01-01", emptyList())

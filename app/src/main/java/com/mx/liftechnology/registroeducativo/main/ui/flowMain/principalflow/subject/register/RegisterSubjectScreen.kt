@@ -18,10 +18,10 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectStateUI
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextComplexGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -66,7 +66,7 @@ fun RegisterSubjectScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logs("Screen subject")
+        logInfo("Screen subject")
         val (header, body, column, action) = createRefs()
 
         Column(
@@ -142,7 +142,7 @@ private fun HeaderRegisterSubject(
  */
 @Composable
 private fun BodyRegisterSubject(
-    uiState: ModelRegisterSubjectUIState,
+    uiState: ModelRegisterSubjectStateUI,
     onSubjectChanged: (String) -> Unit,
     onOptionsChanged: (String) -> Unit,
 ) {
@@ -193,7 +193,7 @@ private fun BodyRegisterSubject(
  */
 @Composable
 private fun ColumnRegisterSubject(
-    uiState: ModelRegisterSubjectUIState,
+    uiState: ModelRegisterSubjectStateUI,
     onNameChange: (Pair<ResponseGetListAssessmentType?, Int>) -> Unit,
     onPercentChange: (Pair<String, Int>) -> Unit,
 ) {

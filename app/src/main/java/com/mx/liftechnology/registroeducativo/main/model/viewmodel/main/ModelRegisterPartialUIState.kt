@@ -16,7 +16,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterPartialUIState(
+data class ModelRegisterPartialStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val isAvailable: Boolean = true,
     val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),

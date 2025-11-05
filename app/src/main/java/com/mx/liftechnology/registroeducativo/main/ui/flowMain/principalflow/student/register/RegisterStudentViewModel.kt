@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.st
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
@@ -16,16 +16,16 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentStateUI
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -43,10 +43,10 @@ class RegisterStudentViewModel(
     private val voiceRecognitionManager: VoiceRecognitionManager
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterStudentUiState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelRegisterStudentUiState> = _uiState.asStateFlow()
-    private val myValue: ModelRegisterStudentUiState
+    private val _uiState = MutableStateFlow(ModelRegisterStudentStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelRegisterStudentStateUI> = _uiState.asStateFlow()
+    private val myValue: ModelRegisterStudentStateUI
         get() = _uiState.value
 
     private var isListening = true
@@ -55,18 +55,18 @@ class RegisterStudentViewModel(
         // Observa los resultados del reconocimiento de voz usando StateFlow
         voiceRecognitionManager.resultsStateFlow
             .onEach { results ->
-                logs(results.toString())
+                logInfo(results.toString())
                 validateDataRecord(results)
             }
             .launchIn(viewModelScope)
     }
 
     /**
-     * Called when the name input changes.
+     * Se invoca cuando el valor del campo de nombre cambia.
      *
-     * @param name The new name value.
+     * @param name El nuevo valor del nombre.
      */
-    fun onChangeName(name: String) {
+    fun onNameChanged(name: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
                 name = name.stringToModelStateOutFieldText()
@@ -75,11 +75,11 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Called when the last name input changes.
+     * Se invoca cuando el valor del campo de apellido paterno cambia.
      *
-     * @param lastName The new last name value.
+     * @param lastName El nuevo valor del apellido paterno.
      */
-    fun onChangeLastName(lastName: String) {
+    fun onLastNameChanged(lastName: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
                 lastName = lastName.stringToModelStateOutFieldText()
@@ -88,11 +88,11 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Called when the second last name input changes.
+     * Se invoca cuando el valor del campo de apellido materno cambia.
      *
-     * @param secondLastName The new second last name value.
+     * @param secondLastName El nuevo valor del apellido materno.
      */
-    fun onChangeSecondLastName(secondLastName: String) {
+    fun onSecondLastNameChanged(secondLastName: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
                 secondLastName = secondLastName.stringToModelStateOutFieldText()
@@ -101,11 +101,11 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Called when the CURP input changes.
+     * Se invoca cuando el valor del campo de CURP cambia.
      *
-     * @param curp The new CURP value.
+     * @param curp El nuevo valor de la CURP.
      */
-    fun onChangeCurp(curp: String) {
+    fun onCurpChanged(curp: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             validateCurpWithBirthday(curp)
             _uiState.update { it.copy(
@@ -126,7 +126,7 @@ class RegisterStudentViewModel(
                 val fullYear = if (year <= 29) 2000 + year else 1900 + year
 
                 val localDate = LocalDate.of(fullYear, month, day)
-                onChangeBirthday( localDate.toString())
+                onBirthdayChanged(localDate.toString())
             } catch (_: Exception) {
                 //Nothing
             }
@@ -134,11 +134,11 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Called when the birthday input changes.
+     * Se invoca cuando el valor del campo de fecha de nacimiento cambia.
      *
-     * @param birthday The new birthday value.
+     * @param birthday El nuevo valor de la fecha de nacimiento.
      */
-    fun onChangeBirthday(birthday: String) {
+    fun onBirthdayChanged(birthday: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
                 birthday = birthday.stringToModelStateOutFieldText()
@@ -147,11 +147,11 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Called when the phone number input changes.
+     * Se invoca cuando el valor del campo de número de teléfono cambia.
      *
-     * @param phoneNumber The new phone number value.
+     * @param phoneNumber El nuevo valor del número de teléfono.
      */
-    fun onChangePhoneNUmber(phoneNumber: String) {
+    fun onPhoneNumberChanged(phoneNumber: String) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(
                 phoneNumber = phoneNumber.stringToModelStateOutFieldText()
@@ -226,7 +226,7 @@ class RegisterStudentViewModel(
                 ) }
             }
             else -> {
-                logs(result.toString())
+                logInfo(result.toString())
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.ERROR
                 ) }
@@ -283,7 +283,7 @@ class RegisterStudentViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
             result?.let { studentData ->
-                logs(studentData.toString())
+                logInfo(studentData.toString())
                 _uiState.update { currentState ->
                     currentState.copy(
                         name = studentData[ModelVoiceConstants.NAME].stringToModelStateOutFieldText(),

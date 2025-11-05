@@ -7,11 +7,11 @@ package com.mx.liftechnology.data.repository.flowMain.subject.evaluationtype
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListEvaluationTypeApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListEvaluationType
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -26,9 +26,9 @@ fun interface GetListEvaluationTypeRepository {
      * Ejecuta la petición para obtener la lista de tipos de evaluación.
      *
      * @param request Los datos de la petición.
-     * @return Un [ResultService] que indica el resultado de la operación.
+     * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListEvaluationType( request: RequestGetListEvaluationType) : ResultService<List<String>?, FailureService>
+    suspend fun executeGetListEvaluationType( request: RequestGetListEvaluationType) : ModelResult<List<String>?, NetworkError>
 }
 
 /**
@@ -39,19 +39,24 @@ fun interface GetListEvaluationTypeRepository {
  * @author Pelkidev
  * @version 1.0.0
  */
-class GetListEvaluationTypeRepositoryImp (
+class GetListEvaluationTypeRepositoryImpl (
     private var getListEvaluationTypeApiCall : GetListEvaluationTypeApiCall
 ): GetListEvaluationTypeRepository{
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListEvaluationType(request: RequestGetListEvaluationType): ResultService<List<String>?, FailureService> {
+    override suspend fun executeGetListEvaluationType(request: RequestGetListEvaluationType): ModelResult<List<String>?, NetworkError> {
         return try {
             val response = getListEvaluationTypeApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    SuccessResult(it)
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
+            }
         } catch (e: Exception) {
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

@@ -32,7 +32,7 @@ class GetListAssessmentTypeRepositoryTest {
      */
     @Before
     fun setUp() {
-        getAssessmentTypeRepository = GetAssessmentTypeRepositoryImp(getListAssessmentTypeApiCall)
+        getAssessmentTypeRepository = GetAssessmentTypeRepositoryImpl(getListAssessmentTypeApiCall)
     }
 
     /**

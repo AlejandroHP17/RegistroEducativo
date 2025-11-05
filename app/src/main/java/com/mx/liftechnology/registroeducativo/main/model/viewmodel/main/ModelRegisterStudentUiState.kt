@@ -22,7 +22,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterStudentUiState(
+data class ModelRegisterStudentStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val name: ModelStateOutFieldText = ModelStateOutFieldText(),
     val lastName: ModelStateOutFieldText = ModelStateOutFieldText(),
@@ -46,7 +46,7 @@ data class ModelRegisterStudentUiState(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterStudentUiCallbacks(
+data class ModelRegisterStudentCallbacksUI(
     val onNameChanged: (String) -> Unit,
     val onLastNameChanged: (String) -> Unit,
     val onSecondLastNameChanged: (String) -> Unit,

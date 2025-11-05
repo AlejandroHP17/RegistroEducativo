@@ -31,7 +31,7 @@ class GetListEvaluationTypeRepositoryTest {
      */
     @Before
     fun setUp() {
-        getListEvaluationTypeRepository = GetListEvaluationTypeRepositoryImp(getListEvaluationTypeApiCall)
+        getListEvaluationTypeRepository = GetListEvaluationTypeRepositoryImpl(getListEvaluationTypeApiCall)
     }
 
     /**

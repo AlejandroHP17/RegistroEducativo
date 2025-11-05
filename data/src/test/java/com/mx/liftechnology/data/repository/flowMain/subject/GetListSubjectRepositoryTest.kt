@@ -32,7 +32,7 @@ class GetListSubjectRepositoryTest {
      */
     @Before
     fun setUp() {
-        getListSubjectRepository = GetListSubjectRepositoryImp(getListSubjectApiCall)
+        getListSubjectRepository = GetListSubjectRepositoryImpl(getListSubjectApiCall)
     }
 
     /**

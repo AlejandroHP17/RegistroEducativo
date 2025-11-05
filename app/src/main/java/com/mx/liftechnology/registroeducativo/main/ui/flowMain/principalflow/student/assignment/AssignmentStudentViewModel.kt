@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.st
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectS
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.toModelSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.toModelComplexCard
@@ -33,9 +33,9 @@ class AssignmentStudentViewModel (
     private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
     private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(ModelAssignmentUiState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelAssignmentUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelAssignmentStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelAssignmentStateUI> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ModelAssignmentDataState())
     /** The data state for the screen. */
@@ -59,7 +59,7 @@ class AssignmentStudentViewModel (
                 }
 
                 else -> {
-                    logs(result.toString())
+                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

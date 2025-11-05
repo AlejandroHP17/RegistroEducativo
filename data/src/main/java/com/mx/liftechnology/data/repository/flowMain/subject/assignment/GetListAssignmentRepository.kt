@@ -7,11 +7,11 @@ package com.mx.liftechnology.data.repository.flowMain.subject.assignment
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListAssignmentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListAssignment
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -26,9 +26,9 @@ fun interface GetListAssignmentRepository{
      * Ejecuta la petición para obtener la lista de asignaciones.
      *
      * @param request Los datos de la petición.
-     * @return Un [ResultService] que indica el resultado de la operación.
+     * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListAssignment(request : RequestGetListAssignment): ResultService<List<String>?, FailureService>
+    suspend fun executeGetListAssignment(request : RequestGetListAssignment): ModelResult<List<String>?, NetworkError>
 }
 
 /**
@@ -39,20 +39,25 @@ fun interface GetListAssignmentRepository{
  * @author Pelkidev
  * @version 1.0.0
  */
-class GetListAssignmentRepositoryImp(
+class GetListAssignmentRepositoryImpl(
     private val getListAssignmentApiCall: GetListAssignmentApiCall
 ): GetListAssignmentRepository {
 
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListAssignment(request: RequestGetListAssignment) : ResultService<List<String>?, FailureService>{
+    override suspend fun executeGetListAssignment(request: RequestGetListAssignment) : ModelResult<List<String>?, NetworkError>{
         return try{
             val response = getListAssignmentApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    SuccessResult(it)
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
+            }
         }catch (e:Exception){
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 

@@ -35,7 +35,7 @@ class LoginRepositoryTest {
      */
     @Before
     fun setUp() {
-        loginRepository = LoginRepositoryImp(loginApiCall)
+        loginRepository = LoginRepositoryImpl(loginApiCall)
     }
 
     /**

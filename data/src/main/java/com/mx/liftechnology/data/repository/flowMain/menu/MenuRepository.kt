@@ -8,12 +8,11 @@ package com.mx.liftechnology.data.repository.flowMain.menu
 import com.mx.liftechnology.core.network.apiCall.flowMain.GroupApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGroup
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.MessageError
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -28,11 +27,11 @@ fun interface MenuRepository{
      * Ejecuta la petición para obtener la lista de grupos.
      *
      * @param request Los datos de la petición.
-     * @return Un [ResultService] que indica el resultado de la operación.
+     * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeGetGroup(
         request: RequestGroup
-    ): ResultService<List<ResponseGroupTeacher>, FailureService>
+    ): ModelResult<List<ResponseGroupTeacher>, NetworkError>
 }
 
 /**
@@ -43,32 +42,27 @@ fun interface MenuRepository{
  * @author Pelkidev
  * @version 1.0.0
  */
-class MenuRepositoryImp(
+class MenuRepositoryImpl(
     private val groupApiCall: GroupApiCall
 ): MenuRepository {
 
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetGroup(request: RequestGroup): ResultService<List<ResponseGroupTeacher>, FailureService> {
+    override suspend fun executeGetGroup(request: RequestGroup): ModelResult<List<ResponseGroupTeacher>, NetworkError> {
         return try {
             val response = groupApiCall.callApi(request)
-            if (response.isSuccessful || response.body()?.data != null) {
+            if (response.isSuccessful && response.body()?.data != null) {
                 response.body()?.data?.let { res ->
                     val data = res.filterNotNull()
-                    if(data.isNotEmpty()) ResultSuccess(data)
-                    else {
-                        val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
-                        ResultError(ExceptionHandler.handleException(exception))
-                    }
-                } ?: run {
-                    val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
-                    ResultError(ExceptionHandler.handleException(exception))
-                }
+                    if(data.isNotEmpty()) SuccessResult(data)
+                    else ErrorResult(NetworkException.handleException(NullPointerException()))
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
             }
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

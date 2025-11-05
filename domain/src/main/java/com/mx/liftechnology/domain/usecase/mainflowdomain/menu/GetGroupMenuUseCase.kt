@@ -4,9 +4,9 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGroup
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
@@ -47,7 +47,7 @@ class GetGroupMenuUseCase(
         return runCatching { menuRepository.executeGetGroup(request) }.fold(
             onSuccess = { result ->
                 when (result) {
-                    is ResultSuccess -> {
+                    is DataSuccessResult -> {
                         val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
                         if (convertedResult.isNotEmpty()) {
                             SuccessResult(
@@ -61,7 +61,7 @@ class GetGroupMenuUseCase(
                         }
                     }
 
-                    is ResultError -> handleResponse(result.error)
+                    is DataErrorResult -> handleResponse(result.error)
                 }
             },
             onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN) }
@@ -117,19 +117,19 @@ class GetGroupMenuUseCase(
     /**
      * Maneja las respuestas de error del repositorio del menú.
      *
-     * @param error El objeto [FailureService] que representa el error.
+     * @param error El objeto [NetworkError] que representa el error.
      * @return Un [ResultModel] que representa el error específico.
      */
-    private fun handleResponse(error: FailureService): ResultModel<ModelInfoStudentGroupDomain, String> {
+    private fun handleResponse(error: NetworkError): ResultModel<ModelInfoStudentGroupDomain, String> {
         return when (error) {
-            is FailureService.BadRequest -> ErrorResult(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            is FailureService.Unauthorized -> {
+            NetworkError.BAD_REQUEST -> ErrorResult(ModelCodeError.ERROR_INCOMPLETE_DATA)
+            NetworkError.UNAUTHORIZED -> {
                 preference.cleanPreference()
                 ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
             }
 
-            is FailureService.NotFound -> ErrorResult(ModelCodeError.ERROR_DATA)
-            is FailureService.Timeout -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
+            NetworkError.NOT_FOUND -> ErrorResult(ModelCodeError.ERROR_DATA)
+            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
             else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
         }
     }

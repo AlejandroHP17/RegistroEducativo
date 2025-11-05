@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelAssignmentUiState(
+data class ModelAssignmentStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val subject: ModelFormatSubjectDomain? = null,
     val student: ModelStudentDomain? = null,

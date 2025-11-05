@@ -7,11 +7,11 @@ package com.mx.liftechnology.data.repository.flowMain.subject
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSubjectApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterSubject
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -26,10 +26,10 @@ fun interface RegisterSubjectRepository{
      * Ejecuta la petición de registro de una materia.
      *
      * @param request Los datos de la petición de registro.
-     * @return Un [ResultService] que indica el resultado de la operación.
+     * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeRegisterOneSubject(request : RequestRegisterSubject)
-    : ResultService<List<String?>?, FailureService>
+    : ModelResult<List<String?>?, NetworkError>
 }
 
 /**
@@ -40,7 +40,7 @@ fun interface RegisterSubjectRepository{
  * @author Pelkidev
  * @version 1.0.0
  */
-class RegisterSubjectRepositoryImp(
+class RegisterSubjectRepositoryImpl(
     private val registerSubjectApiCall: RegisterSubjectApiCall
 ) : RegisterSubjectRepository {
 
@@ -49,13 +49,18 @@ class RegisterSubjectRepositoryImp(
      */
     override suspend fun executeRegisterOneSubject(
         request : RequestRegisterSubject
-    ): ResultService<List<String?>?, FailureService> {
+    ): ModelResult<List<String?>?, NetworkError> {
         return try {
             val response = registerSubjectApiCall.callApi(request)
-            if (response.isSuccessful) ResultSuccess(response.body()?.data)
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    SuccessResult(it)
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
+            }
         } catch (e: Exception) {
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

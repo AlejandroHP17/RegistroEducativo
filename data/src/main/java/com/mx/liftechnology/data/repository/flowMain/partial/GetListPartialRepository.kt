@@ -8,12 +8,11 @@ package com.mx.liftechnology.data.repository.flowMain.partial
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListPartialApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPartial
-import com.mx.liftechnology.data.util.ExceptionHandler
-import com.mx.liftechnology.data.util.FailureService
-import com.mx.liftechnology.data.util.MessageError
-import com.mx.liftechnology.data.util.ResultError
-import com.mx.liftechnology.data.util.ResultService
-import com.mx.liftechnology.data.util.ResultSuccess
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 /**
@@ -28,11 +27,11 @@ fun interface GetListPartialRepository{
    * Ejecuta la petición para obtener la lista de parciales.
    *
    * @param request Los datos de la petición.
-   * @return Un [ResultService] que indica el resultado de la operación.
+   * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeGetListPartial(
       request : RequestGetPartial
-  ): ResultService<List<ResponseGetPartial?>?, FailureService>
+  ): ModelResult<List<ResponseGetPartial>, NetworkError>
 }
 
 /**
@@ -43,7 +42,7 @@ fun interface GetListPartialRepository{
  * @author Pelkidev
  * @version 1.0.0
  */
-class GetListPartialRepositoryImp(
+class GetListPartialRepositoryImpl(
     private val getListPartialApiCall: GetListPartialApiCall
 ) : GetListPartialRepository {
 
@@ -52,25 +51,20 @@ class GetListPartialRepositoryImp(
      */
     override suspend fun executeGetListPartial(
         request : RequestGetPartial
-    ): ResultService<List<ResponseGetPartial>, FailureService> {
+    ): ModelResult<List<ResponseGetPartial>, NetworkError> {
         return try {
             val response = getListPartialApiCall.callApi(request)
-            if (response.isSuccessful || response.body()?.data != null) {
+            if (response.isSuccessful && response.body()?.data != null) {
                 response.body()?.data?.let { res ->
                     val data = res.filterNotNull()
-                    if(data.isNotEmpty()) ResultSuccess(data)
-                    else {
-                        val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
-                        ResultError(ExceptionHandler.handleException(exception))
-                    }
-                } ?: run {
-                    val exception = NullPointerException(MessageError.UNEXPECTED_NULL_BODY_ERROR_MESSAGE)
-                    ResultError(ExceptionHandler.handleException(exception))
-                }
+                    if(data.isNotEmpty()) SuccessResult(data)
+                    else ErrorResult(NetworkException.handleException(NullPointerException()))
+                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
             }
-            else ResultError(ExceptionHandler.handleException(HttpException(response)))
         } catch (e: Exception) {
-            ResultError(ExceptionHandler.handleException(e))
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

@@ -32,7 +32,7 @@ class GetPercentSubjectRepositoryTest {
      */
     @Before
     fun setUp() {
-        getPercentSubjectRepository = GetPercentSubjectRepositoryImp(getPercentSubjectIdApiCall)
+        getPercentSubjectRepository = GetPercentSubjectRepositoryImpl(getPercentSubjectIdApiCall)
     }
 
     /**

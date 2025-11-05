@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.su
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
-import com.mx.liftechnology.core.util.logs
+import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
@@ -15,7 +15,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectUIState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectStateUI
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,9 +36,9 @@ class RegisterSubjectViewModel(
     private val getListAssessmentTypeUseCase: GetListAssessmentTypeUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterSubjectUIState())
-    /** The UI state for the screen. */
-    val uiState: StateFlow<ModelRegisterSubjectUIState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ModelRegisterSubjectStateUI())
+    /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
+    val uiState: StateFlow<ModelRegisterSubjectStateUI> = _uiState.asStateFlow()
 
     /**
      * Called when the subject name changes.
@@ -197,7 +197,7 @@ class RegisterSubjectViewModel(
                 }
             }
             else -> {
-                logs(result.toString())
+                logInfo(result.toString())
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR
@@ -231,7 +231,7 @@ class RegisterSubjectViewModel(
                 }
 
                 else -> {
-                    logs(result.toString())
+                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             listWorkMethods = listOf(

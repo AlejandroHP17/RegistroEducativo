@@ -40,7 +40,7 @@ fun interface LoginRepository {
  * @author Pelkidev
  * @version 1.0.0
  */
-class LoginRepositoryImp(
+class LoginRepositoryImpl(
     private val loginApiCall: LoginApiCall,
 ) : LoginRepository {
 
