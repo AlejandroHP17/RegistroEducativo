@@ -6,6 +6,7 @@ import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCase
+import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListSubjectDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListSubjectStateUI
@@ -48,7 +49,7 @@ class ListSubjectViewModel(
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
                         subjectList = result.result,
-                        subjectListUI = result.result.convertModelCustomCard(),
+                        subjectListUI = DomainToUIMapper.mapSubjectListToCustomCard(result.result),
                     ) }
                 }
                 else -> {
@@ -61,16 +62,6 @@ class ListSubjectViewModel(
                 }
             }
         }
-    }
-
-    private fun List<ModelFormatSubjectDomain>?.convertModelCustomCard():List<ModelCustomCard>{
-        return this?.map {
-            ModelCustomCard(
-                id = it.subjectId.toString(),
-                numberList = "",
-                nameCard = "${it.name}"
-            )
-        }?: emptyList()
     }
 
     /**

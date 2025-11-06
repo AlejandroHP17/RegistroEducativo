@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
-import com.mx.liftechnology.data.util.convertToUI
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
@@ -126,7 +126,7 @@ class LoginViewModel(
             }
 
             is ErrorResult -> {
-                when(result.error.convertToUI()){
+                when(ErrorMapper.mapErrorToUI(result.error)){
                     UserError.SHOW_GENERIC_ERROR ->{
                         _uiState.update {
                             it.copy(

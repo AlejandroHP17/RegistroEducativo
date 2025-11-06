@@ -6,6 +6,7 @@ import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
@@ -50,7 +51,7 @@ class ListStudentViewModel(
                     _dataState.update {
                         it.copy(
                             studentList = result.result,
-                            studentListUI = result.result.convertModelCustomCard()
+                            studentListUI = DomainToUIMapper.mapStudentListToCustomCard(result.result)
                         )
                     }
                 }
@@ -59,22 +60,6 @@ class ListStudentViewModel(
                 }
             }
         }
-    }
-
-    private fun List<ModelStudentDomain>?.convertModelCustomCard(): List<ModelCustomCard> {
-        return this?.sortedWith(
-            compareBy(
-            { it.lastName ?: "" },
-            { it.secondLastName ?: "" },
-            { it.name ?: "" }
-        ))
-            ?.mapIndexed { index, student ->
-                ModelCustomCard(
-                    id = student.studentId ?: "",
-                    numberList = (index + 1).toString(),
-                    nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()
-                )
-            } ?: emptyList()
     }
 
     /**

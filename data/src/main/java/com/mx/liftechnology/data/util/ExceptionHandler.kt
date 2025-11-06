@@ -57,6 +57,7 @@ object NetworkException {
     fun handleException(exception: Throwable): NetworkError {
         return when (exception) {
             is java.net.UnknownHostException -> NetworkError.NO_INTERNET  // No hay conexión a Internet
+            is java.net.ConnectException -> NetworkError.NO_INTERNET  // No se puede establecer conexión con el servidor
             is java.net.SocketTimeoutException -> NetworkError.TIMEOUT // Timeout de conexión
             is retrofit2.HttpException -> {
                 when (exception.code()) {
@@ -64,7 +65,7 @@ object NetworkException {
                     401 -> NetworkError.UNAUTHORIZED
                     404 -> NetworkError.NOT_FOUND
                     429 -> NetworkError.TOO_MANY_REQUESTS
-                    500 -> NetworkError.TIMEOUT
+                    500 -> NetworkError.SERVER_ERROR
                     else -> NetworkError.UNKNOWN
                 }
             }

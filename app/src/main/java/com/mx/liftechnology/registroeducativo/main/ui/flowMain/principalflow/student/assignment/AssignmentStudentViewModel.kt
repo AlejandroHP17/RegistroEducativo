@@ -9,12 +9,11 @@ import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
+import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.toModelSubComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.toModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,7 +53,7 @@ class AssignmentStudentViewModel (
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
                 is SuccessResult -> {
-                    val convertData = subject?.toModelComplexCard()
+                    val convertData = DomainToUIMapper.mapSubjectToComplexCard(subject)
                    fillModel(result.result, convertData)
                 }
 
@@ -76,7 +75,7 @@ class AssignmentStudentViewModel (
             nameTitle = convertData?.nameTitle,
             isShowTitle = convertData?.isShowTitle ?: false,
             isExpandedTitle = convertData?.isExpandedTitle?: false,
-            list = result.toModelSubComplexCard(),
+            list = DomainToUIMapper.mapAssignmentListToSubComplexCard(result),
         )
         _dataState.update {
             it.copy(

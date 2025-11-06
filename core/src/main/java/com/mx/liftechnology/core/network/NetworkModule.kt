@@ -11,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 /**
  * Módulo de Koin para las dependencias relacionadas con la red, como Retrofit y OkHttpClient.
@@ -46,12 +47,21 @@ val networkModule = module {
     single { AuthInterceptor(get()) }
 
     /**
+     * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico de errores.
+     */
+    single { ConnectionErrorInterceptor() }
+
+    /**
      * Provee una instancia singleton de [OkHttpClient], configurado con los interceptores.
      */
     single {
         OkHttpClient.Builder()
             .addInterceptor(get<HttpLoggingInterceptor>())
+            .addInterceptor(get<ConnectionErrorInterceptor>())
             .addInterceptor(get<AuthInterceptor>())
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 
@@ -59,8 +69,10 @@ val networkModule = module {
      * Provee una instancia singleton de [Retrofit].
      */
     single {
+        val baseUrl = Environment.URL_BASE
+        timber.log.Timber.d("NetworkModule: Configurando Retrofit con URL base: $baseUrl")
         Retrofit.Builder()
-            .baseUrl(Environment.URL_BASE)
+            .baseUrl(baseUrl)
             .client(get())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

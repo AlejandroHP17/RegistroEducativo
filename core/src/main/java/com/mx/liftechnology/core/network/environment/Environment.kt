@@ -6,6 +6,7 @@
 package com.mx.liftechnology.core.network.environment
 
 import android.os.Build
+import timber.log.Timber
 
 /**
  * Objeto que contiene las constantes para los endpoints de la API y la URL base.
@@ -15,15 +16,28 @@ import android.os.Build
  * @version 1.0.0
  */
 object Environment {
-    private const val EMULATOR_BASE_URL = "http://3.17.67.71/api/v1/"
-    private const val DEVICE_BASE_URL = "http://3.17.67.71/api/v1/"
+    //private const val EMULATOR_BASE_URL = "http://3.17.67.71/api/v1/"
+    //private const val DEVICE_BASE_URL = "http://3.17.67.71/api/v1/"
+    // Para emulador: 10.0.2.2 es la dirección especial que apunta al localhost de la máquina host
+    private const val EMULATOR_BASE_URL = "http://10.0.2.2:8000/api/"
+    // Para dispositivo real: usar la IP de tu máquina en la red local
+    private const val DEVICE_BASE_URL = "http://192.168.100.94:8000/api/"
 
     /**
      * La URL base para la API.
      * Devuelve la URL apropiada según si la app se está ejecutando en un emulador o en un dispositivo real.
      */
     val URL_BASE: String
-        get() = if (isRunningOnEmulator()) EMULATOR_BASE_URL else DEVICE_BASE_URL
+        get() {
+            val isEmulator = isRunningOnEmulator()
+            val url = if (isEmulator) EMULATOR_BASE_URL else DEVICE_BASE_URL
+            Timber.d("Environment: isRunningOnEmulator: $isEmulator, URL_BASE: $url")
+            Timber.d("Environment: Build.FINGERPRINT: ${Build.FINGERPRINT}")
+            Timber.d("Environment: Build.MODEL: ${Build.MODEL}")
+            Timber.d("Environment: Build.MANUFACTURER: ${Build.MANUFACTURER}")
+            Timber.d("Environment: Build.PRODUCT: ${Build.PRODUCT}")
+            return url
+        }
 
     private fun isRunningOnEmulator(): Boolean {
         return (Build.FINGERPRINT.contains("generic") ||
@@ -35,8 +49,10 @@ object Environment {
     }
 
     /** Endpoints para el flujo de login. */
+    //const val END_POINT_LOGIN = "auth/login"
+    //const val END_POINT_REGISTER = "register/teacherRegister"
     const val END_POINT_LOGIN = "auth/login"
-    const val END_POINT_REGISTER = "register/teacherRegister"
+    const val END_POINT_REGISTER = "auth/register"
 
     /** Endpoints para el flujo de registro. */
     const val END_POINT_REGISTER_SCHOOL = "teacher/registerTeacherCycleGroup"
