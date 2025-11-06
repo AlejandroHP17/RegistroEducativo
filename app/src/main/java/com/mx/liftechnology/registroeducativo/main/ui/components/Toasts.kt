@@ -26,13 +26,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWarningToast
 import kotlinx.coroutines.delay
 
 /**
- * A composable that shows a custom animated toast message.
+ * Componente que muestra un toast personalizado animado.
+ * Se muestra por encima de toda la navegación y no interrumpe el flujo de la app.
  *
- * @param message The message to display.
- * @param isVisible Whether the toast is visible.
- * @param durationMillis The duration in milliseconds to show the toast.
- * @param typeToast The type of toast to show (e.g., success, error, warning, or informative).
- * @param onDismiss A lambda to be invoked when the toast is dismissed.
+ * @param message El mensaje a mostrar.
+ * @param isVisible Si el toast es visible.
+ * @param durationMillis La duración en milisegundos para mostrar el toast.
+ * @param typeToast El tipo de toast (SUCCESS, ERROR, WARNING, INFORMATIVE).
+ * @param onDismiss Lambda que se invoca cuando el toast se oculta.
  */
 @Composable
 fun ShowCustomAnimated(
@@ -49,7 +50,12 @@ fun ShowCustomAnimated(
         }
     }
 
-    Box() {
+    // Box externo con zIndex alto para asegurar que esté por encima de todo
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .zIndex(1000f) // zIndex alto para estar por encima de la navegación
+    ) {
         AnimatedVisibility(
             visible = isVisible,
             enter = fadeIn(),
@@ -58,7 +64,6 @@ fun ShowCustomAnimated(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .wrapContentHeight()
-                .zIndex(1f)
                 .statusBarsPadding()
                 .align(Alignment.TopCenter)
         ) {
@@ -66,22 +71,12 @@ fun ShowCustomAnimated(
                 modifier = Modifier
                     .background(
                         when (typeToast) {
-                            ModelStateTypeToastUI.SUCCESS -> {
-                                colorSuccessToast
-                            }
-
-                            ModelStateTypeToastUI.ERROR -> {
-                                colorErrorToast
-                            }
-
-                            ModelStateTypeToastUI.WARNING -> {
-                                colorWarningToast
-                            }
-
-                            ModelStateTypeToastUI.INFORMATIVE -> {
-                                colorInformativeToast
-                            }
-                        }, RoundedCornerShape(8.dp)
+                            ModelStateTypeToastUI.SUCCESS -> colorSuccessToast
+                            ModelStateTypeToastUI.ERROR -> colorErrorToast
+                            ModelStateTypeToastUI.WARNING -> colorWarningToast
+                            ModelStateTypeToastUI.INFORMATIVE -> colorInformativeToast
+                        },
+                        RoundedCornerShape(8.dp)
                     )
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 contentAlignment = Alignment.Center
@@ -90,5 +85,4 @@ fun ShowCustomAnimated(
             }
         }
     }
-
 }

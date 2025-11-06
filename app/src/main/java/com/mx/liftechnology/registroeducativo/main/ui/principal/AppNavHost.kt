@@ -174,17 +174,13 @@ fun AppNavHost(
             }
         }
 
+        // Toast global que se muestra por encima de toda la navegación
         ShowCustomAnimated(
             message = stringResource(id = uiState.controlToast.messageToast),
             isVisible = uiState.controlToast.showToast,
             typeToast = uiState.controlToast.typeToast,
             onDismiss = {
-                val control = ModelStateToastUI(
-                    messageToast = uiState.controlToast.messageToast,
-                    showToast = false,
-                    typeToast = uiState.controlToast.typeToast
-                )
-                sharedViewModel.modifyShowToast(control)
+                sharedViewModel.hideToast()
             }
         )
 

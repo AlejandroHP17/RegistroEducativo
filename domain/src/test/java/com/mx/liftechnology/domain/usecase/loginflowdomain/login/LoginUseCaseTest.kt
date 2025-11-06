@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.usecase.loginflowdomain.login
 
 import android.location.Location
 import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseLogin
-import com.mx.liftechnology.core.network.apiCall.flowLogin.UserLogin
+import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseUserData
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
@@ -47,7 +47,7 @@ class LoginUseCaseTest {
     fun `invoke con credenciales validas debe devolver SuccessState`() = runBlocking {
         // Preparamos los mocks
         val mockLocation = mockk<Location>(relaxed = true)
-        val mockUser = UserLogin("Test", "User", "", "test@test.com", 1, 1, null, "profesor")
+        val mockUser = ResponseUserData("Test", "User", "", "test@test.com", 1, 1, null, "profesor")
         val mockResponse = ResponseLogin("token", 3600, "Bearer", mockUser)
 
         coEvery { locationHelper.getCurrentLocation() } returns mockLocation

@@ -29,7 +29,7 @@ fun interface RegisterUserRepository{
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeRegisterUser(request: RequestRegisterUser)
-  : ModelResult<List<String?>, NetworkError>
+  : ModelResult<Boolean, NetworkError>
 }
 
 /**
@@ -52,12 +52,12 @@ class RegisterUserRepositoryImpl(
      */
     override suspend fun executeRegisterUser(
         request: RequestRegisterUser
-    ): ModelResult<List<String?>, NetworkError> {
+    ): ModelResult<Boolean, NetworkError> {
         return try {
             val response = registerUserApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    SuccessResult(it)
+                    SuccessResult(it.isActive)
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             }
             else  ErrorResult(NetworkException.handleException(HttpException(response)))

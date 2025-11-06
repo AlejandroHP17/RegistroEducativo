@@ -64,6 +64,7 @@ object NetworkException {
                     400 -> NetworkError.BAD_REQUEST
                     401 -> NetworkError.UNAUTHORIZED
                     404 -> NetworkError.NOT_FOUND
+                    409 -> NetworkError.CONFLICT
                     429 -> NetworkError.TOO_MANY_REQUESTS
                     500 -> NetworkError.SERVER_ERROR
                     else -> NetworkError.UNKNOWN

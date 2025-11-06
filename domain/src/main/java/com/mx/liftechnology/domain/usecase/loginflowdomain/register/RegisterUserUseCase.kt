@@ -35,7 +35,7 @@ class RegisterUserUseCase(
      * @param activationCode El código de activación para la cuenta.
      * @return Un [ResultModel] que representa el resultado del intento de registro.
      */
-    suspend operator fun invoke(email: String?, pass: String?, activationCode: String?): ModelResult<List<String?>, Error> {
+    suspend operator fun invoke(email: String?, pass: String?, activationCode: String?): ModelResult<Boolean, Error> {
         if(email.isNullOrEmpty() || pass.isNullOrEmpty() || activationCode.isNullOrEmpty()) return ErrorResult(
             LocalError.USER_INCOMPLETE_DATA
         )
@@ -49,7 +49,8 @@ class RegisterUserUseCase(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        SuccessResult(result.data)
+                        if(result.data) SuccessResult(true)
+                        else ErrorResult(NetworkError.UNKNOWN_REGISTER)
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)

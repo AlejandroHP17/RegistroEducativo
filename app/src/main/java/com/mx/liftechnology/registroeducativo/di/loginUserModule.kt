@@ -1,10 +1,14 @@
 package com.mx.liftechnology.registroeducativo.di
 
+import com.mx.liftechnology.core.network.apiCall.flowLogin.GetDataUserApiCall
 import com.mx.liftechnology.core.network.apiCall.flowLogin.LoginApiCall
+import com.mx.liftechnology.data.repository.flowLogin.login.GetDataUserRepository
+import com.mx.liftechnology.data.repository.flowLogin.login.GetDataUserRepositoryImpl
 import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
 import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepositoryImpl
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCaseImp
+import com.mx.liftechnology.domain.usecase.loginflowdomain.login.GetDataUserUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login.LoginViewModel
 import org.koin.core.module.dsl.bind
@@ -27,6 +31,11 @@ val loginUserModule = module {
     factory { get<Retrofit>().create(LoginApiCall::class.java) }
 
     /**
+     * Provides an instance of [GetDataUserApiCall].
+     */
+    factory { get<Retrofit>().create(GetDataUserApiCall::class.java) }
+
+    /**
      * Provides a singleton instance of [LoginRepository].
      */
     singleOf(::LoginRepositoryImpl) {
@@ -34,9 +43,21 @@ val loginUserModule = module {
     }
 
     /**
+     * Provides a singleton instance of [LoginRepository].
+     */
+    singleOf(::GetDataUserRepositoryImpl) {
+        bind<GetDataUserRepository>()
+    }
+
+    /**
      * Provides a singleton instance of [LoginUseCase].
      */
     singleOf(::LoginUseCase)
+
+    /**
+     * Provides a singleton instance of [GetDataUserUseCase].
+     */
+    singleOf(::GetDataUserUseCase)
 
     /**
      * Provides a singleton instance of [ValidateFieldsLoginFlowUseCase].

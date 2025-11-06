@@ -2,8 +2,7 @@ package com.mx.liftechnology.domain.usecase.loginflowdomain.login
 
 import android.os.Build
 import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestLogin
-import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseLogin
-import com.mx.liftechnology.core.network.apiCall.flowLogin.UserLogin
+import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseUserData
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
@@ -29,7 +28,8 @@ import com.mx.liftechnology.data.util.SuccessResult
 class LoginUseCase(
     private val repositoryLogin: LoginRepository,
     private val locationHelper: LocationHelper,
-    private val preference: PreferenceUseCase
+    private val preference: PreferenceUseCase,
+    private val getDataUserUseCase: GetDataUserUseCase
 ) {
 
     /**
@@ -44,7 +44,7 @@ class LoginUseCase(
      * - [ErrorResult<LocalError>] si hay un error de validación local (campos vacíos).
      * - [ErrorResult<NetworkError>] si hay un error de red o del servidor.
      */
-    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<UserLogin, Error> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<ResponseUserData, Error> {
         // 1. Validación de Lógica de Negocio (Local)
         if (email.isNullOrBlank() || pass.isNullOrBlank()) {
             return ErrorResult(LocalError.USER_INCOMPLETE_DATA)
@@ -65,8 +65,8 @@ class LoginUseCase(
         val request = RequestLogin(
             email = email.lowercase(),
             password = pass,
-            latitude = latitude.toString(),
-            longitude = longitude.toString(),
+            latitude = latitude,
+            longitude = longitude,
             imei = Build.FINGERPRINT + Build.ID
         )
 
@@ -75,12 +75,8 @@ class LoginUseCase(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        val userLogin = result.data.userLogin
-                        if (userLogin != null && savePreferences(result.data, remember)) {
-                            SuccessResult(userLogin)
-                        } else {
-                            ErrorResult(LocalError.RESPONSE_INCOMPLETE_DATA) // Error si no se pueden guardar las preferencias o el usuario es nulo
-                        }
+                        preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.data.accessToken)
+                        getDataUserUseCase.invoke(remember)
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error) // Mapea el error de la capa de datos al dominio
@@ -89,26 +85,5 @@ class LoginUseCase(
             },
             onFailure = { ErrorResult(NetworkError.UNKNOWN) } // Captura excepciones como problemas de conectividad
         )
-    }
-
-    /**
-     * Guarda las preferencias del usuario después de un inicio de sesión exitoso.
-     *
-     * @param result Los datos de la respuesta de inicio de sesión.
-     * @param remember Indica si se debe guardar la sesión.
-     * @return `true` si las preferencias se guardaron correctamente, `false` en caso contrario.
-     */
-    private fun savePreferences(result: ResponseLogin, remember:Boolean): Boolean {
-        return result.userLogin?.let {
-            preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.accessToken)
-            preference.savePreferenceInt(ModelPreference.ID_USER, it.userId)
-            preference.savePreferenceInt(ModelPreference.ID_ROLE,
-                if (it.teacherId == null) it.studentId
-                else it.teacherId
-            )
-            preference.savePreferenceString(ModelPreference.USER_ROLE, it.role)
-            preference.savePreferenceBoolean(ModelPreference.LOGIN, remember)
-            true
-        } ?: false
     }
 }

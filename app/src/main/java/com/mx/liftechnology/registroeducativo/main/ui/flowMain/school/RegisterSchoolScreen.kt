@@ -21,6 +21,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolInputsUI
@@ -28,7 +29,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelReg
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUICallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUISemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSimpleGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -143,16 +144,18 @@ private fun BodyRegisterSchool(
         onBoxChanged = { onCctChanged(it) }
     )
 
-    BoxEditTextSimpleGeneric(
+    BoxEditTextGeneric(
         value = uiAutomatic.schoolName,
         enable = false,
         label = stringResource(id = R.string.form_school_name),
+        regex = ModelRegex.SIMPLE_TEXT,
     ) {}
 
-    BoxEditTextSimpleGeneric(
+    BoxEditTextGeneric(
         value = uiAutomatic.shift,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
+        regex = ModelRegex.SIMPLE_TEXT,
     ) {}
 }
 
@@ -177,10 +180,11 @@ private fun BodyDoubleRegisterSchool(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            BoxEditTextSimpleGeneric(
+            BoxEditTextGeneric(
                 value = semiAutomatic.type,
                 enable = false,
                 label = stringResource(id = R.string.form_school_type),
+                regex = ModelRegex.SIMPLE_TEXT,
             ) {}
         }
 

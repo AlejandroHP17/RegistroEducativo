@@ -40,7 +40,7 @@ class SplashViewModel(
 
     private fun getNavigation() {
         viewModelScope.launch(dispatcherProvider.io) {
-            val isLoggedIn = preferenceUseCase.getPreferenceBoolean(ModelPreference.LOGIN)
+            val isLoggedIn = preferenceUseCase.getPreferenceBoolean(ModelPreference.REMEMBER_LOGIN)
             _navigate.value = isLoggedIn
         }
     }

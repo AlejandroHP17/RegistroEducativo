@@ -55,7 +55,7 @@ class RegisterOneSchoolUseCase(
         cycle: Int?,
     ): ResultModel<List<String?>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val roleId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
 
         val buildDate = Date(Build.TIME)
         val calendar = Calendar.getInstance().apply { time = buildDate }

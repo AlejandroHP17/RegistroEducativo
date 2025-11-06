@@ -47,7 +47,7 @@ class RegisterListPartialUseCase(
         adapterPeriods: List<ModelDatePeriodDomain>
     ): ResultModel<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         val listAdapter: MutableList<RequestPartials> = mutableListOf()

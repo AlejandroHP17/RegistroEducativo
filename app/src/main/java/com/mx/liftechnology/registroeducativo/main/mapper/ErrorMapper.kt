@@ -48,15 +48,24 @@ object ErrorMapper {
      */
     private fun mapNetworkErrorToUI(networkError: NetworkError): UserError {
         return when (networkError) {
-            NetworkError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR // 404
             NetworkError.UNAUTHORIZED -> UserError.UNAUTHORIZED // 401
+
+            NetworkError.BAD_REQUEST -> UserError.SHOW_SPECIFIC_ERROR //400
+            NetworkError.CONFLICT -> UserError.SHOW_SPECIFIC_ERROR //409
+            NetworkError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR // 404
+
             NetworkError.NO_INTERNET -> UserError.SHOW_GENERIC_ERROR
             NetworkError.TIMEOUT -> UserError.SHOW_GENERIC_ERROR
             NetworkError.SERVER_ERROR -> UserError.SHOW_GENERIC_ERROR
-            NetworkError.BAD_REQUEST -> UserError.SHOW_SPECIFIC_ERROR
-            NetworkError.TOO_MANY_REQUESTS -> UserError.SHOW_GENERIC_ERROR
+
+            NetworkError.TOO_MANY_REQUESTS -> UserError.LOGS
             NetworkError.SERIALIZATION -> UserError.LOGS
             NetworkError.UNKNOWN -> UserError.LOGS
+
+            // Registro Usuario
+            NetworkError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific
+
+
         }
     }
 }

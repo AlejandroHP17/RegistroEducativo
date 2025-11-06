@@ -50,8 +50,10 @@ enum class NetworkError : Error {
     SERIALIZATION,
     UNAUTHORIZED,
     NOT_FOUND,
+    CONFLICT,
     BAD_REQUEST,
     UNKNOWN,
+    UNKNOWN_REGISTER
 }
 
 /**

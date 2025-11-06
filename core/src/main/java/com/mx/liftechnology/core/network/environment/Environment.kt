@@ -16,9 +16,7 @@ import timber.log.Timber
  * @version 1.0.0
  */
 object Environment {
-    //private const val EMULATOR_BASE_URL = "http://3.17.67.71/api/v1/"
-    //private const val DEVICE_BASE_URL = "http://3.17.67.71/api/v1/"
-    // Para emulador: 10.0.2.2 es la dirección especial que apunta al localhost de la máquina host
+     // Para emulador: 10.0.2.2 es la dirección especial que apunta al localhost de la máquina host
     private const val EMULATOR_BASE_URL = "http://10.0.2.2:8000/api/"
     // Para dispositivo real: usar la IP de tu máquina en la red local
     private const val DEVICE_BASE_URL = "http://192.168.100.94:8000/api/"
@@ -49,9 +47,8 @@ object Environment {
     }
 
     /** Endpoints para el flujo de login. */
-    //const val END_POINT_LOGIN = "auth/login"
-    //const val END_POINT_REGISTER = "register/teacherRegister"
     const val END_POINT_LOGIN = "auth/login"
+    const val END_POINT_GET_DATA= "auth/me"
     const val END_POINT_REGISTER = "auth/register"
 
     /** Endpoints para el flujo de registro. */

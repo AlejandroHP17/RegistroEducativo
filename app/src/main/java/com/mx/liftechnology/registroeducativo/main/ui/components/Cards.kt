@@ -41,6 +41,7 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessm
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
@@ -474,10 +475,11 @@ fun EvaluationStudentItem(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(5f)) {
-            BoxEditTextSimpleGeneric(
+            BoxEditTextGeneric(
                 value = nameStudent,
                 enable = false,
                 label = stringResource(id = R.string.tools_empty),
+                regex = ModelRegex.SIMPLE_TEXT,
             ){}
         }
 

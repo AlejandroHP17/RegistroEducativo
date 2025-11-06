@@ -85,7 +85,7 @@ fun BodyForgetPasswordScreen(
 ) {
     BoxEditTextEmail(
         value = emailState,
-        enable = true,
+        enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
         onBoxChanged = { onEmailChanged(it) }
     )

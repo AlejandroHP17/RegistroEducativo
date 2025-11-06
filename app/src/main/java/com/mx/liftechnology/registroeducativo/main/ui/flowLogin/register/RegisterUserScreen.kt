@@ -19,13 +19,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelRegisterUserCallbacksUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelRegisterUserInputsUI
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSimpleGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -61,9 +62,14 @@ fun RegisterUserScreen(
         if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
     }
 
+      // Observa el estado del toast del ViewModel local y lo propaga al SharedViewModel
+    // para que se muestre por encima de toda la navegación
     LaunchedEffect(uiState.controlToast) {
-        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast(uiState.controlToast)
-        registerUserViewModel.modifyShowToast(false)
+        if (uiState.controlToast.showToast) {
+            sharedViewModel.modifyShowToast(uiState.controlToast)
+            // Oculta el toast en el ViewModel local después de propagarlo
+            registerUserViewModel.modifyShowToast(false)
+        }
     }
 
     Column(
@@ -126,7 +132,7 @@ fun BodyRegisterUserScreen(
 
     BoxEditTextEmail(
         value = inputState.emailInputState,
-        enable = true,
+        enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
         onBoxChanged = { callbacks.onEmailChanged(it) }
     )
@@ -159,10 +165,11 @@ fun BodyRegisterUserScreen(
 
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
-    BoxEditTextSimpleGeneric(
+    BoxEditTextGeneric(
         value = inputState.codeInputState,
         enable = true,
         label = stringResource(id = R.string.form_reg_code),
+        regex = ModelRegex.SPECIAL_TEXT,
         onBoxChanged = { callbacks.onCodeChanged(it) }
     )
 }

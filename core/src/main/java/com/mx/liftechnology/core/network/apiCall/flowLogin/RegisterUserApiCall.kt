@@ -28,7 +28,7 @@ fun interface RegisterUserApiCall {
     @POST(Environment.END_POINT_REGISTER)
     suspend fun callApi(
         @Body request: RequestRegisterUser
-    ): Response<ResponseGeneric<List<String?>?>?>
+    ): Response<ResponseGeneric<ResponseRegisterUser?>>
 }
 
 /**
@@ -42,6 +42,33 @@ data class RequestRegisterUser(
     val email: String,
     @SerializedName("password")
     val password: String,
-    @SerializedName("codigoactivacion")
+    @SerializedName("access_code")
     val activationCode: String
+)
+
+/**
+ * Modelo de datos para la respuesta de inicio de sesión.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class ResponseRegisterUser(
+    @SerializedName("email")
+    val email: String?,
+    @SerializedName("first_name")
+    val firstName: String?,
+    @SerializedName("last_name")
+    val lastName: String?,
+    @SerializedName("phone")
+    val phone: String?,
+    @SerializedName("access_level_id")
+    val accessLevel: Int?,
+    @SerializedName("access_code_id")
+    val accessCode: Int?,
+    @SerializedName("is_active")
+    val isActive: Boolean,
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("created_at")
+    val createdAt: String
 )

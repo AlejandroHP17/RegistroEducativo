@@ -34,6 +34,6 @@ class ResponseGeneric<T>(
 data class ResponseBasic(
     @SerializedName("code")
     val code: Int,
-    @SerializedName("msg")
+    @SerializedName("message")
     val message: String
 )

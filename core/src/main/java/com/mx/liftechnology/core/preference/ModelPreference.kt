@@ -14,16 +14,14 @@ package com.mx.liftechnology.core.preference
  */
 object ModelPreference {
     /** Clave para almacenar el estado de inicio de sesión del usuario. */
-    const val LOGIN = "LOGIN"
+    const val REMEMBER_LOGIN = "LOGIN"
     /** Clave para almacenar el token de acceso del usuario. */
     const val ACCESS_TOKEN = "ACCESS_TOKEN"
 
     /** Clave para almacenar el ID de usuario global. */
     const val ID_USER = "ID_USER"
-    /** Clave para almacenar el rol del usuario (ej: "profesor" o "alumno"). */
-    const val USER_ROLE = "USER_ROLE"
     /** Clave para almacenar el ID único asociado al rol del usuario. */
-    const val ID_ROLE = "ID_ROLE"
+    const val ID_USER_LEVEL = "ID_USER_LEVEL"
 
     /** Clave para almacenar el ID del grupo seleccionado. */
     const val ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"

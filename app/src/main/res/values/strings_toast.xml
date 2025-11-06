@@ -16,6 +16,7 @@
     <string name="toast_error_validate_fields">Favor de verificar que todos los campos esten correctos</string>
     <string name="toast_error_login_user">Usuario o contraseña incorrectos, por favor valide nuevamente su información</string>
     <string name="toast_error_register_user">No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos</string>
+    <string name="toast_error_register_user_active">Hay un problema con su usuario, contacte al administrador</string>
     <string name="toast_error_register_school">No se ha podido registrar el grupo, vuelva a intentarlo</string>
     <string name="toast_error_update_info_ui">No se logró actualizar la información, intente más tarde</string>
     <string name="toast_error_register_partials">No de lograron crear los parciales, intente nuevamente</string>

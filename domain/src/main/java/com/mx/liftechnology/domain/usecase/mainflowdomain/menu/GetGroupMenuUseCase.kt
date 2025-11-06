@@ -37,7 +37,7 @@ class GetGroupMenuUseCase(
      */
     suspend operator fun invoke(): ResultModel<ModelInfoStudentGroupDomain, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val roleId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
 
         val request = RequestGroup(
             teacherId = roleId,

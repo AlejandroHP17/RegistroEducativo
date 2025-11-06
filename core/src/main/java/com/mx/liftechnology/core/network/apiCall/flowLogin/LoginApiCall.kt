@@ -28,7 +28,7 @@ fun interface LoginApiCall {
     @POST(Environment.END_POINT_LOGIN)
     suspend fun callApi(
         @Body request: RequestLogin
-    ): Response<ResponseGeneric<ResponseLogin?>?>
+    ): Response<ResponseGeneric<ResponseLogin?>>
 }
 
 /**
@@ -43,9 +43,9 @@ data class RequestLogin(
     @SerializedName("password")
     val password: String,
     @SerializedName("latitude")
-    val latitude: String,
+    val latitude: Double,
     @SerializedName("longitude")
-    val longitude: String,
+    val longitude: Double,
     @SerializedName("imei")
     val imei: String
 )
@@ -59,35 +59,6 @@ data class RequestLogin(
 data class ResponseLogin(
     @SerializedName("access_token")
     val accessToken: String?,
-    @SerializedName("expires_in")
-    val expiresToken: Int?,
     @SerializedName("token_type")
     val typeToken: String?,
-    @SerializedName("user")
-    val userLogin: UserLogin?
-)
-
-/**
- * Modelo de datos para la información del usuario en la respuesta de inicio de sesión.
- *
- * @author Pelkidev
- * @version 1.0.0
- */
-data class UserLogin(
-    @SerializedName("name")
-    val name: String?,
-    @SerializedName("paterno")
-    val lastName: String?,
-    @SerializedName("materno")
-    val secondLastName: String?,
-    @SerializedName("email")
-    val email: String?,
-    @SerializedName("user_id")
-    val userId: Int?,
-    @SerializedName("profesor_id")
-    val teacherId: Int?,
-    @SerializedName("alumno_id")
-    val studentId: Int?,
-    @SerializedName("role")
-    val role: String?,
 )

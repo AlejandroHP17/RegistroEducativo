@@ -44,7 +44,7 @@ class GetListPartialMenuUseCase (
      */
      suspend operator fun invoke(): ResultModel<List<ModelDialogGroupPartialDomain>, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 
         if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorResult(ModelCodeError.ERROR_UNKNOWN)

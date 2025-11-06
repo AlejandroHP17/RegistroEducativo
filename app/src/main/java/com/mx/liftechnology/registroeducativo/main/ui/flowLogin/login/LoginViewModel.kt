@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
-import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -126,34 +126,25 @@ class LoginViewModel(
             }
 
             is ErrorResult -> {
-                when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR ->{
-                        _uiState.update {
-                            it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
-                                controlToast = ModelStateToastUI(
-                                    messageToast = R.string.toast_error_generic,
-                                    showToast = true,
-                                    typeToast = ModelStateTypeToastUI.ERROR
-                                )
+                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
+                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
+                    UserError.UNAUTHORIZED -> R.string.toast_error_login_user
+                    else -> null
+                }
+
+                if(msg != null){
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR,
+                            controlToast = ModelStateToastUI(
+                                messageToast = msg,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        }
+                        )
                     }
-                    UserError.SHOW_SPECIFIC_ERROR -> {
-                        _uiState.update {
-                            it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
-                                controlToast = ModelStateToastUI(
-                                    messageToast = R.string.toast_error_login_user,
-                                    showToast = true,
-                                    typeToast = ModelStateTypeToastUI.ERROR
-                                )
-                            )
-                        }
-                    }
-                    else -> {
-                        _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
-                    }
+                }else{
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
                 }
             }
         }

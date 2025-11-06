@@ -52,7 +52,7 @@ class RegisterListAssignmentUseCaseImp(
      * {@inheritDoc}
      */
     override suspend fun registerListAssignment():ResultModel<List<String>?, String?> {
-        val teacherId = preference.getPreferenceInt(ModelPreference.ID_ROLE)
+        val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
 

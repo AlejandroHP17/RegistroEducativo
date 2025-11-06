@@ -54,9 +54,14 @@ fun LoginScreen(
         if (uiState.uiState == ModelStateUIEnum.SUCCESS) onSuccess()
     }
 
-    LaunchedEffect (uiState.controlToast) {
-        if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast( uiState.controlToast)
-        loginViewModel.modifyShowToast(false)
+    // Observa el estado del toast del ViewModel local y lo propaga al SharedViewModel
+    // para que se muestre por encima de toda la navegación
+    LaunchedEffect(uiState.controlToast) {
+        if (uiState.controlToast.showToast) {
+            sharedViewModel.modifyShowToast(uiState.controlToast)
+            // Oculta el toast en el ViewModel local después de propagarlo
+            loginViewModel.modifyShowToast(false)
+        }
     }
 
     Column(
@@ -116,7 +121,7 @@ fun BodyLoginScreen(
 
     BoxEditTextEmail(
         value = inputState.emailInputState,
-        enable = true,
+        enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
     ) { callbacks.onEmailChanged(it) }
 
