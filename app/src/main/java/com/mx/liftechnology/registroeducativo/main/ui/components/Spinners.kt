@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,10 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 
@@ -70,6 +71,90 @@ fun SpinnerScreen() {
             label = "test",
             onOptionSelected = {  }
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SpinnerTextField(
+    options: List<ModelCustomSpinner>,
+    selectedOption: ModelStateOutFieldText,
+    read: Boolean,
+    label: String,
+    onOptionSelected: (ModelCustomSpinner) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedText by remember { mutableStateOf(selectedOption) }
+    
+    // Actualiza el texto seleccionado cuando cambia el selectedOption externo
+    LaunchedEffect(selectedOption) {
+        selectedText = selectedOption
+    }
+
+    Column {
+        ExposedDropdownMenuBox(
+            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.margin_between)),
+            expanded = expanded,
+            onExpandedChange = {
+                if (!read) {
+                    expanded = !expanded
+                }
+            }
+        ) {
+            OutlinedTextField(
+                value = selectedText.valueText,
+                onValueChange = {},
+                enabled = false,
+                label = {
+                    Text(
+                        text = label,
+                        color = colorPrincipalText
+                    )
+                },
+                modifier = Modifier
+                    .menuAnchor()
+                    .fillMaxWidth(),
+                trailingIcon = {
+                    Icon(
+                        imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Expandir"
+                    )
+                },
+                maxLines = 1,
+                shape = RoundedCornerShape(8.dp),
+                colors = personalizeColors()
+            )
+
+            if (!read) {
+                ExposedDropdownMenu(
+
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    options.forEach { option ->
+                        DropdownMenuItem(
+                            text = { Text(option.value!!) },
+                            onClick = {
+                                selectedText = option.value.stringToModelStateOutFieldText()
+                                onOptionSelected(option)
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
+        }
+
+        if (selectedOption.isError) {
+            Text(
+                text = selectedText.errorMessage,
+                color = colorError,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+            )
+        }
+        CustomSpace(dimensionResource(R.dimen.margin_between))
     }
 }
 

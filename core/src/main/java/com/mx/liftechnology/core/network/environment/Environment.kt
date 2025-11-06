@@ -52,7 +52,8 @@ object Environment {
     const val END_POINT_REGISTER = "auth/register"
 
     /** Endpoints para el flujo de registro. */
-    const val END_POINT_REGISTER_SCHOOL = "teacher/registerTeacherCycleGroup"
+    const val END_POINT_REGISTER_CYCLE_SCHOOL = "cycles"
+
     const val END_POINT_REGISTER_PARTIAL = "teacher/registerPartialCycleGroup"
     const val END_POINT_REGISTER_STUDENT = "teacher/registerStudentCycleGroup"
     const val END_POINT_REGISTER_SUBJECT = "teacher/registerTeacherSubjectSchool"
@@ -68,6 +69,6 @@ object Environment {
     const val END_POINT_GET_ASSESSMENT_TYPE = "teacher/getTeacherTipoTrabajoPECG"
 
     /** Endpoints para el flujo del menú. */
-    const val END_POINT_GET_CCT = "teacher/getSchoolCCT/{cct}"
-    const val END_POINT_GET_GROUP = "teacher/getTeacherGroups"
+    const val END_POINT_GET_CCT = "schools/{cct}"
+    const val END_POINT_GET_GROUP = "cycles"
 }

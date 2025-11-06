@@ -2,13 +2,13 @@ package com.mx.liftechnology.registroeducativo.di
 
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSchoolApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterCycleSchoolApiCall
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepositoryImpl
-import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepository
-import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepositoryImpl
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterCycleSchoolRepository
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterCycleSchoolRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterOneSchoolUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterCycleSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCaseImp
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolViewModel
@@ -32,9 +32,9 @@ val registerSchoolModule = module {
     factory { get<Retrofit>().create(GetCctApiCall::class.java) }
 
     /**
-     * Provides an instance of [RegisterSchoolApiCall].
+     * Provides an instance of [RegisterCycleSchoolApiCall].
      */
-    factory { get<Retrofit>().create(RegisterSchoolApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterCycleSchoolApiCall::class.java) }
 
     /**
      * Provides an instance of [GetCctUseCase].
@@ -49,16 +49,16 @@ val registerSchoolModule = module {
     }
 
     /**
-     * Provides a singleton instance of [RegisterSchoolRepository].
+     * Provides a singleton instance of [RegisterCycleSchoolRepository].
      */
-    singleOf(::RegisterSchoolRepositoryImpl){
-        bind<RegisterSchoolRepository>()
+    singleOf(::RegisterCycleSchoolRepositoryImpl){
+        bind<RegisterCycleSchoolRepository>()
     }
 
     /**
-     * Provides an instance of [RegisterOneSchoolUseCase].
+     * Provides an instance of [RegisterCycleSchoolUseCase].
      */
-    singleOf(::RegisterOneSchoolUseCase)
+    singleOf(::RegisterCycleSchoolUseCase)
 
     /**
      * Provides a singleton instance of [ValidateFieldsRegisterSchoolUseCase].

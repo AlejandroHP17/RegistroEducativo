@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.registerschool
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.data.model.ModelCCTData
 
 /**
  * Modelo de datos que representa el resultado de la búsqueda de una escuela en la capa de dominio.
@@ -12,6 +12,6 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
  * @version 1.0.0
  */
 data class ModelResultSchoolDomain(
-    val spinners : ModelSpinnerSchoolDomain,
-    val result :  ResponseCctSchool?
+    val spinners :ModelSpinnerSchoolDomain,
+    val result :  ModelCCTData
 )

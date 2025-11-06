@@ -1,8 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
+import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
+import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelSpinnerSchoolUi
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
@@ -86,6 +90,45 @@ object DomainToUIMapper {
                 list = null,
             )
         }
+    }
+
+    fun String.toModelCustomSpinner() : ModelCustomSpinner{
+        return ModelCustomSpinner(
+            value = this,
+            id = this.toInt()
+        )
+    }
+
+    fun ModelSpinnerSchoolDomain?.toUi(): ModelSpinnerSchoolUi {
+        return ModelSpinnerSchoolUi(
+            type = this?.type?.map { ModelCustomSpinner(id = 0, value = it.value) },
+            cycle = this?.cycle?.map { ModelCustomSpinner(id = 0, value = it.value) },
+            grade = this?.grade?.map { ModelCustomSpinner(id = 0, value = it.value) },
+            group = this?.group?.map { ModelCustomSpinner(id = 0, value = it.value) }
+        )
+    }
+
+    fun List<ModelFormatAssignment>?.toCustomSpinnerList(): List<ModelCustomSpinner>? {
+        return this?.map { assignment ->
+            ModelCustomSpinner(
+                id = assignment.id,
+                value = assignment.assignmentName.valueText
+            )
+        }
+    }
+
+
+    fun List<ModelCCTDataPeriodCatalog>.getPeriodsByType(typeName: String): List<ModelCustomSpinner> {
+        return this
+            .filter { it.typeName == typeName }
+            .map { it.periodNumber }
+            .distinct()
+            .map { number ->
+                ModelCustomSpinner(
+                    value = number.toString(),
+                    id = number
+                )
+            }
     }
 }
 

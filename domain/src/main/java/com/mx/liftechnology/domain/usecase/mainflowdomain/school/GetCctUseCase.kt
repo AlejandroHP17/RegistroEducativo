@@ -6,18 +6,18 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.data.model.ModelCCTData
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
+
 
 /**
  * Caso de uso para validar una CCT y obtener la información de una escuela.
@@ -36,45 +36,29 @@ class GetCctUseCase(
      * Ejecuta el proceso de validación de la CCT.
      *
      * @param cct La Clave de Centro de Trabajo a validar.
-     * @return Un [ResultModel] que contiene la información de la escuela o un estado de error.
+     * @return Un [ModelResult] que contiene la información de la escuela o un estado de error.
      */
-    suspend operator fun invoke(cct: String): ResultModel<ModelResultSchoolDomain?, String> {
+    suspend operator fun invoke(cct: String): ModelResult<ModelResultSchoolDomain, Error> {
         return runCatching { getCctRepository.executeGetCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
-                    is DataSuccessResult -> {
+                    is SuccessResult -> {
                         val response = ModelResultSchoolDomain(
                             buildLogicSpinner(result.data),
                             result.data
                         )
-
                         SuccessResult(response)
                     }
 
-                    is DataErrorResult -> {
-                        handleResponseCompose(result.error)
+                    is ErrorResult -> {
+                        ErrorResult(result.error)
                     }
                 }
             },
-            onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN) }
+            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
         )
     }
 
-    /**
-     * Maneja las respuestas de error del repositorio de CCT.
-     *
-     * @param error El objeto [NetworkError] que representa el error.
-     * @return Un [ResultModel] que representa el error específico.
-     */
-    private fun handleResponseCompose(error: NetworkError): ResultModel<ModelResultSchoolDomain?, String> {
-        return when (error) {
-            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
-        }
-    }
 
     /**
      * Construye los modelos de datos para los spinners basándose en la información de la escuela.
@@ -83,39 +67,60 @@ class GetCctUseCase(
      * @param data Los datos de [ResponseCctSchool] recibidos del repositorio.
      * @return Un [ModelSpinnerSchoolDomain] que contiene las listas de strings para los spinners.
      */
-    private fun buildLogicSpinner(data: ResponseCctSchool?): ModelSpinnerSchoolDomain {
-        val cycle = data?.schoolCycleType.let { cycle ->
-            val cycleMapping = mapOf(
-                "Anual" to 1,
-                "Bimestral" to 2,
-                "Trimestral" to 3,
-                "Cuatrimestral" to 4
-            )
-            val cycleCount = cycleMapping[cycle]
-            cycleCount?.let { it -> (1..it).map { it.toString() } }
-        }
-        val grade = data?.schoolType.let { grade ->
-            val gradeMapping = mapOf(
-                "Primaria" to 6,
-                "Secundaria" to 3,
-                "Bachillerato" to 6,
-                "Universidad" to 12
-            )
-            val gradeCount = gradeMapping[grade]
-            gradeCount?.let { it -> (1..it).map { it.toString() } }
-        }
-        val group = data?.schoolType.let { group ->
-            val groupMapping = mapOf(
-                "Primaria" to 4,
-                "Secundaria" to 12,
-                "Bachillerato" to 10,
-                "Universidad" to 10
-            )
-            val groupCount = groupMapping[group]
-            groupCount?.let { it -> ('A'..'Z').take(groupCount).map { it.toString() } }
+    private fun buildLogicSpinner(data: ModelCCTData): ModelSpinnerSchoolDomain {
+
+        // --- TYPE (Anual, Semestral, etc) ---
+        val types = data.periodCatalog
+            .map { it.typeName }
+            .distinct()
+            .mapIndexed { index, type ->
+                ModelCustomSpinner(value = type, id = index + 1)
+            }
+
+        logInfo(types.toString())
+
+        // --- CYCLE (número de periodos del año: 1, 2, 3...) ---
+        val cycles = data.periodCatalog
+            .map { it.periodNumber }
+            .distinct()
+            .map { number ->
+                ModelCustomSpinner(value = number.toString(), id = number)
+            }
+
+        // --- GRADE (según tipo de escuela) ---
+        val gradeCount = when (data.schoolTypeId) {
+            1, 2 -> 6
+            3 -> 3
+            4 -> 6
+            5 -> 12
+            else -> 0
         }
 
-        return ModelSpinnerSchoolDomain(cycle, grade, group)
+        val grades = if (gradeCount > 0) {
+            (1..gradeCount).map {
+                ModelCustomSpinner(value = it.toString(), id = it)
+            }
+        } else emptyList()
+
+        // --- GROUP (A, B, C, etc) ---
+        val groupCount = when (data.schoolTypeId) {
+            1, 2 -> 4
+            3 -> 12
+            4, 5 -> 10
+            else -> 0
+        }
+
+        val groups = if (groupCount > 0) {
+            ('A'..'Z').take(groupCount).mapIndexed { index, letter ->
+                ModelCustomSpinner(value = letter.toString(), id = index + 1)
+            }
+        } else emptyList()
+
+        return ModelSpinnerSchoolDomain(
+            type = types,
+            cycle = cycles,
+            grade = grades,
+            group = groups
+        )
     }
-
 }

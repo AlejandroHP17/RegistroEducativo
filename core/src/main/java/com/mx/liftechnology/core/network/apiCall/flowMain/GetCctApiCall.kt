@@ -40,16 +40,35 @@ fun interface GetCctApiCall {
 data class ResponseCctSchool(
     @SerializedName("cct")
     val cct: String,
+    @SerializedName("school_type_id")
+    val schoolTypeId: Int,
+    @SerializedName("name")
+    val schoolName: String,
+    @SerializedName("postal_code")
+    val postalCode: String,
+    @SerializedName("latitude")
+    val latitude: String,
+    @SerializedName("longitude")
+    val longitude: String,
+    @SerializedName("shift_id")
+    val shiftId: Int,
+    @SerializedName("shift_name")
+    val shiftName: String,
     @SerializedName("id")
     val id: Int,
-    @SerializedName("nombreescuela")
-    val schoolName: String,
-    @SerializedName("tipocicloescolar")
-    val schoolCycleType: String,
-    @SerializedName("tipocicloescolar_id")
-    val schoolCycleTypeId: Int,
-    @SerializedName("tipoescuela")
-    val schoolType: String,
-    @SerializedName("turno")
-    val shift: String
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("period_catalog")
+    val periodCatalog: List<ResponsePeriodCatalog>
+)
+
+data class ResponsePeriodCatalog(
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("type_name")
+    val typeName: String,
+    @SerializedName("period_number")
+    val periodNumber: Int,
+    @SerializedName("created_at")
+    val createdAt: String
 )

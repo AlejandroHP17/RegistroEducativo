@@ -34,7 +34,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
@@ -89,6 +89,7 @@ fun RegisterSchoolScreen(
             semiAutomatic = uiSemiAutomaticData,
             inputState = inputState,
             callbacks = ModelRegisterSchoolUICallbacks(
+                onTypeChanged = {registerSchoolViewModel.onTypeChanged(it)},
                 onCycleChanged = {registerSchoolViewModel.onCycleChanged(it)},
                 onGradeChanged = {registerSchoolViewModel.onGradeChanged(it)},
                 onGroupChanged = {registerSchoolViewModel.onGroupChanged(it) }
@@ -152,7 +153,7 @@ private fun BodyRegisterSchool(
     ) {}
 
     BoxEditTextGeneric(
-        value = uiAutomatic.shift,
+        value = uiAutomatic.shiftName,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
         regex = ModelRegex.SIMPLE_TEXT,
@@ -180,21 +181,22 @@ private fun BodyDoubleRegisterSchool(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            BoxEditTextGeneric(
-                value = semiAutomatic.type,
-                enable = false,
+            SpinnerTextField(
+                options = semiAutomatic.spinner?.type ?: emptyList(),
+                selectedOption = inputState.type,
+                read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_type),
-                regex = ModelRegex.SIMPLE_TEXT,
-            ) {}
+                onOptionSelected = { callbacks.onTypeChanged(it) }
+            )
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerOutlinedTextField(
+            SpinnerTextField(
                 options = semiAutomatic.spinner?.cycle ?: emptyList(),
                 selectedOption = inputState.cycle,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_term),
-                onOptionSelected = { callbacks.onCycleChanged(it.value.toString()) }
+                onOptionSelected = { callbacks.onCycleChanged(it) }
             )
         }
     }
@@ -206,22 +208,22 @@ private fun BodyDoubleRegisterSchool(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerOutlinedTextField(
+            SpinnerTextField(
                 options = semiAutomatic.spinner?.grade ?: emptyList(),
                 selectedOption = inputState.grade,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_grade),
-                onOptionSelected = { callbacks.onGradeChanged(it.value.toString()) }
+                onOptionSelected = { callbacks.onGradeChanged(it) }
             )
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerOutlinedTextField(
+            SpinnerTextField(
                 options = semiAutomatic.spinner?.group ?: emptyList(),
                 selectedOption = inputState.group,
                 read = semiAutomatic.read,
                 label = stringResource(id = R.string.form_school_group),
-                onOptionSelected = { callbacks.onGroupChanged(it.value.toString()) }
+                onOptionSelected = { callbacks.onGroupChanged(it) }
             )
         }
     }

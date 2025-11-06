@@ -2,13 +2,13 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.toModelCustomSpinner
 
 
 /**

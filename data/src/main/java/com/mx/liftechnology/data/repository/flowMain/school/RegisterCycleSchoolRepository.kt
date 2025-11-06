@@ -5,8 +5,10 @@
  */
 package com.mx.liftechnology.data.repository.flowMain.school
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterSchoolApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterCycleSchoolApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterCycleSchool
+import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToRegisterCycleSchool
+import com.mx.liftechnology.data.model.ModelRegisterCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
@@ -21,41 +23,41 @@ import retrofit2.HttpException
  * @author Pelkidev
  * @version 1.0.0
  */
-fun interface RegisterSchoolRepository{
+fun interface RegisterCycleSchoolRepository{
   /**
    * Ejecuta la petición de registro de una escuela.
    *
    * @param request Los datos de la petición de registro.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeRegisterOneSchool(
-      request : RequestRegisterSchool
-  ): ModelResult<List<String?>?, NetworkError>
+  suspend fun executeRegisterCycleSchool(
+      request : RequestRegisterCycleSchool
+  ): ModelResult<ModelRegisterCycleData, NetworkError>
 }
 
 /**
- * Implementación de [RegisterSchoolRepository].
+ * Implementación de [RegisterCycleSchoolRepository].
  * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property registerSchoolApiCall La llamada a la API para el registro de escuelas.
+ * @property registerCycleSchoolApiCall La llamada a la API para el registro de escuelas.
  * @author Pelkidev
  * @version 1.0.0
  */
-class RegisterSchoolRepositoryImpl(
-    private val registerSchoolApiCall: RegisterSchoolApiCall
-) : RegisterSchoolRepository {
+class RegisterCycleSchoolRepositoryImpl(
+    private val registerCycleSchoolApiCall: RegisterCycleSchoolApiCall
+) : RegisterCycleSchoolRepository {
 
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeRegisterOneSchool(
-        request : RequestRegisterSchool
-    ): ModelResult<List<String?>?, NetworkError> {
+    override suspend fun executeRegisterCycleSchool(
+        request : RequestRegisterCycleSchool
+    ): ModelResult<ModelRegisterCycleData, NetworkError> {
         return try {
-            val response = registerSchoolApiCall.callApi(request)
+            val response = registerCycleSchoolApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    SuccessResult(it)
+                    SuccessResult(it.mapperToRegisterCycleSchool())
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))

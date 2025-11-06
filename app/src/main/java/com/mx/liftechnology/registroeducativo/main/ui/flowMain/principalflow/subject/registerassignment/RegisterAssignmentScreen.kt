@@ -28,7 +28,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextComplexGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction

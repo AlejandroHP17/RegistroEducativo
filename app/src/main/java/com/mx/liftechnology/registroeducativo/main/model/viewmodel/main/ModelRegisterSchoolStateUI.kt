@@ -1,11 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import androidx.compose.ui.graphics.Color
+import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 /**
@@ -27,9 +28,8 @@ data class ModelRegisterSchoolStateUI(
  * Representa los datos semi-automáticos de la UI para la pantalla de registro de escuela.
  *
  * @property schoolName El nombre de la escuela.
- * @property shift El turno de la escuela.
+ * @property shiftName El turno de la escuela.
  * @property type El tipo de ciclo escolar.
- * @property schoolCycleTypeId El ID del tipo de ciclo escolar.
  * @property spinner El modelo para los spinners.
  * @property read Indica si los campos son de solo lectura.
  * @author Pelkidev
@@ -37,9 +37,9 @@ data class ModelRegisterSchoolStateUI(
  */
 data class ModelRegisterSchoolUISemiAutomaticData(
     val schoolName: ModelStateOutFieldText = ModelStateOutFieldText(),
-    val shift: ModelStateOutFieldText = ModelStateOutFieldText(),
-    val type: ModelStateOutFieldText = ModelStateOutFieldText(),
-    val schoolCycleTypeId: Int = -1,
+    val schoolId: Int = 0,
+    val shiftName: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val periodCatalog:List<ModelCCTDataPeriodCatalog>? = null,
     val spinner: ModelSpinnerSchoolUi? = null,
     val read: Boolean = true,
 )
@@ -54,9 +54,10 @@ data class ModelRegisterSchoolUISemiAutomaticData(
  * @version 1.0.0
  */
 data class ModelRegisterSchoolUICallbacks(
-    val onCycleChanged: (String) -> Unit,
-    val onGradeChanged: (String) -> Unit,
-    val onGroupChanged: (String) -> Unit
+    val onTypeChanged: (ModelCustomSpinner) -> Unit,
+    val onCycleChanged: (ModelCustomSpinner) -> Unit,
+    val onGradeChanged: (ModelCustomSpinner) -> Unit,
+    val onGroupChanged: (ModelCustomSpinner) -> Unit
 )
 
 /**
@@ -69,6 +70,7 @@ data class ModelRegisterSchoolUICallbacks(
  * @version 1.0.0
  */
 data class ModelSpinnerSchoolUi(
+    val type: List<ModelCustomSpinner>?,
     val cycle: List<ModelCustomSpinner>?,
     val grade: List<ModelCustomSpinner>?,
     val group: List<ModelCustomSpinner>?
@@ -86,6 +88,7 @@ data class ModelSpinnerSchoolUi(
  */
 data class ModelRegisterSchoolInputsUI(
     val cct: ModelStateOutFieldText = ModelStateOutFieldText(),
+    val type: ModelStateOutFieldText = ModelStateOutFieldText(),
     val grade: ModelStateOutFieldText = ModelStateOutFieldText(),
     val group: ModelStateOutFieldText = ModelStateOutFieldText(),
     val cycle: ModelStateOutFieldText = ModelStateOutFieldText()

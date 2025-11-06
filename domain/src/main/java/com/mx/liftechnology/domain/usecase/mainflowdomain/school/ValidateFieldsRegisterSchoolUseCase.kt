@@ -19,6 +19,13 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 interface ValidateFieldsRegisterSchoolUseCase {
     /**
      * Valida el campo del grado.
+     * @param type El tipo a validar.
+     * @return Un [ModelStateOutFieldText] con el resultado de la validación.
+     */
+    fun validateTypeCompose(type: String?): ModelStateOutFieldText
+
+    /**
+     * Valida el campo del grado.
      * @param grade El grado a validar.
      * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
@@ -53,6 +60,20 @@ interface ValidateFieldsRegisterSchoolUseCase {
  * @version 1.0.0
  */
 class ValidateFieldsRegisterSchoolUseCaseImp : ValidateFieldsRegisterSchoolUseCase {
+
+    /**
+     * {@inheritDoc}
+     */
+    override fun validateTypeCompose(type: String?): ModelStateOutFieldText {
+        return when {
+            type.isNullOrEmpty() -> type.stringToModelStateOutFieldText(
+                isError = true,
+                errorMessage = ModelCodeInputs.ET_SPINNER_EMPTY
+            )
+
+            else -> type.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+        }
+    }
 
     /**
      * {@inheritDoc}

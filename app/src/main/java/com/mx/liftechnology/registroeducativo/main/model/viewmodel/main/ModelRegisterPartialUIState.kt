@@ -5,7 +5,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 
 /**
  * Representa el estado de la UI para la pantalla de registro de parciales.

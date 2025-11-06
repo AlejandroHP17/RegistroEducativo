@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.school.RegisterSchoolRepository
+import com.mx.liftechnology.data.repository.flowMain.school.RegisterCycleSchoolRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -15,7 +15,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [RegisterOneSchoolUseCase].
+ * Tests para [RegisterCycleSchoolUseCase].
  * Verifica el comportamiento del caso de uso de registro de escuela en diferentes escenarios.
  *
  * @author Pelkidev
@@ -23,8 +23,8 @@ import org.junit.Test
  */
 class RegisterOneSchoolUseCaseTest {
 
-    private lateinit var registerOneSchoolUseCase: RegisterOneSchoolUseCase
-    private val registerSchoolRepository: RegisterSchoolRepository = mockk()
+    private lateinit var registerCycleSchoolUseCase: RegisterCycleSchoolUseCase
+    private val registerCycleSchoolRepository: RegisterCycleSchoolRepository = mockk()
     private val preferenceUseCase: PreferenceUseCase = mockk(relaxed = true)
 
     /**
@@ -32,7 +32,7 @@ class RegisterOneSchoolUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerOneSchoolUseCase = RegisterOneSchoolUseCase(registerSchoolRepository, preferenceUseCase)
+        registerCycleSchoolUseCase = RegisterCycleSchoolUseCase(registerCycleSchoolRepository, preferenceUseCase)
     }
 
     /**
@@ -41,10 +41,10 @@ class RegisterOneSchoolUseCaseTest {
     @Test
     fun `invoke con datos validos debe devolver SuccessState`() = runBlocking {
         // Preparamos el mock
-        coEvery { registerSchoolRepository.executeRegisterOneSchool(any()) } returns ResultSuccess(listOf("Registro exitoso"))
+        coEvery { registerCycleSchoolRepository.executeRegisterCycleSchool(any()) } returns ResultSuccess(listOf("Registro exitoso"))
 
         // Ejecutamos el caso de uso
-        val result = registerOneSchoolUseCase.invoke("1234567890", 1, 1, "A", 1)
+        val result = registerCycleSchoolUseCase.invoke("1234567890", 1, 1, "A", 1)
 
         // Verificamos el resultado
         assertTrue(result is SuccessResult)
@@ -56,10 +56,10 @@ class RegisterOneSchoolUseCaseTest {
     @Test
     fun `invoke con error del repositorio debe devolver ErrorUserState`() = runBlocking {
         // Preparamos el mock
-        coEvery { registerSchoolRepository.executeRegisterOneSchool(any()) } returns ResultError(FailureService.BadRequest)
+        coEvery { registerCycleSchoolRepository.executeRegisterCycleSchool(any()) } returns ResultError(FailureService.BadRequest)
 
         // Ejecutamos el caso de uso
-        val result = registerOneSchoolUseCase.invoke("1234567890", 1, 1, "A", 1)
+        val result = registerCycleSchoolUseCase.invoke("1234567890", 1, 1, "A", 1)
 
         // Verificamos el resultado
         assertTrue(result is ErrorUserResult)

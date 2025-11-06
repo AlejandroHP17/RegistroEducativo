@@ -8,7 +8,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomSpinner
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 
 data class ModelRegisterAssignmentStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
