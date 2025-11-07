@@ -3,14 +3,16 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logInfo
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -123,8 +125,7 @@ class RegisterPartialViewModel(
 
     private suspend fun registerListPartialCompose() {
         when (val result =  registerListPartialUseCase.invoke(
-            _uiData.value.numberPartials.valueText.toInt(),
-            _uiData.value.listCalendar!!
+            adapterPeriods = _uiData.value.listCalendar!!
         )){
             is SuccessResult -> {
                 _uiState.update { it.copy(
@@ -136,27 +137,33 @@ class RegisterPartialViewModel(
                     )
                 ) }
             }
-            is ErrorUserResult -> {
-                _uiState.update { it.copy(
-                    uiState = ModelStateUIEnum.ERROR,
-                    controlToast = ModelStateToastUI(
-                        messageToast = R.string.toast_error_register_partials,
-                        showToast = true,
-                        typeToast = ModelStateTypeToastUI.ERROR
-                    )
-                ) }
-            }
-            else -> {
-                logInfo(result.toString())
-                _uiState.update { it.copy(
-                    uiState = ModelStateUIEnum.ERROR
-                ) }
+            is ErrorResult -> {
+                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
+                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
+                    UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_partials
+                    else -> null
+                }
+
+                if(msg != null){
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR,
+                            controlToast = ModelStateToastUI(
+                                messageToast = msg,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.ERROR
+                            )
+                        )
+                    }
+                }else{
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                }
             }
         }
     }
 
     /**
-     * Gets the list of partials.
+     * Gets list of partials.
      */
     fun getListPartialCompose(){
         viewModelScope.launch (dispatcherProvider.io) {
@@ -169,14 +176,15 @@ class RegisterPartialViewModel(
                     }
                     _uiData.update { item ->
                         item.copy(
-                            listCalendar = result.result?.map { data ->
+                            read = true,
+                            listCalendar = result.data?.map { data ->
                                 data.copy(date = data.date)
                             } ?: emptyList(),
-                            numberPartials = result.result?.size?.toString().stringToModelStateOutFieldText()
+                            numberPartials = result.data?.size?.toString().stringToModelStateOutFieldText()
                         )
                     }
                 }
-                else -> {
+                is ErrorResult  -> {
                     logInfo(result.toString())
                     _uiState.update {
                         it.copy(

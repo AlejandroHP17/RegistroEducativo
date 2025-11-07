@@ -28,10 +28,10 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
@@ -167,6 +167,7 @@ fun SpinnerTextField(
  * @param label The label for the text field.
  * @param onOptionSelected A lambda to be invoked when an option is selected.
  */
+@Deprecated("se migra a SpinnerTextField")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerOutlinedTextField(

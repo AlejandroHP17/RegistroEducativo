@@ -20,17 +20,17 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialUIData
-import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogConfirm
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.components.RegisterPartialList
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
@@ -178,7 +178,7 @@ private fun BodyRegisterPartial(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            SpinnerOutlinedTextField(
+            SpinnerTextField(
                 options = uiData.listOptions,
                 selectedOption = uiData.numberPartials,
                 read = uiData.read,
@@ -206,6 +206,7 @@ private fun ColumnRegisterPartial(
 ) {
     RegisterPartialList(
         items = uiData.listCalendar!!,
+        isActive = !uiData.read,
         onDateChange = { onDateChange(it) })
 }
 

@@ -5,12 +5,11 @@
  */
 package com.mx.liftechnology.core.network.apiCall.flowMain
 
-import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.ResponseGeneric
 import com.mx.liftechnology.core.network.environment.Environment
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * Interfaz para la llamada a la API de obtención de la lista de parciales.
@@ -25,42 +24,8 @@ fun interface GetListPartialApiCall {
      * @param request Los datos de la petición.
      * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de [ResponseGetPartial].
      */
-    @POST(Environment.END_POINT_GET_PARTIAL)
+    @GET(Environment.END_POINT_GET_PARTIAL)
     suspend fun callApi(
-        @Body request: RequestGetPartial,
-    ): Response<ResponseGeneric<List<ResponseGetPartial?>?>>
+        @Query("school_cycle_id") schoolCycleId: Int,
+    ): Response<ResponseGeneric<List<ResponsePartials?>>>
 }
-
-/**
- * Modelo de datos para la petición de la lista de parciales.
- *
- * @author Pelkidev
- * @version 1.0.0
- */
-data class RequestGetPartial(
-    @SerializedName("profesorescuelaciclogrupo_id")
-    val teacherSchoolCycleGroupId: Int,
-    @SerializedName("user_id")
-    val userId: Int,
-    @SerializedName("profesor_id")
-    val teacherId: Int,
-)
-
-/**
- * Modelo de datos para la respuesta de la lista de parciales.
- *
- * @author Pelkidev
- * @version 1.0.0
- */
-data class ResponseGetPartial(
-    @SerializedName("parcialciclogrupo_id")
-    val partialCycleGroupId: Int?,
-    @SerializedName("descripcion")
-    val description: String?,
-    @SerializedName("fechainicio")
-    val startDate: String?,
-    @SerializedName("fechafinal")
-    val endDate: String?,
-    @SerializedName("profesorescuelaciclogrupo_id")
-    val teacherSchoolCycleGroupId: Int?,
-)

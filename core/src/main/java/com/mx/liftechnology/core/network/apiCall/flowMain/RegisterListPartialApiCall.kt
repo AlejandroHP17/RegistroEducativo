@@ -28,7 +28,7 @@ fun interface RegisterListPartialApiCall {
     @POST(Environment.END_POINT_REGISTER_PARTIAL)
     suspend fun callApi(
         @Body request: RequestRegisterPartial
-    ): Response<ResponseGeneric<List<String?>?>>
+    ): Response<ResponseGeneric<List<ResponsePartials?>>>
 }
 
 /**
@@ -38,15 +38,7 @@ fun interface RegisterListPartialApiCall {
  * @version 1.0.0
  */
 data class RequestRegisterPartial(
-    @SerializedName("numparciales")
-    val numberPartials: Int?,
-    @SerializedName("profesorescuelaciclogrupo_id")
-    val teacherSchoolCycleGroupId: Int?,
-    @SerializedName("user_id")
-    val userId: Int?,
-    @SerializedName("profesor_id")
-    val teacherId: Int?,
-    @SerializedName("parciales")
+    @SerializedName("partials")
     val listPartials: List<RequestPartials?>
 )
 
@@ -57,10 +49,33 @@ data class RequestRegisterPartial(
  * @version 1.0.0
  */
 data class RequestPartials(
-    @SerializedName("descripcion")
+    @SerializedName("school_cycle_id")
+    val cycleSchoolId: Int?,
+    @SerializedName("name")
     val description: String?,
-    @SerializedName("fechainicio")
+    @SerializedName("start_date")
     val startDate: String?,
-    @SerializedName("fechafinal")
+    @SerializedName("end_date")
     val endDate: String?
+)
+
+/**
+ * Modelo de datos para un parcial en la petición de registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class ResponsePartials(
+    @SerializedName("school_cycle_id")
+    val cycleSchoolId: Int?,
+    @SerializedName("name")
+    val description: String?,
+    @SerializedName("start_date")
+    val startDate: String?,
+    @SerializedName("end_date")
+    val endDate: String?,
+    @SerializedName("id")
+    val partialId : Int,
+    @SerializedName("created_at")
+    val createdAt : String?
 )

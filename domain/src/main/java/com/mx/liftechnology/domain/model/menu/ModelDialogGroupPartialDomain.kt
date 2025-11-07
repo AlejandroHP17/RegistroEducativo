@@ -5,7 +5,8 @@
  */
 package com.mx.liftechnology.domain.model.menu
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPartial
+import com.mx.liftechnology.data.model.ModelListPartialsData
+
 
 /**
  * Modelo de datos de dominio para un parcial en un diálogo de selección.
@@ -34,11 +35,11 @@ data class ModelDialogGroupPartialDomain(
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ResponseGetPartial?>?.ListPartialToConvertModelDialogGroupPartialDomains: List<ModelDialogGroupPartialDomain>
+val List<ModelListPartialsData?>?.ListPartialToConvertModelDialogGroupPartialDomains: List<ModelDialogGroupPartialDomain>
     get() = this?.mapIndexedNotNull { index, partial ->
         partial?.let {
             ModelDialogGroupPartialDomain(
-                partialId = it.partialCycleGroupId,
+                partialId = it.partialId,
                 startDate = it.startDate ?: "",
                 endDate = it.endDate?: "",
                 name = "Parcial ${index + 1}",

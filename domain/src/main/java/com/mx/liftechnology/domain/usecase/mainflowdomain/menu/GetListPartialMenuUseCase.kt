@@ -5,21 +5,17 @@
  */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepository
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.menu.ListPartialToConvertModelDialogGroupPartialDomains
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 
 /**
  * Caso de uso para obtener la lista de parciales del menú.
@@ -42,51 +38,27 @@ class GetListPartialMenuUseCase (
      * @return Un [ResultModel] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-     suspend operator fun invoke(): ResultModel<List<ModelDialogGroupPartialDomain>, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+     suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, Error> {
+        val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
-        if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorResult(ModelCodeError.ERROR_UNKNOWN)
+        if(cycleSchoolId == null) return ErrorResult(LocalError.USER_INCOMPLETE_DATA)
 
-        val request = RequestGetPartial(
-            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
-            userId = userId,
-            teacherId = roleId
-        )
-
-         return runCatching { getListPartialRepository.executeGetListPartial(request) }.fold(
+         return runCatching { getListPartialRepository.executeGetListPartial(cycleSchoolId) }.fold(
              onSuccess = { result ->
                  when (result){
-                     is DataSuccessResult -> {
+                     is SuccessResult -> {
                          val convertedResult = result.data.ListPartialToConvertModelDialogGroupPartialDomains
                          if (convertedResult.isNotEmpty()) {
                              SuccessResult(convertedResult)
                          }
-                         else ErrorResult(ModelCodeError.ERROR_UNKNOWN)
+                         else ErrorResult(LocalError.EMPTY)
                      }
-                     is DataErrorResult -> {
-                         handleResponse(result.error)
+                     is ErrorResult -> {
+                         ErrorResult(result.error)
                      }
                  }
              },
-             onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
+             onFailure = { ErrorResult(NetworkError.UNKNOWN)}
          )
-    }
-
-    /**
-     * Maneja las respuestas de error del repositorio, convirtiendo un [NetworkError] en un [ResultModel] específico.
-     *
-     * @param error El objeto [NetworkError] que representa el error de la capa de datos.
-     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
-     */
-    private fun handleResponse(error: NetworkError): ResultModel<List<ModelDialogGroupPartialDomain>, String> {
-        return when (error) {
-            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
-            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
-            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
 }

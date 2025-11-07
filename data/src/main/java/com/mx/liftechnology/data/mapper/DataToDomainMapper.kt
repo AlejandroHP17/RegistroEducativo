@@ -2,10 +2,12 @@ package com.mx.liftechnology.data.mapper
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponsePartials
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseRegisterCycleSchool
 import com.mx.liftechnology.data.model.ModelCCTData
 import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.data.model.ModelCycleSchoolData
+import com.mx.liftechnology.data.model.ModelListPartialsData
 import com.mx.liftechnology.data.model.ModelRegisterCycleData
 
 object DataToDomainMapper {
@@ -50,5 +52,16 @@ object DataToDomainMapper {
                 cycleSchoolId = cycle.cycleSchoolId
             )
         }?:emptyList()
+    }
+    
+    fun List<ResponsePartials?>.mapperToModelListPartialsData(): List<ModelListPartialsData>{
+        return this.mapIndexedNotNull { index, partials ->
+            ModelListPartialsData(
+                description = partials?.description,
+                startDate = partials?.startDate,
+                endDate = partials?.endDate,
+                partialId = partials?.partialId ?: 0
+            )
+        }
     }
 }

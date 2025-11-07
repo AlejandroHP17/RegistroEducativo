@@ -239,6 +239,7 @@ fun EvaluationStudentList(
 @Composable
 fun RegisterPartialList(
     items: List<ModelDatePeriodDomain>,
+    isActive: Boolean,
     onDateChange:(Pair<Pair<LocalDate?, LocalDate?>, Int>) -> Unit
 ) {
     LazyColumn (){
@@ -246,6 +247,7 @@ fun RegisterPartialList(
             RegisterPartialListItem(
                 index = index,
                 date = item,
+                isActive = isActive,
                 onDateChange = {onDateChange(Pair(it, index)) },
             )
         }

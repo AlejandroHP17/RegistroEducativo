@@ -9,17 +9,15 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.RequestPartials
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.data.model.ModelListPartialsData
 import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * Caso de uso para registrar una lista de parciales.
@@ -38,67 +36,47 @@ class RegisterListPartialUseCase(
     /**
      * Ejecuta el proceso de registro de una lista de parciales.
      *
-     * @param periodNumber El número de períodos a registrar.
      * @param adapterPeriods La lista de períodos de fechas a registrar.
      * @return Un [ResultModel] que indica el resultado de la operación.
      */
     suspend operator fun invoke(
-        periodNumber: Int?,
         adapterPeriods: List<ModelDatePeriodDomain>
-    ): ResultModel<List<String?>?, String> {
-        val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+    ): ModelResult<List<ModelListPartialsData?>, Error> {
+        val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
+        val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+
+        if(teacherId == null || cycleSchoolId == null || adapterPeriods.isNullOrEmpty()) return ErrorResult(
+            LocalError.USER_INCOMPLETE_DATA
+        )
 
         val listAdapter: MutableList<RequestPartials> = mutableListOf()
         adapterPeriods.forEachIndexed { index,  data ->
             val part = data.date.valueText.split("/")
             listAdapter.add(
                 RequestPartials(
-                    description = (index + 1).toString(),
+                    cycleSchoolId = cycleSchoolId,
+                    description = ("Parcial $index + 1"),
                     startDate = part.getOrNull(0)?.trim() ?: "",
                     endDate = part.getOrNull(1)?.trim() ?: "",
                 )
             )
         }
 
-        val request = RequestRegisterPartial(
-            numberPartials = periodNumber,
-            teacherSchoolCycleGroupId = profSchoolCycleGroupId,
-            userId = userId,
-            teacherId = roleId,
-            listPartials = listAdapter
-        )
+        val request = RequestRegisterPartial(listPartials = listAdapter)
 
         return runCatching { registerListPartialRepository.executeRegisterListPartial(request) }.fold(
             onSuccess = { result ->
                 when(result){
-                    is DataSuccessResult -> {
-                        result.data?.let {
-                            if(it.isNotEmpty()) SuccessResult(result.data)
-                            else ErrorResult(ModelCodeError.ERROR_CRITICAL)
-                        }?:ErrorResult(ModelCodeError.ERROR_CRITICAL)
+                    is SuccessResult -> {
+                        if(result.data.isNotEmpty()) SuccessResult(result.data)
+                        else ErrorResult(NetworkError.UNKNOWN_REGISTER)
                     }
-                    is DataErrorResult -> { handleResponse(result.error)}
+                    is ErrorResult -> {
+                        ErrorResult(result.error)
+                    }
                 }
             },
-            onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
+            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
         )
-    }
-
-    /**
-     * Maneja las respuestas de error del repositorio de registro de parciales.
-     *
-     * @param error El objeto [NetworkError] que representa el error.
-     * @return Un [ResultModel] que representa el error específico.
-     */
-    private fun handleResponse(error: NetworkError): ResultModel<List<String?>?, String> {
-        return when (error) {
-            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
-            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION)
-            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
 }

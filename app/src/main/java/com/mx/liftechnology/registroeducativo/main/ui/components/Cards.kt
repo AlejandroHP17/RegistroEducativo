@@ -39,10 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentUiCallbacks
@@ -507,13 +507,15 @@ fun EvaluationStudentItem(
 fun RegisterPartialListItem(
     index: Int,
     date: ModelDatePeriodDomain,
+    isActive: Boolean = true,
     onDateChange: (Pair<LocalDate?, LocalDate?>) -> Unit,
 ) {
 
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDates by remember { mutableStateOf<Pair<LocalDate?, LocalDate?>>(null to null) }
 
-    DateRangePickerDialog(showDialog = showDatePicker,
+    DateRangePickerDialog(
+        showDialog = showDatePicker,
         onDismiss = { showDatePicker = false },
         onDateSelected = { startDate, endDate ->
             selectedDates = startDate to endDate
@@ -526,7 +528,9 @@ fun RegisterPartialListItem(
         enable = false,
         label = stringResource(id = R.string.form_partial_periods, index + 1),
     )
-    { showDatePicker = true }
+    {
+        if(isActive) showDatePicker = true
+    }
 
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 

@@ -7,6 +7,8 @@ package com.mx.liftechnology.data.repository.flowMain.partial
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListPartialApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterPartial
+import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelListPartialsData
+import com.mx.liftechnology.data.model.ModelListPartialsData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
@@ -29,7 +31,7 @@ fun interface RegisterListPartialRepository{
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeRegisterListPartial(request : RequestRegisterPartial
-  ): ModelResult<List<String?>?, NetworkError>
+  ): ModelResult<List<ModelListPartialsData?>, NetworkError>
 }
 
 /**
@@ -49,12 +51,12 @@ class RegisterListPartialRepositoryImpl(
      */
     override suspend fun executeRegisterListPartial(
         request : RequestRegisterPartial
-    ): ModelResult<List<String?>?, NetworkError> {
+    ): ModelResult<List<ModelListPartialsData?>, NetworkError> {
         return try {
             val response = registerListPartialApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    SuccessResult(it)
+                    SuccessResult(it.mapperToModelListPartialsData())
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))

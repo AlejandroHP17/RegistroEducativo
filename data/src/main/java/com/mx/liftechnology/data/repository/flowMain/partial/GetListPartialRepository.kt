@@ -6,8 +6,8 @@
 package com.mx.liftechnology.data.repository.flowMain.partial
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListPartialApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPartial
+import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelListPartialsData
+import com.mx.liftechnology.data.model.ModelListPartialsData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
@@ -30,8 +30,8 @@ fun interface GetListPartialRepository{
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeGetListPartial(
-      request : RequestGetPartial
-  ): ModelResult<List<ResponseGetPartial>, NetworkError>
+      schoolCycleId : Int
+  ): ModelResult<List<ModelListPartialsData?>, NetworkError>
 }
 
 /**
@@ -50,21 +50,19 @@ class GetListPartialRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun executeGetListPartial(
-        request : RequestGetPartial
-    ): ModelResult<List<ResponseGetPartial>, NetworkError> {
+        schoolCycleId : Int
+    ): ModelResult<List<ModelListPartialsData?>, NetworkError> {
         return try {
-            val response = getListPartialApiCall.callApi(request)
-            if (response.isSuccessful && response.body()?.data != null) {
-                response.body()?.data?.let { res ->
-                    val data = res.filterNotNull()
-                    if(data.isNotEmpty()) SuccessResult(data)
-                    else ErrorResult(NetworkException.handleException(NullPointerException()))
+            val response = getListPartialApiCall.callApi(schoolCycleId)
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    SuccessResult(it.mapperToModelListPartialsData())
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }
         } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
+            ErrorResult(NetworkError.UNKNOWN)
         }
     }
 }
