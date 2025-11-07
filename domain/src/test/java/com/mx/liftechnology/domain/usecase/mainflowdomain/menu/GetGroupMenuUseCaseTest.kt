@@ -61,7 +61,7 @@ class GetGroupMenuUseCaseTest {
         val mockList = listOf(mockGroupTeacher)
 
         // Configuramos el mock del repositorio para que devuelva la lista
-        coEvery { menuRepository.executeGetGroup(any()) } returns ResultSuccess(mockList)
+        coEvery { menuRepository.executeGetCycleSchool(any()) } returns ResultSuccess(mockList)
 
         // Ejecutamos el método a probar
         val result = getGroupMenuUseCase.invoke()
@@ -78,7 +78,7 @@ class GetGroupMenuUseCaseTest {
     @Test
     fun `invoke con respuesta de error del repositorio devuelve ErrorState`() = runBlocking {
         // Configuramos el mock para que devuelva un error de servidor
-        coEvery { menuRepository.executeGetGroup(any()) } returns ResultError(FailureService.ServerError)
+        coEvery { menuRepository.executeGetCycleSchool(any()) } returns ResultError(FailureService.ServerError)
 
         // Ejecutamos el método a probar
         val result = getGroupMenuUseCase.invoke()
@@ -94,7 +94,7 @@ class GetGroupMenuUseCaseTest {
     @Test
     fun `invoke con lista vacia del repositorio devuelve ErrorState`() = runBlocking {
         // Configuramos el mock para que devuelva una lista vacía
-        coEvery { menuRepository.executeGetGroup(any()) } returns ResultSuccess(emptyList())
+        coEvery { menuRepository.executeGetCycleSchool(any()) } returns ResultSuccess(emptyList())
 
         // Ejecutamos el método a probar
         val result = getGroupMenuUseCase.invoke()

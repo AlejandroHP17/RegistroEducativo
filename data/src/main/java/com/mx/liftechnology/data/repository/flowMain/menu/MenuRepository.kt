@@ -6,8 +6,8 @@
 package com.mx.liftechnology.data.repository.flowMain.menu
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GroupApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGroup
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
+import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToCycleSchool
+import com.mx.liftechnology.data.model.ModelCycleSchoolData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
@@ -29,9 +29,9 @@ fun interface MenuRepository{
      * @param request Los datos de la petición.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetGroup(
-        request: RequestGroup
-    ): ModelResult<List<ResponseGroupTeacher>, NetworkError>
+    suspend fun executeGetCycleSchool(
+        request: Int
+    ): ModelResult<List<ModelCycleSchoolData>, NetworkError>
 }
 
 /**
@@ -49,13 +49,13 @@ class MenuRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetGroup(request: RequestGroup): ModelResult<List<ResponseGroupTeacher>, NetworkError> {
+    override suspend fun executeGetCycleSchool(request: Int): ModelResult<List<ModelCycleSchoolData>, NetworkError> {
         return try {
             val response = groupApiCall.callApi(request)
             if (response.isSuccessful && response.body()?.data != null) {
-                response.body()?.data?.let { res ->
-                    val data = res.filterNotNull()
-                    if(data.isNotEmpty()) SuccessResult(data)
+                response.body()?.data?.let { result ->
+                    val data = result.filterNotNull()
+                    if(data.isNotEmpty()) SuccessResult(data.mapperToCycleSchool())
                     else ErrorResult(NetworkException.handleException(NullPointerException()))
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {

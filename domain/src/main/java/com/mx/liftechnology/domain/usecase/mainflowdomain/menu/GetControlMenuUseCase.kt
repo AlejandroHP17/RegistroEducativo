@@ -7,10 +7,12 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
 import com.mx.liftechnology.data.repository.flowMain.menu.MenuLocalRepository
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 
 /**
  * Caso de uso para obtener la lista de ítems del menú de control.
@@ -30,13 +32,13 @@ class GetControlMenuUseCase(
      * @return Un [ResultModel] que contiene la lista de ítems del menú o un estado de error
      * si la lista está vacía o si ocurre una excepción.
      */
-    operator fun invoke(): ResultModel<List<ModelPrincipalMenuData>, String> {
+    operator fun invoke(): ModelResult<List<ModelPrincipalMenuData>, Error> {
         return runCatching { localRepository.getControlMenu() }.fold(
             onSuccess = { list ->
-                if (list.isEmpty()) ErrorResult(ModelCodeError.ERROR_EMPTY)
+                if (list.isEmpty()) ErrorResult(LocalError.EMPTY)
                 else SuccessResult(list)
             },
-            onFailure = { ErrorResult(ModelCodeError.ERROR_CATCH) }
+            onFailure = { ErrorResult(LocalError.CATCH)}
         )
     }
 }

@@ -34,6 +34,8 @@ enum class LocalError : Error {
     /** Error que indica que uno o más campos requeridos para la operación están vacíos o son inválidos. */
     USER_INCOMPLETE_DATA,
     RESPONSE_INCOMPLETE_DATA,
+    CATCH,
+    EMPTY
 }
 
 
@@ -53,7 +55,8 @@ enum class NetworkError : Error {
     CONFLICT,
     BAD_REQUEST,
     UNKNOWN,
-    UNKNOWN_REGISTER
+    UNKNOWN_REGISTER,
+    EMPTY
 }
 
 /**

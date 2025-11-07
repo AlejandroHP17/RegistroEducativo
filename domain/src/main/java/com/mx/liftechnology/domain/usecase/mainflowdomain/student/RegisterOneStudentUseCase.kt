@@ -55,7 +55,7 @@ class RegisterOneStudentUseCase(
     ): ResultModel<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val pecg= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val pecg= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         val request = RequestRegisterStudent(
             name = name,

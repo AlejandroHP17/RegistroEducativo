@@ -37,6 +37,8 @@ object ErrorMapper {
         return when (localError) {
             LocalError.USER_INCOMPLETE_DATA -> UserError.SHOW_INCOMPLETE_ERROR
             LocalError.RESPONSE_INCOMPLETE_DATA -> UserError.SHOW_GENERIC_ERROR
+            LocalError.CATCH -> UserError.SHOW_GENERIC_ERROR
+            LocalError.EMPTY -> UserError.SHOW_GENERIC_ERROR
         }
     }
 
@@ -64,8 +66,7 @@ object ErrorMapper {
 
             // Registro Usuario
             NetworkError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific
-
-
+            NetworkError.EMPTY -> UserError.LOGS
         }
     }
 }

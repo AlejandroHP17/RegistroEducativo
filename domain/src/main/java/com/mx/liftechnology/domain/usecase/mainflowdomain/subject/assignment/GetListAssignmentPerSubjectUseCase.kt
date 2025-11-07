@@ -13,7 +13,7 @@ import com.mx.liftechnology.data.repository.flowMain.subject.assignment.GetPerce
 import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
@@ -47,7 +47,7 @@ class GetListAssignmentPerSubjectUseCase (
 
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
         val subjectSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP)
 
         val request = RequestGetPercentSubjectId(

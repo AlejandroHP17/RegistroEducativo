@@ -49,7 +49,7 @@ class RegisterOneSubjectUseCase(
     ): ResultModel<List<String?>?, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         val listAdapter: MutableList<RequestPercent> = mutableListOf()
         updatedList?.forEach { data ->

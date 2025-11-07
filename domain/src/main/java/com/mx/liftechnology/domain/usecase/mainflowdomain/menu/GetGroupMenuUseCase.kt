@@ -1,17 +1,15 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGroup
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.menu.ModelInfoStudentGroupDomain
 import com.mx.liftechnology.domain.model.menu.RGTtoConvertModelDialogStudentGroupDomains
@@ -35,19 +33,13 @@ class GetGroupMenuUseCase(
      *
      * @return Un [ResultModel] que contiene la información del grupo o un error.
      */
-    suspend operator fun invoke(): ResultModel<ModelInfoStudentGroupDomain, String> {
-        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-
-        val request = RequestGroup(
-            teacherId = roleId,
-            userId = userId,
-        )
-
-        return runCatching { menuRepository.executeGetGroup(request) }.fold(
+    suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, Error> {
+        val userId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
+        if (userId == null) ErrorResult(LocalError.USER_INCOMPLETE_DATA)
+        return runCatching { menuRepository.executeGetCycleSchool( userId!!) }.fold(
             onSuccess = { result ->
                 when (result) {
-                    is DataSuccessResult -> {
+                    is SuccessResult -> {
                         val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
                         if (convertedResult.isNotEmpty()) {
                             SuccessResult(
@@ -57,14 +49,17 @@ class GetGroupMenuUseCase(
                                 )
                             )
                         } else {
-                            ErrorResult(ModelCodeError.ERROR_CRITICAL)
+                            ErrorResult(NetworkError.EMPTY)
                         }
                     }
 
-                    is DataErrorResult -> handleResponse(result.error)
+                    is ErrorResult -> {
+                        if(result.error == NetworkError.UNAUTHORIZED) preference.cleanPreference()
+                        ErrorResult(result.error)
+                    }
                 }
             },
-            onFailure = { ErrorResult(ModelCodeError.ERROR_UNKNOWN) }
+            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
         )
 
     }
@@ -78,18 +73,18 @@ class GetGroupMenuUseCase(
      */
     private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
         return convertedResult.let { itemParent ->
-            if (preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == -1) {
-                val item = itemParent.firstOrNull { it.item?.teacherSchoolCycleGroupId != null }
-                item?.item?.teacherSchoolCycleGroupId?.let { id ->
+            if (preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) == -1) {
+                val item = itemParent.firstOrNull { it.item?.cycleSchoolId != null }
+                item?.item?.cycleSchoolId?.let { id ->
                     preference.savePreferenceInt(
-                        ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,
+                        ModelPreference.ID_CYCLE_SCHOOL,
                         id
                     )
                 }
                 buildOneInformation(item)
             } else {
                 val itemImprovised = itemParent.firstOrNull { onlyData ->
-                    preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP) == onlyData.item?.teacherSchoolCycleGroupId
+                    preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) == onlyData.item?.cycleSchoolId
                 }
                 buildOneInformation(itemImprovised)
             }
@@ -106,31 +101,11 @@ class GetGroupMenuUseCase(
         val modelResponse = ModelDialogStudentGroupDomain(
             selected = convertedResult?.selected,
             item = convertedResult?.item,
-            nameItem = "${convertedResult?.item?.cct} - ${convertedResult?.item?.group}${convertedResult?.item?.name} - ${convertedResult?.item?.shift}",
+            nameItem = convertedResult?.nameItem,
             listItemPartial = convertedResult?.listItemPartial,
             itemPartial = convertedResult?.itemPartial,
             namePartial = convertedResult?.namePartial,
         )
         return modelResponse
-    }
-
-    /**
-     * Maneja las respuestas de error del repositorio del menú.
-     *
-     * @param error El objeto [NetworkError] que representa el error.
-     * @return Un [ResultModel] que representa el error específico.
-     */
-    private fun handleResponse(error: NetworkError): ResultModel<ModelInfoStudentGroupDomain, String> {
-        return when (error) {
-            NetworkError.BAD_REQUEST -> ErrorResult(ModelCodeError.ERROR_INCOMPLETE_DATA)
-            NetworkError.UNAUTHORIZED -> {
-                preference.cleanPreference()
-                ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            }
-
-            NetworkError.NOT_FOUND -> ErrorResult(ModelCodeError.ERROR_DATA)
-            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
 }

@@ -47,7 +47,7 @@ class MenuRepositoryTest {
         coEvery { groupApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = menuRepository.executeGetGroup(mockk())
+        val result = menuRepository.executeGetCycleSchool(mockk())
 
         // Verificamos el resultado
         assertTrue(result is ResultSuccess)
@@ -65,7 +65,7 @@ class MenuRepositoryTest {
         coEvery { groupApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = menuRepository.executeGetGroup(mockk())
+        val result = menuRepository.executeGetCycleSchool(mockk())
 
         // Verificamos el resultado
         assertTrue(result is ResultError)
@@ -83,7 +83,7 @@ class MenuRepositoryTest {
         coEvery { groupApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = menuRepository.executeGetGroup(mockk())
+        val result = menuRepository.executeGetCycleSchool(mockk())
 
         // Verificamos el resultado
         assertTrue(result is ResultError)
@@ -101,7 +101,7 @@ class MenuRepositoryTest {
         coEvery { groupApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = menuRepository.executeGetGroup(mockk())
+        val result = menuRepository.executeGetCycleSchool(mockk())
 
         // Verificamos el resultado
         assertTrue(result is ResultError)

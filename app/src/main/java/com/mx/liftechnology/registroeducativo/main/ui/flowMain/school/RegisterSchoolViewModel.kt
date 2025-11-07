@@ -12,15 +12,14 @@ import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterCycleSchoolUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.getPeriodsByType
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toUi
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -32,6 +31,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelReg
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import com.mx.liftechnology.registroeducativo.main.util.getPeriodsByType
 import com.mx.liftechnology.registroeducativo.main.util.toSelectPeriod
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

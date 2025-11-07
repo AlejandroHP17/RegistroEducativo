@@ -48,7 +48,7 @@ class RegisterAssignmentUseCase (
     suspend operator fun invoke(nameJob: String, typeJob: Int, date: String, studentListUI:  List<RequestStudentJobs>): ResultModel<List<ResponseStudentJobs?>?, String> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val profSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val profSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
         val partialCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP)
 
         val request = RequestRegisterJobStudent(

@@ -9,9 +9,7 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepository
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
@@ -20,6 +18,8 @@ import com.mx.liftechnology.domain.model.generic.ResultModel
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.menu.ListPartialToConvertModelDialogGroupPartialDomains
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 
 /**
  * Caso de uso para obtener la lista de parciales del menú.
@@ -45,7 +45,7 @@ class GetListPartialMenuUseCase (
      suspend operator fun invoke(): ResultModel<List<ModelDialogGroupPartialDomain>, String> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val profSchoolCycleGroupId= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(userId == null || roleId == null || profSchoolCycleGroupId == null) return ErrorResult(ModelCodeError.ERROR_UNKNOWN)
 

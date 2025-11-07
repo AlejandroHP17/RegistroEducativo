@@ -70,5 +70,5 @@ object Environment {
 
     /** Endpoints para el flujo del menú. */
     const val END_POINT_GET_CCT = "schools/{cct}"
-    const val END_POINT_GET_GROUP = "cycles"
+    const val END_POINT_GET_CYCLE_SCHOOL = "cycles/"
 }

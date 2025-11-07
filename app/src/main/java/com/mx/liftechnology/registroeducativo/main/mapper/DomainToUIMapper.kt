@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
@@ -92,7 +91,7 @@ object DomainToUIMapper {
         }
     }
 
-    fun String.toModelCustomSpinner() : ModelCustomSpinner{
+    fun String.toModelCustomSpinner(): ModelCustomSpinner {
         return ModelCustomSpinner(
             value = this,
             id = this.toInt()
@@ -115,20 +114,6 @@ object DomainToUIMapper {
                 value = assignment.assignmentName.valueText
             )
         }
-    }
-
-
-    fun List<ModelCCTDataPeriodCatalog>.getPeriodsByType(typeName: String): List<ModelCustomSpinner> {
-        return this
-            .filter { it.typeName == typeName }
-            .map { it.periodNumber }
-            .distinct()
-            .map { number ->
-                ModelCustomSpinner(
-                    value = number.toString(),
-                    id = number
-                )
-            }
     }
 }
 

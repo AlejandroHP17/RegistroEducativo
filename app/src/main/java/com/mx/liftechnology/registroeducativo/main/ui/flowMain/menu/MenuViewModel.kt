@@ -3,10 +3,9 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.core.util.logInfo
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.GetControlMenuUseCase
@@ -17,6 +16,7 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.menu.UpdateGroupMenuUs
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.SavePartialUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.UpdatePartialUseCase
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -29,7 +29,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the main menu screen.
@@ -67,12 +66,12 @@ class MenuViewModel(
     fun getGroup() {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            when (val state = getGroupMenuUseCase.invoke()) {
+            when (val result = getGroupMenuUseCase.invoke()) {
                 is SuccessResult -> {
                     _dialogState.update {
                         it.copy(
-                            studentGroupItem = state.result.infoSchoolSelected,
-                            studentGroupList = state.result.listSchool,
+                            studentGroupItem = result.data.infoSchoolSelected,
+                            studentGroupList = result.data.listSchool,
                         )
                     }
                     getListPartialCompose()
@@ -83,26 +82,25 @@ class MenuViewModel(
 
                 }
 
-                is ErrorUnauthorizedResult -> {
-                    preference.cleanPreference()
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.UNAUTHORIZED,
-                            controlToast = ModelStateToastUI(
-                                messageToast = R.string.toast_warning_close_session,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.WARNING
-                            )
-                        )
+                is ErrorResult -> {
+                    val msg = when(ErrorMapper.mapErrorToUI(result.error)){
+                        UserError.UNAUTHORIZED -> R.string.toast_warning_close_session
+                        else -> null
                     }
-                }
 
-                else -> {
-                    logInfo(state.toString())
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
+                    if(msg != null){
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = ModelStateToastUI(
+                                    messageToast = msg,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.ERROR
+                                )
+                            )
+                        }
+                    }else{
+                        _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
                     }
                 }
             }
@@ -123,7 +121,7 @@ class MenuViewModel(
     }
 
     private suspend fun getListPartialCompose() {
-        when (val state = getListPartialMenuUseCase.invoke()) {
+       /* when (val state = getListPartialMenuUseCase.invoke()) {
             is SuccessResult -> {
                 withContext(dispatcherProvider.io) {
                     val itemSelected = savePartialUseCase.invoke(state.result)
@@ -180,7 +178,7 @@ class MenuViewModel(
                     }
                 }
             }
-        }
+        }*/
     }
 
     /**
@@ -188,17 +186,17 @@ class MenuViewModel(
      */
     fun getControlMenu() {
         viewModelScope.launch(dispatcherProvider.io) {
-            when (val state = getControlMenuUseCase.invoke()) {
+            when (val result = getControlMenuUseCase.invoke()) {
                 is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
                     _dataState.update {
-                        it.copy(controlItems = state.result)
+                        it.copy(controlItems = result.data)
                     }
                 }
 
-                else -> {
+                is ErrorResult -> {
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR
@@ -211,7 +209,7 @@ class MenuViewModel(
     }
 
     private fun showGetControlRegister() {
-        when (val state = getControlRegisterUseCase.invoke()) {
+        when (val result = getControlRegisterUseCase.invoke()) {
             is SuccessResult -> {
                 _uiState.update {
                     it.copy(
@@ -220,11 +218,11 @@ class MenuViewModel(
                     )
                 }
                 _dataState.update {
-                    it.copy(evaluationItems = state.result)
+                    it.copy(evaluationItems = result.data)
                 }
             }
 
-            else -> {
+            is ErrorResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.ERROR,

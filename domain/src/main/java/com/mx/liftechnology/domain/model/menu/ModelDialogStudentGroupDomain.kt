@@ -7,6 +7,7 @@
 package com.mx.liftechnology.domain.model.menu
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
+import com.mx.liftechnology.data.model.ModelCycleSchoolData
 
 /**
  * Modelo de datos que representa un grupo de estudiantes en un diálogo de selección.
@@ -22,7 +23,7 @@ import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
  */
 data class ModelDialogStudentGroupDomain (
     val selected : Boolean?,
-    val item : ResponseGroupTeacher?,
+    val item : ModelCycleSchoolData?,
     val nameItem : String?,
     val listItemPartial : List<ModelDialogGroupPartialDomain>?,
     val itemPartial: ModelDialogGroupPartialDomain?,
@@ -38,13 +39,13 @@ data class ModelDialogStudentGroupDomain (
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ResponseGroupTeacher?>?.RGTtoConvertModelDialogStudentGroupDomains: List<ModelDialogStudentGroupDomain>
-    get() = this?.mapNotNull { teacher -> // Filtramos los valores nulos
-        teacher?.let {
+val List<ModelCycleSchoolData>.RGTtoConvertModelDialogStudentGroupDomains: List<ModelDialogStudentGroupDomain>
+    get() = this.mapNotNull { cycle -> // Filtramos los valores nulos
+        cycle.let {
             ModelDialogStudentGroupDomain(
                 selected = false,
-                item = teacher,
-                nameItem = "${it.cct} - ${it.group}${it.name} - ${it.shift}",
+                item = cycle,
+                nameItem = it.name,
                 listItemPartial = null,
                 itemPartial = null,
                 namePartial = null

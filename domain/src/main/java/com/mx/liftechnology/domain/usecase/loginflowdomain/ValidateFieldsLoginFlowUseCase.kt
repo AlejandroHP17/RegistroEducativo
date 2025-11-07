@@ -5,10 +5,10 @@
  */
 package com.mx.liftechnology.domain.usecase.loginflowdomain
 
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 
 /**
  * Interfaz para el caso de uso que valida los campos de los flujos de login y registro.

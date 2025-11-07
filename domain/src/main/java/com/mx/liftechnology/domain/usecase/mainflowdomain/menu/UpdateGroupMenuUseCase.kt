@@ -25,8 +25,8 @@ class UpdateGroupMenuUseCase(private val preference: PreferenceUseCase) {
      */
     operator fun invoke(selected: ModelDialogStudentGroupDomain) {
         preference.savePreferenceInt(
-            ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP,
-            selected.item?.teacherSchoolCycleGroupId
+            ModelPreference.ID_CYCLE_SCHOOL,
+            selected.item?.cycleSchoolId
         )
     }
 }

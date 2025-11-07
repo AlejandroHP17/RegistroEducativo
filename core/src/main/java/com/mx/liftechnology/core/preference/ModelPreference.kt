@@ -24,7 +24,7 @@ object ModelPreference {
     const val ID_USER_LEVEL = "ID_USER_LEVEL"
 
     /** Clave para almacenar el ID del grupo seleccionado. */
-    const val ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"
+    const val ID_CYCLE_SCHOOL = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"
     /** Clave para almacenar el ID del parcial seleccionado. */
     const val ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP"
     /** Clave para almacenar el ID de la materia seleccionada. */

@@ -21,12 +21,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
-import com.mx.liftechnology.domain.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
@@ -136,7 +136,7 @@ fun DialogGroupList(
     LazyColumn {
         itemsIndexed(items) { index, item ->
             DialogGroupItem(
-                text = "${item.item?.cct.orEmpty()} ${item.item?.group.orEmpty()} ${item.item?.name.orEmpty()}",
+                text = "${item.item?.name.orEmpty()}",
                 isSelected = index == selectedIndex,
                 onSelected = {
                     selectedIndex = index

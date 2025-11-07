@@ -44,7 +44,7 @@ class GetListAssessmentTypeUseCase(
     suspend operator fun invoke(): ResultModel<List<ResponseGetListAssessmentType?>?, String?> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP)
+        val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         val request = RequestGetListAssessmentType(
             teacherId = teacherId,

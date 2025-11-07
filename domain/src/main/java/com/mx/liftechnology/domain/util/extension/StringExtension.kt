@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.domain.extension
+package com.mx.liftechnology.domain.util.extension
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 

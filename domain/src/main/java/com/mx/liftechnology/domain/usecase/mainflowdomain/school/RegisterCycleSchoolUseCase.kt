@@ -68,8 +68,8 @@ class RegisterCycleSchoolUseCase(
         val request = RequestRegisterCycleSchool(
             teacherId = teacherId,
             schoolId = schoolId,
-            name = "$cct Grupo: $grade $group, $shiftName",
-            description = "$cct Grupo: $grade $group, $shiftName",
+            name = "$cct, $grade$group, $shiftName",
+            description = "$cct, $grade$group, $shiftName",
             year = year,
             cycleLabel = "",
             grade = grade.toString(),

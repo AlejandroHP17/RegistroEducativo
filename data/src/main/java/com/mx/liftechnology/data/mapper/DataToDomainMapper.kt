@@ -1,9 +1,11 @@
 package com.mx.liftechnology.data.mapper
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseRegisterCycleSchool
 import com.mx.liftechnology.data.model.ModelCCTData
 import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
+import com.mx.liftechnology.data.model.ModelCycleSchoolData
 import com.mx.liftechnology.data.model.ModelRegisterCycleData
 
 object DataToDomainMapper {
@@ -34,5 +36,19 @@ object DataToDomainMapper {
             isActive = this.isActive,
             idCycleSchool = this.idCycleSchool?:0
         )
+    }    
+    
+    fun List<ResponseGroupTeacher>?.mapperToCycleSchool(): List<ModelCycleSchoolData> {
+        return this?.mapIndexedNotNull { index, cycle ->
+            ModelCycleSchoolData(
+                teacherId = cycle.teacherId,
+                schoolId = cycle.schoolId,
+                name = cycle.name,
+                grade = cycle.grade,
+                group = cycle.groupName,
+                isActive = cycle.isActive,
+                cycleSchoolId = cycle.cycleSchoolId
+            )
+        }?:emptyList()
     }
 }
