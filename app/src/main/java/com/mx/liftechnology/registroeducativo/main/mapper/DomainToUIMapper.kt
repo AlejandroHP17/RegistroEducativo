@@ -3,8 +3,8 @@ package com.mx.liftechnology.registroeducativo.main.mapper
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelSpinnerSchoolUi
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
@@ -47,7 +47,7 @@ object DomainToUIMapper {
      * @param subjects La lista de materias del dominio a convertir.
      * @return Una lista de ModelCustomCard formateada para mostrar en la UI.
      */
-    fun mapSubjectListToCustomCard(subjects: List<ModelFormatSubjectDomain>?): List<ModelCustomCard> {
+    fun mapSubjectListToCustomCard(subjects: List<ModelFormatFormativeFieldsDomain>?): List<ModelCustomCard> {
         return subjects?.map {
             ModelCustomCard(
                 id = it.subjectId?:0,
@@ -63,7 +63,7 @@ object DomainToUIMapper {
      * @param subject La materia del dominio a convertir.
      * @return Un ModelComplexCard con la información de la materia.
      */
-    fun mapSubjectToComplexCard(subject: ModelFormatSubjectDomain?): ModelComplexCard {
+    fun mapSubjectToComplexCard(subject: ModelFormatFormativeFieldsDomain?): ModelComplexCard {
         return ModelComplexCard(
             idTitle = subject?.subjectId,
             nameTitle = subject?.name,

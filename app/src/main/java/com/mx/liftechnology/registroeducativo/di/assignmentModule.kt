@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment.AssignmentStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.assignment.AssignmentSubjectViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.assignment.AssignmentSubjectViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

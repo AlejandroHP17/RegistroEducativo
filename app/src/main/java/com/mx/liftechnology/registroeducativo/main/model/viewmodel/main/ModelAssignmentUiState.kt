@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -19,7 +19,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  */
 data class ModelAssignmentStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val subject: ModelFormatSubjectDomain? = null,
+    val subject: ModelFormatFormativeFieldsDomain? = null,
     val student: ModelStudentDomain? = null,
     val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
 )
@@ -50,7 +50,7 @@ data class ModelAssignmentUiCallbacks(
     val onItemClick: (ModelComplexCard?) -> Unit,
 )
 
-fun ModelFormatSubjectDomain?.toModelComplexCard(): ModelComplexCard {
+fun ModelFormatFormativeFieldsDomain?.toModelComplexCard(): ModelComplexCard {
     return ModelComplexCard(
         idTitle = this?.subjectId,
         nameTitle = this?.name,

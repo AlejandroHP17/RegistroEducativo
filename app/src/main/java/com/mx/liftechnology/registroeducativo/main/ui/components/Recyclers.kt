@@ -19,13 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.data.model.ModelWorkTypeData
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.menu.ModelDialogStudentGroupDomain
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
-import com.mx.liftechnology.domain.model.subject.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
@@ -80,7 +80,7 @@ fun MyGridScreenPreview() {
         ),
     )
 
-    val items3 = listOf(ModelFormatSubjectDomain(1,"hola","mundo",1))
+    val items3 = listOf(ModelFormatFormativeFieldsDomain(1,"hola","mundo",1))
 
     Column {
         MyGridScreen(items, 410.dp) {}
@@ -188,9 +188,9 @@ fun DialogPartialList(
  */
 @Composable
 fun EvaluationPercentList(
-    listWorkMethods :List<ResponseGetListAssessmentType?>,
+    listWorkMethods :List<ModelWorkTypeData?>,
     items: List<ModelSpinnersWorkMethods>,
-    onNameChange:(Pair<ResponseGetListAssessmentType?, Int>) -> Unit,
+    onNameChange:(Pair<ModelWorkTypeData?, Int>) -> Unit,
     onPercentChange:(Pair<String, Int>) -> Unit,
 ) {
     LazyColumn {

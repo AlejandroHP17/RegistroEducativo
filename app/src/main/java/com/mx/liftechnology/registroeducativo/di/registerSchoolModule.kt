@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.school.GetCctApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterCycleSchoolApiCall
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepositoryImpl

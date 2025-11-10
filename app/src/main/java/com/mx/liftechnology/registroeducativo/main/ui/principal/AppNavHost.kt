@@ -21,7 +21,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.forgetPassword.ForgetPasswordScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login.LoginScreen
@@ -32,10 +31,10 @@ import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.cal
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment.AssignmentStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.assignment.AssignmentSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.list.ListSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.register.RegisterSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.subject.registerassignment.RegisterAssignmentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.assignment.AssignmentSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.list.ListSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.register.RegisterSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.registerassignment.RegisterAssignmentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashScreen

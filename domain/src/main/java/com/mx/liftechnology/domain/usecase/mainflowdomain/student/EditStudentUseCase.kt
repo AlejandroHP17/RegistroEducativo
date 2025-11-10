@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestEditStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.RequestEditStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.ModelStudentData

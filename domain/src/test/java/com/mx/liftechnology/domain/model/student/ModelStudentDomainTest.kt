@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

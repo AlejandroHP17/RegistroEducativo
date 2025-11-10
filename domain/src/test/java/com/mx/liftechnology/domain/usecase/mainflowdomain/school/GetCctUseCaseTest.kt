@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.school.ResponseCctSchool
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError

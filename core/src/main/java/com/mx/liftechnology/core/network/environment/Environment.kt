@@ -55,26 +55,29 @@ object Environment {
     const val END_POINT_REGISTER_CYCLE_SCHOOL = "cycles/"
     const val END_POINT_REGISTER_PARTIAL = "partials/"
     const val END_POINT_REGISTER_STUDENT = "students/"
+    const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/"
+    const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk"
 
-    const val END_POINT_REGISTER_SUBJECT = "teacher/registerTeacherSubjectSchool"
-    const val END_POINT_REGISTER_ASSIGNMENT = "teacher/registerTeacherSubjectSchoolGroup"
     const val END_POINT_REGISTER_JOB = "teacher/registerTeacherJobDayByStudent"
 
     /** Endpoints para la obtención de datos. */
     const val END_POINT_GET_PARTIAL = "partials/"
     const val END_POINT_GET_STUDENT = "students/"
+    const val END_POINT_GET_FORMATIVE_FIELDS= "formative-fields/"
+    const val END_POINT_GET_WORK_TYPE = "work-types/"
 
-    const val END_POINT_GET_SUBJECT= "teacher/getTeacherSubjectsPECG"
     const val END_POINT_GET_SUBJECT_PERCENT = "teacher/getTeacherSubjectsPercent"
     const val END_POINT_GET_EVALUATION_TYPE = "teacher/getTeacherGroup"
-    const val END_POINT_GET_ASSESSMENT_TYPE = "teacher/getTeacherTipoTrabajoPECG"
+
+
 
     /** Endpoints para borrar datos. */
     const val END_POINT_DELETE_STUDENT = "students/{student_id}"
+    const val END_POINT_DELETE_FORMATIVE_FIELDS = "formative-fields/{field_id}"
 
-
-    /** Endpoints para borrar datos. */
+    /** Endpoints para editar datos. */
     const val END_POINT_EDIT_STUDENT = "students/{student_id}"
+    const val END_POINT_EDIT_FORMATIVE_FIELDS = "formative-fields/{field_id}"
 
     /** Endpoints para el flujo del menú. */
     const val END_POINT_GET_CCT = "schools/{cct}"

@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.repository.flowMain.school
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetCctApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.school.GetCctApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.school.ResponseCctSchool
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery

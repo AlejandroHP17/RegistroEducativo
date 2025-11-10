@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.school.ResponseCctSchool
 import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.model.ModelCCTData
 import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository

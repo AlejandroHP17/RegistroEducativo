@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
-import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.SaveIdSubjectSelectedUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
@@ -49,7 +49,7 @@ class AssignmentStudentViewModel (
         _uiState.update { it.copy(student =  student) }
     }
 
-    private fun getListAssessmentType(subject: ModelFormatSubjectDomain?) {
+    private fun getListAssessmentType(subject: ModelFormatFormativeFieldsDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
                 is SuccessResult -> {

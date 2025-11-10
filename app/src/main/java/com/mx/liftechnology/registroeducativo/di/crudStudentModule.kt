@@ -1,9 +1,9 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.DeleteStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.EditStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.DeleteStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.EditStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.GetListStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.RegisterStudentApiCall
 import com.mx.liftechnology.data.repository.flowMain.student.DeleteStudentRepository
 import com.mx.liftechnology.data.repository.flowMain.student.DeleteStudentRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.student.EditStudentRepository

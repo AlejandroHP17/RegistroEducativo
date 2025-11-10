@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.flowMain.partial
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListPartialApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.partial.GetListPartialApiCall
 import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelListPartialsData
 import com.mx.liftechnology.data.model.ModelListPartialsData
 import com.mx.liftechnology.data.util.ErrorResult

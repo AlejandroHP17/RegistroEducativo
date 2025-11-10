@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.flowMain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.EditStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestEditStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.EditStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.RequestEditStudent
 import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelStudent
 import com.mx.liftechnology.data.model.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult

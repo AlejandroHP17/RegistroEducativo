@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListPartialApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.partial.GetListPartialApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListPartialApiCall
 import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepository
 import com.mx.liftechnology.data.repository.flowMain.partial.GetListPartialRepositoryImpl

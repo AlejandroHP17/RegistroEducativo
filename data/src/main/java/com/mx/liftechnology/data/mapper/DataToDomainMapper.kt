@@ -1,18 +1,23 @@
 package com.mx.liftechnology.data.mapper
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseCctSchool
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseEditStudent
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListWorkType
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponsePartials
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseRegisterCycleSchool
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseRegisterStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.formativeField.ResponseFormativeFieldBulk
+import com.mx.liftechnology.core.network.apiCall.flowMain.formativeField.ResponseGetListFormativeFields
+import com.mx.liftechnology.core.network.apiCall.flowMain.school.ResponseCctSchool
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseEditStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseRegisterStudent
 import com.mx.liftechnology.data.model.ModelCCTData
 import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.data.model.ModelCycleSchoolData
+import com.mx.liftechnology.data.model.ModelFormativeFieldsData
 import com.mx.liftechnology.data.model.ModelListPartialsData
 import com.mx.liftechnology.data.model.ModelRegisterCycleData
 import com.mx.liftechnology.data.model.ModelStudentData
+import com.mx.liftechnology.data.model.ModelWorkTypeData
 
 object DataToDomainMapper {
 
@@ -111,5 +116,35 @@ object DataToDomainMapper {
                 studentId = this?.studentId,
                 isActive = this?.isActive
         )
+    }
+
+
+    fun List<ResponseGetListFormativeFields?>.mapperToModelListFormativeFields(): List<ModelFormativeFieldsData>{
+        return this.mapIndexedNotNull { index, formativeFields ->
+            ModelFormativeFieldsData(
+                name = formativeFields?.name,
+                code = formativeFields?.code,
+                formativeFieldID = formativeFields?.formativeFieldID
+            )
+        }
+    }
+
+    fun ResponseFormativeFieldBulk?.mapperToModelListFormativeFields(): ModelFormativeFieldsData{
+        return ModelFormativeFieldsData(
+                name = this?.formativeFieldsName,
+                code = this?.formativeFieldsCode,
+                formativeFieldID = this?.formativeFieldsId
+            )
+        }
+
+
+
+    fun List<ResponseGetListWorkType?>.mapperToModelListWorkTypeData(): List<ModelWorkTypeData>{
+        return this.mapIndexedNotNull { index, workType ->
+            ModelWorkTypeData(
+                workTypeId = workType?.workTypeId,
+                name = workType?.name,
+           )
+        }
     }
 }

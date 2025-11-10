@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
 import com.mx.liftechnology.data.util.FailureService

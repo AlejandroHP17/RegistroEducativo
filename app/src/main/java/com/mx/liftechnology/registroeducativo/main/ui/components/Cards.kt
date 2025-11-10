@@ -37,8 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
 import com.mx.liftechnology.data.model.ModelPrincipalMenuData
+import com.mx.liftechnology.data.model.ModelWorkTypeData
 import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -106,10 +106,9 @@ fun CustomCardView() {
 
         EvaluationPercentItem(
             listWorkMethods = listOf(
-                ResponseGetListAssessmentType(
-                    assessmentTypeId = 1,
-                    description = "hola",
-                    teacherSchoolCycleGroupId = 1
+                ModelWorkTypeData(
+                    workTypeId = 1,
+                    name = "hola"
                 )
             ),
             name = "Hola".stringToModelStateOutFieldText(),
@@ -418,10 +417,10 @@ fun DialogGroupItem(
  */
 @Composable
 fun EvaluationPercentItem(
-    listWorkMethods: List<ResponseGetListAssessmentType?>,
+    listWorkMethods: List<ModelWorkTypeData?>,
     name: ModelStateOutFieldText,
     percent: ModelStateOutFieldText,
-    onNameChange: (ResponseGetListAssessmentType?) -> Unit,
+    onNameChange: (ModelWorkTypeData?) -> Unit,
     onPercentChange: (String) -> Unit,
 ) {
     Row(

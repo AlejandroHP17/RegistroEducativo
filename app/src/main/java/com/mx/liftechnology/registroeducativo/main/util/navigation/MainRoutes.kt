@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.util.navigation
 import android.net.Uri
 import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 
 /**
  * Clase sellada que representa las rutas para el flujo principal de la aplicación.
@@ -80,12 +80,12 @@ sealed class MainRoutes (val route: String) {
     /** Ruta para la pantalla de asignación de materia. */
     data object AssignmentSubject : MainRoutes("assignment?subject={subject}") {
         /**
-         * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [ModelFormatSubjectDomain] como parámetro.
+         * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [ModelFormatFormativeFieldsDomain] como parámetro.
          *
          * @param subject El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun createRoutes(subject: ModelFormatSubjectDomain?): String {
+        fun createRoutes(subject: ModelFormatFormativeFieldsDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "assignment?subject=$subjectJson"
         }
@@ -94,12 +94,12 @@ sealed class MainRoutes (val route: String) {
     /** Ruta para la pantalla de registro de asignación. */
     data object RegisterAssignment : MainRoutes("registerassignment?subject={subject}") {
         /**
-         * Crea la ruta para la pantalla de registro de asignación, pasando un objeto [ModelFormatSubjectDomain] como parámetro.
+         * Crea la ruta para la pantalla de registro de asignación, pasando un objeto [ModelFormatFormativeFieldsDomain] como parámetro.
          *
          * @param subject El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun createRoutes(subject: ModelFormatSubjectDomain?): String {
+        fun createRoutes(subject: ModelFormatFormativeFieldsDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "registerassignment?subject=$subjectJson"
         }

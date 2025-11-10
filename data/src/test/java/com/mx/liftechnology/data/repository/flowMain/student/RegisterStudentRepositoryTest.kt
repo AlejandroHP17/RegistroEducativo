@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.repository.flowMain.student
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.RegisterStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.RequestRegisterStudent
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery

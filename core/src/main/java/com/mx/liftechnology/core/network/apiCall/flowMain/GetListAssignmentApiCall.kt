@@ -25,7 +25,7 @@ fun interface GetListAssignmentApiCall{
      * @param request Los datos de la petición.
      * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de strings.
      */
-    @POST(Environment.END_POINT_REGISTER_ASSIGNMENT)
+    @POST(Environment.END_POINT_REGISTER_FORMATIVE_FIELDS_BULK)
     suspend fun callApi(
         @Body request: RequestGetListAssignment
     ): Response<ResponseGeneric<List<String>?>?>

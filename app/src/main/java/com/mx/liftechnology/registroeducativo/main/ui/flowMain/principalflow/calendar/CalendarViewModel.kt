@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.GetListSubjectUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListSubjectDataState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListFormativeFieldsDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -34,9 +34,9 @@ class CalendarViewModel(
     /** The UI state for the screen. */
     val uiState: StateFlow<ModelMenuStateUI> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelListSubjectDataState())
+    private val _dataState = MutableStateFlow(ModelListFormativeFieldsDataState())
     /** The data state for subjects. */
-    val dataState: StateFlow<ModelListSubjectDataState> = _dataState.asStateFlow()
+    val dataState: StateFlow<ModelListFormativeFieldsDataState> = _dataState.asStateFlow()
 
     private val _dataState2 = MutableStateFlow(ModelListStudentDataState())
     /** The data state for students. */

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
 
-import com.mx.liftechnology.domain.model.subject.ModelFormatAssignment
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 
 data class ModelComplexCard(
     val idTitle : Int?,

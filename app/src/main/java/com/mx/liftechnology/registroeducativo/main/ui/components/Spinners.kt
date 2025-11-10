@@ -27,7 +27,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListAssessmentType
+import com.mx.liftechnology.data.model.ModelWorkTypeData
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -53,7 +53,7 @@ fun SpinnerScreen() {
             value ="Otro",
             id= 3),
         )
-    val options2 = listOf(ResponseGetListAssessmentType(assessmentTypeId = 1, description = "hola", teacherSchoolCycleGroupId = 1))
+    val options2 = listOf(ModelWorkTypeData(workTypeId = 1, name = "hola"))
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
@@ -258,10 +258,10 @@ fun SpinnerOutlinedTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpinnerMixOutlinedTextField(
-    options: List<ResponseGetListAssessmentType?>,
+    options: List<ModelWorkTypeData?>,
     selectedOption: ModelStateOutFieldText,
     label: String,
-    onOptionSelected: (ResponseGetListAssessmentType?) -> Unit,
+    onOptionSelected: (ModelWorkTypeData?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptions by remember { mutableStateOf(selectedOption) }
@@ -281,10 +281,9 @@ fun SpinnerMixOutlinedTextField(
                         selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
                     }
                     onOptionSelected(
-                        ResponseGetListAssessmentType(
-                        assessmentTypeId = -1,
-                        description = newValue,
-                        teacherSchoolCycleGroupId = options.firstOrNull()?.teacherSchoolCycleGroupId
+                        ModelWorkTypeData(
+                        workTypeId = -1,
+                        name = newValue
                     )
                     )
                 }, 
@@ -318,11 +317,11 @@ fun SpinnerMixOutlinedTextField(
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(
-                        text = { Text(option?.description ?: "Nuevo") },
+                        text = { Text(option?.name ?: "Nuevo") },
                         onClick = {
-                            selectedOptions = (option?.description).stringToModelStateOutFieldText()
-                            onOptionSelected(option?.copy(description = if(option.description == "Nuevo") "" else selectedOptions.valueText))
-                            isEditable = option?.description == "Nuevo"
+                            selectedOptions = (option?.name).stringToModelStateOutFieldText()
+                            onOptionSelected(option?.copy(name = if(option.name == "Nuevo") "" else selectedOptions.valueText))
+                            isEditable = option?.name == "Nuevo"
                             expanded = false
                         }
                     )

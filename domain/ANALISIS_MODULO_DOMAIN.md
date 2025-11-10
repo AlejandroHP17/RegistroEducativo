@@ -54,7 +54,7 @@ com.mx.liftechnology.domain/
 │       │   └── ModifyOneStudentUseCase.kt
 │       └── subject/
 │           ├── GetListSubjectUseCase.kt
-│           ├── RegisterOneSubjectUseCase.kt
+│           ├── RegisterFormativeFieldsBulkUseCase.kt
 │           ├── assignment/
 │           │   ├── GetListAssignmentUseCase.kt
 │           │   ├── GetListAssignmentPerSubjectUseCase.kt

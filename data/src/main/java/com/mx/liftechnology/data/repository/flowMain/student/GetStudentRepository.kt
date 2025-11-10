@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.flowMain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.GetListStudentApiCall
 import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelListStudent
 import com.mx.liftechnology.data.model.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult

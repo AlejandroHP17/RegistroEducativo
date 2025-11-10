@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.flowMain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.DeleteStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.DeleteStudentApiCall
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError

@@ -6,7 +6,7 @@
 package com.mx.liftechnology.domain.model.student
 
 import android.os.Parcelable
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
 import com.mx.liftechnology.data.model.ModelStudentData
 import kotlinx.parcelize.Parcelize
 

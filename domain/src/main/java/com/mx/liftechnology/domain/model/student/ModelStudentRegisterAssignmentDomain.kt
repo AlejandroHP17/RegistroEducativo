@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.model.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
 
 /**
  * Modelo de datos que representa a un estudiante para el registro de una asignación en la capa de dominio.
