@@ -5,21 +5,17 @@
  */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentRegisterAssignmentDomain
-import com.mx.liftechnology.domain.model.student.toModelStudentRegisterAssignmentList
+import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.student.toModelStudentList
 
 /**
  * Caso de uso para obtener la lista de estudiantes para el registro de una nueva asignación.
@@ -41,48 +37,27 @@ class GetListStudentAssignmentUseCase (
      * @return Un [ResultModel] que contiene la lista de estudiantes formateada para el registro de asignación,
      * o un estado de error si la operación falla.
      */
-    suspend operator fun invoke(): ResultModel<List<ModelStudentRegisterAssignmentDomain>?, String> {
-        val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val roleId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        val pecg =
+    suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>?, Error> {
+        val cycleSchoolId =
             preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
-        val request = RequestGetListStudent(
-            teacherId = roleId,
-            userId = userId,
-            teacherSchoolCycleGroupId = pecg
+        if(cycleSchoolId == null) return ErrorResult(
+            LocalError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getStudentRepository.executeGetListStudent(request) }.fold(
+        return runCatching { getStudentRepository.executeGetListStudent(cycleSchoolId) }.fold(
             onSuccess = { result ->
-                when (result) {
-                    is DataSuccessResult -> {
-                        if (result.data.isNullOrEmpty()) ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-                        else SuccessResult(result.data?.toModelStudentRegisterAssignmentList())
+                when(result){
+                    is SuccessResult -> {
+                        if (result.data.isNullOrEmpty()) ErrorResult(LocalError.EMPTY)
+                        else SuccessResult(result.data.toModelStudentList())
                     }
-
-                    is DataErrorResult -> {
-                        handleResponseAssignment(result.error)
+                    is ErrorResult -> {
+                        ErrorResult(result.error)
                     }
                 }
             },
-            onFailure = {ErrorResult(ModelCodeError.ERROR_UNKNOWN)}
+            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
         )
-    }
-
-    /**
-     * Maneja las respuestas de error del repositorio, convirtiendo un [NetworkError] en un [ResultModel] específico.
-     *
-     * @param error El objeto [NetworkError] que representa el error de la capa de datos.
-     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
-     */
-    private fun handleResponseAssignment(error: NetworkError): ResultModel<List<ModelStudentRegisterAssignmentDomain>?, String> {
-        return when (error) {
-            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
-        }
     }
 }

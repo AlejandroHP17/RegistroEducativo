@@ -5,10 +5,10 @@
  */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 
 /**
  * Interfaz para el caso de uso que valida los campos del formulario de registro de estudiantes.
@@ -126,7 +126,7 @@ class ValidateFieldsStudentUseCaseImp : ValidateFieldsStudentUseCase {
 
     private fun String.isNotValid(): Boolean {
         val regex = ModelRegex.CURP
-        return regex.matches(this)
+        return !regex.matches(this)
     }
 
     /**

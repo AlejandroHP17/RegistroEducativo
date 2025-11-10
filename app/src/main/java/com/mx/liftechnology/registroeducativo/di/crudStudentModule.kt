@@ -1,13 +1,21 @@
 package com.mx.liftechnology.registroeducativo.di
 
+import com.mx.liftechnology.core.network.apiCall.flowMain.DeleteStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.flowMain.EditStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
+import com.mx.liftechnology.data.repository.flowMain.student.DeleteStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.DeleteStudentRepositoryImpl
+import com.mx.liftechnology.data.repository.flowMain.student.EditStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.EditStudentRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
 import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepositoryImpl
 import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
 import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepositoryImpl
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.DeleteStudentUseCase
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.EditStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ModifyOneStudentUseCaseImp
@@ -41,6 +49,16 @@ val crudStudentModule = module {
     factory { get<Retrofit>().create(GetListStudentApiCall::class.java) }
 
     /**
+     * Provides an instance of [DeleteStudentApiCall].
+     */
+    factory { get<Retrofit>().create(DeleteStudentApiCall::class.java) }
+
+    /**
+     * Provides an instance of [EditStudentApiCall].
+     */
+    factory { get<Retrofit>().create(EditStudentApiCall::class.java) }
+
+    /**
      * Provides a singleton instance of [RegisterStudentRepository].
      */
     singleOf(::RegisterStudentRepositoryImpl) {
@@ -52,6 +70,18 @@ val crudStudentModule = module {
      */
     singleOf(::GetStudentRepositoryImpl) {
         bind<GetStudentRepository>()
+    }
+    /**
+     * Provides a singleton instance of [GetStudentRepository].
+     */
+    singleOf(::DeleteStudentRepositoryImpl) {
+        bind<DeleteStudentRepository>()
+    }
+    /**
+     * Provides a singleton instance of [GetStudentRepository].
+     */
+    singleOf(::EditStudentRepositoryImpl) {
+        bind<EditStudentRepository>()
     }
 
     /**
@@ -84,6 +114,14 @@ val crudStudentModule = module {
     singleOf(::ValidateFieldsStudentUseCaseImp) {
         bind<ValidateFieldsStudentUseCase>()
     }
+    /**
+     * Provides a singleton instance of [ValidateFieldsStudentUseCase].
+     */
+    singleOf(::DeleteStudentUseCase)
+    /**
+     * Provides a singleton instance of [ValidateFieldsStudentUseCase].
+     */
+    singleOf(::EditStudentUseCase)
 
     /**
      * Provides an instance of [RegisterStudentViewModel].

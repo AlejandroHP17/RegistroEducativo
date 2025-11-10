@@ -1,15 +1,10 @@
-/**
- * @file Define el caso de uso para registrar un nuevo estudiante.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterStudent
+import com.mx.liftechnology.core.network.apiCall.flowMain.RequestEditStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.ModelStudentData
-import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
+import com.mx.liftechnology.data.repository.flowMain.student.EditStudentRepository
 import com.mx.liftechnology.data.util.Error
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalError
@@ -17,21 +12,10 @@ import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult
 
-/**
- * Caso de uso para registrar un único estudiante.
- * Encapsula la lógica de negocio para construir la petición de registro y manejar la respuesta del repositorio.
- *
- * @property crudStudentRepository El repositorio para las operaciones CRUD de estudiantes.
- * @property preference El caso de uso para la gestión de las preferencias de usuario.
- *
- * @author Pelkidev
- * @version 1.0.0
- */
-class RegisterOneStudentUseCase(
-    private val crudStudentRepository: RegisterStudentRepository,
+class EditStudentUseCase (
+    private val editStudentRepository: EditStudentRepository,
     private val preference: PreferenceUseCase
-) {
-
+){
     /**
      * Ejecuta el proceso de registro de un estudiante.
      *
@@ -49,16 +33,17 @@ class RegisterOneStudentUseCase(
         secondLastName: String,
         curp: String,
         birthday: String,
-        phoneNumber: String
+        phoneNumber: String,
+        studentId: Int?
     ): ModelResult<ModelStudentData?, Error> {
         val teacherId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
-        if(teacherId == null || cycleSchoolId == null ) return ErrorResult(
+        if(teacherId == null || cycleSchoolId == null || studentId == null ) return ErrorResult(
             LocalError.USER_INCOMPLETE_DATA
         )
 
-        val request = RequestRegisterStudent(
+        val request = RequestEditStudent(
             name = name,
             lastName = lastName,
             secondLastName = secondLastName,
@@ -70,7 +55,7 @@ class RegisterOneStudentUseCase(
             isActive = true
         )
 
-        return runCatching { crudStudentRepository.executeRegisterOneStudent(request) }.fold(
+        return runCatching { editStudentRepository.executeEditStudent(request, studentId) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {

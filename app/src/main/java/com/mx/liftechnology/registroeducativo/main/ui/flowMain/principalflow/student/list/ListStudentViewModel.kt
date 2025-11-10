@@ -2,11 +2,12 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.st
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.usecase.mainflowdomain.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
  */
 class ListStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val getListStudentUseCase: GetListStudentUseCase
+    private val getListStudentUseCase: GetListStudentUseCase,
+    private val deleteStudentUseCase: DeleteStudentUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ModelListStudentStateUI())
@@ -50,13 +52,14 @@ class ListStudentViewModel(
                     }
                     _dataState.update {
                         it.copy(
-                            studentList = result.result,
-                            studentListUI = DomainToUIMapper.mapStudentListToCustomCard(result.result)
+                            studentList = result.data,
+                            studentListUI = DomainToUIMapper.mapStudentListToCustomCard(result.data)
                         )
                     }
                 }
                 else -> {
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _dataState.update { it.copy(studentList = emptyList()) }
                 }
             }
         }
@@ -69,4 +72,19 @@ class ListStudentViewModel(
      * @return The [ModelStudentDomain] object, or null if not found.
      */
     fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
+
+    fun deleteStudent(card: ModelCustomCard) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+
+            when(deleteStudentUseCase.invoke(card.id)){
+                is SuccessResult -> {
+                    getListStudent()
+                }
+                else -> {
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                }
+            }
+        }
+    }
 }

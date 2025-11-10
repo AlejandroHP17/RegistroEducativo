@@ -45,7 +45,7 @@ fun List<ResponseGetStudent?>?.toModelStudentRegisterAssignmentList(): List<Mode
         ?.mapIndexed { index, response ->
             val completeName = "${response.lastName} ${response.secondLastName} ${response.name}"
             ModelStudentRegisterAssignmentDomain(
-                studentId = response.studentId,
+                studentId = response.id.toString(),
                 curp = response.curp,
                 completeName = completeName,
                 qualification = null, // La calificación se establece posteriormente.

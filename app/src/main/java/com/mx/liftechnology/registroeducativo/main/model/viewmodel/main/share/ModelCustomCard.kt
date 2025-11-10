@@ -11,7 +11,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
  * @version 1.0.0
  */
 data class ModelCustomCard(
-    val id: String,
+    val id: Int,
     val numberList: String?,
     val nameCard: String?,
 )

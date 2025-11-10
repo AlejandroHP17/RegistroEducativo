@@ -9,6 +9,7 @@
     <string name="toast_success_register_subject">Se registró correctamente el campo formativo</string>
     <string name="toast_success_register_assignment">Se registraron correctamente las calificaciones</string>
 
+    <string name="toast_success_edit_student">Se modificó correctamente al alumno</string>
 
     <!--- Error -->
     <string name="toast_error_generic">Por favor intente mas tarde, estamos teniendo problemas en la plataforma</string>
@@ -23,6 +24,8 @@
     <string name="toast_error_register_student">No de logró registrar al alumno, intente nuevamente</string>
     <string name="toast_error_register_subject">No de logró registrar el campo formativo, intente nuevamente</string>
     <string name="toast_error_register_assignment">Hubo un error, intente nuevamente</string>
+
+    <string name="toast_error_edit_student">No se logró modificar correctamente al alumno, intente más tarde</string>
 
 
     <!--- Warning -->

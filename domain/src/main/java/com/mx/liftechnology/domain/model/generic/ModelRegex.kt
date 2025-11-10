@@ -29,7 +29,7 @@ object ModelRegex {
     val SCORE = Regex("^[0-9]*\\.?[0-9]*$")
 
     /** Expresión regular para texto simple (letras y espacios). */
-    val SIMPLE_TEXT = Regex("^[A-Za-z ]+$")
+    val SIMPLE_TEXT = Regex("^[A-Za-z \\-áéíóúÁÉÍÓÚñÑ]+$")
 
     /** Expresión regular para texto complejo (letras, números, espacios y caracteres comunes). */
     val COMPLEX_TEXT = Regex("^[A-Za-z0-9 .,_\\-áéíóúÁÉÍÓÚñÑ]+$")

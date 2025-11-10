@@ -62,7 +62,7 @@ fun CustomCardView() {
     Column {
         CustomCard(
             item = ModelCustomCard(
-                id = "1",
+                id = 1,
                 numberList = "1",
                 nameCard = "Curp",
             ),

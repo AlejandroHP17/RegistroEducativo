@@ -22,14 +22,20 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterStudentStateUI(
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+data class ModelRegisterStudentInputsUI(
+    val studentId : Int? = null,
     val name: ModelStateOutFieldText = ModelStateOutFieldText(),
     val lastName: ModelStateOutFieldText = ModelStateOutFieldText(),
     val secondLastName: ModelStateOutFieldText = ModelStateOutFieldText(),
     val curp: ModelStateOutFieldText = ModelStateOutFieldText(),
     val birthday: ModelStateOutFieldText = ModelStateOutFieldText(),
     val phoneNumber: ModelStateOutFieldText = ModelStateOutFieldText(),
+
+    )
+
+data class ModelRegisterStudentStateUI(
+    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val isNew: Boolean = true,
     val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
     val buttonColor: Color = colorSuccess
 )

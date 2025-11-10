@@ -70,5 +70,5 @@ class ListSubjectViewModel(
      * @param item The custom card model of the subject to get.
      * @return The [ModelFormatSubjectDomain] object, or null if not found.
      */
-    fun getSubject(item: ModelCustomCard): ModelFormatSubjectDomain? = _dataState.value.subjectList?.find { it.subjectId.toString() == item.id }
+    fun getSubject(item: ModelCustomCard): ModelFormatSubjectDomain? = _dataState.value.subjectList?.find { it.subjectId == item.id }
 }

@@ -7,6 +7,7 @@ package com.mx.liftechnology.domain.model.student
 
 import android.os.Parcelable
 import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.data.model.ModelStudentData
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -27,11 +28,11 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class ModelStudentDomain(
-    val studentId : String?,
+    val studentId : Int?,
     val curp : String?,
     val birthday : String?,
     val phoneNumber : String?,
-    val userId : String?,
+    val userId : Int?,
     val name : String?,
     val lastName : String?,
     val secondLastName : String?
@@ -46,18 +47,18 @@ data class ModelStudentDomain(
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<ResponseGetStudent?>?.toModelStudentList(): List<ModelStudentDomain> {
+fun List<ModelStudentData?>?.toModelStudentList(): List<ModelStudentDomain> {
     return this?.mapNotNull { response ->
         response?.let {
             ModelStudentDomain(
-                studentId = response?.studentId,
-                curp = response?.curp,
-                birthday = response?.birthday,
-                phoneNumber = response?.phoneNumber,
-                userId = response?.userId,
-                name = response?.name,
-                lastName = response?.lastName,
-                secondLastName = response?.secondLastName
+                studentId = response.studentId,
+                curp = response.curp,
+                birthday = response.birthday,
+                phoneNumber = response.phoneNumber,
+                userId = response.userId,
+                name = response.name,
+                lastName = response.lastName,
+                secondLastName = response.secondLastName
             )
         }
     } ?: emptyList()

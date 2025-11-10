@@ -34,7 +34,7 @@ object DomainToUIMapper {
             )
         )?.mapIndexed { index, student ->
             ModelCustomCard(
-                id = student.studentId ?: "",
+                id = student.studentId?:0,
                 numberList = (index + 1).toString(),
                 nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()
             )
@@ -50,7 +50,7 @@ object DomainToUIMapper {
     fun mapSubjectListToCustomCard(subjects: List<ModelFormatSubjectDomain>?): List<ModelCustomCard> {
         return subjects?.map {
             ModelCustomCard(
-                id = it.subjectId.toString(),
+                id = it.subjectId?:0,
                 numberList = "",
                 nameCard = "${it.name}"
             )

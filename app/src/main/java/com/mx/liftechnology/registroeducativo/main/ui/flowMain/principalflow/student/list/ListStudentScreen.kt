@@ -72,7 +72,9 @@ fun ListStudentScreen(
                         )
                     )
                 },
-                onDelete = {}
+                onDelete = {
+                    listStudentViewModel.deleteStudent(it)
+                }
             ),
             onAction = {
                 navController.navigateWithParams(

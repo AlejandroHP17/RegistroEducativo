@@ -54,21 +54,27 @@ object Environment {
     /** Endpoints para el flujo de registro. */
     const val END_POINT_REGISTER_CYCLE_SCHOOL = "cycles/"
     const val END_POINT_REGISTER_PARTIAL = "partials/"
+    const val END_POINT_REGISTER_STUDENT = "students/"
 
-    const val END_POINT_REGISTER_STUDENT = "teacher/registerStudentCycleGroup"
     const val END_POINT_REGISTER_SUBJECT = "teacher/registerTeacherSubjectSchool"
     const val END_POINT_REGISTER_ASSIGNMENT = "teacher/registerTeacherSubjectSchoolGroup"
     const val END_POINT_REGISTER_JOB = "teacher/registerTeacherJobDayByStudent"
 
     /** Endpoints para la obtención de datos. */
     const val END_POINT_GET_PARTIAL = "partials/"
+    const val END_POINT_GET_STUDENT = "students/"
 
-
-    const val END_POINT_GET_STUDENT = "teacher/getTeacherGroupStudents"
     const val END_POINT_GET_SUBJECT= "teacher/getTeacherSubjectsPECG"
     const val END_POINT_GET_SUBJECT_PERCENT = "teacher/getTeacherSubjectsPercent"
     const val END_POINT_GET_EVALUATION_TYPE = "teacher/getTeacherGroup"
     const val END_POINT_GET_ASSESSMENT_TYPE = "teacher/getTeacherTipoTrabajoPECG"
+
+    /** Endpoints para borrar datos. */
+    const val END_POINT_DELETE_STUDENT = "students/{student_id}"
+
+
+    /** Endpoints para borrar datos. */
+    const val END_POINT_EDIT_STUDENT = "students/{student_id}"
 
     /** Endpoints para el flujo del menú. */
     const val END_POINT_GET_CCT = "schools/{cct}"

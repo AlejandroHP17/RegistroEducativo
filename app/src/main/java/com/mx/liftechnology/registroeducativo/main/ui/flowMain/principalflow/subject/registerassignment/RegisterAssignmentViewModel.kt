@@ -3,11 +3,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.su
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestStudentJobs
-import com.mx.liftechnology.core.util.logInfo
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.subject.ModelFormatSubjectDomain
 import com.mx.liftechnology.domain.usecase.mainflowdomain.student.GetListStudentUseCase
@@ -16,10 +13,8 @@ import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.Get
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.RegisterAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.mainflowdomain.subject.assignment.ValidateFieldsAssignmentUseCase
-import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
@@ -69,7 +64,7 @@ class RegisterAssignmentViewModel(
     fun updateSubject(subject: ModelFormatSubjectDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
             saveIdSubjectSelectedUseCase.invoke(subject?.subjectId)
-            getListAssessmentType()
+            //getListAssessmentType()
             _uiState.update {
                 it.copy(
                     subject = subject
@@ -78,7 +73,7 @@ class RegisterAssignmentViewModel(
         }
     }
 
-    private fun getListAssessmentType() {
+    /*private fun getListAssessmentType() {
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
                 is SuccessResult -> {
@@ -101,7 +96,7 @@ class RegisterAssignmentViewModel(
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Called when the name of the job changes.
@@ -182,16 +177,13 @@ class RegisterAssignmentViewModel(
                 is SuccessResult -> {
                     _dataState.update {
                         it.copy(
-                            studentList = result.result,
-                            studentListUI = result.result.convertModelCustomCard()
+                            studentList = result.data,
+                            studentListUI = result.data.convertModelCustomCard()
                         )
                     }
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
-                }
-                is ErrorUserResult -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                 }
                 else -> {
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
@@ -209,7 +201,7 @@ class RegisterAssignmentViewModel(
             ))
             ?.mapIndexed { index, student ->
                 ModelCustomCardStudent(
-                    id = student.studentId ?: "",
+                    id = student.studentId.toString(),
                     numberList = (index + 1).toString(),
                     studentName = "${student.lastName} ${student.secondLastName} ${student.name}".trim(),
                     score = "10.0".stringToModelStateOutFieldText()
@@ -239,12 +231,12 @@ class RegisterAssignmentViewModel(
                 it.copy( date = dateState )
             }
 
-            if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerAssignment()
-            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            /*if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerAssignment()
+            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }*/
         }
     }
 
-    private suspend fun registerAssignment() {
+    /*private suspend fun registerAssignment() {
         when (val result = registerAssignmentUseCase.invoke(
             nameJob = _dataState.value.nameJob.valueText,
             typeJob = _dataState.value.options?.id!!,
@@ -286,7 +278,7 @@ class RegisterAssignmentViewModel(
                 }
             }
         }
-    }
+    }*/
 
     /**
      * Updates the date range for the active partial.

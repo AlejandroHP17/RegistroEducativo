@@ -6,8 +6,8 @@
 package com.mx.liftechnology.data.repository.flowMain.student
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.GetListStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestGetListStudent
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetStudent
+import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelListStudent
+import com.mx.liftechnology.data.model.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
@@ -29,8 +29,8 @@ fun interface GetStudentRepository{
      * @param request Los datos de la petición.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListStudent(request: RequestGetListStudent)
-    : ModelResult<List<ResponseGetStudent?>?, NetworkError>
+    suspend fun executeGetListStudent(cycleSchoolId: Int)
+    : ModelResult<List<ModelStudentData?>, NetworkError>
 }
 
 /**
@@ -49,13 +49,13 @@ class GetStudentRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun executeGetListStudent(
-        request: RequestGetListStudent
-    ) : ModelResult<List<ResponseGetStudent?>?, NetworkError> {
+        cycleSchoolId: Int
+    ) : ModelResult<List<ModelStudentData?>, NetworkError> {
         return try {
-            val response = getListStudentApiCall.callApi(request)
+            val response = getListStudentApiCall.callApi(cycleSchoolId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    SuccessResult(it)
+                    SuccessResult(it.mapperToModelListStudent())
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))

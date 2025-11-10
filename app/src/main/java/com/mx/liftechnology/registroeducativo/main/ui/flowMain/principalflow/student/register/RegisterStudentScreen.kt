@@ -23,6 +23,7 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentCallbacksUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentInputsUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentStateUI
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
@@ -52,6 +53,7 @@ fun RegisterStudentScreen(
     sharedViewModel: SharedViewModel,
     registerStudentViewModel: RegisterStudentViewModel = koinViewModel(),
 ) {
+    val inputState by registerStudentViewModel.uiInputs.collectAsStateWithLifecycle()
     val uiState by registerStudentViewModel.uiState.collectAsStateWithLifecycle()
     val studentJson = backStackEntry.arguments?.getString("student")
 
@@ -84,10 +86,12 @@ fun RegisterStudentScreen(
     )
     {
         logInfo("Screen register student")
-        HeaderRegisterStudent(navController = navController)
+        HeaderRegisterStudent(
+            uiState = uiState,
+            navController = navController)
 
         BodyRegisterStudent(
-            uiState = uiState,
+            inputState = inputState,
             callbacks = ModelRegisterStudentCallbacksUI(
                 onNameChanged = { registerStudentViewModel.onNameChanged(it) },
                 onLastNameChanged = { registerStudentViewModel.onLastNameChanged(it) },
@@ -127,61 +131,63 @@ fun RegisterStudentScreen(
  * @param navController The navigation controller.
  */
 @Composable
-private fun HeaderRegisterStudent(navController: NavHostController) {
+private fun HeaderRegisterStudent(
+    uiState: ModelRegisterStudentStateUI,
+    navController: NavHostController) {
     ComponentHeaderBack(
-        title = stringResource(R.string.register_student_name),
-        body = stringResource(R.string.register_student_name_description)
+        title = if(uiState.isNew) stringResource(R.string.register_student_name) else stringResource(R.string.edit_student_name),
+        body =  if(uiState.isNew) stringResource(R.string.register_student_name_description) else stringResource(R.string.edit_student_name_description)
     ) { navController.popBackStack() }
 }
 
 /**
  * The body of the Student Registration screen.
  *
- * @param uiState The UI state for the screen.
+ * @param inputState The UI state for the screen.
  * @param callbacks The callbacks for the input fields.
  */
 @Composable
 private fun BodyRegisterStudent(
-    uiState: ModelRegisterStudentStateUI,
+    inputState: ModelRegisterStudentInputsUI,
     callbacks: ModelRegisterStudentCallbacksUI,
 ) {
     BoxEditTextCapitalLetterGeneric(
-        value = uiState.name,
+        value = inputState.name,
         enable = true,
         label = stringResource(id = R.string.form_student_name),
         onBoxChanged = { callbacks.onNameChanged(it) }
     )
 
     BoxEditTextCapitalLetterGeneric(
-        value = uiState.lastName,
+        value = inputState.lastName,
         enable = true,
         label = stringResource(id = R.string.form_student_last_name),
         onBoxChanged = { callbacks.onLastNameChanged(it) }
     )
 
     BoxEditTextCapitalLetterGeneric(
-        value = uiState.secondLastName,
+        value = inputState.secondLastName,
         enable = true,
         label = stringResource(id = R.string.form_student_second_last_name),
         onBoxChanged = { callbacks.onSecondLastNameChanged(it) }
     )
 
     BoxEditTextAllCaps(
-        value = uiState.curp,
+        value = inputState.curp,
         enable = true,
         label = stringResource(id = R.string.form_student_curp),
         onBoxChanged = { callbacks.onCurpChanged(it) }
     )
 
     BoxEditTextCalendar(
-        value = uiState.birthday,
+        value = inputState.birthday,
         enable = false,
         label = stringResource(id = R.string.form_student_birthday),
         onBoxChanged = { callbacks.onBirthdayChanged() }
     )
 
     BoxEditTextNumeric(
-        value = uiState.phoneNumber,
+        value = inputState.phoneNumber,
         enable = true,
         label = stringResource(id = R.string.form_student_phone_number),
         maxNumberCharacter = 10,
@@ -205,7 +211,7 @@ private fun ActionRegisterStudent(
     ButtonPair(
         actionColor = colorAction,
         recordColor = uiState.buttonColor,
-        text = stringResource(R.string.add_button),
+        text = if(uiState.isNew) stringResource(R.string.add_button) else stringResource(R.string.edit_student_edit),
         onActionClick = { validateFieldsCompose() },
         onRecordClick = { onRecord() }
     )

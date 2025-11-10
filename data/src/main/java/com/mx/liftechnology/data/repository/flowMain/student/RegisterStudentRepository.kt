@@ -7,6 +7,8 @@ package com.mx.liftechnology.data.repository.flowMain.student
 
 import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterStudent
+import com.mx.liftechnology.data.mapper.DataToDomainMapper.mapperToModelStudent
+import com.mx.liftechnology.data.model.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
@@ -29,7 +31,7 @@ fun interface RegisterStudentRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeRegisterOneStudent(request: RequestRegisterStudent)
-    : ModelResult<List<String?>?, NetworkError>
+    : ModelResult<ModelStudentData?, NetworkError>
 }
 
 /**
@@ -49,12 +51,12 @@ class RegisterStudentRepositoryImpl(
      */
     override suspend fun executeRegisterOneStudent(
         request: RequestRegisterStudent
-    ): ModelResult<List<String?>?, NetworkError> {
+    ): ModelResult<ModelStudentData?, NetworkError> {
         return try {
             val response = registerStudentApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    SuccessResult(it)
+                    SuccessResult(it.mapperToModelStudent())
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
