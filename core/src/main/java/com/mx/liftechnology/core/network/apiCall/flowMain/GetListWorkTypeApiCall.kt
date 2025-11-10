@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.ResponseGeneric
 import com.mx.liftechnology.core.network.environment.Environment
 import retrofit2.Response
-import retrofit2.http.POST
+import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
@@ -25,7 +25,7 @@ fun interface GetListWorkTypeApiCall{
      * @param request Los datos de la petición.
      * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de [ResponseGetListWorkType].
      */
-    @POST(Environment.END_POINT_GET_WORK_TYPE)
+    @GET(Environment.END_POINT_GET_WORK_TYPE)
     suspend fun callApi(
         @Query ("teacher_id") teacherId : Int
     ): Response<ResponseGeneric<List<ResponseGetListWorkType?>?>>
