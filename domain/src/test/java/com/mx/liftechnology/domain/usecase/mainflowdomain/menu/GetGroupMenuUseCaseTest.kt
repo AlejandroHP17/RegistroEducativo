@@ -1,13 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGroupTeacher
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.menu.MenuRepository
+import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetGroupMenuUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetGroupMenuUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetGroupMenuUseCase].
  * Esta clase contiene los tests unitarios para el caso de uso que obtiene los grupos del menú,
  * verificando que la lógica de negocio funcione como se espera en casos de éxito y error.
  *
@@ -49,7 +50,7 @@ class GetGroupMenuUseCaseTest {
             cct = "123",
             schoolYearId = 1,
             description = "Grupo A",
-            cycleSchoolId = 1,
+            schoolCycleId = 1,
             group = "A",
             name = "Primaria",
             nameSchool = "Escuela Test",

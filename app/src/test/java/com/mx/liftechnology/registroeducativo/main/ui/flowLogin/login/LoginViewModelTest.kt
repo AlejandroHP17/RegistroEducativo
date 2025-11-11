@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login
 
-import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
-import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
+import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
+import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

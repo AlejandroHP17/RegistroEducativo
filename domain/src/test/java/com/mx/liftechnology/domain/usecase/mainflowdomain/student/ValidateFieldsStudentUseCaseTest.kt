@@ -1,12 +1,13 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
+import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCaseImp
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [ValidateFieldsStudentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase].
  * Verifica todos los casos de validación para el formulario de registro de estudiantes.
  *
  * @author Pelkidev

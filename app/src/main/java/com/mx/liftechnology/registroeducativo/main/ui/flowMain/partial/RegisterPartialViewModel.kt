@@ -6,10 +6,10 @@ import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
-import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper

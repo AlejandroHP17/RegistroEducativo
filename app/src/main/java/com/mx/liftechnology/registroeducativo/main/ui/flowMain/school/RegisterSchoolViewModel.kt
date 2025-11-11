@@ -15,9 +15,9 @@ import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.GetCctUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.RegisterCycleSchoolUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.school.ValidateFieldsRegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterCycleSchoolUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toUi
@@ -229,7 +229,7 @@ class RegisterSchoolViewModel(
                         it.copy(
                             schoolName = it.schoolName.copy(valueText = state.data.result.schoolName),
                             schoolId = state.data.result.id,
-                            shiftName = it.shiftName.copy(valueText = state.data.result.shiftName),
+                            shiftName = it.shiftName.copy(valueText = state.data.result.shiftName?:""),
                             spinner = state.data.spinners.toUi(),
                             read = false,
                             periodCatalog = state.data.result.periodCatalog

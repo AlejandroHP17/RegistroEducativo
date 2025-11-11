@@ -1,12 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.evaluationType
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.evaluationtype.GetListEvaluationTypeRepository
+import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCaseImp
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -15,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetListEvaluationTypeUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios.
  *
  * @author Pelkidev
@@ -32,7 +34,8 @@ class GetListEvaluationTypetUseCaseTest {
      */
     @Before
     fun setUp() {
-        getListEvaluationTypeUseCase = GetListEvaluationTypeUseCaseImp(getListEvaluationTypeRepository, preferenceUseCase)
+        getListEvaluationTypeUseCase =
+            GetListEvaluationTypeUseCaseImp(getListEvaluationTypeRepository, preferenceUseCase)
     }
 
     /**

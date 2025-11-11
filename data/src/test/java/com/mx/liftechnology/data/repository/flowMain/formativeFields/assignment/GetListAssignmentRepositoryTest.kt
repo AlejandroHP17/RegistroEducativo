@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListAssignmentApiCall
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetListAssignmentApiCall
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery

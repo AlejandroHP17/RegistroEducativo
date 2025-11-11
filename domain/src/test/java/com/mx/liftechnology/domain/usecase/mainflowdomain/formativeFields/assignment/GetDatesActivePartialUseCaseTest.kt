@@ -2,6 +2,7 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assig
 
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -11,7 +12,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetDatesActivePartialUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase].
  * Verifica que el caso de uso recupere correctamente el rango de fechas desde las preferencias.
  *
  * @author Pelkidev

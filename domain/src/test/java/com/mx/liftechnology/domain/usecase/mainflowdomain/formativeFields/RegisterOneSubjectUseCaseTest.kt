@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.RegisterFormativeFieldsBulkRepository
+import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
@@ -9,6 +9,7 @@ import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -17,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [RegisterFormativeFieldsBulkUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase].
  * Verifica el comportamiento del caso de uso de registro de materia en diferentes escenarios.
  *
  * @author Pelkidev
@@ -34,7 +35,10 @@ class RegisterOneSubjectUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerFormativeFieldsBulkUseCase = RegisterFormativeFieldsBulkUseCase(registerFormativeFieldsBulkRepository, preferenceUseCase)
+        registerFormativeFieldsBulkUseCase = RegisterFormativeFieldsBulkUseCase(
+            registerFormativeFieldsBulkRepository,
+            preferenceUseCase
+        )
     }
 
     /**

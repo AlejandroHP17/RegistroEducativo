@@ -2,12 +2,14 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCaseImp
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [ValidateFieldsSubjectUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCase].
  * Verifica el comportamiento de las funciones de validación del caso de uso.
  *
  * @author Pelkidev

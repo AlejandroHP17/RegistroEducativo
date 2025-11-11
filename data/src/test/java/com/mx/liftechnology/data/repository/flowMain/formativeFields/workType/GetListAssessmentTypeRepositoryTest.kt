@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.formativeFields.workType
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListWorkTypeApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListWorkType
+import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWorkTypeApiCall
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWorkType
+import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
+import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [GetWorkTypeRepository].
+ * Tests para [com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene la lista de tipos de evaluación.
  *
  * @author Pelkidev

@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.model.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
 
 /**
  * Modelo de datos que representa a un estudiante para el registro de una asignación en la capa de dominio.
@@ -45,7 +45,7 @@ fun List<ResponseGetStudent?>?.toModelStudentRegisterAssignmentList(): List<Mode
         ?.mapIndexed { index, response ->
             val completeName = "${response.lastName} ${response.secondLastName} ${response.name}"
             ModelStudentRegisterAssignmentDomain(
-                studentId = response.id.toString(),
+                studentId = response.studentId.toString(),
                 curp = response.curp,
                 completeName = completeName,
                 qualification = null, // La calificación se establece posteriormente.

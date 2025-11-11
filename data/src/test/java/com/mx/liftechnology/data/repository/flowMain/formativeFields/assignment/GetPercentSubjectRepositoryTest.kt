@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetPercentSubjectIdApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPercentSubjectId
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetPercentSubjectIdApiCall
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGetPercentSubjectId
+import com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepository
+import com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [GetPercentSubjectRepository].
+ * Tests para [com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene el porcentaje de una materia.
  *
  * @author Pelkidev

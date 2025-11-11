@@ -52,7 +52,7 @@ object Environment {
     const val END_POINT_REGISTER = "auth/register"
 
     /** Endpoints para el flujo de registro. */
-    const val END_POINT_REGISTER_CYCLE_SCHOOL = "cycles/"
+    const val END_POINT_REGISTER_SCHOOL_CYCLE = "cycles/"
     const val END_POINT_REGISTER_PARTIAL = "partials/"
     const val END_POINT_REGISTER_STUDENT = "students/"
     const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/"

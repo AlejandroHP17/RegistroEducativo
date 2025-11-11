@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.registerschool
 
-import com.mx.liftechnology.data.model.ModelCCTData
+import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 
 /**
  * Modelo de datos que representa el resultado de la búsqueda de una escuela en la capa de dominio.

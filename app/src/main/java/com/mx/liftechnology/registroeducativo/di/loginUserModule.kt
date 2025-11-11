@@ -1,15 +1,15 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.flowLogin.GetDataUserApiCall
-import com.mx.liftechnology.core.network.apiCall.flowLogin.LoginApiCall
-import com.mx.liftechnology.data.repository.flowLogin.login.GetDataUserRepository
-import com.mx.liftechnology.data.repository.flowLogin.login.GetDataUserRepositoryImpl
-import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepository
-import com.mx.liftechnology.data.repository.flowLogin.login.LoginRepositoryImpl
-import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCase
-import com.mx.liftechnology.domain.usecase.loginflowdomain.ValidateFieldsLoginFlowUseCaseImp
-import com.mx.liftechnology.domain.usecase.loginflowdomain.login.GetDataUserUseCase
-import com.mx.liftechnology.domain.usecase.loginflowdomain.login.LoginUseCase
+import com.mx.liftechnology.core.network.apiCall.auth.GetDataUserApiCall
+import com.mx.liftechnology.core.network.apiCall.auth.LoginApiCall
+import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
+import com.mx.liftechnology.data.repository.auth.GetDataUserRepositoryImpl
+import com.mx.liftechnology.data.repository.auth.LoginRepository
+import com.mx.liftechnology.data.repository.auth.LoginRepositoryImpl
+import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
+import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCaseImp
+import com.mx.liftechnology.domain.usecase.auth.GetDataUserUseCase
+import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login.LoginViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf

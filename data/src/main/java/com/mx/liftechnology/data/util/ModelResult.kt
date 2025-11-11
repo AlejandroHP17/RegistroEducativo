@@ -20,7 +20,8 @@ enum class UserError {
     SHOW_SPECIFIC_ERROR,
     SHOW_INCOMPLETE_ERROR,
     UNAUTHORIZED,
-    LOGS
+    LOGS,
+    USER_NOT_ACTIVE
 }
 
 
@@ -56,7 +57,8 @@ enum class NetworkError : Error {
     BAD_REQUEST,
     UNKNOWN,
     UNKNOWN_REGISTER,
-    EMPTY
+    EMPTY,
+    NOT_ACTIVE
 }
 
 /**

@@ -1,9 +1,10 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.menu
 
-import com.mx.liftechnology.data.model.ModelPrincipalMenuData
-import com.mx.liftechnology.data.repository.flowMain.menu.MenuLocalRepository
+import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
+import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuLocalRepository
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertTrue
@@ -11,7 +12,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetControlMenuUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios, como éxito y error.
  *
  * @author Pelkidev

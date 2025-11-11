@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.student
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.GetListStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.student.GetListStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
+import com.mx.liftechnology.data.repository.student.GetStudentRepository
+import com.mx.liftechnology.data.repository.student.GetStudentRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [GetStudentRepository].
+ * Tests para [com.mx.liftechnology.data.repository.student.GetStudentRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene la lista de estudiantes.
  *
  * @author Pelkidev

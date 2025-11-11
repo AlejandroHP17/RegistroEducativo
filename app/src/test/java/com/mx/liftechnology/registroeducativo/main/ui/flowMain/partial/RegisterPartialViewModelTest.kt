@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial
 
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.GetListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.RegisterListPartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.partial.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

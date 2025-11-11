@@ -6,8 +6,8 @@ import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.SaveIdSubjectSelectedUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.GetListAssignmentPerSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -20,8 +20,8 @@ class ModelStudentRegisterAssignmentDomainTest {
     fun `toModelStudentRegisterAssignmentList con lista valida`() {
         // Preparamos los datos de entrada desordenados
         val responseList = listOf(
-            ResponseGetStudent(id = "2", studentId = "102", teacherSchoolCycleGroupId = "202", curp = "...", birthday = "...", phoneNumber = "...", userId = "302", name = "Maria", lastName = "Lopez", secondLastName = "Garcia"),
-            ResponseGetStudent(id = "1", studentId = "101", teacherSchoolCycleGroupId = "201", curp = "...", birthday = "...", phoneNumber = "...", userId = "301", name = "Juan", lastName = "Perez", secondLastName = "Gomez")
+            ResponseGetStudent(studentId = "2", studentId = "102", teacherSchoolCycleGroupId = "202", curp = "...", birthday = "...", phoneNumber = "...", userId = "302", name = "Maria", lastName = "Lopez", secondLastName = "Garcia"),
+            ResponseGetStudent(studentId = "1", studentId = "101", teacherSchoolCycleGroupId = "201", curp = "...", birthday = "...", phoneNumber = "...", userId = "301", name = "Juan", lastName = "Perez", secondLastName = "Gomez")
         )
 
         // Ejecutamos la función de extensión
@@ -64,7 +64,7 @@ class ModelStudentRegisterAssignmentDomainTest {
     fun `toModelStudentRegisterAssignmentList con elementos nulos en la lista`() {
         // Preparamos los datos de entrada
         val listWithNulls = listOf(
-            ResponseGetStudent(id = "1", studentId = "101", teacherSchoolCycleGroupId = "201", curp = "...", birthday = "...", phoneNumber = "...", userId = "301", name = "Juan", lastName = "Perez", secondLastName = "Gomez"),
+            ResponseGetStudent(studentId = "1", studentId = "101", teacherSchoolCycleGroupId = "201", curp = "...", birthday = "...", phoneNumber = "...", userId = "301", name = "Juan", lastName = "Perez", secondLastName = "Gomez"),
             null
         )
 

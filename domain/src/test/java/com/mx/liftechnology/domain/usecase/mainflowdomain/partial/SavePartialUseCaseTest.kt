@@ -2,7 +2,8 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.domain.model.menu.ModelDialogGroupPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.SavePartialUseCase
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -14,7 +15,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
- * Tests para [SavePartialUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.schoolCycle.partial.SavePartialUseCase].
  * Verifica que la lógica para seleccionar y guardar el parcial activo funcione correctamente.
  *
  * @author Pelkidev

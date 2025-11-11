@@ -1,12 +1,13 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.school.RegisterCycleSchoolRepository
+import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterCycleSchoolUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -32,7 +33,8 @@ class RegisterOneSchoolUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerCycleSchoolUseCase = RegisterCycleSchoolUseCase(registerCycleSchoolRepository, preferenceUseCase)
+        registerCycleSchoolUseCase =
+            RegisterCycleSchoolUseCase(registerCycleSchoolRepository, preferenceUseCase)
     }
 
     /**

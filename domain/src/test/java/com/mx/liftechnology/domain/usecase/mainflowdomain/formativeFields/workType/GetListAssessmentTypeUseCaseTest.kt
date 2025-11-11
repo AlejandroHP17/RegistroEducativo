@@ -1,13 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.workType
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetListWorkType
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWorkType
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.workType.GetWorkTypeRepository
+import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetListWorkTypeUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios.
  *
  * @author Pelkidev

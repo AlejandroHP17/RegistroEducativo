@@ -3,12 +3,11 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.st
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logInfo
-import com.mx.liftechnology.domain.model.generic.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.SaveIdSubjectSelectedUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.GetListAssignmentPerSubjectUseCase
+import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
@@ -30,7 +29,6 @@ import kotlinx.coroutines.launch
 class AssignmentStudentViewModel (
     private val dispatcherProvider: DispatcherProvider,
     private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
-    private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ModelAssignmentStateUI())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */

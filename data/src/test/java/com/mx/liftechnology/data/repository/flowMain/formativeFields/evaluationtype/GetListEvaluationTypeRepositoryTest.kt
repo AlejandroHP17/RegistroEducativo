@@ -1,7 +1,9 @@
 package com.mx.liftechnology.data.repository.flowMain.formativeFields.evaluationtype
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListEvaluationTypeApiCall
+import com.mx.liftechnology.core.network.apiCall.evaluation.GetListEvaluationTypeApiCall
+import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepository
+import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -14,7 +16,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [GetListEvaluationTypeRepository].
+ * Tests para [com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene la lista de tipos de evaluación.
  *
  * @author Pelkidev
@@ -31,7 +33,8 @@ class GetListEvaluationTypeRepositoryTest {
      */
     @Before
     fun setUp() {
-        getListEvaluationTypeRepository = GetListEvaluationTypeRepositoryImpl(getListEvaluationTypeApiCall)
+        getListEvaluationTypeRepository =
+            GetListEvaluationTypeRepositoryImpl(getListEvaluationTypeApiCall)
     }
 
     /**

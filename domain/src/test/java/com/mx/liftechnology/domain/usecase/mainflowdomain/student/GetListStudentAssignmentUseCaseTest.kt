@@ -1,13 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.student.GetStudentRepository
+import com.mx.liftechnology.data.repository.student.GetStudentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.student.GetListStudentAssignmentUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetListStudentAssignmentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.student.GetListStudentAssignmentUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios.
  *
  * @author Pelkidev
@@ -33,7 +34,8 @@ class GetListStudentAssignmentUseCaseTest {
      */
     @Before
     fun setUp() {
-        getListStudentAssignmentUseCase = GetListStudentAssignmentUseCase(getStudentRepository, preferenceUseCase)
+        getListStudentAssignmentUseCase =
+            GetListStudentAssignmentUseCase(getStudentRepository, preferenceUseCase)
     }
 
     /**

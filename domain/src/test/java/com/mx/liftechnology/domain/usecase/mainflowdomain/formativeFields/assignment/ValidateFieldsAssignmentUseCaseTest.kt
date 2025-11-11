@@ -1,6 +1,8 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment
 
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCaseImp
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -8,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [ValidateFieldsAssignmentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase].
  * Verifica el comportamiento de las funciones de validación del caso de uso.
  *
  * @author Pelkidev

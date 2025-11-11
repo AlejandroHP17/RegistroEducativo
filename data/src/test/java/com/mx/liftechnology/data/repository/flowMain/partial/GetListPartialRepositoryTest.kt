@@ -1,8 +1,9 @@
 package com.mx.liftechnology.data.repository.flowMain.partial
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.partial.GetListPartialApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPartial
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGetPartial
+import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
+import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +16,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [GetListPartialRepository].
+ * Tests para [com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene la lista de parciales.
  *
  * @author Pelkidev

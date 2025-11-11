@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.school
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterCycleSchoolApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RequestRegisterCycleSchool
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.RegisterSchoolCycleApiCall
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestRegisterSchoolCycle
+import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository
+import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [RegisterCycleSchoolRepository].
+ * Tests para [com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository].
  * Esta clase contiene los tests unitarios para el repositorio que registra una nueva escuela.
  *
  * @author Pelkidev
@@ -24,7 +26,7 @@ import retrofit2.Response
 class RegisterSchoolRepositoryTest {
 
     private lateinit var registerCycleSchoolRepository: RegisterCycleSchoolRepository
-    private val registerCycleSchoolApiCall: RegisterCycleSchoolApiCall = mockk()
+    private val registerSchoolCycleApiCall: RegisterSchoolCycleApiCall = mockk()
 
     /**
      * Configuración inicial para los tests.
@@ -32,7 +34,8 @@ class RegisterSchoolRepositoryTest {
      */
     @Before
     fun setUp() {
-        registerCycleSchoolRepository = RegisterCycleSchoolRepositoryImpl(registerCycleSchoolApiCall)
+        registerCycleSchoolRepository =
+            RegisterCycleSchoolRepositoryImpl(registerSchoolCycleApiCall)
     }
 
     /**
@@ -44,10 +47,10 @@ class RegisterSchoolRepositoryTest {
         val mockBody: ResponseGeneric<List<String?>?> = ResponseGeneric(emptyList(), mockk())
         val mockResponse: Response<ResponseGeneric<List<String?>?>> = Response.success(mockBody)
 
-        coEvery { registerCycleSchoolApiCall.callApi(any()) } returns mockResponse
+        coEvery { registerSchoolCycleApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = registerCycleSchoolRepository.executeRegisterCycleSchool(RequestRegisterCycleSchool("", 1, 1, "", "", 1, 1, 1))
+        val result = registerCycleSchoolRepository.executeRegisterCycleSchool(RequestRegisterSchoolCycle("", 1, 1, "", "", 1, 1, 1))
 
         // Verificamos el resultado
         assertTrue(result is ResultSuccess)
@@ -62,10 +65,10 @@ class RegisterSchoolRepositoryTest {
         val mockResponseBody: ResponseBody = mockk(relaxed = true)
         val mockResponse: Response<ResponseGeneric<List<String?>?>> = Response.error(400, mockResponseBody)
 
-        coEvery { registerCycleSchoolApiCall.callApi(any()) } returns mockResponse
+        coEvery { registerSchoolCycleApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = registerCycleSchoolRepository.executeRegisterCycleSchool(RequestRegisterCycleSchool("", 1, 1, "", "", 1, 1, 1))
+        val result = registerCycleSchoolRepository.executeRegisterCycleSchool(RequestRegisterSchoolCycle("", 1, 1, "", "", 1, 1, 1))
 
         // Verificamos el resultado
         assertTrue(result is ResultError)

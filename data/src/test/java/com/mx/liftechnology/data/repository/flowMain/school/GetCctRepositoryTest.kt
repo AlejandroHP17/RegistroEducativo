@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.school
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.school.GetCctApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.school.ResponseCctSchool
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetCctApiCall
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseCctSchool
+import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
+import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [GetCctRepository].
+ * Tests para [com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene la información de una escuela a partir de su CCT.
  *
  * @author Pelkidev

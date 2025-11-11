@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.student
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.RegisterStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.student.RequestRegisterStudent
+import com.mx.liftechnology.core.network.apiCall.student.RegisterStudentApiCall
+import com.mx.liftechnology.core.network.apiCall.student.RequestRegisterStudent
+import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
+import com.mx.liftechnology.data.repository.student.RegisterStudentRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [RegisterStudentRepository].
+ * Tests para [com.mx.liftechnology.data.repository.student.RegisterStudentRepository].
  * Esta clase contiene los tests unitarios para el repositorio que registra un nuevo estudiante.
  *
  * @author Pelkidev

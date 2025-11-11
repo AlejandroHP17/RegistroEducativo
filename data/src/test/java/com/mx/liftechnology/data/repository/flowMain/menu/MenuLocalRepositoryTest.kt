@@ -3,6 +3,7 @@ package com.mx.liftechnology.data.repository.flowMain.menu
 import android.content.Context
 import android.content.res.Resources
 import com.mx.liftechnology.data.R
+import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuLocalRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
@@ -10,7 +11,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [MenuLocalRepository].
+ * Tests para [com.mx.liftechnology.data.repository.schoolCycle.menu.MenuLocalRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene los datos del menú local.
  *
  * @author Pelkidev

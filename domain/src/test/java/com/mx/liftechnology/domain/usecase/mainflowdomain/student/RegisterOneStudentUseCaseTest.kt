@@ -1,12 +1,13 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.student.RegisterStudentRepository
+import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.student.RegisterOneStudentUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -15,7 +16,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [RegisterOneStudentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.student.RegisterOneStudentUseCase].
  * Verifica el comportamiento del caso de uso de registro de estudiante en diferentes escenarios.
  *
  * @author Pelkidev
@@ -32,7 +33,8 @@ class RegisterOneStudentUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerOneStudentUseCase = RegisterOneStudentUseCase(crudStudentRepository, preferenceUseCase)
+        registerOneStudentUseCase =
+            RegisterOneStudentUseCase(crudStudentRepository, preferenceUseCase)
     }
 
     /**

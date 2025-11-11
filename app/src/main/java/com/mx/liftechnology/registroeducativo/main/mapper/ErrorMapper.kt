@@ -63,6 +63,7 @@ object ErrorMapper {
             NetworkError.TOO_MANY_REQUESTS -> UserError.LOGS
             NetworkError.SERIALIZATION -> UserError.LOGS
             NetworkError.UNKNOWN -> UserError.LOGS
+            NetworkError.NOT_ACTIVE -> UserError.USER_NOT_ACTIVE
 
             // Registro Usuario
             NetworkError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific

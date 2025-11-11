@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.util
 
-import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
+import com.mx.liftechnology.data.model.schoolCycle.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 
 fun List<ModelCCTDataPeriodCatalog>?.toSelectPeriod(cycle: String, type: String): Int {

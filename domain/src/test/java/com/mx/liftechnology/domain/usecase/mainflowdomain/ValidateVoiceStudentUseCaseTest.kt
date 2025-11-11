@@ -1,13 +1,15 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain
 
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
+import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCaseImp
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [ValidateVoiceStudentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase].
  * Esta clase contiene los tests unitarios para el caso de uso que valida y procesa los datos de un estudiante a partir de una entrada de voz.
  *
  * @author Pelkidev

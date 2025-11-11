@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.DeleteFormativeFieldsUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.GetListSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListFormativeFieldsDataState

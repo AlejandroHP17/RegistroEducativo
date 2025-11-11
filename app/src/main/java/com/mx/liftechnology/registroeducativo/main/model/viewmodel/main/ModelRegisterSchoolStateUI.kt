@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import androidx.compose.ui.graphics.Color
-import com.mx.liftechnology.data.model.ModelCCTDataPeriodCatalog
+import com.mx.liftechnology.data.model.schoolCycle.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R

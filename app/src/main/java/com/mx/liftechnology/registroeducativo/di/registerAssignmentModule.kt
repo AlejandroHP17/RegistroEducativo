@@ -1,25 +1,16 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetListAssignmentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.GetPercentSubjectIdApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterJobStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.RegisterListAssignmentApiCall
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.GetListAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.GetListAssignmentRepositoryImpl
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.GetPercentSubjectRepository
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.GetPercentSubjectRepositoryImpl
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.RegisterAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.RegisterAssignmentRepositoryImpl
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.RegisterListAssignmentRepository
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.RegisterListAssignmentRepositoryImpl
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.SaveIdSubjectSelectedUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.GetDatesActivePartialUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.GetListAssignmentPerSubjectUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.RegisterAssignmentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.RegisterListAssignmentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.RegisterListAssignmentUseCaseImp
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.ValidateFieldsAssignmentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment.ValidateFieldsAssignmentUseCaseImp
+import com.mx.liftechnology.core.network.apiCall.evaluation.RegisterJobStudentApiCall
+import com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepository
+import com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepositoryImpl
+import com.mx.liftechnology.data.repository.evaluation.RegisterAssignmentRepository
+import com.mx.liftechnology.data.repository.evaluation.RegisterAssignmentRepositoryImpl
+import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCaseImp
+import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.registerassignment.RegisterAssignmentViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -35,20 +26,6 @@ import retrofit2.Retrofit
  */
 val registerAssignmentModule = module {
 
-    /**
-     * Provides an instance of [RegisterListAssignmentApiCall].
-     */
-    factory { get<Retrofit>().create(RegisterListAssignmentApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetPercentSubjectIdApiCall].
-     */
-    factory { get<Retrofit>().create(GetPercentSubjectIdApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetListAssignmentApiCall].
-     */
-    factory { get<Retrofit>().create(GetListAssignmentApiCall::class.java) }
 
     /**
      * Provides an instance of [RegisterJobStudentApiCall].
@@ -62,19 +39,7 @@ val registerAssignmentModule = module {
         bind<GetPercentSubjectRepository>()
     }
 
-    /**
-     * Provides a singleton instance of [RegisterListAssignmentRepository].
-     */
-    singleOf(::RegisterListAssignmentRepositoryImpl) {
-        bind<RegisterListAssignmentRepository>()
-    }
 
-    /**
-     * Provides a singleton instance of [GetListAssignmentRepository].
-     */
-    singleOf(::GetListAssignmentRepositoryImpl) {
-        bind<GetListAssignmentRepository>()
-    }
 
     /**
      * Provides a singleton instance of [RegisterAssignmentRepository].
@@ -83,12 +48,7 @@ val registerAssignmentModule = module {
         bind<RegisterAssignmentRepository>()
     }
 
-    /**
-     * Provides a singleton instance of [RegisterListAssignmentUseCase].
-     */
-    singleOf(::RegisterListAssignmentUseCaseImp) {
-        bind<RegisterListAssignmentUseCase>()
-    }
+
 
     /**
      * Provides a singleton instance of [ValidateFieldsAssignmentUseCase].

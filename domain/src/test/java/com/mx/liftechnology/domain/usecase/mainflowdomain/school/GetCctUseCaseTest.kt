@@ -1,13 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.school.ResponseCctSchool
-import com.mx.liftechnology.data.repository.flowMain.school.GetCctRepository
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseCctSchool
+import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -42,7 +43,7 @@ class GetCctUseCaseTest {
         // Preparamos el mock de la respuesta del repositorio
         val mockResponse = ResponseCctSchool(
             cct = "1234567890",
-            id = 1,
+            schoolId = 1,
             schoolName = "Escuela Primaria Test",
             schoolCycleType = "Anual",
             schoolCycleTypeId = 1,

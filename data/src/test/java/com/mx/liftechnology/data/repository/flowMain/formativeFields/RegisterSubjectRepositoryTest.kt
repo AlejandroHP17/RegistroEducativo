@@ -1,7 +1,9 @@
 package com.mx.liftechnology.data.repository.flowMain.formativeFields
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.formativeField.RegisterFormativeFieldsBulkApiCall
+import com.mx.liftechnology.core.network.apiCall.formativeField.RegisterFormativeFieldsBulkApiCall
+import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
+import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -14,7 +16,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [RegisterFormativeFieldsBulkRepository].
+ * Tests para [com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository].
  * Esta clase contiene los tests unitarios para el repositorio que registra una nueva materia.
  *
  * @author Pelkidev
@@ -31,7 +33,8 @@ class RegisterSubjectRepositoryTest {
      */
     @Before
     fun setUp() {
-        registerFormativeFieldsBulkRepository = RegisterFormativeFieldsBulkRepositoryImpl(registerFormativeFieldsBulkApiCall)
+        registerFormativeFieldsBulkRepository =
+            RegisterFormativeFieldsBulkRepositoryImpl(registerFormativeFieldsBulkApiCall)
     }
 
     /**

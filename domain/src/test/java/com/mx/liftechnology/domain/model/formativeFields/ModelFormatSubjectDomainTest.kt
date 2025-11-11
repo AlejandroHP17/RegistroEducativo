@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.formativeFields
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.formativeField.ResponseGetListFormativeFields
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListFormativeField
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -14,14 +14,14 @@ import org.junit.Test
 class ModelFormatSubjectDomainTest {
 
     /**
-     * Test para verificar que una lista de [ResponseGetListFormativeFields] se convierte correctamente a una lista de [ModelFormatFormativeFieldsDomain].
+     * Test para verificar que una lista de [ResponseGetListFormativeField] se convierte correctamente a una lista de [ModelFormatFormativeFieldsDomain].
      */
     @Test
     fun `toModelSubjectList con lista valida`() {
         // Preparamos los datos de entrada
         val responseList = listOf(
-            ResponseGetListFormativeFields(1, "Matemáticas"),
-            ResponseGetListFormativeFields(2, "Español")
+            ResponseGetListFormativeField(1, "Matemáticas"),
+            ResponseGetListFormativeField(2, "Español")
         )
 
         // Ejecutamos la función de extensión
@@ -39,8 +39,8 @@ class ModelFormatSubjectDomainTest {
     @Test
     fun `toModelSubjectList con lista nula o vacia`() {
         // Preparamos los datos de entrada
-        val nullList: List<ResponseGetListFormativeFields>? = null
-        val emptyList = emptyList<ResponseGetListFormativeFields>()
+        val nullList: List<ResponseGetListFormativeField>? = null
+        val emptyList = emptyList<ResponseGetListFormativeField>()
 
         // Ejecutamos la función de extensión
         val resultFromNull = nullList.toModelListFormativeFields()
@@ -58,9 +58,9 @@ class ModelFormatSubjectDomainTest {
     fun `toModelSubjectList con elementos nulos en la lista`() {
         // Preparamos los datos de entrada
         val listWithNulls = listOf(
-            ResponseGetListFormativeFields(1, "Matemáticas"),
+            ResponseGetListFormativeField(1, "Matemáticas"),
             null,
-            ResponseGetListFormativeFields(2, "Español")
+            ResponseGetListFormativeField(2, "Español")
         )
 
         // Ejecutamos la función de extensión

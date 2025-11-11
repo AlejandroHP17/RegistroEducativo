@@ -9,10 +9,10 @@ import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.usecase.mainflowdomain.ValidateVoiceStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.EditStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.RegisterOneStudentUseCase
-import com.mx.liftechnology.domain.usecase.mainflowdomain.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.EditStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.RegisterOneStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper

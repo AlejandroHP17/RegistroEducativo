@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowMain.menu
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowMain.GroupApiCall
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGroupTeacher
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.GroupApiCall
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGroupTeacher
+import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
+import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [MenuRepository].
+ * Tests para [com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository].
  * Esta clase contiene los tests unitarios para el repositorio que obtiene los datos del menú.
  *
  * @author Pelkidev

@@ -1,8 +1,10 @@
 package com.mx.liftechnology.data.repository.flowLogin.register
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowLogin.RegisterUserApiCall
-import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestRegisterUser
+import com.mx.liftechnology.core.network.apiCall.auth.RegisterUserApiCall
+import com.mx.liftechnology.core.network.apiCall.auth.RequestRegisterUser
+import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
+import com.mx.liftechnology.data.repository.auth.RegisterUserRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -15,7 +17,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [RegisterUserRepository].
+ * Tests para [com.mx.liftechnology.data.repository.auth.RegisterUserRepository].
  * Esta clase contiene los tests unitarios para el repositorio de registro de usuarios, 
  * verificando que la lógica de la capa de datos funcione como se espera.
  *

@@ -1,5 +1,7 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.school
 
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCaseImp
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

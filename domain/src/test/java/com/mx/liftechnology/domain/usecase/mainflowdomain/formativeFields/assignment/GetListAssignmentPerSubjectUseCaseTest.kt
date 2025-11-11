@@ -1,13 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseGetPercentSubjectId
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGetPercentSubjectId
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.GetPercentSubjectRepository
+import com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [GetListAssignmentPerSubjectUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios.
  *
  * @author Pelkidev
@@ -33,7 +34,8 @@ class GetListAssignmentPerSubjectUseCaseTest {
      */
     @Before
     fun setUp() {
-        getListAssignmentPerSubjectUseCase = GetListAssignmentPerSubjectUseCase(getPercentSubjectRepository, preferenceUseCase)
+        getListAssignmentPerSubjectUseCase =
+            GetListAssignmentPerSubjectUseCase(getPercentSubjectRepository, preferenceUseCase)
     }
 
     /**

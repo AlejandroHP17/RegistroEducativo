@@ -1,13 +1,14 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment
 
-import com.mx.liftechnology.core.network.apiCall.flowMain.ResponseStudentJobs
+import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseStudentJobs
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.formativeFields.assignment.RegisterAssignmentRepository
+import com.mx.liftechnology.data.repository.evaluation.RegisterAssignmentRepository
 import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [RegisterAssignmentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios.
  *
  * @author Pelkidev
@@ -33,7 +34,8 @@ class RegisterAssignmentUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerAssignmentUseCase = RegisterAssignmentUseCase(registerAssignmentRepository, preferenceUseCase)
+        registerAssignmentUseCase =
+            RegisterAssignmentUseCase(registerAssignmentRepository, preferenceUseCase)
     }
 
     /**

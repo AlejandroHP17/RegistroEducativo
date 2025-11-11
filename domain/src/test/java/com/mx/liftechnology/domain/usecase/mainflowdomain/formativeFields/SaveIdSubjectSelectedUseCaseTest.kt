@@ -2,13 +2,14 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields
 
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [SaveIdSubjectSelectedUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase].
  * Verifica que el ID de la materia seleccionada se guarde correctamente en las preferencias.
  *
  * @author Pelkidev

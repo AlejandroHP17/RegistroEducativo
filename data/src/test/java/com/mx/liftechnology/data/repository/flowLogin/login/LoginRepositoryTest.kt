@@ -1,9 +1,11 @@
 package com.mx.liftechnology.data.repository.flowLogin.login
 
 import com.mx.liftechnology.core.model.ResponseGeneric
-import com.mx.liftechnology.core.network.apiCall.flowLogin.LoginApiCall
-import com.mx.liftechnology.core.network.apiCall.flowLogin.RequestLogin
-import com.mx.liftechnology.core.network.apiCall.flowLogin.ResponseLogin
+import com.mx.liftechnology.core.network.apiCall.auth.LoginApiCall
+import com.mx.liftechnology.core.network.apiCall.auth.RequestLogin
+import com.mx.liftechnology.core.network.apiCall.auth.ResponseLogin
+import com.mx.liftechnology.data.repository.auth.LoginRepository
+import com.mx.liftechnology.data.repository.auth.LoginRepositoryImpl
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import io.mockk.coEvery
@@ -17,7 +19,7 @@ import org.junit.Test
 import retrofit2.Response
 
 /**
- * Tests para [LoginRepository].
+ * Tests para [com.mx.liftechnology.data.repository.auth.LoginRepository].
  * Esta clase contiene los tests unitarios para el repositorio de inicio de sesion,
  * verificando que la lógica de la capa de datos funcione como se espera.
  *

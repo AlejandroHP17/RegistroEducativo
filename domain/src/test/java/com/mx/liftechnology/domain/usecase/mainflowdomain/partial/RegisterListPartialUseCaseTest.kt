@@ -1,14 +1,15 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.flowMain.partial.RegisterListPartialRepository
+import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepository
 import com.mx.liftechnology.data.util.FailureService
 import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
-import com.mx.liftechnology.domain.model.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.SuccessResult
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -17,7 +18,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [RegisterListPartialUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase].
  * Verifica el comportamiento del caso de uso en diferentes escenarios.
  *
  * @author Pelkidev
@@ -34,7 +35,8 @@ class RegisterListPartialUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerListPartialUseCase = RegisterListPartialUseCase(registerListPartialRepository, preferenceUseCase)
+        registerListPartialUseCase =
+            RegisterListPartialUseCase(registerListPartialRepository, preferenceUseCase)
     }
 
     /**
