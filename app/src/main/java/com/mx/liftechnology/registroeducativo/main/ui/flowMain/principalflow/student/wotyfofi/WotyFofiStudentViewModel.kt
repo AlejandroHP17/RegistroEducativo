@@ -66,39 +66,19 @@ class WotyFofiStudentViewModel (
         }
     }
 
-
-
     /**
      * Updates the expanded state of the title card.
      *
      * @param expanded True to expand, false to collapse.
      */
-    fun updateExpandedTitle(expanded: Boolean) {
+    fun updateExpandedTitle(expanded: Pair<Boolean, Int>) {
         _dataState.update { currentState ->
             currentState.copy(
-                dataCard = currentState.dataCard?.copy(
-                    isExpandedTitle = expanded
-                )
-            )
-        }
-    }
-
-    /**
-     * Updates the expanded state of a subtitle card.
-     *
-     * @param subTitleId The ID of the subtitle to update.
-     * @param expanded True to expand, false to collapse.
-     */
-    fun updateExpandedSubTitle(subTitleId: Int, expanded: Boolean) {
-        _dataState.update { currentState ->
-            currentState.copy(
-                dataCard = currentState.dataCard?.copy(
-                    list = currentState.dataCard.list?.map { subCard ->
-                        if (subCard?.idSubTitle == subTitleId) {
-                            subCard.copy(isExpandedSubTitle = expanded)
-                        } else subCard
-                    }
-                )
+                dataCard = currentState.dataCard?.map { card ->
+                    if (card.idTitle == expanded.second) {
+                        card.copy(isExpandedTitle = expanded.first)
+                    } else card
+                }
             )
         }
     }

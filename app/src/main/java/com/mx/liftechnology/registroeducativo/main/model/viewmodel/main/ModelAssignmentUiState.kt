@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -32,7 +32,7 @@ data class ModelAssignmentStateUI(
  * @version 1.0.0
  */
 data class ModelAssignmentDataState(
-    val dataCard: ModelComplexCard? = null,
+    val dataCard: List<ModelComplexCard>? = null,
 )
 
 /**
@@ -45,7 +45,7 @@ data class ModelAssignmentDataState(
  * @version 1.0.0
  */
 data class ModelAssignmentUiCallbacks(
-    val onExpandedTitle: (Boolean) -> Unit,
+    val onExpandedTitle: (Pair<Boolean, Int>) -> Unit,
     val onExpandedSubTitle: (Boolean) -> Unit,
     val onItemClick: (ModelComplexCard?) -> Unit,
 )

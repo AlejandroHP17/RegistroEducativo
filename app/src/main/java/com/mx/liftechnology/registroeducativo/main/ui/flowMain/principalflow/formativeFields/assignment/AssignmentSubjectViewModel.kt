@@ -3,11 +3,11 @@ package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.fo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logInfo
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
@@ -78,11 +78,11 @@ class AssignmentSubjectViewModel (
             isExpandedTitle = convertData?.isExpandedTitle?: false,
             list = DomainToUIMapper.mapAssignmentListToSubComplexCard(result),
         )
-        _dataState.update {
+       /* _dataState.update {
             it.copy(
                 dataCard = data
             )
-        }
+        }*/
     }
 
     /**
@@ -90,7 +90,7 @@ class AssignmentSubjectViewModel (
      *
      * @param expanded True to expand, false to collapse.
      */
-    fun updateExpandedTitle(expanded: Boolean) {
+   /* fun updateExpandedTitle(expanded: Boolean) {
         _dataState.update { currentState ->
             currentState.copy(
                 dataCard = currentState.dataCard?.copy(
@@ -118,5 +118,5 @@ class AssignmentSubjectViewModel (
                 )
             )
         }
-    }
+    }*/
 }

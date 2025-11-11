@@ -37,11 +37,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
@@ -275,7 +275,14 @@ fun ComplexCard(
                 Column {
                     Row(
                         modifier = Modifier
-                            .clickable { complexCallbacks.onExpandedTitle(!((item?.isExpandedTitle)?:false)) }
+                            .clickable {
+                                complexCallbacks.onExpandedTitle(
+                                    Pair(
+                                        !((item?.isExpandedTitle)?:false),
+                                        item?.idTitle?:0
+                                    )
+                                )
+                            }
                             .fillMaxWidth()
                             .padding(
                                 start = dimensionResource(id = R.dimen.margin_16dp) ),

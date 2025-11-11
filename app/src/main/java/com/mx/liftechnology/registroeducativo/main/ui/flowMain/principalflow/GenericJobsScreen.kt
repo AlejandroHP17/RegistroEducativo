@@ -1,8 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -11,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
@@ -88,14 +93,24 @@ private fun BodyAssignment(
     dataState: ModelAssignmentDataState,
     complexCallbacks: ModelAssignmentUiCallbacks
 ){
-    ComplexCard(
-        item = dataState.dataCard,
-        complexCallbacks = ModelAssignmentUiCallbacks(
-            onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
-            onExpandedSubTitle = { complexCallbacks.onExpandedSubTitle(it) },
-            onItemClick = { complexCallbacks.onItemClick(it) }
-        )
-    )
+    LazyColumn(
+        modifier = Modifier.wrapContentHeight(),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
+    ) {
+        itemsIndexed(
+            items = dataState.dataCard ?: emptyList(),
+            key = { _, item: ModelComplexCard -> item.idTitle!! }
+        ) { _, item: ModelComplexCard ->
+            ComplexCard(
+                item = item,
+                complexCallbacks = ModelAssignmentUiCallbacks(
+                    onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
+                    onExpandedSubTitle = { complexCallbacks.onExpandedSubTitle(it) },
+                    onItemClick = { complexCallbacks.onItemClick(it) }
+                )
+            )
+        }
+    }
 }
 
 /**

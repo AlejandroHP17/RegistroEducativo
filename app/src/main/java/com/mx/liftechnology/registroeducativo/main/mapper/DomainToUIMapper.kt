@@ -118,14 +118,18 @@ object DomainToUIMapper {
         }
     }
     
-    fun ModelWotyFofiData.toComplexCardUI():ModelComplexCard{
-        return ModelComplexCard(
-            idTitle = this.formativeFields.firstOrNull()?.formativeFieldId,
-            nameTitle = this.formativeFields.firstOrNull()?.formativeFieldName,
-            isShowTitle = true,
-            isExpandedTitle = true,
-            list = this.formativeFields.map { it.listWorkTypes.firstOrNull()?.toData() }
-        )
+    fun ModelWotyFofiData.toComplexCardUI():List<ModelComplexCard>{
+        return this.formativeFields.mapNotNull { formativeField ->
+            ModelComplexCard(
+                idTitle = formativeField.formativeFieldId,
+                nameTitle = formativeField.formativeFieldName,
+                isShowTitle = true,
+                isExpandedTitle = true,
+                list = formativeField.listWorkTypes.mapNotNull { workType ->
+                    workType.toData() }
+            )
+        }
+
     }
 
     // --- Extensión para el nivel intermedio ---
@@ -138,7 +142,5 @@ object DomainToUIMapper {
             list = null
         )
     }
-
-
 }
 

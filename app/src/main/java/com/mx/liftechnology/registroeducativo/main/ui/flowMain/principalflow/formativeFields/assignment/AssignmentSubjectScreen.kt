@@ -62,7 +62,8 @@ fun AssignmentSubjectScreen(
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelAssignmentUiCallbacks(
-                onExpandedTitle = { assignmentSubjectViewModel.updateExpandedTitle(it) },
+                onExpandedTitle = { //assignmentSubjectViewModel.updateExpandedTitle(it)
+                                  },
                 onExpandedSubTitle = {
                 },
                 onItemClick = {}
