@@ -4,7 +4,7 @@ import com.mx.liftechnology.core.network.apiCall.auth.RegisterUserApiCall
 import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
 import com.mx.liftechnology.data.repository.auth.RegisterUserRepositoryImpl
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register.RegisterUserViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.framework
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
-import com.mx.liftechnology.registroeducativo.di.assignmentModule
+import com.mx.liftechnology.registroeducativo.di.wotyFofiModule
 import com.mx.liftechnology.registroeducativo.di.calendarModule
 import com.mx.liftechnology.registroeducativo.di.crudPartialModule
 import com.mx.liftechnology.registroeducativo.di.crudStudentModule
@@ -64,7 +64,7 @@ class MyApp : Application() {
                 crudStudentModule,
                 crudSubjectModule,
                 profileModule,
-                assignmentModule,
+                wotyFofiModule,
                 registerAssignmentModule,
                 calendarModule
             )

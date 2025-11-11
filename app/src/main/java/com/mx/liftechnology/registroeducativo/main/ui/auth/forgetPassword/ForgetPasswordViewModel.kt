@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.forgetPassword
+package com.mx.liftechnology.registroeducativo.main.ui.auth.forgetPassword
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

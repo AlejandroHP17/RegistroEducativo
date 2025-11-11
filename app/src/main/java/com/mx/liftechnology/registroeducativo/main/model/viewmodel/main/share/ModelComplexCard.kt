@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
 
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 
-data class ModelComplexCard(
+data class ModelComplexCard(//foramtiva
     val idTitle : Int?,
     val nameTitle : String?,
     val isShowTitle: Boolean = false,
@@ -10,7 +10,7 @@ data class ModelComplexCard(
     val list : List<ModelSubComplexCard?>?,
 )
 
-data class ModelSubComplexCard(
+data class ModelSubComplexCard( //work
     val idSubTitle : Int?,
     val nameSubTitle : String?,
     val isShowSubTitle: Boolean = false,
@@ -18,7 +18,7 @@ data class ModelSubComplexCard(
     val list : List<ModelSubSubComplexCard?>?,
 )
 
-data class ModelSubSubComplexCard(
+data class ModelSubSubComplexCard(//evaluation
     val idDescription : String?,
     val nameDescription : String?,
     val isShowDescription: Boolean = false

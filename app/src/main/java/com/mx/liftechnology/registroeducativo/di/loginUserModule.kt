@@ -10,7 +10,7 @@ import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCaseImp
 import com.mx.liftechnology.domain.usecase.auth.GetDataUserUseCase
 import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login.LoginViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.auth.login.LoginViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

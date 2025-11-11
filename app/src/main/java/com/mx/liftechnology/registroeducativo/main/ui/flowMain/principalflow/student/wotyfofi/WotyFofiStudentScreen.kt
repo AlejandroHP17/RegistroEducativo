@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment
+package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.wotyfofi
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,17 +27,17 @@ import org.koin.androidx.compose.koinViewModel
  *
  * @param navController The navigation controller.
  * @param backStackEntry The back stack entry for this screen.
- * @param assignmentStudentViewModel The ViewModel for this screen.
+ * @param wotyFofiStudentViewModel The ViewModel for this screen.
  */
 @Composable
 fun AssignmentStudentScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    assignmentStudentViewModel: AssignmentStudentViewModel = koinViewModel(),
+    wotyFofiStudentViewModel: WotyFofiStudentViewModel = koinViewModel(),
 ) {
 
-    val uiState by assignmentStudentViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by assignmentStudentViewModel.dataState.collectAsStateWithLifecycle()
+    val uiState by wotyFofiStudentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by wotyFofiStudentViewModel.dataState.collectAsStateWithLifecycle()
     val studentJson = backStackEntry.arguments?.getString("student")
 
     LaunchedEffect(Unit) {
@@ -46,9 +46,9 @@ fun AssignmentStudentScreen(
         } else {
             Gson().fromJson(studentJson, ModelStudentDomain::class.java)
         }
-        assignmentStudentViewModel.updateStudent(student)
+        wotyFofiStudentViewModel.updateStudent(student)
+        wotyFofiStudentViewModel.getListWotyFofi()
     }
-
 
     Box(
         modifier = Modifier
@@ -62,7 +62,7 @@ fun AssignmentStudentScreen(
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelAssignmentUiCallbacks(
-                onExpandedTitle = { assignmentStudentViewModel.updateExpandedTitle(it) },
+                onExpandedTitle = { wotyFofiStudentViewModel.updateExpandedTitle(it) },
                 onExpandedSubTitle = {
                 },
                 onItemClick = {}

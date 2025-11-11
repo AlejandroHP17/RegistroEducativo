@@ -10,17 +10,17 @@ import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGetPercentS
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.GetPercentSubjectRepository
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.ModelCodeError
 import com.mx.liftechnology.domain.model.generic.ResultModel
 import com.mx.liftechnology.domain.model.generic.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
+import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 
 /**
  * Caso de uso para obtener la lista de asignaciones (trabajos) por materia.
@@ -32,6 +32,7 @@ import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
  * @author Pelkidev
  * @version 1.0.0
  */
+@Deprecated("cambiara")
 class GetListAssignmentPerSubjectUseCase (
     private val getPercentSubjectRepository: GetPercentSubjectRepository,
     private val preference : PreferenceUseCase

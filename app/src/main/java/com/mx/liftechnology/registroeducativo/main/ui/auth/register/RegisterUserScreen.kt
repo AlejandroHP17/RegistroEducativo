@@ -3,7 +3,7 @@
  * @author PelkiDev
  * @version 1.0.0
  */
-package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register
+package com.mx.liftechnology.registroeducativo.main.ui.auth.register
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

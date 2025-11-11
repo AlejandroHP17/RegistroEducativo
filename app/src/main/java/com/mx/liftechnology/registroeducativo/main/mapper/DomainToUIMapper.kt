@@ -1,10 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
+import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
+import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelSpinnerSchoolUi
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
@@ -115,5 +117,28 @@ object DomainToUIMapper {
             )
         }
     }
+    
+    fun ModelWotyFofiData.toComplexCardUI():ModelComplexCard{
+        return ModelComplexCard(
+            idTitle = this.formativeFields.firstOrNull()?.formativeFieldId,
+            nameTitle = this.formativeFields.firstOrNull()?.formativeFieldName,
+            isShowTitle = true,
+            isExpandedTitle = true,
+            list = this.formativeFields.map { it.listWorkTypes.firstOrNull()?.toData() }
+        )
+    }
+
+    // --- Extensión para el nivel intermedio ---
+    fun ResponseWorkTypesData.toData(): ModelSubComplexCard {
+        return ModelSubComplexCard(
+            idSubTitle = this.workTypeId,
+            nameSubTitle = this.workTypeName,
+            isShowSubTitle = false,
+            isExpandedSubTitle = false,
+            list = null
+        )
+    }
+
+
 }
 

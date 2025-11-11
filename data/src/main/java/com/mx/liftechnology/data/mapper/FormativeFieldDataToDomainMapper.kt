@@ -1,10 +1,16 @@
 package com.mx.liftechnology.data.mapper
 
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativeFieldBulk
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativeFields
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListFormativeField
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWorkType
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWotyFofi
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypes
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
+import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
+import com.mx.liftechnology.data.model.formativeField.ResponseFormativeFieldsData
+import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
 
 object FormativeFieldDataToDomainMapper {
     fun List<ResponseGetListFormativeField>.mapperToModelListFormativeFields(): List<ModelFormativeFieldData>{
@@ -31,6 +37,30 @@ object FormativeFieldDataToDomainMapper {
             name = this.formativeFieldsName,
             code = this.formativeFieldsCode,
             formativeFieldID = this.formativeFieldsId
+        )
+    }
+
+    fun ResponseGetListWotyFofi.mapperToModelListWotyFofi(): ModelWotyFofiData{
+        return ModelWotyFofiData(
+            // Mapeo de la lista de ResponseFormativeFields a ResponseFormativeFieldsData
+            formativeFields = this.formativeFields.map { it.toData() }
+        )
+    }
+    fun ResponseWorkTypes.toData(): ResponseWorkTypesData {
+        return ResponseWorkTypesData(
+            workTypeId = this.workTypeId,
+            workTypeName = this.workTypeName,
+            evaluationWeight = this.evaluationWeight
+        )
+    }
+
+    // --- Extensión para el nivel intermedio ---
+    fun ResponseFormativeFields.toData(): ResponseFormativeFieldsData {
+        return ResponseFormativeFieldsData(
+            formativeFieldId = this.formativeFieldId,
+            formativeFieldName = this.formativeFieldName,
+            code = this.code,
+            listWorkTypes = this.listWorkTypes.map { it.toData() }
         )
     }
 }

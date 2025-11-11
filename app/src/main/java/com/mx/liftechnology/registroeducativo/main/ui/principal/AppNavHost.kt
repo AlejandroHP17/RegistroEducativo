@@ -22,13 +22,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
-import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.forgetPassword.ForgetPasswordScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login.LoginScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register.RegisterUserScreen
+import com.mx.liftechnology.registroeducativo.main.ui.auth.forgetPassword.ForgetPasswordScreen
+import com.mx.liftechnology.registroeducativo.main.ui.auth.login.LoginScreen
+import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial.RegisterPartialScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.calendar.CalendarScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment.AssignmentStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.wotyfofi.AssignmentStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.assignment.AssignmentSubjectScreen

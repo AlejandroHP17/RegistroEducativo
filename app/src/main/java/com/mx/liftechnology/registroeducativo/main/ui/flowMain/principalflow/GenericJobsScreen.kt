@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentUiCallbacks
@@ -112,4 +113,21 @@ private fun ActionAssignment(
         onActionClick = { onActionClick() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun GenericJobsScreenPreview(){
+    GenericJobsScreen(
+        title = "Alejandro",
+        description = "Test de prueba",
+        dataState = ModelAssignmentDataState(),
+        onReturnClick = {},
+        complexCallbacks = ModelAssignmentUiCallbacks(
+            onExpandedTitle = {},
+            onExpandedSubTitle = {},
+            onItemClick = {}
+        ),
+        onAction = {  }
+    )
 }

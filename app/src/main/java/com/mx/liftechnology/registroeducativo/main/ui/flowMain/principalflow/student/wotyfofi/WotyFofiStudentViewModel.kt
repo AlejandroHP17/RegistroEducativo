@@ -1,18 +1,14 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.assignment
+package com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.wotyfofi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.logInfo
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.model.generic.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
+import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
+import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentStateUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,10 +22,11 @@ import kotlinx.coroutines.launch
  * @author Pelkidev
  * @version 1.0.0
  */
-class AssignmentStudentViewModel (
+class WotyFofiStudentViewModel (
     private val dispatcherProvider: DispatcherProvider,
-    private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
-): ViewModel() {
+    private val getListWotyFofiUseCase: GetListWotyFofiUseCase,
+
+    ): ViewModel() {
     private val _uiState = MutableStateFlow(ModelAssignmentStateUI())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
     val uiState: StateFlow<ModelAssignmentStateUI> = _uiState.asStateFlow()
@@ -47,14 +44,16 @@ class AssignmentStudentViewModel (
         _uiState.update { it.copy(student =  student) }
     }
 
-    private fun getListAssessmentType(subject: ModelFormatFormativeFieldsDomain?) {
+    fun getListWotyFofi(){
         viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
-                is SuccessResult -> {
-                    val convertData = DomainToUIMapper.mapSubjectToComplexCard(subject)
-                   fillModel(result.result, convertData)
+            when (val result = getListWotyFofiUseCase.invoke()){
+                is com.mx.liftechnology.data.util.SuccessResult ->{
+                    _dataState.update {
+                        it.copy(
+                            dataCard = result.data.toComplexCardUI()
+                        )
+                    }
                 }
-
                 else -> {
                     logInfo(result.toString())
                     _uiState.update {
@@ -67,20 +66,7 @@ class AssignmentStudentViewModel (
         }
     }
 
-    private fun fillModel(result: List<ModelFormatAssignment>?, convertData: ModelComplexCard?) {
-        val data = ModelComplexCard(
-            idTitle = convertData?.idTitle,
-            nameTitle = convertData?.nameTitle,
-            isShowTitle = convertData?.isShowTitle ?: false,
-            isExpandedTitle = convertData?.isExpandedTitle?: false,
-            list = DomainToUIMapper.mapAssignmentListToSubComplexCard(result),
-        )
-        _dataState.update {
-            it.copy(
-                dataCard = data
-            )
-        }
-    }
+
 
     /**
      * Updates the expanded state of the title card.

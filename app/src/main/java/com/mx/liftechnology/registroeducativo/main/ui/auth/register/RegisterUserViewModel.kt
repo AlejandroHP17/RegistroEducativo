@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register
+package com.mx.liftechnology.registroeducativo.main.ui.auth.register
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

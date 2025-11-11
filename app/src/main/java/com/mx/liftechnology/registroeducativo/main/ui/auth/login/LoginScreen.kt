@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.login
+package com.mx.liftechnology.registroeducativo.main.ui.auth.login
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

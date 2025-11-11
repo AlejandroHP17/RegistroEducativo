@@ -55,8 +55,8 @@ object Environment {
     const val END_POINT_REGISTER_SCHOOL_CYCLE = "cycles/"
     const val END_POINT_REGISTER_PARTIAL = "partials/"
     const val END_POINT_REGISTER_STUDENT = "students/"
-    const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/"
-    const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk"
+    const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/" // Solo agrega el campo formativo
+    const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk" //Agrega campo formativo, tipos de trabajo y tipos de trabajo asociados al campo formativo
 
     const val END_POINT_REGISTER_JOB = "teacher/registerTeacherJobDayByStudent"
 
@@ -65,6 +65,7 @@ object Environment {
     const val END_POINT_GET_STUDENT = "students/"
     const val END_POINT_GET_FORMATIVE_FIELDS= "formative-fields/"
     const val END_POINT_GET_WORK_TYPE = "work-types/"
+    const val END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE = "formative-fields/by-cycle/{school_cycle_id}"
 
     const val END_POINT_GET_SUBJECT_PERCENT = "teacher/getTeacherSubjectsPercent"
     const val END_POINT_GET_EVALUATION_TYPE = "teacher/getTeacherGroup"

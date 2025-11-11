@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.flowLogin.register
+package com.mx.liftechnology.registroeducativo.main.ui.auth.register
 
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
