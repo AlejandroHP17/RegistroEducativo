@@ -7,7 +7,7 @@ import com.mx.liftechnology.data.util.ResultError
 import com.mx.liftechnology.data.util.ResultSuccess
 import com.mx.liftechnology.domain.model.generic.ErrorUserResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
-import com.mx.liftechnology.domain.usecase.student.RegisterOneStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.RegisterStudentUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +16,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [com.mx.liftechnology.domain.usecase.student.RegisterOneStudentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.student.RegisterStudentUseCase].
  * Verifica el comportamiento del caso de uso de registro de estudiante en diferentes escenarios.
  *
  * @author Pelkidev
@@ -24,7 +24,7 @@ import org.junit.Test
  */
 class RegisterOneStudentUseCaseTest {
 
-    private lateinit var registerOneStudentUseCase: RegisterOneStudentUseCase
+    private lateinit var registerStudentUseCase: RegisterStudentUseCase
     private val crudStudentRepository: RegisterStudentRepository = mockk()
     private val preferenceUseCase: PreferenceUseCase = mockk(relaxed = true)
 
@@ -33,8 +33,8 @@ class RegisterOneStudentUseCaseTest {
      */
     @Before
     fun setUp() {
-        registerOneStudentUseCase =
-            RegisterOneStudentUseCase(crudStudentRepository, preferenceUseCase)
+        registerStudentUseCase =
+            RegisterStudentUseCase(crudStudentRepository, preferenceUseCase)
     }
 
     /**
@@ -43,10 +43,10 @@ class RegisterOneStudentUseCaseTest {
     @Test
     fun `invoke con datos validos debe devolver SuccessState`() = runBlocking {
         // Preparamos el mock
-        coEvery { crudStudentRepository.executeRegisterOneStudent(any()) } returns ResultSuccess(listOf("Registro exitoso"))
+        coEvery { crudStudentRepository.executeRegisterStudent(any()) } returns ResultSuccess(listOf("Registro exitoso"))
 
         // Ejecutamos el caso de uso
-        val result = registerOneStudentUseCase.invoke("Juan", "Perez", "Gomez", "XAXX010101HXXIXXA0", "2001-01-01", "1234567890")
+        val result = registerStudentUseCase.invoke("Juan", "Perez", "Gomez", "XAXX010101HXXIXXA0", "2001-01-01", "1234567890")
 
         // Verificamos el resultado
         assertTrue(result is SuccessResult)
@@ -58,10 +58,10 @@ class RegisterOneStudentUseCaseTest {
     @Test
     fun `invoke con error del repositorio debe devolver ErrorUserState`() = runBlocking {
         // Preparamos el mock
-        coEvery { crudStudentRepository.executeRegisterOneStudent(any()) } returns ResultError(FailureService.BadRequest)
+        coEvery { crudStudentRepository.executeRegisterStudent(any()) } returns ResultError(FailureService.BadRequest)
 
         // Ejecutamos el caso de uso
-        val result = registerOneStudentUseCase.invoke("Juan", "Perez", "Gomez", "XAXX010101HXXIXXA0", "2001-01-01", "1234567890")
+        val result = registerStudentUseCase.invoke("Juan", "Perez", "Gomez", "XAXX010101HXXIXXA0", "2001-01-01", "1234567890")
 
         // Verificamos el resultado
         assertTrue(result is ErrorUserResult)

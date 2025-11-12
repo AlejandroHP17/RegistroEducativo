@@ -55,7 +55,7 @@ class RegisterListPartialUseCase(
             listAdapter.add(
                 RequestPartials(
                     cycleSchoolId = cycleSchoolId,
-                    description = ("Parcial $index + 1"),
+                    description = ("Parcial ${index + 1}"),
                     startDate = part.getOrNull(0)?.trim() ?: "",
                     endDate = part.getOrNull(1)?.trim() ?: "",
                 )

@@ -1,7 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashViewModel
-import org.koin.core.module.dsl.viewModel
+import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

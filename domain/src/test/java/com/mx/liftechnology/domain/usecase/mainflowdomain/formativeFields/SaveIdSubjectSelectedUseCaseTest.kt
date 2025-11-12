@@ -34,7 +34,7 @@ class SaveIdSubjectSelectedUseCaseTest {
         saveIdSubjectSelectedUseCase.invoke(123)
 
         // Verificamos que se llamó al método para guardar en preferencias con el ID correcto
-        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP, 123) }
+        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_FORMATIVE_FIELD, 123) }
     }
 
     /**
@@ -46,6 +46,6 @@ class SaveIdSubjectSelectedUseCaseTest {
         saveIdSubjectSelectedUseCase.invoke(null)
 
         // Verificamos que se llamó al método para guardar en preferencias con -1
-        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP, -1) }
+        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_FORMATIVE_FIELD, -1) }
     }
 }

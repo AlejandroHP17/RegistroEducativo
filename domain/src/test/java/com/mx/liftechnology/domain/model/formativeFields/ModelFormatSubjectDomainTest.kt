@@ -30,7 +30,7 @@ class ModelFormatSubjectDomainTest {
         // Verificamos el resultado
         assertEquals(2, result.size)
         assertEquals("Matemáticas", result[0].name)
-        assertEquals(1, result[0].subjectId)
+        assertEquals(1, result[0].formativeFieldId)
     }
 
     /**

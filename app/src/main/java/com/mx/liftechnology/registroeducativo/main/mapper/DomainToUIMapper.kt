@@ -1,12 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
+import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelSpinnerSchoolUi
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
@@ -21,27 +21,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  */
 object DomainToUIMapper {
 
-    /**
-     * Convierte una lista de estudiantes del dominio a una lista de ModelCustomCard para la UI.
-     *
-     * @param students La lista de estudiantes del dominio a convertir.
-     * @return Una lista de ModelCustomCard ordenada y formateada para mostrar en la UI.
-     */
-    fun mapStudentListToCustomCard(students: List<ModelStudentDomain>?): List<ModelCustomCard> {
-        return students?.sortedWith(
-            compareBy(
-                { it.lastName ?: "" },
-                { it.secondLastName ?: "" },
-                { it.name ?: "" }
-            )
-        )?.mapIndexed { index, student ->
-            ModelCustomCard(
-                id = student.studentId?:0,
-                numberList = (index + 1).toString(),
-                nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()
-            )
-        } ?: emptyList()
-    }
+
 
     /**
      * Convierte una lista de materias del dominio a una lista de ModelCustomCard para la UI.
@@ -52,7 +32,7 @@ object DomainToUIMapper {
     fun mapSubjectListToCustomCard(subjects: List<ModelFormatFormativeFieldsDomain>?): List<ModelCustomCard> {
         return subjects?.map {
             ModelCustomCard(
-                id = it.subjectId?:0,
+                id = it.formativeFieldId?:0,
                 numberList = "",
                 nameCard = "${it.name}"
             )
@@ -67,7 +47,7 @@ object DomainToUIMapper {
      */
     fun mapSubjectToComplexCard(subject: ModelFormatFormativeFieldsDomain?): ModelComplexCard {
         return ModelComplexCard(
-            idTitle = subject?.subjectId,
+            idTitle = subject?.formativeFieldId,
             nameTitle = subject?.name,
             isShowTitle = true,
             isExpandedTitle = true,
@@ -141,6 +121,20 @@ object DomainToUIMapper {
             isExpandedSubTitle = false,
             list = null
         )
+    }
+
+
+    fun ModelWorkTypeByFormativeField.toComplexCardUI():List<ModelComplexCard>{
+        return this.workTypes.mapNotNull { workType ->
+            ModelComplexCard(
+                idTitle = workType.workTypeId,
+                nameTitle = workType.workTypeName,
+                isShowTitle = true,
+                isExpandedTitle = true,
+                list = null
+            )
+        }
+
     }
 }
 

@@ -2,14 +2,14 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
-import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCaseImp
+import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCaseImp
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase].
  * Verifica el comportamiento de las funciones de validación del caso de uso.
  *
  * @author Pelkidev
@@ -17,11 +17,11 @@ import org.junit.Test
  */
 class ValidateFieldsSubjectUseCaseTest {
 
-    private lateinit var useCase: ValidateFieldsSubjectUseCase
+    private lateinit var useCase: ValidateFieldsFormativeFieldsUseCase
 
     @Before
     fun setUp() {
-        useCase = ValidateFieldsSubjectUseCaseImp()
+        useCase = ValidateFieldsFormativeFieldsUseCaseImp()
     }
 
     //region Tests para validateNameCompose

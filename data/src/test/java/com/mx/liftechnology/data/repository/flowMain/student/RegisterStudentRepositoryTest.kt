@@ -49,7 +49,7 @@ class RegisterStudentRepositoryTest {
         coEvery { registerStudentApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = registerStudentRepository.executeRegisterOneStudent(RequestRegisterStudent("", "", "", "", "", "", 1, 1, 1))
+        val result = registerStudentRepository.executeRegisterStudent(RequestRegisterStudent("", "", "", "", "", "", 1, 1, 1))
 
         // Verificamos el resultado
         assertTrue(result is ResultSuccess)
@@ -67,7 +67,7 @@ class RegisterStudentRepositoryTest {
         coEvery { registerStudentApiCall.callApi(any()) } returns mockResponse
 
         // Ejecutamos el método a probar
-        val result = registerStudentRepository.executeRegisterOneStudent(RequestRegisterStudent("", "", "", "", "", "", 1, 1, 1))
+        val result = registerStudentRepository.executeRegisterStudent(RequestRegisterStudent("", "", "", "", "", "", 1, 1, 1))
 
         // Verificamos el resultado
         assertTrue(result is ResultError)

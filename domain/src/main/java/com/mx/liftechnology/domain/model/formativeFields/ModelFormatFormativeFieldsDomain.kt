@@ -17,7 +17,7 @@ import kotlinx.parcelize.Parcelize
  * @property position La posición de la materia en una lista.
  * @property name El nombre de la materia.
  * @property percent El valor porcentual asociado a la materia.
- * @property subjectId El identificador único de la materia.
+ * @property formativeFieldId El identificador único de la materia.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -27,7 +27,7 @@ data class ModelFormatFormativeFieldsDomain(
     val position:Int,
     var name: String?,
     var percent: String?,
-    val subjectId: Int?
+    val formativeFieldId: Int?
 ): Parcelable
 
 /**
@@ -47,7 +47,7 @@ fun List<ModelFormativeFieldData?>?.toModelListFormativeFields() :List<ModelForm
                 position = index,
                 name = it.name,
                 percent = null,
-                subjectId = it.formativeFieldID
+                formativeFieldId = it.formativeFieldID
             )
         }
     }?: emptyList()

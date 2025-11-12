@@ -82,7 +82,7 @@ fun AlertDialogConfirm(
 }
 
 /**
- * A menu dialog.
+ * A schoolCycle dialog.
  *
  * @param uiDialog The state of the dialog.
  * @param itemSelectedReturn A lambda to be invoked when a group item is selected.

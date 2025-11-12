@@ -8,11 +8,11 @@ import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPart
 import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepositoryImpl
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.SavePartialUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.UpdatePartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.menu.SavePartialMenuUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.menu.UpdatePartialMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial.RegisterPartialViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -68,14 +68,14 @@ val crudPartialModule = module {
     }
 
     /**
-     * Provides a singleton instance of [SavePartialUseCase].
+     * Provides a singleton instance of [SavePartialMenuUseCase].
      */
-    singleOf(::SavePartialUseCase)
+    singleOf(::SavePartialMenuUseCase)
 
     /**
-     * Provides a singleton instance of [UpdatePartialUseCase].
+     * Provides a singleton instance of [UpdatePartialMenuUseCase].
      */
-    singleOf(::UpdatePartialUseCase)
+    singleOf(::UpdatePartialMenuUseCase)
 
     /**
      * Provides an instance of [RegisterPartialViewModel].

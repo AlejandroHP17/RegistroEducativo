@@ -45,7 +45,7 @@ import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelAssignmentUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
@@ -81,7 +81,7 @@ fun CustomCardView() {
                 isExpandedTitle = true,
                 list = null
             ),
-            complexCallbacks = ModelAssignmentUiCallbacks(
+            complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = {},
                 onExpandedSubTitle = {},
                 onItemClick = {}
@@ -136,7 +136,7 @@ fun CustomCardView() {
 }
 
 /**
- * A custom card component with a title, a number, and a dropdown menu.
+ * A custom card component with a title, a number, and a dropdown schoolCycle.
  *
  * @param item The data for the card.
  * @param callbacks The callbacks for the card.
@@ -242,7 +242,7 @@ fun CustomCard(
 @Composable
 fun ComplexCard(
     item: ModelComplexCard?,
-    complexCallbacks: ModelAssignmentUiCallbacks,
+    complexCallbacks: ModelWotyFofiUiCallbacks,
 ) {
 
     Card(

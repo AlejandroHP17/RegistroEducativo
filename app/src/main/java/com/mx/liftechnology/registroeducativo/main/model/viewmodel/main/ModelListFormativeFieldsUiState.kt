@@ -22,12 +22,12 @@ data class ModelListFormativeFieldsStateUI(
 /**
  * Representa los datos de la UI para la pantalla de lista de materias.
  *
- * @property subjectList La lista de materias.
- * @property subjectListUI La lista de materias formateada para la UI.
+ * @property formativeFieldsList La lista de materias.
+ * @property formativeFieldsListUI La lista de materias formateada para la UI.
  * @author Pelkidev
  * @version 1.0.0
  */
 data class ModelListFormativeFieldsDataState(
-    val subjectList: List<ModelFormatFormativeFieldsDomain>? = null,
-    val subjectListUI: List<ModelCustomCard> = emptyList()
+    val formativeFieldsList: List<ModelFormatFormativeFieldsDomain>? = null,
+    val formativeFieldsListUI: List<ModelCustomCard> = emptyList()
 )

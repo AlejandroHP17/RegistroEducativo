@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

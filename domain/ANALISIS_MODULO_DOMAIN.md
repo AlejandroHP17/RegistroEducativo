@@ -49,7 +49,7 @@ com.mx.liftechnology.domain/
 │       │   └── RegisterOneSchoolUseCase.kt
 │       ├── student/
 │       │   ├── GetListStudentUseCase.kt
-│       │   ├── RegisterOneStudentUseCase.kt
+│       │   ├── RegisterStudentUseCase.kt
 │       │   ├── GetListStudentAssignmentUseCase.kt
 │       │   └── ModifyOneStudentUseCase.kt
 │       └── subject/

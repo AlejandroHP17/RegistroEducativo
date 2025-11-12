@@ -65,6 +65,7 @@ object Environment {
     const val END_POINT_GET_STUDENT = "students/"
     const val END_POINT_GET_FORMATIVE_FIELDS= "formative-fields/"
     const val END_POINT_GET_WORK_TYPE = "work-types/"
+    const val END_POINT_GET_WORK_TYPE_BY = "work-types/by_formative_field/{formative_field_id}"
     const val END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE = "formative-fields/by-cycle/{school_cycle_id}"
 
     const val END_POINT_GET_SUBJECT_PERCENT = "teacher/getTeacherSubjectsPercent"

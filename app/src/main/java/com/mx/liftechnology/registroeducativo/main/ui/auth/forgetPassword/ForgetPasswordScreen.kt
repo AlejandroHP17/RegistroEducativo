@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -110,4 +111,22 @@ fun FooterForgetPasswordScreen(
         onActionClick = { validateFieldsCompose() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
+}
+
+@Preview(showBackground = true)
+@Composable()
+fun ForgetPasswordPreview(){
+    Column(
+        ModifierOrientation()
+    ) {
+        HeaderForgetPasswordScreen { }
+
+        BodyForgetPasswordScreen(
+            emailState = ModelStateOutFieldText(),
+            onEmailChanged = {  },
+            getRules = "forgetPasswordViewModel.getRules(context)"
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        FooterForgetPasswordScreen { }
+    }
 }

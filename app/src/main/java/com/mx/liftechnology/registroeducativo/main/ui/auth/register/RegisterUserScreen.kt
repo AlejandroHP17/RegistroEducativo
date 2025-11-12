@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelRegex
@@ -191,4 +192,28 @@ fun FooterRegisterUserScreen(
         onActionClick = { validateFieldsCompose() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
+}
+
+
+@Preview(showBackground = true)
+@Composable()
+fun RegisterUserPreview(){
+    Column(
+        ModifierOrientation()
+    ) {
+        HeaderRegisterUserScreen { }
+
+        BodyRegisterUserScreen(
+            inputState = ModelRegisterUserInputsUI(),
+            callbacks = ModelRegisterUserCallbacksUI(
+                onEmailChanged = {  },
+                onPassChanged = {  },
+                onRepeatPassChanged = {  },
+                onCodeChanged = { }
+            ),
+            getRules = "registerUserViewModel.getRules(context)",
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        FooterRegisterUserScreen { }
+    }
 }

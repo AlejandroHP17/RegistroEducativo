@@ -159,7 +159,7 @@ fun SpinnerTextField(
 }
 
 /**
- * An outlined text field with a dropdown menu.
+ * An outlined text field with a dropdown schoolCycle.
  *
  * @param options The list of options to display.
  * @param selectedOption The currently selected option.
@@ -248,7 +248,7 @@ fun SpinnerOutlinedTextField(
 }
 
 /**
- * An outlined text field with a dropdown menu that allows for custom input.
+ * An outlined text field with a dropdown schoolCycle that allows for custom input.
  *
  * @param options The list of options to display.
  * @param selectedOption The currently selected option.

@@ -9,7 +9,7 @@ import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlRegisterUs
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetGroupMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetListPartialMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.UpdateGroupMenuUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
@@ -18,7 +18,7 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 /**
- * Koin module for menu-related dependencies.
+ * Koin module for schoolCycle-related dependencies.
  *
  * @author Pelkidev
  * @version 1.0.0

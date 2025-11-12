@@ -27,7 +27,7 @@ class GetControlRegisterUseCase(
     /**
      * Ejecuta el proceso para obtener la lista de ítems del menú de registro y control.
      *
-     * @return Un [ResultModel] que contiene la lista de ítems del menú o un estado de error
+     * @return Un [ModelResult] que contiene la lista de ítems del menú o un estado de error
      * si la lista está vacía o si ocurre una excepción.
      */
     operator fun invoke(): ModelResult<List<ModelPrincipalMenuData>, Error> {

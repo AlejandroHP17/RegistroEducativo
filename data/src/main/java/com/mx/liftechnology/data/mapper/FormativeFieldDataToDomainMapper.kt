@@ -5,9 +5,13 @@ import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativ
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListFormativeField
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWorkType
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWotyFofi
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetWorkType
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypeDetail
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypes
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
+import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeDetail
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseFormativeFieldsData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
@@ -61,6 +65,22 @@ object FormativeFieldDataToDomainMapper {
             formativeFieldName = this.formativeFieldName,
             code = this.code,
             listWorkTypes = this.listWorkTypes.map { it.toData() }
+        )
+    }
+
+    fun ResponseGetWorkType.mapperToModelWorkTypeByFormativeField(): ModelWorkTypeByFormativeField {
+        return ModelWorkTypeByFormativeField(
+            formativeFieldName = formativeFieldName,
+            formativeFieldId = formativeFieldId,
+            workTypes = this.workTypes.map { it.toData() }
+        )
+    }
+
+    fun ResponseWorkTypeDetail.toData(): ModelWorkTypeDetail{
+        return ModelWorkTypeDetail(
+            workTypeName = this.workTypeName,
+            workTypeId = this.workTypeId,
+            evaluationWeight = this.evaluationWeight
         )
     }
 }

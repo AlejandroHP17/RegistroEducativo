@@ -35,7 +35,7 @@ class GetListPartialMenuUseCase (
      * Ejecuta el proceso para obtener la lista de parciales.
      * Construye la petición, la envía a través del repositorio y transforma la respuesta en un estado de la UI.
      *
-     * @return Un [ResultModel] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
+     * @return Un [ModelResult] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
      suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, Error> {

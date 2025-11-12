@@ -30,7 +30,7 @@ fun interface RegisterStudentRepository{
      * @param request Los datos de la petición de registro.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeRegisterOneStudent(request: RequestRegisterStudent)
+    suspend fun executeRegisterStudent(request: RequestRegisterStudent)
     : ModelResult<ModelStudentData?, NetworkError>
 }
 
@@ -49,7 +49,7 @@ class RegisterStudentRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeRegisterOneStudent(
+    override suspend fun executeRegisterStudent(
         request: RequestRegisterStudent
     ): ModelResult<ModelStudentData?, NetworkError> {
         return try {

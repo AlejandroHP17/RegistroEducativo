@@ -25,10 +25,12 @@ object ModelPreference {
 
     /** Clave para almacenar el ID del grupo seleccionado. */
     const val ID_CYCLE_SCHOOL = "ID_PROFESSOR_TEACHER_SCHOOL_CYCLE_GROUP"
+    /** Clave para almacenar el ID de la materia seleccionada. */
+    const val ID_FORMATIVE_FIELD = "ID_FORMATIVE_FIELD"
+
     /** Clave para almacenar el ID del parcial seleccionado. */
     const val ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP"
-    /** Clave para almacenar el ID de la materia seleccionada. */
-    const val ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP"
+
 
     /** Clave para almacenar el rango de fechas del parcial activo. */
     const val RANGE_DATES_PARTIAL= "RANGE_DATES_PARTIAL"

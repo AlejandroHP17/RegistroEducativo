@@ -28,7 +28,7 @@ class SaveIdSubjectSelectedUseCase (
      */
     operator fun invoke(id: Int?) {
         preference.savePreferenceInt(
-            ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP,
+            ModelPreference.ID_FORMATIVE_FIELD,
             id?:-1
         )
     }

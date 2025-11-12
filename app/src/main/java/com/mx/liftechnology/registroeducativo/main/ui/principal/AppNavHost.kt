@@ -25,19 +25,19 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnima
 import com.mx.liftechnology.registroeducativo.main.ui.auth.forgetPassword.ForgetPasswordScreen
 import com.mx.liftechnology.registroeducativo.main.ui.auth.login.LoginScreen
 import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.menu.MenuScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.partial.RegisterPartialScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.calendar.CalendarScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.wotyfofi.AssignmentStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.assignment.AssignmentSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.list.ListSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.register.RegisterSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.registerassignment.RegisterAssignmentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolScreen
-import com.mx.liftechnology.registroeducativo.main.ui.flowSplash.SplashScreen
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
+import com.mx.liftechnology.registroeducativo.main.ui.calendar.CalendarScreen
+import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.AssignmentSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.registerassignment.RegisterAssignmentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.RegisterSchoolScreen
+import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
@@ -139,7 +139,7 @@ fun AppNavHost(
                     defaultValue = ""
                 })
             ) { backStackEntry ->
-                AssignmentStudentScreen(
+                WotyFofiStudentScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry
                 )

@@ -24,7 +24,7 @@ sealed class MainRoutes (val route: String) {
          * @return La ruta completa con el parámetro de recarga.
          */
         fun withReload(reload: Boolean = false): String {
-            return "menu?reload=$reload"
+            return "schoolCycle?reload=$reload"
         }
     }
 

@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterCycleSchoolUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.school.RegisterSchoolViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.RegisterSchoolViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

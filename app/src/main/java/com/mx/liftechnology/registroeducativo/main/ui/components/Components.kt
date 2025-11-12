@@ -191,7 +191,7 @@ fun ComponentCheckBoxAndText(
 }
 
 /**
- * A header component for the main menu.
+ * A header component for the main schoolCycle.
  *
  * @param title The title of the header.
  * @param body The body text of the header.

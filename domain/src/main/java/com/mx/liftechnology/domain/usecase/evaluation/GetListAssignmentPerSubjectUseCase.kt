@@ -49,7 +49,7 @@ class GetListAssignmentPerSubjectUseCase (
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val teacherSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
-        val subjectSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_SUBJECT_GROUP)
+        val subjectSchoolCycleGroupId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD)
 
         val request = RequestGetPercentSubjectId(
             teacherId = teacherId,

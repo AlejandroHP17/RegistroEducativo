@@ -19,11 +19,11 @@ import com.mx.liftechnology.domain.usecase.student.EditStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.ModifyOneStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.ModifyOneStudentUseCaseImp
-import com.mx.liftechnology.domain.usecase.student.RegisterOneStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.RegisterStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCaseImp
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.list.ListStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.student.register.RegisterStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -85,9 +85,9 @@ val crudStudentModule = module {
     }
 
     /**
-     * Provides a singleton instance of [RegisterOneStudentUseCase].
+     * Provides a singleton instance of [RegisterStudentUseCase].
      */
-    singleOf(::RegisterOneStudentUseCase)
+    singleOf(::RegisterStudentUseCase)
 
     /**
      * Provides a singleton instance of [GetListStudentUseCase].

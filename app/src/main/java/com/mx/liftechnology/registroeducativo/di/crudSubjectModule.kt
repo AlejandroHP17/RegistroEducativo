@@ -18,13 +18,13 @@ import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsSubjectUseCaseImp
+import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCaseImp
 import com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCaseImp
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.list.ListFormativeFieldsViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.register.RegisterFormativeFieldsViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterFormativeFieldsViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -126,10 +126,10 @@ val crudSubjectModule = module {
     singleOf(::DeleteFormativeFieldsUseCase)
 
     /**
-     * Provides a singleton instance of [ValidateFieldsSubjectUseCase].
+     * Provides a singleton instance of [ValidateFieldsFormativeFieldsUseCase].
      */
-    singleOf(::ValidateFieldsSubjectUseCaseImp) {
-        bind<ValidateFieldsSubjectUseCase>()
+    singleOf(::ValidateFieldsFormativeFieldsUseCaseImp) {
+        bind<ValidateFieldsFormativeFieldsUseCase>()
     }
 
     /**

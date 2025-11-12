@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCaseImp
 import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.principalflow.formativeFields.registerassignment.RegisterAssignmentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.registerassignment.RegisterAssignmentViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

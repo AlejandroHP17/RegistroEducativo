@@ -3,7 +3,7 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.partial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.SavePartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.menu.SavePartialMenuUseCase
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Assert.assertEquals
@@ -15,7 +15,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 /**
- * Tests para [com.mx.liftechnology.domain.usecase.schoolCycle.partial.SavePartialUseCase].
+ * Tests para [SavePartialMenuUseCase].
  * Verifica que la lógica para seleccionar y guardar el parcial activo funcione correctamente.
  *
  * @author Pelkidev
@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter
  */
 class SavePartialUseCaseTest {
 
-    private lateinit var savePartialUseCase: SavePartialUseCase
+    private lateinit var savePartialMenuUseCase: SavePartialMenuUseCase
     private val preferenceUseCase: PreferenceUseCase = mockk(relaxed = true)
 
     private val today = LocalDate.now()
@@ -31,7 +31,7 @@ class SavePartialUseCaseTest {
 
     @Before
     fun setUp() {
-        savePartialUseCase = SavePartialUseCase(preferenceUseCase)
+        savePartialMenuUseCase = SavePartialMenuUseCase(preferenceUseCase)
     }
 
     /**
@@ -47,7 +47,7 @@ class SavePartialUseCaseTest {
         )
 
         // Ejecutamos el caso de uso
-        val result = savePartialUseCase.invoke(partials)
+        val result = savePartialMenuUseCase.invoke(partials)
 
         // Verificamos el resultado
         assertNotNull(result)
@@ -70,7 +70,7 @@ class SavePartialUseCaseTest {
         )
 
         // Ejecutamos el caso de uso
-        val result = savePartialUseCase.invoke(partials)
+        val result = savePartialMenuUseCase.invoke(partials)
 
         // Verificamos que se seleccionó el último parcial
         assertNotNull(result)
@@ -86,7 +86,7 @@ class SavePartialUseCaseTest {
     @Test
     fun `invoke con lista vacia no selecciona nada y limpia preferencias`() {
         // Ejecutamos el caso de uso con una lista vacía
-        val result = savePartialUseCase.invoke(emptyList())
+        val result = savePartialMenuUseCase.invoke(emptyList())
 
         // Verificamos que el resultado es nulo
         assertNull(result)
