@@ -78,7 +78,7 @@ fun WotyFofiStudentScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun WotyFofiStudentPreview(){
+private fun WotyFofiStudentPreview(){
     Box(
         modifier = Modifier
             .fillMaxSize()

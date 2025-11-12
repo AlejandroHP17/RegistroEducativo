@@ -79,7 +79,7 @@ fun AssignmentSubjectScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun WotyFofiFormativeFieldsPreview(){
+private fun WotyFofiFormativeFieldsPreview(){
     Box(
         modifier = Modifier
             .fillMaxSize()

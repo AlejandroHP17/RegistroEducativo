@@ -223,7 +223,7 @@ private fun ActionRegisterStudent(
 
 @Preview(showBackground = true)
 @Composable
-fun RegisterStudentPreview(){
+private fun RegisterStudentPreview(){
     Column(
         modifier = Modifier
             .fillMaxSize()

@@ -34,7 +34,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterS
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.AssignmentSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.registerassignment.RegisterAssignmentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
@@ -165,7 +165,7 @@ fun AppNavHost(
                     defaultValue = ""
                 })
             ) { backStackEntry ->
-                RegisterAssignmentScreen(
+                RegisterEvaluationScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry,
                     sharedViewModel = sharedViewModel,

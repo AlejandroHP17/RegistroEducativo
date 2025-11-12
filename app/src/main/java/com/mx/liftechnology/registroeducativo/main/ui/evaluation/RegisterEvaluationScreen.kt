@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.registerassignment
+package com.mx.liftechnology.registroeducativo.main.ui.evaluation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,8 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,33 +50,33 @@ import org.koin.androidx.compose.koinViewModel
  *
  * @param navController The navigation controller.
  * @param backStackEntry The back stack entry for this screen.
- * @param registerAssignmentViewModel The ViewModel for this screen.
+ * @param registerEvaluationViewModel The ViewModel for this screen.
  * @param sharedViewModel The shared ViewModel.
  */
 @Composable
-fun RegisterAssignmentScreen(
+fun RegisterEvaluationScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    registerAssignmentViewModel: RegisterAssignmentViewModel = koinViewModel(),
+    registerEvaluationViewModel: RegisterEvaluationViewModel = koinViewModel(),
     sharedViewModel: SharedViewModel,
 ) {
 
-    val uiState by registerAssignmentViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by registerAssignmentViewModel.dataState.collectAsStateWithLifecycle()
-    val dialogState by registerAssignmentViewModel.dialogState.collectAsStateWithLifecycle()
+    val uiState by registerEvaluationViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by registerEvaluationViewModel.dataState.collectAsStateWithLifecycle()
+    val dialogState by registerEvaluationViewModel.dialogState.collectAsStateWithLifecycle()
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
     val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        registerAssignmentViewModel.getListStudent()
+        registerEvaluationViewModel.getListStudent()
         val subject: ModelFormatFormativeFieldsDomain? = if (subjectJson.isNullOrEmpty()) {
             null
         } else {
             Gson().fromJson(subjectJson, ModelFormatFormativeFieldsDomain::class.java)
         }
 
-        registerAssignmentViewModel.updateSubject(subject)
+        registerEvaluationViewModel.updateSubject(subject)
     }
 
     LaunchedEffect(uiState.uiState) {
@@ -83,7 +85,7 @@ fun RegisterAssignmentScreen(
 
     LaunchedEffect(uiState.controlToast) {
         if (uiState.controlToast.showToast) sharedViewModel.modifyShowToast(uiState.controlToast)
-        registerAssignmentViewModel.modifyShowToast(false)
+        registerEvaluationViewModel.modifyShowToast(false)
     }
 
 
@@ -116,9 +118,9 @@ fun RegisterAssignmentScreen(
             BodyRegisterAssignment(
                 dataState = dataState,
                 dialogState = dialogState,
-                onNameJobChanged = { registerAssignmentViewModel.onNameChanged(it) },
+                onNameJobChanged = { registerEvaluationViewModel.onNameChanged(it) },
                 showDialog = {
-                    registerAssignmentViewModel.updateDates()
+                    registerEvaluationViewModel.updateDates()
                     showDialog.value = true
                 }
             )
@@ -132,7 +134,7 @@ fun RegisterAssignmentScreen(
             }) {
             Body2RegisterAssignment(
                 dataState = dataState,
-                onNameAssignmentChanged = { registerAssignmentViewModel.onNameAssignmentChanged(it) }
+                onNameAssignmentChanged = { registerEvaluationViewModel.onNameAssignmentChanged(it) }
             )
         }
 
@@ -146,7 +148,7 @@ fun RegisterAssignmentScreen(
             }) {
             ColumnRegisterScore(
                 dataState = dataState,
-                onScoreChange = { registerAssignmentViewModel.onScoreChange(it) }
+                onScoreChange = { registerEvaluationViewModel.onScoreChange(it) }
             )
         }
 
@@ -157,7 +159,7 @@ fun RegisterAssignmentScreen(
                 end.linkTo(parent.end)
             }) {
             ActionRegisterAssignment(
-                onClick = { registerAssignmentViewModel.validateFields() }
+                onClick = { registerEvaluationViewModel.validateFields() }
             )
         }
 
@@ -168,7 +170,7 @@ fun RegisterAssignmentScreen(
             showDialog = true,
             dialogState = dialogState,
             onDismiss = { showDialog.value = false },
-            onDateSelected = { registerAssignmentViewModel.onDateChanged(it.toString()) }
+            onDateSelected = { registerEvaluationViewModel.onDateChanged(it.toString()) }
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -289,4 +291,86 @@ private fun ActionRegisterAssignment(
         onActionClick = { onClick() }
     )
     CustomSpace(dimensionResource(R.dimen.margin_divided))
+}
+
+
+/**
+ * The action button for the Assignment Registration screen.
+ *
+ * @param onClick A lambda to be invoked when the action button is clicked.
+ */
+@Preview(showBackground = true)
+@Composable
+private fun RegisterEvaluationPreview(){
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+    ) {
+        val (header, body, body2, column, action) = createRefs()
+
+        Column(
+            modifier = Modifier.constrainAs(header) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            HeaderRegisterAssignment(
+                uiState = ModelRegisterAssignmentStateUI(),
+                navController = NavHostController(context = LocalContext.current)
+            )
+        }
+
+        Column(
+            modifier = Modifier.constrainAs(body) {
+                top.linkTo(header.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            BodyRegisterAssignment(
+                dataState = ModelRegisterAssignmentDataState(),
+                dialogState = ModelCustomCalendar(),
+                onNameJobChanged = {  },
+                showDialog = { }
+            )
+        }
+
+        Column(
+            modifier = Modifier.constrainAs(body2) {
+                top.linkTo(body.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            Body2RegisterAssignment(
+                dataState = ModelRegisterAssignmentDataState(),
+                onNameAssignmentChanged = { }
+            )
+        }
+
+        Column(
+            modifier = Modifier.constrainAs(column) {
+                top.linkTo(body2.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(action.top)
+                height = Dimension.fillToConstraints
+            }) {
+            ColumnRegisterScore(
+                dataState = ModelRegisterAssignmentDataState(),
+                onScoreChange = { }
+            )
+        }
+
+        Column(
+            modifier = Modifier.constrainAs(action) {
+                bottom.linkTo(parent.bottom)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            }) {
+            ActionRegisterAssignment(
+                onClick = {  }
+            )
+        }
+
+    }
 }

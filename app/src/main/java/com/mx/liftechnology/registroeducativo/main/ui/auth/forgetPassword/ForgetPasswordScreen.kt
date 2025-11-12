@@ -115,7 +115,7 @@ fun FooterForgetPasswordScreen(
 
 @Preview(showBackground = true)
 @Composable()
-fun ForgetPasswordPreview(){
+private fun ForgetPasswordPreview(){
     Column(
         ModifierOrientation()
     ) {

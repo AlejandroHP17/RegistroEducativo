@@ -197,7 +197,7 @@ fun FooterRegisterUserScreen(
 
 @Preview(showBackground = true)
 @Composable()
-fun RegisterUserPreview(){
+private fun RegisterUserPreview(){
     Column(
         ModifierOrientation()
     ) {

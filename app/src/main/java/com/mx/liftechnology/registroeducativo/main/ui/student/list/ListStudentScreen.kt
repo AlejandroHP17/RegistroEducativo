@@ -93,7 +93,7 @@ fun ListStudentScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun ListStudentPreview(){
+private fun ListStudentPreview(){
     val dataState = ModelListStudentDataState(
         studentList = listOf(ModelStudentDomain(
             studentId = 1,

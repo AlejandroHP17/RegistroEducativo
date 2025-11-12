@@ -184,7 +184,7 @@ fun FooterLoginScreen(
 
 @Preview(showBackground = true)
 @Composable()
-fun LoginPreview(){
+private fun LoginPreview(){
     Column(
         modifier = ModifierOrientation()
     ) {

@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCaseImp
 import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.registerassignment.RegisterAssignmentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -78,7 +78,7 @@ val registerAssignmentModule = module {
     singleOf(::GetDatesActivePartialUseCase)
 
     /**
-     * Provides an instance of [RegisterAssignmentViewModel].
+     * Provides an instance of [RegisterEvaluationViewModel].
      */
-    viewModelOf(::RegisterAssignmentViewModel)
+    viewModelOf(::RegisterEvaluationViewModel)
 }

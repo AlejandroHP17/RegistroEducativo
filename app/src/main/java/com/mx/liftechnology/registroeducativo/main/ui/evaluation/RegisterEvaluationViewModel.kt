@@ -1,18 +1,18 @@
-package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.registerassignment
+package com.mx.liftechnology.registroeducativo.main.ui.evaluation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.network.apiCall.evaluation.RequestStudentJobs
 import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -33,7 +33,7 @@ import kotlinx.coroutines.launch
  * @author Pelkidev
  * @version 1.0.0
  */
-class RegisterAssignmentViewModel(
+class RegisterEvaluationViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getListStudentUseCase: GetListStudentUseCase,
     private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase,
