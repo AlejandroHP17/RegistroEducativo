@@ -25,7 +25,7 @@ fun interface GetListEvaluationTypeApiCall{
      * @param request Los datos de la petición.
      * @return Una respuesta de Retrofit que contiene un [ResponseGeneric] con una lista de strings.
      */
-    @POST(Environment.END_POINT_GET_EVALUATION_TYPE)
+    @POST(Environment.END_POINT_GET_WORK_TYPE_EVALUATIONS)
     suspend fun callApi(
         @Body request: RequestGetListEvaluationType
     ): Response<ResponseGeneric<List<String>?>?>

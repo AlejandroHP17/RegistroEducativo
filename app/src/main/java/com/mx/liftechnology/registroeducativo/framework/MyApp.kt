@@ -14,7 +14,7 @@ import com.mx.liftechnology.registroeducativo.di.locationModule
 import com.mx.liftechnology.registroeducativo.di.loginUserModule
 import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.profileModule
-import com.mx.liftechnology.registroeducativo.di.registerAssignmentModule
+import com.mx.liftechnology.registroeducativo.di.registerEvaluationModule
 import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
 import com.mx.liftechnology.registroeducativo.di.registerUserModule
 import com.mx.liftechnology.registroeducativo.di.sharedModule
@@ -65,7 +65,7 @@ class MyApp : Application() {
                 crudSubjectModule,
                 profileModule,
                 wotyFofiModule,
-                registerAssignmentModule,
+                registerEvaluationModule,
                 calendarModule
             )
         }

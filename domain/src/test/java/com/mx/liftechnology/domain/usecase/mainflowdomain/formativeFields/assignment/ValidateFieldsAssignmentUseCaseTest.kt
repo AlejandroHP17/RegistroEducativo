@@ -1,8 +1,8 @@
 package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields.assignment
 
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
-import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCaseImp
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCaseImp
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -10,7 +10,7 @@ import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase].
  * Verifica el comportamiento de las funciones de validación del caso de uso.
  *
  * @author Pelkidev
@@ -18,11 +18,11 @@ import org.junit.Test
  */
 class ValidateFieldsAssignmentUseCaseTest {
 
-    private lateinit var useCase: ValidateFieldsAssignmentUseCase
+    private lateinit var useCase: ValidateFieldsEvaluationUseCase
 
     @Before
     fun setUp() {
-        useCase = ValidateFieldsAssignmentUseCaseImp()
+        useCase = ValidateFieldsEvaluationUseCaseImp()
     }
 
     //region Tests para validateNameJob

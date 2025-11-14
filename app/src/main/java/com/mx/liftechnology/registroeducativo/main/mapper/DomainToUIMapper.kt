@@ -89,11 +89,11 @@ object DomainToUIMapper {
         )
     }
 
-    fun List<ModelFormatAssignment>?.toCustomSpinnerList(): List<ModelCustomSpinner>? {
-        return this?.map { assignment ->
+    fun ModelWorkTypeByFormativeField.toCustomSpinnerList(): List<ModelCustomSpinner>? {
+        return this.workTypes.map { workType ->
             ModelCustomSpinner(
-                id = assignment.id,
-                value = assignment.assignmentName.valueText
+                id = workType.workTypeId,
+                value = workType.workTypeName
             )
         }
     }

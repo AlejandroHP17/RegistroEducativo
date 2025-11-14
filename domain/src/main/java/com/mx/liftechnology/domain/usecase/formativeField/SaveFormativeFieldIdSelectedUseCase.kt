@@ -18,7 +18,7 @@ import com.mx.liftechnology.core.preference.PreferenceUseCase
  * @author Pelkidev
  * @version 1.0.0
  */
-class SaveIdSubjectSelectedUseCase (
+class SaveFormativeFieldIdSelectedUseCase (
     private val preference: PreferenceUseCase
 ){
     /**

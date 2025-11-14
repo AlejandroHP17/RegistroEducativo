@@ -64,19 +64,19 @@ fun RegisterEvaluationScreen(
     val uiState by registerEvaluationViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by registerEvaluationViewModel.dataState.collectAsStateWithLifecycle()
     val dialogState by registerEvaluationViewModel.dialogState.collectAsStateWithLifecycle()
-    val subjectJson = backStackEntry.arguments?.getString("subject")
+    val formativeFieldJson = backStackEntry.arguments?.getString("subject")
 
     val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         registerEvaluationViewModel.getListStudent()
-        val subject: ModelFormatFormativeFieldsDomain? = if (subjectJson.isNullOrEmpty()) {
+        val formativeField: ModelFormatFormativeFieldsDomain? = if (formativeFieldJson.isNullOrEmpty()) {
             null
         } else {
-            Gson().fromJson(subjectJson, ModelFormatFormativeFieldsDomain::class.java)
+            Gson().fromJson(formativeFieldJson, ModelFormatFormativeFieldsDomain::class.java)
         }
 
-        registerEvaluationViewModel.updateSubject(subject)
+        registerEvaluationViewModel.updateFormativeField(formativeField)
     }
 
     LaunchedEffect(uiState.uiState) {
@@ -188,7 +188,7 @@ private fun HeaderRegisterAssignment(
     navController: NavHostController,
 ) {
     ComponentHeaderBackWithout(
-        title = uiState.subject?.name ?: "Desconocido"
+        title = uiState.formativeField?.name ?: "Desconocido"
     ) { navController.popBackStack() }
 }
 

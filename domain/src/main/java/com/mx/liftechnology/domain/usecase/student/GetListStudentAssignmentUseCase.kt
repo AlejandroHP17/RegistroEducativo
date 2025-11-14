@@ -34,7 +34,7 @@ class GetListStudentAssignmentUseCase (
     /**
      * Ejecuta el proceso para obtener la lista de estudiantes de una asignación.
      *
-     * @return Un [ResultModel] que contiene la lista de estudiantes formateada para el registro de asignación,
+     * @return Un [ModelResult] que contiene la lista de estudiantes formateada para el registro de asignación,
      * o un estado de error si la operación falla.
      */
     suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>?, Error> {

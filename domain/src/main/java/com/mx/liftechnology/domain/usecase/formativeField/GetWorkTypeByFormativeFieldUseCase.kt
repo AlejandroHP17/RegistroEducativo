@@ -11,7 +11,7 @@ import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult
 
-class GetWorkTypeByFormativeField (
+class GetWorkTypeByFormativeFieldUseCase (
     private val getWorkTypeByFormativeFieldsRepository: GetWorkTypeByFormativeFieldsRepository,
     private val preference : PreferenceUseCase
 ){

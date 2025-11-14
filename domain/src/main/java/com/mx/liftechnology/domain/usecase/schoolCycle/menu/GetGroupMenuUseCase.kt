@@ -9,7 +9,6 @@ import com.mx.liftechnology.data.util.LocalError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.generic.ResultModel
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ModelInfoStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.RGTtoConvertModelDialogStudentGroupDomains
@@ -31,7 +30,7 @@ class GetGroupMenuUseCase(
     /**
      * Ejecuta el proceso de obtención de grupos, selección de uno por defecto y procesamiento de la información.
      *
-     * @return Un [ResultModel] que contiene la información del grupo o un error.
+     * @return Un [ModelResult] que contiene la información del grupo o un error.
      */
     suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, Error> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)

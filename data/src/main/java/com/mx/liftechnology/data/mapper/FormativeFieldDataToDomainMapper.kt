@@ -31,7 +31,7 @@ object FormativeFieldDataToDomainMapper {
         return this.mapIndexed { _, workType ->
             ModelWorkTypeData(
                 workTypeId = workType.workTypeId,
-                name = workType.name,
+                name = workType.name
             )
         }
     }

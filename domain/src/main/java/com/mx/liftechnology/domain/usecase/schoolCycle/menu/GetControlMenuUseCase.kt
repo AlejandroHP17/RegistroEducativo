@@ -12,7 +12,6 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.generic.ResultModel
 
 /**
  * Caso de uso para obtener la lista de ítems del menú de control.
@@ -29,7 +28,7 @@ class GetControlMenuUseCase(
     /**
      * Ejecuta el proceso para obtener la lista de ítems del menú de control.
      *
-     * @return Un [ResultModel] que contiene la lista de ítems del menú o un estado de error
+     * @return Un [ModelResult] que contiene la lista de ítems del menú o un estado de error
      * si la lista está vacía o si ocurre una excepción.
      */
     operator fun invoke(): ModelResult<List<ModelPrincipalMenuData>, Error> {

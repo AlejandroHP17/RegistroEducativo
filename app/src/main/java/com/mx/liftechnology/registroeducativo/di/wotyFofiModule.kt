@@ -9,7 +9,7 @@ import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiReposi
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepository
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepositoryImpl
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeField
+import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.WotyFofiViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentViewModel
 import org.koin.core.module.dsl.bind
@@ -42,7 +42,7 @@ val wotyFofiModule = module {
     }
 
     singleOf(::GetListWotyFofiUseCase)
-    singleOf(::GetWorkTypeByFormativeField)
+    singleOf(::GetWorkTypeByFormativeFieldUseCase)
 
 
     /**

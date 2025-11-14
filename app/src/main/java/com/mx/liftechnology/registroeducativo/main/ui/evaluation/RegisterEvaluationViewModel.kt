@@ -2,18 +2,17 @@ package com.mx.liftechnology.registroeducativo.main.ui.evaluation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestStudentJobs
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.GetListAssignmentPerSubjectUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsAssignmentUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
@@ -36,10 +35,9 @@ import kotlinx.coroutines.launch
 class RegisterEvaluationViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getListStudentUseCase: GetListStudentUseCase,
-    private val saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase,
-    private val getListAssignmentPerSubjectUseCase: GetListAssignmentPerSubjectUseCase,
-    private val validateFieldsAssignmentUseCase: ValidateFieldsAssignmentUseCase,
-    private val registerAssignmentUseCase: RegisterAssignmentUseCase,
+    private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase,
+    private val getWorkTypeByFormativeFieldUseCase: GetWorkTypeByFormativeFieldUseCase,
+    private val validateFieldsEvaluationUseCase: ValidateFieldsEvaluationUseCase,
     private val getDatesActivePartialUseCase: GetDatesActivePartialUseCase,
 
     ) : ViewModel() {
@@ -59,25 +57,25 @@ class RegisterEvaluationViewModel(
     /**
      * Updates the current subject.
      *
-     * @param subject The new subject.
+     * @param formativeField The new subject.
      */
-    fun updateSubject(subject: ModelFormatFormativeFieldsDomain?) {
+    fun updateFormativeField(formativeField: ModelFormatFormativeFieldsDomain?) {
         viewModelScope.launch(dispatcherProvider.io) {
-            saveIdSubjectSelectedUseCase.invoke(subject?.formativeFieldId)
-            //getListAssessmentType()
+            saveFormativeFieldIdSelectedUseCase.invoke(formativeField?.formativeFieldId)
+            getListWorkType()
             _uiState.update {
                 it.copy(
-                    subject = subject
+                    formativeField = formativeField
                 )
             }
         }
     }
 
-    /*private fun getListAssessmentType() {
+    private fun getListWorkType() {
         viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListAssignmentPerSubjectUseCase.invoke()) {
+            when (val result = getWorkTypeByFormativeFieldUseCase.invoke()) {
                 is SuccessResult -> {
-                    val convertData = result.result.toCustomSpinnerList()
+                    val convertData = result.data.toCustomSpinnerList()
                     onNameAssignmentChanged(convertData?.first()!!)
                     _dataState.update {
                         it.copy(
@@ -87,7 +85,6 @@ class RegisterEvaluationViewModel(
                 }
 
                 else -> {
-                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR
@@ -96,7 +93,7 @@ class RegisterEvaluationViewModel(
                 }
             }
         }
-    }*/
+    }
 
     /**
      * Called when the name of the job changes.
@@ -216,10 +213,10 @@ class RegisterEvaluationViewModel(
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             val nameJobState =
-                validateFieldsAssignmentUseCase.validateNameJob(_dataState.value.nameJob.valueText)
+                validateFieldsEvaluationUseCase.validateNameJob(_dataState.value.nameJob.valueText)
             val nameAssignmentState =
-                validateFieldsAssignmentUseCase.validateNameAssignment(_dataState.value.nameAssignment.valueText)
-            val dateState = validateFieldsAssignmentUseCase.validateDate(_dialogState.value.date.valueText)
+                validateFieldsEvaluationUseCase.validateNameAssignment(_dataState.value.nameAssignment.valueText)
+            val dateState = validateFieldsEvaluationUseCase.validateDate(_dialogState.value.date.valueText)
 
             _dataState.update {
                 it.copy(
@@ -295,7 +292,7 @@ class RegisterEvaluationViewModel(
     }
 
 
-    private fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<RequestStudentJobs>{
+    /*private fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<RequestStudentJobs>{
         return this.map { student ->
             RequestStudentJobs(
                 studentSchoolCycleGroupId = student.id.toIntOrNull() ?: 0,
@@ -303,7 +300,7 @@ class RegisterEvaluationViewModel(
                 comment = "Asistió"
             )
         }
-    }
+    }*/
 
     /**
      * Modifies the visibility of the toast message.

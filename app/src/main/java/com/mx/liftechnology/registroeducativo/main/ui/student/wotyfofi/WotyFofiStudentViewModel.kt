@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
@@ -56,7 +55,6 @@ class WotyFofiStudentViewModel (
                     }
                 }
                 else -> {
-                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

@@ -16,7 +16,7 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
  * @author Pelkidev
  * @version 1.0.0
  */
-interface ValidateFieldsAssignmentUseCase {
+interface ValidateFieldsEvaluationUseCase {
     /**
      * Valida el campo del nombre del trabajo.
      * @param nameJob El nombre a validar.
@@ -40,12 +40,12 @@ interface ValidateFieldsAssignmentUseCase {
 }
 
 /**
- * Implementación de [ValidateFieldsAssignmentUseCase].
+ * Implementación de [ValidateFieldsEvaluationUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-class ValidateFieldsAssignmentUseCaseImp : ValidateFieldsAssignmentUseCase{
+class ValidateFieldsEvaluationUseCaseImp : ValidateFieldsEvaluationUseCase{
     /**
      * {@inheritDoc}
      */

@@ -1,0 +1,42 @@
+package com.mx.liftechnology.registroeducativo.di
+
+import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCaseImp
+import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
+import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationViewModel
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
+
+/**
+ * Koin module for assignment registration-related dependencies.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+val registerEvaluationModule = module {
+
+    /**
+     * Provides a singleton instance of [ValidateFieldsEvaluationUseCase].
+     */
+    singleOf(::ValidateFieldsEvaluationUseCaseImp) {
+        bind<ValidateFieldsEvaluationUseCase>()
+    }
+
+    /**
+     * Provides a singleton instance of [SaveFormativeFieldIdSelectedUseCase].
+     */
+    singleOf(::SaveFormativeFieldIdSelectedUseCase)
+
+    /**
+     * Provides a singleton instance of [GetDatesActivePartialUseCase].
+     */
+    singleOf(::GetDatesActivePartialUseCase)
+
+    /**
+     * Provides an instance of [RegisterEvaluationViewModel].
+     */
+    viewModelOf(::RegisterEvaluationViewModel)
+}

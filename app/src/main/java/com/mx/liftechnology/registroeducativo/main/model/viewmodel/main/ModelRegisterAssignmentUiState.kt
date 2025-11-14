@@ -1,19 +1,19 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
-import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 
 data class ModelRegisterAssignmentStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
-    val subject : ModelFormatFormativeFieldsDomain? = null,
+    val formativeField : ModelFormatFormativeFieldsDomain? = null,
 )
 
 data class ModelRegisterAssignmentDataState (

@@ -8,7 +8,6 @@ import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
-import com.mx.liftechnology.domain.usecase.evaluation.RegisterAssignmentUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking

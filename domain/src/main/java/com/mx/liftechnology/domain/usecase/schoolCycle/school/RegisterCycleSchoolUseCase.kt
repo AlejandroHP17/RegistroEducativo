@@ -17,7 +17,6 @@ import com.mx.liftechnology.data.util.LocalError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.generic.ResultModel
 import java.util.Calendar
 import java.util.Date
 
@@ -43,7 +42,7 @@ class RegisterCycleSchoolUseCase(
      * @param grade El grado que se va a registrar.
      * @param group El nombre del grupo.
      * @param cycle El período del ciclo escolar.
-     * @return Un [ResultModel] que indica el resultado de la operación, ya sea un éxito o un error.
+     * @return Un [ModelResult] que indica el resultado de la operación, ya sea un éxito o un error.
      */
     suspend operator fun invoke(
         schoolId: Int,

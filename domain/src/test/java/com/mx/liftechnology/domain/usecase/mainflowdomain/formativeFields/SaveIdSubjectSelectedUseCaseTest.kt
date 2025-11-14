@@ -2,14 +2,14 @@ package com.mx.liftechnology.domain.usecase.mainflowdomain.formativeFields
 
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.Before
 import org.junit.Test
 
 /**
- * Tests para [com.mx.liftechnology.domain.usecase.formativeField.SaveIdSubjectSelectedUseCase].
+ * Tests para [com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase].
  * Verifica que el ID de la materia seleccionada se guarde correctamente en las preferencias.
  *
  * @author Pelkidev
@@ -17,12 +17,12 @@ import org.junit.Test
  */
 class SaveIdSubjectSelectedUseCaseTest {
 
-    private lateinit var saveIdSubjectSelectedUseCase: SaveIdSubjectSelectedUseCase
+    private lateinit var saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase
     private val preferenceUseCase: PreferenceUseCase = mockk(relaxed = true)
 
     @Before
     fun setUp() {
-        saveIdSubjectSelectedUseCase = SaveIdSubjectSelectedUseCase(preferenceUseCase)
+        saveFormativeFieldIdSelectedUseCase = SaveFormativeFieldIdSelectedUseCase(preferenceUseCase)
     }
 
     /**
@@ -31,7 +31,7 @@ class SaveIdSubjectSelectedUseCaseTest {
     @Test
     fun `invoke con un ID valido lo guarda en preferencias`() {
         // Ejecutamos el caso de uso con un ID válido
-        saveIdSubjectSelectedUseCase.invoke(123)
+        saveFormativeFieldIdSelectedUseCase.invoke(123)
 
         // Verificamos que se llamó al método para guardar en preferencias con el ID correcto
         verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_FORMATIVE_FIELD, 123) }
@@ -43,7 +43,7 @@ class SaveIdSubjectSelectedUseCaseTest {
     @Test
     fun `invoke con un ID nulo guarda -1 en preferencias`() {
         // Ejecutamos el caso de uso con un ID nulo
-        saveIdSubjectSelectedUseCase.invoke(null)
+        saveFormativeFieldIdSelectedUseCase.invoke(null)
 
         // Verificamos que se llamó al método para guardar en preferencias con -1
         verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_FORMATIVE_FIELD, -1) }

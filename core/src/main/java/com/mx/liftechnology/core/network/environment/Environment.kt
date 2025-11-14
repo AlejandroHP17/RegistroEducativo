@@ -57,8 +57,7 @@ object Environment {
     const val END_POINT_REGISTER_STUDENT = "students/"
     const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/" // Solo agrega el campo formativo
     const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk" //Agrega campo formativo, tipos de trabajo y tipos de trabajo asociados al campo formativo
-
-    const val END_POINT_REGISTER_JOB = "teacher/registerTeacherJobDayByStudent"
+    const val END_POINT_REGISTER_STUDENT_WORK = "student-works/bulk"
 
     /** Endpoints para la obtención de datos. */
     const val END_POINT_GET_PARTIAL = "partials/"
@@ -67,11 +66,8 @@ object Environment {
     const val END_POINT_GET_WORK_TYPE = "work-types/"
     const val END_POINT_GET_WORK_TYPE_BY = "work-types/by_formative_field/{formative_field_id}"
     const val END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE = "formative-fields/by-cycle/{school_cycle_id}"
-
-    const val END_POINT_GET_SUBJECT_PERCENT = "teacher/getTeacherSubjectsPercent"
-    const val END_POINT_GET_EVALUATION_TYPE = "teacher/getTeacherGroup"
-
-
+    const val END_POINT_GET_WORK_TYPE_EVALUATIONS = "work-type-evaluations/"
+    const val END_POINT_GET_WORKS_STUDENT = "student-works/"
 
     /** Endpoints para borrar datos. */
     const val END_POINT_DELETE_STUDENT = "students/{student_id}"

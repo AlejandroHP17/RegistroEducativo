@@ -7,7 +7,8 @@ package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
-import com.mx.liftechnology.domain.model.generic.ResultModel
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelResult
 
 /**
  * Interfaz para el caso de uso que modifica la información de un solo estudiante.
@@ -26,7 +27,7 @@ fun interface ModifyOneStudentUseCase{
      * @param curp La nueva CURP del estudiante.
      * @param birthday La nueva fecha de nacimiento del estudiante.
      * @param phoneNumber El nuevo número de teléfono del estudiante.
-     * @return Un [ResultModel] que indica el resultado de la operación de modificación.
+     * @return Un [ModelResult] que indica el resultado de la operación de modificación.
      */
     suspend fun modifyOneStudent(
         name: String,
@@ -35,7 +36,7 @@ fun interface ModifyOneStudentUseCase{
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ResultModel<List<String?>?, String>?
+    ): ModelResult<List<String?>?, Error>?
 }
 
 /**
@@ -61,7 +62,7 @@ class ModifyOneStudentUseCaseImp (
         curp: String,
         birthday: String,
         phoneNumber: String,
-    ): ResultModel<List<String?>?, String>? {
+    ): ModelResult<List<String?>?, Error>? {
         TODO("Aún no implementado")
     }
 

@@ -9,15 +9,12 @@ import com.mx.liftechnology.core.network.apiCall.evaluation.RequestGetListEvalua
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepository
+import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkError
-import com.mx.liftechnology.domain.model.generic.ErrorResult
-import com.mx.liftechnology.domain.model.generic.ErrorUnauthorizedResult
-import com.mx.liftechnology.domain.model.generic.ErrorUserResult
-import com.mx.liftechnology.domain.model.generic.ModelCodeError
-import com.mx.liftechnology.domain.model.generic.ResultModel
-import com.mx.liftechnology.domain.model.generic.SuccessResult
-import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
-import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
+import com.mx.liftechnology.data.util.SuccessResult
 
 /**
  * Interfaz para el caso de uso que obtiene la lista de tipos de evaluación.
@@ -29,9 +26,9 @@ fun interface GetListEvaluationTypeUseCase {
     /**
      * Ejecuta el proceso para obtener la lista de tipos de evaluación.
      *
-     * @return Un [ResultModel] que contiene la lista de tipos de evaluación (como `String`) o un estado de error.
+     * @return Un [ModelResult] que contiene la lista de tipos de evaluación (como `String`) o un estado de error.
      */
-    suspend fun getListEvaluationType(): ResultModel<List<String>?, String>?
+    suspend fun getListEvaluationType(): ModelResult<List<String>?, Error>?
 }
 
 /**
@@ -52,7 +49,7 @@ class GetListEvaluationTypeUseCaseImp (
     /**
      * {@inheritDoc}
      */
-    override suspend fun getListEvaluationType(): ResultModel<List<String>?, String> {
+    override suspend fun getListEvaluationType(): ModelResult<List<String>?, Error> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
@@ -63,29 +60,20 @@ class GetListEvaluationTypeUseCaseImp (
             teacherSchoolCycleGroupId = pecg
         )
 
-        return when (val result =  getListEvaluationTypeRepository.executeGetListEvaluationType(request)) {
-            is DataSuccessResult -> {
-                SuccessResult(result.data)
-            }
-            is DataErrorResult -> {
-                handleResponse(result.error)
-            }
-        }
-    }
+        return runCatching { getListEvaluationTypeRepository.executeGetListEvaluationType(request) }.fold(
+            onSuccess = { result ->
+                when (result) {
+                    is SuccessResult -> {
+                        if (result?.data?.isNullOrEmpty() == true) ErrorResult(LocalError.EMPTY)
+                        else SuccessResult(result.data)
+                    }
 
-    /**
-     * Maneja las respuestas de error del repositorio, convirtiendo un [NetworkError] en un [ResultModel] específico.
-     *
-     * @param error El objeto [NetworkError] que representa el error de la capa de datos.
-     * @return Un [ResultModel] que representa el error específico para la capa de dominio/UI.
-     */
-    private fun handleResponse(error: NetworkError): ResultModel<List<String>?, String> {
-        return when (error) {
-            NetworkError.BAD_REQUEST -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            NetworkError.UNAUTHORIZED -> ErrorUnauthorizedResult(ModelCodeError.ERROR_UNAUTHORIZED)
-            NetworkError.NOT_FOUND -> ErrorUserResult(ModelCodeError.ERROR_VALIDATION_REGISTER_USER)
-            NetworkError.TIMEOUT -> ErrorResult(ModelCodeError.ERROR_TIMEOUT)
-            else -> ErrorResult(ModelCodeError.ERROR_UNKNOWN)
-        }
+                    is ErrorResult -> {
+                        ErrorResult(result.error)
+                    }
+                }
+            },
+            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+        )
     }
 }
