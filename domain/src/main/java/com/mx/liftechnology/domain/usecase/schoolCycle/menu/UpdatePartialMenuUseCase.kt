@@ -28,7 +28,7 @@ class UpdatePartialMenuUseCase(
      */
     operator fun invoke(partial: ModelDialogGroupPartialDomain?) {
         preference.savePreferenceInt(
-            ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP,
+            ModelPreference.ID_PARTIAL,
             partial?.partialId?: -1
         )
         val result = ("${partial?.startDate}/${partial?.endDate}")

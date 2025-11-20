@@ -55,7 +55,7 @@ class SavePartialUseCaseTest {
         assertEquals("Parcial Actual", result?.name)
 
         // Verificamos que se guardaron las preferencias correctas
-        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP, 2) }
+        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_PARTIAL, 2) }
     }
 
     /**
@@ -77,7 +77,7 @@ class SavePartialUseCaseTest {
         assertEquals(2, result?.partialId)
 
         // Verificamos que se guardaron las preferencias del último parcial
-        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP, 2) }
+        verify { preferenceUseCase.savePreferenceInt(ModelPreference.ID_PARTIAL, 2) }
     }
 
     /**

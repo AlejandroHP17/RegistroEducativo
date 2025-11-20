@@ -51,10 +51,10 @@ class SavePartialMenuUseCase (
         element?.let {
             val result = ("${it.startDate}/${it.endDate}")
             preference.savePreferenceString(ModelPreference.RANGE_DATES_PARTIAL, result)
-            preference.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP, it.partialId)
+            preference.savePreferenceInt(ModelPreference.ID_PARTIAL, it.partialId)
         }?:{
             preference.savePreferenceString(ModelPreference.RANGE_DATES_PARTIAL, null)
-            preference.savePreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP, -1)
+            preference.savePreferenceInt(ModelPreference.ID_PARTIAL, -1)
         }
         return element
     }

@@ -29,7 +29,7 @@ object ModelPreference {
     const val ID_FORMATIVE_FIELD = "ID_FORMATIVE_FIELD"
 
     /** Clave para almacenar el ID del parcial seleccionado. */
-    const val ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP = "ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP"
+    const val ID_PARTIAL = "ID_PARTIAL"
 
 
     /** Clave para almacenar el rango de fechas del parcial activo. */

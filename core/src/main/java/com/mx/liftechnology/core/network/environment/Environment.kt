@@ -57,7 +57,7 @@ object Environment {
     const val END_POINT_REGISTER_STUDENT = "students/"
     const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/" // Solo agrega el campo formativo
     const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk" //Agrega campo formativo, tipos de trabajo y tipos de trabajo asociados al campo formativo
-    const val END_POINT_REGISTER_STUDENT_WORK = "student-works/bulk"
+    const val END_POINT_REGISTER_STUDENT_WORK_BULK = "student-works/bulk"
 
     /** Endpoints para la obtención de datos. */
     const val END_POINT_GET_PARTIAL = "partials/"

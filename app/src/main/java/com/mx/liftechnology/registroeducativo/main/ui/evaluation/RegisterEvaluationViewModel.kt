@@ -2,18 +2,25 @@ package com.mx.liftechnology.registroeducativo.main.ui.evaluation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
+import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.RegisterWorkTypeEvaluationsUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
@@ -39,6 +46,7 @@ class RegisterEvaluationViewModel(
     private val getWorkTypeByFormativeFieldUseCase: GetWorkTypeByFormativeFieldUseCase,
     private val validateFieldsEvaluationUseCase: ValidateFieldsEvaluationUseCase,
     private val getDatesActivePartialUseCase: GetDatesActivePartialUseCase,
+    private val registerWorkTypeEvaluationsUseCase: RegisterWorkTypeEvaluationsUseCase
 
     ) : ViewModel() {
 
@@ -228,16 +236,16 @@ class RegisterEvaluationViewModel(
                 it.copy( date = dateState )
             }
 
-            /*if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerAssignment()
-            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }*/
+            if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerWorkTypeEvaluations()
+            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
         }
     }
 
-    /*private suspend fun registerAssignment() {
-        when (val result = registerAssignmentUseCase.invoke(
-            nameJob = _dataState.value.nameJob.valueText,
-            typeJob = _dataState.value.options?.id!!,
-            date = _dialogState.value.date.valueText,
+    private suspend fun registerWorkTypeEvaluations() {
+        when (val result = registerWorkTypeEvaluationsUseCase.invoke(
+            workTypeId = _dataState.value.options?.id!!,
+            nameWork = _dataState.value.nameJob.valueText,
+            workDate = _dialogState.value.date.valueText,
             studentListUI = _dataState.value.studentListUI.toCredentialStudent()
         )) {
             is SuccessResult -> {
@@ -253,29 +261,29 @@ class RegisterEvaluationViewModel(
                 }
             }
 
-            is ErrorUserResult -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = ModelStateToastUI(
-                            messageToast = R.string.toast_error_register_assignment,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.ERROR
-                        )
-                    )
+            is ErrorResult -> {
+                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
+                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_register_assignment
+                    else -> null
                 }
-            }
 
-            else -> {
-                logInfo(result.toString())
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR
-                    )
+                if(msg != null){
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR,
+                            controlToast = ModelStateToastUI(
+                                messageToast = msg,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.ERROR
+                            )
+                        )
+                    }
+                }else{
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
                 }
             }
         }
-    }*/
+    }
 
     /**
      * Updates the date range for the active partial.
@@ -292,15 +300,14 @@ class RegisterEvaluationViewModel(
     }
 
 
-    /*private fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<RequestStudentJobs>{
+    private fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<RequestListGrades>{
         return this.map { student ->
-            RequestStudentJobs(
-                studentSchoolCycleGroupId = student.id.toIntOrNull() ?: 0,
-                qualification = student.score.valueText.toFloatOrNull() ?: 0f,
-                comment = "Asistió"
+            RequestListGrades(
+                studentId = student.id.toIntOrNull() ?: 0,
+                grade = student.score.valueText.toDoubleOrNull() ?: 0.0,
             )
         }
-    }*/
+    }
 
     /**
      * Modifies the visibility of the toast message.

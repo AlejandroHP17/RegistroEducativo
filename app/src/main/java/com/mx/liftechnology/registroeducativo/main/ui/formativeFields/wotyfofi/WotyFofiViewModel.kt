@@ -2,6 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
@@ -48,7 +49,7 @@ class WotyFofiViewModel (
     fun getListWotyFofi(){
         viewModelScope.launch(dispatcherProvider.io) {
             when (val result = getWorkTypeByFormativeFieldUseCase.invoke()){
-                is com.mx.liftechnology.data.util.SuccessResult ->{
+                is SuccessResult ->{
                     _dataState.update {
                         it.copy(
                             dataCard = result.data.toComplexCardUI()

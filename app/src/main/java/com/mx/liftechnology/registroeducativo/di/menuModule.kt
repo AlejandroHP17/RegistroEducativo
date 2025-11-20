@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
+import com.mx.liftechnology.core.network.apiCall.evaluation.RegisterWorkTypeEvaluationsApiCall
 import com.mx.liftechnology.core.network.apiCall.schoolCycle.GroupApiCall
 import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuLocalRepository
 import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
@@ -28,7 +29,7 @@ val menuModule = module {
     /**
      * Provides an instance of [GroupApiCall].
      */
-    factory { get<Retrofit>().create(GroupApiCall::class.java) }
+    factory { get<Retrofit>().create(RegisterWorkTypeEvaluationsApiCall::class.java) }
 
     /**
      * Provides a singleton instance of [MenuLocalRepository].

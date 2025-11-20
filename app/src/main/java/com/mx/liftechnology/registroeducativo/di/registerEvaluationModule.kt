@@ -1,6 +1,10 @@
 package com.mx.liftechnology.registroeducativo.di
 
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.GroupApiCall
+import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepository
+import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepositoryImpl
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.RegisterWorkTypeEvaluationsUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCaseImp
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
@@ -9,6 +13,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
+import retrofit2.Retrofit
 
 /**
  * Koin module for assignment registration-related dependencies.
@@ -18,11 +23,17 @@ import org.koin.dsl.module
  */
 val registerEvaluationModule = module {
 
+    factory { get<Retrofit>().create(GroupApiCall::class.java) }
+
     /**
      * Provides a singleton instance of [ValidateFieldsEvaluationUseCase].
      */
     singleOf(::ValidateFieldsEvaluationUseCaseImp) {
         bind<ValidateFieldsEvaluationUseCase>()
+    }
+
+    singleOf(::RegisterWorkTypeEvaluationsRepositoryImpl) {
+        bind<RegisterWorkTypeEvaluationsRepository>()
     }
 
     /**
@@ -34,6 +45,8 @@ val registerEvaluationModule = module {
      * Provides a singleton instance of [GetDatesActivePartialUseCase].
      */
     singleOf(::GetDatesActivePartialUseCase)
+
+    singleOf(::RegisterWorkTypeEvaluationsUseCase)
 
     /**
      * Provides an instance of [RegisterEvaluationViewModel].

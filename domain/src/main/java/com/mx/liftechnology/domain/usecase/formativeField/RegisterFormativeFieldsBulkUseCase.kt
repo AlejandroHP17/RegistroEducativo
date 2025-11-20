@@ -46,7 +46,7 @@ class RegisterFormativeFieldsBulkUseCase(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String
     ): ModelResult<ModelFormativeFieldData, Error> {
-        val partialId= preference.getPreferenceInt(ModelPreference.ID_PROFESSOR_TEACHER_SCHOOL_PARTIAL_CYCLE_GROUP)
+        val partialId= preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(cycleSchoolId == null || partialId == null || updatedList.isNullOrEmpty()) return ErrorResult(
