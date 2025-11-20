@@ -54,24 +54,24 @@ object NetworkException {
      * @param exception La excepción a gestionar.
      * @return Un [com.mx.liftechnology.domain.util.NetworkError] que representa la excepción gestionada.
      */
-    fun handleException(exception: Throwable): NetworkError {
+    fun handleException(exception: Throwable): NetworkModelError {
         return when (exception) {
-            is java.net.UnknownHostException -> NetworkError.NO_INTERNET  // No hay conexión a Internet
-            is java.net.ConnectException -> NetworkError.NO_INTERNET  // No se puede establecer conexión con el servidor
-            is java.net.SocketTimeoutException -> NetworkError.TIMEOUT // Timeout de conexión
+            is java.net.UnknownHostException -> NetworkModelError.NO_INTERNET  // No hay conexión a Internet
+            is java.net.ConnectException -> NetworkModelError.NO_INTERNET  // No se puede establecer conexión con el servidor
+            is java.net.SocketTimeoutException -> NetworkModelError.TIMEOUT // Timeout de conexión
             is retrofit2.HttpException -> {
                 when (exception.code()) {
-                    400 -> NetworkError.BAD_REQUEST
-                    401 -> NetworkError.UNAUTHORIZED
-                    404 -> NetworkError.NOT_FOUND
-                    409 -> NetworkError.CONFLICT
-                    429 -> NetworkError.TOO_MANY_REQUESTS
-                    500 -> NetworkError.SERVER_ERROR
-                    else -> NetworkError.UNKNOWN
+                    400 -> NetworkModelError.BAD_REQUEST
+                    401 -> NetworkModelError.UNAUTHORIZED
+                    404 -> NetworkModelError.NOT_FOUND
+                    409 -> NetworkModelError.CONFLICT
+                    429 -> NetworkModelError.TOO_MANY_REQUESTS
+                    500 -> NetworkModelError.SERVER_ERROR
+                    else -> NetworkModelError.UNKNOWN
                 }
             }
 
-            else -> NetworkError.UNKNOWN
+            else -> NetworkModelError.UNKNOWN
         }
     }
 }

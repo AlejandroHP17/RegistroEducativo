@@ -7,9 +7,9 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
 import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuLocalRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.SuccessResult
 
@@ -31,13 +31,13 @@ class GetControlMenuUseCase(
      * @return Un [ModelResult] que contiene la lista de ítems del menú o un estado de error
      * si la lista está vacía o si ocurre una excepción.
      */
-    operator fun invoke(): ModelResult<List<ModelPrincipalMenuData>, Error> {
+    operator fun invoke(): ModelResult<List<ModelPrincipalMenuData>, ModelError> {
         return runCatching { localRepository.getControlMenu() }.fold(
             onSuccess = { list ->
-                if (list.isEmpty()) ErrorResult(LocalError.EMPTY)
+                if (list.isEmpty()) ErrorResult(LocalModelError.EMPTY)
                 else SuccessResult(list)
             },
-            onFailure = { ErrorResult(LocalError.CATCH)}
+            onFailure = { ErrorResult(LocalModelError.CATCH)}
         )
     }
 }

@@ -4,11 +4,11 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -37,18 +37,18 @@ class GetListWorkTypeUseCase(
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la lista de [com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWorkType] en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelWorkTypeData>, Error> {
+    suspend operator fun invoke(): ModelResult<List<ModelWorkTypeData>, ModelError> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
 
         if(teacherId == null) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         return runCatching { getWorkTypeRepository.executeGetListWorkType(teacherId) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        if (result.data.isEmpty()) ErrorResult(LocalError.EMPTY)
+                        if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
                         else SuccessResult(result.data)
                     }
 
@@ -57,7 +57,7 @@ class GetListWorkTypeUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 }

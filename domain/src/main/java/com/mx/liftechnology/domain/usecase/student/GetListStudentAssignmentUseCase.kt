@@ -8,11 +8,11 @@ package com.mx.liftechnology.domain.usecase.student
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.student.GetStudentRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.student.toModelStudentList
@@ -37,19 +37,19 @@ class GetListStudentAssignmentUseCase (
      * @return Un [ModelResult] que contiene la lista de estudiantes formateada para el registro de asignación,
      * o un estado de error si la operación falla.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>?, Error> {
+    suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>?, ModelError> {
         val cycleSchoolId =
             preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(cycleSchoolId == null) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         return runCatching { getStudentRepository.executeGetListStudent(cycleSchoolId) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {
-                        if (result.data.isNullOrEmpty()) ErrorResult(LocalError.EMPTY)
+                        if (result.data.isNullOrEmpty()) ErrorResult(LocalModelError.EMPTY)
                         else SuccessResult(result.data.toModelStudentList())
                     }
                     is ErrorResult -> {
@@ -57,7 +57,7 @@ class GetListStudentAssignmentUseCase (
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
     }
 }

@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.data.util.Error
-import com.mx.liftechnology.data.util.LocalError
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.ModelError
+import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.UserError
 
 /**
@@ -15,59 +15,59 @@ import com.mx.liftechnology.data.util.UserError
 object ErrorMapper {
 
     /**
-     * Convierte un error de la capa de datos (data.util.Error) a un error de UI (UserError).
+     * Convierte un error de la capa de datos (data.util.ModelError) a un error de UI (UserError).
      *
-     * @param error El error a convertir, puede ser LocalError o NetworkError.
+     * @param error El error a convertir, puede ser LocalModelError o NetworkModelError.
      * @return Un UserError que representa cómo debe mostrarse el error al usuario.
      */
-    fun mapErrorToUI(error: Error): UserError {
+    fun mapErrorToUI(error: ModelError): UserError {
         return when (error) {
-            is LocalError -> mapLocalErrorToUI(error)
-            is NetworkError -> mapNetworkErrorToUI(error)
+            is LocalModelError -> mapLocalErrorToUI(error)
+            is NetworkModelError -> mapNetworkErrorToUI(error)
         }
     }
 
     /**
-     * Convierte un LocalError a UserError.
+     * Convierte un LocalModelError a UserError.
      *
      * @param localError El error local a convertir.
      * @return Un UserError correspondiente.
      */
-    private fun mapLocalErrorToUI(localError: LocalError): UserError {
+    private fun mapLocalErrorToUI(localError: LocalModelError): UserError {
         return when (localError) {
-            LocalError.USER_INCOMPLETE_DATA -> UserError.SHOW_INCOMPLETE_ERROR
-            LocalError.RESPONSE_INCOMPLETE_DATA -> UserError.SHOW_GENERIC_ERROR
-            LocalError.CATCH -> UserError.SHOW_GENERIC_ERROR
-            LocalError.EMPTY -> UserError.SHOW_GENERIC_ERROR
+            LocalModelError.USER_INCOMPLETE_DATA -> UserError.SHOW_INCOMPLETE_ERROR
+            LocalModelError.RESPONSE_INCOMPLETE_DATA -> UserError.SHOW_GENERIC_ERROR
+            LocalModelError.CATCH -> UserError.SHOW_GENERIC_ERROR
+            LocalModelError.EMPTY -> UserError.SHOW_GENERIC_ERROR
         }
     }
 
     /**
-     * Convierte un NetworkError a UserError.
+     * Convierte un NetworkModelError a UserError.
      *
      * @param networkError El error de red a convertir.
      * @return Un UserError correspondiente.
      */
-    private fun mapNetworkErrorToUI(networkError: NetworkError): UserError {
+    private fun mapNetworkErrorToUI(networkError: NetworkModelError): UserError {
         return when (networkError) {
-            NetworkError.UNAUTHORIZED -> UserError.UNAUTHORIZED // 401
+            NetworkModelError.UNAUTHORIZED -> UserError.UNAUTHORIZED // 401
 
-            NetworkError.BAD_REQUEST -> UserError.SHOW_SPECIFIC_ERROR //400
-            NetworkError.CONFLICT -> UserError.SHOW_SPECIFIC_ERROR //409
-            NetworkError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR // 404
+            NetworkModelError.BAD_REQUEST -> UserError.SHOW_SPECIFIC_ERROR //400
+            NetworkModelError.CONFLICT -> UserError.SHOW_SPECIFIC_ERROR //409
+            NetworkModelError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR // 404
 
-            NetworkError.NO_INTERNET -> UserError.SHOW_GENERIC_ERROR
-            NetworkError.TIMEOUT -> UserError.SHOW_GENERIC_ERROR
-            NetworkError.SERVER_ERROR -> UserError.SHOW_GENERIC_ERROR
+            NetworkModelError.NO_INTERNET -> UserError.SHOW_GENERIC_ERROR
+            NetworkModelError.TIMEOUT -> UserError.SHOW_GENERIC_ERROR
+            NetworkModelError.SERVER_ERROR -> UserError.SHOW_GENERIC_ERROR
 
-            NetworkError.TOO_MANY_REQUESTS -> UserError.LOGS
-            NetworkError.SERIALIZATION -> UserError.LOGS
-            NetworkError.UNKNOWN -> UserError.LOGS
-            NetworkError.NOT_ACTIVE -> UserError.USER_NOT_ACTIVE
+            NetworkModelError.TOO_MANY_REQUESTS -> UserError.LOGS
+            NetworkModelError.SERIALIZATION -> UserError.LOGS
+            NetworkModelError.UNKNOWN -> UserError.LOGS
+            NetworkModelError.NOT_ACTIVE -> UserError.USER_NOT_ACTIVE
 
             // Registro Usuario
-            NetworkError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific
-            NetworkError.EMPTY -> UserError.LOGS
+            NetworkModelError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific
+            NetworkModelError.EMPTY -> UserError.LOGS
         }
     }
 }

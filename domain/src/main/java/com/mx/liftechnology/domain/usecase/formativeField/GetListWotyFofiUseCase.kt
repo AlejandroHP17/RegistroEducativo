@@ -4,11 +4,11 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 class GetListWotyFofiUseCase(
@@ -16,11 +16,11 @@ class GetListWotyFofiUseCase(
     private val getListWotyFofiRepository: GetListWotyFofiRepository
 ) {
 
-    suspend operator fun invoke() : ModelResult<ModelWotyFofiData, Error> {
+    suspend operator fun invoke() : ModelResult<ModelWotyFofiData, ModelError> {
         val schoolCycleId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if (schoolCycleId == null) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         return runCatching {getListWotyFofiRepository.executeGetListWotyFofi(schoolCycleId)}.fold(
@@ -35,7 +35,7 @@ class GetListWotyFofiUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
 
     }

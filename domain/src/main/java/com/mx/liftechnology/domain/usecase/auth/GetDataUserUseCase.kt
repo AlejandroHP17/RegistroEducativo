@@ -4,17 +4,17 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 class GetDataUserUseCase(
     private val preference: PreferenceUseCase,
     private val getDataUserRepository: GetDataUserRepository,
 ) {
-    suspend operator fun invoke(remember: Boolean): ModelResult<ModelGetUserData, Error> {
+    suspend operator fun invoke(remember: Boolean): ModelResult<ModelGetUserData, ModelError> {
 
         // 2. Ejecución de la llamada de red
         return runCatching { getDataUserRepository.executeGetData() }.fold(
@@ -26,7 +26,7 @@ class GetDataUserUseCase(
                             savePreferences(result.data, remember)
                             SuccessResult(userLogin)
                         }
-                        else ErrorResult(NetworkError.NOT_ACTIVE)
+                        else ErrorResult(NetworkModelError.NOT_ACTIVE)
                     }
 
                     is ErrorResult -> {
@@ -34,7 +34,7 @@ class GetDataUserUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 

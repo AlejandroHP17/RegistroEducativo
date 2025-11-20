@@ -15,7 +15,7 @@ package com.mx.liftechnology.domain.model.generic
 object ModelCodeError {
     //region Errores de Servicio
     /** Mensaje para excepciones genéricas capturadas en un bloque catch. */
-    const val ERROR_CATCH: String = "Error que entra al catch"
+    const val ERROR_CATCH: String = "ModelError que entra al catch"
 
     /** Mensaje para indicar que los datos recibidos o procesados están incompletos. */
     const val ERROR_INCOMPLETE_DATA: String = "Datos incompletos"
@@ -27,13 +27,13 @@ object ModelCodeError {
     const val ERROR_UNAUTHORIZED: String = "Token expirado"
 
     /** Mensaje para errores genéricos en operaciones CRUD (Crear, Leer, Actualizar, Eliminar). */
-    const val ERROR_DATA: String = "Error CRUD"
+    const val ERROR_DATA: String = "ModelError CRUD"
 
     /** Mensaje para errores genéricos en operaciones CRUD (Crear, Leer, Actualizar, Eliminar). */
     const val ERROR_TOO_MANY_REQUESTS: String = "Muchas peticiones"
 
     /** Mensaje para errores inesperados o no clasificados. */
-    const val ERROR_UNKNOWN: String = "Error inesperado"
+    const val ERROR_UNKNOWN: String = "ModelError inesperado"
 
     /** Mensaje para indicar que una lista o conjunto de datos está vacío. */
     const val ERROR_EMPTY: String = "Lista vacia"

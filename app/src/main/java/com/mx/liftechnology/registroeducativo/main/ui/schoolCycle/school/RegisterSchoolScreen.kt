@@ -148,14 +148,14 @@ private fun BodyRegisterSchool(
     )
 
     BoxEditTextGeneric(
-        value = uiAutomatic.schoolName,
+        modelText = uiAutomatic.schoolName,
         enable = false,
         label = stringResource(id = R.string.form_school_name),
         regex = ModelRegex.SIMPLE_TEXT,
     ) {}
 
     BoxEditTextGeneric(
-        value = uiAutomatic.shiftName,
+        modelText = uiAutomatic.shiftName,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
         regex = ModelRegex.SIMPLE_TEXT,

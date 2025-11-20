@@ -9,11 +9,11 @@ import com.mx.liftechnology.core.network.apiCall.evaluation.RequestGetListEvalua
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -28,7 +28,7 @@ fun interface GetListEvaluationTypeUseCase {
      *
      * @return Un [ModelResult] que contiene la lista de tipos de evaluación (como `String`) o un estado de error.
      */
-    suspend fun getListEvaluationType(): ModelResult<List<String>?, Error>?
+    suspend fun getListEvaluationType(): ModelResult<List<String>?, ModelError>?
 }
 
 /**
@@ -49,7 +49,7 @@ class GetListEvaluationTypeUseCaseImp (
     /**
      * {@inheritDoc}
      */
-    override suspend fun getListEvaluationType(): ModelResult<List<String>?, Error> {
+    override suspend fun getListEvaluationType(): ModelResult<List<String>?, ModelError> {
         val userId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val roleId= preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
         val pecg= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
@@ -64,7 +64,7 @@ class GetListEvaluationTypeUseCaseImp (
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        if (result?.data?.isNullOrEmpty() == true) ErrorResult(LocalError.EMPTY)
+                        if (result?.data?.isNullOrEmpty() == true) ErrorResult(LocalModelError.EMPTY)
                         else SuccessResult(result.data)
                     }
 
@@ -73,7 +73,7 @@ class GetListEvaluationTypeUseCaseImp (
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 }

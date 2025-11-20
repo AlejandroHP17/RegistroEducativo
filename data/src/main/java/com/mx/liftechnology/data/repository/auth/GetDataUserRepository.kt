@@ -5,20 +5,20 @@ import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToGetUserDa
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 fun interface GetDataUserRepository{
-    suspend fun executeGetData(): ModelResult<ModelGetUserData, NetworkError>
+    suspend fun executeGetData(): ModelResult<ModelGetUserData, NetworkModelError>
 }
 
 class GetDataUserRepositoryImpl(
     private val getDataUserApiCall: GetDataUserApiCall
 ) : GetDataUserRepository {
 
-    override suspend fun executeGetData(): ModelResult<ModelGetUserData, NetworkError> {
+    override suspend fun executeGetData(): ModelResult<ModelGetUserData, NetworkModelError> {
         return try {
             val response = getDataUserApiCall.callApi()
             if (response.isSuccessful && response.body() != null) {
@@ -29,7 +29,7 @@ class GetDataUserRepositoryImpl(
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }
         } catch (e: Exception) {
-            ErrorResult(NetworkError.UNKNOWN)
+            ErrorResult(NetworkModelError.UNKNOWN)
         }
     }
 }

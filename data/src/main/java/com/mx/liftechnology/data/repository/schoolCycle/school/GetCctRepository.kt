@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRe
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -29,7 +29,7 @@ fun interface GetCctRepository{
    * @param cct El CCT de la escuela.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkError>
+  suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkModelError>
 }
 
 /**
@@ -47,7 +47,7 @@ class GetCctRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkError> {
+    override suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkModelError> {
         return try {
             val response = cctApiCall.callApi(cct)
             if (response.isSuccessful && response.body() != null) {

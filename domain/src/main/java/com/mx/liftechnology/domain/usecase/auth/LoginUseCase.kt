@@ -1,18 +1,17 @@
 package com.mx.liftechnology.domain.usecase.auth
 
 import android.os.Build
-import com.mx.liftechnology.core.network.apiCall.auth.RequestLogin
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.LocationHelper
 import com.mx.liftechnology.core.util.LocationResult
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.repository.auth.LoginRepository
-import com.mx.liftechnology.data.util.Error
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -42,13 +41,13 @@ class LoginUseCase(
      * @param remember Indica si la sesión del usuario debe ser recordada.
      * @return Un [ModelResult] que puede ser:
      * - [SuccessResult<UserLogin>] si el inicio de sesión es exitoso.
-     * - [ErrorResult<LocalError>] si hay un error de validación local (campos vacíos).
-     * - [ErrorResult<NetworkError>] si hay un error de red o del servidor.
+     * - [ErrorResult<LocalModelError>] si hay un error de validación local (campos vacíos).
+     * - [ErrorResult<NetworkModelError>] si hay un error de red o del servidor.
      */
-    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<ModelGetUserData, Error> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<ModelGetUserData, ModelError> {
         // 1. Validación de Lógica de Negocio (Local)
         if (email.isNullOrBlank() || pass.isNullOrBlank()) {
-            return ErrorResult(LocalError.USER_INCOMPLETE_DATA)
+            return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
         }
 
         // Obtener ubicación usando LocationResult
@@ -63,16 +62,14 @@ class LoginUseCase(
             }
         }
 
-        val request = RequestLogin(
-            email = email.lowercase(),
+        // 2. Ejecución de la llamada de red
+        return runCatching { repositoryLogin.executeLogin(
+            email = email.lowercase().trim(),
             password = pass,
             latitude = latitude,
             longitude = longitude,
             imei = Build.FINGERPRINT + Build.ID
-        )
-
-        // 2. Ejecución de la llamada de red
-        return runCatching { repositoryLogin.executeLogin(request) }.fold(
+        ) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
@@ -84,7 +81,7 @@ class LoginUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) } // Captura excepciones como problemas de conectividad
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) } // Captura excepciones como problemas de conectividad
         )
     }
 }

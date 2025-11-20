@@ -3,7 +3,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.auth.forgetPassword
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
@@ -42,9 +41,9 @@ class ForgetPasswordViewModel(
      *
      * @param email The new email value.
      */
-    fun onEmailChanged(email: String) {
-        viewModelScope.launch (dispatcherProvider.io){
-            _emailState.update { email.stringToModelStateOutFieldText() }
+    fun onEmailChanged(email: ModelStateOutFieldText) {
+        viewModelScope.launch (dispatcherProvider.default){
+            _emailState.update { email }
         }
     }
 

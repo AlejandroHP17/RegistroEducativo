@@ -1,17 +1,17 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
 import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 class DeleteFormativeFieldsUseCase(
     private val deleteFormativeFieldRepository: DeleteFormativeFieldRepository
 ) {
 
-    suspend operator fun invoke (fieldId: Int): ModelResult<String, Error>{
+    suspend operator fun invoke (fieldId: Int): ModelResult<String, ModelError>{
         return runCatching { deleteFormativeFieldRepository.executeFormativeFieldsStudent(fieldId) }.fold(
             onSuccess = { result ->
                 when (result) {
@@ -24,7 +24,7 @@ class DeleteFormativeFieldsUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 }

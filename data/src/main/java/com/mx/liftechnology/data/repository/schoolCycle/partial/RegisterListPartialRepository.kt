@@ -11,7 +11,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToMo
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -31,7 +31,7 @@ fun interface RegisterListPartialRepository{
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeRegisterListPartial(request : RequestRegisterPartial
-  ): ModelResult<List<ModelListPartialData?>, NetworkError>
+  ): ModelResult<List<ModelListPartialData?>, NetworkModelError>
 }
 
 /**
@@ -51,7 +51,7 @@ class RegisterListPartialRepositoryImpl(
      */
     override suspend fun executeRegisterListPartial(
         request : RequestRegisterPartial
-    ): ModelResult<List<ModelListPartialData?>, NetworkError> {
+    ): ModelResult<List<ModelListPartialData?>, NetworkModelError> {
         return try {
             val response = registerListPartialApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

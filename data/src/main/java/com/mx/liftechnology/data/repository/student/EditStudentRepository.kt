@@ -6,7 +6,7 @@ import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelS
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -19,14 +19,14 @@ fun interface EditStudentRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeEditStudent(request: RequestEditStudent, studentId: Int)
-            : ModelResult<ModelStudentData, NetworkError>
+            : ModelResult<ModelStudentData, NetworkModelError>
 }
 
 class EditStudentRepositoryImpl (
     private val editStudentApiCall: EditStudentApiCall
 ) : EditStudentRepository {
     override suspend fun executeEditStudent(request: RequestEditStudent, studentId: Int)
-    : ModelResult<ModelStudentData, NetworkError> {
+    : ModelResult<ModelStudentData, NetworkModelError> {
         return try {
             val response = editStudentApiCall.callApi(studentId, request )
             if (response.isSuccessful && response.body() != null) {

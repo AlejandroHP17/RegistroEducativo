@@ -5,19 +5,19 @@ import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperT
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 fun interface GetListWotyFofiRepository {
-    suspend fun executeGetListWotyFofi(schoolCycleId: Int): ModelResult<ModelWotyFofiData, NetworkError>
+    suspend fun executeGetListWotyFofi(schoolCycleId: Int): ModelResult<ModelWotyFofiData, NetworkModelError>
 }
 
 class GetListWotyFofiRepositoryImpl(
     private val getListWotyFofiApiCall: GetListWotyFofiApiCall
 ):GetListWotyFofiRepository{
-    override suspend fun executeGetListWotyFofi(schoolCycleId: Int): ModelResult<ModelWotyFofiData, NetworkError> {
+    override suspend fun executeGetListWotyFofi(schoolCycleId: Int): ModelResult<ModelWotyFofiData, NetworkModelError> {
         return try{
             val response = getListWotyFofiApiCall.callApi(schoolCycleId)
             if (response.isSuccessful && response.body() != null) {

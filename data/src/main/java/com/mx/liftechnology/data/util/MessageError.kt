@@ -11,12 +11,12 @@ object MessageError{
     /**
      * Mensaje de error para el log cuando hay error a la conexión de la red.
      */
-    const val CONNECTION_INTERNET_ERROR_MESSAGE = "Error de conexión a Internet"
+    const val CONNECTION_INTERNET_ERROR_MESSAGE = "ModelError de conexión a Internet"
 
     /**
      * Mensaje de error para el log cuando hay error interno del servidor.
      */
-    const val SERVER_ERROR_MESSAGE = "Error en el servidor, intenta más tarde"
+    const val SERVER_ERROR_MESSAGE = "ModelError en el servidor, intenta más tarde"
 
     /**
      * Mensaje de error para el log cuando hay error de "No Encontrado" (ej: 404).
@@ -51,7 +51,7 @@ object MessageError{
     /**
      * Mensaje de error para el log cuando hay error desconocido
      */
-    const val UNKNOWN_ERROR_MESSAGE = "Error desconocido"
+    const val UNKNOWN_ERROR_MESSAGE = "ModelError desconocido"
 
 
 }

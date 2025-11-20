@@ -89,7 +89,7 @@ class GetCctUseCaseTest {
     @Test
     fun `invoke cuando el repositorio lanza excepcion devuelve ErrorState`() = runBlocking {
         // Preparamos el mock para que lance una excepción
-        coEvery { getCctRepository.executeGetCct(any()) } throws RuntimeException("Error de red")
+        coEvery { getCctRepository.executeGetCct(any()) } throws RuntimeException("ModelError de red")
 
         // Ejecutamos el caso de uso
         val result = getCctUseCase.invoke("1234567890")

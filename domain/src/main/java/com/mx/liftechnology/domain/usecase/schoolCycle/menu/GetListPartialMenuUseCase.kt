@@ -8,11 +8,11 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialToConvertModelDialogGroupPartialDomains
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
@@ -38,10 +38,10 @@ class GetListPartialMenuUseCase (
      * @return Un [ModelResult] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-     suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, Error> {
+     suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, ModelError> {
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
-        if(cycleSchoolId == null) return ErrorResult(LocalError.USER_INCOMPLETE_DATA)
+        if(cycleSchoolId == null) return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
          return runCatching { getListPartialRepository.executeGetListPartial(cycleSchoolId) }.fold(
              onSuccess = { result ->
@@ -51,14 +51,14 @@ class GetListPartialMenuUseCase (
                          if (convertedResult.isNotEmpty()) {
                              SuccessResult(convertedResult)
                          }
-                         else ErrorResult(LocalError.EMPTY)
+                         else ErrorResult(LocalModelError.EMPTY)
                      }
                      is ErrorResult -> {
                          ErrorResult(result.error)
                      }
                  }
              },
-             onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+             onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
          )
     }
 }

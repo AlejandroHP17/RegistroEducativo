@@ -7,7 +7,7 @@ package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 
 /**
@@ -36,7 +36,7 @@ fun interface ModifyOneStudentUseCase{
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ModelResult<List<String?>?, Error>?
+    ): ModelResult<List<String?>?, ModelError>?
 }
 
 /**
@@ -62,7 +62,7 @@ class ModifyOneStudentUseCaseImp (
         curp: String,
         birthday: String,
         phoneNumber: String,
-    ): ModelResult<List<String?>?, Error>? {
+    ): ModelResult<List<String?>?, ModelError>? {
         TODO("Aún no implementado")
     }
 

@@ -11,8 +11,8 @@ import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToGetLoginD
 import com.mx.liftechnology.data.model.auth.ModelLoginData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -30,7 +30,13 @@ fun interface LoginRepository {
      * @param request Los datos de la petición de inicio de sesión.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeLogin(request: RequestLogin): ModelResult<ModelLoginData, NetworkError>
+    suspend fun executeLogin(
+        email : String,
+        password : String,
+        latitude : Double,
+        longitude : Double,
+        imei : String
+    ): ModelResult<ModelLoginData, NetworkModelError>
 }
 
 /**
@@ -52,8 +58,21 @@ class LoginRepositoryImpl(
      * el contrato definido en [LoginRepository.executeLogin].
      */
     override suspend fun executeLogin(
-        request: RequestLogin,
-    ): ModelResult<ModelLoginData, NetworkError> {
+        email : String,
+        password : String,
+        latitude : Double,
+        longitude : Double,
+        imei : String
+    ): ModelResult<ModelLoginData, NetworkModelError> {
+
+        val request = RequestLogin(
+            email = email,
+            password = password,
+            latitude = latitude,
+            longitude = longitude,
+            imei = imei
+        )
+
         return try {
             val response = loginApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {
@@ -64,7 +83,7 @@ class LoginRepositoryImpl(
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }
         } catch (e: Exception) {
-            ErrorResult(NetworkError.UNKNOWN)
+            ErrorResult(NetworkModelError.UNKNOWN)
         }
     }
 }

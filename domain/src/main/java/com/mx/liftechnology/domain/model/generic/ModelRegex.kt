@@ -13,8 +13,14 @@ package com.mx.liftechnology.domain.model.generic
  * @version 1.0.0
  */
 object ModelRegex {
+    /** Expresión regular para texto especial. */
+    val COMPLETE_TEXT = Regex("[a-zA-Z0-9ñÑ@!#$%&'*+\\-/=?^_`{|}~.,]+")
+
     /** Expresión regular para validar un nombre de usuario (formato de email). */
-    val EMAIL = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
+    val EMAIL = Regex("^[A-Za-z0-9ñÑ._%+-]+@[A-Za-z0-9ñÑ.-]+\\.[A-Za-zñÑ]{2,}$")
+
+
+
 
     /** Expresión regular para validar una contraseña (al menos una mayúscula, una minúscula, un número y 8 caracteres). */
     val PASS = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$")
@@ -37,6 +43,5 @@ object ModelRegex {
     /** Expresión regular para texto simple con numeros. */
     val TEXT_WITH_NUMBERS = Regex("^[a-zA-Z0-9ñÑ]+$")
 
-    /** Expresión regular para texto especial. */
-    val SPECIAL_TEXT = Regex("[a-zA-Z0-9ñÑ@!#$%&'*+\\-/=?^_`{|}~.,]+")
+
 }

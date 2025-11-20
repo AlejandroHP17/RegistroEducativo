@@ -6,9 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
+import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -53,10 +54,10 @@ class RegisterUserViewModel(
      *
      * @param email The new email value.
      */
-    fun onEmailChanged(email: String) {
-        viewModelScope.launch (dispatcherProvider.io){
+    fun onEmailChanged(email: ModelStateOutFieldText) {
+        viewModelScope.launch (dispatcherProvider.default){
             _inputState.update { it.copy(
-                emailInputState = email.stringToModelStateOutFieldText()
+                emailInputState = email
             ) }
         }
     }
@@ -66,10 +67,10 @@ class RegisterUserViewModel(
      *
      * @param pass The new password value.
      */
-    fun onPassChanged(pass: String) {
+    fun onPassChanged(pass: ModelStateOutFieldText) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
-                passInputState = pass.stringToModelStateOutFieldText()
+                passInputState = pass
             )}
         }
     }
@@ -79,10 +80,10 @@ class RegisterUserViewModel(
      *
      * @param repeatPass The new repeated password value.
      */
-    fun onRepeatPassChanged(repeatPass: String) {
+    fun onRepeatPassChanged(repeatPass: ModelStateOutFieldText) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
-                repeatPassInputState = repeatPass.stringToModelStateOutFieldText()
+                repeatPassInputState = repeatPass
             )}
         }
     }
@@ -92,10 +93,10 @@ class RegisterUserViewModel(
      *
      * @param code The new activation code value.
      */
-    fun onCodeChanged(code: String) {
+    fun onCodeChanged(code: ModelStateOutFieldText) {
         viewModelScope.launch (dispatcherProvider.io){
             _inputState.update { it.copy(
-                codeInputState = code.stringToModelStateOutFieldText()
+                codeInputState = code
             )}
         }
     }

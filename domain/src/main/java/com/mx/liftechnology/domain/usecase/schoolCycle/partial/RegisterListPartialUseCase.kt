@@ -11,11 +11,11 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 
@@ -41,12 +41,12 @@ class RegisterListPartialUseCase(
      */
     suspend operator fun invoke(
         adapterPeriods: List<ModelDatePeriodDomain>
-    ): ModelResult<List<ModelListPartialData?>, Error> {
+    ): ModelResult<List<ModelListPartialData?>, ModelError> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(teacherId == null || cycleSchoolId == null || adapterPeriods.isEmpty()) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         val listAdapter: MutableList<RequestPartials> = mutableListOf()
@@ -69,14 +69,14 @@ class RegisterListPartialUseCase(
                 when(result){
                     is SuccessResult -> {
                         if(result.data.isNotEmpty()) SuccessResult(result.data)
-                        else ErrorResult(NetworkError.UNKNOWN_REGISTER)
+                        else ErrorResult(NetworkModelError.UNKNOWN_REGISTER)
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
     }
 }

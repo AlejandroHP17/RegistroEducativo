@@ -4,7 +4,7 @@ import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseStudentJobs
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.RegisterAssignmentRepository
 import com.mx.liftechnology.data.util.ErrorResult as DataErrorResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult as DataSuccessResult
 import com.mx.liftechnology.domain.model.generic.ErrorResult
 import com.mx.liftechnology.domain.model.generic.SuccessResult
@@ -59,7 +59,7 @@ class RegisterAssignmentUseCaseTest {
     @Test
     fun `invoke con error del repositorio debe devolver ErrorState`() = runBlocking {
         // Preparamos el mock
-        coEvery { registerAssignmentRepository.executeRegisterAssignment(any()) } returns DataErrorResult(NetworkError.SERVER_ERROR)
+        coEvery { registerAssignmentRepository.executeRegisterAssignment(any()) } returns DataErrorResult(NetworkModelError.SERVER_ERROR)
 
         // Ejecutamos el caso de uso
         val result = registerAssignmentUseCase.invoke("Test Job", 1, "2024-01-01", emptyList())

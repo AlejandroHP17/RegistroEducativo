@@ -2,11 +2,11 @@ package com.mx.liftechnology.domain.usecase.auth
 
 import com.mx.liftechnology.core.network.apiCall.auth.RequestRegisterUser
 import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -29,9 +29,9 @@ class RegisterUserUseCase(
      * @param activationCode El código de activación para la cuenta.
      * @return Un [ModelResult] que representa el resultado del intento de registro.
      */
-    suspend operator fun invoke(email: String?, pass: String?, activationCode: String?): ModelResult<Boolean, Error> {
+    suspend operator fun invoke(email: String?, pass: String?, activationCode: String?): ModelResult<Boolean, ModelError> {
         if(email.isNullOrEmpty() || pass.isNullOrEmpty() || activationCode.isNullOrEmpty()) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         val request = RequestRegisterUser(
@@ -44,14 +44,14 @@ class RegisterUserUseCase(
                 when (result) {
                     is SuccessResult -> {
                         if(result.data.isActive == true) SuccessResult(true)
-                        else ErrorResult(NetworkError.UNKNOWN_REGISTER)
+                        else ErrorResult(NetworkModelError.UNKNOWN_REGISTER)
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 }

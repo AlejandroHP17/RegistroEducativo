@@ -3,7 +3,7 @@ package com.mx.liftechnology.data.repository.student
 import com.mx.liftechnology.core.network.apiCall.student.DeleteStudentApiCall
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -22,14 +22,14 @@ fun interface DeleteStudentRepository{
      * @param studentId pertenece al estudiante.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkError>
+    suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkModelError>
 }
 
 
 class DeleteStudentRepositoryImpl (
     private val deleteStudentApiCall: DeleteStudentApiCall
 ) : DeleteStudentRepository {
-    override suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkError> {
+    override suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkModelError> {
         return try {
             val response = deleteStudentApiCall.callApi(studentId)
             if (response.isSuccessful && response.body() != null) {

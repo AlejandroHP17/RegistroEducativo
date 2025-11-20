@@ -4,22 +4,22 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 class GetWorkTypeByFormativeFieldUseCase (
     private val getWorkTypeByFormativeFieldsRepository: GetWorkTypeByFormativeFieldsRepository,
     private val preference : PreferenceUseCase
 ){
-    suspend operator fun invoke(): ModelResult<ModelWorkTypeByFormativeField, Error> {
+    suspend operator fun invoke(): ModelResult<ModelWorkTypeByFormativeField, ModelError> {
         val formativeFieldId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD)
 
         if(formativeFieldId == null) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         return runCatching { getWorkTypeByFormativeFieldsRepository.executeGetWorkTyperByFormativeFields(formativeFieldId = formativeFieldId) }.fold(
@@ -34,7 +34,7 @@ class GetWorkTypeByFormativeFieldUseCase (
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 }

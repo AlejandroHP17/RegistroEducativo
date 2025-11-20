@@ -68,7 +68,7 @@ class GetControlMenuUseCaseTest {
     @Test
     fun `invoke cuando el repositorio lanza excepcion devuelve ErrorState`() {
         // Preparamos el mock
-        every { localRepository.getControlMenu() } throws RuntimeException("Error de base de datos")
+        every { localRepository.getControlMenu() } throws RuntimeException("ModelError de base de datos")
 
         // Ejecutamos el caso de uso
         val result = getControlMenuUseCase.invoke()

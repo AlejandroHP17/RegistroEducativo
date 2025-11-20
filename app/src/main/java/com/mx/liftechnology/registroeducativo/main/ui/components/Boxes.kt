@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
@@ -49,21 +50,21 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 @Preview(showBackground = true)
 @Composable
 fun TestBoxes() {
-    var data by remember { mutableStateOf("") }
+    var data by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
     var passwordVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.background(background())
     ) {
         BoxEditTextEmail(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
+            modelText = data,
             enableBox = true,
             label = stringResource(id = R.string.form_generic_email)
         )
         { data = it }
 
         BoxEditTextPassword(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
+            modelText = data,
             statePass = passwordVisible,
             enable = true,
             label = stringResource(id = R.string.form_generic_password),
@@ -72,14 +73,14 @@ fun TestBoxes() {
         )
 
         BoxEditTextGeneric(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
+            modelText = data,
             enable = true,
             label = stringResource(id = R.string.tools_generic),
             regex = ModelRegex.SIMPLE_TEXT
         )
         { data = it }
 
-        BoxEditTextComplexGeneric(
+        /*BoxEditTextComplexGeneric(
             value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
             enable = true,
             label = stringResource(id = R.string.tools_generic)
@@ -106,30 +107,35 @@ fun TestBoxes() {
             enable = true,
             label = stringResource(id = R.string.tools_generic)
         )
-        { }
+        { }*/
     }
 }
+
 
 /**
  * An outlined text field for email input.
  *
- * @param value The state of the text field.
+ * @param modelText The state of the text field.
  * @param enableBox Whether the text field is enabled.
  * @param label The label for the text field.
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
 fun BoxEditTextEmail(
-    value: ModelStateOutFieldText,
+    modelText: ModelStateOutFieldText,
     enableBox: Boolean,
     label: String,
-    onBoxChanged: (String) -> Unit,
+    onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
+    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    LaunchedEffect(Unit, modelText.isError) { value = modelText }
+
     OutlinedTextField(
         value = value.valueText,
-        onValueChange = {
-            if (it.matches(ModelRegex.SPECIAL_TEXT) || it.isEmpty()) {
-                onBoxChanged(it)
+        onValueChange = {newValue ->
+            if (ModelRegex.COMPLETE_TEXT.matches(newValue) || newValue.isEmpty()) {
+                value = newValue.stringToModelStateOutFieldText()
+                onBoxChanged(value)
             }
         },
         modifier = Modifier
@@ -165,7 +171,7 @@ fun BoxEditTextEmail(
 /**
  * An outlined text field for password input.
  *
- * @param value The state of the text field.
+ * @param modelText The state of the text field.
  * @param statePass Whether the password is visible.
  * @param enable Whether the text field is enabled.
  * @param label The label for the text field.
@@ -174,16 +180,22 @@ fun BoxEditTextEmail(
  */
 @Composable
 fun BoxEditTextPassword(
-    value: ModelStateOutFieldText,
+    modelText: ModelStateOutFieldText,
     statePass: Boolean,
     enable: Boolean,
     label: String,
-    onBoxChanged: (String) -> Unit,
+    onBoxChanged: (ModelStateOutFieldText) -> Unit,
     onStatePassChanged: (Boolean) -> Unit,
 ) {
+    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    LaunchedEffect(Unit, modelText.isError) { value = modelText }
+
     OutlinedTextField(
         value = value.valueText,
-        onValueChange = { onBoxChanged(it) },
+        onValueChange = {newValue ->
+            value = newValue.stringToModelStateOutFieldText()
+            onBoxChanged(value)
+                        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
@@ -288,25 +300,28 @@ fun BoxEditTextCapitalLetterGeneric(
 /**
  * A simple generic outlined text field.
  *
- * @param value The state of the text field.
+ * @param modelText The state of the text field.
  * @param enable Whether the text field is enabled.
  * @param label The label for the text field.
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
 fun BoxEditTextGeneric(
-    value: ModelStateOutFieldText,
+    modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
     regex: Regex,
-    onBoxChanged: (String) -> Unit,
+    onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
+    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    LaunchedEffect(Unit, modelText.isError) { value = modelText }
 
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
             if (newValue.isEmpty() || regex.matches(newValue)) {
-                onBoxChanged(newValue)
+                value = newValue.stringToModelStateOutFieldText()
+                onBoxChanged(value)
             }
         },
         modifier = Modifier

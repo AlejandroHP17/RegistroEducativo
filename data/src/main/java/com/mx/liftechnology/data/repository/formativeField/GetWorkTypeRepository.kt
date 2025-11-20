@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperT
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -29,7 +29,7 @@ fun interface GetWorkTypeRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeGetListWorkType(teacherId: Int)
-            : ModelResult<List<ModelWorkTypeData>, NetworkError>
+            : ModelResult<List<ModelWorkTypeData>, NetworkModelError>
 }
 
 /**
@@ -49,7 +49,7 @@ class GetWorkTypeRepositoryImpl(
      */
     override suspend fun executeGetListWorkType(
         teacherId: Int
-    ): ModelResult<List<ModelWorkTypeData>, NetworkError> {
+    ): ModelResult<List<ModelWorkTypeData>, NetworkModelError> {
         return try {
             val response = getListWorkTypeApiCall.callApi(teacherId)
             if (response.isSuccessful && response.body() != null) {

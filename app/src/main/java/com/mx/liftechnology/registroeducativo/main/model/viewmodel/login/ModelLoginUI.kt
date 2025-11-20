@@ -43,7 +43,7 @@ data class ModelLoginInputsUI(
  * @version 1.0.0
  */
 data class ModelLoginCallbacksUI(
-    val onEmailChanged: (String) -> Unit,
-    val onPassChanged: (String) -> Unit,
+    val onEmailChanged: (ModelStateOutFieldText) -> Unit,
+    val onPassChanged: (ModelStateOutFieldText) -> Unit,
     val onRememberChanged: (Boolean) -> Unit
 )

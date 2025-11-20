@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToMo
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -30,7 +30,7 @@ fun interface GetListPartialRepository{
    */
   suspend fun executeGetListPartial(
       schoolCycleId : Int
-  ): ModelResult<List<ModelListPartialData>, NetworkError>
+  ): ModelResult<List<ModelListPartialData>, NetworkModelError>
 }
 
 /**
@@ -50,7 +50,7 @@ class GetListPartialRepositoryImpl(
      */
     override suspend fun executeGetListPartial(
         schoolCycleId : Int
-    ): ModelResult<List<ModelListPartialData>, NetworkError> {
+    ): ModelResult<List<ModelListPartialData>, NetworkModelError> {
         return try {
             val response = getListPartialApiCall.callApi(schoolCycleId)
             if (response.isSuccessful && response.body() != null) {
@@ -61,7 +61,7 @@ class GetListPartialRepositoryImpl(
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }
         } catch (e: Exception) {
-            ErrorResult(NetworkError.UNKNOWN)
+            ErrorResult(NetworkModelError.UNKNOWN)
         }
     }
 }

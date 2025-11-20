@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
-import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
+import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -53,10 +53,10 @@ class LoginViewModel(
      *
      * @param email El nuevo valor del email.
      */
-    fun onEmailChanged(email: String) {
-        viewModelScope.launch (dispatcherProvider.io){
+    fun onEmailChanged(email: ModelStateOutFieldText) {
+        viewModelScope.launch (dispatcherProvider.default){
             _inputState.update { it.copy(
-                emailInputState = email.stringToModelStateOutFieldText()
+                emailInputState = email
             ) }
         }
     }
@@ -66,10 +66,10 @@ class LoginViewModel(
      *
      * @param pass El nuevo valor de la contraseña.
      */
-    fun onPassChanged(pass: String) {
-        viewModelScope.launch (dispatcherProvider.io){
+    fun onPassChanged(pass: ModelStateOutFieldText) {
+        viewModelScope.launch (dispatcherProvider.default){
             _inputState.update { it.copy(
-                passInputState = pass.stringToModelStateOutFieldText()
+                passInputState = pass
             )}
         }
     }
@@ -80,7 +80,7 @@ class LoginViewModel(
      * @param remember El nuevo estado del checkbox.
      */
     fun onRememberChanged(remember: Boolean) {
-        viewModelScope.launch (dispatcherProvider.io){
+        viewModelScope.launch (dispatcherProvider.default){
             _inputState.update { it.copy(
                     isRemember = remember
             ) }

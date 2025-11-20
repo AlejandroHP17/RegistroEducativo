@@ -132,7 +132,7 @@ fun BodyRegisterUserScreen(
     var repeatPasswordVisible by remember { mutableStateOf(false) }
 
     BoxEditTextEmail(
-        value = inputState.emailInputState,
+        modelText = inputState.emailInputState,
         enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
         onBoxChanged = { callbacks.onEmailChanged(it) }
@@ -141,7 +141,7 @@ fun BodyRegisterUserScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
     BoxEditTextPassword(
-        value = inputState.passInputState,
+        modelText = inputState.passInputState,
         statePass = passwordVisible,
         enable = true,
         label = stringResource(id = R.string.form_generic_password),
@@ -152,7 +152,7 @@ fun BodyRegisterUserScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
     BoxEditTextPassword(
-        value = inputState.repeatPassInputState,
+        modelText = inputState.repeatPassInputState,
         statePass = repeatPasswordVisible,
         enable = true,
         label = stringResource(id = R.string.form_reg_repeat_password),
@@ -167,10 +167,10 @@ fun BodyRegisterUserScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
     BoxEditTextGeneric(
-        value = inputState.codeInputState,
+        modelText = inputState.codeInputState,
         enable = true,
         label = stringResource(id = R.string.form_reg_code),
-        regex = ModelRegex.SPECIAL_TEXT,
+        regex = ModelRegex.COMPLETE_TEXT,
         onBoxChanged = { callbacks.onCodeChanged(it) }
     )
 }

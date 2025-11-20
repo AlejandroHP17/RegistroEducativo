@@ -5,11 +5,11 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.repository.student.EditStudentRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 class EditStudentUseCase (
@@ -35,12 +35,12 @@ class EditStudentUseCase (
         birthday: String,
         phoneNumber: String,
         studentId: Int?
-    ): ModelResult<ModelStudentData?, Error> {
+    ): ModelResult<ModelStudentData?, ModelError> {
         val teacherId= preference.getPreferenceInt(ModelPreference.ID_USER)
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(teacherId == null || cycleSchoolId == null || studentId == null ) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         val request = RequestEditStudent(
@@ -67,7 +67,7 @@ class EditStudentUseCase (
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
     }
 }

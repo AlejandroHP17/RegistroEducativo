@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperT
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -29,7 +29,7 @@ fun interface GetListFormativeFieldRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeGetListFormativeFields(cycleSchoolId: Int)
-    : ModelResult<List<ModelFormativeFieldData>, NetworkError>
+    : ModelResult<List<ModelFormativeFieldData>, NetworkModelError>
 }
 
 /**
@@ -49,7 +49,7 @@ class GetListFormativeFieldRepositoryImpl(
      */
     override suspend fun executeGetListFormativeFields(
         cycleSchoolId: Int
-    ) : ModelResult<List<ModelFormativeFieldData>, NetworkError> {
+    ) : ModelResult<List<ModelFormativeFieldData>, NetworkModelError> {
         return try {
             val response = getListFormativeFieldsApiCall.callApi(cycleSchoolId)
             if (response.isSuccessful && response.body() != null) {

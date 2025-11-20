@@ -3,11 +3,11 @@ package com.mx.liftechnology.domain.usecase.formativeField
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.formativeField.GetListFormativeFieldRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.formativeFields.toModelListFormativeFields
@@ -31,18 +31,18 @@ class GetListSubjectUseCase (
      *
      * @return Un [ModelResult] que contiene la lista de materias o un estado de error.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelFormatFormativeFieldsDomain>?, Error> {
+    suspend operator fun invoke(): ModelResult<List<ModelFormatFormativeFieldsDomain>?, ModelError> {
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(cycleSchoolId == null) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         return runCatching { getListFormativeFieldRepository.executeGetListFormativeFields(cycleSchoolId) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {
-                        if (result.data.isEmpty()) ErrorResult(LocalError.EMPTY)
+                        if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
                         else SuccessResult(result.data.toModelListFormativeFields())
                     }
                     is ErrorResult -> {
@@ -50,7 +50,7 @@ class GetListSubjectUseCase (
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
     }
 }

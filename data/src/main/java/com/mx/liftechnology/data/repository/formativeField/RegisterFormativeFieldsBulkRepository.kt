@@ -11,7 +11,7 @@ import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperT
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -31,7 +31,7 @@ fun interface RegisterFormativeFieldsBulkRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeRegisterFormativeFieldsBulk(request : RequestRegisterFormativeField)
-    : ModelResult<ModelFormativeFieldData, NetworkError>
+    : ModelResult<ModelFormativeFieldData, NetworkModelError>
 }
 
 /**
@@ -51,7 +51,7 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
      */
     override suspend fun executeRegisterFormativeFieldsBulk(
         request : RequestRegisterFormativeField
-    ): ModelResult<ModelFormativeFieldData, NetworkError> {
+    ): ModelResult<ModelFormativeFieldData, NetworkModelError> {
         return try {
             val response = registerFormativeFieldsBulkApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

@@ -1,17 +1,17 @@
 package com.mx.liftechnology.data.util
 
-fun Error.convertToUI(): UserError{
+fun ModelError.convertToUI(): UserError{
     return when(this){
-        is LocalError ->
+        is LocalModelError ->
             when(this){
-                LocalError.USER_INCOMPLETE_DATA -> UserError.SHOW_INCOMPLETE_ERROR
+                LocalModelError.USER_INCOMPLETE_DATA -> UserError.SHOW_INCOMPLETE_ERROR
                 else -> UserError.LOGS
             }
 
-        is NetworkError ->
+        is NetworkModelError ->
             when(this){
-                NetworkError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR //404
-                NetworkError.UNAUTHORIZED -> UserError.UNAUTHORIZED // 401
+                NetworkModelError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR //404
+                NetworkModelError.UNAUTHORIZED -> UserError.UNAUTHORIZED // 401
                 else -> UserError.LOGS
         }
     }

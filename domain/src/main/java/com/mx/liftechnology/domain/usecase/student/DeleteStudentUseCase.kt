@@ -1,17 +1,17 @@
 package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.data.repository.student.DeleteStudentRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 class DeleteStudentUseCase(
     private val deleteStudentRepository: DeleteStudentRepository
 ) {
 
-    suspend operator fun invoke (studentId: Int): ModelResult<String, Error>{
+    suspend operator fun invoke (studentId: Int): ModelResult<String, ModelError>{
         return runCatching { deleteStudentRepository.executeDeleteStudent(studentId) }.fold(
             onSuccess = { result ->
                 when (result) {
@@ -24,7 +24,7 @@ class DeleteStudentUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 }

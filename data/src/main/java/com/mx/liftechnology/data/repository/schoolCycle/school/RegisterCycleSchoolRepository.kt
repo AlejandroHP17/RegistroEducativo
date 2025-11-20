@@ -11,7 +11,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRe
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -32,7 +32,7 @@ fun interface RegisterCycleSchoolRepository{
    */
   suspend fun executeRegisterCycleSchool(
       request : RequestRegisterSchoolCycle
-  ): ModelResult<ModelRegisterSchoolCycleData, NetworkError>
+  ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError>
 }
 
 /**
@@ -52,7 +52,7 @@ class RegisterCycleSchoolRepositoryImpl(
      */
     override suspend fun executeRegisterCycleSchool(
         request : RequestRegisterSchoolCycle
-    ): ModelResult<ModelRegisterSchoolCycleData, NetworkError> {
+    ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError> {
         return try {
             val response = registerSchoolCycleApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

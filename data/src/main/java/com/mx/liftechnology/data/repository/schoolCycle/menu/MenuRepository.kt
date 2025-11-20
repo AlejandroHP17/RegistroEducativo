@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToCy
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
@@ -31,7 +31,7 @@ fun interface MenuRepository{
      */
     suspend fun executeGetCycleSchool(
         request: Int
-    ): ModelResult<List<ModelSchoolCycleData>, NetworkError>
+    ): ModelResult<List<ModelSchoolCycleData>, NetworkModelError>
 }
 
 /**
@@ -49,7 +49,7 @@ class MenuRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetCycleSchool(request: Int): ModelResult<List<ModelSchoolCycleData>, NetworkError> {
+    override suspend fun executeGetCycleSchool(request: Int): ModelResult<List<ModelSchoolCycleData>, NetworkModelError> {
         return try {
             val response = groupApiCall.callApi(request)
             if (response.isSuccessful && response.body()?.data != null) {

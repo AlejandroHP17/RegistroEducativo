@@ -3,11 +3,11 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ModelInfoStudentGroupDomain
@@ -32,9 +32,9 @@ class GetGroupMenuUseCase(
      *
      * @return Un [ModelResult] que contiene la información del grupo o un error.
      */
-    suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, Error> {
+    suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, ModelError> {
         val userId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
-        if (userId == null) ErrorResult(LocalError.USER_INCOMPLETE_DATA)
+        if (userId == null) ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
         return runCatching { menuRepository.executeGetCycleSchool( userId!!) }.fold(
             onSuccess = { result ->
                 when (result) {
@@ -48,17 +48,17 @@ class GetGroupMenuUseCase(
                                 )
                             )
                         } else {
-                            ErrorResult(NetworkError.EMPTY)
+                            ErrorResult(NetworkModelError.EMPTY)
                         }
                     }
 
                     is ErrorResult -> {
-                        if(result.error == NetworkError.UNAUTHORIZED) preference.cleanPreference()
+                        if(result.error == NetworkModelError.UNAUTHORIZED) preference.cleanPreference()
                         ErrorResult(result.error)
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
 
     }

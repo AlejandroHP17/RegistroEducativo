@@ -46,8 +46,8 @@ data class ModelRegisterUserInputsUI(
  * @version 1.0.0
  */
 data class ModelRegisterUserCallbacksUI(
-    val onEmailChanged: (String) -> Unit,
-    val onPassChanged: (String) -> Unit,
-    val onRepeatPassChanged: (String) -> Unit,
-    val onCodeChanged: (String) -> Unit
+    val onEmailChanged: (ModelStateOutFieldText) -> Unit,
+    val onPassChanged: (ModelStateOutFieldText) -> Unit,
+    val onRepeatPassChanged: (ModelStateOutFieldText) -> Unit,
+    val onCodeChanged: (ModelStateOutFieldText) -> Unit
 )

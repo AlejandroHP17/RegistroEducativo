@@ -3,10 +3,10 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.school
 import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
@@ -36,7 +36,7 @@ class GetCctUseCase(
      * @param cct La Clave de Centro de Trabajo a validar.
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la información de la escuela o un estado de error.
      */
-    suspend operator fun invoke(cct: String): ModelResult<ModelResultSchoolDomain, Error> {
+    suspend operator fun invoke(cct: String): ModelResult<ModelResultSchoolDomain, ModelError> {
         return runCatching { getCctRepository.executeGetCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
@@ -53,7 +53,7 @@ class GetCctUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN) }
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
     }
 

@@ -121,7 +121,7 @@ fun BodyLoginScreen(
     var passwordVisible by remember { mutableStateOf(false) }
 
     BoxEditTextEmail(
-        value = inputState.emailInputState,
+        modelText = inputState.emailInputState,
         enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
     ) { callbacks.onEmailChanged(it) }
@@ -129,7 +129,7 @@ fun BodyLoginScreen(
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
     BoxEditTextPassword(
-        value = inputState.passInputState,
+        modelText = inputState.passInputState,
         statePass = passwordVisible,
         enable = true,
         label = stringResource(id = R.string.form_generic_password),

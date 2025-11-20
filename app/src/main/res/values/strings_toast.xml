@@ -11,7 +11,7 @@
 
     <string name="toast_success_edit_student">Se modificó correctamente al alumno</string>
 
-    <!--- Error -->
+    <!--- ModelError -->
     <string name="toast_error_generic">Por favor intente mas tarde, estamos teniendo problemas en la plataforma</string>
 
     <string name="toast_error_validate_fields">Favor de verificar que todos los campos esten correctos</string>

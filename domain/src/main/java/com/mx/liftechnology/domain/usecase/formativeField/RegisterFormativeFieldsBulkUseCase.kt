@@ -7,11 +7,11 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
 
@@ -45,12 +45,12 @@ class RegisterFormativeFieldsBulkUseCase(
     suspend operator fun invoke(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String
-    ): ModelResult<ModelFormativeFieldData, Error> {
+    ): ModelResult<ModelFormativeFieldData, ModelError> {
         val partialId= preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
         if(cycleSchoolId == null || partialId == null || updatedList.isNullOrEmpty()) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
         val workTypes : MutableList<RequestWorkType> = mutableListOf()
@@ -93,7 +93,7 @@ class RegisterFormativeFieldsBulkUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
     }
 }

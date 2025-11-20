@@ -6,7 +6,7 @@ package com.mx.liftechnology.data.util
  * @author PelkiDev
  * @version 1.0.0
  */
-sealed interface Error
+sealed interface ModelError
 
 /**
  * Representa errores específicos de validaciones locales o de lógica de negocio
@@ -15,7 +15,7 @@ sealed interface Error
  * @version 1.0.0
  */
 enum class UserError {
-    /** Error que indica que uno o más campos requeridos para la operación están vacíos o son inválidos. */
+    /** ModelError que indica que uno o más campos requeridos para la operación están vacíos o son inválidos. */
     SHOW_GENERIC_ERROR,
     SHOW_SPECIFIC_ERROR,
     SHOW_INCOMPLETE_ERROR,
@@ -31,8 +31,8 @@ enum class UserError {
  * @author PelkiDev
  * @version 1.0.0
  */
-enum class LocalError : Error {
-    /** Error que indica que uno o más campos requeridos para la operación están vacíos o son inválidos. */
+enum class LocalModelError : ModelError {
+    /** ModelError que indica que uno o más campos requeridos para la operación están vacíos o son inválidos. */
     USER_INCOMPLETE_DATA,
     RESPONSE_INCOMPLETE_DATA,
     CATCH,
@@ -45,7 +45,7 @@ enum class LocalError : Error {
  * @author PelkiDev
  * @version 1.0.0
  */
-enum class NetworkError : Error {
+enum class NetworkModelError : ModelError {
     TIMEOUT,
     TOO_MANY_REQUESTS,
     NO_INTERNET,
@@ -66,11 +66,11 @@ enum class NetworkError : Error {
  * Puede ser un éxito ([SuccessResult]) o un error ([ErrorResult]).
  *
  * @param D El tipo de dato en caso de éxito.
- * @param E El tipo de error, que debe implementar la interfaz [Error].
+ * @param E El tipo de error, que debe implementar la interfaz [ModelError].
  * @author PelkiDev
  * @version 1.0.0
  */
-sealed class ModelResult<out D, out E: Error>
+sealed class ModelResult<out D, out E: ModelError>
 
 /**
  * Representa un resultado exitoso, conteniendo los datos de la operación.
@@ -82,4 +82,4 @@ data class SuccessResult<out D>(val data: D) : ModelResult<D, Nothing>()
  * Representa un resultado fallido, conteniendo el error específico.
  * @param error El error que ocurrió durante la operación.
  */
-data class ErrorResult<out E: Error>(val error: E) : ModelResult<Nothing, E>()
+data class ErrorResult<out E: ModelError>(val error: E) : ModelResult<Nothing, E>()

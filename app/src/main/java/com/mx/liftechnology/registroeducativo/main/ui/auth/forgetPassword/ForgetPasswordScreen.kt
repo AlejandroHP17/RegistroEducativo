@@ -81,11 +81,11 @@ fun HeaderForgetPasswordScreen(
 @Composable
 fun BodyForgetPasswordScreen(
     emailState : ModelStateOutFieldText,
-    onEmailChanged: (String) -> Unit,
+    onEmailChanged: (ModelStateOutFieldText) -> Unit,
     getRules: String,
 ) {
     BoxEditTextEmail(
-        value = emailState,
+        modelText = emailState,
         enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
         onBoxChanged = { onEmailChanged(it) }

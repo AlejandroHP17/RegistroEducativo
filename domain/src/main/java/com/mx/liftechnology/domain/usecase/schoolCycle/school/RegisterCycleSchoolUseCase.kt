@@ -11,11 +11,11 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository
-import com.mx.liftechnology.data.util.Error
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalError
+import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkError
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import java.util.Calendar
 import java.util.Date
@@ -52,7 +52,7 @@ class RegisterCycleSchoolUseCase(
         group: String?,
         cycle: Int,
         shiftName: String
-    ): ModelResult<ModelRegisterSchoolCycleData, Error> {
+    ): ModelResult<ModelRegisterSchoolCycleData, ModelError> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val buildDate = Date(Build.TIME)
         val calendar = Calendar.getInstance().apply { time = buildDate }
@@ -61,7 +61,7 @@ class RegisterCycleSchoolUseCase(
 
         if(schoolId < 1 || periodCatalogId < 1 || grade < 1
             || group.isNullOrEmpty() || cycle < 1 || teacherId == null) return ErrorResult(
-            LocalError.USER_INCOMPLETE_DATA
+            LocalModelError.USER_INCOMPLETE_DATA
         )
 
 
@@ -89,7 +89,7 @@ class RegisterCycleSchoolUseCase(
                     }
                 }
             },
-            onFailure = { ErrorResult(NetworkError.UNKNOWN)}
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
     }
 }

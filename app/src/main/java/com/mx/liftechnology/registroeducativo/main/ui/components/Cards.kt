@@ -482,7 +482,7 @@ fun EvaluationStudentItem(
     ) {
         Box(modifier = Modifier.weight(5f)) {
             BoxEditTextGeneric(
-                value = nameStudent,
+                modelText = nameStudent,
                 enable = false,
                 label = stringResource(id = R.string.tools_empty),
                 regex = ModelRegex.SIMPLE_TEXT,
