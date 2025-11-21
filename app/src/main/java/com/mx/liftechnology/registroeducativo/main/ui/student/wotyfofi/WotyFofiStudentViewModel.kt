@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
+import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiDataState
@@ -25,6 +26,7 @@ import kotlinx.coroutines.launch
 class WotyFofiStudentViewModel (
     private val dispatcherProvider: DispatcherProvider,
     private val getListWotyFofiUseCase: GetListWotyFofiUseCase,
+    private val getListEvaluationsStudentUseCase: GetListEvaluationsStudentUseCase
 
     ): ViewModel() {
     private val _uiState = MutableStateFlow(ModelWotyFofiStateUI())
@@ -79,6 +81,36 @@ class WotyFofiStudentViewModel (
                     } else card
                 }
             )
+        }
+    }
+
+    fun updateExpandedSubTitle(expanded: Pair<Boolean, Int>) {
+        _dataState.update { currentState ->
+            currentState.copy(
+                dataCard = currentState.dataCard?.map { card ->
+                    if (card.idTitle == expanded.second) {
+                        card.copy(isExpandedTitle = expanded.first)
+                    } else card
+                }
+            )
+        }
+
+        getListEvaluations(expanded.second)
+    }
+
+    fun getListEvaluations(id: Int) {
+        viewModelScope.launch(dispatcherProvider.io) {
+            when (val result = getListEvaluationsStudentUseCase.invoke(id)){
+                is SuccessResult ->{
+                }
+                else -> {
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR
+                        )
+                    }
+                }
+            }
         }
     }
 }

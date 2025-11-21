@@ -3,13 +3,17 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.core.network.apiCall.auth.RegisterUserApiCall
 import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWotyFofiApiCall
 import com.mx.liftechnology.core.network.apiCall.formativeField.GetWorkTypeApiCall
+import com.mx.liftechnology.core.network.apiCall.student.GetListEvaluationsStudentApiCall
 import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
 import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiRepository
 import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiRepositoryImpl
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepository
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepositoryImpl
+import com.mx.liftechnology.data.repository.student.GetListEvaluationsStudentRepository
+import com.mx.liftechnology.data.repository.student.GetListEvaluationsStudentRepositoryImpl
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.WotyFofiViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentViewModel
 import org.koin.core.module.dsl.bind
@@ -30,6 +34,7 @@ val wotyFofiModule = module {
      */
     factory { get<Retrofit>().create(GetListWotyFofiApiCall::class.java) }
     factory { get<Retrofit>().create(GetWorkTypeApiCall::class.java) }
+    factory { get<Retrofit>().create(GetListEvaluationsStudentApiCall::class.java) }
 
     /**
      * Provides a singleton instance of [RegisterUserRepository].
@@ -40,9 +45,13 @@ val wotyFofiModule = module {
     singleOf(::GetWorkTypeByFormativeFieldsRepositoryImpl){
         bind<GetWorkTypeByFormativeFieldsRepository>()
     }
+    singleOf(::GetListEvaluationsStudentRepositoryImpl){
+        bind<GetListEvaluationsStudentRepository>()
+    }
 
     singleOf(::GetListWotyFofiUseCase)
     singleOf(::GetWorkTypeByFormativeFieldUseCase)
+    singleOf(::GetListEvaluationsStudentUseCase)
 
 
     /**

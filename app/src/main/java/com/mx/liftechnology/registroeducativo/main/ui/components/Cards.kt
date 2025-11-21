@@ -314,7 +314,10 @@ fun ComplexCard(
                             item?.list?.forEach{item ->
                                 Row(
                                     modifier = Modifier
-                                        .clickable { complexCallbacks.onExpandedSubTitle(!((item?.isExpandedSubTitle)?:false)) }
+                                        .clickable { complexCallbacks.onExpandedSubTitle( Pair(
+                                            !((item?.isExpandedSubTitle)?:false),
+                                            item?.idSubTitle?:0
+                                        )) }
                                         .fillMaxWidth()
                                         .padding(
                                             start = dimensionResource(id = R.dimen.margin_16dp) ),

@@ -1,0 +1,41 @@
+package com.mx.liftechnology.core.network.apiCall.student
+
+import com.google.gson.annotations.SerializedName
+import com.mx.liftechnology.core.model.ResponseGeneric
+import com.mx.liftechnology.core.network.environment.Environment
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface GetListEvaluationsStudentApiCall {
+    @GET(Environment.END_POINT_GET_WORKS_STUDENT)
+    suspend fun callApi(
+        @Query("formative_field_id")formativeFieldId: Int,
+        @Query("partial_id")partialId: Int,
+        @Query("work_type_id")workTypeId: Int,
+        @Query("school_cycle_id")schoolCycleId: Int
+    ): Response<ResponseGeneric<List<ResponseGetListEvaluationsStudent>>>
+}
+
+data class ResponseGetListEvaluationsStudent(
+    @SerializedName("student_id")
+    val studentId: Int,
+    @SerializedName("formative_field_id")
+    val formativeFieldId: Int,
+    @SerializedName("partial_id")
+    val partialId: Int,
+    @SerializedName("work_type_id")
+    val workTypeId: Int,
+    @SerializedName("name")
+    val evaluationName: String,
+    @SerializedName("grade")
+    val grade: String?,
+    @SerializedName("work_date")
+    val workDate: String?,
+    @SerializedName("id")
+    val evaluationId: Int,
+    @SerializedName("teacher_id")
+    val teacherId: Int,
+    @SerializedName("created_at")
+    val createdAt: String
+)

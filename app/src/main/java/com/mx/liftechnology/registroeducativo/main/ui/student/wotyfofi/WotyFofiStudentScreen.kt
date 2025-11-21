@@ -65,7 +65,7 @@ fun WotyFofiStudentScreen(
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = { wotyFofiStudentViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = {
+                onExpandedSubTitle = {wotyFofiStudentViewModel.updateExpandedSubTitle(it)
                 },
                 onItemClick = {}
             ),

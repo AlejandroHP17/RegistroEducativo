@@ -46,7 +46,7 @@ data class ModelWotyFofiDataState(
  */
 data class ModelWotyFofiUiCallbacks(
     val onExpandedTitle: (Pair<Boolean, Int>) -> Unit,
-    val onExpandedSubTitle: (Boolean) -> Unit,
+    val onExpandedSubTitle: (Pair<Boolean, Int>)-> Unit,
     val onItemClick: (ModelComplexCard?) -> Unit,
 )
 
