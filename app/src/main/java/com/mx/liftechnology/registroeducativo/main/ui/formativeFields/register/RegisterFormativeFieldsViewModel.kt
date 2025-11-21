@@ -8,6 +8,7 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase
@@ -47,11 +48,11 @@ class RegisterFormativeFieldsViewModel(
      *
      * @param subject The new subject name.
      */
-    fun onSubjectChanged(subject: String) {
+    fun onSubjectChanged(subject: ModelStateOutFieldText) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update {
                 it.copy(
-                    subject = subject.stringToModelStateOutFieldText()
+                    subject = subject
                 )
             }
         }
@@ -86,13 +87,13 @@ class RegisterFormativeFieldsViewModel(
      *
      * @param value A pair containing the new percentage and the index of the item that changed.
      */
-    fun onPercentChange(value: Pair<String, Int>) {
+    fun onPercentChange(value: Pair<ModelStateOutFieldText, Int>) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.update {
                 it.copy(
                     listAdapter = it.listAdapter?.map { subject ->
                         if (subject.position == value.second) {
-                            subject.copy(percent = value.first.stringToModelStateOutFieldText())
+                            subject.copy(percent = value.first)
                         } else {
                             subject
                         }

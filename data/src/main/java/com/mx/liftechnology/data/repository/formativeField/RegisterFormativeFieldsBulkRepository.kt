@@ -6,13 +6,15 @@
 package com.mx.liftechnology.data.repository.formativeField
 
 import com.mx.liftechnology.core.network.apiCall.formativeField.RegisterFormativeFieldsBulkApiCall
+import com.mx.liftechnology.core.network.apiCall.formativeField.RequestEvaluations
 import com.mx.liftechnology.core.network.apiCall.formativeField.RequestRegisterFormativeField
+import com.mx.liftechnology.core.network.apiCall.formativeField.RequestWorkType
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListFormativeFields
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -30,7 +32,13 @@ fun interface RegisterFormativeFieldsBulkRepository{
      * @param request Los datos de la petición de registro.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeRegisterFormativeFieldsBulk(request : RequestRegisterFormativeField)
+    suspend fun executeRegisterFormativeFieldsBulk(
+        cycleSchoolId : Int,
+        formativeFieldName : String,
+        code : String,
+        workTypes : List<RequestWorkType>,
+        evaluations :  List<RequestEvaluations>
+    )
     : ModelResult<ModelFormativeFieldData, NetworkModelError>
 }
 
@@ -50,8 +58,20 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun executeRegisterFormativeFieldsBulk(
-        request : RequestRegisterFormativeField
+        cycleSchoolId : Int,
+        formativeFieldName : String,
+        code : String,
+        workTypes : List<RequestWorkType>,
+        evaluations :  List<RequestEvaluations>
     ): ModelResult<ModelFormativeFieldData, NetworkModelError> {
+        val request = RequestRegisterFormativeField(
+            cycleSchoolId = cycleSchoolId,
+            formativeFieldName = formativeFieldName,
+            code = code,
+            workTypes = workTypes,
+            evaluations = evaluations,
+        )
+
         return try {
             val response = registerFormativeFieldsBulkApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

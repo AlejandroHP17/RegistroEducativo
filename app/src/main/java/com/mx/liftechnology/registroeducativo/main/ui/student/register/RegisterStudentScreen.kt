@@ -154,28 +154,28 @@ private fun BodyRegisterStudent(
     callbacks: ModelRegisterStudentCallbacksUI,
 ) {
     BoxEditTextCapitalLetterGeneric(
-        value = inputState.name,
+        modelText = inputState.name,
         enable = true,
         label = stringResource(id = R.string.form_student_name),
         onBoxChanged = { callbacks.onNameChanged(it) }
     )
 
     BoxEditTextCapitalLetterGeneric(
-        value = inputState.lastName,
+        modelText = inputState.lastName,
         enable = true,
         label = stringResource(id = R.string.form_student_last_name),
         onBoxChanged = { callbacks.onLastNameChanged(it) }
     )
 
     BoxEditTextCapitalLetterGeneric(
-        value = inputState.secondLastName,
+        modelText = inputState.secondLastName,
         enable = true,
         label = stringResource(id = R.string.form_student_second_last_name),
         onBoxChanged = { callbacks.onSecondLastNameChanged(it) }
     )
 
     BoxEditTextAllCaps(
-        value = inputState.curp,
+        modelText = inputState.curp,
         enable = true,
         label = stringResource(id = R.string.form_student_curp),
         onBoxChanged = { callbacks.onCurpChanged(it) }
@@ -189,7 +189,7 @@ private fun BodyRegisterStudent(
     )
 
     BoxEditTextNumeric(
-        value = inputState.phoneNumber,
+        modelText = inputState.phoneNumber,
         enable = true,
         label = stringResource(id = R.string.form_student_phone_number),
         maxNumberCharacter = 10,

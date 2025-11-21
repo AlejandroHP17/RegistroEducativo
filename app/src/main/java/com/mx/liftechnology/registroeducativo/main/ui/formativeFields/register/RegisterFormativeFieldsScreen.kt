@@ -20,16 +20,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
+import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectStateUI
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextComplexGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationPercentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
@@ -144,14 +146,16 @@ private fun HeaderRegisterSubject(
 @Composable
 private fun BodyRegisterSubject(
     uiState: ModelRegisterSubjectStateUI,
-    onSubjectChanged: (String) -> Unit,
+    onSubjectChanged: (ModelStateOutFieldText) -> Unit,
     onOptionsChanged: (String) -> Unit,
 ) {
-    BoxEditTextComplexGeneric(
-        value = uiState.subject,
+    BoxEditTextGeneric(
+        modelText = uiState.subject,
         enable = true,
         label = stringResource(id = R.string.form_subject_field),
-    ) { onSubjectChanged(it) }
+        regex = COMPLEX_TEXT,
+        onBoxChanged = {onSubjectChanged(it)}
+    )
 
     CustomSpace(dimensionResource(R.dimen.margin_between))
 
@@ -173,7 +177,7 @@ private fun BodyRegisterSubject(
         Box(
             modifier = Modifier.weight(4f)
         ) {
-            SpinnerOutlinedTextField(
+            SpinnerTextField(
                 options = uiState.listOptions,
                 selectedOption = uiState.options,
                 read = uiState.read,
@@ -196,7 +200,7 @@ private fun BodyRegisterSubject(
 private fun ColumnRegisterSubject(
     uiState: ModelRegisterSubjectStateUI,
     onNameChange: (Pair<ModelWorkTypeData?, Int>) -> Unit,
-    onPercentChange: (Pair<String, Int>) -> Unit,
+    onPercentChange: (Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
     EvaluationPercentList(
         listWorkMethods = uiState.listWorkMethods,

@@ -57,7 +57,7 @@ fun SpinnerScreen() {
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
-        SpinnerOutlinedTextField(
+        SpinnerTextField(
             options = options,
             selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             read = false,
@@ -84,7 +84,9 @@ fun SpinnerTextField(
     onOptionSelected: (ModelCustomSpinner) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(selectedOption) }
+    var selectedText by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+
+    LaunchedEffect(Unit, selectedOption.isError) { selectedText = selectedOption }
     
     // Actualiza el texto seleccionado cuando cambia el selectedOption externo
     LaunchedEffect(selectedOption) {
@@ -158,94 +160,6 @@ fun SpinnerTextField(
     }
 }
 
-/**
- * An outlined text field with a dropdown schoolCycle.
- *
- * @param options The list of options to display.
- * @param selectedOption The currently selected option.
- * @param read Whether the text field is read-only.
- * @param label The label for the text field.
- * @param onOptionSelected A lambda to be invoked when an option is selected.
- */
-@Deprecated("se migra a SpinnerTextField")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SpinnerOutlinedTextField(
-    options: List<ModelCustomSpinner>,
-    selectedOption: ModelStateOutFieldText,
-    read: Boolean,
-    label: String,
-    onOptionSelected: (ModelCustomSpinner) -> Unit,
-) {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedText by remember { mutableStateOf(selectedOption) }
-
-    Column {
-        ExposedDropdownMenuBox(
-            modifier = Modifier.padding(top = dimensionResource(id = R.dimen.margin_between)),
-            expanded = expanded,
-            onExpandedChange = {
-                if (!read) {
-                    expanded = !expanded
-                }
-            }
-        ) {
-            OutlinedTextField(
-                value = selectedText.valueText,
-                onValueChange = {}, 
-                enabled = false,
-                label = {
-                    Text(
-                        text = label,
-                        color = colorPrincipalText
-                    )
-                },
-                modifier = Modifier
-                    .menuAnchor()
-                    .fillMaxWidth(),
-                trailingIcon = {
-                    Icon(
-                        imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Expandir"
-                    )
-                },
-                maxLines = 1,
-                shape = RoundedCornerShape(8.dp),
-                colors = personalizeColors()
-            )
-
-            if (!read) {
-                ExposedDropdownMenu(
-
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
-                ) {
-                    options.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(option.value!!) },
-                            onClick = {
-                                selectedText = option.value.stringToModelStateOutFieldText()
-                                onOptionSelected(option)
-                                expanded = false
-                            }
-                        )
-                    }
-                }
-            }
-
-        }
-
-        if (selectedOption.isError) {
-            Text(
-                text = selectedText.errorMessage,
-                color = colorError,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-            )
-        }
-        CustomSpace(dimensionResource(R.dimen.margin_between))
-    }
-}
 
 /**
  * An outlined text field with a dropdown schoolCycle that allows for custom input.
@@ -264,8 +178,11 @@ fun SpinnerMixOutlinedTextField(
     onOptionSelected: (ModelWorkTypeData?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptions by remember { mutableStateOf(selectedOption) }
+    var selectedOptions by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
     var isEditable by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit, selectedOptions.isError) { selectedOptions = selectedOption }
+
 
     if (selectedOption.valueText == "Nuevo") selectedOptions = "".stringToModelStateOutFieldText()
 
@@ -275,10 +192,11 @@ fun SpinnerMixOutlinedTextField(
             onExpandedChange = { expanded = !expanded }
         ) {
             OutlinedTextField(
-                value = selectedOption.valueText,
+
+                value = selectedOptions.valueText,
                 onValueChange = { newValue ->
                     if (isEditable && (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue))){
-                        selectedOptions = ModelStateOutFieldText(valueText = newValue, isError = selectedOption.isError, errorMessage = selectedOption.errorMessage)
+                        selectedOptions = newValue.stringToModelStateOutFieldText()
                     }
                     onOptionSelected(
                         ModelWorkTypeData(

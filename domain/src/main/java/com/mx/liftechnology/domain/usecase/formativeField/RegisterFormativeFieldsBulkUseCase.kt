@@ -1,15 +1,14 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
 import com.mx.liftechnology.core.network.apiCall.formativeField.RequestEvaluations
-import com.mx.liftechnology.core.network.apiCall.formativeField.RequestRegisterFormativeField
 import com.mx.liftechnology.core.network.apiCall.formativeField.RequestWorkType
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -60,7 +59,7 @@ class RegisterFormativeFieldsBulkUseCase(
             workTypes.add(
                 RequestWorkType(
                     workTypeId = data.workTypeId?.let { if(it > 1)data.workTypeId else null },
-                    workTypeName = data.name.valueText
+                    workTypeName = data.name.valueText.trim()
                 )
             )
 
@@ -68,21 +67,20 @@ class RegisterFormativeFieldsBulkUseCase(
                 RequestEvaluations(
                     partialId = partialId,
                     workTypeId = data.workTypeId?.let { if(it > 0)data.workTypeId else null },
-                    workTypeName = data.name.valueText,
+                    workTypeName = data.name.valueText.trim(),
                     evaluationWeight = data.percent.valueText.toInt()
                 )
             )
         }
 
-        val request = RequestRegisterFormativeField(
+
+        return runCatching {registerFormativeFieldsBulkRepository.executeRegisterFormativeFieldsBulk(
             cycleSchoolId = cycleSchoolId,
-            formativeFieldName = name,
-            code = name,
+            formativeFieldName = name.trim(),
+            code = name.trim(),
             workTypes = workTypes,
             evaluations = evaluations,
-        )
-
-        return runCatching {registerFormativeFieldsBulkRepository.executeRegisterFormativeFieldsBulk(request)}.fold(
+        )}.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {

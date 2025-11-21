@@ -428,7 +428,7 @@ fun EvaluationPercentItem(
     name: ModelStateOutFieldText,
     percent: ModelStateOutFieldText,
     onNameChange: (ModelWorkTypeData?) -> Unit,
-    onPercentChange: (String) -> Unit,
+    onPercentChange: (ModelStateOutFieldText) -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -449,14 +449,12 @@ fun EvaluationPercentItem(
 
         Box(modifier = Modifier.weight(2f)) {
             BoxEditTextNumeric(
-                value = percent,
+                modelText = percent,
                 enable = true,
                 maxNumberCharacter = 4,
                 label = stringResource(id = R.string.form_subject_percent),
+                onBoxChanged = {onPercentChange(it)}
             )
-            {
-                onPercentChange(it)
-            }
         }
     }
     CustomSpace(dimensionResource(R.dimen.margin_divided))

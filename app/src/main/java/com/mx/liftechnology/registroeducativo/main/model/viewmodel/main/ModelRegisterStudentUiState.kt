@@ -53,10 +53,10 @@ data class ModelRegisterStudentStateUI(
  * @version 1.0.0
  */
 data class ModelRegisterStudentCallbacksUI(
-    val onNameChanged: (String) -> Unit,
-    val onLastNameChanged: (String) -> Unit,
-    val onSecondLastNameChanged: (String) -> Unit,
-    val onCurpChanged: (String) -> Unit,
-    val onPhoneNumberChanged: (String) -> Unit,
+    val onNameChanged: (ModelStateOutFieldText) -> Unit,
+    val onLastNameChanged: (ModelStateOutFieldText) -> Unit,
+    val onSecondLastNameChanged: (ModelStateOutFieldText) -> Unit,
+    val onCurpChanged: (ModelStateOutFieldText) -> Unit,
+    val onPhoneNumberChanged: (ModelStateOutFieldText) -> Unit,
     val onBirthdayChanged: () -> Unit
 )

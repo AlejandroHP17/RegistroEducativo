@@ -80,34 +80,34 @@ fun TestBoxes() {
         )
         { data = it }
 
-        /*BoxEditTextComplexGeneric(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
-            enable = true,
-            label = stringResource(id = R.string.tools_generic)
-        )
-        { data = it }
-
         BoxEditTextAllCaps(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
+            modelText = data,
             enable = true,
             label = stringResource(id = R.string.form_student_curp)
         )
         { data = it }
 
+        BoxEditTextCapitalLetterGeneric(
+            modelText = data,
+            enable = true,
+            label = stringResource(id = R.string.form_student_name)
+        ) {}
+
         BoxEditTextNumeric(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
+            modelText = data,
             enable = true,
             label = stringResource(id = R.string.form_student_phone_number),
             maxNumberCharacter = 5
         )
         { data = it }
 
+
         BoxEditTextCalendar(
-            value = ModelStateOutFieldText(valueText = data, isError = false, errorMessage = ""),
+            value =data,
             enable = true,
             label = stringResource(id = R.string.tools_generic)
         )
-        { }*/
+        { }
     }
 }
 
@@ -132,7 +132,7 @@ fun BoxEditTextEmail(
 
     OutlinedTextField(
         value = value.valueText,
-        onValueChange = {newValue ->
+        onValueChange = { newValue ->
             if (ModelRegex.COMPLETE_TEXT.matches(newValue) || newValue.isEmpty()) {
                 value = newValue.stringToModelStateOutFieldText()
                 onBoxChanged(value)
@@ -192,10 +192,10 @@ fun BoxEditTextPassword(
 
     OutlinedTextField(
         value = value.valueText,
-        onValueChange = {newValue ->
+        onValueChange = { newValue ->
             value = newValue.stringToModelStateOutFieldText()
             onBoxChanged(value)
-                        },
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = dimensionResource(id = R.dimen.margin_between)),
@@ -244,24 +244,28 @@ fun BoxEditTextPassword(
 /**
  * A generic outlined text field that capitalizes the first letter of each word.
  *
- * @param value The state of the text field.
+ * @param modelText The state of the text field.
  * @param enable Whether the text field is enabled.
  * @param label The label for the text field.
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
 fun BoxEditTextCapitalLetterGeneric(
-    value: ModelStateOutFieldText,
+    modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    onBoxChanged: (String) -> Unit,
+    onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
+
+    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    LaunchedEffect(Unit, modelText.isError) { value = modelText }
 
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
             if (newValue.isEmpty() || ModelRegex.SIMPLE_TEXT.matches(newValue)) {
-                onBoxChanged(newValue)
+                value = newValue.stringToModelStateOutFieldText()
+                onBoxChanged(value)
             }
         },
         modifier = Modifier
@@ -358,82 +362,29 @@ fun BoxEditTextGeneric(
 }
 
 /**
- * A complex generic outlined text field.
- *
- * @param value The state of the text field.
- * @param enable Whether the text field is enabled.
- * @param label The label for the text field.
- * @param onBoxChanged A lambda to be invoked when the text field value changes.
- */
-@Deprecated ("Se migra a BoxEditTextGeneric con regex")
-@Composable
-fun BoxEditTextComplexGeneric(
-    value: ModelStateOutFieldText,
-    enable: Boolean,
-    label: String,
-    onBoxChanged: (String) -> Unit,
-) {
-    OutlinedTextField(
-        value = value.valueText,
-        onValueChange = { newValue ->
-            if (newValue.isEmpty() || ModelRegex.COMPLEX_TEXT.matches(newValue)) {
-                onBoxChanged(newValue)
-            }
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = dimensionResource(id = R.dimen.margin_between)),
-        enabled = enable,
-        label = {
-            Text(
-                text = label,
-                color = if (value.isError) colorError else colorPrincipalText
-            )
-        },
-        isError = value.isError,
-        keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Sentences,
-            keyboardType = KeyboardType.Text,
-            imeAction = ImeAction.Next
-        ),
-        maxLines = 1,
-        shape = RoundedCornerShape(8.dp),
-        colors = personalizeColors()
-    )
-
-    if (value.isError) {
-        Text(
-            text = value.errorMessage,
-            color = colorError,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
-        )
-    }
-
-    CustomSpace(dimensionResource(R.dimen.margin_between))
-}
-
-/**
  * An outlined text field that converts all input to uppercase.
  *
- * @param value The state of the text field.
+ * @param modelText The state of the text field.
  * @param enable Whether the text field is enabled.
  * @param label The label for the text field.
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
 fun BoxEditTextAllCaps(
-    value: ModelStateOutFieldText,
+    modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
-    onBoxChanged: (String) -> Unit,
+    onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
+    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    LaunchedEffect(Unit, modelText.isError) { value = modelText }
 
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
             if (newValue.isEmpty() || ModelRegex.TEXT_WITH_NUMBERS.matches(newValue)) {
-                onBoxChanged(newValue.uppercase())
+                value = newValue.uppercase().stringToModelStateOutFieldText()
+                onBoxChanged(value)
             }
         },
 
@@ -473,7 +424,7 @@ fun BoxEditTextAllCaps(
 /**
  * An outlined text field for numeric input.
  *
- * @param value The state of the text field.
+ * @param modelText The state of the text field.
  * @param enable Whether the text field is enabled.
  * @param label The label for the text field.
  * @param maxNumberCharacter The maximum number of characters allowed.
@@ -481,49 +432,52 @@ fun BoxEditTextAllCaps(
  */
 @Composable
 fun BoxEditTextNumeric(
-    value: ModelStateOutFieldText,
+    modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
     maxNumberCharacter: Int,
-    onBoxChanged: (String) -> Unit,
+    onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
+    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    LaunchedEffect(Unit, modelText.isError) { value = modelText }
 
-    Column {
-        OutlinedTextField(
-            value = value.valueText,
-            onValueChange = {
-                if (it.length <= maxNumberCharacter)
-                    onBoxChanged(it)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dimensionResource(id = R.dimen.margin_between)),
-            enabled = enable,
-            label = {
-                Text(
-                    text = label,
-                    color = if (value.isError) colorError else colorPrincipalText
-                )
-            },
-            isError = value.isError,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            maxLines = 1,
-            shape = RoundedCornerShape(8.dp),
-            colors = personalizeColors()
-        )
-
-        if (value.isError) {
+    OutlinedTextField(
+        value = value.valueText,
+        onValueChange = { newValue ->
+            if (newValue.length <= maxNumberCharacter) {
+                value = newValue.stringToModelStateOutFieldText()
+                onBoxChanged(value)
+            }
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = dimensionResource(id = R.dimen.margin_between)),
+        enabled = enable,
+        label = {
             Text(
-                text = value.errorMessage,
-                color = colorError,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                text = label,
+                color = if (value.isError) colorError else colorPrincipalText
             )
-        }
+        },
+        isError = value.isError,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        ),
+        maxLines = 1,
+        shape = RoundedCornerShape(8.dp),
+        colors = personalizeColors()
+    )
+
+    if (value.isError) {
+        Text(
+            text = value.errorMessage,
+            color = colorError,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+        )
     }
+
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 

@@ -7,6 +7,7 @@ import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
@@ -75,10 +76,10 @@ class RegisterStudentViewModel(
      *
      * @param name El nuevo valor del nombre.
      */
-    fun onNameChanged(name: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
+    fun onNameChanged(name: ModelStateOutFieldText) {
+        viewModelScope.launch(dispatcherProvider.default) {
             _uiInputs.update { it.copy(
-                name = name.stringToModelStateOutFieldText()
+                name = name
             ) }
         }
     }
@@ -88,10 +89,10 @@ class RegisterStudentViewModel(
      *
      * @param lastName El nuevo valor del apellido paterno.
      */
-    fun onLastNameChanged(lastName: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
+    fun onLastNameChanged(lastName: ModelStateOutFieldText) {
+        viewModelScope.launch(dispatcherProvider.default) {
             _uiInputs.update { it.copy(
-                lastName = lastName.stringToModelStateOutFieldText()
+                lastName = lastName
             ) }
         }
     }
@@ -101,10 +102,10 @@ class RegisterStudentViewModel(
      *
      * @param secondLastName El nuevo valor del apellido materno.
      */
-    fun onSecondLastNameChanged(secondLastName: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
+    fun onSecondLastNameChanged(secondLastName: ModelStateOutFieldText) {
+        viewModelScope.launch(dispatcherProvider.default) {
             _uiInputs.update { it.copy(
-                secondLastName = secondLastName.stringToModelStateOutFieldText()
+                secondLastName = secondLastName
             ) }
         }
     }
@@ -114,11 +115,11 @@ class RegisterStudentViewModel(
      *
      * @param curp El nuevo valor de la CURP.
      */
-    fun onCurpChanged(curp: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            validateCurpWithBirthday(curp)
+    fun onCurpChanged(curp: ModelStateOutFieldText) {
+        viewModelScope.launch(dispatcherProvider.default) {
+            validateCurpWithBirthday(curp.valueText)
             _uiInputs.update { it.copy(
-                curp = curp.stringToModelStateOutFieldText()
+                curp = curp
             ) }
         }
     }
@@ -127,7 +128,7 @@ class RegisterStudentViewModel(
         if (curp.length > 10) {
             val rawDate = curp.substring(4, 10)
 
-            return try {
+            try {
                 val year = rawDate.substring(0, 2).toInt()
                 val month = rawDate.substring(2, 4).toInt()
                 val day = rawDate.substring(4, 6).toInt()
@@ -148,7 +149,7 @@ class RegisterStudentViewModel(
      * @param birthday El nuevo valor de la fecha de nacimiento.
      */
     fun onBirthdayChanged(birthday: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch(dispatcherProvider.default) {
             _uiInputs.update { it.copy(
                 birthday = birthday.stringToModelStateOutFieldText()
             ) }
@@ -160,10 +161,10 @@ class RegisterStudentViewModel(
      *
      * @param phoneNumber El nuevo valor del número de teléfono.
      */
-    fun onPhoneNumberChanged(phoneNumber: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
+    fun onPhoneNumberChanged(phoneNumber: ModelStateOutFieldText) {
+        viewModelScope.launch(dispatcherProvider.default) {
             _uiInputs.update { it.copy(
-                phoneNumber = phoneNumber.stringToModelStateOutFieldText()
+                phoneNumber = phoneNumber
             ) }
         }
     }

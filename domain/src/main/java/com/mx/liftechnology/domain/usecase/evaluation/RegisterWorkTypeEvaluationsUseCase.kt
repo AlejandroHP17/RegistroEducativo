@@ -1,13 +1,12 @@
 package com.mx.liftechnology.domain.usecase.evaluation
 
 import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestWorkTypeEvaluations
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -25,16 +24,15 @@ class RegisterWorkTypeEvaluationsUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val request= RequestWorkTypeEvaluations(
+        return runCatching { registerWorkTypeEvaluationsRepository.executeRegisterWorkTyperEvaluations(
             formativeFieldId = formativeFieldId,
             partialId = partialId,
             workTypeId = workTypeId,
-            nameWork = nameWork,
-            workDate = workDate,
+            nameWork = nameWork.trim(),
+            workDate = workDate.trim(),
             schoolCycleId = cycleSchoolId,
             grades = studentListUI
-        )
-        return runCatching { registerWorkTypeEvaluationsRepository.executeRegisterWorkTyperEvaluations(request) }.fold(
+        ) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

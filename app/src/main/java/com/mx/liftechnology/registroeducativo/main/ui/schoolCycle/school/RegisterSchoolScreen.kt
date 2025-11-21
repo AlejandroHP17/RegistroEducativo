@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelRegex
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolInputsUI
@@ -138,10 +139,10 @@ private fun HeaderRegisterSchool(navController: NavHostController) {
 private fun BodyRegisterSchool(
     inputState: ModelRegisterSchoolInputsUI,
     uiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
-    onCctChanged: (String) -> Unit,
+    onCctChanged: (ModelStateOutFieldText) -> Unit,
 ) {
     BoxEditTextAllCaps (
-        value = inputState.cct,
+        modelText = inputState.cct,
         enable = true,
         label = stringResource(id = R.string.form_school_cct),
         onBoxChanged = { onCctChanged(it) }

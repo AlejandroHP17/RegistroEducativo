@@ -1,21 +1,49 @@
 package com.mx.liftechnology.data.repository.evaluation
 
 import com.mx.liftechnology.core.network.apiCall.evaluation.RegisterWorkTypeEvaluationsApiCall
+import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
 import com.mx.liftechnology.core.network.apiCall.evaluation.RequestWorkTypeEvaluations
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
 fun interface RegisterWorkTypeEvaluationsRepository{
-    suspend fun executeRegisterWorkTyperEvaluations(request:RequestWorkTypeEvaluations) : ModelResult<Boolean, NetworkModelError>
+    suspend fun executeRegisterWorkTyperEvaluations(
+            formativeFieldId : Int,
+            partialId : Int,
+            workTypeId : Int,
+            nameWork : String,
+            workDate : String,
+            schoolCycleId : Int,
+            grades : List<RequestListGrades>
+    ) : ModelResult<Boolean, NetworkModelError>
 }
 class RegisterWorkTypeEvaluationsRepositoryImpl (
     val registerWorkTypeEvaluationsApiCall: RegisterWorkTypeEvaluationsApiCall
 ): RegisterWorkTypeEvaluationsRepository{
-    override suspend fun executeRegisterWorkTyperEvaluations(request: RequestWorkTypeEvaluations): ModelResult<Boolean, NetworkModelError> {
+    override suspend fun executeRegisterWorkTyperEvaluations(
+        formativeFieldId : Int,
+        partialId : Int,
+        workTypeId : Int,
+        nameWork : String,
+        workDate : String,
+        schoolCycleId : Int,
+        grades : List<RequestListGrades>
+    ): ModelResult<Boolean, NetworkModelError> {
+
+        val request= RequestWorkTypeEvaluations(
+            formativeFieldId = formativeFieldId,
+            partialId = partialId,
+            workTypeId = workTypeId,
+            nameWork = nameWork,
+            workDate = workDate,
+            schoolCycleId = schoolCycleId,
+            grades = grades
+        )
+
         return try {
             val response = registerWorkTypeEvaluationsApiCall.callApi(request)
             if(response.isSuccessful && response.body() != null){

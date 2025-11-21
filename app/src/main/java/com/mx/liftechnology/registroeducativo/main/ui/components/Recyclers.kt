@@ -19,11 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
+import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
@@ -191,7 +192,7 @@ fun EvaluationPercentList(
     listWorkMethods :List<ModelWorkTypeData?>,
     items: List<ModelSpinnersWorkMethods>,
     onNameChange:(Pair<ModelWorkTypeData?, Int>) -> Unit,
-    onPercentChange:(Pair<String, Int>) -> Unit,
+    onPercentChange:(Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
     LazyColumn {
         itemsIndexed(items) { index, item ->

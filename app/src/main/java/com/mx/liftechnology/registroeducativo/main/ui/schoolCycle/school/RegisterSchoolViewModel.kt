@@ -187,22 +187,22 @@ class RegisterSchoolViewModel(
      * @author PelkiDev
      * @version 1.0.0
      */
-    fun onCctChanged(cct: String) {
+    fun onCctChanged(cct: ModelStateOutFieldText) {
         viewModelScope.launch(dispatcherProvider.io) {
-            if (cct.length == 10) {
+            if (cct.valueText.length == 10) {
                 _uiState.update {
                     it.copy(uiState = ModelStateUIEnum.LOADING)
                 }
                 _inputState.update {
                     it.copy(
-                        cct = cct.uppercase().stringToModelStateOutFieldText()
+                        cct = cct
                     )
                 }
-                getSchoolCCT(cct.uppercase())
+                getSchoolCCT(cct.valueText)
             } else {
                 _inputState.update {
                     it.copy(
-                        cct = cct.uppercase().stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND)
+                        cct = cct.valueText.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND)
                     )
                 }
                 _uiSemiAutomaticData.update {
@@ -385,7 +385,7 @@ class RegisterSchoolViewModel(
     private fun validateData(state: List<String>) {
         viewModelScope.launch {
             val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
-            onCctChanged(result ?: "")
+            onCctChanged((result ?: "").stringToModelStateOutFieldText())
             _inputState.update { it.copy(cct = result?.uppercase().stringToModelStateOutFieldText()
             ) }
         }

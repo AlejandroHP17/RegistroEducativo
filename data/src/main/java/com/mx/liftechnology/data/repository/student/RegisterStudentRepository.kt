@@ -30,7 +30,17 @@ fun interface RegisterStudentRepository{
      * @param request Los datos de la petición de registro.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeRegisterStudent(request: RequestRegisterStudent)
+    suspend fun executeRegisterStudent(
+        name: String,
+        lastName: String,
+        secondLastName: String,
+        curp: String,
+        birthday: String,
+        phoneNumber: String,
+        teacherId : Int,
+        schoolCycleId : Int,
+        isActive : Boolean
+    )
     : ModelResult<ModelStudentData?, NetworkModelError>
 }
 
@@ -50,8 +60,27 @@ class RegisterStudentRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun executeRegisterStudent(
-        request: RequestRegisterStudent
+        name: String,
+        lastName: String,
+        secondLastName: String,
+        curp: String,
+        birthday: String,
+        phoneNumber: String,
+        teacherId : Int,
+        schoolCycleId : Int,
+        isActive : Boolean
     ): ModelResult<ModelStudentData?, NetworkModelError> {
+        val request = RequestRegisterStudent(
+            name = name,
+            lastName = lastName,
+            secondLastName = secondLastName,
+            curp = curp,
+            birthday = birthday,
+            phoneNumber = phoneNumber,
+            teacherId = teacherId,
+            schoolCycleId = schoolCycleId,
+            isActive = true
+        )
         return try {
             val response = registerStudentApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

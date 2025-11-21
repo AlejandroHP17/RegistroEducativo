@@ -26,20 +26,22 @@ import com.google.gson.Gson
 import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
+import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextComplexGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.DateSimplePickerDialog
 import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationStudentList
 import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerOutlinedTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
 import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
@@ -204,14 +206,16 @@ private fun HeaderRegisterAssignment(
 fun BodyRegisterAssignment(
     dataState: ModelRegisterAssignmentDataState,
     dialogState: ModelCustomCalendar,
-    onNameJobChanged: (String) -> Unit,
+    onNameJobChanged: (ModelStateOutFieldText) -> Unit,
     showDialog: () -> Unit,
 ) {
-    BoxEditTextComplexGeneric(
-        value = dataState.nameJob,
+    BoxEditTextGeneric(
+        modelText = dataState.nameJob,
         enable = true,
         label = stringResource(id = R.string.form_assignment_name),
-    ) { onNameJobChanged(it) }
+        regex = COMPLEX_TEXT,
+        onBoxChanged= { onNameJobChanged(it)}
+    )
 
     BoxEditTextCalendar(
         value = dialogState.date,
@@ -245,7 +249,7 @@ private fun Body2RegisterAssignment(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            SpinnerOutlinedTextField(
+            SpinnerTextField(
                 options = dataState.listOptions!!,
                 selectedOption = dataState.nameAssignment,
                 read = false,

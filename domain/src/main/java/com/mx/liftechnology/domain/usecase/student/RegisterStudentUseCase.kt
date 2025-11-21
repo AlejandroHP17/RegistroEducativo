@@ -5,14 +5,13 @@
  */
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.core.network.apiCall.student.RequestRegisterStudent
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -57,20 +56,17 @@ class RegisterStudentUseCase(
         if(teacherId == null || cycleSchoolId == null ) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
-
-        val request = RequestRegisterStudent(
-            name = name,
-            lastName = lastName,
-            secondLastName = secondLastName,
+        return runCatching { crudStudentRepository.executeRegisterStudent(
+            name = name.trim(),
+            lastName = lastName.trim(),
+            secondLastName = secondLastName.trim(),
             curp = curp,
             birthday = birthday,
-            phoneNumber = phoneNumber,
+            phoneNumber = phoneNumber.trim(),
             teacherId = teacherId,
             schoolCycleId = cycleSchoolId,
             isActive = true
-        )
-
-        return runCatching { crudStudentRepository.executeRegisterStudent(request) }.fold(
+        ) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {

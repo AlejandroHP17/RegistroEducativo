@@ -8,6 +8,7 @@ import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
+import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterWorkTypeEvaluationsUseCase
@@ -108,11 +109,11 @@ class RegisterEvaluationViewModel(
      *
      * @param name The new name.
      */
-    fun onNameChanged(name: String) {
+    fun onNameChanged(name: ModelStateOutFieldText) {
         viewModelScope.launch(dispatcherProvider.io) {
             _dataState.update {
                 it.copy(
-                    nameJob = name.stringToModelStateOutFieldText()
+                    nameJob = name
                 )
             }
         }
