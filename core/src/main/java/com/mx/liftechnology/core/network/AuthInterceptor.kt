@@ -70,7 +70,9 @@ class AuthInterceptor(
             if (refreshResponse.isSuccessful) {
 
                 val rawBody = refreshResponse.peekBody(Long.MAX_VALUE).string()
-                val newAccess = JSONObject(rawBody).getString("access_token")
+                val root = JSONObject(rawBody)
+                val data = root.getJSONObject("data")
+                val newAccess = data.getString("access_token")
 
                 tokenProvider.saveNewToken(newAccess)
 
