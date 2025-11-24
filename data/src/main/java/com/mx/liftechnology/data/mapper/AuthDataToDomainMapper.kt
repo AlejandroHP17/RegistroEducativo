@@ -23,6 +23,7 @@ object AuthDataToDomainMapper {
     fun ResponseLogin.mapperToGetLoginData(): ModelLoginData{
         return ModelLoginData(
             accessToken = accessToken,
+            refreshToken = refreshToken,
             tokenType = tokenType
         )
     }

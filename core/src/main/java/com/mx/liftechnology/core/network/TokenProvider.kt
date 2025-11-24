@@ -25,4 +25,17 @@ class TokenProvider(private val preference: PreferenceUseCase) {
     fun getToken(): String? {
         return preference.getPreferenceString(ModelPreference.ACCESS_TOKEN)
     }
+
+    fun getRefreshToken(): String?{
+        return preference.getPreferenceString(ModelPreference.REFRESH_TOKEN)
+    }
+
+    fun saveNewToken(token: String?){
+        preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, token)
+    }
+
+    fun closeSession() =
+        preference.cleanPreference()
+
+
 }

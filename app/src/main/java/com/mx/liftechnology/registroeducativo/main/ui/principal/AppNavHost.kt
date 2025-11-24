@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,23 +22,23 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.ui.auth.forgetPassword.ForgetPasswordScreen
 import com.mx.liftechnology.registroeducativo.main.ui.auth.login.LoginScreen
 import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserScreen
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
 import com.mx.liftechnology.registroeducativo.main.ui.calendar.CalendarScreen
-import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.AssignmentSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
+import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.AssignmentSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
+import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
+import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 
@@ -58,6 +59,14 @@ fun AppNavHost(
     val navigationController = rememberNavController()
     val uiState by sharedViewModel.uiState.collectAsStateWithLifecycle()
     var isBlocked by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState.sessionExpired) {
+        if(uiState.sessionExpired){
+            sharedViewModel.sessionExpired()
+            navigationController.navigate(LoginRoutes.LOGIN.route)
+        }
+
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
 

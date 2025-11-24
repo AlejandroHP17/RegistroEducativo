@@ -17,6 +17,8 @@ object ModelPreference {
     const val REMEMBER_LOGIN = "LOGIN"
     /** Clave para almacenar el token de acceso del usuario. */
     const val ACCESS_TOKEN = "ACCESS_TOKEN"
+    /** Clave para almacenar el token de acceso del usuario. */
+    const val REFRESH_TOKEN = "REFRESH_TOKEN"
 
     /** Clave para almacenar el ID de usuario global. */
     const val ID_USER = "ID_USER"

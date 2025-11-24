@@ -50,6 +50,7 @@ object Environment {
     const val END_POINT_LOGIN = "auth/login"
     const val END_POINT_GET_DATA= "auth/me"
     const val END_POINT_REGISTER = "auth/register"
+    const val END_POINT_REFRESH = "auth/refresh"
 
     /** Endpoints para el flujo de registro. */
     const val END_POINT_REGISTER_SCHOOL_CYCLE = "cycles/"

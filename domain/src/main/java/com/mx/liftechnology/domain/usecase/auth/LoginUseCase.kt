@@ -74,6 +74,7 @@ class LoginUseCase(
                 when (result) {
                     is SuccessResult -> {
                         preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, result.data.accessToken)
+                        preference.savePreferenceString(ModelPreference.REFRESH_TOKEN, result.data.refreshToken)
                         getDataUserUseCase.invoke(remember)
                     }
                     is ErrorResult -> {

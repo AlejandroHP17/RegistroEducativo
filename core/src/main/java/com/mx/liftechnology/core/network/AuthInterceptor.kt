@@ -5,10 +5,17 @@
  */
 package com.mx.liftechnology.core.network
 
+import com.google.gson.Gson
 import com.mx.liftechnology.core.network.environment.Environment
+import com.mx.liftechnology.core.network.environment.Environment.END_POINT_REFRESH
+import com.mx.liftechnology.core.util.SessionManager
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONObject
 
 /**
  * Interceptor de OkHttp que añade el token de autenticación a las cabeceras de las peticiones que lo requieran.
@@ -17,39 +24,80 @@ import okhttp3.Response
  * @author Pelkidev
  * @version 1.0.0
  */
-class AuthInterceptor(private val tokenProvider: TokenProvider) : Interceptor {
-    /**
-     * Intercepta la petición y añade la cabecera de autenticación si es necesario.
-     *
-     * @param chain La cadena de interceptores.
-     * @return La respuesta de la petición.
-     */
+class AuthInterceptor(
+    private val sessionManager: SessionManager,
+    private val tokenProvider: TokenProvider
+) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        if (requiresAuth(request)) {
-            val token = tokenProvider.getToken() ?: ""
-            val newRequest = request.newBuilder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-            return chain.proceed(newRequest)
+        // Evitamos interceptar login y refresh
+        if (!requiresAuth(request)) {
+            return chain.proceed(request)
         }
-        return chain.proceed(request)
+
+        // 1. Agregar access token actual
+        val accessToken = tokenProvider.getToken()
+        val authRequest = request.newBuilder()
+            .addHeader("Authorization", "Bearer $accessToken")
+            .build()
+
+        val response = chain.proceed(authRequest)
+
+        // 2. Si el access token expiró → intentar refrescar
+        if (response.code == 401) {
+            response.close()
+
+            val refreshToken = tokenProvider.getRefreshToken()
+            if (refreshToken.isNullOrEmpty()) {
+                tokenProvider.closeSession()
+                runBlocking { sessionManager.notifySessionExpired() }
+                return response
+            }
+
+            val refreshJson = Gson().toJson(RefreshRequest(refreshToken))
+            val refreshBody = refreshJson.toRequestBody("application/json".toMediaType())
+
+            val refreshRequest = Request.Builder()
+                .url(Environment.URL_BASE + END_POINT_REFRESH)
+                .post(refreshBody)
+                .build()
+
+            // 🔥 Ejecutamos la petición usando el propio interceptor
+            val refreshResponse = chain.proceed(refreshRequest)
+
+            if (refreshResponse.isSuccessful) {
+
+                val rawBody = refreshResponse.peekBody(Long.MAX_VALUE).string()
+                val newAccess = JSONObject(rawBody).getString("access_token")
+
+                tokenProvider.saveNewToken(newAccess)
+
+                refreshResponse.close()
+
+                val retryRequest = request.newBuilder()
+                    .addHeader("Authorization", "Bearer $newAccess")
+                    .build()
+
+                return chain.proceed(retryRequest)
+            }
+
+        }
+
+        return response
     }
 
-    /**
-     * Comprueba si una petición requiere autenticación, basándose en su URL.
-     *
-     * @param request La petición a comprobar.
-     * @return `true` si la petición requiere autenticación, `false` en caso contrario.
-     */
     private fun requiresAuth(request: Request): Boolean {
-        return when (request.url.toString()) {
-            Environment.URL_BASE + Environment.END_POINT_LOGIN,
-            Environment.URL_BASE + Environment.END_POINT_REGISTER
-            -> false
-
-            else -> true
-        }
+        val url = request.url.toString()
+        return !(
+                url.endsWith(Environment.END_POINT_LOGIN) ||
+                        url.endsWith(Environment.END_POINT_REGISTER) ||
+                        url.endsWith(Environment.END_POINT_REFRESH)
+                )
     }
 }
+
+data class RefreshRequest(
+    val refresh_token: String
+)

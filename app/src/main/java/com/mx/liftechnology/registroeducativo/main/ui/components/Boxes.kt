@@ -317,7 +317,7 @@ fun BoxEditTextGeneric(
     regex: Regex,
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
-    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
+    var value by remember { mutableStateOf(modelText) }
     LaunchedEffect(Unit, modelText.isError) { value = modelText }
 
     OutlinedTextField(

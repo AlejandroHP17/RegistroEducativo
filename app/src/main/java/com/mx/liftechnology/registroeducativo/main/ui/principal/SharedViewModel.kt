@@ -1,6 +1,8 @@
 package com.mx.liftechnology.registroeducativo.main.ui.principal
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.util.SessionManager
 import com.mx.liftechnology.registroeducativo.main.model.ModelShareUIState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
@@ -8,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 /**
  * ViewModel compartido para gestionar el estado común de la UI entre diferentes pantallas.
@@ -16,10 +19,27 @@ import kotlinx.coroutines.flow.update
  * @author Pelkidev
  * @version 1.0.0
  */
-class SharedViewModel : ViewModel(){
+class SharedViewModel(
+    private val sessionManager: SessionManager
+) : ViewModel(){
     private val _uiState = MutableStateFlow(ModelShareUIState())
     /** El estado de la UI para componentes compartidos. */
     val uiState: StateFlow<ModelShareUIState> = _uiState.asStateFlow()
+
+    init{
+        viewModelScope.launch {
+            sessionManager.sessionExpired.collect { emit->
+               _uiState.update { it.copy(sessionExpired = emit) }
+            }
+        }
+    }
+
+    fun sessionExpired(){
+        viewModelScope.launch{
+            sessionManager.resetSessionExpired()
+        }
+    }
+
 
     /**
      * Modifica el estado del toast.

@@ -6,8 +6,10 @@
 package com.mx.liftechnology.core.network
 
 import com.mx.liftechnology.core.network.environment.Environment
+import com.mx.liftechnology.core.util.SessionManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,7 +46,7 @@ val networkModule = module {
     /**
      * Provee una instancia singleton de [AuthInterceptor] para la autenticación.
      */
-    single { AuthInterceptor(get()) }
+    singleOf ( ::AuthInterceptor )
 
     /**
      * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico de errores.
@@ -56,9 +58,9 @@ val networkModule = module {
      */
     single {
         OkHttpClient.Builder()
+            .addInterceptor(get<AuthInterceptor>())
             .addInterceptor(get<HttpLoggingInterceptor>())
             .addInterceptor(get<ConnectionErrorInterceptor>())
-            .addInterceptor(get<AuthInterceptor>())
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
@@ -77,5 +79,7 @@ val networkModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    singleOf (::SessionManager)
 
 }
