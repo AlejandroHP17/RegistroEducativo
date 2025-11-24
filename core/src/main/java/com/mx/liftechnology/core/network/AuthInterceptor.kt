@@ -7,7 +7,6 @@ package com.mx.liftechnology.core.network
 
 import com.google.gson.Gson
 import com.mx.liftechnology.core.network.environment.Environment
-import com.mx.liftechnology.core.network.environment.Environment.END_POINT_REFRESH
 import com.mx.liftechnology.core.util.SessionManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -32,12 +31,10 @@ class AuthInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
 
-        // Evitamos interceptar login y refresh
         if (!requiresAuth(request)) {
             return chain.proceed(request)
         }
 
-        // 1. Agregar access token actual
         val accessToken = tokenProvider.getToken()
         val authRequest = request.newBuilder()
             .addHeader("Authorization", "Bearer $accessToken")
@@ -45,7 +42,6 @@ class AuthInterceptor(
 
         val response = chain.proceed(authRequest)
 
-        // 2. Si el access token expiró → intentar refrescar
         if (response.code == 401) {
             response.close()
 
@@ -60,11 +56,10 @@ class AuthInterceptor(
             val refreshBody = refreshJson.toRequestBody("application/json".toMediaType())
 
             val refreshRequest = Request.Builder()
-                .url(Environment.URL_BASE + END_POINT_REFRESH)
+                .url(Environment.URL_BASE + Environment.END_POINT_REFRESH)
                 .post(refreshBody)
                 .build()
 
-            // 🔥 Ejecutamos la petición usando el propio interceptor
             val refreshResponse = chain.proceed(refreshRequest)
 
             if (refreshResponse.isSuccessful) {
@@ -83,6 +78,9 @@ class AuthInterceptor(
                     .build()
 
                 return chain.proceed(retryRequest)
+            }else{
+                tokenProvider.closeSession()
+                runBlocking { sessionManager.notifySessionExpired() }
             }
 
         }
