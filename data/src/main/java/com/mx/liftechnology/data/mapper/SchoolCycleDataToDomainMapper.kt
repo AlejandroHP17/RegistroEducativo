@@ -72,7 +72,6 @@ object SchoolCycleDataToDomainMapper {
             teacherId = this.teacherId,
             schoolId = this.schoolId,
             name = this.name,
-            description = this.description,
             isActive = this.isActive,
             idCycleSchool = this.schoolCycleId
         )

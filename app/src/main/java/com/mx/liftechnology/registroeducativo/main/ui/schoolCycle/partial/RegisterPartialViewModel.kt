@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
@@ -185,7 +184,6 @@ class RegisterPartialViewModel(
                     }
                 }
                 is ErrorResult  -> {
-                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR

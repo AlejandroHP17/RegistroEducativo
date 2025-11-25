@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.UserError
 
@@ -52,11 +52,11 @@ object ErrorMapper {
         return when (networkError) {
             NetworkModelError.UNAUTHORIZED -> UserError.UNAUTHORIZED // 401
 
-            NetworkModelError.BAD_REQUEST -> UserError.SHOW_SPECIFIC_ERROR //400
+            NetworkModelError.BAD_REQUEST -> UserError.SHOW_GENERIC_ERROR //400
             NetworkModelError.CONFLICT -> UserError.SHOW_SPECIFIC_ERROR //409
             NetworkModelError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR // 404
 
-            NetworkModelError.NO_INTERNET -> UserError.SHOW_GENERIC_ERROR
+            NetworkModelError.NO_INTERNET -> UserError.NO_INTERNET
             NetworkModelError.TIMEOUT -> UserError.SHOW_GENERIC_ERROR
             NetworkModelError.SERVER_ERROR -> UserError.SHOW_GENERIC_ERROR
 
@@ -64,8 +64,8 @@ object ErrorMapper {
             NetworkModelError.SERIALIZATION -> UserError.LOGS
             NetworkModelError.UNKNOWN -> UserError.LOGS
             NetworkModelError.NOT_ACTIVE -> UserError.USER_NOT_ACTIVE
+            NetworkModelError.WITHOUT_ACCESS -> UserError.WITHOUT_ACCESS
 
-            // Registro Usuario
             NetworkModelError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific
             NetworkModelError.EMPTY -> UserError.LOGS
         }

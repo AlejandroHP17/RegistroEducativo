@@ -18,7 +18,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -69,7 +68,6 @@ fun RegisterSubjectScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logInfo("Screen subject")
         val (header, body, column, action) = createRefs()
 
         Column(

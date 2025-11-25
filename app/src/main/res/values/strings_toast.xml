@@ -13,11 +13,19 @@
 
     <!--- ModelError -->
     <string name="toast_error_generic">Por favor intente mas tarde, estamos teniendo problemas en la plataforma</string>
-
+    <string name="toast_error_no_internet">Por favor verifique su conexión a internet</string>
+    <string name="toast_error_inactive_user">Contacte al administrador, su usuario se encuentra inactivo</string>
     <string name="toast_error_validate_fields">Favor de verificar que todos los campos esten correctos</string>
+
+    <!-- login -->
     <string name="toast_error_login_user">Usuario o contraseña incorrectos, por favor valide nuevamente su información</string>
-    <string name="toast_error_register_user">No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos</string>
-    <string name="toast_error_register_user_active">Hay un problema con su usuario, contacte al administrador</string>
+    <!-- register user -->
+    <string name="toast_error_register_user">El correo ya existe, intente con otro correo o inicie sesión</string>
+
+
+
+
+
     <string name="toast_error_register_school">No se ha podido registrar el grupo, vuelva a intentarlo</string>
     <string name="toast_error_update_info_ui">No se logró actualizar la información, intente más tarde</string>
     <string name="toast_error_register_partials">No de lograron crear los parciales, intente nuevamente</string>

@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
@@ -225,7 +224,6 @@ class RegisterFormativeFieldsViewModel(
                 }
 
                 else -> {
-                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             listWorkMethods = listOf(

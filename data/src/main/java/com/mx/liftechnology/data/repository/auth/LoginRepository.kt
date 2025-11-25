@@ -75,15 +75,10 @@ class LoginRepositoryImpl(
 
         return try {
             val response = loginApiCall.callApi(request)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToGetLoginData())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
+            if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToGetLoginData())
+            else ErrorResult(NetworkException.handleException(HttpException(response)))
         } catch (e: Exception) {
-            ErrorResult(NetworkModelError.UNKNOWN)
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

@@ -58,7 +58,6 @@ class CalendarViewModel(
                     ) }
                 }
                 else -> {
-                    logInfo(result.toString())
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,

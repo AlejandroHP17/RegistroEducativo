@@ -10,8 +10,8 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToCy
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -55,7 +55,7 @@ class MenuRepositoryImpl(
             if (response.isSuccessful && response.body()?.data != null) {
                 response.body()?.data?.let { result ->
                     if(result.isNotEmpty()) SuccessResult(result.mapperToCycleSchool())
-                    else ErrorResult(NetworkException.handleException(NullPointerException()))
+                    else ErrorResult(NetworkModelError.EMPTY)
                 } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))

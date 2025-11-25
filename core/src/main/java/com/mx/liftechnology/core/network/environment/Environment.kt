@@ -6,7 +6,7 @@
 package com.mx.liftechnology.core.network.environment
 
 import android.os.Build
-import timber.log.Timber
+import com.mx.liftechnology.core.util.logInfo
 
 /**
  * Objeto que contiene las constantes para los endpoints de la API y la URL base.
@@ -29,11 +29,7 @@ object Environment {
         get() {
             val isEmulator = isRunningOnEmulator()
             val url = if (isEmulator) EMULATOR_BASE_URL else DEVICE_BASE_URL
-            Timber.d("Environment: isRunningOnEmulator: $isEmulator, URL_BASE: $url")
-            Timber.d("Environment: Build.FINGERPRINT: ${Build.FINGERPRINT}")
-            Timber.d("Environment: Build.MODEL: ${Build.MODEL}")
-            Timber.d("Environment: Build.MANUFACTURER: ${Build.MANUFACTURER}")
-            Timber.d("Environment: Build.PRODUCT: ${Build.PRODUCT}")
+            logInfo("Environment: isRunningOnEmulator: $isEmulator")
             return url
         }
 

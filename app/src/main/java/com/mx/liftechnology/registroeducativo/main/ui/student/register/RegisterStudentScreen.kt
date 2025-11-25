@@ -20,7 +20,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -87,7 +86,6 @@ fun RegisterStudentScreen(
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     )
     {
-        logInfo("Screen register student")
         HeaderRegisterStudent(
             uiState = uiState,
             navController = navController)

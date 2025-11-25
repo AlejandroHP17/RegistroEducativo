@@ -40,13 +40,8 @@ class RegisterUserUseCase(
         ) }.fold(
             onSuccess = { result ->
                 when (result) {
-                    is SuccessResult -> {
-                        if(result.data.isActive == true) SuccessResult(true)
-                        else ErrorResult(NetworkModelError.UNKNOWN_REGISTER)
-                    }
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
+                    is SuccessResult -> { SuccessResult(true) }
+                    is ErrorResult -> { ErrorResult(result.error) }
                 }
             },
             onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }

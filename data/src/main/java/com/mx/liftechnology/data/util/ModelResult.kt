@@ -21,7 +21,9 @@ enum class UserError {
     SHOW_INCOMPLETE_ERROR,
     UNAUTHORIZED,
     LOGS,
-    USER_NOT_ACTIVE
+    USER_NOT_ACTIVE,
+    NO_INTERNET,
+    WITHOUT_ACCESS
 }
 
 
@@ -58,7 +60,8 @@ enum class NetworkModelError : ModelError {
     UNKNOWN,
     UNKNOWN_REGISTER,
     EMPTY,
-    NOT_ACTIVE
+    NOT_ACTIVE,
+    WITHOUT_ACCESS
 }
 
 /**

@@ -8,7 +8,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.VoiceRecognitionManager
-import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.core.util.logDebug
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
@@ -82,7 +82,7 @@ class RegisterSchoolViewModel(
         // Observa los resultados del reconocimiento de voz usando StateFlow
         voiceRecognitionManager.resultsStateFlow
             .onEach { results ->
-                logInfo(results.toString())
+                logDebug(results.toString())
                 validateData(results)
             }
             .launchIn(viewModelScope)
@@ -246,7 +246,6 @@ class RegisterSchoolViewModel(
                 }
             }
             else -> {
-                logInfo(state.toString())
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.NOTHING,

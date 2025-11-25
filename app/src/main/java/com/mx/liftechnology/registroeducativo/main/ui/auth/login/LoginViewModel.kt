@@ -128,11 +128,13 @@ class LoginViewModel(
             is ErrorResult -> {
                 val msg = when(ErrorMapper.mapErrorToUI(result.error)){
                     UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
+                    UserError.NO_INTERNET -> R.string.toast_error_no_internet
                     UserError.UNAUTHORIZED -> R.string.toast_error_login_user
+                    UserError.USER_NOT_ACTIVE -> R.string.toast_error_inactive_user
                     else -> null
                 }
 
-                if(msg != null){
+                msg?.let {
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
@@ -143,9 +145,7 @@ class LoginViewModel(
                             )
                         )
                     }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
-                }
+                }?: _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
             }
         }
     }

@@ -23,7 +23,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
@@ -96,7 +95,6 @@ fun RegisterEvaluationScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-        logInfo("Screen list student assignment")
         val (header, body, body2, column, action) = createRefs()
 
         Column(

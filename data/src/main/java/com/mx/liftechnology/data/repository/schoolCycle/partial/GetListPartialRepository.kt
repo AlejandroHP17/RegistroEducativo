@@ -61,7 +61,7 @@ class GetListPartialRepositoryImpl(
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }
         } catch (e: Exception) {
-            ErrorResult(NetworkModelError.UNKNOWN)
+            ErrorResult(NetworkException.handleException(e))
         }
     }
 }

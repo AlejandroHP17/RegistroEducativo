@@ -9,7 +9,6 @@ import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
-import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
@@ -164,13 +163,13 @@ class RegisterUserViewModel(
 
             is ErrorResult -> {
                 val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
+                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_validate_fields
                     UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_user
-                    UserError.SHOW_INCOMPLETE_ERROR -> R.string.toast_error_register_user_active
+                    UserError.NO_INTERNET -> R.string.toast_error_no_internet
                     else -> null
                 }
 
-                if(msg != null){
+                msg?.let {
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
@@ -181,9 +180,8 @@ class RegisterUserViewModel(
                             )
                         )
                     }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
-                }
+                }?: _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+
             }
         }
     }
