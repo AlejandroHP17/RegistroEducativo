@@ -11,8 +11,8 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRe
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -31,7 +31,13 @@ fun interface RegisterCycleSchoolRepository{
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
   suspend fun executeRegisterCycleSchool(
-      request : RequestRegisterSchoolCycle
+      teacherId : Int,
+      schoolId : Int,
+      name : String,
+      cycleLabel : String,
+      grade : String,
+      nameGroup : String,
+      periodCatalogId : Int
   ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError>
 }
 
@@ -51,8 +57,26 @@ class RegisterCycleSchoolRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun executeRegisterCycleSchool(
-        request : RequestRegisterSchoolCycle
+        teacherId : Int,
+        schoolId : Int,
+        name : String,
+        cycleLabel : String,
+        grade : String,
+        nameGroup : String,
+        periodCatalogId : Int
     ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError> {
+
+        val request = RequestRegisterSchoolCycle(
+            teacherId = teacherId,
+            schoolId = schoolId,
+            name = name,
+            cycleLabel = "",
+            grade = grade,
+            nameGroup = nameGroup,
+            periodCatalogId =periodCatalogId,
+            isActive = true
+        )
+
         return try {
             val response = registerSchoolCycleApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

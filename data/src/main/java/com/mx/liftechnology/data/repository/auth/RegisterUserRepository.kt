@@ -6,8 +6,8 @@ import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToRegisterU
 import com.mx.liftechnology.data.model.auth.ModelRegisterUserData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -25,7 +25,11 @@ fun interface RegisterUserRepository{
    * @param request Los datos de la petición de registro.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeRegisterUser(request: RequestRegisterUser)
+  suspend fun executeRegisterUser(
+      email: String,
+      pass: String,
+      activationCode: String
+  )
   : ModelResult<ModelRegisterUserData, NetworkModelError>
 }
 
@@ -48,8 +52,17 @@ class RegisterUserRepositoryImpl(
      * el contrato definido en [RegisterUserRepository.executeRegisterUser].
      */
     override suspend fun executeRegisterUser(
-        request: RequestRegisterUser
+        email: String,
+        pass: String,
+        activationCode: String
     ): ModelResult<ModelRegisterUserData, NetworkModelError> {
+
+        val request = RequestRegisterUser(
+            email = email.lowercase(),
+            password = pass,
+            activationCode = activationCode
+        )
+
         return try {
             val response = registerUserApiCall.callApi(request)
             if (response.isSuccessful && response.body() != null) {

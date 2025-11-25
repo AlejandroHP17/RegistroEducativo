@@ -39,10 +39,6 @@ data class RequestRegisterSchoolCycle(
     val schoolId: Int,
     @SerializedName("name")
     val name: String,
-    @SerializedName("description")
-    val description: String?,
-    @SerializedName("year")
-    val year: Int,
     @SerializedName("cycle_label")
     val cycleLabel: String?,
     @SerializedName("grade")
@@ -68,10 +64,6 @@ data class ResponseRegisterSchoolCycle(
     val schoolId: Int,
     @SerializedName("name")
     val name: String,
-    @SerializedName("description")
-    val description: String?,
-    @SerializedName("year")
-    val year: Int,
     @SerializedName("cycle_label")
     val cycleLabel: String?,
     @SerializedName("grade")
@@ -86,4 +78,6 @@ data class ResponseRegisterSchoolCycle(
     val schoolCycleId: Int,
     @SerializedName("created_at")
     val createdAt: String,
+    @SerializedName("teacher_name")
+    val teacherName: String,
 )

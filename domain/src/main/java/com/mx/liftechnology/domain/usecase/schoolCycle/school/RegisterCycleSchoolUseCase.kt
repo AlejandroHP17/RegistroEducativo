@@ -5,20 +5,16 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.school
 
-import android.os.Build
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestRegisterSchoolCycle
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import java.util.Calendar
-import java.util.Date
 
 /**
  * Caso de uso para registrar una nueva escuela y asociarla a un profesor.
@@ -51,33 +47,26 @@ class RegisterCycleSchoolUseCase(
         grade: Int,
         group: String?,
         cycle: Int,
-        shiftName: String
+        shiftName: String,
+        labelCycleState : String
     ): ModelResult<ModelRegisterSchoolCycleData, ModelError> {
         val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
-        val buildDate = Date(Build.TIME)
-        val calendar = Calendar.getInstance().apply { time = buildDate }
-        val year = calendar[Calendar.YEAR]
-
 
         if(schoolId < 1 || periodCatalogId < 1 || grade < 1
             || group.isNullOrEmpty() || cycle < 1 || teacherId == null) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-
-        val request = RequestRegisterSchoolCycle(
+        return runCatching { registerCycleSchoolRepository.executeRegisterCycleSchool(
             teacherId = teacherId,
             schoolId = schoolId,
             name = "$cct, $grade$group, $shiftName",
-            description = "$cct, $grade$group, $shiftName",
-            year = year,
-            cycleLabel = "",
+            cycleLabel =  labelCycleState.trim(),
             grade = grade.toString(),
-            nameGroup = group,
+            nameGroup = group.trim(),
             periodCatalogId =periodCatalogId,
-            isActive = true
-        )
-        return runCatching { registerCycleSchoolRepository.executeRegisterCycleSchool(request) }.fold(
+            )
+        }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

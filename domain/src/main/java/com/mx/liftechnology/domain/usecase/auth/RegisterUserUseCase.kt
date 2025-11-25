@@ -1,10 +1,9 @@
 package com.mx.liftechnology.domain.usecase.auth
 
-import com.mx.liftechnology.core.network.apiCall.auth.RequestRegisterUser
 import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -34,12 +33,11 @@ class RegisterUserUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val request = RequestRegisterUser(
-            email = email.lowercase(),
-            password = pass,
+        return runCatching{ registerUserRepository.executeRegisterUser(
+            email = email,
+            pass = pass,
             activationCode = activationCode
-        )
-        return runCatching{ registerUserRepository.executeRegisterUser(request) }.fold(
+        ) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

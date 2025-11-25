@@ -41,18 +41,18 @@ data class RequestListGrades(
 data class ResponseWorkTypeEvaluations(
     @SerializedName("created")
     val createdWorks: List<ResponseCreatedWorks>,
-    @SerializedName("updated")
-    val updatedWorks: List<ResponseCreatedWorks>,
     @SerializedName("total_with_grade")
     val totalStudentsWithGrade: Int,
     @SerializedName("total_without_grade")
     val totalStudentsWithoutGrade: Int,
-    @SerializedName("formative_field_id")
-    val formativeFieldId: Int,
-    @SerializedName("partial_id")
-    val partialId: Int,
+    @SerializedName("formative_field_name")
+    val formativeFieldName: String?,
+    @SerializedName("partial_name")
+    val partialName: String?,
     @SerializedName("work_type_id")
     val workTypeId: Int,
+    @SerializedName("work_type_name")
+    val workTypeName: String,
     @SerializedName("name")
     val nameWork: String
 )
@@ -77,5 +77,13 @@ data class ResponseCreatedWorks(
     @SerializedName("teacher_id")
     val teacherId: Int,
     @SerializedName("created_at")
-    val createdAt: String
+    val createdAt: String,
+    @SerializedName("student_name")
+    val studentName: String?,
+    @SerializedName("formative_field_name")
+    val formativeFieldName: String?,
+    @SerializedName("partial_name")
+    val partialName : String?,
+    @SerializedName("work_type_name")
+    val workTypeName : String?,
 )

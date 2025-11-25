@@ -45,6 +45,8 @@ interface ValidateFieldsRegisterSchoolUseCase {
      */
     fun validateCycleCompose(cycle: String?): ModelStateOutFieldText
 
+    fun validateLabelCycleCompose(labelCycle: String?): ModelStateOutFieldText
+
     /**
      * Valida el campo de la CCT.
      * @param cct La CCT a validar.
@@ -124,6 +126,17 @@ class ValidateFieldsRegisterSchoolUseCaseImp : ValidateFieldsRegisterSchoolUseCa
             )
 
             else -> cycle.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+        }
+    }
+
+    override fun validateLabelCycleCompose(labelCycle: String?): ModelStateOutFieldText {
+        return when {
+            labelCycle.isNullOrBlank() -> labelCycle.stringToModelStateOutFieldText(
+                isError = true,
+                errorMessage = ModelCodeInputs.ET_EMPTY
+            )
+
+            else -> labelCycle.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

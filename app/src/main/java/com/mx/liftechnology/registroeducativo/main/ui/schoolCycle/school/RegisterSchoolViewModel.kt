@@ -216,6 +216,14 @@ class RegisterSchoolViewModel(
         }
     }
 
+    fun onLabelCycleChanged(labelCycle: ModelStateOutFieldText) {
+        viewModelScope.launch(dispatcherProvider.default) {
+            _inputState.update { it.copy(
+                labelCycle = labelCycle
+            )}
+        }
+    }
+
     private suspend fun getSchoolCCT(cct: String) {
         when (val state = getCctUseCase.invoke(cct)) {
             is SuccessResult -> {
@@ -281,16 +289,18 @@ class RegisterSchoolViewModel(
             val gradeState = validateFieldsUseCase.validateGradeCompose(inputStateVM.grade.valueText)
             val groupState = validateFieldsUseCase.validateGroupCompose(inputStateVM.group.valueText)
             val cycleState = validateFieldsUseCase.validateCycleCompose(inputStateVM.cycle.valueText)
+            val labelCycleState = validateFieldsUseCase.validateCycleCompose(inputStateVM.cycle.valueText)
 
             _inputState.update { it.copy(
                 cct = cctState,
                 type = typeState,
                 grade = gradeState,
                 group = groupState,
-                cycle = cycleState
+                cycle = cycleState,
+                labelCycle = labelCycleState
             )}
 
-            if (!(cctState.isError || gradeState.isError || groupState.isError || cycleState.isError || typeState.isError)) {
+            if (!(cctState.isError || gradeState.isError || groupState.isError || cycleState.isError || typeState.isError || labelCycleState.isError)) {
                 registerCycleSchool()
             } else {
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
@@ -310,7 +320,8 @@ class RegisterSchoolViewModel(
             grade = inputStateVM.grade.valueText.toInt(),
             group = inputStateVM.group.valueText,
             cycle = inputStateVM.cycle.valueText.toInt(),
-            shiftName = _uiSemiAutomaticData.value.shiftName.valueText
+            shiftName = _uiSemiAutomaticData.value.shiftName.valueText,
+            labelCycleState = inputStateVM.labelCycle.valueText
         )) {
             is SuccessResult-> {
                 _uiState.update {

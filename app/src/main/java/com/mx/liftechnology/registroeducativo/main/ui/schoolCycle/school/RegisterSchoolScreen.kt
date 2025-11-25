@@ -85,7 +85,8 @@ fun RegisterSchoolScreen(
         BodyRegisterSchool(
             inputState = inputState,
             uiAutomatic = uiSemiAutomaticData,
-            onCctChanged =  { registerSchoolViewModel.onCctChanged(it) }
+            onCctChanged =  { registerSchoolViewModel.onCctChanged(it) },
+            onLabelCycleChanged = { registerSchoolViewModel.onLabelCycleChanged(it) }
         )
 
         BodyDoubleRegisterSchool(
@@ -140,6 +141,7 @@ private fun BodyRegisterSchool(
     inputState: ModelRegisterSchoolInputsUI,
     uiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
     onCctChanged: (ModelStateOutFieldText) -> Unit,
+    onLabelCycleChanged: (ModelStateOutFieldText) -> Unit,
 ) {
     BoxEditTextAllCaps (
         modelText = inputState.cct,
@@ -153,14 +155,24 @@ private fun BodyRegisterSchool(
         enable = false,
         label = stringResource(id = R.string.form_school_name),
         regex = ModelRegex.SIMPLE_TEXT,
-    ) {}
+        onBoxChanged = {}
+    )
 
     BoxEditTextGeneric(
         modelText = uiAutomatic.shiftName,
         enable = false,
         label = stringResource(id = R.string.form_school_shift),
         regex = ModelRegex.SIMPLE_TEXT,
-    ) {}
+        onBoxChanged = {}
+    )
+
+    BoxEditTextGeneric(
+        modelText = uiAutomatic.labelCycle,
+        enable = false,
+        label = stringResource(id = R.string.form_school_label_cycle),
+        regex = ModelRegex.SIMPLE_TEXT,
+        onBoxChanged = { onLabelCycleChanged(it) }
+    )
 }
 
 /**
@@ -271,7 +283,8 @@ private fun RegisterSchoolPreview(){
         BodyRegisterSchool(
             inputState = ModelRegisterSchoolInputsUI(),
             uiAutomatic = ModelRegisterSchoolUISemiAutomaticData(),
-            onCctChanged =  { }
+            onCctChanged =  { },
+            onLabelCycleChanged = {}
         )
 
         BodyDoubleRegisterSchool(
