@@ -288,7 +288,7 @@ class RegisterSchoolViewModel(
             val gradeState = validateFieldsUseCase.validateGradeCompose(inputStateVM.grade.valueText)
             val groupState = validateFieldsUseCase.validateGroupCompose(inputStateVM.group.valueText)
             val cycleState = validateFieldsUseCase.validateCycleCompose(inputStateVM.cycle.valueText)
-            val labelCycleState = validateFieldsUseCase.validateCycleCompose(inputStateVM.cycle.valueText)
+            val labelCycleState = validateFieldsUseCase.validateLabelCycleCompose(inputStateVM.labelCycle.valueText)
 
             _inputState.update { it.copy(
                 cct = cctState,

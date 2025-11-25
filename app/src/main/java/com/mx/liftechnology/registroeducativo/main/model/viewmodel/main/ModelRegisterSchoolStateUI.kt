@@ -39,7 +39,6 @@ data class ModelRegisterSchoolUISemiAutomaticData(
     val schoolName: ModelStateOutFieldText = ModelStateOutFieldText(),
     val schoolId: Int = 0,
     val shiftName: ModelStateOutFieldText = ModelStateOutFieldText(),
-    val labelCycle: ModelStateOutFieldText = ModelStateOutFieldText(),
     val periodCatalog:List<ModelCCTDataPeriodCatalog>? = null,
     val spinner: ModelSpinnerSchoolUi? = null,
     val read: Boolean = true,

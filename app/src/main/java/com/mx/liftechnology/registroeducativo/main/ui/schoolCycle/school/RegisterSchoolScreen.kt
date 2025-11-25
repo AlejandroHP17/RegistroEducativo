@@ -23,7 +23,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -32,7 +31,8 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelReg
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUICallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUISemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextNumeric
+import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSet
 import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
 import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
@@ -150,27 +150,21 @@ private fun BodyRegisterSchool(
         onBoxChanged = { onCctChanged(it) }
     )
 
-    BoxEditTextGeneric(
+    BoxEditTextSet(
         modelText = uiAutomatic.schoolName,
-        enable = false,
         label = stringResource(id = R.string.form_school_name),
-        regex = ModelRegex.SIMPLE_TEXT,
-        onBoxChanged = {}
     )
 
-    BoxEditTextGeneric(
+    BoxEditTextSet(
         modelText = uiAutomatic.shiftName,
-        enable = false,
         label = stringResource(id = R.string.form_school_shift),
-        regex = ModelRegex.SIMPLE_TEXT,
-        onBoxChanged = {}
     )
 
-    BoxEditTextGeneric(
-        modelText = uiAutomatic.labelCycle,
-        enable = false,
+    BoxEditTextNumeric(
+        modelText = inputState.labelCycle,
+        enable = true,
         label = stringResource(id = R.string.form_school_label_cycle),
-        regex = ModelRegex.SIMPLE_TEXT,
+        maxNumberCharacter = 15,
         onBoxChanged = { onLabelCycleChanged(it) }
     )
 }

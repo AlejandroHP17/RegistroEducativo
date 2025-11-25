@@ -108,6 +108,11 @@ fun TestBoxes() {
             label = stringResource(id = R.string.tools_generic)
         )
         { }
+
+        BoxEditTextSet(
+            modelText = data,
+            label = stringResource(id = R.string.form_student_phone_number),
+        )
     }
 }
 
@@ -361,6 +366,33 @@ fun BoxEditTextGeneric(
     CustomSpace(dimensionResource(R.dimen.margin_between))
 }
 
+@Composable
+fun BoxEditTextSet(
+    modelText: ModelStateOutFieldText,
+    label: String
+) {
+
+    OutlinedTextField(
+        value = modelText.valueText,
+        onValueChange = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = dimensionResource(id = R.dimen.margin_between)),
+        enabled = false,
+        label = {
+            Text(
+                text = label,
+                color =  colorPrincipalText
+            )
+        },
+        maxLines = 1,
+        shape = RoundedCornerShape(8.dp),
+        colors = personalizeColors()
+    )
+
+    CustomSpace(dimensionResource(R.dimen.margin_between))
+}
+
 /**
  * An outlined text field that converts all input to uppercase.
  *
@@ -382,8 +414,9 @@ fun BoxEditTextAllCaps(
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
-            if (newValue.isEmpty() || ModelRegex.TEXT_WITH_NUMBERS.matches(newValue)) {
-                value = newValue.uppercase().stringToModelStateOutFieldText()
+            val reformatValue = newValue.trim()
+            if (reformatValue.isEmpty() || ModelRegex.TEXT_WITH_NUMBERS.matches(reformatValue)) {
+                value = reformatValue.uppercase().stringToModelStateOutFieldText()
                 onBoxChanged(value)
             }
         },

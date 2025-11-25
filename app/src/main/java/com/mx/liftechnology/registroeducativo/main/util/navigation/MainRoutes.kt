@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.util.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 
 /**
  * Clase sellada que representa las rutas para el flujo principal de la aplicación.
@@ -17,14 +17,9 @@ sealed class MainRoutes (val route: String) {
 
     /** Ruta para la pantalla del menú principal. */
     data object Menu : MainRoutes("menu?reload={reload}") {
-        /**
-         * Crea la ruta para la pantalla del menú, con la opción de forzar la recarga de datos.
-         *
-         * @param reload Si es `true`, la pantalla recargará sus datos.
-         * @return La ruta completa con el parámetro de recarga.
-         */
+
         fun withReload(reload: Boolean = false): String {
-            return "schoolCycle?reload=$reload"
+            return "menu?reload=$reload"
         }
     }
 
