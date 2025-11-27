@@ -3,9 +3,9 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -40,27 +40,21 @@ class GetGroupMenuUseCase(
                 when (result) {
                     is SuccessResult -> {
                         val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
-                        if (convertedResult.isNotEmpty()) {
-                            SuccessResult(
-                                ModelInfoStudentGroupDomain(
-                                    listSchool = convertedResult,
-                                    infoSchoolSelected = selectOneGroup(convertedResult)
-                                )
+                        SuccessResult(
+                            ModelInfoStudentGroupDomain(
+                                listSchool = convertedResult,
+                                infoSchoolSelected = selectOneGroup(convertedResult)
                             )
-                        } else {
-                            ErrorResult(NetworkModelError.EMPTY)
-                        }
+                        )
                     }
 
                     is ErrorResult -> {
-                        if(result.error == NetworkModelError.UNAUTHORIZED) preference.cleanPreference()
                         ErrorResult(result.error)
                     }
                 }
             },
             onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
-
     }
 
     /**

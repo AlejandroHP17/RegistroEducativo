@@ -10,8 +10,8 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToMo
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -53,13 +53,8 @@ class GetListPartialRepositoryImpl(
     ): ModelResult<List<ModelListPartialData>, NetworkModelError> {
         return try {
             val response = getListPartialApiCall.callApi(schoolCycleId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListPartialsData())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
+            if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToModelListPartialsData())
+            else ErrorResult(NetworkException.handleException(HttpException(response)))
         } catch (e: Exception) {
             ErrorResult(NetworkException.handleException(e))
         }

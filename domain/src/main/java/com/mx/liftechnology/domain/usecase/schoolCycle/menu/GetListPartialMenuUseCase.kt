@@ -8,9 +8,9 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -39,19 +39,17 @@ class GetListPartialMenuUseCase (
      * o un estado de error específico en caso de fallo.
      */
      suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, ModelError> {
-        val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+        val cycleSchoolId =
+            preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) ?: return ErrorResult(
+                LocalModelError.USER_INCOMPLETE_DATA
+            )
 
-        if(cycleSchoolId == null) return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
-
-         return runCatching { getListPartialRepository.executeGetListPartial(cycleSchoolId) }.fold(
+        return runCatching { getListPartialRepository.executeGetListPartial(cycleSchoolId) }.fold(
              onSuccess = { result ->
                  when (result){
                      is SuccessResult -> {
                          val convertedResult = result.data.ListPartialToConvertModelDialogGroupPartialDomains
-                         if (convertedResult.isNotEmpty()) {
-                             SuccessResult(convertedResult)
-                         }
-                         else ErrorResult(LocalModelError.EMPTY)
+                         SuccessResult(convertedResult)
                      }
                      is ErrorResult -> {
                          ErrorResult(result.error)

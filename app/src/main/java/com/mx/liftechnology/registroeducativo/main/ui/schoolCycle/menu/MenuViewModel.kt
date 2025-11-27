@@ -83,8 +83,8 @@ class MenuViewModel(
 
                 is ErrorResult -> {
                     val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                        UserError.UNAUTHORIZED -> R.string.toast_warning_close_session
-                        else -> null
+                        UserError.LOGS -> null
+                        else -> R.string.toast_error_generic
                     }
 
                     if(msg != null){
@@ -151,26 +151,7 @@ class MenuViewModel(
                 }
             }
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
-                    UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_update_info_ui
-                    else -> null
-                }
-
-                if(msg != null){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
-                        )
-                    }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
-                }
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
             }
         }
     }

@@ -51,12 +51,10 @@ class MenuRepositoryImpl(
      */
     override suspend fun executeGetCycleSchool(request: Int): ModelResult<List<ModelSchoolCycleData>, NetworkModelError> {
         return try {
-            val response = groupApiCall.callApi(request)
+            val response = groupApiCall.callApi(teacherId = request)
             if (response.isSuccessful && response.body()?.data != null) {
-                response.body()?.data?.let { result ->
-                    if(result.isNotEmpty()) SuccessResult(result.mapperToCycleSchool())
-                    else ErrorResult(NetworkModelError.EMPTY)
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+                if(response.body()?.data?.isNotEmpty() == true) SuccessResult(response.body()?.data.mapperToCycleSchool())
+                else ErrorResult(NetworkModelError.EMPTY)
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }
