@@ -10,8 +10,8 @@ import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRe
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -53,7 +53,7 @@ class GetCctRepositoryImpl(
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToRegisterSchool())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+                } ?: ErrorResult(NetworkModelError.EMPTY)
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }

@@ -42,7 +42,7 @@ class ListStudentViewModel(
      * Gets the list of students.
      */
     fun getListStudent() {
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.default){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
             when(val result = getListStudentUseCase.invoke()){
@@ -74,7 +74,7 @@ class ListStudentViewModel(
     fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
 
     fun deleteStudent(card: ModelCustomCard) {
-        viewModelScope.launch {
+        viewModelScope.launch (dispatcherProvider.default){
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
             when(deleteStudentUseCase.invoke(card.id)){

@@ -10,8 +10,8 @@ import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelL
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -55,7 +55,7 @@ class GetStudentRepositoryImpl(
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListStudent())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+                } ?: ErrorResult(NetworkModelError.EMPTY)
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }

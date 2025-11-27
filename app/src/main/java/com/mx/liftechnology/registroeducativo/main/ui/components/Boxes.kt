@@ -132,8 +132,11 @@ fun BoxEditTextEmail(
     label: String,
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
-    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
-    LaunchedEffect(Unit, modelText.isError) { value = modelText }
+    var value by remember { mutableStateOf(modelText) }
+    LaunchedEffect(Unit, modelText) {
+        if(value != modelText)
+            value = modelText
+    }
 
     OutlinedTextField(
         value = value.valueText,
@@ -192,9 +195,11 @@ fun BoxEditTextPassword(
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
     onStatePassChanged: (Boolean) -> Unit,
 ) {
-    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
-    LaunchedEffect(Unit, modelText.isError) { value = modelText }
-
+    var value by remember { mutableStateOf(modelText) }
+    LaunchedEffect(Unit, modelText) {
+        if(value != modelText)
+            value = modelText
+    }
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
@@ -261,9 +266,11 @@ fun BoxEditTextCapitalLetterGeneric(
     label: String,
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
-
-    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
-    LaunchedEffect(Unit, modelText.isError) { value = modelText }
+    var value by remember { mutableStateOf(modelText) }
+    LaunchedEffect(Unit, modelText) {
+        if(value != modelText)
+        value = modelText
+    }
 
     OutlinedTextField(
         value = value.valueText,
@@ -323,8 +330,10 @@ fun BoxEditTextGeneric(
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
     var value by remember { mutableStateOf(modelText) }
-    LaunchedEffect(Unit, modelText.isError) { value = modelText }
-
+    LaunchedEffect(Unit, modelText) {
+        if(value != modelText)
+            value = modelText
+    }
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
@@ -408,9 +417,11 @@ fun BoxEditTextAllCaps(
     label: String,
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
-    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
-    LaunchedEffect(Unit, modelText.isError) { value = modelText }
-
+    var value by remember { mutableStateOf(modelText) }
+    LaunchedEffect(Unit, modelText) {
+        if(value != modelText)
+            value = modelText
+    }
     OutlinedTextField(
         value = value.valueText,
         onValueChange = { newValue ->
@@ -471,8 +482,11 @@ fun BoxEditTextNumeric(
     maxNumberCharacter: Int,
     onBoxChanged: (ModelStateOutFieldText) -> Unit,
 ) {
-    var value by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
-    LaunchedEffect(Unit, modelText.isError) { value = modelText }
+    var value by remember { mutableStateOf(modelText) }
+    LaunchedEffect(Unit, modelText) {
+        if(value != modelText)
+            value = modelText
+    }
 
     OutlinedTextField(
         value = value.valueText,

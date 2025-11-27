@@ -3,9 +3,9 @@ package com.mx.liftechnology.domain.usecase.student
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.student.GetStudentRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -32,11 +32,10 @@ class GetListStudentUseCase(
      * @return Un [ModelResult] que contiene la lista de estudiantes o un estado de error.
      */
     suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>, ModelError> {
-        val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
-
-        if(cycleSchoolId == null) return ErrorResult(
-            LocalModelError.USER_INCOMPLETE_DATA
-        )
+        val cycleSchoolId =
+            preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) ?: return ErrorResult(
+                LocalModelError.USER_INCOMPLETE_DATA
+            )
 
         return runCatching { getStudentRepository.executeGetListStudent(cycleSchoolId) }.fold(
             onSuccess = { result ->

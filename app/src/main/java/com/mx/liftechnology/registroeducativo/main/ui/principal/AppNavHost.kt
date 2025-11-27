@@ -28,7 +28,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUser
 import com.mx.liftechnology.registroeducativo.main.ui.calendar.CalendarScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
-import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.AssignmentSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
@@ -107,7 +107,7 @@ fun AppNavHost(
                 onCloseSession = {navigationController.navigate(LoginRoutes.LOGIN.route){popUpTo(MainRoutes.Menu.route) { inclusive = true } }}
             ) }
             composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
-            composable(MainRoutes.ListFormativeFields.route){ ListSubjectScreen(navigationController) }
+            composable(MainRoutes.ListFormativeFields.route){ ListFormativeFieldsScreen(navigationController) }
             composable(MainRoutes.Calendar.route){ CalendarScreen(navigationController) }
 
             composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(

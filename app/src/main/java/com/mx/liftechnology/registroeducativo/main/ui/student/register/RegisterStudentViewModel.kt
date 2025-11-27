@@ -130,7 +130,7 @@ class RegisterStudentViewModel(
             val rawDate = curp.substring(4, 10)
 
             try {
-                val year = rawDate.substring(0, 2).toInt()
+                val year = rawDate.take(2).toInt()
                 val month = rawDate.substring(2, 4).toInt()
                 val day = rawDate.substring(4, 6).toInt()
 
@@ -230,7 +230,6 @@ class RegisterStudentViewModel(
 
             is ErrorResult -> {
                 val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
                     UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_student
                     else -> null
                 }
@@ -277,7 +276,6 @@ class RegisterStudentViewModel(
 
             is ErrorResult -> {
                 val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
                     UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_edit_student
                     else -> null
                 }

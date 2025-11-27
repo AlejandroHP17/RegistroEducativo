@@ -82,7 +82,7 @@ class RegisterCycleSchoolRepositoryImpl(
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToRegisterCycleSchool())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+                } ?:  ErrorResult(NetworkModelError.EMPTY)
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }

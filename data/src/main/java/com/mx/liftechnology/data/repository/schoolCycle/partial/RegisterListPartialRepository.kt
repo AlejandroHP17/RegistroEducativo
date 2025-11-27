@@ -73,11 +73,15 @@ class RegisterListPartialRepositoryImpl(
 
         val request = RequestRegisterPartial(listPartials = listAdapter)
 
-
         return try {
             val response = registerListPartialApiCall.callApi(request)
-            if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToModelListPartialData())
-            else ErrorResult(NetworkException.handleException(HttpException(response)))
+            if (response.isSuccessful && response.body() != null) {
+                response.body()?.data?.let {
+                    SuccessResult(it.mapperToModelListPartialData())
+                } ?: ErrorResult(NetworkModelError.EMPTY)
+            } else {
+                ErrorResult(NetworkException.handleException(HttpException(response)))
+            }
         } catch (e: Exception) {
             ErrorResult(NetworkException.handleException(e))
         }
