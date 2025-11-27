@@ -6,13 +6,15 @@
 package com.mx.liftechnology.data.repository.schoolCycle.partial
 
 import com.mx.liftechnology.core.network.apiCall.schoolCycle.RegisterListPartialApiCall
+import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestPartials
 import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestRegisterPartial
 import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToModelListPartialData
+import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -30,7 +32,9 @@ fun interface RegisterListPartialRepository{
    * @param request Los datos de la petición de registro.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeRegisterListPartial(request : RequestRegisterPartial
+  suspend fun executeRegisterListPartial(
+      adapterPeriods: List<ModelDatePeriod>,
+      cycleSchoolId: Int
   ): ModelResult<List<ModelListPartialData?>, NetworkModelError>
 }
 
@@ -50,17 +54,30 @@ class RegisterListPartialRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun executeRegisterListPartial(
-        request : RequestRegisterPartial
+        adapterPeriods: List<ModelDatePeriod>,
+        cycleSchoolId: Int
     ): ModelResult<List<ModelListPartialData?>, NetworkModelError> {
+
+        val listAdapter: MutableList<RequestPartials> = mutableListOf()
+        adapterPeriods.forEachIndexed { index,  data ->
+            val part = data.date.split("/")
+            listAdapter.add(
+                RequestPartials(
+                    cycleSchoolId = cycleSchoolId,
+                    description = ("Parcial ${index + 1}"),
+                    startDate = part.getOrNull(0)?.trim() ?: "",
+                    endDate = part.getOrNull(1)?.trim() ?: "",
+                )
+            )
+        }
+
+        val request = RequestRegisterPartial(listPartials = listAdapter)
+
+
         return try {
             val response = registerListPartialApiCall.callApi(request)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListPartialData())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
+            if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToModelListPartialData())
+            else ErrorResult(NetworkException.handleException(HttpException(response)))
         } catch (e: Exception) {
             ErrorResult(NetworkException.handleException(e))
         }

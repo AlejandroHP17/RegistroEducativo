@@ -5,15 +5,14 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.partial
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestPartials
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestRegisterPartial
 import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -42,34 +41,29 @@ class RegisterListPartialUseCase(
     suspend operator fun invoke(
         adapterPeriods: List<ModelDatePeriodDomain>
     ): ModelResult<List<ModelListPartialData?>, ModelError> {
-        val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
         val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
 
-        if(teacherId == null || cycleSchoolId == null || adapterPeriods.isEmpty()) return ErrorResult(
+        if(cycleSchoolId == null || adapterPeriods.isEmpty()) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val listAdapter: MutableList<RequestPartials> = mutableListOf()
-        adapterPeriods.forEachIndexed { index,  data ->
-            val part = data.date.valueText.split("/")
-            listAdapter.add(
-                RequestPartials(
-                    cycleSchoolId = cycleSchoolId,
-                    description = ("Parcial ${index + 1}"),
-                    startDate = part.getOrNull(0)?.trim() ?: "",
-                    endDate = part.getOrNull(1)?.trim() ?: "",
-                )
+        val adapter = adapterPeriods.map {
+            ModelDatePeriod(
+                position = it.position,
+                date = it.date.valueText,
+                partialCycleGroup = it.partialCycleGroup
             )
         }
 
-        val request = RequestRegisterPartial(listPartials = listAdapter)
-
-        return runCatching { registerListPartialRepository.executeRegisterListPartial(request) }.fold(
+        return runCatching { registerListPartialRepository.executeRegisterListPartial(
+            adapterPeriods = adapter,
+            cycleSchoolId = cycleSchoolId
+        ) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {
                         if(result.data.isNotEmpty()) SuccessResult(result.data)
-                        else ErrorResult(NetworkModelError.UNKNOWN_REGISTER)
+                        else ErrorResult(NetworkModelError.NOT_FOUND)
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)

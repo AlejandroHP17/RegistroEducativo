@@ -138,8 +138,7 @@ class RegisterPartialViewModel(
             }
             is ErrorResult -> {
                 val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
-                    UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_partials
+                    UserError.WITHOUT_ACCESS, UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_partials
                     else -> null
                 }
 

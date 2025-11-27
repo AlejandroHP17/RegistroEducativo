@@ -107,7 +107,7 @@ fun AppNavHost(
                 onCloseSession = {navigationController.navigate(LoginRoutes.LOGIN.route){popUpTo(MainRoutes.Menu.route) { inclusive = true } }}
             ) }
             composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
-            composable(MainRoutes.ListSubject.route){ ListSubjectScreen(navigationController) }
+            composable(MainRoutes.ListFormativeFields.route){ ListSubjectScreen(navigationController) }
             composable(MainRoutes.Calendar.route){ CalendarScreen(navigationController) }
 
             composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(
@@ -115,7 +115,7 @@ fun AppNavHost(
                 sharedViewModel = sharedViewModel
             ) }
 
-            composable(MainRoutes.RegisterSubject.route){ RegisterSubjectScreen(
+            composable(MainRoutes.RegisterFormativeField.route){ RegisterSubjectScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel) }
             composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(

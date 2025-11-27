@@ -46,7 +46,7 @@ fun ListSubjectScreen(
             description = stringResource(R.string.empty_subject_2),
             button = stringResource(R.string.add_button),
             onReturnClick = { navController.popBackStack() },
-            onActionClick = { navController.navigateWithParams(MainRoutes.RegisterSubject.route) }
+            onActionClick = { navController.navigateWithParams(MainRoutes.RegisterFormativeField.route) }
         )
     } else {
         GenericListScreen(
@@ -65,7 +65,7 @@ fun ListSubjectScreen(
                 onEdit = {},
                 onDelete = { listFormativeFieldsViewModel.deleteFormativeField(it) }
             ),
-            onAction = { navController.navigateWithState(MainRoutes.RegisterSubject.route) }
+            onAction = { navController.navigateWithState(MainRoutes.RegisterFormativeField.route) }
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)

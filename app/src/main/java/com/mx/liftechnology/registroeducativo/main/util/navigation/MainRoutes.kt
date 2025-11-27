@@ -30,10 +30,10 @@ sealed class MainRoutes (val route: String) {
     data object ListStudent: MainRoutes("listStudent")
 
     /** Ruta para la pantalla de registro de materia. */
-    data object RegisterSubject: MainRoutes("registerSubject")
+    data object RegisterFormativeField : MainRoutes("registerSubject")
 
     /** Ruta para la pantalla de lista de materias. */
-    data object ListSubject: MainRoutes("listSubject")
+    data object ListFormativeFields : MainRoutes("listSubject")
 
     /** Ruta para la pantalla de registro de parciales. */
     data object RegisterPartial: MainRoutes("registerPartial")

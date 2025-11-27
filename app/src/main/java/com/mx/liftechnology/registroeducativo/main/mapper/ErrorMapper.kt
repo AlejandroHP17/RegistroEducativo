@@ -55,6 +55,7 @@ object ErrorMapper {
             NetworkModelError.BAD_REQUEST -> UserError.SHOW_GENERIC_ERROR //400
             NetworkModelError.CONFLICT -> UserError.SHOW_SPECIFIC_ERROR //409
             NetworkModelError.NOT_FOUND -> UserError.SHOW_SPECIFIC_ERROR // 404
+            NetworkModelError.WITHOUT_ACCESS -> UserError.WITHOUT_ACCESS //403
 
             NetworkModelError.NO_INTERNET -> UserError.NO_INTERNET
             NetworkModelError.TIMEOUT -> UserError.SHOW_GENERIC_ERROR
@@ -64,7 +65,7 @@ object ErrorMapper {
             NetworkModelError.SERIALIZATION -> UserError.LOGS
             NetworkModelError.UNKNOWN -> UserError.LOGS
             NetworkModelError.NOT_ACTIVE -> UserError.USER_NOT_ACTIVE
-            NetworkModelError.WITHOUT_ACCESS -> UserError.WITHOUT_ACCESS
+
 
             NetworkModelError.UNKNOWN_REGISTER -> UserError.SHOW_INCOMPLETE_ERROR // Specific
             NetworkModelError.EMPTY -> UserError.LOGS

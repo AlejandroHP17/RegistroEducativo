@@ -203,7 +203,7 @@ private fun RegisterAreaMenuScreen(
         MyGridScreen(uiData.evaluationItems, 660.dp) { selectedItem ->
             when (selectedItem.id) {
                 menuItemsRegister[0] -> navController(MainRoutes.ListStudent.route)
-                menuItemsRegister[1] -> navController(MainRoutes.ListSubject.route)
+                menuItemsRegister[1] -> navController(MainRoutes.ListFormativeFields.route)
                 menuItemsRegister[2] -> navController(MainRoutes.Calendar.route)
                 menuItemsRegister[3] -> navController(MainRoutes.RegisterPartial.route)
 

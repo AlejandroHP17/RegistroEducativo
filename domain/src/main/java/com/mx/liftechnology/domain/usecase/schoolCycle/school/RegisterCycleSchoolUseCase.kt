@@ -60,7 +60,7 @@ class RegisterCycleSchoolUseCase(
         return runCatching { registerCycleSchoolRepository.executeRegisterCycleSchool(
             teacherId = teacherId,
             schoolId = schoolId,
-            name = "$cct, $grade$group, $shiftName",
+            name = "Ciclo $labelCycleState, $grade$group, $cct",
             cycleLabel =  labelCycleState.trim(),
             grade = grade.toString(),
             nameGroup = group.trim(),
