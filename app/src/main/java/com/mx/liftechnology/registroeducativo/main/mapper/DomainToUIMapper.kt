@@ -1,6 +1,8 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
+import com.mx.liftechnology.data.model.formativeField.ModelListWorkStudentFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
+import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
@@ -123,18 +125,26 @@ object DomainToUIMapper {
         )
     }
 
-
-    fun ModelWorkTypeByFormativeField.toComplexCardUI():List<ModelComplexCard>{
-        return this.workTypes.mapNotNull { workType ->
+    fun ModelWorkTypeFormativeField.toComplexCardUI():List<ModelComplexCard>{
+        return this.listWorks.mapNotNull { workType ->
             ModelComplexCard(
-                idTitle = workType.workTypeId,
-                nameTitle = workType.workTypeName,
+                idTitle = workType.workId,
+                nameTitle = workType.workName,
                 isShowTitle = true,
-                isExpandedTitle = true,
-                list = null
+                isExpandedTitle = false,
+                list = workType.listWorks.mapNotNull { it.toData() }
             )
         }
+    }
 
+    fun ModelListWorkStudentFormativeField.toData(): ModelSubComplexCard {
+        return ModelSubComplexCard(
+            idSubTitle = this.workStudentId,
+            nameSubTitle = this.workStudentName,
+            isShowSubTitle = true,
+            isExpandedSubTitle = false,
+            list = null
+        )
     }
 }
 

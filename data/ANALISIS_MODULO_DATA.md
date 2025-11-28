@@ -43,7 +43,7 @@ com.mx.liftechnology.data/
 │           ├── assessment/
 │           │   └── GetAssessmentTypeRepository.kt
 │           ├── evaluationtype/
-│           │   └── GetListEvaluationTypeRepository.kt
+│           │   └── GetListWorkTypeFormativeFieldRepository.kt
 │           └── GetListSubjectRepository.kt
 │           └── RegisterSubjectRepository.kt
 └── util/                       # Utilidades de la capa de datos

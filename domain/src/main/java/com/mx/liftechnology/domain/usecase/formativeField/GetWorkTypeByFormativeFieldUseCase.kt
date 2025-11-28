@@ -4,9 +4,9 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -16,11 +16,10 @@ class GetWorkTypeByFormativeFieldUseCase (
     private val preference : PreferenceUseCase
 ){
     suspend operator fun invoke(): ModelResult<ModelWorkTypeByFormativeField, ModelError> {
-        val formativeFieldId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD)
-
-        if(formativeFieldId == null) return ErrorResult(
-            LocalModelError.USER_INCOMPLETE_DATA
-        )
+        val formativeFieldId =
+            preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD) ?: return ErrorResult(
+                LocalModelError.USER_INCOMPLETE_DATA
+            )
 
         return runCatching { getWorkTypeByFormativeFieldsRepository.executeGetWorkTyperByFormativeFields(formativeFieldId = formativeFieldId) }.fold(
             onSuccess = { result ->

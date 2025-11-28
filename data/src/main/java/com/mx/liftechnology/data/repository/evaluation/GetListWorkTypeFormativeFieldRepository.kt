@@ -5,12 +5,13 @@
  */
 package com.mx.liftechnology.data.repository.evaluation
 
-import com.mx.liftechnology.core.network.apiCall.evaluation.GetListEvaluationTypeApiCall
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestGetListEvaluationType
+import com.mx.liftechnology.core.network.apiCall.evaluation.GetListWorkTypeStudentApiCall
+import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelWorkTypeFormativeField
+import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.NetworkException
+import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import retrofit2.HttpException
 
@@ -21,37 +22,36 @@ import retrofit2.HttpException
  * @author Pelkidev
  * @version 1.0.0
  */
-fun interface GetListEvaluationTypeRepository {
+fun interface GetListWorkTypeFormativeFieldRepository {
     /**
      * Ejecuta la petición para obtener la lista de tipos de evaluación.
      *
-     * @param request Los datos de la petición.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListEvaluationType( request: RequestGetListEvaluationType) : ModelResult<List<String>?, NetworkModelError>
+    suspend fun executeGetListWorkTypeFormativeField(formativeFieldId:Int) : ModelResult<ModelWorkTypeFormativeField, NetworkModelError>
 }
 
 /**
- * Implementación de [GetListEvaluationTypeRepository].
+ * Implementación de [GetListWorkTypeFormativeFieldRepository].
  * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getListEvaluationTypeApiCall La llamada a la API para obtener la lista de tipos de evaluación.
+ * @property getListWorkTypeStudentApiCall La llamada a la API para obtener la lista de tipos de evaluación.
  * @author Pelkidev
  * @version 1.0.0
  */
-class GetListEvaluationTypeRepositoryImpl (
-    private var getListEvaluationTypeApiCall : GetListEvaluationTypeApiCall
-): GetListEvaluationTypeRepository{
+class GetListWorkTypeFormativeFieldRepositoryImpl (
+    private var getListWorkTypeStudentApiCall : GetListWorkTypeStudentApiCall
+): GetListWorkTypeFormativeFieldRepository{
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListEvaluationType(request: RequestGetListEvaluationType): ModelResult<List<String>?, NetworkModelError> {
+    override suspend fun executeGetListWorkTypeFormativeField(formativeFieldId:Int): ModelResult<ModelWorkTypeFormativeField, NetworkModelError> {
         return try {
-            val response = getListEvaluationTypeApiCall.callApi(request)
+            val response = getListWorkTypeStudentApiCall.callApi(formativeFieldId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
-                    SuccessResult(it)
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
+                    SuccessResult(it.mapperToModelWorkTypeFormativeField())
+                } ?: ErrorResult(NetworkModelError.EMPTY)
             } else {
                 ErrorResult(NetworkException.handleException(HttpException(response)))
             }

@@ -65,9 +65,8 @@ fun AssignmentSubjectScreen(
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelWotyFofiUiCallbacks(
-                onExpandedTitle = {  },
-                onExpandedSubTitle = {subItem, parentItem ->
-                },
+                onExpandedTitle = { wotyFofiViewModel.updateExpandedTitle(it) },
+                onExpandedSubTitle = {subItem, parentItem -> wotyFofiViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
             onAction = { navController.navigate(MainRoutes.RegisterAssignment.createRoutes(uiState.formativeFields))},
         )

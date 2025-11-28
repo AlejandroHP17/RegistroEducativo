@@ -16,7 +16,10 @@ fun interface GetListEvaluationsStudentRepository{
         partialId: Int,
         formativeFieldId: Int,
         workTypeId: Int,
-        studentId: Int
+        studentId: Int,
+        workDate: String?,
+        workDateFrom : String?,
+        workDateTo: String?
     ): ModelResult<List<ModelEvaluationsStudent>, NetworkModelError>
 }
 class GetListEvaluationsStudentRepositoryImpl(
@@ -27,7 +30,10 @@ class GetListEvaluationsStudentRepositoryImpl(
         partialId: Int,
         formativeFieldId: Int,
         workTypeId: Int,
-        studentId: Int
+        studentId: Int,
+        workDate: String?,
+        workDateFrom : String?,
+        workDateTo: String?
     ): ModelResult<List <ModelEvaluationsStudent>, NetworkModelError> {
         return try{
             val response = getListEvaluationsStudentApiCall.callApi(
@@ -35,7 +41,10 @@ class GetListEvaluationsStudentRepositoryImpl(
                 partialId = partialId,
                 workTypeId = workTypeId,
                 schoolCycleId = schoolCycleId,
-                studentId = studentId
+                studentId = studentId,
+                workDate = workDate,
+                workDateFrom = workDateFrom,
+                workDateTo= workDateTo,
             )
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {

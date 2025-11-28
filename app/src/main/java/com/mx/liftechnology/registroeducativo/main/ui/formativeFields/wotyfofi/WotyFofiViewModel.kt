@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +27,7 @@ import kotlinx.coroutines.launch
  */
 class WotyFofiViewModel (
     private val dispatcherProvider: DispatcherProvider,
-    private val getWorkTypeByFormativeFieldUseCase: GetWorkTypeByFormativeFieldUseCase,
+    private val getListWorkEvaluationFormativeFieldUseCase: GetListWorkEvaluationFormativeFieldUseCase,
     private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ModelWotyFofiStateUI())
@@ -48,7 +50,7 @@ class WotyFofiViewModel (
 
     fun getListWotyFofi(){
         viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getWorkTypeByFormativeFieldUseCase.invoke()){
+            when (val result = getListWorkEvaluationFormativeFieldUseCase.invoke()){
                 is SuccessResult ->{
                     _dataState.update {
                         it.copy(
@@ -73,15 +75,35 @@ class WotyFofiViewModel (
      *
      * @param expanded True to expand, false to collapse.
      */
-    fun updateExpandedTitle(expanded: Pair<Boolean, Int>) {
+    fun updateExpandedTitle(expanded: ModelComplexCard?) {
         _dataState.update { currentState ->
             currentState.copy(
                 dataCard = currentState.dataCard?.map { card ->
-                    if (card.idTitle == expanded.second) {
-                        card.copy(isExpandedTitle = expanded.first)
+                    if (card.idTitle == expanded?.idTitle) {
+                        card.copy(isExpandedTitle = !expanded!!.isExpandedTitle)
                     } else card
                 }
             )
         }
+    }
+
+    fun updateExpandedSubTitle(subItem: ModelSubComplexCard, parentItem: ModelComplexCard) {
+        _dataState.update { currentState ->
+            currentState.copy(
+                dataCard = currentState.dataCard?.map { card ->
+                    if (card.idTitle == parentItem.idTitle) {
+                        val updatedList = card.list?.map { subCard ->
+                            if (subCard?.idSubTitle == subItem.idSubTitle) {
+                                subCard?.copy(isExpandedSubTitle = !subCard.isExpandedSubTitle)
+                            } else subCard
+                        }
+
+                        card.copy(list = updatedList)
+
+                    } else card
+                }
+            )
+        }
+        //getListEvaluations(subItem.idSubTitle, parentItem.idTitle)
     }
 }

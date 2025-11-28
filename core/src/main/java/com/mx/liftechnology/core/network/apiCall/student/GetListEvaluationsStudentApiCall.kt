@@ -14,7 +14,10 @@ interface GetListEvaluationsStudentApiCall {
         @Query("partial_id")partialId: Int,
         @Query("work_type_id")workTypeId: Int,
         @Query("school_cycle_id")schoolCycleId: Int,
-        @Query("student_id")studentId: Int
+        @Query("student_id")studentId: Int,
+        @Query("work_date")workDate: String?,
+        @Query("work_date_from")workDateFrom: String?,
+        @Query("work_date_to")workDateTo: String?,
     ): Response<ResponseGeneric<List<ResponseGetListEvaluationsStudent>>>
 }
 

@@ -1,28 +1,27 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.evaluation.GetListEvaluationTypeApiCall
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWorkTypeApiCall
+import com.mx.liftechnology.core.network.apiCall.evaluation.GetListWorkTypeStudentApiCall
 import com.mx.liftechnology.core.network.apiCall.formativeField.DeleteFormativeFieldApiCall
 import com.mx.liftechnology.core.network.apiCall.formativeField.GetListFormativeFieldsApiCall
+import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWorkTypeApiCall
 import com.mx.liftechnology.core.network.apiCall.formativeField.RegisterFormativeFieldsBulkApiCall
+import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepository
+import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepository
 import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repository.formativeField.GetListFormativeFieldRepository
 import com.mx.liftechnology.data.repository.formativeField.GetListFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
-import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
-import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepository
-import com.mx.liftechnology.data.repository.evaluation.GetListEvaluationTypeRepositoryImpl
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepositoryImpl
+import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
+import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
+import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCaseImp
-import com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.GetListEvaluationTypeUseCaseImp
-import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterFormativeFieldsViewModel
 import org.koin.core.module.dsl.bind
@@ -50,9 +49,9 @@ val crudSubjectModule = module {
     factory { get<Retrofit>().create(GetListFormativeFieldsApiCall::class.java) }
 
     /**
-     * Provides an instance of [GetListEvaluationTypeApiCall].
+     * Provides an instance of [GetListWorkTypeStudentApiCall].
      */
-    factory { get<Retrofit>().create(GetListEvaluationTypeApiCall::class.java) }
+    factory { get<Retrofit>().create(GetListWorkTypeStudentApiCall::class.java) }
 
     /**
      * Provides an instance of [GetListWorkTypeApiCall].
@@ -65,10 +64,10 @@ val crudSubjectModule = module {
     factory { get<Retrofit>().create(DeleteFormativeFieldApiCall::class.java) }
 
     /**
-     * Provides a singleton instance of [GetListEvaluationTypeRepository].
+     * Provides a singleton instance of [GetListWorkTypeFormativeFieldRepository].
      */
-    singleOf(::GetListEvaluationTypeRepositoryImpl) {
-        bind<GetListEvaluationTypeRepository>()
+    singleOf(::GetListWorkTypeFormativeFieldRepositoryImpl) {
+        bind<GetListWorkTypeFormativeFieldRepository>()
     }
 
     /**
@@ -99,11 +98,9 @@ val crudSubjectModule = module {
     }
 
     /**
-     * Provides a singleton instance of [GetListEvaluationTypeUseCase].
+     * Provides a singleton instance of [GetListWorkEvaluationFormativeFieldUseCase].
      */
-    singleOf(::GetListEvaluationTypeUseCaseImp) {
-        bind<GetListEvaluationTypeUseCase>()
-    }
+    singleOf(::GetListWorkEvaluationFormativeFieldUseCase)
 
     /**
      * Provides a singleton instance of [RegisterFormativeFieldsBulkUseCase].

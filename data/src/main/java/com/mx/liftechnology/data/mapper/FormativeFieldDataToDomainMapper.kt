@@ -1,5 +1,8 @@
 package com.mx.liftechnology.data.mapper
 
+import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseGetListWorkStudents
+import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseListWork
+import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseListWorkStudent
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativeFieldBulk
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativeFields
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListFormativeField
@@ -9,9 +12,12 @@ import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetWorkT
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypeDetail
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypes
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.model.formativeField.ModelListWorkFormativeField
+import com.mx.liftechnology.data.model.formativeField.ModelListWorkStudentFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeDetail
+import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseFormativeFieldsData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
@@ -81,6 +87,32 @@ object FormativeFieldDataToDomainMapper {
             workTypeName = this.workTypeName,
             workTypeId = this.workTypeId,
             evaluationWeight = this.evaluationWeight
+        )
+    }
+
+    fun ResponseGetListWorkStudents.mapperToModelWorkTypeFormativeField() : ModelWorkTypeFormativeField {
+        return ModelWorkTypeFormativeField(
+            formativeFieldId = this.formativeFieldId,
+            nameFormativeField = this.nameFormativeField,
+            listWorks = this.listWorks.map {
+                it.toData()
+            }
+        )
+    }
+
+    fun ResponseListWork.toData():ModelListWorkFormativeField{
+        return ModelListWorkFormativeField(
+            workId = this.workId,
+            workName = this.workName,
+            listWorks = this.listWorks.map { it.toData() }
+        )
+    }
+
+    fun ResponseListWorkStudent.toData():ModelListWorkStudentFormativeField{
+        return ModelListWorkStudentFormativeField(
+            workStudentId = this.workStudentId,
+            workStudentName = this.workStudentName,
+            workStudentDate = this.workStudentDate
         )
     }
 }

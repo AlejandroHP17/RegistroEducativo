@@ -4,9 +4,9 @@ import com.mx.liftechnology.core.preference.ModelPreference
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -38,9 +38,7 @@ class GetListWorkTypeUseCase(
      * o un estado de error específico en caso de fallo.
      */
     suspend operator fun invoke(): ModelResult<List<ModelWorkTypeData>, ModelError> {
-        val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
-
-        if(teacherId == null) return ErrorResult(
+        val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER) ?: return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 

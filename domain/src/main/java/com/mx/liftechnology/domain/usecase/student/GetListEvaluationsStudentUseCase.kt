@@ -15,7 +15,15 @@ class GetListEvaluationsStudentUseCase(
     private val preference: PreferenceUseCase,
     private val getListEvaluationsStudentRepository: GetListEvaluationsStudentRepository,
 ) {
-    suspend operator fun invoke(workTypeId: Int?, studentId: Int?, formativeFieldId : Int?): ModelResult<List<ModelEvaluationsStudent>, ModelError> {
+    suspend operator fun invoke(
+        workTypeId: Int?,
+        studentId: Int?,
+        formativeFieldId : Int?,
+        workDate : String? = null,
+        workDateFrom : String? = null,
+        workDateTo : String? = null
+
+    ): ModelResult<List<ModelEvaluationsStudent>, ModelError> {
         val schoolCycleId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
         val partialId = preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
 
@@ -29,7 +37,10 @@ class GetListEvaluationsStudentUseCase(
                 partialId = partialId,
                 formativeFieldId = formativeFieldId,
                 workTypeId = workTypeId,
-                studentId = studentId
+                studentId = studentId,
+                workDate = workDate,
+                workDateFrom = workDateFrom,
+                workDateTo = workDateTo
             )
         }.fold(
             onSuccess = { result ->
