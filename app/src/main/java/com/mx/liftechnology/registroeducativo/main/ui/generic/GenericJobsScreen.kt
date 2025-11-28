@@ -51,8 +51,7 @@ fun GenericJobsScreen(
             dataState =  dataState,
             complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
-                onExpandedSubTitle = { complexCallbacks.onExpandedSubTitle(it) },
-                onItemClick = { complexCallbacks.onItemClick (it)}
+                onExpandedSubTitle = { subItem, parentItem -> complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
             )
         )
 
@@ -105,8 +104,7 @@ private fun BodyAssignment(
                 item = item,
                 complexCallbacks = ModelWotyFofiUiCallbacks(
                     onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
-                    onExpandedSubTitle = { complexCallbacks.onExpandedSubTitle(it) },
-                    onItemClick = { complexCallbacks.onItemClick(it) }
+                    onExpandedSubTitle = {subItem, parentItem ->   complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
                 )
             )
         }
@@ -140,8 +138,7 @@ private fun GenericJobsScreenPreview(){
         onReturnClick = {},
         complexCallbacks = ModelWotyFofiUiCallbacks(
             onExpandedTitle = {},
-            onExpandedSubTitle = {},
-            onItemClick = {}
+            onExpandedSubTitle = {subItem, parentItem ->  }
         ),
         onAction = {  }
     )

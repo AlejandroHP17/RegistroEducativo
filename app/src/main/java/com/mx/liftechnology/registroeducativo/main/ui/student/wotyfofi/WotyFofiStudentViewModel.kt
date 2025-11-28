@@ -10,6 +10,9 @@ import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCom
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiDataState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -72,36 +75,69 @@ class WotyFofiStudentViewModel (
      *
      * @param expanded True to expand, false to collapse.
      */
-    fun updateExpandedTitle(expanded: Pair<Boolean, Int>) {
+    fun updateExpandedTitle(expanded: ModelComplexCard?) {
         _dataState.update { currentState ->
             currentState.copy(
                 dataCard = currentState.dataCard?.map { card ->
-                    if (card.idTitle == expanded.second) {
-                        card.copy(isExpandedTitle = expanded.first)
+                    if (card.idTitle == expanded?.idTitle) {
+                        card.copy(isExpandedTitle = !expanded!!.isExpandedTitle)
                     } else card
                 }
             )
         }
     }
 
-    fun updateExpandedSubTitle(expanded: Pair<Boolean, Int>) {
+    fun updateExpandedSubTitle(subItem: ModelSubComplexCard, parentItem: ModelComplexCard) {
         _dataState.update { currentState ->
             currentState.copy(
                 dataCard = currentState.dataCard?.map { card ->
-                    if (card.idTitle == expanded.second) {
-                        card.copy(isExpandedTitle = expanded.first)
+                    if (card.idTitle == parentItem.idTitle) {
+                        val updatedList = card.list?.map { subCard ->
+                            if (subCard?.idSubTitle == subItem.idSubTitle) {
+                                subCard?.copy(isExpandedSubTitle = !subCard.isExpandedSubTitle)
+                            } else subCard
+                        }
+
+                        card.copy(list = updatedList)
+
                     } else card
                 }
             )
         }
-
-        getListEvaluations(expanded.second)
+        getListEvaluations(subItem.idSubTitle, parentItem.idTitle)
     }
 
-    fun getListEvaluations(id: Int) {
+    fun getListEvaluations(workTypeId: Int?, idTitle: Int?) {
         viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListEvaluationsStudentUseCase.invoke(id)){
+            when (val result = getListEvaluationsStudentUseCase.invoke(
+                formativeFieldId = idTitle,
+                workTypeId = workTypeId,
+                studentId = _uiState.value.student?.studentId
+            )){
                 is SuccessResult ->{
+                    _dataState.update { currentState ->
+                        currentState.copy(
+                            dataCard = currentState.dataCard?.map { card ->
+                                if (card.idTitle == idTitle) {
+                                    val updatedList = card.list?.map { subCard ->
+                                        if (subCard?.idSubTitle == workTypeId) {
+
+                                            subCard?.copy(
+                                                list = result.data.map { item ->
+                                                    ModelSubSubComplexCard(
+                                                        idDescription = item.evaluationId,
+                                                        nameDescription = item.evaluationName,
+                                                        grade = item.grade,
+                                                        isShowDescription = true
+                                                    )
+                                                })
+                                        } else subCard
+                                    }
+                                    card.copy(list = updatedList)
+                                } else card
+                            }
+                        )
+                    }
                 }
                 else -> {
                     _uiState.update {

@@ -21,10 +21,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,7 +51,9 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWot
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorFail
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
+import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWarning
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 import java.time.LocalDate
 
@@ -83,8 +87,7 @@ fun CustomCardView() {
             ),
             complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = {},
-                onExpandedSubTitle = {},
-                onItemClick = {}
+                onExpandedSubTitle = {subItem, parentItem ->  },
             )
         )
 
@@ -270,19 +273,11 @@ fun ComplexCard(
 
                 ),
                 colors = CardDefaults.cardColors(containerColor = colorWhite),
-                onClick = { complexCallbacks.onItemClick(item) }
             ) {
                 Column {
                     Row(
                         modifier = Modifier
-                            .clickable {
-                                complexCallbacks.onExpandedTitle(
-                                    Pair(
-                                        !((item?.isExpandedTitle)?:false),
-                                        item?.idTitle?:0
-                                    )
-                                )
-                            }
+                            .clickable { complexCallbacks.onExpandedTitle(item!!) }
                             .fillMaxWidth()
                             .padding(
                                 start = dimensionResource(id = R.dimen.margin_16dp) ),
@@ -296,7 +291,9 @@ fun ComplexCard(
                         )
 
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_principal_drop),
+                            painter =
+                                if(item?.isExpandedTitle == true) painterResource(id = R.drawable.ic_principal_drop_up)
+                                else painterResource(id = R.drawable.ic_principal_drop_down),
                             contentDescription = "More Options",
 
                             modifier = Modifier
@@ -311,24 +308,23 @@ fun ComplexCard(
                                 .fillMaxWidth()
                                 .padding(start = 16.dp)
                         ) {
-                            item?.list?.forEach{item ->
+                            item?.list?.forEach{subItem ->
                                 Row(
                                     modifier = Modifier
-                                        .clickable { complexCallbacks.onExpandedSubTitle( Pair(
-                                            !((item?.isExpandedSubTitle)?:false),
-                                            item?.idSubTitle?:0
-                                        )) }
+                                        .clickable { complexCallbacks.onExpandedSubTitle( subItem!!, item) }
                                         .fillMaxWidth()
-                                        .padding(
-                                            start = dimensionResource(id = R.dimen.margin_16dp) ),
-                                    horizontalArrangement = Arrangement.SpaceBetween
+                                        .padding(start = dimensionResource(id = R.dimen.margin_16dp) ),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+
                                 ){
                                     Text(
-                                        text = item?.nameSubTitle ?: "",
+                                        text = subItem?.nameSubTitle ?: "",
                                         modifier = Modifier.padding(8.dp)
                                     )
                                     Icon(
-                                        painter = painterResource(id = R.drawable.ic_drop_down),
+                                        painter =
+                                            if (subItem?.isExpandedSubTitle == true) painterResource(id = R.drawable.ic_drop_up)
+                                            else painterResource(id = R.drawable.ic_drop_down),
                                         contentDescription = "More Options",
 
                                         modifier = Modifier
@@ -337,6 +333,40 @@ fun ComplexCard(
                                     )
                                 }
 
+                                AnimatedVisibility(visible = subItem?.isExpandedSubTitle ?: false) {
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(start = 16.dp)
+                                    ) {
+                                        subItem?.list?.forEach{subSubItem ->
+                                            Row(
+                                                modifier = Modifier
+                                                    .clickable {  }
+                                                    .fillMaxWidth()
+                                                    .padding(start = dimensionResource(id = R.dimen.margin_16dp) ),
+                                                horizontalArrangement = Arrangement.SpaceBetween
+                                            ){
+                                                CompositionLocalProvider(
+                                                    when{
+                                                        subSubItem?.grade == null -> {LocalContentColor provides colorWarning}
+                                                        subSubItem.grade > 6.0 -> {LocalContentColor provides colorPrincipalText}
+                                                        else ->{LocalContentColor provides colorFail}
+                                                    })
+                                                   {
+                                                    Text(
+                                                        text = subSubItem?.nameDescription ?: "",
+                                                        modifier = Modifier.padding(8.dp)
+                                                    )
+                                                    Text(
+                                                        text = (subSubItem?.grade ?: "-").toString(),
+                                                        modifier = Modifier.padding(8.dp)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

@@ -65,11 +65,9 @@ fun WotyFofiStudentScreen(
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = { wotyFofiStudentViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = {wotyFofiStudentViewModel.updateExpandedSubTitle(it)
-                },
-                onItemClick = {}
+                onExpandedSubTitle = {subItem, parentItem -> wotyFofiStudentViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
-            onAction = { navController.navigate(MainRoutes.RegisterAssignment.createRoutes(uiState.subject))},
+            onAction = { navController.navigate(MainRoutes.RegisterAssignment.createRoutes(uiState.formativeFields))},
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -92,9 +90,8 @@ private fun WotyFofiStudentPreview(){
             onReturnClick = {},
             complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = {  },
-                onExpandedSubTitle = {
-                },
-                onItemClick = {}
+                onExpandedSubTitle = { _, _ ->
+                }
             ),
             onAction = { },
         )

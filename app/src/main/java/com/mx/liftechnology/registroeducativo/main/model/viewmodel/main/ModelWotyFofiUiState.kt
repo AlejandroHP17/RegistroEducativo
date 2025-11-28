@@ -6,12 +6,13 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
 
 /**
  * Representa el estado de la UI para la pantalla de asignación.
  *
  * @property uiState El estado general de la UI.
- * @property subject La materia seleccionada.
+ * @property formativeFields La materia seleccionada.
  * @property student El estudiante seleccionado.
  * @property controlToast El estado para la visualización de mensajes toast.
  * @author Pelkidev
@@ -19,7 +20,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  */
 data class ModelWotyFofiStateUI(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val subject: ModelFormatFormativeFieldsDomain? = null,
+    val formativeFields: ModelFormatFormativeFieldsDomain? = null,
     val student: ModelStudentDomain? = null,
     val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
 )
@@ -40,14 +41,12 @@ data class ModelWotyFofiDataState(
  *
  * @property onExpandedTitle Lambda que se invoca al expandir o contraer el título.
  * @property onExpandedSubTitle Lambda que se invoca al expandir o contraer un subtítulo.
- * @property onItemClick Lambda que se invoca al hacer clic en un ítem.
  * @author Pelkidev
  * @version 1.0.0
  */
 data class ModelWotyFofiUiCallbacks(
-    val onExpandedTitle: (Pair<Boolean, Int>) -> Unit,
-    val onExpandedSubTitle: (Pair<Boolean, Int>)-> Unit,
-    val onItemClick: (ModelComplexCard?) -> Unit,
+    val onExpandedTitle:  (ModelComplexCard) -> Unit,
+    val onExpandedSubTitle: (ModelSubComplexCard, ModelComplexCard)-> Unit,
 )
 
 fun ModelFormatFormativeFieldsDomain?.toModelComplexCard(): ModelComplexCard {

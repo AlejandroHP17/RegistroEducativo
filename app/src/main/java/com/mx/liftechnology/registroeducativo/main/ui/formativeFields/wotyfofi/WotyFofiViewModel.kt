@@ -43,7 +43,7 @@ class WotyFofiViewModel (
      */
     fun updateSubject(subject: ModelFormatFormativeFieldsDomain?) {
         saveFormativeFieldIdSelectedUseCase.invoke(subject?.formativeFieldId)
-        _uiState.update { it.copy(subject =  subject) }
+        _uiState.update { it.copy(formativeFields =  subject) }
     }
 
     fun getListWotyFofi(){

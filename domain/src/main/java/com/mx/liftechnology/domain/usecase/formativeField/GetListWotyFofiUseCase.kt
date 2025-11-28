@@ -17,11 +17,10 @@ class GetListWotyFofiUseCase(
 ) {
 
     suspend operator fun invoke() : ModelResult<ModelWotyFofiData, ModelError> {
-        val schoolCycleId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
-
-        if (schoolCycleId == null) return ErrorResult(
-            LocalModelError.USER_INCOMPLETE_DATA
-        )
+        val schoolCycleId =
+            preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) ?: return ErrorResult(
+                LocalModelError.USER_INCOMPLETE_DATA
+            )
 
         return runCatching {getListWotyFofiRepository.executeGetListWotyFofi(schoolCycleId)}.fold(
             onSuccess = { result ->

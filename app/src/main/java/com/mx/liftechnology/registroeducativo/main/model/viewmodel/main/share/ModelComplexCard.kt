@@ -1,8 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
 
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
-
-data class ModelComplexCard(//foramtiva
+data class ModelComplexCard( //formativeFields
     val idTitle : Int?,
     val nameTitle : String?,
     val isShowTitle: Boolean = false,
@@ -18,20 +16,9 @@ data class ModelSubComplexCard( //work
     val list : List<ModelSubSubComplexCard?>?,
 )
 
-data class ModelSubSubComplexCard(//evaluation
-    val idDescription : String?,
+data class ModelSubSubComplexCard( //evaluation
+    val idDescription : Int,
     val nameDescription : String?,
+    val grade : Double?,
     val isShowDescription: Boolean = false
 )
-
-fun List<ModelFormatAssignment>?.toModelSubComplexCard(): List<ModelSubComplexCard?>? {
-    return this?.map {
-        ModelSubComplexCard(
-            idSubTitle = it.id,
-            nameSubTitle = it.assignmentName.valueText,
-            isShowSubTitle = true,
-            isExpandedSubTitle = false,
-            list = null,
-        )
-    }
-}

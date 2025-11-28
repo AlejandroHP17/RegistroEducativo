@@ -60,17 +60,16 @@ fun AssignmentSubjectScreen(
     ) {
 
         GenericJobsScreen(
-            title = uiState.subject?.name ?: "Desconocido",
+            title = uiState.formativeFields?.name ?: "Desconocido",
             description = stringResource(R.string.assignment_subject_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = ModelWotyFofiUiCallbacks(
-                onExpandedTitle = { wotyFofiViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = {
+                onExpandedTitle = {  },
+                onExpandedSubTitle = {subItem, parentItem ->
                 },
-                onItemClick = {}
             ),
-            onAction = { navController.navigate(MainRoutes.RegisterAssignment.createRoutes(uiState.subject))},
+            onAction = { navController.navigate(MainRoutes.RegisterAssignment.createRoutes(uiState.formativeFields))},
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -93,9 +92,8 @@ private fun WotyFofiFormativeFieldsPreview(){
             onReturnClick = {},
             complexCallbacks = ModelWotyFofiUiCallbacks(
                 onExpandedTitle = {  },
-                onExpandedSubTitle = {
-                },
-                onItemClick = {}
+                onExpandedSubTitle = { subItem, parentItem ->
+                }
             ),
             onAction = { },
         )

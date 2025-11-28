@@ -15,12 +15,11 @@ class GetListEvaluationsStudentUseCase(
     private val preference: PreferenceUseCase,
     private val getListEvaluationsStudentRepository: GetListEvaluationsStudentRepository,
 ) {
-    suspend operator fun invoke(id: Int): ModelResult<List<ModelEvaluationsStudent>, ModelError> {
+    suspend operator fun invoke(workTypeId: Int?, studentId: Int?, formativeFieldId : Int?): ModelResult<List<ModelEvaluationsStudent>, ModelError> {
         val schoolCycleId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
         val partialId = preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
-        val formativeFieldId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD)
-        val workTypeId = id
-        if (schoolCycleId == null || partialId == null || formativeFieldId == null) return ErrorResult(
+
+        if (schoolCycleId == null || partialId == null || studentId == null || workTypeId== null || formativeFieldId == null) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
@@ -29,7 +28,8 @@ class GetListEvaluationsStudentUseCase(
                 schoolCycleId = schoolCycleId,
                 partialId = partialId,
                 formativeFieldId = formativeFieldId,
-                workTypeId = workTypeId
+                workTypeId = workTypeId,
+                studentId = studentId
             )
         }.fold(
             onSuccess = { result ->

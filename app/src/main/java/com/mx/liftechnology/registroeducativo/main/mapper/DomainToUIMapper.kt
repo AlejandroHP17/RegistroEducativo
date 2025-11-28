@@ -104,7 +104,7 @@ object DomainToUIMapper {
                 idTitle = formativeField.formativeFieldId,
                 nameTitle = formativeField.formativeFieldName,
                 isShowTitle = true,
-                isExpandedTitle = true,
+                isExpandedTitle = false,
                 list = formativeField.listWorkTypes.mapNotNull { workType ->
                     workType.toData() }
             )

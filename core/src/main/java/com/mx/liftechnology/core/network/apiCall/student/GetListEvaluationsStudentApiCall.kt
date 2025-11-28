@@ -13,29 +13,32 @@ interface GetListEvaluationsStudentApiCall {
         @Query("formative_field_id")formativeFieldId: Int,
         @Query("partial_id")partialId: Int,
         @Query("work_type_id")workTypeId: Int,
-        @Query("school_cycle_id")schoolCycleId: Int
+        @Query("school_cycle_id")schoolCycleId: Int,
+        @Query("student_id")studentId: Int
     ): Response<ResponseGeneric<List<ResponseGetListEvaluationsStudent>>>
 }
 
 data class ResponseGetListEvaluationsStudent(
+    @SerializedName("id")
+    val evaluationId: Int,
     @SerializedName("student_id")
     val studentId: Int,
     @SerializedName("formative_field_id")
     val formativeFieldId: Int,
-    @SerializedName("partial_id")
-    val partialId: Int,
     @SerializedName("work_type_id")
     val workTypeId: Int,
     @SerializedName("name")
     val evaluationName: String,
     @SerializedName("grade")
-    val grade: String?,
+    val grade: Double?,
     @SerializedName("work_date")
     val workDate: String?,
-    @SerializedName("id")
-    val evaluationId: Int,
-    @SerializedName("teacher_id")
-    val teacherId: Int,
     @SerializedName("created_at")
-    val createdAt: String
+    val createdAt: String,
+    @SerializedName("student_name")
+    val studentName: String,
+    @SerializedName("formative_field_name")
+    val formativeFieldName: String,
+    @SerializedName("work_type_name")
+    val workTypeName: String,
 )
