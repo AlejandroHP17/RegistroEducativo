@@ -10,6 +10,7 @@ import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel para la pantalla de Inicio de Sesión.
@@ -54,11 +56,8 @@ class LoginViewModel(
      * @param email El nuevo valor del email.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.default){
-            _inputState.update { it.copy(
-                emailInputState = email
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(emailInputState = email) }
     }
 
     /**
@@ -67,11 +66,8 @@ class LoginViewModel(
      * @param pass El nuevo valor de la contraseña.
      */
     fun onPassChanged(pass: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.default){
-            _inputState.update { it.copy(
-                passInputState = pass
-            )}
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(passInputState = pass) }
     }
 
     /**
@@ -80,19 +76,18 @@ class LoginViewModel(
      * @param remember El nuevo estado del checkbox.
      */
     fun onRememberChanged(remember: Boolean) {
-        viewModelScope.launch (dispatcherProvider.default){
-            _inputState.update { it.copy(
-                    isRemember = remember
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(isRemember = remember) }
     }
 
     /**
      * Valida los campos de entrada y, si son válidos, procede con el inicio de sesión.
      */
     fun validateFieldsCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            
+            // Las validaciones son operaciones síncronas simples
             val emailState = validateFieldsLoginFlowUseCase.validateEmailCompose(inputStateVM.emailInputState.valueText)
             val passState = validateFieldsLoginFlowUseCase.validatePassCompose(inputStateVM.passInputState.valueText)
 
@@ -101,17 +96,25 @@ class LoginViewModel(
                 passInputState = passState
             )}
 
-            if (!(emailState.isError || passState.isError)) loginCompose()
-            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            if (!(emailState.isError || passState.isError)) {
+                loginCompose()
+            } else {
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            }
         }
     }
 
     private suspend fun loginCompose() {
-        when (val result = loginUseCase.invoke(
-            email = inputStateVM.emailInputState.valueText,
-            pass = inputStateVM.passInputState.valueText,
-            remember = inputStateVM.isRemember
-        )) {
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
+            loginUseCase.invoke(
+                email = inputStateVM.emailInputState.valueText,
+                pass = inputStateVM.passInputState.valueText,
+                remember = inputStateVM.isRemember
+            )
+        }
+
+        when (result) {
             is SuccessResult -> {
                 _uiState.update {
                     it.copy(
@@ -126,26 +129,24 @@ class LoginViewModel(
             }
 
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_generic
-                    UserError.NO_INTERNET -> R.string.toast_error_no_internet
-                    UserError.UNAUTHORIZED -> R.string.toast_error_login_user
-                    UserError.USER_NOT_ACTIVE -> R.string.toast_error_inactive_user
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.LOGIN
+                )
 
-                msg?.let {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }?: _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
+                }
             }
         }
     }
@@ -156,16 +157,11 @@ class LoginViewModel(
      * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch (dispatcherProvider.main){
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }

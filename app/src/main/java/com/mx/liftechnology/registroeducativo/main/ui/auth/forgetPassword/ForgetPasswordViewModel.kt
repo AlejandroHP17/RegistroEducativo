@@ -42,18 +42,17 @@ class ForgetPasswordViewModel(
      * @param email The new email value.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.default){
-            _emailState.update { email }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _emailState.update { email }
     }
 
     /**
      * Validates the input fields and updates their states.
      */
     fun validateFieldsCompose() {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
+            // Las validaciones son operaciones síncronas simples
             val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
-
             _emailState.update { emailState }
         }
     }

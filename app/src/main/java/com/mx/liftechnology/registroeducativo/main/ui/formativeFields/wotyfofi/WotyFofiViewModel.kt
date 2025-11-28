@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Subject Assignment screen.
@@ -47,25 +48,31 @@ class WotyFofiViewModel (
      * @param subject The new subject.
      */
     fun updateSubject(subject: ModelFormatFormativeFieldsDomain?) {
-        saveFormativeFieldIdSelectedUseCase.invoke(subject?.formativeFieldId)
-        _uiState.update { it.copy(formativeFields =  subject) }
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            withContext(dispatcherProvider.io) {
+                saveFormativeFieldIdSelectedUseCase.invoke(subject?.formativeFieldId)
+            }
+            _uiState.update { it.copy(formativeFields = subject) }
+        }
     }
 
     fun getListWotyFofi(){
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListWorkEvaluationFormativeFieldUseCase.invoke()){
-                is SuccessResult ->{
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListWorkEvaluationFormativeFieldUseCase.invoke()
+            }
+
+            when (result) {
+                is SuccessResult -> {
                     _dataState.update {
-                        it.copy(
-                            dataCard = result.data.toComplexCardUI()
-                        )
+                        it.copy(dataCard = result.data.toComplexCardUI())
                     }
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
+                        it.copy(uiState = ModelStateUIEnum.ERROR)
                     }
                 }
             }
@@ -116,45 +123,48 @@ class WotyFofiViewModel (
         workDate: String?,
         idTitle: Int?
     ) {
-        viewModelScope.launch (dispatcherProvider.io){
-            when (val result = getListByFieldTypeStudentUseCase.invoke(
-                workTypeId = idTitle,
-                workName = workName,
-                workDate = workDate
-            )){
-            is SuccessResult ->{
-                _dataState.update { currentState ->
-                    currentState.copy(
-                        dataCard = currentState.dataCard?.map { card ->
-                            if (card.idTitle == idTitle) {
-                                val updatedList = card.list?.map { subCard ->
-                                    if (subCard?.idSubTitle == idSubTitle) {
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListByFieldTypeStudentUseCase.invoke(
+                    workTypeId = idTitle,
+                    workName = workName,
+                    workDate = workDate
+                )
+            }
 
-                                        subCard?.copy(
-                                            list = result.data.works.firstOrNull()?.listStudents?.map { item ->
-                                                ModelSubSubComplexCard(
-                                                    idDescription = item.studentId,
-                                                    nameDescription = item.studentName,
-                                                    grade = item.grade?.toDouble(),
-                                                    isShowDescription = true
-                                                )
-                                            })
-                                    } else subCard
-                                }
-                                card.copy(list = updatedList)
-                            } else card
-                        }
-                    )
+            when (result) {
+                is SuccessResult -> {
+                    _dataState.update { currentState ->
+                        currentState.copy(
+                            dataCard = currentState.dataCard?.map { card ->
+                                if (card.idTitle == idTitle) {
+                                    val updatedList = card.list?.map { subCard ->
+                                        if (subCard?.idSubTitle == idSubTitle) {
+                                            subCard?.copy(
+                                                list = result.data.works.firstOrNull()?.listStudents?.map { item ->
+                                                    ModelSubSubComplexCard(
+                                                        idDescription = item.studentId,
+                                                        nameDescription = item.studentName,
+                                                        grade = item.grade?.toDouble(),
+                                                        isShowDescription = true
+                                                    )
+                                                }
+                                            )
+                                        } else subCard
+                                    }
+                                    card.copy(list = updatedList)
+                                } else card
+                            }
+                        )
+                    }
+                }
+                else -> {
+                    _uiState.update {
+                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                    }
                 }
             }
-            else -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR
-                    )
-                }
-            }
-        }
         }
     }
 

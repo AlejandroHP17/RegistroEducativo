@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Subject List screen.
@@ -42,10 +43,15 @@ class ListFormativeFieldsViewModel(
      * Gets the list of subjects.
      */
     fun getFormativeFields() {
-        viewModelScope.launch (dispatcherProvider.main){
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            when(val result = getListSubjectUseCase.invoke()){
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListSubjectUseCase.invoke()
+            }
+
+            when(result) {
                 is SuccessResult -> {
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
@@ -73,7 +79,12 @@ class ListFormativeFieldsViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            when(deleteFormativeFieldsUseCase.invoke(card.id)){
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                deleteFormativeFieldsUseCase.invoke(card.id)
+            }
+
+            when(result) {
                 is SuccessResult -> {
                     getFormativeFields()
                 }

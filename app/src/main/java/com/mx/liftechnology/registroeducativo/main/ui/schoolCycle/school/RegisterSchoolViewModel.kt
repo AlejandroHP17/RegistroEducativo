@@ -11,7 +11,6 @@ import com.mx.liftechnology.core.util.VoiceRecognitionManager
 import com.mx.liftechnology.core.util.logDebug
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -22,12 +21,13 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toUi
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiInputs
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiSemiAutomaticData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -97,30 +97,27 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun onTypeChanged(type: ModelCustomSpinner) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            val data = _uiSemiAutomaticData.value.periodCatalog
-                ?.getPeriodsByType(type.value.toString())
+        // Actualizaciones de estado simples no necesitan corrutinas
+        val data = _uiSemiAutomaticData.value.periodCatalog
+            ?.getPeriodsByType(type.value.toString())
 
-            // Actualiza el campo cycle al primer elemento de la lista del nuevo tipo
-            val firstCycle = data?.firstOrNull()
-            
-            withContext(dispatcherProvider.main) {
-                _uiSemiAutomaticData.update { current ->
-                    current.copy(
-                        spinner = current.spinner?.copy(
-                            cycle = data
-                        )
-                    )
-                }
-                
-                _inputState.update {
-                    it.copy(
-                        type = type.value.stringToModelStateOutFieldText(),
-                        cycle = firstCycle?.value?.stringToModelStateOutFieldText() 
-                            ?: ModelStateOutFieldText() // Si no hay ciclos, deja el campo vacío
-                    )
-                }
-            }
+        // Actualiza el campo cycle al primer elemento de la lista del nuevo tipo
+        val firstCycle = data?.firstOrNull()
+        
+        _uiSemiAutomaticData.update { current ->
+            current.copy(
+                spinner = current.spinner?.copy(
+                    cycle = data
+                )
+            )
+        }
+        
+        _inputState.update {
+            it.copy(
+                type = type.value.stringToModelStateOutFieldText(),
+                cycle = firstCycle?.value?.stringToModelStateOutFieldText() 
+                    ?: ModelStateOutFieldText() // Si no hay ciclos, deja el campo vacío
+            )
         }
     }
 
@@ -133,12 +130,9 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun onCycleChanged(cycle: ModelCustomSpinner) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _inputState.update {
-                it.copy(
-                    cycle = cycle.value.stringToModelStateOutFieldText()
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update {
+            it.copy(cycle = cycle.value.stringToModelStateOutFieldText())
         }
     }
 
@@ -151,12 +145,9 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun onGradeChanged(grade: ModelCustomSpinner) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _inputState.update {
-                it.copy(
-                    grade = grade.value.stringToModelStateOutFieldText()
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update {
+            it.copy(grade = grade.value.stringToModelStateOutFieldText())
         }
     }
 
@@ -169,12 +160,9 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun onGroupChanged(group: ModelCustomSpinner) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _inputState.update {
-                it.copy(
-                    group = group.value.stringToModelStateOutFieldText()
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update {
+            it.copy(group = group.value.stringToModelStateOutFieldText())
         }
     }
 
@@ -188,61 +176,58 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun onCctChanged(cct: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            if (cct.valueText.length == 10) {
-                _uiState.update {
-                    it.copy(uiState = ModelStateUIEnum.LOADING)
-                }
-                _inputState.update {
-                    it.copy(
-                        cct = cct
-                    )
-                }
+        if (cct.valueText.length == 10) {
+            _uiState.update {
+                it.copy(uiState = ModelStateUIEnum.LOADING)
+            }
+            _inputState.update {
+                it.copy(cct = cct)
+            }
+            viewModelScope.launch {
                 getSchoolCCT(cct.valueText)
-            } else {
-                _inputState.update {
-                    it.copy(
-                        cct = cct.valueText.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND)
-                    )
-                }
-                _uiSemiAutomaticData.update {
-                    it.copy(
-                        schoolName = it.schoolName.copy(valueText = ""),
-                        shiftName = it.shiftName.copy(valueText = ""),
-                        read = true
-                    )
-                }
+            }
+        } else {
+            _inputState.update {
+                it.copy(
+                    cct = cct.valueText.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_NOT_FOUND)
+                )
+            }
+            _uiSemiAutomaticData.update {
+                it.copy(
+                    schoolName = it.schoolName.copy(valueText = ""),
+                    shiftName = it.shiftName.copy(valueText = ""),
+                    read = true
+                )
             }
         }
     }
 
     fun onLabelCycleChanged(labelCycle: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            _inputState.update { it.copy(
-                labelCycle = labelCycle
-            )}
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(labelCycle = labelCycle) }
     }
 
     private suspend fun getSchoolCCT(cct: String) {
-        when (val state = getCctUseCase.invoke(cct)) {
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val state = withContext(dispatcherProvider.io) {
+            getCctUseCase.invoke(cct)
+        }
+
+        when (state) {
             is SuccessResult -> {
-                withContext(dispatcherProvider.main){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.NOTHING
-                        )
-                    }
-                    _uiSemiAutomaticData.update {
-                        it.copy(
-                            schoolName = it.schoolName.copy(valueText = state.data.result.schoolName),
-                            schoolId = state.data.result.id,
-                            shiftName = it.shiftName.copy(valueText = state.data.result.shiftName?:""),
-                            spinner = state.data.spinners.toUi(),
-                            read = false,
-                            periodCatalog = state.data.result.periodCatalog
-                        )
-                    }
+                _uiState.update {
+                    it.copy(uiState = ModelStateUIEnum.NOTHING)
+                }
+                _uiSemiAutomaticData.update {
+                    it.copy(
+                        schoolName = it.schoolName.copy(valueText = state.data.result.schoolName),
+                        schoolId = state.data.result.id,
+                        shiftName = it.shiftName.copy(valueText = state.data.result.shiftName ?: ""),
+                        spinner = state.data.spinners.toUi(),
+                        read = false,
+                        periodCatalog = state.data.result.periodCatalog
+                    )
+
                 }
             }
             else -> {
@@ -280,9 +265,10 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun validateFields() {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
+            // Las validaciones son operaciones síncronas simples
             val cctState = validateFieldsUseCase.validateCctCompose(inputStateVM.cct.valueText)
             val typeState = validateFieldsUseCase.validateTypeCompose(inputStateVM.type.valueText)
             val gradeState = validateFieldsUseCase.validateGradeCompose(inputStateVM.grade.valueText)
@@ -308,21 +294,27 @@ class RegisterSchoolViewModel(
     }
 
     private suspend fun registerCycleSchool() {
-        val  period  = _uiSemiAutomaticData.value.periodCatalog.toSelectPeriod(
+        val period = _uiSemiAutomaticData.value.periodCatalog.toSelectPeriod(
             inputStateVM.cycle.valueText,
             inputStateVM.type.valueText
         )
-        when (val result = registerCycleSchoolUseCase.invoke(
-            schoolId = _uiSemiAutomaticData.value.schoolId,
-            periodCatalogId =  period,
-            cct = inputStateVM.cct.valueText,
-            grade = inputStateVM.grade.valueText.toInt(),
-            group = inputStateVM.group.valueText,
-            cycle = inputStateVM.cycle.valueText.toInt(),
-            shiftName = _uiSemiAutomaticData.value.shiftName.valueText,
-            labelCycleState = inputStateVM.labelCycle.valueText
-        )) {
-            is SuccessResult-> {
+        
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
+            registerCycleSchoolUseCase.invoke(
+                schoolId = _uiSemiAutomaticData.value.schoolId,
+                periodCatalogId = period,
+                cct = inputStateVM.cct.valueText,
+                grade = inputStateVM.grade.valueText.toInt(),
+                group = inputStateVM.group.valueText,
+                cycle = inputStateVM.cycle.valueText.toInt(),
+                shiftName = _uiSemiAutomaticData.value.shiftName.valueText,
+                labelCycleState = inputStateVM.labelCycle.valueText
+            )
+        }
+
+        when (result) {
+            is SuccessResult -> {
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
@@ -336,24 +328,23 @@ class RegisterSchoolViewModel(
             }
 
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_register_school
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.REGISTER_SCHOOL
+                )
 
-                if(msg != null){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
                 }
             }
         }
@@ -379,7 +370,7 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun change() {
-        viewModelScope.launch(dispatcherProvider.main) {
+        viewModelScope.launch {
             if (isListening) {
                 voiceRecognitionManager.startListening()
                 isListening = false
@@ -396,8 +387,9 @@ class RegisterSchoolViewModel(
         viewModelScope.launch {
             val result = state.firstOrNull()?.replace(" ", "")?.uppercase()
             onCctChanged((result ?: "").stringToModelStateOutFieldText())
-            _inputState.update { it.copy(cct = result?.uppercase().stringToModelStateOutFieldText()
-            ) }
+            _inputState.update { 
+                it.copy(cct = result?.uppercase()?.stringToModelStateOutFieldText() ?: ModelStateOutFieldText())
+            }
         }
     }
 
@@ -409,16 +401,11 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch(dispatcherProvider.main) {
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }

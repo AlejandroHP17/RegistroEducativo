@@ -8,6 +8,7 @@ import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Splash screen.
@@ -39,8 +40,11 @@ class SplashViewModel(
     }
 
     private fun getNavigation() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            val isLoggedIn = preferenceUseCase.getPreferenceBoolean(ModelPreference.REMEMBER_LOGIN)
+        viewModelScope.launch {
+            // Las operaciones de I/O (SharedPreferences) deben ejecutarse en el dispatcher de I/O
+            val isLoggedIn = withContext(dispatcherProvider.io) {
+                preferenceUseCase.getPreferenceBoolean(ModelPreference.REMEMBER_LOGIN)
+            }
             _navigate.value = isLoggedIn
         }
     }

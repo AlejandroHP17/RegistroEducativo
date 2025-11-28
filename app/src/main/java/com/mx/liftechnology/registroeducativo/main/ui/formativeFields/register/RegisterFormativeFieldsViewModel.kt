@@ -14,6 +14,7 @@ import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativ
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Subject Registration screen.
@@ -48,13 +50,8 @@ class RegisterFormativeFieldsViewModel(
      * @param subject The new subject name.
      */
     fun onSubjectChanged(subject: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update {
-                it.copy(
-                    subject = subject
-                )
-            }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiState.update { it.copy(subject = subject) }
     }
 
     /**
@@ -63,21 +60,20 @@ class RegisterFormativeFieldsViewModel(
      * @param value A pair containing the new workType type and the index of the item that changed.
      */
     fun onNameChange(value: Pair<ModelWorkTypeData?, Int>) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update {
-                it.copy(
-                    listAdapter = it.listAdapter?.map { subject ->
-                        if (subject.position == value.second) {
-                            subject.copy(
-                                name = value.first?.name.stringToModelStateOutFieldText(),
-                                workTypeId = value.first?.workTypeId,
-                            )
-                        } else {
-                            subject
-                        }
-                    },
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiState.update {
+            it.copy(
+                listAdapter = it.listAdapter?.map { subject ->
+                    if (subject.position == value.second) {
+                        subject.copy(
+                            name = value.first?.name.stringToModelStateOutFieldText(),
+                            workTypeId = value.first?.workTypeId,
+                        )
+                    } else {
+                        subject
+                    }
+                },
+            )
         }
     }
 
@@ -87,18 +83,17 @@ class RegisterFormativeFieldsViewModel(
      * @param value A pair containing the new percentage and the index of the item that changed.
      */
     fun onPercentChange(value: Pair<ModelStateOutFieldText, Int>) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _uiState.update {
-                it.copy(
-                    listAdapter = it.listAdapter?.map { subject ->
-                        if (subject.position == value.second) {
-                            subject.copy(percent = value.first)
-                        } else {
-                            subject
-                        }
-                    },
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiState.update {
+            it.copy(
+                listAdapter = it.listAdapter?.map { subject ->
+                    if (subject.position == value.second) {
+                        subject.copy(percent = value.first)
+                    } else {
+                        subject
+                    }
+                },
+            )
         }
     }
 
@@ -108,24 +103,23 @@ class RegisterFormativeFieldsViewModel(
      * @param options The new number of options.
      */
     fun onOptionsChanged(options: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            if (options.toInt() > 0) {
-                val list = MutableList(options.toInt()) { index ->
-                    ModelSpinnersWorkMethods(
-                        position = index,
-                        name = "".stringToModelStateOutFieldText(),
-                        percent = "".stringToModelStateOutFieldText(),
-                        workTypeId = 0,
-                    )
-                }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        if (options.toIntOrNull() != null && options.toInt() > 0) {
+            val list = MutableList(options.toInt()) { index ->
+                ModelSpinnersWorkMethods(
+                    position = index,
+                    name = "".stringToModelStateOutFieldText(),
+                    percent = "".stringToModelStateOutFieldText(),
+                    workTypeId = 0,
+                )
+            }
 
-                _uiState.update {
-                    it.copy(
-                        options = options.stringToModelStateOutFieldText(),
-                        listAdapter = list,
-                        subject = it.subject.valueText.stringToModelStateOutFieldText()
-                    )
-                }
+            _uiState.update {
+                it.copy(
+                    options = options.stringToModelStateOutFieldText(),
+                    listAdapter = list,
+                    subject = it.subject.valueText.stringToModelStateOutFieldText()
+                )
             }
         }
     }
@@ -134,14 +128,13 @@ class RegisterFormativeFieldsViewModel(
      * Validates the input fields and proceeds to register the subject if they are valid.
      */
     fun validateFieldsCompose() {
-        viewModelScope.launch (dispatcherProvider.io){
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            val nameState =
-                validateFieldsFormativeFieldsUseCase.validateNameCompose(_uiState.value.subject.valueText)
-            val optionState =
-                validateFieldsFormativeFieldsUseCase.validateOptionCompose(_uiState.value.options.valueText)
-            val updatedListState =
-                validateFieldsFormativeFieldsUseCase.validateListJobsCompose(_uiState.value.listAdapter?.toMutableList())
+            
+            // Las validaciones son operaciones síncronas simples
+            val nameState = validateFieldsFormativeFieldsUseCase.validateNameCompose(_uiState.value.subject.valueText)
+            val optionState = validateFieldsFormativeFieldsUseCase.validateOptionCompose(_uiState.value.options.valueText)
+            val updatedListState = validateFieldsFormativeFieldsUseCase.validateListJobsCompose(_uiState.value.listAdapter?.toMutableList())
 
             _uiState.update {
                 it.copy(
@@ -152,13 +145,13 @@ class RegisterFormativeFieldsViewModel(
             }
 
             if (!(nameState.isError || optionState.isError)) {
-                val optionState = validateFieldsFormativeFieldsUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
+                val percentState = validateFieldsFormativeFieldsUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
 
-                _uiState.update { it.copy(options = optionState) }
+                _uiState.update { it.copy(options = percentState) }
 
-                if (!optionState.isError) {
+                if (!percentState.isError) {
                     registerFormativeField()
-                }else{
+                } else {
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                 }
             } else {
@@ -168,12 +161,15 @@ class RegisterFormativeFieldsViewModel(
     }
 
     private suspend fun registerFormativeField() {
-        when (val result =
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
             registerFormativeFieldsBulkUseCase.invoke(
                 _uiState.value.listAdapter?.toMutableList(),
                 _uiState.value.subject.valueText
-            )){
+            )
+        }
 
+        when (result) {
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
@@ -185,24 +181,23 @@ class RegisterFormativeFieldsViewModel(
                 ) }
             }
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_register_subject
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.REGISTER_SUBJECT
+                )
 
-                if(msg != null){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
                 }
             }
         }
@@ -212,14 +207,16 @@ class RegisterFormativeFieldsViewModel(
      * Gets the list of workType types.
      */
     fun getListWorkType() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListWorkTypeUseCase.invoke()
-            ) {
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListWorkTypeUseCase.invoke()
+            }
+
+            when (result) {
                 is SuccessResult -> {
                     _uiState.update {
-                        it.copy(
-                            listWorkMethods = result.data
-                        )
+                        it.copy(listWorkMethods = result.data)
                     }
                 }
 
@@ -245,16 +242,11 @@ class RegisterFormativeFieldsViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch (dispatcherProvider.main){
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }

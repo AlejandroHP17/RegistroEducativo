@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Student Assignment screen.
@@ -50,20 +51,21 @@ class WotyFofiStudentViewModel (
     }
 
     fun getListWotyFofi(){
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListWotyFofiUseCase.invoke()){
-                is SuccessResult ->{
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListWotyFofiUseCase.invoke()
+            }
+
+            when (result) {
+                is SuccessResult -> {
                     _dataState.update {
-                        it.copy(
-                            dataCard = result.data.toComplexCardUI()
-                        )
+                        it.copy(dataCard = result.data.toComplexCardUI())
                     }
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
+                        it.copy(uiState = ModelStateUIEnum.ERROR)
                     }
                 }
             }
@@ -108,20 +110,24 @@ class WotyFofiStudentViewModel (
     }
 
     fun getListEvaluations(workTypeId: Int?, idTitle: Int?) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getListEvaluationsStudentUseCase.invoke(
-                formativeFieldId = idTitle,
-                workTypeId = workTypeId,
-                studentId = _uiState.value.student?.studentId
-            )){
-                is SuccessResult ->{
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListEvaluationsStudentUseCase.invoke(
+                    formativeFieldId = idTitle,
+                    workTypeId = workTypeId,
+                    studentId = _uiState.value.student?.studentId
+                )
+            }
+
+            when (result) {
+                is SuccessResult -> {
                     _dataState.update { currentState ->
                         currentState.copy(
                             dataCard = currentState.dataCard?.map { card ->
                                 if (card.idTitle == idTitle) {
                                     val updatedList = card.list?.map { subCard ->
                                         if (subCard?.idSubTitle == workTypeId) {
-
                                             subCard?.copy(
                                                 list = result.data.map { item ->
                                                     ModelSubSubComplexCard(
@@ -130,7 +136,8 @@ class WotyFofiStudentViewModel (
                                                         grade = item.grade,
                                                         isShowDescription = true
                                                     )
-                                                })
+                                                }
+                                            )
                                         } else subCard
                                     }
                                     card.copy(list = updatedList)
@@ -141,9 +148,7 @@ class WotyFofiStudentViewModel (
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
+                        it.copy(uiState = ModelStateUIEnum.ERROR)
                     }
                 }
             }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Student List screen.
@@ -42,10 +43,15 @@ class ListStudentViewModel(
      * Gets the list of students.
      */
     fun getListStudent() {
-        viewModelScope.launch (dispatcherProvider.default){
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            when(val result = getListStudentUseCase.invoke()){
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListStudentUseCase.invoke()
+            }
+
+            when(result) {
                 is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
@@ -74,10 +80,15 @@ class ListStudentViewModel(
     fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
 
     fun deleteStudent(card: ModelCustomCard) {
-        viewModelScope.launch (dispatcherProvider.default){
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            when(deleteStudentUseCase.invoke(card.id)){
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                deleteStudentUseCase.invoke(card.id)
+            }
+
+            when(result) {
                 is SuccessResult -> {
                     getListStudent()
                 }

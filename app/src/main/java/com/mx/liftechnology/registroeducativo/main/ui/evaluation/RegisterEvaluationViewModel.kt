@@ -19,6 +19,7 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMapper.toModelCard
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Assignment Registration screen.
@@ -69,35 +71,37 @@ class RegisterEvaluationViewModel(
      * @param formativeField The new subject.
      */
     fun updateFormativeField(formativeField: ModelFormatFormativeFieldsDomain?) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            saveFormativeFieldIdSelectedUseCase.invoke(formativeField?.formativeFieldId)
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            withContext(dispatcherProvider.io) {
+                saveFormativeFieldIdSelectedUseCase.invoke(formativeField?.formativeFieldId)
+            }
             getListWorkType()
             _uiState.update {
-                it.copy(
-                    formativeField = formativeField
-                )
+                it.copy(formativeField = formativeField)
             }
         }
     }
 
     private fun getListWorkType() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getWorkTypeByFormativeFieldUseCase.invoke()) {
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getWorkTypeByFormativeFieldUseCase.invoke()
+            }
+
+            when (result) {
                 is SuccessResult -> {
                     val convertData = result.data.toCustomSpinnerList()
                     onNameAssignmentChanged(convertData?.first()!!)
                     _dataState.update {
-                        it.copy(
-                            listOptions = convertData
-                        )
+                        it.copy(listOptions = convertData)
                     }
                 }
 
                 else -> {
                     _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
+                        it.copy(uiState = ModelStateUIEnum.ERROR)
                     }
                 }
             }
@@ -110,13 +114,8 @@ class RegisterEvaluationViewModel(
      * @param name The new name.
      */
     fun onNameChanged(name: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _dataState.update {
-                it.copy(
-                    nameJob = name
-                )
-            }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _dataState.update { it.copy(nameJob = name) }
     }
 
     /**
@@ -125,12 +124,9 @@ class RegisterEvaluationViewModel(
      * @param date The new date.
      */
     fun onDateChanged(date: String) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _dialogState.update {
-                it.copy(
-                    date = date.stringToModelStateOutFieldText()
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _dialogState.update {
+            it.copy(date = date.stringToModelStateOutFieldText())
         }
     }
 
@@ -140,13 +136,12 @@ class RegisterEvaluationViewModel(
      * @param assignment The new assignment.
      */
     fun onNameAssignmentChanged(assignment: ModelCustomSpinner) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _dataState.update {
-                it.copy(
-                    nameAssignment = assignment.value.stringToModelStateOutFieldText(),
-                    options = assignment
-                )
-            }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _dataState.update {
+            it.copy(
+                nameAssignment = assignment.value.stringToModelStateOutFieldText(),
+                options = assignment
+            )
         }
     }
 
@@ -156,20 +151,17 @@ class RegisterEvaluationViewModel(
      * @param data A pair containing the student ID and the new score.
      */
     fun onScoreChange(data: Pair<String, String>) {
-        viewModelScope.launch(dispatcherProvider.io) {
-            _dataState.update { currentState ->
-                currentState.copy(
-                    studentListUI = currentState.studentListUI.mapIndexed { _, score ->
-                        if (score.id == data.first) {
-                            score.copy(
-                                score = data.second.stringToModelStateOutFieldText(),
-                            )
-                        } else {
-                            score
-                        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _dataState.update { currentState ->
+            currentState.copy(
+                studentListUI = currentState.studentListUI.mapIndexed { _, score ->
+                    if (score.id == data.first) {
+                        score.copy(score = data.second.stringToModelStateOutFieldText())
+                    } else {
+                        score
                     }
-                )
-            }
+                }
+            )
         }
     }
 
@@ -177,9 +169,15 @@ class RegisterEvaluationViewModel(
      * Gets the list of students.
      */
     fun getListStudent() {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            when(val result = getListStudentUseCase.invoke()){
+            
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListStudentUseCase.invoke()
+            }
+
+            when(result) {
                 is SuccessResult -> {
                     _dataState.update {
                         it.copy(
@@ -219,12 +217,12 @@ class RegisterEvaluationViewModel(
      * Validates the input fields and proceeds to register the assignment if they are valid.
      */
     fun validateFields() {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            val nameJobState =
-                validateFieldsEvaluationUseCase.validateNameJob(_dataState.value.nameJob.valueText)
-            val nameAssignmentState =
-                validateFieldsEvaluationUseCase.validateNameAssignment(_dataState.value.nameAssignment.valueText)
+            
+            // Las validaciones son operaciones síncronas simples
+            val nameJobState = validateFieldsEvaluationUseCase.validateNameJob(_dataState.value.nameJob.valueText)
+            val nameAssignmentState = validateFieldsEvaluationUseCase.validateNameAssignment(_dataState.value.nameAssignment.valueText)
             val dateState = validateFieldsEvaluationUseCase.validateDate(_dialogState.value.date.valueText)
 
             _dataState.update {
@@ -234,21 +232,29 @@ class RegisterEvaluationViewModel(
                 )
             }
             _dialogState.update {
-                it.copy( date = dateState )
+                it.copy(date = dateState)
             }
 
-            if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) registerWorkTypeEvaluations()
-            else _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) {
+                registerWorkTypeEvaluations()
+            } else {
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+            }
         }
     }
 
     private suspend fun registerWorkTypeEvaluations() {
-        when (val result = registerWorkTypeEvaluationsUseCase.invoke(
-            workTypeId = _dataState.value.options?.id!!,
-            nameWork = _dataState.value.nameJob.valueText,
-            workDate = _dialogState.value.date.valueText,
-            studentListUI = _dataState.value.studentListUI.toModelCard()
-        )) {
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
+            registerWorkTypeEvaluationsUseCase.invoke(
+                workTypeId = _dataState.value.options?.id!!,
+                nameWork = _dataState.value.nameJob.valueText,
+                workDate = _dialogState.value.date.valueText,
+                studentListUI = _dataState.value.studentListUI.toModelCard()
+            )
+        }
+
+        when (result) {
             is SuccessResult -> {
                 _uiState.update {
                     it.copy(
@@ -263,24 +269,23 @@ class RegisterEvaluationViewModel(
             }
 
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_register_assignment
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.REGISTER_ASSIGNMENT
+                )
 
-                if(msg != null){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
                 }
             }
         }
@@ -290,16 +295,16 @@ class RegisterEvaluationViewModel(
      * Updates the date range for the active partial.
      */
     fun updateDates(){
-        viewModelScope.launch(dispatcherProvider.io) {
-            val dates = getDatesActivePartialUseCase.invoke()
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val dates = withContext(dispatcherProvider.io) {
+                getDatesActivePartialUseCase.invoke()
+            }
             _dialogState.update {
-                it.copy(
-                    rangeDate = dates
-                )
+                it.copy(rangeDate = dates)
             }
         }
     }
-
 
     /**
      * Modifies the visibility of the toast message.
@@ -307,16 +312,11 @@ class RegisterEvaluationViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch (dispatcherProvider.main){
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }

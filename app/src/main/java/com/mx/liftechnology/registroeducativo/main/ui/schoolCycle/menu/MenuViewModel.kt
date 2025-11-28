@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase
@@ -14,11 +13,11 @@ import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetListPartialMenuUs
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.SavePartialMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.UpdateGroupMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.UpdatePartialMenuUseCase
-import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiState
@@ -63,9 +62,15 @@ class MenuViewModel(
      * Gets all the options for the schoolCycle.
      */
     fun getGroup() {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
-            when (val result = getGroupMenuUseCase.invoke()) {
+            
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getGroupMenuUseCase.invoke()
+            }
+
+            when (result) {
                 is SuccessResult -> {
                     _dialogState.update {
                         it.copy(
@@ -78,28 +83,26 @@ class MenuViewModel(
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
-
                 }
 
                 is ErrorResult -> {
-                    val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                        UserError.LOGS -> null
-                        else -> R.string.toast_error_generic
-                    }
+                    val userError = ErrorMapper.mapErrorToUI(result.error)
+                    val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                        error = userError,
+                        context = ErrorToMessageMapper.ErrorContext.GENERIC
+                    )
 
-                    if(msg != null){
-                        _uiState.update {
-                            it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
-                                controlToast = ToastUiState(
+                    _uiState.update {
+                        it.copy(
+                            uiState = ModelStateUIEnum.ERROR,
+                            controlToast = messageRes?.let { msg ->
+                                ToastUiState(
                                     messageToast = msg,
                                     showToast = true,
                                     typeToast = ModelStateTypeToastUI.ERROR
                                 )
-                            )
-                        }
-                    }else{
-                        _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                            } ?: it.controlToast.copy(showToast = false)
+                        )
                     }
                 }
             }
@@ -112,42 +115,53 @@ class MenuViewModel(
      * @param nameItem The selected group.
      */
     fun updateGroup(nameItem: ModelDialogStudentGroupDomain) {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
+            // Actualizaciones de estado simples no necesitan dispatcher específico
             _dialogState.update { it.copy(studentGroupItem = nameItem) }
-            updateGroupMenuUseCase.invoke(nameItem)
+            
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            withContext(dispatcherProvider.io) {
+                updateGroupMenuUseCase.invoke(nameItem)
+            }
             getListPartialCompose()
         }
     }
 
     private suspend fun getListPartialCompose() {
-        when (val result = getListPartialMenuUseCase.invoke()) {
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
+            getListPartialMenuUseCase.invoke()
+        }
+
+        when (result) {
             is SuccessResult -> {
-                withContext(dispatcherProvider.io) {
-                    val itemSelected = savePartialMenuUseCase.invoke(result.data)
-                    val studentGroupItem =  _dialogState.value.studentGroupItem.copy(
-                        listItemPartial = result.data,
-                        namePartial = itemSelected?.name,
-                        itemPartial = itemSelected
-                    )
+                val itemSelected = withContext(dispatcherProvider.io) {
+                    savePartialMenuUseCase.invoke(result.data)
+                }
+                
+                val studentGroupItem = _dialogState.value.studentGroupItem.copy(
+                    listItemPartial = result.data,
+                    namePartial = itemSelected?.name,
+                    itemPartial = itemSelected
+                )
 
-                    val studentGroupList=  _dialogState.value.studentGroupList.map { groupItem ->
-                        if (groupItem.itemPartial?.partialId == itemSelected?.partialId) {
-                            groupItem.copy(
-                                listItemPartial = result.data,
-                                namePartial = itemSelected?.name,
-                                itemPartial = itemSelected
-                            )
-                        } else {
-                            groupItem
-                        }
-                    }
-
-                    _dialogState.update {
-                        it.copy(
-                            studentGroupItem = studentGroupItem,
-                            studentGroupList = studentGroupList
+                val studentGroupList = _dialogState.value.studentGroupList.map { groupItem ->
+                    if (groupItem.itemPartial?.partialId == itemSelected?.partialId) {
+                        groupItem.copy(
+                            listItemPartial = result.data,
+                            namePartial = itemSelected?.name,
+                            itemPartial = itemSelected
                         )
+                    } else {
+                        groupItem
                     }
+                }
+
+                _dialogState.update {
+                    it.copy(
+                        studentGroupItem = studentGroupItem,
+                        studentGroupList = studentGroupList
+                    )
                 }
             }
             is ErrorResult -> {
@@ -160,8 +174,13 @@ class MenuViewModel(
      * Gets the control schoolCycle items.
      */
     fun getControlMenu() {
-        viewModelScope.launch(dispatcherProvider.io) {
-            when (val result = getControlMenuUseCase.invoke()) {
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getControlMenuUseCase.invoke()
+            }
+
+            when (result) {
                 is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
@@ -173,18 +192,20 @@ class MenuViewModel(
 
                 is ErrorResult -> {
                     _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR
-                        )
+                        it.copy(uiState = ModelStateUIEnum.ERROR)
                     }
                 }
-
             }
         }
     }
 
-    private fun showGetControlRegister() {
-        when (val result = getControlRegisterUseCase.invoke()) {
+    private suspend fun showGetControlRegister() {
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
+            getControlRegisterUseCase.invoke()
+        }
+
+        when (result) {
             is SuccessResult -> {
                 _uiState.update {
                     it.copy(
@@ -206,7 +227,6 @@ class MenuViewModel(
                 }
             }
         }
-
     }
 
     /**
@@ -215,7 +235,8 @@ class MenuViewModel(
      * @param partialItem The selected partial.
      */
     fun updatePartial(partialItem: ModelDialogGroupPartialDomain?) {
-        viewModelScope.launch(dispatcherProvider.io) {
+        viewModelScope.launch {
+            // Actualizaciones de estado simples no necesitan dispatcher específico
             _dialogState.update {
                 it.copy(
                     studentGroupItem = it.studentGroupItem.copy(
@@ -224,7 +245,11 @@ class MenuViewModel(
                     )
                 )
             }
-            updatePartialMenuUseCase.invoke(partialItem)
+            
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            withContext(dispatcherProvider.io) {
+                updatePartialMenuUseCase.invoke(partialItem)
+            }
         }
     }
 
@@ -234,16 +259,11 @@ class MenuViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch(dispatcherProvider.main) {
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the Calendar screen.
@@ -85,7 +86,12 @@ class CalendarViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            when(val result = getListStudentUseCase.invoke()){
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListStudentUseCase.invoke()
+            }
+
+            when(result) {
                 is SuccessResult -> {
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)

@@ -11,6 +11,7 @@ import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * ViewModel for the User Registration screen.
@@ -54,11 +56,8 @@ class RegisterUserViewModel(
      * @param email The new email value.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.default){
-            _inputState.update { it.copy(
-                emailInputState = email
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(emailInputState = email) }
     }
 
     /**
@@ -67,11 +66,8 @@ class RegisterUserViewModel(
      * @param pass The new password value.
      */
     fun onPassChanged(pass: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.io){
-            _inputState.update { it.copy(
-                passInputState = pass
-            )}
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(passInputState = pass) }
     }
 
     /**
@@ -80,11 +76,8 @@ class RegisterUserViewModel(
      * @param repeatPass The new repeated password value.
      */
     fun onRepeatPassChanged(repeatPass: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.io){
-            _inputState.update { it.copy(
-                repeatPassInputState = repeatPass
-            )}
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(repeatPassInputState = repeatPass) }
     }
 
     /**
@@ -93,22 +86,20 @@ class RegisterUserViewModel(
      * @param code The new activation code value.
      */
     fun onCodeChanged(code: ModelStateOutFieldText) {
-        viewModelScope.launch (dispatcherProvider.io){
-            _inputState.update { it.copy(
-                codeInputState = code
-            )}
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _inputState.update { it.copy(codeInputState = code) }
     }
 
     /**
      * Validates the input fields and proceeds to registration if they are valid.
      */
     fun validateFieldsCompose() {
-        viewModelScope.launch (dispatcherProvider.io){
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            
+            // Las validaciones son operaciones síncronas simples
             val emailState = validateFieldsUseCase.validateEmailCompose(inputStateVM.emailInputState.valueText)
-            val passState =
-                validateFieldsUseCase.validatePassRegisterCompose(inputStateVM.passInputState.valueText)
+            val passState = validateFieldsUseCase.validatePassRegisterCompose(inputStateVM.passInputState.valueText)
             val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(
                 inputStateVM.passInputState.valueText,
                 inputStateVM.repeatPassInputState.valueText
@@ -143,11 +134,16 @@ class RegisterUserViewModel(
     }
 
     private suspend fun registerCompose() {
-        when (val result = registerUserUseCase.invoke(
-            email = inputStateVM.emailInputState.valueText,
-            pass = inputStateVM.passInputState.valueText,
-            activationCode = inputStateVM.codeInputState.valueText
-        )) {
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
+            registerUserUseCase.invoke(
+                email = inputStateVM.emailInputState.valueText,
+                pass = inputStateVM.passInputState.valueText,
+                activationCode = inputStateVM.codeInputState.valueText
+            )
+        }
+
+        when (result) {
             is SuccessResult -> {
                 _uiState.update {
                     it.copy(
@@ -162,26 +158,24 @@ class RegisterUserViewModel(
             }
 
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_GENERIC_ERROR -> R.string.toast_error_validate_fields
-                    UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_user
-                    UserError.NO_INTERNET -> R.string.toast_error_no_internet
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.REGISTER_USER
+                )
 
-                msg?.let {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }?: _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
-
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
+                }
             }
         }
     }
@@ -192,16 +186,11 @@ class RegisterUserViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch (dispatcherProvider.main){
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }

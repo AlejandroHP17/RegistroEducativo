@@ -18,6 +18,7 @@ import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 /**
@@ -78,11 +80,8 @@ class RegisterStudentViewModel(
      * @param name El nuevo valor del nombre.
      */
     fun onNameChanged(name: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            _uiInputs.update { it.copy(
-                name = name
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiInputs.update { it.copy(name = name) }
     }
 
     /**
@@ -91,11 +90,8 @@ class RegisterStudentViewModel(
      * @param lastName El nuevo valor del apellido paterno.
      */
     fun onLastNameChanged(lastName: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            _uiInputs.update { it.copy(
-                lastName = lastName
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiInputs.update { it.copy(lastName = lastName) }
     }
 
     /**
@@ -104,11 +100,8 @@ class RegisterStudentViewModel(
      * @param secondLastName El nuevo valor del apellido materno.
      */
     fun onSecondLastNameChanged(secondLastName: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            _uiInputs.update { it.copy(
-                secondLastName = secondLastName
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiInputs.update { it.copy(secondLastName = secondLastName) }
     }
 
     /**
@@ -117,12 +110,9 @@ class RegisterStudentViewModel(
      * @param curp El nuevo valor de la CURP.
      */
     fun onCurpChanged(curp: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            validateCurpWithBirthday(curp.valueText)
-            _uiInputs.update { it.copy(
-                curp = curp
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        validateCurpWithBirthday(curp.valueText)
+        _uiInputs.update { it.copy(curp = curp) }
     }
 
     private fun validateCurpWithBirthday(curp: String) {
@@ -150,11 +140,8 @@ class RegisterStudentViewModel(
      * @param birthday El nuevo valor de la fecha de nacimiento.
      */
     fun onBirthdayChanged(birthday: String) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            _uiInputs.update { it.copy(
-                birthday = birthday.stringToModelStateOutFieldText()
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiInputs.update { it.copy(birthday = birthday.stringToModelStateOutFieldText()) }
     }
 
     /**
@@ -163,24 +150,21 @@ class RegisterStudentViewModel(
      * @param phoneNumber El nuevo valor del número de teléfono.
      */
     fun onPhoneNumberChanged(phoneNumber: ModelStateOutFieldText) {
-        viewModelScope.launch(dispatcherProvider.default) {
-            _uiInputs.update { it.copy(
-                phoneNumber = phoneNumber
-            ) }
-        }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiInputs.update { it.copy(phoneNumber = phoneNumber) }
     }
 
     /**
      * Validates the input fields and proceeds to register the student if they are valid.
      */
     fun validateFieldsCompose() {
-        viewModelScope.launch (dispatcherProvider.io){
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
+            // Las validaciones son operaciones síncronas simples
             val nameState = validateFieldsStudentUseCase.validateName(_uiInputs.value.name.valueText)
             val lastNameState = validateFieldsStudentUseCase.validateLastName(_uiInputs.value.lastName.valueText)
-            val secondLastNameState =
-                validateFieldsStudentUseCase.validateSecondLastName(_uiInputs.value.secondLastName.valueText)
+            val secondLastNameState = validateFieldsStudentUseCase.validateSecondLastName(_uiInputs.value.secondLastName.valueText)
             val curpState = validateFieldsStudentUseCase.validateCurp(_uiInputs.value.curp.valueText)
             val birthdayState = validateFieldsStudentUseCase.validateBirthday(_uiInputs.value.birthday.valueText)
             val phoneNumberState = validateFieldsStudentUseCase.validatePhoneNumber(_uiInputs.value.phoneNumber.valueText)
@@ -201,14 +185,15 @@ class RegisterStudentViewModel(
             )) {
                 if(_uiState.value.isNew) registerOneStudentCompose()
                 else editStudent()
-            }else{
+            } else {
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
     }
 
     private suspend fun registerOneStudentCompose() {
-        when (val result =
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
             registerStudentUseCase.invoke(
                 myValue.name.valueText,
                 myValue.lastName.valueText,
@@ -216,7 +201,10 @@ class RegisterStudentViewModel(
                 myValue.curp.valueText,
                 myValue.birthday.valueText,
                 myValue.phoneNumber.valueText
-            )){
+            )
+        }
+
+        when (result) {
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
@@ -229,31 +217,31 @@ class RegisterStudentViewModel(
             }
 
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_register_student
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.REGISTER_STUDENT
+                )
 
-                if(msg != null){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
                 }
             }
         }
     }
 
     private suspend fun editStudent() {
-        when (val result =
+        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+        val result = withContext(dispatcherProvider.io) {
             editStudentUseCase.invoke(
                 myValue.name.valueText,
                 myValue.lastName.valueText,
@@ -262,7 +250,10 @@ class RegisterStudentViewModel(
                 myValue.birthday.valueText,
                 myValue.phoneNumber.valueText,
                 myValue.studentId
-            )){
+            )
+        }
+
+        when (result) {
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
@@ -275,24 +266,23 @@ class RegisterStudentViewModel(
             }
 
             is ErrorResult -> {
-                val msg = when(ErrorMapper.mapErrorToUI(result.error)){
-                    UserError.SHOW_SPECIFIC_ERROR -> R.string.toast_error_edit_student
-                    else -> null
-                }
+                val userError = ErrorMapper.mapErrorToUI(result.error)
+                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                    error = userError,
+                    context = ErrorToMessageMapper.ErrorContext.EDIT_STUDENT
+                )
 
-                if(msg != null){
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ToastUiState(
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR,
+                        controlToast = messageRes?.let { msg ->
+                            ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
                             )
-                        )
-                    }
-                }else{
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                        } ?: it.controlToast.copy(showToast = false)
+                    )
                 }
             }
         }
@@ -304,20 +294,19 @@ class RegisterStudentViewModel(
      * @param student The student data.
      */
     fun getArguments(student: ModelStudentDomain) {
-        viewModelScope.launch (dispatcherProvider.main){
-            _uiInputs.update {
-                it.copy(
-                    name = student.name.stringToModelStateOutFieldText(),
-                    lastName = student.lastName.stringToModelStateOutFieldText(),
-                    secondLastName = student.secondLastName.stringToModelStateOutFieldText(),
-                    curp = student.curp.stringToModelStateOutFieldText(),
-                    birthday = student.birthday.stringToModelStateOutFieldText(),
-                    phoneNumber = student.phoneNumber.stringToModelStateOutFieldText(),
-                    studentId = student.studentId
-                )
-            }
-            _uiState.update { it.copy( isNew = false) }
+        // Actualizaciones de estado simples no necesitan corrutinas
+        _uiInputs.update {
+            it.copy(
+                name = student.name.stringToModelStateOutFieldText(),
+                lastName = student.lastName.stringToModelStateOutFieldText(),
+                secondLastName = student.secondLastName.stringToModelStateOutFieldText(),
+                curp = student.curp.stringToModelStateOutFieldText(),
+                birthday = student.birthday.stringToModelStateOutFieldText(),
+                phoneNumber = student.phoneNumber.stringToModelStateOutFieldText(),
+                studentId = student.studentId
+            )
         }
+        _uiState.update { it.copy(isNew = false) }
     }
 
     /**
@@ -332,7 +321,7 @@ class RegisterStudentViewModel(
      * Toggles the voice recognition listening state.
      */
     fun change() {
-        viewModelScope.launch (dispatcherProvider.main){
+        viewModelScope.launch {
             if (isListening) {
                 voiceRecognitionManager.startListening()
                 isListening = false
@@ -346,7 +335,8 @@ class RegisterStudentViewModel(
     }
 
     private fun validateDataRecord(data: List<String>) {
-        viewModelScope.launch (dispatcherProvider.main){
+        viewModelScope.launch {
+            // Las validaciones son operaciones síncronas simples
             val result = validateVoiceStudentUseCase.buildModelStudent(data.firstOrNull())
             result?.let { studentData ->
                 logInfo(studentData.toString())
@@ -370,16 +360,11 @@ class RegisterStudentViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        viewModelScope.launch (dispatcherProvider.main){
-            _uiState.update {
-                it.copy(
-                    controlToast = ToastUiState(
-                        messageToast = it.controlToast.messageToast,
-                        showToast = show,
-                        typeToast = it.controlToast.typeToast
-                    )
-                )
-            }
+        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        _uiState.update {
+            it.copy(
+                controlToast = it.controlToast.copy(showToast = show)
+            )
         }
     }
 }
