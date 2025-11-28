@@ -35,7 +35,7 @@ data class RequestListGrades(
     @SerializedName("student_id")
     val studentId: Int,
     @SerializedName("grade")
-    val grade: Double
+    val grade: Double?
 )
 
 data class ResponseWorkTypeEvaluations(

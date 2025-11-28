@@ -359,7 +359,7 @@ fun ComplexCard(
                                                         modifier = Modifier.padding(8.dp)
                                                     )
                                                     Text(
-                                                        text = (subSubItem?.grade ?: "-").toString(),
+                                                        text = (subSubItem?.grade ?: " — ").toString(),
                                                         modifier = Modifier.padding(8.dp)
                                                     )
                                                 }

@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.evaluation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
@@ -20,6 +19,7 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMapper.toModelCard
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -247,7 +247,7 @@ class RegisterEvaluationViewModel(
             workTypeId = _dataState.value.options?.id!!,
             nameWork = _dataState.value.nameJob.valueText,
             workDate = _dialogState.value.date.valueText,
-            studentListUI = _dataState.value.studentListUI.toCredentialStudent()
+            studentListUI = _dataState.value.studentListUI.toModelCard()
         )) {
             is SuccessResult -> {
                 _uiState.update {
@@ -300,15 +300,6 @@ class RegisterEvaluationViewModel(
         }
     }
 
-
-    private fun List<ModelCustomCardStudent>.toCredentialStudent()  : List<RequestListGrades>{
-        return this.map { student ->
-            RequestListGrades(
-                studentId = student.id.toIntOrNull() ?: 0,
-                grade = student.score.valueText.toDoubleOrNull() ?: 0.0,
-            )
-        }
-    }
 
     /**
      * Modifies the visibility of the toast message.

@@ -10,12 +10,13 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.domain.model.evaluation.ModelCardDomain
 
 class RegisterWorkTypeEvaluationsUseCase(
     private val preference : PreferenceUseCase,
     private val registerWorkTypeEvaluationsRepository: RegisterWorkTypeEvaluationsRepository
 ) {
-    suspend operator fun invoke(workTypeId: Int?, nameWork: String?, workDate: String?, studentListUI: List<RequestListGrades>):  ModelResult<Boolean, ModelError>{
+    suspend operator fun invoke(workTypeId: Int?, nameWork: String?, workDate: String?, studentListUI: List<ModelCardDomain>):  ModelResult<Boolean, ModelError>{
         val formativeFieldId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD)
         val partialId= preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
         val cycleSchoolId= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
@@ -31,7 +32,7 @@ class RegisterWorkTypeEvaluationsUseCase(
             nameWork = nameWork.trim(),
             workDate = workDate.trim(),
             schoolCycleId = cycleSchoolId,
-            grades = studentListUI
+            grades = studentListUI.toCredentialStudent()
         ) }.fold(
             onSuccess = { result ->
                 when (result) {
@@ -46,5 +47,14 @@ class RegisterWorkTypeEvaluationsUseCase(
             },
             onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
+    }
+
+    private fun List<ModelCardDomain>.toCredentialStudent()  : List<RequestListGrades>{
+        return this.map { student ->
+            RequestListGrades(
+                studentId = student.studentId,
+                grade = student.grade,
+            )
+        }
     }
 }
