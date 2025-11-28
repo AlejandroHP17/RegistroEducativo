@@ -5,16 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
-import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
+import com.mx.liftechnology.domain.usecase.auth.RegisterUserWithValidationUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiInputs
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -37,8 +35,7 @@ import kotlinx.coroutines.withContext
  */
 class RegisterUserViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val registerUserUseCase: RegisterUserUseCase,
-    private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
+    private val registerUserWithValidationUseCase: RegisterUserWithValidationUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUserUiState())
@@ -92,30 +89,72 @@ class RegisterUserViewModel(
 
     /**
      * Validates the input fields and proceeds to registration if they are valid.
+     * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             
-            // Las validaciones son operaciones síncronas simples
-            val emailState = validateFieldsUseCase.validateEmailCompose(inputStateVM.emailInputState.valueText)
-            val passState = validateFieldsUseCase.validatePassRegisterCompose(inputStateVM.passInputState.valueText)
-            val repeatPassState = validateFieldsUseCase.validateRepeatPassCompose(
-                inputStateVM.passInputState.valueText,
-                inputStateVM.repeatPassInputState.valueText
-            )
-            val codeState = validateFieldsUseCase.validateCodeCompose(inputStateVM.codeInputState.valueText)
+            // El Use Case combina validación + operación
+            val validationResult = withContext(dispatcherProvider.io) {
+                registerUserWithValidationUseCase.invoke(
+                    email = inputStateVM.emailInputState.valueText,
+                    pass = inputStateVM.passInputState.valueText,
+                    repeatPass = inputStateVM.repeatPassInputState.valueText,
+                    activationCode = inputStateVM.codeInputState.valueText
+                )
+            }
 
-            _inputState.update { it.copy(
-                emailInputState = emailState,
-                passInputState = passState,
-                repeatPassInputState = repeatPassState,
-                codeInputState = codeState
-            )}
+            // Actualizar los estados de validación de los campos
+            _inputState.update { 
+                it.copy(
+                    emailInputState = validationResult.validationStates["email"] ?: it.emailInputState,
+                    passInputState = validationResult.validationStates["pass"] ?: it.passInputState,
+                    repeatPassInputState = validationResult.validationStates["repeatPass"] ?: it.repeatPassInputState,
+                    codeInputState = validationResult.validationStates["code"] ?: it.codeInputState
+                )
+            }
 
-            if (!(emailState.isError || passState.isError || repeatPassState.isError || codeState.isError)) {
-                registerCompose()
+            // Si las validaciones pasaron, manejar el resultado de la operación
+            if (validationResult.isValid && validationResult.operationResult != null) {
+                when (val result = validationResult.operationResult) {
+                    is SuccessResult -> {
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.SUCCESS,
+                                controlToast = ToastUiState(
+                                    messageToast = R.string.toast_success_register_user,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.SUCCESS
+                                )
+                            )
+                        }
+                    }
+
+                    is ErrorResult -> {
+                        val userError = ErrorMapper.mapErrorToUI(result.error)
+                        val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                            error = userError,
+                            context = ErrorToMessageMapper.ErrorContext.REGISTER_USER
+                        )
+
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = messageRes?.let { msg ->
+                                    ToastUiState(
+                                        messageToast = msg,
+                                        showToast = true,
+                                        typeToast = ModelStateTypeToastUI.ERROR
+                                    )
+                                } ?: it.controlToast.copy(showToast = false)
+                            )
+                        }
+                    }
+                    else ->{}
+                }
             } else {
+                // Si hay errores de validación, solo actualizar el estado
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
@@ -131,53 +170,6 @@ class RegisterUserViewModel(
         val listRules = context.resources?.getStringArray(R.array.rules_pass)
         val stringBuilder = listRules?.joinToString(separator = "\n").orEmpty()
         return stringBuilder
-    }
-
-    private suspend fun registerCompose() {
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            registerUserUseCase.invoke(
-                email = inputStateVM.emailInputState.valueText,
-                pass = inputStateVM.passInputState.valueText,
-                activationCode = inputStateVM.codeInputState.valueText
-            )
-        }
-
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ToastUiState(
-                            messageToast = R.string.toast_success_register_user,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.SUCCESS
-                        )
-                    )
-                }
-            }
-
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.REGISTER_USER
-                )
-
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
-                }
-            }
-        }
     }
 
     /**

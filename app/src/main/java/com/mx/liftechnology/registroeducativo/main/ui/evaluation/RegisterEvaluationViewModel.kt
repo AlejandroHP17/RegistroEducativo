@@ -4,14 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.RegisterWorkTypeEvaluationsUseCase
-import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.RegisterEvaluationWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
@@ -21,9 +19,9 @@ import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCus
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMapper.toModelCard
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
@@ -47,10 +45,8 @@ class RegisterEvaluationViewModel(
     private val getListStudentUseCase: GetListStudentUseCase,
     private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase,
     private val getWorkTypeByFormativeFieldUseCase: GetWorkTypeByFormativeFieldUseCase,
-    private val validateFieldsEvaluationUseCase: ValidateFieldsEvaluationUseCase,
     private val getDatesActivePartialUseCase: GetDatesActivePartialUseCase,
-    private val registerWorkTypeEvaluationsUseCase: RegisterWorkTypeEvaluationsUseCase
-
+    private val registerEvaluationWithValidationUseCase: RegisterEvaluationWithValidationUseCase
     ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterAssignmentUiState())
@@ -216,77 +212,77 @@ class RegisterEvaluationViewModel(
     /**
      * Validates the input fields and proceeds to register the assignment if they are valid.
      */
+    /**
+     * Validates the input fields and proceeds to register the assignment if they are valid.
+     * La lógica de validación + operación está encapsulada en el Use Case.
+     */
     fun validateFields() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             
-            // Las validaciones son operaciones síncronas simples
-            val nameJobState = validateFieldsEvaluationUseCase.validateNameJob(_dataState.value.nameJob.valueText)
-            val nameAssignmentState = validateFieldsEvaluationUseCase.validateNameAssignment(_dataState.value.nameAssignment.valueText)
-            val dateState = validateFieldsEvaluationUseCase.validateDate(_dialogState.value.date.valueText)
+            // El Use Case combina validación + operación
+            val validationResult = withContext(dispatcherProvider.io) {
+                registerEvaluationWithValidationUseCase.invoke(
+                    nameJob = _dataState.value.nameJob.valueText,
+                    nameAssignment = _dataState.value.nameAssignment.valueText,
+                    date = _dialogState.value.date.valueText,
+                    workTypeId = _dataState.value.options?.id,
+                    studentListUI = _dataState.value.studentListUI.toModelCard()
+                )
+            }
 
+            // Actualizar los estados de validación de los campos
             _dataState.update {
                 it.copy(
-                    nameJob = nameJobState,
-                    nameAssignment = nameAssignmentState,
+                    nameJob = validationResult.validationStates["nameJob"] ?: it.nameJob,
+                    nameAssignment = validationResult.validationStates["nameAssignment"] ?: it.nameAssignment
                 )
             }
             _dialogState.update {
-                it.copy(date = dateState)
+                it.copy(date = validationResult.validationStates["date"] ?: it.date)
             }
 
-            if (!(nameJobState.isError || nameAssignmentState.isError || dateState.isError)) {
-                registerWorkTypeEvaluations()
-            } else {
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
-            }
-        }
-    }
-
-    private suspend fun registerWorkTypeEvaluations() {
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            registerWorkTypeEvaluationsUseCase.invoke(
-                workTypeId = _dataState.value.options?.id!!,
-                nameWork = _dataState.value.nameJob.valueText,
-                workDate = _dialogState.value.date.valueText,
-                studentListUI = _dataState.value.studentListUI.toModelCard()
-            )
-        }
-
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ToastUiState(
-                            messageToast = R.string.toast_success_register_assignment,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.SUCCESS
-                        )
-                    )
-                }
-            }
-
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.REGISTER_ASSIGNMENT
-                )
-
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
+            // Si las validaciones pasaron, manejar el resultado de la operación
+            if (validationResult.isValid && validationResult.operationResult != null) {
+                when (val operationResult = validationResult.operationResult) {
+                    is SuccessResult -> {
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.SUCCESS,
+                                controlToast = ToastUiState(
+                                    messageToast = R.string.toast_success_register_assignment,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.SUCCESS
+                                )
                             )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
+                        }
+                    }
+
+                    is ErrorResult -> {
+                        val userError = ErrorMapper.mapErrorToUI(operationResult.error)
+                        val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                            error = userError,
+                            context = ErrorToMessageMapper.ErrorContext.REGISTER_ASSIGNMENT
+                        )
+
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = messageRes?.let { msg ->
+                                    ToastUiState(
+                                        messageToast = msg,
+                                        showToast = true,
+                                        typeToast = ModelStateTypeToastUI.ERROR
+                                    )
+                                } ?: it.controlToast.copy(showToast = false)
+                            )
+                        }
+                    }
+                    else ->{}
                 }
+            } else {
+                // Si hay errores de validación, solo actualizar el estado
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
     }

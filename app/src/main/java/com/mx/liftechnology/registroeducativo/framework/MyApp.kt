@@ -3,11 +3,10 @@ package com.mx.liftechnology.registroeducativo.framework
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
-import com.mx.liftechnology.registroeducativo.di.wotyFofiModule
 import com.mx.liftechnology.registroeducativo.di.calendarModule
+import com.mx.liftechnology.registroeducativo.di.crudFormativeFieldModule
 import com.mx.liftechnology.registroeducativo.di.crudPartialModule
 import com.mx.liftechnology.registroeducativo.di.crudStudentModule
-import com.mx.liftechnology.registroeducativo.di.crudFormativeFieldModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
@@ -19,7 +18,9 @@ import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
 import com.mx.liftechnology.registroeducativo.di.registerUserModule
 import com.mx.liftechnology.registroeducativo.di.sharedModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
+import com.mx.liftechnology.registroeducativo.di.validationModule
 import com.mx.liftechnology.registroeducativo.di.voiceModule
+import com.mx.liftechnology.registroeducativo.di.wotyFofiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import timber.log.Timber
@@ -66,7 +67,8 @@ class MyApp : Application() {
                 profileModule,
                 wotyFofiModule,
                 registerEvaluationModule,
-                calendarModule
+                calendarModule,
+                validationModule
             )
         }
     }

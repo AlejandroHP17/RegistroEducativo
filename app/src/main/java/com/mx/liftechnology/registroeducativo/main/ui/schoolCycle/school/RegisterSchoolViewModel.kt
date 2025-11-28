@@ -15,8 +15,7 @@ import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterCycleSchoolUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterSchoolWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toUi
@@ -58,8 +57,7 @@ import kotlinx.coroutines.withContext
 class RegisterSchoolViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getCctUseCase: GetCctUseCase,
-    private val validateFieldsUseCase: ValidateFieldsRegisterSchoolUseCase,
-    private val registerCycleSchoolUseCase: RegisterCycleSchoolUseCase,
+    private val registerSchoolWithValidationUseCase: RegisterSchoolWithValidationUseCase,
     private val voiceRecognitionManager: VoiceRecognitionManager,
 ) : ViewModel() {
 
@@ -260,6 +258,7 @@ class RegisterSchoolViewModel(
      * Inicia la validación de todos los campos de entrada del formulario.
      * Actualiza el estado de los campos con los resultados de la validación y, si todos son válidos,
      * procede a registrar la escuela.
+     * La lógica de validación + operación está encapsulada en el Use Case.
      *
      * @author PelkiDev
      * @version 1.0.0
@@ -268,84 +267,80 @@ class RegisterSchoolViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            // Las validaciones son operaciones síncronas simples
-            val cctState = validateFieldsUseCase.validateCctCompose(inputStateVM.cct.valueText)
-            val typeState = validateFieldsUseCase.validateTypeCompose(inputStateVM.type.valueText)
-            val gradeState = validateFieldsUseCase.validateGradeCompose(inputStateVM.grade.valueText)
-            val groupState = validateFieldsUseCase.validateGroupCompose(inputStateVM.group.valueText)
-            val cycleState = validateFieldsUseCase.validateCycleCompose(inputStateVM.cycle.valueText)
-            val labelCycleState = validateFieldsUseCase.validateLabelCycleCompose(inputStateVM.labelCycle.valueText)
-
-            _inputState.update { it.copy(
-                cct = cctState,
-                type = typeState,
-                grade = gradeState,
-                group = groupState,
-                cycle = cycleState,
-                labelCycle = labelCycleState
-            )}
-
-            if (!(cctState.isError || gradeState.isError || groupState.isError || cycleState.isError || typeState.isError || labelCycleState.isError)) {
-                registerCycleSchool()
-            } else {
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
-            }
-        }
-    }
-
-    private suspend fun registerCycleSchool() {
-        val period = _uiSemiAutomaticData.value.periodCatalog.toSelectPeriod(
-            inputStateVM.cycle.valueText,
-            inputStateVM.type.valueText
-        )
-        
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            registerCycleSchoolUseCase.invoke(
-                schoolId = _uiSemiAutomaticData.value.schoolId,
-                periodCatalogId = period,
-                cct = inputStateVM.cct.valueText,
-                grade = inputStateVM.grade.valueText.toInt(),
-                group = inputStateVM.group.valueText,
-                cycle = inputStateVM.cycle.valueText.toInt(),
-                shiftName = _uiSemiAutomaticData.value.shiftName.valueText,
-                labelCycleState = inputStateVM.labelCycle.valueText
+            // Calcular el period antes de llamar al Use Case
+            val period = _uiSemiAutomaticData.value.periodCatalog.toSelectPeriod(
+                inputStateVM.cycle.valueText,
+                inputStateVM.type.valueText
             )
-        }
 
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ToastUiState(
-                            messageToast = R.string.toast_success_register_school,
-                            showToast = true,
-                            typeToast = ModelStateTypeToastUI.SUCCESS
-                        )
-                    )
-                }
+            // El Use Case combina validación + operación
+            val validationResult = withContext(dispatcherProvider.io) {
+                registerSchoolWithValidationUseCase.invoke(
+                    cct = inputStateVM.cct.valueText,
+                    type = inputStateVM.type.valueText,
+                    grade = inputStateVM.grade.valueText,
+                    group = inputStateVM.group.valueText,
+                    cycle = inputStateVM.cycle.valueText,
+                    labelCycle = inputStateVM.labelCycle.valueText,
+                    schoolId = _uiSemiAutomaticData.value.schoolId,
+                    periodCatalogId = period,
+                    shiftName = _uiSemiAutomaticData.value.shiftName.valueText
+                )
             }
 
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.REGISTER_SCHOOL
+            // Actualizar los estados de validación de los campos
+            _inputState.update { 
+                it.copy(
+                    cct = validationResult.validationStates["cct"] ?: it.cct,
+                    type = validationResult.validationStates["type"] ?: it.type,
+                    grade = validationResult.validationStates["grade"] ?: it.grade,
+                    group = validationResult.validationStates["group"] ?: it.group,
+                    cycle = validationResult.validationStates["cycle"] ?: it.cycle,
+                    labelCycle = validationResult.validationStates["labelCycle"] ?: it.labelCycle
                 )
+            }
 
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
+            // Si las validaciones pasaron, manejar el resultado de la operación
+            if (validationResult.isValid && validationResult.operationResult != null) {
+                when (val operationResult = validationResult.operationResult) {
+                    is SuccessResult -> {
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.SUCCESS,
+                                controlToast = ToastUiState(
+                                    messageToast = R.string.toast_success_register_school,
+                                    showToast = true,
+                                    typeToast = ModelStateTypeToastUI.SUCCESS
+                                )
                             )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
+                        }
+                    }
+
+                    is ErrorResult -> {
+                        val userError = ErrorMapper.mapErrorToUI(operationResult.error)
+                        val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                            error = userError,
+                            context = ErrorToMessageMapper.ErrorContext.REGISTER_SCHOOL
+                        )
+
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = messageRes?.let { msg ->
+                                    ToastUiState(
+                                        messageToast = msg,
+                                        showToast = true,
+                                        typeToast = ModelStateTypeToastUI.ERROR
+                                    )
+                                } ?: it.controlToast.copy(showToast = false)
+                            )
+                        }
+                    }
+                    else -> {}
                 }
+            } else {
+                // Si hay errores de validación, solo actualizar el estado
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
     }

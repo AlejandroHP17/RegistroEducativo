@@ -7,8 +7,7 @@ import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterPartialWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
@@ -35,8 +34,7 @@ import java.time.LocalDate
  */
 class RegisterPartialViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val validateFieldsRegisterPartialUseCase: ValidateFieldsRegisterPartialUseCase,
-    private val registerListPartialUseCase: RegisterListPartialUseCase,
+    private val registerPartialWithValidationUseCase: RegisterPartialWithValidationUseCase,
     private val getListPartialUseCase: GetListPartialUseCase,
 ) : ViewModel() {
 
@@ -99,67 +97,68 @@ class RegisterPartialViewModel(
 
     /**
      * Validates the input fields and proceeds to register the partials if they are valid.
+     * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             
-            // Las validaciones son operaciones síncronas simples
-            val periodState = validateFieldsRegisterPartialUseCase.validatePeriod(_uiData.value.numberPartials.valueText)
-            val listCalendarState = validateFieldsRegisterPartialUseCase.validateAdapter(_uiData.value.listCalendar)
-            val calendarState = validateFieldsRegisterPartialUseCase.validateAdapterError(listCalendarState)
+            // El Use Case combina validación + operación
+            val result = withContext(dispatcherProvider.io) {
+                registerPartialWithValidationUseCase.invoke(
+                    numberPartials = _uiData.value.numberPartials.valueText,
+                    listCalendar = _uiData.value.listCalendar
+                )
+            }
 
+            val validationResult = result.validationResult
+
+            // Actualizar los estados de validación de los campos
             _uiData.update {
                 it.copy(
-                    numberPartials = periodState,
-                    listCalendar = listCalendarState
+                    numberPartials = validationResult.validationStates["numberPartials"] ?: it.numberPartials,
+                    listCalendar = result.updatedListCalendar ?: it.listCalendar
                 )
             }
 
-            if (!(periodState.isError || calendarState.isError)) {
-                registerListPartialCompose()
-            } else {
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
-            }
-        }
-    }
-
-    private suspend fun registerListPartialCompose() {
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            registerListPartialUseCase.invoke(adapterPeriods = _uiData.value.listCalendar!!)
-        }
-
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update { it.copy(
-                    uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ToastUiState(
-                        messageToast = R.string.toast_success_register_partial,
-                        showToast = true,
-                        typeToast = ModelStateTypeToastUI.SUCCESS
-                    )
-                ) }
-            }
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.REGISTER_PARTIAL
-                )
-
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
+            // Si las validaciones pasaron, manejar el resultado de la operación
+            if (validationResult.isValid && validationResult.operationResult != null) {
+                when (val operationResult = validationResult.operationResult) {
+                    is SuccessResult -> {
+                        _uiState.update { it.copy(
+                            uiState = ModelStateUIEnum.SUCCESS,
+                            controlToast = ToastUiState(
+                                messageToast = R.string.toast_success_register_partial,
                                 showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
+                                typeToast = ModelStateTypeToastUI.SUCCESS
                             )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
+                        ) }
+                    }
+                    is ErrorResult -> {
+                        val userError = ErrorMapper.mapErrorToUI(operationResult.error)
+                        val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                            error = userError,
+                            context = ErrorToMessageMapper.ErrorContext.REGISTER_PARTIAL
+                        )
+
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = messageRes?.let { msg ->
+                                    ToastUiState(
+                                        messageToast = msg,
+                                        showToast = true,
+                                        typeToast = ModelStateTypeToastUI.ERROR
+                                    )
+                                } ?: it.controlToast.copy(showToast = false)
+                            )
+                        }
+                    }
+                    else -> {}
                 }
+            } else {
+                // Si hay errores de validación, solo actualizar el estado
+                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
     }

@@ -7,21 +7,19 @@ import com.mx.liftechnology.core.util.logDebug
 import com.mx.liftechnology.core.util.logInfo
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.EditStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.RegisterStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.EditStudentWithValidationUseCase
+import com.mx.liftechnology.domain.usecase.student.RegisterStudentWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiInputs
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
@@ -45,9 +43,8 @@ import java.time.LocalDate
  */
 class RegisterStudentViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val validateFieldsStudentUseCase: ValidateFieldsStudentUseCase,
-    private val registerStudentUseCase: RegisterStudentUseCase,
-    private val editStudentUseCase: EditStudentUseCase,
+    private val registerStudentWithValidationUseCase: RegisterStudentWithValidationUseCase,
+    private val editStudentWithValidationUseCase: EditStudentWithValidationUseCase,
     private val validateVoiceStudentUseCase: ValidateVoiceStudentUseCase,
     private val voiceRecognitionManager: VoiceRecognitionManager
     ) : ViewModel() {
@@ -157,133 +154,99 @@ class RegisterStudentViewModel(
     /**
      * Validates the input fields and proceeds to register the student if they are valid.
      */
+    /**
+     * Valida los campos de entrada y, si son válidos, procede con el registro o edición del estudiante.
+     * La lógica de validación + operación está encapsulada en los Use Cases.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            // Las validaciones son operaciones síncronas simples
-            val nameState = validateFieldsStudentUseCase.validateName(_uiInputs.value.name.valueText)
-            val lastNameState = validateFieldsStudentUseCase.validateLastName(_uiInputs.value.lastName.valueText)
-            val secondLastNameState = validateFieldsStudentUseCase.validateSecondLastName(_uiInputs.value.secondLastName.valueText)
-            val curpState = validateFieldsStudentUseCase.validateCurp(_uiInputs.value.curp.valueText)
-            val birthdayState = validateFieldsStudentUseCase.validateBirthday(_uiInputs.value.birthday.valueText)
-            val phoneNumberState = validateFieldsStudentUseCase.validatePhoneNumber(_uiInputs.value.phoneNumber.valueText)
+            // El Use Case combina validación + operación
+            val validationResult = withContext(dispatcherProvider.io) {
+                if (_uiState.value.isNew) {
+                    registerStudentWithValidationUseCase.invoke(
+                        name = myValue.name.valueText,
+                        lastName = myValue.lastName.valueText,
+                        secondLastName = myValue.secondLastName.valueText,
+                        curp = myValue.curp.valueText,
+                        birthday = myValue.birthday.valueText,
+                        phoneNumber = myValue.phoneNumber.valueText
+                    )
+                } else {
+                    editStudentWithValidationUseCase.invoke(
+                        name = myValue.name.valueText,
+                        lastName = myValue.lastName.valueText,
+                        secondLastName = myValue.secondLastName.valueText,
+                        curp = myValue.curp.valueText,
+                        birthday = myValue.birthday.valueText,
+                        phoneNumber = myValue.phoneNumber.valueText,
+                        studentId = myValue.studentId
+                    )
+                }
+            }
 
+            // Actualizar los estados de validación de los campos
             _uiInputs.update {
                 it.copy(
-                    name = nameState,
-                    lastName = lastNameState,
-                    secondLastName = secondLastNameState,
-                    curp = curpState,
-                    birthday = birthdayState,
-                    phoneNumber = phoneNumberState
+                    name = validationResult.validationStates["name"] ?: it.name,
+                    lastName = validationResult.validationStates["lastName"] ?: it.lastName,
+                    secondLastName = validationResult.validationStates["secondLastName"] ?: it.secondLastName,
+                    curp = validationResult.validationStates["curp"] ?: it.curp,
+                    birthday = validationResult.validationStates["birthday"] ?: it.birthday,
+                    phoneNumber = validationResult.validationStates["phoneNumber"] ?: it.phoneNumber
                 )
             }
 
-            if (!(nameState.isError || lastNameState.isError || secondLastNameState.isError || curpState.isError
-                        || birthdayState.isError || phoneNumberState.isError
-            )) {
-                if(_uiState.value.isNew) registerOneStudentCompose()
-                else editStudent()
+            // Si las validaciones pasaron, manejar el resultado de la operación
+            if (validationResult.isValid && validationResult.operationResult != null) {
+                when (val result = validationResult.operationResult) {
+                    is SuccessResult -> {
+                        val messageRes = if (_uiState.value.isNew) {
+                            R.string.toast_success_register_student
+                        } else {
+                            R.string.toast_success_edit_student
+                        }
+                        _uiState.update { it.copy(
+                            uiState = ModelStateUIEnum.SUCCESS,
+                            controlToast = ToastUiState(
+                                messageToast = messageRes,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.SUCCESS
+                            )
+                        ) }
+                    }
+
+                    is ErrorResult -> {
+                        val userError = ErrorMapper.mapErrorToUI(result.error)
+                        val context = if (_uiState.value.isNew) {
+                            ErrorToMessageMapper.ErrorContext.REGISTER_STUDENT
+                        } else {
+                            ErrorToMessageMapper.ErrorContext.EDIT_STUDENT
+                        }
+                        val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                            error = userError,
+                            context = context
+                        )
+
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = messageRes?.let { msg ->
+                                    ToastUiState(
+                                        messageToast = msg,
+                                        showToast = true,
+                                        typeToast = ModelStateTypeToastUI.ERROR
+                                    )
+                                } ?: it.controlToast.copy(showToast = false)
+                            )
+                        }
+                    }
+                    else -> {}
+                }
             } else {
+                // Si hay errores de validación, solo actualizar el estado
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
-            }
-        }
-    }
-
-    private suspend fun registerOneStudentCompose() {
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            registerStudentUseCase.invoke(
-                myValue.name.valueText,
-                myValue.lastName.valueText,
-                myValue.secondLastName.valueText,
-                myValue.curp.valueText,
-                myValue.birthday.valueText,
-                myValue.phoneNumber.valueText
-            )
-        }
-
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update { it.copy(
-                    uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ToastUiState(
-                        messageToast = R.string.toast_success_register_student,
-                        showToast = true,
-                        typeToast = ModelStateTypeToastUI.SUCCESS
-                    )
-                ) }
-            }
-
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.REGISTER_STUDENT
-                )
-
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
-                }
-            }
-        }
-    }
-
-    private suspend fun editStudent() {
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            editStudentUseCase.invoke(
-                myValue.name.valueText,
-                myValue.lastName.valueText,
-                myValue.secondLastName.valueText,
-                myValue.curp.valueText,
-                myValue.birthday.valueText,
-                myValue.phoneNumber.valueText,
-                myValue.studentId
-            )
-        }
-
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update { it.copy(
-                    uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ToastUiState(
-                        messageToast = R.string.toast_success_edit_student,
-                        showToast = true,
-                        typeToast = ModelStateTypeToastUI.SUCCESS
-                    )
-                ) }
-            }
-
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.EDIT_STUDENT
-                )
-
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
-                }
             }
         }
     }

@@ -9,8 +9,7 @@ import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
@@ -35,8 +34,7 @@ import kotlinx.coroutines.withContext
  */
 class RegisterFormativeFieldsViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val validateFieldsFormativeFieldsUseCase: ValidateFieldsFormativeFieldsUseCase,
-    private val registerFormativeFieldsBulkUseCase: RegisterFormativeFieldsBulkUseCase,
+    private val registerFormativeFieldsWithValidationUseCase: RegisterFormativeFieldsWithValidationUseCase,
     private val getListWorkTypeUseCase: GetListWorkTypeUseCase,
 ) : ViewModel() {
 
@@ -127,78 +125,72 @@ class RegisterFormativeFieldsViewModel(
     /**
      * Validates the input fields and proceeds to register the subject if they are valid.
      */
+    /**
+     * Validates the input fields and proceeds to register the subject if they are valid.
+     * La lógica de validación + operación está encapsulada en el Use Case.
+     */
     fun validateFieldsCompose() {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
             
-            // Las validaciones son operaciones síncronas simples
-            val nameState = validateFieldsFormativeFieldsUseCase.validateNameCompose(_uiState.value.subject.valueText)
-            val optionState = validateFieldsFormativeFieldsUseCase.validateOptionCompose(_uiState.value.options.valueText)
-            val updatedListState = validateFieldsFormativeFieldsUseCase.validateListJobsCompose(_uiState.value.listAdapter?.toMutableList())
+            // El Use Case combina validación + operación
+            val result = withContext(dispatcherProvider.io) {
+                registerFormativeFieldsWithValidationUseCase.invoke(
+                    subject = _uiState.value.subject.valueText,
+                    options = _uiState.value.options.valueText,
+                    listAdapter = _uiState.value.listAdapter?.toMutableList()
+                )
+            }
 
+            val validationResult = result.validationResult
+
+            // Actualizar los estados de validación de los campos
             _uiState.update {
                 it.copy(
-                    subject = nameState,
-                    options = optionState,
-                    listAdapter = updatedListState
+                    subject = validationResult.validationStates["subject"] ?: it.subject,
+                    options = validationResult.validationStates["options"] ?: it.options,
+                    listAdapter = result.updatedListAdapter
                 )
             }
 
-            if (!(nameState.isError || optionState.isError)) {
-                val percentState = validateFieldsFormativeFieldsUseCase.validPercentCompose(_uiState.value.listAdapter?.toMutableList())
+            // Si las validaciones pasaron, manejar el resultado de la operación
+            if (validationResult.isValid && validationResult.operationResult != null) {
+                when (val operationResult = validationResult.operationResult) {
+                    is SuccessResult -> {
+                        _uiState.update { it.copy(
+                            uiState = ModelStateUIEnum.SUCCESS,
+                            controlToast = ToastUiState(
+                                messageToast = R.string.toast_success_register_subject,
+                                showToast = true,
+                                typeToast = ModelStateTypeToastUI.SUCCESS
+                            )
+                        ) }
+                    }
+                    is ErrorResult -> {
+                        val userError = ErrorMapper.mapErrorToUI(operationResult.error)
+                        val messageRes = ErrorToMessageMapper.mapErrorToMessage(
+                            error = userError,
+                            context = ErrorToMessageMapper.ErrorContext.REGISTER_SUBJECT
+                        )
 
-                _uiState.update { it.copy(options = percentState) }
-
-                if (!percentState.isError) {
-                    registerFormativeField()
-                } else {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                        _uiState.update {
+                            it.copy(
+                                uiState = ModelStateUIEnum.ERROR,
+                                controlToast = messageRes?.let { msg ->
+                                    ToastUiState(
+                                        messageToast = msg,
+                                        showToast = true,
+                                        typeToast = ModelStateTypeToastUI.ERROR
+                                    )
+                                } ?: it.controlToast.copy(showToast = false)
+                            )
+                        }
+                    }
+                    else -> {}
                 }
             } else {
+                // Si hay errores de validación, solo actualizar el estado
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
-            }
-        }
-    }
-
-    private suspend fun registerFormativeField() {
-        // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-        val result = withContext(dispatcherProvider.io) {
-            registerFormativeFieldsBulkUseCase.invoke(
-                _uiState.value.listAdapter?.toMutableList(),
-                _uiState.value.subject.valueText
-            )
-        }
-
-        when (result) {
-            is SuccessResult -> {
-                _uiState.update { it.copy(
-                    uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ToastUiState(
-                        messageToast = R.string.toast_success_register_subject,
-                        showToast = true,
-                        typeToast = ModelStateTypeToastUI.SUCCESS
-                    )
-                ) }
-            }
-            is ErrorResult -> {
-                val userError = ErrorMapper.mapErrorToUI(result.error)
-                val messageRes = ErrorToMessageMapper.mapErrorToMessage(
-                    error = userError,
-                    context = ErrorToMessageMapper.ErrorContext.REGISTER_SUBJECT
-                )
-
-                _uiState.update {
-                    it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
-                        controlToast = messageRes?.let { msg ->
-                            ToastUiState(
-                                messageToast = msg,
-                                showToast = true,
-                                typeToast = ModelStateTypeToastUI.ERROR
-                            )
-                        } ?: it.controlToast.copy(showToast = false)
-                    )
-                }
             }
         }
     }
