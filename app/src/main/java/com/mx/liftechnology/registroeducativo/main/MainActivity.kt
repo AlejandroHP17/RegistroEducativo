@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Modifier
-import com.mx.liftechnology.registroeducativo.main.ui.components.background
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.background
 import com.mx.liftechnology.registroeducativo.main.ui.principal.AppNavHost
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.AppTheme

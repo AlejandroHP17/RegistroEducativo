@@ -11,11 +11,11 @@ import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelRegisterUserInputsUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelRegisterUserStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,14 +39,14 @@ class RegisterUserViewModel(
     private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterUserStateUI())
+    private val _uiState = MutableStateFlow(RegisterUserUiState())
     /** The UI state for the screen. */
-    val uiState: StateFlow<ModelRegisterUserStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterUserUiState> = _uiState.asStateFlow()
 
-    private val _inputState = MutableStateFlow(ModelRegisterUserInputsUI())
+    private val _inputState = MutableStateFlow(RegisterUserUiInputs())
     /** The state of the input fields. */
-    val inputState: StateFlow<ModelRegisterUserInputsUI> = _inputState.asStateFlow()
-    private val inputStateVM: ModelRegisterUserInputsUI get() = _inputState.value
+    val inputState: StateFlow<RegisterUserUiInputs> = _inputState.asStateFlow()
+    private val inputStateVM: RegisterUserUiInputs get() = _inputState.value
 
     /**
      * Called when the email input changes.
@@ -152,7 +152,7 @@ class RegisterUserViewModel(
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ModelStateToastUI(
+                        controlToast = ToastUiState(
                             messageToast = R.string.toast_success_register_user,
                             showToast = true,
                             typeToast = ModelStateTypeToastUI.SUCCESS
@@ -173,7 +173,7 @@ class RegisterUserViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -195,7 +195,7 @@ class RegisterUserViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

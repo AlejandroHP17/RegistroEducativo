@@ -23,18 +23,18 @@ import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentCallbacksUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentInputsUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentStateUI
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCapitalLetterGeneric
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextNumeric
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.DateSimplePickerDialog
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiState
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldAllCaps
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCapitalLetter
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldNumeric
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonPair
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DateSimplePickerDialog
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
@@ -92,7 +92,7 @@ fun RegisterStudentScreen(
 
         BodyRegisterStudent(
             inputState = inputState,
-            callbacks = ModelRegisterStudentCallbacksUI(
+            callbacks = RegisterStudentUiCallbacks(
                 onNameChanged = { registerStudentViewModel.onNameChanged(it) },
                 onLastNameChanged = { registerStudentViewModel.onLastNameChanged(it) },
                 onSecondLastNameChanged = { registerStudentViewModel.onSecondLastNameChanged(it) },
@@ -132,7 +132,7 @@ fun RegisterStudentScreen(
  */
 @Composable
 private fun HeaderRegisterStudent(
-    uiState: ModelRegisterStudentStateUI,
+    uiState: RegisterStudentUiState,
     navController: NavHostController) {
     ComponentHeaderBack(
         title = if(uiState.isNew) stringResource(R.string.register_student_name) else stringResource(R.string.edit_student_name),
@@ -148,45 +148,45 @@ private fun HeaderRegisterStudent(
  */
 @Composable
 private fun BodyRegisterStudent(
-    inputState: ModelRegisterStudentInputsUI,
-    callbacks: ModelRegisterStudentCallbacksUI,
+    inputState: RegisterStudentUiInputs,
+    callbacks: RegisterStudentUiCallbacks,
 ) {
-    BoxEditTextCapitalLetterGeneric(
+    TextFieldCapitalLetter(
         modelText = inputState.name,
         enable = true,
         label = stringResource(id = R.string.form_student_name),
         onBoxChanged = { callbacks.onNameChanged(it) }
     )
 
-    BoxEditTextCapitalLetterGeneric(
+    TextFieldCapitalLetter(
         modelText = inputState.lastName,
         enable = true,
         label = stringResource(id = R.string.form_student_last_name),
         onBoxChanged = { callbacks.onLastNameChanged(it) }
     )
 
-    BoxEditTextCapitalLetterGeneric(
+    TextFieldCapitalLetter(
         modelText = inputState.secondLastName,
         enable = true,
         label = stringResource(id = R.string.form_student_second_last_name),
         onBoxChanged = { callbacks.onSecondLastNameChanged(it) }
     )
 
-    BoxEditTextAllCaps(
+    TextFieldAllCaps(
         modelText = inputState.curp,
         enable = true,
         label = stringResource(id = R.string.form_student_curp),
         onBoxChanged = { callbacks.onCurpChanged(it) }
     )
 
-    BoxEditTextCalendar(
+    TextFieldCalendar(
         value = inputState.birthday,
         enable = false,
         label = stringResource(id = R.string.form_student_birthday),
         onBoxChanged = { callbacks.onBirthdayChanged() }
     )
 
-    BoxEditTextNumeric(
+    TextFieldNumeric(
         modelText = inputState.phoneNumber,
         enable = true,
         label = stringResource(id = R.string.form_student_phone_number),
@@ -204,7 +204,7 @@ private fun BodyRegisterStudent(
  */
 @Composable
 private fun ActionRegisterStudent(
-    uiState: ModelRegisterStudentStateUI,
+    uiState: RegisterStudentUiState,
     validateFieldsCompose: () -> Unit,
     onRecord: () -> Unit,
 ) {
@@ -230,12 +230,12 @@ private fun RegisterStudentPreview(){
     )
     {
         HeaderRegisterStudent(
-            uiState = ModelRegisterStudentStateUI(),
+            uiState = RegisterStudentUiState(),
             navController = NavHostController(context = LocalContext.current))
 
         BodyRegisterStudent(
-            inputState = ModelRegisterStudentInputsUI(),
-            callbacks = ModelRegisterStudentCallbacksUI(
+            inputState = RegisterStudentUiInputs(),
+            callbacks = RegisterStudentUiCallbacks(
                 onNameChanged = {  },
                 onLastNameChanged = {  },
                 onSecondLastNameChanged = {  },
@@ -248,7 +248,7 @@ private fun RegisterStudentPreview(){
         Spacer(modifier = Modifier.weight(1f))
 
         ActionRegisterStudent(
-            uiState = ModelRegisterStudentStateUI(),
+            uiState = RegisterStudentUiState(),
             validateFieldsCompose = {  },
             onRecord = { })
     }

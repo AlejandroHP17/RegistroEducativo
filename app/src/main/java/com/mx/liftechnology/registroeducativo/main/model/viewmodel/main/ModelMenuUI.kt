@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
 /**
@@ -15,10 +15,10 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelMenuStateUI(
+data class MenuUiState(
     val showControl: Boolean = false,
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
+    val controlToast : ToastUiState = ToastUiState(R.string.app_name,false),
 )
 
 /**
@@ -29,7 +29,7 @@ data class ModelMenuStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelMenuDialogUI(
+data class MenuUiDialog(
     val studentGroupItem: ModelDialogStudentGroupDomain = ModelDialogStudentGroupDomain(
         selected = false,
         item = null,
@@ -58,7 +58,7 @@ data class ModelMenuDialogUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelMenuDataData (
+data class MenuUiData (
     val evaluationItems: List<ModelPrincipalMenuData> = listOf(),
     val controlItems: List<ModelPrincipalMenuData> = listOf(),
 )

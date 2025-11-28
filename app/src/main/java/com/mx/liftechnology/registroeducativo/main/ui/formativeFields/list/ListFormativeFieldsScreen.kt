@@ -10,10 +10,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListFormativeFieldsDataState
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericListScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
@@ -54,7 +54,7 @@ fun ListFormativeFieldsScreen(
             textButton = stringResource(R.string.add_button),
             items = dataState.formativeFieldsListUI,
             onReturnClick = { navController.popBackStack() },
-            callbacks = ModelStateSpinnerUI(
+            callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
                         MainRoutes.AssignmentSubject.createRoutes(
@@ -76,7 +76,7 @@ fun ListFormativeFieldsScreen(
 @Composable()
 private fun ListFormativeFieldsPreview(){
 
-    val dataState = ModelListFormativeFieldsDataState(
+    val dataState = ListFormativeFieldsUiData(
         formativeFieldsList = listOf(
             ModelFormatFormativeFieldsDomain(
                 position = 1,
@@ -102,7 +102,7 @@ private fun ListFormativeFieldsPreview(){
             textButton = stringResource(R.string.add_button),
             items = dataState.formativeFieldsListUI,
             onReturnClick = { },
-            callbacks = ModelStateSpinnerUI(
+            callbacks = SpinnerUiCallbacks(
                 onItemClick = {},
                 onEdit = {},
                 onDelete = { }

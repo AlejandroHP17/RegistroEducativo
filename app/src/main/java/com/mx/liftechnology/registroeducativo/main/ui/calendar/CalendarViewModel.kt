@@ -7,9 +7,9 @@ import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListFormativeFieldsDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,17 +30,17 @@ class CalendarViewModel(
     private val getListStudentUseCase: GetListStudentUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelMenuStateUI())
+    private val _uiState = MutableStateFlow(MenuUiState())
     /** The UI state for the screen. */
-    val uiState: StateFlow<ModelMenuStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelListFormativeFieldsDataState())
+    private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
     /** The data state for subjects. */
-    val dataState: StateFlow<ModelListFormativeFieldsDataState> = _dataState.asStateFlow()
+    val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
-    private val _dataState2 = MutableStateFlow(ModelListStudentDataState())
+    private val _dataState2 = MutableStateFlow(ListStudentUiData())
     /** The data state for students. */
-    val dataState2: StateFlow<ModelListStudentDataState> = _dataState2.asStateFlow()
+    val dataState2: StateFlow<ListStudentUiData> = _dataState2.asStateFlow()
 
     /**
      * Gets the list of subjects.

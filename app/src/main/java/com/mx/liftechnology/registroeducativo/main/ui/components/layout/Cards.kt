@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.layout
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -46,8 +46,8 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
@@ -56,6 +56,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWarning
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 import java.time.LocalDate
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextDescription
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextFieldEditable
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldNumeric
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldScore
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
+import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DateRangePickerDialog
 
 /**
  * A composable function for previewing the cards in this file.
@@ -70,7 +78,7 @@ fun CustomCardView() {
                 numberList = "1",
                 nameCard = "Curp",
             ),
-            callbacks = ModelStateSpinnerUI(
+            callbacks = SpinnerUiCallbacks(
                 onItemClick = {},
                 onEdit = {},
                 onDelete = {}
@@ -85,7 +93,7 @@ fun CustomCardView() {
                 isExpandedTitle = true,
                 list = null
             ),
-            complexCallbacks = ModelWotyFofiUiCallbacks(
+            complexCallbacks = WotyFofiUiCallbacks(
                 onExpandedTitle = {},
                 onExpandedSubTitle = {subItem, parentItem ->  },
             )
@@ -147,7 +155,7 @@ fun CustomCardView() {
 @Composable
 fun CustomCard(
     item: ModelCustomCard,
-    callbacks: ModelStateSpinnerUI
+    callbacks: SpinnerUiCallbacks
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -245,7 +253,7 @@ fun CustomCard(
 @Composable
 fun ComplexCard(
     item: ModelComplexCard?,
-    complexCallbacks: ModelWotyFofiUiCallbacks,
+    complexCallbacks: WotyFofiUiCallbacks,
 ) {
 
     Card(
@@ -470,7 +478,7 @@ fun EvaluationPercentItem(
     ) {
         Column(modifier = Modifier.weight(5f)) {
             CustomSpace(dimensionResource(R.dimen.margin_between))
-            SpinnerMixOutlinedTextField(
+            DropdownTextFieldEditable(
                 options = listWorkMethods,
                 selectedOption = name,
                 label = stringResource(R.string.form_subject_evaluation),
@@ -481,7 +489,7 @@ fun EvaluationPercentItem(
         }
 
         Box(modifier = Modifier.weight(2f)) {
-            BoxEditTextNumeric(
+            TextFieldNumeric(
                 modelText = percent,
                 enable = true,
                 maxNumberCharacter = 4,
@@ -512,7 +520,7 @@ fun EvaluationStudentItem(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(5f)) {
-            BoxEditTextGeneric(
+            TextFieldGeneric(
                 modelText = nameStudent,
                 enable = false,
                 label = stringResource(id = R.string.tools_empty),
@@ -522,7 +530,7 @@ fun EvaluationStudentItem(
 
 
         Box(modifier = Modifier.weight(2f)) {
-            BoxEditTextScore(
+            TextFieldScore(
                 value = score,
                 enable = true,
                 label = stringResource(id = R.string.form_assignment_score),
@@ -560,7 +568,7 @@ fun RegisterPartialListItem(
         })
 
 
-    BoxEditTextCalendar(
+    TextFieldCalendar(
         value = date.date,
         enable = false,
         label = stringResource(id = R.string.form_partial_periods, index + 1),

@@ -9,8 +9,8 @@ import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStud
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubSubComplexCard
@@ -33,13 +33,13 @@ class WotyFofiViewModel (
     private val getListByFieldTypeStudentUseCase: GetListByFieldTypeStudentUseCase,
     private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(ModelWotyFofiStateUI())
+    private val _uiState = MutableStateFlow(WotyFofiUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelWotyFofiStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<WotyFofiUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelWotyFofiDataState())
+    private val _dataState = MutableStateFlow(WotyFofiUiData())
     /** The data state for the screen. */
-    val dataState: StateFlow<ModelWotyFofiDataState> = _dataState.asStateFlow()
+    val dataState: StateFlow<WotyFofiUiData> = _dataState.asStateFlow()
 
     /**
      * Updates the current subject.

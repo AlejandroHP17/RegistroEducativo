@@ -12,11 +12,11 @@ import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsReg
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialStateUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialUIData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiData
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,13 +38,13 @@ class RegisterPartialViewModel(
     private val getListPartialUseCase: GetListPartialUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterPartialStateUI())
+    private val _uiState = MutableStateFlow(RegisterPartialUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelRegisterPartialStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterPartialUiState> = _uiState.asStateFlow()
 
-    private val _uiData = MutableStateFlow(ModelRegisterPartialUIData())
+    private val _uiData = MutableStateFlow(RegisterPartialUiData())
     /** The data state for the screen. */
-    val uiData: StateFlow<ModelRegisterPartialUIData> = _uiData.asStateFlow()
+    val uiData: StateFlow<RegisterPartialUiData> = _uiData.asStateFlow()
 
     /**
      * Called when the number of partials changes.
@@ -129,7 +129,7 @@ class RegisterPartialViewModel(
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = R.string.toast_success_register_partial,
                         showToast = true,
                         typeToast = ModelStateTypeToastUI.SUCCESS
@@ -146,7 +146,7 @@ class RegisterPartialViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -202,7 +202,7 @@ class RegisterPartialViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

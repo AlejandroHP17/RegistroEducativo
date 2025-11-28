@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

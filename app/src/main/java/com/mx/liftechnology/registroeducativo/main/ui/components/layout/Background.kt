@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.layout
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -38,6 +38,11 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgFirst
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgSecond
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextSubHeader
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextDescription
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonReturn
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonActionShort
 
 /**
  * A composable function that returns a vertical gradient brush for the background.

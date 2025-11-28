@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
@@ -18,11 +18,11 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelWotyFofiStateUI(
+data class WotyFofiUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val formativeFields: ModelFormatFormativeFieldsDomain? = null,
     val student: ModelStudentDomain? = null,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
 /**
@@ -32,7 +32,7 @@ data class ModelWotyFofiStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelWotyFofiDataState(
+data class WotyFofiUiData(
     val dataCard: List<ModelComplexCard>? = null,
 )
 
@@ -44,7 +44,7 @@ data class ModelWotyFofiDataState(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelWotyFofiUiCallbacks(
+data class WotyFofiUiCallbacks(
     val onExpandedTitle:  (ModelComplexCard) -> Unit,
     val onExpandedSubTitle: (ModelSubComplexCard, ModelComplexCard)-> Unit,
 )

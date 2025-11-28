@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.calendars
 
 import android.icu.util.Calendar
 import androidx.compose.foundation.background
@@ -30,6 +30,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonsCalendar
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId

@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.login
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
 /**
@@ -13,9 +13,9 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterUserStateUI(
+data class RegisterUserUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
 /**
@@ -28,7 +28,7 @@ data class ModelRegisterUserStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterUserInputsUI(
+data class RegisterUserUiInputs(
     val emailInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
     val passInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
     val repeatPassInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
@@ -45,7 +45,7 @@ data class ModelRegisterUserInputsUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterUserCallbacksUI(
+data class RegisterUserUiCallbacks(
     val onEmailChanged: (ModelStateOutFieldText) -> Unit,
     val onPassChanged: (ModelStateOutFieldText) -> Unit,
     val onRepeatPassChanged: (ModelStateOutFieldText) -> Unit,

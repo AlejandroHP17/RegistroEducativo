@@ -20,11 +20,11 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMapper.toModelCard
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -51,13 +51,13 @@ class RegisterEvaluationViewModel(
 
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterAssignmentStateUI())
+    private val _uiState = MutableStateFlow(RegisterAssignmentUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelRegisterAssignmentStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterAssignmentUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelRegisterAssignmentDataState())
+    private val _dataState = MutableStateFlow(RegisterAssignmentUiData())
     /** The data state for the screen. */
-    val dataState: StateFlow<ModelRegisterAssignmentDataState> = _dataState.asStateFlow()
+    val dataState: StateFlow<RegisterAssignmentUiData> = _dataState.asStateFlow()
 
     private val _dialogState = MutableStateFlow(ModelCustomCalendar())
     /** The state for the date picker dialog. */
@@ -253,7 +253,7 @@ class RegisterEvaluationViewModel(
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ModelStateToastUI(
+                        controlToast = ToastUiState(
                             messageToast = R.string.toast_success_register_assignment,
                             showToast = true,
                             typeToast = ModelStateTypeToastUI.SUCCESS
@@ -272,7 +272,7 @@ class RegisterEvaluationViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -310,7 +310,7 @@ class RegisterEvaluationViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

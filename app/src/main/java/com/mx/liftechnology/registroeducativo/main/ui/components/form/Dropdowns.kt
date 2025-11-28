@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.form
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -35,6 +35,8 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.personalizeColors
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 
 /**
  * A composable function for previewing the spinners in this file.
@@ -57,7 +59,7 @@ fun SpinnerScreen() {
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
-        SpinnerTextField(
+        DropdownTextField(
             options = options,
             selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             read = false,
@@ -65,7 +67,7 @@ fun SpinnerScreen() {
             onOptionSelected = { selectedOption = it }
         )
 
-        SpinnerMixOutlinedTextField(
+        DropdownTextFieldEditable(
             options = options2,
             selectedOption = selectedOption.value.stringToModelStateOutFieldText(),
             label = "test",
@@ -76,7 +78,7 @@ fun SpinnerScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpinnerTextField(
+fun DropdownTextField(
     options: List<ModelCustomSpinner>,
     selectedOption: ModelStateOutFieldText,
     read: Boolean,
@@ -171,7 +173,7 @@ fun SpinnerTextField(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpinnerMixOutlinedTextField(
+fun DropdownTextFieldEditable(
     options: List<ModelWorkTypeData?>,
     selectedOption: ModelStateOutFieldText,
     label: String,

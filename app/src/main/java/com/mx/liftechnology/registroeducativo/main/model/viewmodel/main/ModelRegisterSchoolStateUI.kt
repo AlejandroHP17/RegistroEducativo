@@ -5,7 +5,7 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
@@ -18,9 +18,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterSchoolStateUI(
+data class RegisterSchoolUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
     val buttonColor: Color = colorSuccess
 )
 
@@ -35,12 +35,12 @@ data class ModelRegisterSchoolStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterSchoolUISemiAutomaticData(
+data class RegisterSchoolUiSemiAutomaticData(
     val schoolName: ModelStateOutFieldText = ModelStateOutFieldText(),
     val schoolId: Int = 0,
     val shiftName: ModelStateOutFieldText = ModelStateOutFieldText(),
     val periodCatalog:List<ModelCCTDataPeriodCatalog>? = null,
-    val spinner: ModelSpinnerSchoolUi? = null,
+    val spinner: SpinnerSchoolUi? = null,
     val read: Boolean = true,
 )
 
@@ -53,7 +53,7 @@ data class ModelRegisterSchoolUISemiAutomaticData(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterSchoolUICallbacks(
+data class RegisterSchoolUiCallbacks(
     val onTypeChanged: (ModelCustomSpinner) -> Unit,
     val onCycleChanged: (ModelCustomSpinner) -> Unit,
     val onGradeChanged: (ModelCustomSpinner) -> Unit,
@@ -69,7 +69,7 @@ data class ModelRegisterSchoolUICallbacks(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelSpinnerSchoolUi(
+data class SpinnerSchoolUi(
     val type: List<ModelCustomSpinner>?,
     val cycle: List<ModelCustomSpinner>?,
     val grade: List<ModelCustomSpinner>?,
@@ -86,7 +86,7 @@ data class ModelSpinnerSchoolUi(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterSchoolInputsUI(
+data class RegisterSchoolUiInputs(
     val cct: ModelStateOutFieldText = ModelStateOutFieldText(),
     val type: ModelStateOutFieldText = ModelStateOutFieldText(),
     val grade: ModelStateOutFieldText = ModelStateOutFieldText(),

@@ -16,12 +16,12 @@ import com.mx.liftechnology.domain.usecase.schoolCycle.menu.UpdateGroupMenuUseCa
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.UpdatePartialMenuUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuDataData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuDialogUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -47,17 +47,17 @@ class MenuViewModel(
     private val updatePartialMenuUseCase: UpdatePartialMenuUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelMenuStateUI())
+    private val _uiState = MutableStateFlow(MenuUiState())
     /** The UI state for the screen. */
-    val uiState: StateFlow<ModelMenuStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
 
-    private val _dialogState = MutableStateFlow(ModelMenuDialogUI())
+    private val _dialogState = MutableStateFlow(MenuUiDialog())
     /** The state for dialogs. */
-    val dialogState: StateFlow<ModelMenuDialogUI> = _dialogState.asStateFlow()
+    val dialogState: StateFlow<MenuUiDialog> = _dialogState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelMenuDataData())
+    private val _dataState = MutableStateFlow(MenuUiData())
     /** The data state for the screen. */
-    val dataState: StateFlow<ModelMenuDataData> = _dataState.asStateFlow()
+    val dataState: StateFlow<MenuUiData> = _dataState.asStateFlow()
 
     /**
      * Gets all the options for the schoolCycle.
@@ -91,7 +91,7 @@ class MenuViewModel(
                         _uiState.update {
                             it.copy(
                                 uiState = ModelStateUIEnum.ERROR,
-                                controlToast = ModelStateToastUI(
+                                controlToast = ToastUiState(
                                     messageToast = msg,
                                     showToast = true,
                                     typeToast = ModelStateTypeToastUI.ERROR
@@ -237,7 +237,7 @@ class MenuViewModel(
         viewModelScope.launch(dispatcherProvider.main) {
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

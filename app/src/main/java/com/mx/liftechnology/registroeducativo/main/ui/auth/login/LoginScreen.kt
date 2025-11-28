@@ -16,18 +16,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelLoginCallbacksUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelLoginInputsUI
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentCheckBoxAndText
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeader
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentTextMix
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.ImageLogo
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiInputs
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldEmail
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldPassword
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentCheckBoxAndText
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeader
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentTextMix
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ImageLogo
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ModifierOrientation
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
@@ -72,7 +72,7 @@ fun LoginScreen(
 
         BodyLoginScreen(
             inputState = inputState,
-            callbacks = ModelLoginCallbacksUI(
+            callbacks = LoginUiCallbacks(
                 onEmailChanged = { loginViewModel.onEmailChanged(it) },
                 onPassChanged = { loginViewModel.onPassChanged(it) },
                 onRememberChanged = { loginViewModel.onRememberChanged(it) }
@@ -114,13 +114,13 @@ fun HeaderLoginScreen() {
  */
 @Composable
 fun BodyLoginScreen(
-    inputState: ModelLoginInputsUI,
-    callbacks: ModelLoginCallbacksUI,
+    inputState: LoginUiInputs,
+    callbacks: LoginUiCallbacks,
     navigate: () -> Unit,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
-    BoxEditTextEmail(
+    TextFieldEmail(
         modelText = inputState.emailInputState,
         enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
@@ -128,7 +128,7 @@ fun BodyLoginScreen(
 
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
-    BoxEditTextPassword(
+    TextFieldPassword(
         modelText = inputState.passInputState,
         statePass = passwordVisible,
         enable = true,
@@ -191,8 +191,8 @@ private fun LoginPreview(){
         HeaderLoginScreen()
 
         BodyLoginScreen(
-            inputState = ModelLoginInputsUI(),
-            callbacks = ModelLoginCallbacksUI(
+            inputState = LoginUiInputs(),
+            callbacks = LoginUiCallbacks(
                 onEmailChanged = { },
                 onPassChanged = {  },
                 onRememberChanged = {  }

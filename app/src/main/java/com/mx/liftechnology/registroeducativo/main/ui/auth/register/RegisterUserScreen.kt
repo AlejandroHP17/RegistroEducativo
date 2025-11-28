@@ -23,17 +23,17 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelRegisterUserCallbacksUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelRegisterUserInputsUI
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextPassword
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
-import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiInputs
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldEmail
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldPassword
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ModifierOrientation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
@@ -80,7 +80,7 @@ fun RegisterUserScreen(
 
         BodyRegisterUserScreen(
             inputState = inputState,
-            callbacks = ModelRegisterUserCallbacksUI(
+            callbacks = RegisterUserUiCallbacks(
                 onEmailChanged = { registerUserViewModel.onEmailChanged(it) },
                 onPassChanged = { registerUserViewModel.onPassChanged(it) },
                 onRepeatPassChanged = { registerUserViewModel.onRepeatPassChanged(it) },
@@ -124,14 +124,14 @@ fun HeaderRegisterUserScreen(
  */
 @Composable
 fun BodyRegisterUserScreen(
-    inputState: ModelRegisterUserInputsUI,
-    callbacks: ModelRegisterUserCallbacksUI,
+    inputState: RegisterUserUiInputs,
+    callbacks: RegisterUserUiCallbacks,
     getRules: String,
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     var repeatPasswordVisible by remember { mutableStateOf(false) }
 
-    BoxEditTextEmail(
+    TextFieldEmail(
         modelText = inputState.emailInputState,
         enableBox = true,
         label = stringResource(id = R.string.form_generic_email),
@@ -140,7 +140,7 @@ fun BodyRegisterUserScreen(
 
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
-    BoxEditTextPassword(
+    TextFieldPassword(
         modelText = inputState.passInputState,
         statePass = passwordVisible,
         enable = true,
@@ -151,7 +151,7 @@ fun BodyRegisterUserScreen(
 
     CustomSpace(dimensionResource(id = R.dimen.margin_between))
 
-    BoxEditTextPassword(
+    TextFieldPassword(
         modelText = inputState.repeatPassInputState,
         statePass = repeatPasswordVisible,
         enable = true,
@@ -166,7 +166,7 @@ fun BodyRegisterUserScreen(
 
     CustomSpace(dimensionResource(id = R.dimen.margin_divided))
 
-    BoxEditTextGeneric(
+    TextFieldGeneric(
         modelText = inputState.codeInputState,
         enable = true,
         label = stringResource(id = R.string.form_reg_code),
@@ -204,8 +204,8 @@ private fun RegisterUserPreview(){
         HeaderRegisterUserScreen { }
 
         BodyRegisterUserScreen(
-            inputState = ModelRegisterUserInputsUI(),
-            callbacks = ModelRegisterUserCallbacksUI(
+            inputState = RegisterUserUiInputs(),
+            callbacks = RegisterUserUiCallbacks(
                 onEmailChanged = {  },
                 onPassChanged = {  },
                 onRepeatPassChanged = {  },

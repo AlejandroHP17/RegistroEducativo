@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextHeader
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextDescription
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextLink
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonReturn
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.CheckboxWithText
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.background
 
 /**
  * A composable function for previewing the components in this file.

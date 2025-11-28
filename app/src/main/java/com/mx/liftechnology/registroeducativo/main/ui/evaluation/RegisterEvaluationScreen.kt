@@ -29,19 +29,19 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterAssignmentStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.DateSimplePickerDialog
-import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationStudentList
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
-import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DateSimplePickerDialog
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.EvaluationStudentList
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
@@ -184,7 +184,7 @@ fun RegisterEvaluationScreen(
  */
 @Composable
 private fun HeaderRegisterAssignment(
-    uiState: ModelRegisterAssignmentStateUI,
+    uiState: RegisterAssignmentUiState,
     navController: NavHostController,
 ) {
     ComponentHeaderBackWithout(
@@ -202,12 +202,12 @@ private fun HeaderRegisterAssignment(
  */
 @Composable
 fun BodyRegisterAssignment(
-    dataState: ModelRegisterAssignmentDataState,
+    dataState: RegisterAssignmentUiData,
     dialogState: ModelCustomCalendar,
     onNameJobChanged: (ModelStateOutFieldText) -> Unit,
     showDialog: () -> Unit,
 ) {
-    BoxEditTextGeneric(
+    TextFieldGeneric(
         modelText = dataState.nameJob,
         enable = true,
         label = stringResource(id = R.string.form_assignment_name),
@@ -215,7 +215,7 @@ fun BodyRegisterAssignment(
         onBoxChanged= { onNameJobChanged(it)}
     )
 
-    BoxEditTextCalendar(
+    TextFieldCalendar(
         value = dialogState.date,
         enable = true,
         label = stringResource(id = R.string.form_assignment_date)
@@ -230,7 +230,7 @@ fun BodyRegisterAssignment(
  */
 @Composable
 private fun Body2RegisterAssignment(
-    dataState: ModelRegisterAssignmentDataState,
+    dataState: RegisterAssignmentUiData,
     onNameAssignmentChanged: (ModelCustomSpinner) -> Unit,
 ) {
     Row(
@@ -247,7 +247,7 @@ private fun Body2RegisterAssignment(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = dataState.listOptions!!,
                 selectedOption = dataState.nameAssignment,
                 read = false,
@@ -268,7 +268,7 @@ private fun Body2RegisterAssignment(
  */
 @Composable
 private fun ColumnRegisterScore(
-    dataState: ModelRegisterAssignmentDataState,
+    dataState: RegisterAssignmentUiData,
     onScoreChange: (Pair<String, String>) -> Unit,
 ) {
     EvaluationStudentList(
@@ -318,7 +318,7 @@ private fun RegisterEvaluationPreview(){
                 end.linkTo(parent.end)
             }) {
             HeaderRegisterAssignment(
-                uiState = ModelRegisterAssignmentStateUI(),
+                uiState = RegisterAssignmentUiState(),
                 navController = NavHostController(context = LocalContext.current)
             )
         }
@@ -330,7 +330,7 @@ private fun RegisterEvaluationPreview(){
                 end.linkTo(parent.end)
             }) {
             BodyRegisterAssignment(
-                dataState = ModelRegisterAssignmentDataState(),
+                dataState = RegisterAssignmentUiData(),
                 dialogState = ModelCustomCalendar(),
                 onNameJobChanged = {  },
                 showDialog = { }
@@ -344,7 +344,7 @@ private fun RegisterEvaluationPreview(){
                 end.linkTo(parent.end)
             }) {
             Body2RegisterAssignment(
-                dataState = ModelRegisterAssignmentDataState(),
+                dataState = RegisterAssignmentUiData(),
                 onNameAssignmentChanged = { }
             )
         }
@@ -358,7 +358,7 @@ private fun RegisterEvaluationPreview(){
                 height = Dimension.fillToConstraints
             }) {
             ColumnRegisterScore(
-                dataState = ModelRegisterAssignmentDataState(),
+                dataState = RegisterAssignmentUiData(),
                 onScoreChange = { }
             )
         }

@@ -23,15 +23,15 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectStateUI
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextGeneric
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.EvaluationPercentList
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
-import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSubjectUiState
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.EvaluationPercentList
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
@@ -143,11 +143,11 @@ private fun HeaderRegisterSubject(
  */
 @Composable
 private fun BodyRegisterSubject(
-    uiState: ModelRegisterSubjectStateUI,
+    uiState: RegisterSubjectUiState,
     onSubjectChanged: (ModelStateOutFieldText) -> Unit,
     onOptionsChanged: (String) -> Unit,
 ) {
-    BoxEditTextGeneric(
+    TextFieldGeneric(
         modelText = uiState.subject,
         enable = true,
         label = stringResource(id = R.string.form_subject_field),
@@ -175,7 +175,7 @@ private fun BodyRegisterSubject(
         Box(
             modifier = Modifier.weight(4f)
         ) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = uiState.listOptions,
                 selectedOption = uiState.options,
                 read = uiState.read,
@@ -196,7 +196,7 @@ private fun BodyRegisterSubject(
  */
 @Composable
 private fun ColumnRegisterSubject(
-    uiState: ModelRegisterSubjectStateUI,
+    uiState: RegisterSubjectUiState,
     onNameChange: (Pair<ModelWorkTypeData?, Int>) -> Unit,
     onPercentChange: (Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
@@ -249,7 +249,7 @@ private fun RegisterFormativeFieldsPreview(){
                 end.linkTo(parent.end)
             }) {
             BodyRegisterSubject(
-                uiState = ModelRegisterSubjectStateUI(),
+                uiState = RegisterSubjectUiState(),
                 onSubjectChanged = {  },
                 onOptionsChanged = { }
             )
@@ -265,7 +265,7 @@ private fun RegisterFormativeFieldsPreview(){
             }) {
 
             ColumnRegisterSubject(
-                uiState = ModelRegisterSubjectStateUI(),
+                uiState = RegisterSubjectUiState(),
                 onNameChange = { },
                 onPercentChange = { }
             )

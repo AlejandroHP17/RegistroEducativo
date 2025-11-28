@@ -6,17 +6,17 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
 
-data class ModelRegisterAssignmentStateUI(
+data class RegisterAssignmentUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast : ModelStateToastUI = ModelStateToastUI(R.string.app_name,false),
+    val controlToast : ToastUiState = ToastUiState(R.string.app_name,false),
     val formativeField : ModelFormatFormativeFieldsDomain? = null,
 )
 
-data class ModelRegisterAssignmentDataState (
+data class RegisterAssignmentUiData (
     val nameJob : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val listOptions: List<ModelCustomSpinner> ?= listOf(),

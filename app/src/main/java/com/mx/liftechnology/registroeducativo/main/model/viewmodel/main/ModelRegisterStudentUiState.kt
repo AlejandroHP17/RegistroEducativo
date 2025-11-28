@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
@@ -22,7 +22,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterStudentInputsUI(
+data class RegisterStudentUiInputs(
     val studentId : Int? = null,
     val name: ModelStateOutFieldText = ModelStateOutFieldText(),
     val lastName: ModelStateOutFieldText = ModelStateOutFieldText(),
@@ -33,10 +33,10 @@ data class ModelRegisterStudentInputsUI(
 
     )
 
-data class ModelRegisterStudentStateUI(
+data class RegisterStudentUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val isNew: Boolean = true,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
     val buttonColor: Color = colorSuccess
 )
 
@@ -52,7 +52,7 @@ data class ModelRegisterStudentStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterStudentCallbacksUI(
+data class RegisterStudentUiCallbacks(
     val onNameChanged: (ModelStateOutFieldText) -> Unit,
     val onLastNameChanged: (ModelStateOutFieldText) -> Unit,
     val onSecondLastNameChanged: (ModelStateOutFieldText) -> Unit,

@@ -8,8 +8,8 @@ import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.StudentDomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,13 +30,13 @@ class ListStudentViewModel(
     private val deleteStudentUseCase: DeleteStudentUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelListStudentStateUI())
+    private val _uiState = MutableStateFlow(ListStudentUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelListStudentStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<ListStudentUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelListStudentDataState())
+    private val _dataState = MutableStateFlow(ListStudentUiData())
     /** The data state for the screen. */
-    val dataState: StateFlow<ModelListStudentDataState> = _dataState.asStateFlow()
+    val dataState: StateFlow<ListStudentUiData> = _dataState.asStateFlow()
 
     /**
      * Gets the list of students.

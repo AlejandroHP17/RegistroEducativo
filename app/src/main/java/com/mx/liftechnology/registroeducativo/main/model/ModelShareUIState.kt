@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model
 
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 
 /**
  * Representa el estado de la UI compartido entre diferentes pantallas.
@@ -10,7 +10,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelShareUIState(
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+data class ShareUiState(
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
     val sessionExpired: Boolean = false
 )

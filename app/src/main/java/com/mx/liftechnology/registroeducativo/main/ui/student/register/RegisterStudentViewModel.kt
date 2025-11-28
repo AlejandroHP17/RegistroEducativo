@@ -18,11 +18,11 @@ import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentInputsUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterStudentStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -50,14 +50,14 @@ class RegisterStudentViewModel(
     private val voiceRecognitionManager: VoiceRecognitionManager
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterStudentStateUI())
+    private val _uiState = MutableStateFlow(RegisterStudentUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelRegisterStudentStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterStudentUiState> = _uiState.asStateFlow()
 
-    private val _uiInputs = MutableStateFlow(ModelRegisterStudentInputsUI())
+    private val _uiInputs = MutableStateFlow(RegisterStudentUiInputs())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiInputs: StateFlow<ModelRegisterStudentInputsUI> = _uiInputs.asStateFlow()
-    private val myValue: ModelRegisterStudentInputsUI
+    val uiInputs: StateFlow<RegisterStudentUiInputs> = _uiInputs.asStateFlow()
+    private val myValue: RegisterStudentUiInputs
         get() = _uiInputs.value
 
     private var isListening = true
@@ -220,7 +220,7 @@ class RegisterStudentViewModel(
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = R.string.toast_success_register_student,
                         showToast = true,
                         typeToast = ModelStateTypeToastUI.SUCCESS
@@ -238,7 +238,7 @@ class RegisterStudentViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -266,7 +266,7 @@ class RegisterStudentViewModel(
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = R.string.toast_success_edit_student,
                         showToast = true,
                         typeToast = ModelStateTypeToastUI.SUCCESS
@@ -284,7 +284,7 @@ class RegisterStudentViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -373,7 +373,7 @@ class RegisterStudentViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

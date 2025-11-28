@@ -14,13 +14,13 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextEmail
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.ModifierOrientation
-import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldEmail
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ModifierOrientation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
@@ -84,7 +84,7 @@ fun BodyForgetPasswordScreen(
     onEmailChanged: (ModelStateOutFieldText) -> Unit,
     getRules: String,
 ) {
-    BoxEditTextEmail(
+    TextFieldEmail(
         modelText = emailState,
         enableBox = true,
         label = stringResource(id = R.string.form_generic_email),

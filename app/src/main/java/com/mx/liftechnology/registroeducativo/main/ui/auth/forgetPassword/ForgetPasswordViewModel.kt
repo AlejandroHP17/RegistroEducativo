@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelLoginStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,9 +28,9 @@ class ForgetPasswordViewModel(
     private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelLoginStateUI())
+    private val _uiState = MutableStateFlow(LoginUiState())
     /** The UI state for the screen. */
-    val uiState: StateFlow<ModelLoginStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     private val _emailState = MutableStateFlow(ModelStateOutFieldText())
     /** The state of the email input field. */

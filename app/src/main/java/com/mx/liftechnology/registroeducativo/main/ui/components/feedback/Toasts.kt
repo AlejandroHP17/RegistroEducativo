@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.feedback
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn

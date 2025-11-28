@@ -26,7 +26,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.auth.forgetPassword.Forget
 import com.mx.liftechnology.registroeducativo.main.ui.auth.login.LoginScreen
 import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserScreen
 import com.mx.liftechnology.registroeducativo.main.ui.calendar.CalendarScreen
-import com.mx.liftechnology.registroeducativo.main.ui.components.ShowCustomAnimated
+import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen

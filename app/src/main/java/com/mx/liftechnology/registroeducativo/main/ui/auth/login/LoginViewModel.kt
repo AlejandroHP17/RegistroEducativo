@@ -10,11 +10,11 @@ import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelLoginInputsUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.ModelLoginStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,14 +39,14 @@ class LoginViewModel(
     private val validateFieldsLoginFlowUseCase: ValidateFieldsLoginFlowUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelLoginStateUI())
+    private val _uiState = MutableStateFlow(LoginUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelLoginStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    private val _inputState = MutableStateFlow(ModelLoginInputsUI())
+    private val _inputState = MutableStateFlow(LoginUiInputs())
     /** El estado que contiene los valores de los campos de entrada del usuario. */
-    val inputState: StateFlow<ModelLoginInputsUI> = _inputState.asStateFlow()
-    private val inputStateVM: ModelLoginInputsUI get() = _inputState.value
+    val inputState: StateFlow<LoginUiInputs> = _inputState.asStateFlow()
+    private val inputStateVM: LoginUiInputs get() = _inputState.value
 
     /**
      * Se invoca cuando el valor del campo de email cambia.
@@ -116,7 +116,7 @@ class LoginViewModel(
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ModelStateToastUI(
+                        controlToast = ToastUiState(
                             messageToast = R.string.toast_success_login,
                             showToast = true,
                             typeToast = ModelStateTypeToastUI.SUCCESS
@@ -138,7 +138,7 @@ class LoginViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -159,7 +159,7 @@ class LoginViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

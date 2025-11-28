@@ -8,7 +8,7 @@ package com.mx.liftechnology.registroeducativo.main.model.ui
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelStateCalendarUI(
+data class CalendarUiCallbacks(
     val onDateSelected: (Long) -> Unit,
     val onDismiss: () -> Unit
 )

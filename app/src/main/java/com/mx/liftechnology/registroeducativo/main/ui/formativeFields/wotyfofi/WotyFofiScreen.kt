@@ -17,9 +17,9 @@ import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import org.koin.androidx.compose.koinViewModel
@@ -64,7 +64,7 @@ fun AssignmentSubjectScreen(
             description = stringResource(R.string.assignment_subject_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
-            complexCallbacks = ModelWotyFofiUiCallbacks(
+            complexCallbacks = WotyFofiUiCallbacks(
                 onExpandedTitle = { wotyFofiViewModel.updateExpandedTitle(it) },
                 onExpandedSubTitle = {subItem, parentItem -> wotyFofiViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
@@ -87,9 +87,9 @@ private fun WotyFofiFormativeFieldsPreview(){
         GenericJobsScreen(
             title = "Desconocido",
             description = stringResource(R.string.assignment_student_description),
-            dataState = ModelWotyFofiDataState(),
+            dataState = WotyFofiUiData(),
             onReturnClick = {},
-            complexCallbacks = ModelWotyFofiUiCallbacks(
+            complexCallbacks = WotyFofiUiCallbacks(
                 onExpandedTitle = {  },
                 onExpandedSubTitle = { subItem, parentItem ->
                 }

@@ -10,10 +10,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListStudentDataState
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericListScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
@@ -60,7 +60,7 @@ fun ListStudentScreen(
             textButton = stringResource(R.string.add_button),
             items = dataState.studentListUI,
             onReturnClick = { navController.popBackStack() },
-            callbacks = ModelStateSpinnerUI(
+            callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
                         MainRoutes.AssignmentStudent.createRoutes(
@@ -94,7 +94,7 @@ fun ListStudentScreen(
 @Preview(showBackground = true)
 @Composable
 private fun ListStudentPreview(){
-    val dataState = ModelListStudentDataState(
+    val dataState = ListStudentUiData(
         studentList = listOf(ModelStudentDomain(
             studentId = 1,
             curp = "curp",
@@ -122,7 +122,7 @@ private fun ListStudentPreview(){
             textButton = stringResource(R.string.add_button),
             items = dataState.studentListUI,
             onReturnClick = {  },
-            callbacks = ModelStateSpinnerUI(
+            callbacks = SpinnerUiCallbacks(
                 onItemClick = {},
                 onEdit = {},
                 onDelete = {}

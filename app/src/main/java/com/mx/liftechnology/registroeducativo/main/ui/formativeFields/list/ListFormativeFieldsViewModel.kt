@@ -8,8 +8,8 @@ import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsU
 import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListFormativeFieldsDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelListFormativeFieldsStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,13 +30,13 @@ class ListFormativeFieldsViewModel(
     private val deleteFormativeFieldsUseCase: DeleteFormativeFieldsUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelListFormativeFieldsStateUI())
+    private val _uiState = MutableStateFlow(ListFormativeFieldsUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelListFormativeFieldsStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<ListFormativeFieldsUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ModelListFormativeFieldsDataState())
+    private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
     /** The data state for the screen. */
-    val dataState: StateFlow<ModelListFormativeFieldsDataState> = _dataState.asStateFlow()
+    val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
     /**
      * Gets the list of subjects.

@@ -22,12 +22,12 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toUi
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolInputsUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolStateUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUISemiAutomaticData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiSemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
@@ -63,18 +63,18 @@ class RegisterSchoolViewModel(
     private val voiceRecognitionManager: VoiceRecognitionManager,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterSchoolStateUI())
+    private val _uiState = MutableStateFlow(RegisterSchoolUiState())
     /** Estado de la UI que contiene eventos generales como carga, éxito o error. */
-    val uiState: StateFlow<ModelRegisterSchoolStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterSchoolUiState> = _uiState.asStateFlow()
 
-    private val _uiSemiAutomaticData = MutableStateFlow(ModelRegisterSchoolUISemiAutomaticData())
+    private val _uiSemiAutomaticData = MutableStateFlow(RegisterSchoolUiSemiAutomaticData())
     /** Estado que almacena los datos de la escuela que se rellenan automáticamente tras una búsqueda de CCT exitosa. */
-    val uiSemiAutomaticData: StateFlow<ModelRegisterSchoolUISemiAutomaticData> = _uiSemiAutomaticData.asStateFlow()
+    val uiSemiAutomaticData: StateFlow<RegisterSchoolUiSemiAutomaticData> = _uiSemiAutomaticData.asStateFlow()
 
-    private val _inputState = MutableStateFlow(ModelRegisterSchoolInputsUI())
+    private val _inputState = MutableStateFlow(RegisterSchoolUiInputs())
     /** Estado que contiene los valores de los campos de entrada del usuario (CCT, grado, grupo, ciclo). */
-    val inputState: StateFlow<ModelRegisterSchoolInputsUI> = _inputState.asStateFlow()
-    private val inputStateVM: ModelRegisterSchoolInputsUI get() = _inputState.value
+    val inputState: StateFlow<RegisterSchoolUiInputs> = _inputState.asStateFlow()
+    private val inputStateVM: RegisterSchoolUiInputs get() = _inputState.value
 
     private var isListening = true
 
@@ -326,7 +326,7 @@ class RegisterSchoolViewModel(
                 _uiState.update {
                     it.copy(
                         uiState = ModelStateUIEnum.SUCCESS,
-                        controlToast = ModelStateToastUI(
+                        controlToast = ToastUiState(
                             messageToast = R.string.toast_success_register_school,
                             showToast = true,
                             typeToast = ModelStateTypeToastUI.SUCCESS
@@ -345,7 +345,7 @@ class RegisterSchoolViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -412,7 +412,7 @@ class RegisterSchoolViewModel(
         viewModelScope.launch(dispatcherProvider.main) {
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

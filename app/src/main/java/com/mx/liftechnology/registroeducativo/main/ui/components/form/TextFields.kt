@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.form
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,6 +43,8 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSecondaryText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.background
 
 /**
  * A composable function for previewing the text fields in this file.
@@ -56,14 +58,14 @@ fun TestBoxes() {
     Column(
         modifier = Modifier.background(background())
     ) {
-        BoxEditTextEmail(
+        TextFieldEmail(
             modelText = data,
             enableBox = true,
             label = stringResource(id = R.string.form_generic_email)
         )
         { data = it }
 
-        BoxEditTextPassword(
+        TextFieldPassword(
             modelText = data,
             statePass = passwordVisible,
             enable = true,
@@ -72,7 +74,7 @@ fun TestBoxes() {
             onStatePassChanged = { passwordVisible = it }
         )
 
-        BoxEditTextGeneric(
+        TextFieldGeneric(
             modelText = data,
             enable = true,
             label = stringResource(id = R.string.tools_generic),
@@ -80,20 +82,20 @@ fun TestBoxes() {
         )
         { data = it }
 
-        BoxEditTextAllCaps(
+        TextFieldAllCaps(
             modelText = data,
             enable = true,
             label = stringResource(id = R.string.form_student_curp)
         )
         { data = it }
 
-        BoxEditTextCapitalLetterGeneric(
+        TextFieldCapitalLetter(
             modelText = data,
             enable = true,
             label = stringResource(id = R.string.form_student_name)
         ) {}
 
-        BoxEditTextNumeric(
+        TextFieldNumeric(
             modelText = data,
             enable = true,
             label = stringResource(id = R.string.form_student_phone_number),
@@ -102,14 +104,14 @@ fun TestBoxes() {
         { data = it }
 
 
-        BoxEditTextCalendar(
+        TextFieldCalendar(
             value =data,
             enable = true,
             label = stringResource(id = R.string.tools_generic)
         )
         { }
 
-        BoxEditTextSet(
+        TextFieldSet(
             modelText = data,
             label = stringResource(id = R.string.form_student_phone_number),
         )
@@ -126,7 +128,7 @@ fun TestBoxes() {
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
-fun BoxEditTextEmail(
+fun TextFieldEmail(
     modelText: ModelStateOutFieldText,
     enableBox: Boolean,
     label: String,
@@ -187,7 +189,7 @@ fun BoxEditTextEmail(
  * @param onStatePassChanged A lambda to be invoked when the password visibility state changes.
  */
 @Composable
-fun BoxEditTextPassword(
+fun TextFieldPassword(
     modelText: ModelStateOutFieldText,
     statePass: Boolean,
     enable: Boolean,
@@ -260,7 +262,7 @@ fun BoxEditTextPassword(
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
-fun BoxEditTextCapitalLetterGeneric(
+fun TextFieldCapitalLetter(
     modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
@@ -322,7 +324,7 @@ fun BoxEditTextCapitalLetterGeneric(
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
-fun BoxEditTextGeneric(
+fun TextFieldGeneric(
     modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
@@ -376,7 +378,7 @@ fun BoxEditTextGeneric(
 }
 
 @Composable
-fun BoxEditTextSet(
+fun TextFieldSet(
     modelText: ModelStateOutFieldText,
     label: String
 ) {
@@ -411,7 +413,7 @@ fun BoxEditTextSet(
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
-fun BoxEditTextAllCaps(
+fun TextFieldAllCaps(
     modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
@@ -475,7 +477,7 @@ fun BoxEditTextAllCaps(
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
-fun BoxEditTextNumeric(
+fun TextFieldNumeric(
     modelText: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
@@ -537,7 +539,7 @@ fun BoxEditTextNumeric(
  * @param onBoxChanged A lambda to be invoked when the text field value changes.
  */
 @Composable
-fun BoxEditTextScore(
+fun TextFieldScore(
     value: ModelStateOutFieldText,
     enable: Boolean,
     label: String,
@@ -608,7 +610,7 @@ fun BoxEditTextScore(
  * @param onBoxChanged A lambda to be invoked when the calendar icon is clicked.
  */
 @Composable
-fun BoxEditTextCalendar(
+fun TextFieldCalendar(
     value: ModelStateOutFieldText,
     enable: Boolean,
     label: String,

@@ -22,15 +22,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuDataData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuDialogUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuStateUI
-import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogMenu
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderMenu
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.MyGridScreen
-import com.mx.liftechnology.registroeducativo.main.ui.components.TextSubHeader
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiState
+import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.AlertDialogMenu
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderMenu
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.MyGridScreen
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextSubHeader
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
@@ -131,7 +131,7 @@ object MenuScreenObject {
  * @param onShowDialog A lambda to be invoked when the dialog is shown.
  */
 @Composable
-private fun HeaderMenuScreen(uiDialog: ModelMenuDialogUI, onShowDialog: (Boolean) -> Unit) {
+private fun HeaderMenuScreen(uiDialog: MenuUiDialog, onShowDialog: (Boolean) -> Unit) {
     ComponentHeaderMenu(
         title = stringResource(R.string.menu_grettins, "Profesor"),
         body = uiDialog.studentGroupItem.nameItem ?: stringResource(R.string.menu_empty),
@@ -150,8 +150,8 @@ private fun HeaderMenuScreen(uiDialog: ModelMenuDialogUI, onShowDialog: (Boolean
  */
 @Composable
 private fun BodyMenuScreen(
-    uiState: ModelMenuStateUI,
-    uiData: ModelMenuDataData,
+    uiState: MenuUiState,
+    uiData: MenuUiData,
     navController: (String) -> Unit,
 ) {
     LazyColumn(
@@ -190,7 +190,7 @@ private fun BodyMenuScreen(
  */
 @Composable
 private fun RegisterAreaMenuScreen(
-    uiData: ModelMenuDataData,
+    uiData: MenuUiData,
     navController: (String) -> Unit,
     test: () -> Unit,
 ) {
@@ -222,7 +222,7 @@ private fun RegisterAreaMenuScreen(
  */
 @Composable
 private fun ControlAreaMenuScreen(
-    uiData: ModelMenuDataData,
+    uiData: MenuUiData,
     navController: (String) -> Unit,
 ) {
     val menuItemsControl = stringArrayResource(com.mx.liftechnology.data.R.array.menu_items_control)
@@ -248,12 +248,12 @@ private fun MenuPreview(){
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
         HeaderMenuScreen(
-            uiDialog = ModelMenuDialogUI(),
+            uiDialog = MenuUiDialog(),
             onShowDialog = {  }
         )
         BodyMenuScreen(
-            uiState = ModelMenuStateUI(),
-            uiData = ModelMenuDataData(),
+            uiState = MenuUiState(),
+            uiData = MenuUiData(),
             navController = { }
         )
     }

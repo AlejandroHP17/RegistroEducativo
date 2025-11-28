@@ -23,15 +23,15 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterPartialUIData
-import com.mx.liftechnology.registroeducativo.main.ui.components.AlertDialogConfirm
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.RegisterPartialList
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
-import com.mx.liftechnology.registroeducativo.main.ui.components.TextBody
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiData
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.AlertDialogConfirm
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextField
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.RegisterPartialList
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextBody
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
@@ -158,7 +158,7 @@ private fun HeaderRegisterPartial(
  */
 @Composable
 private fun BodyRegisterPartial(
-    uiData: ModelRegisterPartialUIData,
+    uiData: RegisterPartialUiData,
     onPartialChanged: (ModelCustomSpinner) -> Unit,
 ) {
     CustomSpace(dimensionResource(R.dimen.margin_between))
@@ -177,7 +177,7 @@ private fun BodyRegisterPartial(
         Box(
             modifier = Modifier.weight(1f)
         ) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = uiData.listOptions,
                 selectedOption = uiData.numberPartials,
                 read = uiData.read,
@@ -198,7 +198,7 @@ private fun BodyRegisterPartial(
  */
 @Composable
 private fun ColumnRegisterPartial(
-    uiData: ModelRegisterPartialUIData,
+    uiData: RegisterPartialUiData,
     onDateChange: (
         Pair<Pair<LocalDate?, LocalDate?>, Int>,
     ) -> Unit,
@@ -254,7 +254,7 @@ private fun RegisterPartialPreview(){
                 end.linkTo(parent.end)
             }) {
             BodyRegisterPartial(
-                uiData = ModelRegisterPartialUIData(),
+                uiData = RegisterPartialUiData(),
                 onPartialChanged = { }
             )
         }
@@ -269,7 +269,7 @@ private fun RegisterPartialPreview(){
             }) {
 
                 ColumnRegisterPartial(
-                    uiData = ModelRegisterPartialUIData(),
+                    uiData = RegisterPartialUiData(),
                     onDateChange = { },
                 )
 

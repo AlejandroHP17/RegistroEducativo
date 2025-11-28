@@ -11,7 +11,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelStateSpinnerUI(
+data class SpinnerUiCallbacks(
     val onItemClick: (ModelCustomCard) -> Unit,
     val onEdit: (ModelCustomCard) -> Unit,
     val onDelete: (ModelCustomCard) -> Unit

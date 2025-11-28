@@ -3,8 +3,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.principal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.SessionManager
-import com.mx.liftechnology.registroeducativo.main.model.ModelShareUIState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ShareUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,9 +22,9 @@ import kotlinx.coroutines.launch
 class SharedViewModel(
     private val sessionManager: SessionManager
 ) : ViewModel(){
-    private val _uiState = MutableStateFlow(ModelShareUIState())
+    private val _uiState = MutableStateFlow(ShareUiState())
     /** El estado de la UI para componentes compartidos. */
-    val uiState: StateFlow<ModelShareUIState> = _uiState.asStateFlow()
+    val uiState: StateFlow<ShareUiState> = _uiState.asStateFlow()
 
     init{
         viewModelScope.launch {
@@ -46,10 +46,10 @@ class SharedViewModel(
      *
      * @param controlToast El nuevo estado del toast.
      */
-    fun modifyShowToast(controlToast: ModelStateToastUI) {
+    fun modifyShowToast(controlToast: ToastUiState) {
         _uiState.update {
             it.copy(
-                controlToast = ModelStateToastUI(
+                controlToast = ToastUiState(
                     messageToast = controlToast.messageToast,
                     showToast = controlToast.showToast,
                     typeToast = controlToast.typeToast
@@ -71,7 +71,7 @@ class SharedViewModel(
     ) {
         _uiState.update {
             it.copy(
-                controlToast = ModelStateToastUI(
+                controlToast = ToastUiState(
                     messageToast = messageToast,
                     showToast = true,
                     typeToast = typeToast

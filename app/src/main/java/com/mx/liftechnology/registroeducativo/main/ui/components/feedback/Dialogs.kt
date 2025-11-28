@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.components
+package com.mx.liftechnology.registroeducativo.main.ui.components.feedback
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,10 +13,16 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelMenuDialogUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextTitleDialog
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextBody
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.DialogGroupList
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.DialogPartialList
 
 /**
  * A composable function for previewing the alert dialogs in this file.
@@ -25,7 +31,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 @Composable
 fun AlertDialogPreview(){
     Column {
-        AlertDialogMenu(ModelMenuDialogUI(),{},{},false){}
+        AlertDialogMenu(MenuUiDialog(),{},{},false){}
         CustomSpace(16.dp)
         AlertDialogConfirm({},{})
     }
@@ -92,7 +98,7 @@ fun AlertDialogConfirm(
  */
 @Composable
 fun AlertDialogMenu(
-    uiDialog: ModelMenuDialogUI,
+    uiDialog: MenuUiDialog,
     itemSelectedReturn: (ModelDialogStudentGroupDomain) -> Unit,
     itemSelectedPartialReturn: (ModelDialogGroupPartialDomain?) -> Unit,
     selectType : Boolean,

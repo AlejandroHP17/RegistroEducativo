@@ -13,13 +13,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiDataState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComplexCard
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComplexCard
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
 /**
@@ -36,9 +36,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 fun GenericJobsScreen(
     title: String,
     description: String,
-    dataState: ModelWotyFofiDataState,
+    dataState: WotyFofiUiData,
     onReturnClick: () -> Unit,
-    complexCallbacks: ModelWotyFofiUiCallbacks,
+    complexCallbacks: WotyFofiUiCallbacks,
     onAction: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -49,7 +49,7 @@ fun GenericJobsScreen(
         )
         BodyAssignment(
             dataState =  dataState,
-            complexCallbacks = ModelWotyFofiUiCallbacks(
+            complexCallbacks = WotyFofiUiCallbacks(
                 onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
                 onExpandedSubTitle = { subItem, parentItem -> complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
             )
@@ -89,8 +89,8 @@ private fun GenericHeaderAssignment(
  */
 @Composable
 private fun BodyAssignment(
-    dataState: ModelWotyFofiDataState,
-    complexCallbacks: ModelWotyFofiUiCallbacks
+    dataState: WotyFofiUiData,
+    complexCallbacks: WotyFofiUiCallbacks
 ){
     LazyColumn(
         modifier = Modifier.wrapContentHeight(),
@@ -102,7 +102,7 @@ private fun BodyAssignment(
         ) { _, item: ModelComplexCard ->
             ComplexCard(
                 item = item,
-                complexCallbacks = ModelWotyFofiUiCallbacks(
+                complexCallbacks = WotyFofiUiCallbacks(
                     onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
                     onExpandedSubTitle = {subItem, parentItem ->   complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
                 )
@@ -134,9 +134,9 @@ private fun GenericJobsScreenPreview(){
     GenericJobsScreen(
         title = "Alejandro",
         description = "Test de prueba",
-        dataState = ModelWotyFofiDataState(),
+        dataState = WotyFofiUiData(),
         onReturnClick = {},
-        complexCallbacks = ModelWotyFofiUiCallbacks(
+        complexCallbacks = WotyFofiUiCallbacks(
             onExpandedTitle = {},
             onExpandedSubTitle = {subItem, parentItem ->  }
         ),

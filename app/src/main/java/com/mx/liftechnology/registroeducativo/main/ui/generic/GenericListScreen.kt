@@ -15,13 +15,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomCard
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.EmptyState
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomCard
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.EmptyState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
 /**
@@ -40,7 +40,7 @@ fun GenericListScreen(
     textButton: String,
     items: List<ModelCustomCard>,
     onReturnClick: () -> Unit,
-    callbacks: ModelStateSpinnerUI,
+    callbacks: SpinnerUiCallbacks,
     onAction: () -> Unit,
 ) {
     ConstraintLayout(
@@ -152,7 +152,7 @@ private fun GenericHeaderList(
 @Composable
 fun BodyListGeneric(
     items: List<ModelCustomCard>,
-    callbacks: ModelStateSpinnerUI,
+    callbacks: SpinnerUiCallbacks,
 ) {
     LazyColumn(
         modifier = Modifier.wrapContentHeight(),
@@ -161,7 +161,7 @@ fun BodyListGeneric(
         itemsIndexed(items, key = { _, item -> item.id }) { _, item ->
             CustomCard(
                 item = item,
-                callbacks = ModelStateSpinnerUI(
+                callbacks = SpinnerUiCallbacks(
                     onItemClick = { callbacks.onItemClick(item) },
                     onEdit = { callbacks.onEdit(item) },
                     onDelete = { callbacks.onDelete(item) }

@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.login
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
 /**
@@ -13,9 +13,9 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelLoginStateUI(
+data class LoginUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
 /**
@@ -27,7 +27,7 @@ data class ModelLoginStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelLoginInputsUI(
+data class LoginUiInputs(
     val emailInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
     val passInputState: ModelStateOutFieldText = ModelStateOutFieldText(),
     val isRemember: Boolean = false,
@@ -42,7 +42,7 @@ data class ModelLoginInputsUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelLoginCallbacksUI(
+data class LoginUiCallbacks(
     val onEmailChanged: (ModelStateOutFieldText) -> Unit,
     val onPassChanged: (ModelStateOutFieldText) -> Unit,
     val onRememberChanged: (Boolean) -> Unit

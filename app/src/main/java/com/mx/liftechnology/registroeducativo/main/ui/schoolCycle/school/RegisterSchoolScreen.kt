@@ -26,18 +26,18 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolInputsUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolStateUI
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUICallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSchoolUISemiAutomaticData
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextAllCaps
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextNumeric
-import com.mx.liftechnology.registroeducativo.main.ui.components.BoxEditTextSet
-import com.mx.liftechnology.registroeducativo.main.ui.components.ButtonPair
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBack
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.LoadingAnimation
-import com.mx.liftechnology.registroeducativo.main.ui.components.SpinnerTextField
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiSemiAutomaticData
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldAllCaps
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldNumeric
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldSet
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonPair
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextField
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
@@ -92,7 +92,7 @@ fun RegisterSchoolScreen(
         BodyDoubleRegisterSchool(
             semiAutomatic = uiSemiAutomaticData,
             inputState = inputState,
-            callbacks = ModelRegisterSchoolUICallbacks(
+            callbacks = RegisterSchoolUiCallbacks(
                 onTypeChanged = {registerSchoolViewModel.onTypeChanged(it)},
                 onCycleChanged = {registerSchoolViewModel.onCycleChanged(it)},
                 onGradeChanged = {registerSchoolViewModel.onGradeChanged(it)},
@@ -138,29 +138,29 @@ private fun HeaderRegisterSchool(navController: NavHostController) {
  */
 @Composable
 private fun BodyRegisterSchool(
-    inputState: ModelRegisterSchoolInputsUI,
-    uiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
+    inputState: RegisterSchoolUiInputs,
+    uiAutomatic: RegisterSchoolUiSemiAutomaticData,
     onCctChanged: (ModelStateOutFieldText) -> Unit,
     onLabelCycleChanged: (ModelStateOutFieldText) -> Unit,
 ) {
-    BoxEditTextAllCaps (
+    TextFieldAllCaps (
         modelText = inputState.cct,
         enable = true,
         label = stringResource(id = R.string.form_school_cct),
         onBoxChanged = { onCctChanged(it) }
     )
 
-    BoxEditTextSet(
+    TextFieldSet(
         modelText = uiAutomatic.schoolName,
         label = stringResource(id = R.string.form_school_name),
     )
 
-    BoxEditTextSet(
+    TextFieldSet(
         modelText = uiAutomatic.shiftName,
         label = stringResource(id = R.string.form_school_shift),
     )
 
-    BoxEditTextNumeric(
+    TextFieldNumeric(
         modelText = inputState.labelCycle,
         enable = true,
         label = stringResource(id = R.string.form_school_label_cycle),
@@ -181,16 +181,16 @@ private fun BodyRegisterSchool(
  */
 @Composable
 private fun BodyDoubleRegisterSchool(
-    semiAutomatic: ModelRegisterSchoolUISemiAutomaticData,
-    inputState: ModelRegisterSchoolInputsUI,
-    callbacks: ModelRegisterSchoolUICallbacks
+    semiAutomatic: RegisterSchoolUiSemiAutomaticData,
+    inputState: RegisterSchoolUiInputs,
+    callbacks: RegisterSchoolUiCallbacks
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = semiAutomatic.spinner?.type ?: emptyList(),
                 selectedOption = inputState.type,
                 read = semiAutomatic.read,
@@ -200,7 +200,7 @@ private fun BodyDoubleRegisterSchool(
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = semiAutomatic.spinner?.cycle ?: emptyList(),
                 selectedOption = inputState.cycle,
                 read = semiAutomatic.read,
@@ -217,7 +217,7 @@ private fun BodyDoubleRegisterSchool(
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.margin_divided))
     ) {
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = semiAutomatic.spinner?.grade ?: emptyList(),
                 selectedOption = inputState.grade,
                 read = semiAutomatic.read,
@@ -227,7 +227,7 @@ private fun BodyDoubleRegisterSchool(
         }
 
         Box(modifier = Modifier.weight(1f)) {
-            SpinnerTextField(
+            DropdownTextField(
                 options = semiAutomatic.spinner?.group ?: emptyList(),
                 selectedOption = inputState.group,
                 read = semiAutomatic.read,
@@ -249,7 +249,7 @@ private fun BodyDoubleRegisterSchool(
  */
 @Composable
 private fun ActionRegisterSchool(
-    uiState: ModelRegisterSchoolStateUI,
+    uiState: RegisterSchoolUiState,
     validateFieldsCompose: () -> Unit,
     onRecord: () -> Unit,
 ) {
@@ -275,16 +275,16 @@ private fun RegisterSchoolPreview(){
         HeaderRegisterSchool(NavHostController(context = LocalContext.current))
 
         BodyRegisterSchool(
-            inputState = ModelRegisterSchoolInputsUI(),
-            uiAutomatic = ModelRegisterSchoolUISemiAutomaticData(),
+            inputState = RegisterSchoolUiInputs(),
+            uiAutomatic = RegisterSchoolUiSemiAutomaticData(),
             onCctChanged =  { },
             onLabelCycleChanged = {}
         )
 
         BodyDoubleRegisterSchool(
-            semiAutomatic = ModelRegisterSchoolUISemiAutomaticData(),
-            inputState = ModelRegisterSchoolInputsUI(),
-            callbacks = ModelRegisterSchoolUICallbacks(
+            semiAutomatic = RegisterSchoolUiSemiAutomaticData(),
+            inputState = RegisterSchoolUiInputs(),
+            callbacks = RegisterSchoolUiCallbacks(
                 onTypeChanged = {},
                 onCycleChanged = {},
                 onGradeChanged = {},
@@ -295,7 +295,7 @@ private fun RegisterSchoolPreview(){
         Spacer(modifier = Modifier.weight(1f))
 
         ActionRegisterSchool(
-            uiState = ModelRegisterSchoolStateUI(),
+            uiState = RegisterSchoolUiState(),
             validateFieldsCompose = { },
             onRecord = {})
     }

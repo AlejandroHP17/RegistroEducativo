@@ -8,7 +8,7 @@ import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelSpinnerSchoolUi
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.SpinnerSchoolUi
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
@@ -45,8 +45,8 @@ object DomainToUIMapper {
         )
     }
 
-    fun ModelSpinnerSchoolDomain?.toUi(): ModelSpinnerSchoolUi {
-        return ModelSpinnerSchoolUi(
+    fun ModelSpinnerSchoolDomain?.toUi(): SpinnerSchoolUi {
+        return SpinnerSchoolUi(
             type = this?.type?.map { ModelCustomSpinner(id = 0, value = it.value) },
             cycle = this?.cycle?.map { ModelCustomSpinner(id = 0, value = it.value) },
             grade = this?.grade?.map { ModelCustomSpinner(id = 0, value = it.value) },

@@ -14,10 +14,10 @@ import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativ
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelRegisterSubjectStateUI
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSubjectUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,9 +38,9 @@ class RegisterFormativeFieldsViewModel(
     private val getListWorkTypeUseCase: GetListWorkTypeUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ModelRegisterSubjectStateUI())
+    private val _uiState = MutableStateFlow(RegisterSubjectUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<ModelRegisterSubjectStateUI> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterSubjectUiState> = _uiState.asStateFlow()
 
     /**
      * Called when the subject name changes.
@@ -177,7 +177,7 @@ class RegisterFormativeFieldsViewModel(
             is SuccessResult -> {
                 _uiState.update { it.copy(
                     uiState = ModelStateUIEnum.SUCCESS,
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = R.string.toast_success_register_subject,
                         showToast = true,
                         typeToast = ModelStateTypeToastUI.SUCCESS
@@ -194,7 +194,7 @@ class RegisterFormativeFieldsViewModel(
                     _uiState.update {
                         it.copy(
                             uiState = ModelStateUIEnum.ERROR,
-                            controlToast = ModelStateToastUI(
+                            controlToast = ToastUiState(
                                 messageToast = msg,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.ERROR
@@ -248,7 +248,7 @@ class RegisterFormativeFieldsViewModel(
         viewModelScope.launch (dispatcherProvider.main){
             _uiState.update {
                 it.copy(
-                    controlToast = ModelStateToastUI(
+                    controlToast = ToastUiState(
                         messageToast = it.controlToast.messageToast,
                         showToast = show,
                         typeToast = it.controlToast.typeToast

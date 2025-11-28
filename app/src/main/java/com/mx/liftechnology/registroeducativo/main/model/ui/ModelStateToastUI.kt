@@ -9,7 +9,7 @@ package com.mx.liftechnology.registroeducativo.main.model.ui
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelStateToastUI(
+data class ToastUiState(
     val messageToast: Int,
     val showToast: Boolean,
     val typeToast: ModelStateTypeToastUI = ModelStateTypeToastUI.SUCCESS

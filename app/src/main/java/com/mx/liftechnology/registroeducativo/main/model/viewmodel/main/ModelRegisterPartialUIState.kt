@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 
@@ -16,10 +16,10 @@ import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterPartialStateUI(
+data class RegisterPartialUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
     val isAvailable: Boolean = true,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
 /**
@@ -32,7 +32,7 @@ data class ModelRegisterPartialStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelRegisterPartialUIData(
+data class RegisterPartialUiData(
     val numberPartials: ModelStateOutFieldText = ModelStateOutFieldText(),
     val listCalendar: List<ModelDatePeriodDomain>? = listOf(),
     val listOptions: List<ModelCustomSpinner> = listOf(

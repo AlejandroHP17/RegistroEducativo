@@ -16,12 +16,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateSpinnerUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
-import com.mx.liftechnology.registroeducativo.main.ui.components.ComponentHeaderBackWithout
-import com.mx.liftechnology.registroeducativo.main.ui.components.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.DatePickerScreen
-import com.mx.liftechnology.registroeducativo.main.ui.components.SegmentedControl
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
+import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DatePickerScreen
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.SegmentedControl
 import com.mx.liftechnology.registroeducativo.main.ui.generic.BodyListGeneric
 import org.koin.androidx.compose.koinViewModel
 
@@ -68,7 +68,7 @@ fun CalendarScreen (
         if(selectedIndex == 0){
             BodyListGeneric(
                 items = dataState.formativeFieldsListUI,
-                callbacks = ModelStateSpinnerUI(
+                callbacks = SpinnerUiCallbacks(
                     onItemClick = {},
                     onEdit = {},
                     onDelete = { }
@@ -77,7 +77,7 @@ fun CalendarScreen (
         }else{
             BodyListGeneric(
                 items = dataState2.studentListUI,
-                callbacks = ModelStateSpinnerUI(
+                callbacks = SpinnerUiCallbacks(
                     onItemClick = {},
                     onEdit = {},
                     onDelete = { }

@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
 
@@ -14,9 +14,9 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelListFormativeFieldsStateUI(
+data class ListFormativeFieldsUiState(
     val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
-    val controlToast: ModelStateToastUI = ModelStateToastUI(R.string.app_name, false),
+    val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
 /**
@@ -27,7 +27,7 @@ data class ModelListFormativeFieldsStateUI(
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelListFormativeFieldsDataState(
+data class ListFormativeFieldsUiData(
     val formativeFieldsList: List<ModelFormatFormativeFieldsDomain>? = null,
     val formativeFieldsListUI: List<ModelCustomCard> = emptyList()
 )
