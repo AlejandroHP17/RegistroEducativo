@@ -14,6 +14,7 @@ data class ModelSubComplexCard( //work
     val isShowSubTitle: Boolean = false,
     val isExpandedSubTitle : Boolean = false,
     val list : List<ModelSubSubComplexCard?>?,
+    val date : String?,
 )
 
 data class ModelSubSubComplexCard( //evaluation

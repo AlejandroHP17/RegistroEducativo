@@ -65,6 +65,7 @@ object Environment {
     const val END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE = "formative-fields/by-cycle/{school_cycle_id}"
     const val END_POINT_GET_WORK_TYPE_STUDENT = "student-works/grouped"
     const val END_POINT_GET_WORKS_STUDENT = "student-works/"
+    const val END_POINT_GET_FIELD_TYPE_STUDENTS = "student-works/by-field-type-students"
 
     /** Endpoints para borrar datos. */
     const val END_POINT_DELETE_STUDENT = "students/{student_id}"

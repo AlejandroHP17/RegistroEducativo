@@ -36,7 +36,7 @@ import retrofit2.Retrofit
  * @author Pelkidev
  * @version 1.0.0
  */
-val crudSubjectModule = module {
+val crudFormativeFieldModule = module {
 
     /**
      * Provides an instance of [RegisterFormativeFieldsBulkApiCall].

@@ -5,7 +5,6 @@ import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeFi
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatAssignment
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
@@ -23,8 +22,6 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.Mo
  */
 object DomainToUIMapper {
 
-
-
     /**
      * Convierte una lista de materias del dominio a una lista de ModelCustomCard para la UI.
      *
@@ -39,40 +36,6 @@ object DomainToUIMapper {
                 nameCard = "${it.name}"
             )
         } ?: emptyList()
-    }
-
-    /**
-     * Convierte un ModelFormatSubjectDomain a un ModelComplexCard para la UI.
-     *
-     * @param subject La materia del dominio a convertir.
-     * @return Un ModelComplexCard con la información de la materia.
-     */
-    fun mapSubjectToComplexCard(subject: ModelFormatFormativeFieldsDomain?): ModelComplexCard {
-        return ModelComplexCard(
-            idTitle = subject?.formativeFieldId,
-            nameTitle = subject?.name,
-            isShowTitle = true,
-            isExpandedTitle = true,
-            list = null,
-        )
-    }
-
-    /**
-     * Convierte una lista de asignaciones del dominio a una lista de ModelSubComplexCard para la UI.
-     *
-     * @param assignments La lista de asignaciones del dominio a convertir.
-     * @return Una lista de ModelSubComplexCard formateada para mostrar en la UI.
-     */
-    fun mapAssignmentListToSubComplexCard(assignments: List<ModelFormatAssignment>?): List<ModelSubComplexCard?>? {
-        return assignments?.map {
-            ModelSubComplexCard(
-                idSubTitle = it.id,
-                nameSubTitle = it.assignmentName.valueText,
-                isShowSubTitle = true,
-                isExpandedSubTitle = false,
-                list = null,
-            )
-        }
     }
 
     fun String.toModelCustomSpinner(): ModelCustomSpinner {
@@ -121,7 +84,8 @@ object DomainToUIMapper {
             nameSubTitle = this.workTypeName,
             isShowSubTitle = false,
             isExpandedSubTitle = false,
-            list = null
+            list = null,
+            date = null
         )
     }
 
@@ -143,7 +107,8 @@ object DomainToUIMapper {
             nameSubTitle = this.workStudentName,
             isShowSubTitle = true,
             isExpandedSubTitle = false,
-            list = null
+            list = null,
+            date = this.workStudentDate
         )
     }
 }

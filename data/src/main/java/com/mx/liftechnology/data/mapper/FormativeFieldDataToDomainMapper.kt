@@ -5,13 +5,19 @@ import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseListWork
 import com.mx.liftechnology.core.network.apiCall.evaluation.ResponseListWorkStudent
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativeFieldBulk
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseFormativeFields
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetByFieldTypeStudent
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListByFieldStudent
+import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListByFieldTypeStudent
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListFormativeField
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWorkType
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListWotyFofi
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetWorkType
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypeDetail
 import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseWorkTypes
+import com.mx.liftechnology.data.model.formativeField.ModelByFieldTypeStudentData
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.model.formativeField.ModelGetListByFieldStudentData
+import com.mx.liftechnology.data.model.formativeField.ModelGetListByFieldTypeStudentData
 import com.mx.liftechnology.data.model.formativeField.ModelListWorkFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelListWorkStudentFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
@@ -113,6 +119,33 @@ object FormativeFieldDataToDomainMapper {
             workStudentId = this.workStudentId,
             workStudentName = this.workStudentName,
             workStudentDate = this.workStudentDate
+        )
+    }
+
+    fun ResponseGetByFieldTypeStudent.mapperToModelByFieldTypeStudentData () : ModelByFieldTypeStudentData{
+        return ModelByFieldTypeStudentData(
+            formativeFieldId = this.formativeFieldId,
+            formativeFieldName = this.formativeFieldName,
+            workTypeId = this.workTypeId,
+            workTypeName = this.workTypeName,
+            works = this.works.map { it.toData() }
+        )
+    }
+
+    private fun ResponseGetListByFieldTypeStudent.toData() : ModelGetListByFieldTypeStudentData{
+        return ModelGetListByFieldTypeStudentData(
+            workId = this.workId,
+            workName = this.workName,
+            workDate = this.workDate,
+            listStudents = this.listStudents.map { it.toData() }
+        )
+    }
+
+    private fun ResponseGetListByFieldStudent.toData() : ModelGetListByFieldStudentData {
+        return ModelGetListByFieldStudentData(
+            studentId = this.studentId,
+            studentName = this.studentName,
+            grade = this.grade
         )
     }
 }

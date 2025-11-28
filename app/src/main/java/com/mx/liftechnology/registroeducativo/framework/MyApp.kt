@@ -7,7 +7,7 @@ import com.mx.liftechnology.registroeducativo.di.wotyFofiModule
 import com.mx.liftechnology.registroeducativo.di.calendarModule
 import com.mx.liftechnology.registroeducativo.di.crudPartialModule
 import com.mx.liftechnology.registroeducativo.di.crudStudentModule
-import com.mx.liftechnology.registroeducativo.di.crudSubjectModule
+import com.mx.liftechnology.registroeducativo.di.crudFormativeFieldModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
@@ -62,7 +62,7 @@ class MyApp : Application() {
                 registerSchoolModule,
                 crudPartialModule,
                 crudStudentModule,
-                crudSubjectModule,
+                crudFormativeFieldModule,
                 profileModule,
                 wotyFofiModule,
                 registerEvaluationModule,

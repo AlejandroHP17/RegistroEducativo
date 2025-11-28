@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -12,6 +13,7 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWot
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ModelWotyFofiStateUI
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 class WotyFofiViewModel (
     private val dispatcherProvider: DispatcherProvider,
     private val getListWorkEvaluationFormativeFieldUseCase: GetListWorkEvaluationFormativeFieldUseCase,
+    private val getListByFieldTypeStudentUseCase: GetListByFieldTypeStudentUseCase,
     private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ModelWotyFofiStateUI())
@@ -104,6 +107,55 @@ class WotyFofiViewModel (
                 }
             )
         }
-        //getListEvaluations(subItem.idSubTitle, parentItem.idTitle)
+        getListEvaluationsStudents(subItem.idSubTitle, subItem.nameSubTitle, subItem.date, parentItem.idTitle)
     }
+
+    private fun getListEvaluationsStudents(
+        idSubTitle: Int?,
+        workName: String?,
+        workDate: String?,
+        idTitle: Int?
+    ) {
+        viewModelScope.launch (dispatcherProvider.io){
+            when (val result = getListByFieldTypeStudentUseCase.invoke(
+                workTypeId = idTitle,
+                workName = workName,
+                workDate = workDate
+            )){
+            is SuccessResult ->{
+                _dataState.update { currentState ->
+                    currentState.copy(
+                        dataCard = currentState.dataCard?.map { card ->
+                            if (card.idTitle == idTitle) {
+                                val updatedList = card.list?.map { subCard ->
+                                    if (subCard?.idSubTitle == idSubTitle) {
+
+                                        subCard?.copy(
+                                            list = result.data.works.firstOrNull()?.listStudents?.map { item ->
+                                                ModelSubSubComplexCard(
+                                                    idDescription = item.studentId,
+                                                    nameDescription = item.studentName,
+                                                    grade = item.grade?.toDouble(),
+                                                    isShowDescription = true
+                                                )
+                                            })
+                                    } else subCard
+                                }
+                                card.copy(list = updatedList)
+                            } else card
+                        }
+                    )
+                }
+            }
+            else -> {
+                _uiState.update {
+                    it.copy(
+                        uiState = ModelStateUIEnum.ERROR
+                    )
+                }
+            }
+        }
+        }
+    }
+
 }
