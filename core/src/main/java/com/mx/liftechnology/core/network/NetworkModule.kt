@@ -55,7 +55,9 @@ val networkModule = module {
     singleOf ( ::AuthInterceptor )
 
     /**
-     * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico de errores de conexión.
+     * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico y logging de conectividad.
+     * Este interceptor loguea información detallada de las peticiones y captura errores de conexión (IOException)
+     * para facilitar el debugging de problemas de red de bajo nivel.
      */
     single { ConnectionErrorInterceptor() }
 
@@ -70,9 +72,9 @@ val networkModule = module {
      * 
      * Orden de interceptores:
      * 1. AuthInterceptor - Maneja autenticación y refresh token
-     * 2. HttpLoggingInterceptor - Loguea peticiones y respuestas
-     * 3. ErrorHandlingInterceptor - Maneja errores HTTP de forma centralizada
-     * 4. ConnectionErrorInterceptor - Maneja errores de conexión
+     * 2. HttpLoggingInterceptor - Loguea peticiones y respuestas HTTP
+     * 3. ErrorHandlingInterceptor - Maneja y categoriza errores HTTP (4xx, 5xx)
+     * 4. ConnectionErrorInterceptor - Diagnostica errores de conectividad (IOException) y loguea información de red
      */
     single {
         OkHttpClient.Builder()

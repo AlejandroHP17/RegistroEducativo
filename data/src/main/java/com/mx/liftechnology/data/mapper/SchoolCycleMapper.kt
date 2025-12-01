@@ -11,7 +11,7 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
 
-object SchoolCycleDataToDomainMapper {
+object SchoolCycleMapper {
 
     fun List<ResponseGroupTeacher>?.mapperToCycleSchool(): List<ModelSchoolCycleData> {
         return this?.mapIndexed { index, cycle ->

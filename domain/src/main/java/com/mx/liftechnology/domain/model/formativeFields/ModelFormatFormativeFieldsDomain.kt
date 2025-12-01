@@ -7,7 +7,7 @@ package com.mx.liftechnology.domain.model.formativeFields
 
 import android.os.Parcelable
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -40,7 +40,7 @@ data class ModelFormatFormativeFieldsDomain(
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<ModelFormativeFieldData?>?.toModelListFormativeFields() :List<ModelFormatFormativeFieldsDomain>{
+fun List<FormativeFieldData?>?.toModelListFormativeFields() :List<ModelFormatFormativeFieldsDomain>{
     return this?.mapIndexedNotNull { index, response ->
         response?.let {
             ModelFormatFormativeFieldsDomain(

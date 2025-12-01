@@ -38,6 +38,18 @@ class LocationHelper(private val context: Context) {
         LocationServices.getFusedLocationProviderClient(context)
 
     /**
+     * Verifica si la aplicación tiene el permiso de ubicación concedido.
+     *
+     * @return `true` si el permiso está concedido, `false` en caso contrario.
+     */
+    private fun hasLocationPermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    /**
      * Interfaz de callback para notificar el resultado de la obtención de la ubicación.
      */
     interface LocationCallback {
@@ -63,11 +75,7 @@ class LocationHelper(private val context: Context) {
         permissionLauncher: ActivityResultLauncher<String>,
         callback: LocationCallback
     ) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (!hasLocationPermission()) {
             if (context is Activity) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         context,
@@ -135,11 +143,7 @@ class LocationHelper(private val context: Context) {
     }
 
     private fun getLastKnownLocation(callback: LocationCallback) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (hasLocationPermission()) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 callback.onLocationResult(location)
             }.addOnFailureListener {
@@ -156,11 +160,7 @@ class LocationHelper(private val context: Context) {
      *         [LocationResult.Error] si hay un error (permiso denegado, ubicación nula, etc.).
      */
     suspend fun getCurrentLocation(): LocationResult = suspendCancellableCoroutine { continuation ->
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        if (!hasLocationPermission()) {
             continuation.resume(LocationResult.Error("Permiso de ubicación no concedido"))
             return@suspendCancellableCoroutine
         }

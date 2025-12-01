@@ -7,8 +7,8 @@ package com.mx.liftechnology.data.repository.auth
 
 import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.core.network.api.RequestLogin
-import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToGetLoginData
-import com.mx.liftechnology.data.model.auth.ModelLoginData
+import com.mx.liftechnology.data.mapper.AuthMapper.mapperToGetLoginData
+import com.mx.liftechnology.data.model.auth.LoginData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkException
@@ -36,7 +36,7 @@ fun interface LoginRepository {
         latitude : Double,
         longitude : Double,
         imei : String
-    ): ModelResult<ModelLoginData, NetworkModelError>
+    ): ModelResult<LoginData, NetworkModelError>
 }
 
 /**
@@ -63,7 +63,7 @@ class LoginRepositoryImpl(
         latitude : Double,
         longitude : Double,
         imei : String
-    ): ModelResult<ModelLoginData, NetworkModelError> {
+    ): ModelResult<LoginData, NetworkModelError> {
 
         val request = RequestLogin(
             email = email,

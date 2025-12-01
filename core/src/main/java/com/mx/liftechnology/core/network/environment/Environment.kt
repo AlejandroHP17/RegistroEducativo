@@ -6,33 +6,88 @@
 package com.mx.liftechnology.core.network.environment
 
 import android.os.Build
+import com.mx.liftechnology.core.BuildConfig
 import com.mx.liftechnology.core.util.extension.logInfo
 
 /**
  * Objeto que contiene las constantes para los endpoints de la API y la URL base.
- * Gestiona la URL base dinámicamente, dependiendo de si la app se ejecuta en un emulador o en un dispositivo real.
- *
+ * 
+ * **Configuración de entorno:**
+ * La URL base se obtiene desde BuildConfig, permitiendo diferentes configuraciones
+ * para debug y release sin modificar el código. Además, detecta automáticamente
+ * si la app se está ejecutando en un emulador o en un dispositivo real para
+ * usar la URL apropiada.
+ * 
+ * **BuildConfig:**
+ * Los valores se configuran en `build.gradle.kts` del módulo core mediante
+ * `buildConfigField` en los diferentes `buildTypes` (debug, release, etc.).
+ * Se configuran dos URLs:
+ * - `EMULATOR_BASE_URL`: URL para cuando se ejecuta en emulador
+ * - `DEVICE_BASE_URL`: URL para cuando se ejecuta en dispositivo real
+ * 
+ * **Detección de emulador:**
+ * La app detecta automáticamente si se está ejecutando en un emulador usando
+ * propiedades del sistema Android (Build.FINGERPRINT, Build.MODEL, etc.).
+ * 
  * @author Pelkidev
  * @version 1.0.0
  */
 object Environment {
-     // Para emulador: 10.0.2.2 es la dirección especial que apunta al localhost de la máquina host
-    private const val EMULATOR_BASE_URL = "http://10.0.2.2:8000/api/"
-    // Para dispositivo real: usar la IP de tu máquina en la red local
-    private const val DEVICE_BASE_URL = "http://192.168.100.94:8000/api/"
-
     /**
      * La URL base para la API.
-     * Devuelve la URL apropiada según si la app se está ejecutando en un emulador o en un dispositivo real.
+     * 
+     * Gestiona la URL base dinámicamente, dependiendo de si la app se ejecuta
+     * en un emulador o en un dispositivo real. Obtiene las URLs desde BuildConfig
+     * y selecciona la apropiada según el entorno de ejecución.
+     * 
+     * **Flujo:**
+     * 1. Detecta si se está ejecutando en emulador o dispositivo real
+     * 2. Selecciona la URL correspondiente desde BuildConfig
+     * 3. Loguea la información para debugging
+     * 4. Retorna la URL seleccionada
+     * 
+     * **Configuración en build.gradle.kts:**
+     * ```kotlin
+     * buildTypes {
+     *     debug {
+     *         buildConfigField("String", "EMULATOR_BASE_URL", "\"http://10.0.2.2:8000/api/\"")
+     *         buildConfigField("String", "DEVICE_BASE_URL", "\"http://192.168.100.94:8000/api/\"")
+     *     }
+     *     release {
+     *         buildConfigField("String", "EMULATOR_BASE_URL", "\"https://api.example.com/api/\"")
+     *         buildConfigField("String", "DEVICE_BASE_URL", "\"https://api.example.com/api/\"")
+     *     }
+     * }
+     * ```
+     * 
+     * @return La URL base apropiada según el entorno de ejecución (emulador o dispositivo).
      */
     val URL_BASE: String
         get() {
             val isEmulator = isRunningOnEmulator()
-            val url = if (isEmulator) EMULATOR_BASE_URL else DEVICE_BASE_URL
+            val url = if (isEmulator) {
+                BuildConfig.EMULATOR_BASE_URL
+            } else {
+                BuildConfig.DEVICE_BASE_URL
+            }
             logInfo("Environment: isRunningOnEmulator: $isEmulator")
+            logInfo("Environment: URL base configurada: $url")
             return url
         }
 
+    /**
+     * Detecta si la aplicación se está ejecutando en un emulador.
+     * 
+     * Utiliza varias propiedades del sistema Android para determinar si el dispositivo
+     * es un emulador. Verifica:
+     * - Build.FINGERPRINT contiene "generic" o "emulator"
+     * - Build.MODEL contiene "Emulator"
+     * - Build.MANUFACTURER contiene "Genymotion"
+     * - Build.BRAND y Build.DEVICE comienzan con "generic"
+     * - Build.PRODUCT es "google_sdk"
+     * 
+     * @return `true` si se está ejecutando en un emulador, `false` si es un dispositivo real.
+     */
     private fun isRunningOnEmulator(): Boolean {
         return (Build.FINGERPRINT.contains("generic") ||
                 Build.FINGERPRINT.contains("emulator") ||
@@ -41,6 +96,17 @@ object Environment {
                 Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") ||
                 "google_sdk" == Build.PRODUCT)
     }
+
+    /**
+     * La versión de la API.
+     * 
+     * Obtiene la versión desde BuildConfig, permitiendo diferentes versiones
+     * según el tipo de build.
+     * 
+     * @return La versión de la API configurada para el entorno actual.
+     */
+    val API_VERSION: String
+        get() = BuildConfig.API_VERSION
 
     /** Endpoints para el flujo de login. */
     const val END_POINT_LOGIN = "auth/login"

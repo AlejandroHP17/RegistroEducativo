@@ -9,8 +9,8 @@ import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.core.network.api.RequestEvaluations
 import com.mx.liftechnology.core.network.api.RequestRegisterFormativeField
 import com.mx.liftechnology.core.network.api.RequestWorkType
-import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListFormativeFields
-import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelListFormativeFields
+import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkException
@@ -39,7 +39,7 @@ fun interface RegisterFormativeFieldsBulkRepository{
         workTypes : List<RequestWorkType>,
         evaluations :  List<RequestEvaluations>
     )
-    : ModelResult<ModelFormativeFieldData, NetworkModelError>
+    : ModelResult<FormativeFieldData, NetworkModelError>
 }
 
 /**
@@ -63,7 +63,7 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
         code : String,
         workTypes : List<RequestWorkType>,
         evaluations :  List<RequestEvaluations>
-    ): ModelResult<ModelFormativeFieldData, NetworkModelError> {
+    ): ModelResult<FormativeFieldData, NetworkModelError> {
         val request = RequestRegisterFormativeField(
             cycleSchoolId = cycleSchoolId,
             formativeFieldName = formativeFieldName,

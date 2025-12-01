@@ -7,7 +7,7 @@ package com.mx.liftechnology.data.repository.schoolCycle.school
 
 import com.mx.liftechnology.core.network.api.RequestRegisterSchoolCycle
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRegisterCycleSchool
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToRegisterCycleSchool
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult

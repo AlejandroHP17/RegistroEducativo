@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.auth
 
-import android.os.Build
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.core.util.device.DeviceIdHelper
 import com.mx.liftechnology.core.util.location.LocationHelper
 import com.mx.liftechnology.core.util.location.LocationResult
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
@@ -19,6 +19,7 @@ import com.mx.liftechnology.data.util.SuccessResult
  *
  * @property repositoryLogin El repositorio para las operaciones de inicio de sesión.
  * @property locationHelper Utilidad para obtener la ubicación actual del dispositivo.
+ * @property deviceIdHelper Utilidad para obtener el identificador único del dispositivo de forma segura.
  * @property preference Caso de uso para la gestión de las preferencias de usuario.
  *
  * @author Pelkidev
@@ -27,6 +28,7 @@ import com.mx.liftechnology.data.util.SuccessResult
 class LoginUseCase(
     private val repositoryLogin: LoginRepository,
     private val locationHelper: LocationHelper,
+    private val deviceIdHelper: DeviceIdHelper,
     private val preference: PreferenceUseCase,
     private val getDataUserUseCase: GetDataUserUseCase
 ) {
@@ -61,13 +63,16 @@ class LoginUseCase(
             }
         }
 
-        // 2. Ejecución de la llamada de red
+        // 2. Obtener identificador único del dispositivo de forma segura
+        val deviceId = deviceIdHelper.getDeviceId()
+
+        // 3. Ejecución de la llamada de red
         return runCatching { repositoryLogin.executeLogin(
             email = email.lowercase().trim(),
             password = pass,
             latitude = latitude,
             longitude = longitude,
-            imei = Build.FINGERPRINT + Build.ID
+            imei = deviceId
         ) }.fold(
             onSuccess = { result ->
                 when (result) {

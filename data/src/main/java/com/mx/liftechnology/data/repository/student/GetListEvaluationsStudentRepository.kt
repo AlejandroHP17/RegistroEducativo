@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelEvaluationsStudent
+import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelEvaluationsStudent
 import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult

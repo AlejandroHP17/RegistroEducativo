@@ -4,10 +4,10 @@ import com.mx.liftechnology.core.network.api.ResponseDataUser
 import com.mx.liftechnology.core.network.api.ResponseLogin
 import com.mx.liftechnology.core.network.api.ResponseRegisterUser
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
-import com.mx.liftechnology.data.model.auth.ModelLoginData
+import com.mx.liftechnology.data.model.auth.LoginData
 import com.mx.liftechnology.data.model.auth.ModelRegisterUserData
 
-object AuthDataToDomainMapper {
+object AuthMapper {
     fun ResponseDataUser.mapperToGetUserData(): ModelGetUserData {
         return ModelGetUserData(
             email = this.email,
@@ -20,8 +20,8 @@ object AuthDataToDomainMapper {
         )
     }
 
-    fun ResponseLogin.mapperToGetLoginData(): ModelLoginData{
-        return ModelLoginData(
+    fun ResponseLogin.mapperToGetLoginData(): LoginData{
+        return LoginData(
             accessToken = accessToken,
             refreshToken = refreshToken,
             tokenType = tokenType

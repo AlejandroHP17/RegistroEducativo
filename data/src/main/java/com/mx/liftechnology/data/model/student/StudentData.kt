@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.model.student
 
-data class ModelStudentData(
+data class StudentData(
     val curp: String?,
     val name: String?,
     val lastName: String?,

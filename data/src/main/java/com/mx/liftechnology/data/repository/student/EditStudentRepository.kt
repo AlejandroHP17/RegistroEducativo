@@ -2,8 +2,8 @@ package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.RequestEditStudent
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelStudent
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelStudent
+import com.mx.liftechnology.data.model.student.StudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
@@ -19,14 +19,14 @@ fun interface EditStudentRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeEditStudent(request: RequestEditStudent, studentId: Int)
-            : ModelResult<ModelStudentData, NetworkModelError>
+            : ModelResult<StudentData, NetworkModelError>
 }
 
 class EditStudentRepositoryImpl (
     private val studentApi: StudentApi
 ) : EditStudentRepository {
     override suspend fun executeEditStudent(request: RequestEditStudent, studentId: Int)
-    : ModelResult<ModelStudentData, NetworkModelError> {
+    : ModelResult<StudentData, NetworkModelError> {
         return try {
             val response = studentApi.editStudent(studentId, request)
             if (response.isSuccessful && response.body() != null) {

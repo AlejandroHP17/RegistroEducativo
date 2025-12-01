@@ -6,7 +6,7 @@
 package com.mx.liftechnology.data.repository.formativeField
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListWorkTypeData
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelListWorkTypeData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult

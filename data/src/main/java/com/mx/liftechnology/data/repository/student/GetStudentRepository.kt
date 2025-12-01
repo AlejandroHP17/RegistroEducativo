@@ -6,8 +6,8 @@
 package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelListStudent
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelListStudent
+import com.mx.liftechnology.data.model.student.StudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkException
@@ -29,7 +29,7 @@ fun interface GetStudentRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun executeGetListStudent(cycleSchoolId: Int)
-    : ModelResult<List<ModelStudentData?>, NetworkModelError>
+    : ModelResult<List<StudentData?>, NetworkModelError>
 }
 
 /**
@@ -49,7 +49,7 @@ class GetStudentRepositoryImpl(
      */
     override suspend fun executeGetListStudent(
         cycleSchoolId: Int
-    ) : ModelResult<List<ModelStudentData?>, NetworkModelError> {
+    ) : ModelResult<List<StudentData?>, NetworkModelError> {
         return try {
             val response = studentApi.getListStudents(cycleSchoolId)
             if (response.isSuccessful && response.body() != null) {

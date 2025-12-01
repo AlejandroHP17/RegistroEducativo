@@ -1,5 +1,5 @@
 /**
- * @file Proporciona funciones de extensión para logging, facilitando el registro de eventos en la consola.
+ * @file Proporciona funciones de extensión para logging utilizando Timber.
  * @author Pelkidev
  * @version 1.0.0
  */

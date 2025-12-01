@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.formativeField
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListWotyFofi
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelListWotyFofi
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult

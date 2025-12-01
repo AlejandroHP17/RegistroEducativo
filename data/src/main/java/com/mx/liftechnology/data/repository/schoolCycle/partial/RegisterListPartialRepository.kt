@@ -8,7 +8,7 @@ package com.mx.liftechnology.data.repository.schoolCycle.partial
 import com.mx.liftechnology.core.network.api.RequestPartials
 import com.mx.liftechnology.core.network.api.RequestRegisterPartial
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToModelListPartialData
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToModelListPartialData
 import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult

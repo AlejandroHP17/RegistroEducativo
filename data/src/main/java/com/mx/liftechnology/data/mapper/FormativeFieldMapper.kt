@@ -15,7 +15,7 @@ import com.mx.liftechnology.core.network.api.ResponseListWorkStudent
 import com.mx.liftechnology.core.network.api.ResponseWorkTypeDetail
 import com.mx.liftechnology.core.network.api.ResponseWorkTypes
 import com.mx.liftechnology.data.model.formativeField.ModelByFieldTypeStudentData
-import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
 import com.mx.liftechnology.data.model.formativeField.ModelGetListByFieldStudentData
 import com.mx.liftechnology.data.model.formativeField.ModelGetListByFieldTypeStudentData
 import com.mx.liftechnology.data.model.formativeField.ModelListWorkFormativeField
@@ -28,10 +28,10 @@ import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseFormativeFieldsData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
 
-object FormativeFieldDataToDomainMapper {
-    fun List<ResponseGetListFormativeField>.mapperToModelListFormativeFields(): List<ModelFormativeFieldData>{
+object FormativeFieldMapper {
+    fun List<ResponseGetListFormativeField>.mapperToModelListFormativeFields(): List<FormativeFieldData>{
         return this.mapIndexed { _, formativeField ->
-            ModelFormativeFieldData(
+            FormativeFieldData(
                 name = formativeField.name,
                 code = formativeField.code,
                 formativeFieldID = formativeField.formativeFieldId
@@ -48,8 +48,8 @@ object FormativeFieldDataToDomainMapper {
         }
     }
 
-    fun ResponseFormativeFieldBulk.mapperToModelListFormativeFields(): ModelFormativeFieldData{
-        return ModelFormativeFieldData(
+    fun ResponseFormativeFieldBulk.mapperToModelListFormativeFields(): FormativeFieldData{
+        return FormativeFieldData(
             name = this.formativeFieldsName,
             code = this.formativeFieldsCode,
             formativeFieldID = this.formativeFieldsId

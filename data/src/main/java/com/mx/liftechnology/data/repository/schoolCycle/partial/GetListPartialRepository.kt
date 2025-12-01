@@ -6,7 +6,7 @@
 package com.mx.liftechnology.data.repository.schoolCycle.partial
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToModelListPartialsData
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToModelListPartialsData
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult

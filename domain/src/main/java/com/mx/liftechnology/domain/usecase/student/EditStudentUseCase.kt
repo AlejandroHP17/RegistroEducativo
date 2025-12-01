@@ -3,7 +3,7 @@ package com.mx.liftechnology.domain.usecase.student
 import com.mx.liftechnology.core.network.api.RequestEditStudent
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.model.student.StudentData
 import com.mx.liftechnology.data.repository.student.EditStudentRepository
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
@@ -35,7 +35,7 @@ class EditStudentUseCase (
         birthday: String,
         phoneNumber: String,
         studentId: Int?
-    ): ModelResult<ModelStudentData?, ModelError> {
+    ): ModelResult<StudentData?, ModelError> {
         val teacherId= preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()
 

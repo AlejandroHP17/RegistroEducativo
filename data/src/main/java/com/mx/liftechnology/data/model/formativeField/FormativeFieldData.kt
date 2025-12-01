@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.model.formativeField
 
-data class ModelFormativeFieldData(
+data class FormativeFieldData(
     val name: String?,
     val code: String?,
     val formativeFieldID: Int?

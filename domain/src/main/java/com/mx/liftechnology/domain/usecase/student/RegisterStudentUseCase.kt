@@ -6,7 +6,7 @@
 package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.model.student.StudentData
 import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
@@ -48,7 +48,7 @@ class RegisterStudentUseCase(
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ModelResult<ModelStudentData?, ModelError> {
+    ): ModelResult<StudentData?, ModelError> {
         val teacherId = preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()
 

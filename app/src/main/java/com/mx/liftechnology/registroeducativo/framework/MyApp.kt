@@ -3,6 +3,7 @@ package com.mx.liftechnology.registroeducativo.framework
 import android.app.Application
 import com.mx.liftechnology.core.network.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
+import com.mx.liftechnology.core.util.device.deviceModule
 import com.mx.liftechnology.registroeducativo.di.calendarModule
 import com.mx.liftechnology.registroeducativo.di.crudFormativeFieldModule
 import com.mx.liftechnology.registroeducativo.di.crudPartialModule
@@ -55,6 +56,7 @@ class MyApp : Application() {
                 locationModule,
                 networkModule,
                 preferenceModule,
+                deviceModule,
                 splashModule,
                 loginUserModule,
                 registerUserModule,

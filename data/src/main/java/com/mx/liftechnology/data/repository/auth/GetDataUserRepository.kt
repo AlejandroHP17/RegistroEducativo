@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.auth
 
 import com.mx.liftechnology.core.network.api.AuthApi
-import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToGetUserData
+import com.mx.liftechnology.data.mapper.AuthMapper.mapperToGetUserData
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult

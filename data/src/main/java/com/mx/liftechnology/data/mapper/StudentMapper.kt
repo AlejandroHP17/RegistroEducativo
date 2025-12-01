@@ -5,11 +5,11 @@ import com.mx.liftechnology.core.network.api.ResponseGetListEvaluationsStudent
 import com.mx.liftechnology.core.network.api.ResponseGetStudent
 import com.mx.liftechnology.core.network.api.ResponseRegisterStudent
 import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.model.student.StudentData
 
-object StudentDataToDomainMapper {
-    fun ResponseEditStudent.mapperToModelStudent(): ModelStudentData{
-        return ModelStudentData(
+object StudentMapper {
+    fun ResponseEditStudent.mapperToModelStudent(): StudentData{
+        return StudentData(
             curp = curp,
             name = name,
             lastName = lastName,
@@ -22,9 +22,9 @@ object StudentDataToDomainMapper {
         )
     }
 
-    fun List<ResponseGetStudent>.mapperToModelListStudent(): List<ModelStudentData>{
+    fun List<ResponseGetStudent>.mapperToModelListStudent(): List<StudentData>{
         return this.mapIndexed { index, student ->
-            ModelStudentData(
+            StudentData(
                 curp = student.curp,
                 name = student.name,
                 lastName = student.lastName,
@@ -38,8 +38,8 @@ object StudentDataToDomainMapper {
         }
     }
 
-    fun ResponseRegisterStudent.mapperToModelStudent(): ModelStudentData{
-        return ModelStudentData(
+    fun ResponseRegisterStudent.mapperToModelStudent(): StudentData{
+        return StudentData(
             curp = curp,
             name = name,
             lastName = lastName,

@@ -7,8 +7,8 @@ package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.RequestRegisterStudent
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelStudent
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelStudent
+import com.mx.liftechnology.data.model.student.StudentData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkException
@@ -41,7 +41,7 @@ fun interface RegisterStudentRepository{
         schoolCycleId : Int,
         isActive : Boolean
     )
-    : ModelResult<ModelStudentData?, NetworkModelError>
+    : ModelResult<StudentData?, NetworkModelError>
 }
 
 /**
@@ -69,7 +69,7 @@ class RegisterStudentRepositoryImpl(
         teacherId : Int,
         schoolCycleId : Int,
         isActive : Boolean
-    ): ModelResult<ModelStudentData?, NetworkModelError> {
+    ): ModelResult<StudentData?, NetworkModelError> {
         val request = RequestRegisterStudent(
             name = name,
             lastName = lastName,

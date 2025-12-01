@@ -7,7 +7,7 @@ package com.mx.liftechnology.domain.model.student
 
 import android.os.Parcelable
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.model.student.ModelStudentData
+import com.mx.liftechnology.data.model.student.StudentData
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -47,7 +47,7 @@ data class ModelStudentDomain(
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<ModelStudentData?>?.toModelStudentList(): List<ModelStudentDomain> {
+fun List<StudentData?>?.toModelStudentList(): List<ModelStudentDomain> {
     return this?.mapNotNull { response ->
         response?.let {
             ModelStudentDomain(

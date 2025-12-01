@@ -3,7 +3,7 @@ package com.mx.liftechnology.domain.usecase.formativeField
 import com.mx.liftechnology.core.network.api.RequestEvaluations
 import com.mx.liftechnology.core.network.api.RequestWorkType
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
+import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
 import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
@@ -43,7 +43,7 @@ class RegisterFormativeFieldsBulkUseCase(
     suspend operator fun invoke(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String
-    ): ModelResult<ModelFormativeFieldData, ModelError> {
+    ): ModelResult<FormativeFieldData, ModelError> {
         val partialId = preference.getIdPartial()
         val cycleSchoolId = preference.getIdCycleSchool()
 
