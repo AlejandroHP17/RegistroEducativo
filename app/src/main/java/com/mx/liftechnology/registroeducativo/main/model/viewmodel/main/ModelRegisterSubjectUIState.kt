@@ -6,9 +6,9 @@ import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toModelCustomSpinner
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.mapper.GenericMapper.toModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 
 
 /**
@@ -34,17 +34,8 @@ data class RegisterSubjectUiState(
     val subject: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val options: ModelStateOutFieldText = "".stringToModelStateOutFieldText(),
     val listOptions: List<ModelCustomSpinner> =
-        listOf(
-            "1".toModelCustomSpinner(),
-            "2".toModelCustomSpinner(),
-            "3".toModelCustomSpinner(),
-            "4".toModelCustomSpinner(),
-            "5".toModelCustomSpinner(),
-            "6".toModelCustomSpinner(),
-            "7".toModelCustomSpinner(),
-            "8".toModelCustomSpinner(),
-            "9".toModelCustomSpinner()
-        ),
+        listOf("1", "2", "3", "4", "5", "6", "7", "8", "9")
+            .mapNotNull { it.toModelCustomSpinner() },
     val listAdapter: List<ModelSpinnersWorkMethods>? = null,
     val listWorkMethods: List<ModelWorkTypeData?> = emptyList(),
 

@@ -7,7 +7,7 @@ import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFie
 import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
+import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiState

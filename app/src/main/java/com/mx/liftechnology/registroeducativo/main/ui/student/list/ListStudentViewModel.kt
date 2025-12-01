@@ -6,7 +6,7 @@ import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
-import com.mx.liftechnology.registroeducativo.main.mapper.StudentDomainToUIMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiState
@@ -59,7 +59,7 @@ class ListStudentViewModel(
                     _dataState.update {
                         it.copy(
                             studentList = result.data,
-                            studentListUI = StudentDomainToUIMapper.mapStudentListToCustomCard(result.data)
+                            studentListUI = StudentMapper.mapStudentListToCustomCard(result.data)
                         )
                     }
                 }

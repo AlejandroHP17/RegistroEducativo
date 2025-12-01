@@ -15,20 +15,24 @@ import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSe
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toCustomSpinnerList
+import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toCustomSpinnerList
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMapper.toModelCard
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -60,6 +64,10 @@ class RegisterEvaluationViewModel(
     private val _dialogState = MutableStateFlow(ModelCustomCalendar())
     /** The state for the date picker dialog. */
     val dialogState: StateFlow<ModelCustomCalendar> = _dialogState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    /** Eventos de UI que deben ser manejados una sola vez (navegación, etc.) */
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     /**
      * Updates the current subject.
@@ -256,6 +264,8 @@ class RegisterEvaluationViewModel(
                                 )
                             )
                         }
+                        // Emitir evento de navegación en lugar de depender del estado
+                        _uiEvent.emit(UiEvent.NavigateBack)
                     }
 
                     is ErrorResult -> {

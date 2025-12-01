@@ -12,11 +12,15 @@ import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiInputs
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -46,6 +50,10 @@ class LoginViewModel(
     /** El estado que contiene los valores de los campos de entrada del usuario. */
     val inputState: StateFlow<LoginUiInputs> = _inputState.asStateFlow()
     private val inputStateVM: LoginUiInputs get() = _inputState.value
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    /** Eventos de UI que deben ser manejados una sola vez (navegación, etc.) */
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     /**
      * Se invoca cuando el valor del campo de email cambia.
@@ -116,6 +124,8 @@ class LoginViewModel(
                                 )
                             )
                         }
+                        // Emitir evento de navegación en lugar de depender del estado
+                        _uiEvent.emit(UiEvent.NavigateToHome)
                     }
 
                     is ErrorResult -> {

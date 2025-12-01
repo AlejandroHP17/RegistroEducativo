@@ -29,6 +29,7 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
@@ -80,8 +81,14 @@ fun RegisterEvaluationScreen(
         registerEvaluationViewModel.updateFormativeField(formativeField)
     }
 
-    LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+    // Consumir eventos de navegación en lugar de observar estados
+    LaunchedEffect(Unit) {
+        registerEvaluationViewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.NavigateBack -> navController.popBackStack()
+                else -> { /* Otros eventos se manejan en otros lugares */ }
+            }
+        }
     }
 
     LaunchedEffect(uiState.controlToast) {

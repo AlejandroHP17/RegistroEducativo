@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiInputs
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -51,8 +52,14 @@ fun LoginScreen(
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     val inputState by loginViewModel.inputState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS) onSuccess()
+    // Consumir eventos de navegación en lugar de observar estados
+    LaunchedEffect(Unit) {
+        loginViewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.NavigateToHome -> onSuccess()
+                else -> { /* Otros eventos se manejan en otros lugares */ }
+            }
+        }
     }
 
     // Observa el estado del toast del ViewModel local y lo propaga al SharedViewModel

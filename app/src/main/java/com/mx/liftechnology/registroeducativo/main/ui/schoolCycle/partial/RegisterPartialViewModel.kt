@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterPartialWithValidationUseCase
@@ -12,14 +11,18 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiData
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -45,6 +48,10 @@ class RegisterPartialViewModel(
     private val _uiData = MutableStateFlow(RegisterPartialUiData())
     /** The data state for the screen. */
     val uiData: StateFlow<RegisterPartialUiData> = _uiData.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    /** Eventos de UI que deben ser manejados una sola vez (navegación, etc.) */
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     /**
      * Called when the number of partials changes.
@@ -133,6 +140,8 @@ class RegisterPartialViewModel(
                                 typeToast = ModelStateTypeToastUI.SUCCESS
                             )
                         ) }
+                        // Emitir evento de navegación en lugar de depender del estado
+                        _uiEvent.emit(UiEvent.NavigateBack)
                     }
                     is ErrorResult -> {
                         val userError = ErrorMapper.mapErrorToUI(operationResult.error)

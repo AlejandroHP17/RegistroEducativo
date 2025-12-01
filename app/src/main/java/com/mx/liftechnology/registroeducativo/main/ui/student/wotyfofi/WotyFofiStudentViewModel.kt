@@ -6,7 +6,7 @@ import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toComplexCardUI
+import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiState

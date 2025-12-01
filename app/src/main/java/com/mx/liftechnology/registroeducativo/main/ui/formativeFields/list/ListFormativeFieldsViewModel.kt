@@ -6,7 +6,7 @@ import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiState
@@ -56,7 +56,7 @@ class ListFormativeFieldsViewModel(
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
                         formativeFieldsList = result.data,
-                        formativeFieldsListUI = DomainToUIMapper.mapSubjectListToCustomCard(result.data),
+                        formativeFieldsListUI = FormativeFieldMapper.mapSubjectListToCustomCard(result.data),
                     ) }
                 }
                 else -> {

@@ -23,6 +23,7 @@ import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.ModelStudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiInputs
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiState
@@ -70,8 +71,14 @@ fun RegisterStudentScreen(
         student?.let { registerStudentViewModel.getArguments(it) }
     }
 
-    LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+    // Consumir eventos de navegación en lugar de observar estados
+    LaunchedEffect(Unit) {
+        registerStudentViewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.NavigateBack -> navController.popBackStack()
+                else -> { /* Otros eventos se manejan en otros lugares */ }
+            }
+        }
     }
 
     LaunchedEffect(uiState.controlToast) {

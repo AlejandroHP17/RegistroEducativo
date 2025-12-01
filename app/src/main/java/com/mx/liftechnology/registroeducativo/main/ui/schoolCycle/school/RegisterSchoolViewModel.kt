@@ -18,12 +18,13 @@ import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterSchoolWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.mapper.DomainToUIMapper.toUi
+import com.mx.liftechnology.registroeducativo.main.mapper.SchoolCycleMapper.toUi
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiInputs
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiSemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
@@ -31,9 +32,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import com.mx.liftechnology.registroeducativo.main.util.getPeriodsByType
+import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
 import com.mx.liftechnology.registroeducativo.main.util.toSelectPeriod
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -73,6 +78,10 @@ class RegisterSchoolViewModel(
     /** Estado que contiene los valores de los campos de entrada del usuario (CCT, grado, grupo, ciclo). */
     val inputState: StateFlow<RegisterSchoolUiInputs> = _inputState.asStateFlow()
     private val inputStateVM: RegisterSchoolUiInputs get() = _inputState.value
+
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    /** Eventos de UI que deben ser manejados una sola vez (navegación, etc.) */
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     private var isListening = true
 
@@ -314,6 +323,8 @@ class RegisterSchoolViewModel(
                                 )
                             )
                         }
+                        // Emitir evento de navegación en lugar de depender del estado
+                        _uiEvent.emit(UiEvent.Navigate(MainRoutes.Menu.withReload(true)))
                     }
 
                     is ErrorResult -> {

@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiInputs
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiCallbacks
@@ -64,9 +65,17 @@ fun RegisterSchoolScreen(
     val uiSemiAutomaticData by registerSchoolViewModel.uiSemiAutomaticData.collectAsStateWithLifecycle()
     val inputState by registerSchoolViewModel.inputState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS)navController.navigate(MainRoutes.Menu.withReload(true)) {
-            popUpTo(MainRoutes.Menu.route) { inclusive = true }
+    // Consumir eventos de navegación en lugar de observar estados
+    LaunchedEffect(Unit) {
+        registerSchoolViewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.route) {
+                        popUpTo(MainRoutes.Menu.route) { inclusive = true }
+                    }
+                }
+                else -> { /* Otros eventos se manejan en otros lugares */ }
+            }
         }
     }
 
