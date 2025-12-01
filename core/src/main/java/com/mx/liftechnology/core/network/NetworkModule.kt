@@ -5,6 +5,7 @@
  */
 package com.mx.liftechnology.core.network
 
+import com.mx.liftechnology.core.BuildConfig
 import com.mx.liftechnology.core.network.environment.Environment
 import com.mx.liftechnology.core.util.session.SessionManager
 import okhttp3.OkHttpClient
@@ -31,6 +32,7 @@ val networkModule = module {
 
     /**
      * Provee una instancia singleton de [HttpLoggingInterceptor] para el registro de las peticiones.
+     * El nivel de logging se configura según el tipo de build: BODY en DEBUG, NONE en producción.
      */
     single {
         val logging = HttpLoggingInterceptor { message ->
@@ -38,7 +40,11 @@ val networkModule = module {
                 timber.log.Timber.d(message)
             }
         }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
         }
         logging
     }
@@ -49,21 +55,34 @@ val networkModule = module {
     singleOf ( ::AuthInterceptor )
 
     /**
-     * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico de errores.
+     * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico de errores de conexión.
      */
     single { ConnectionErrorInterceptor() }
 
     /**
+     * Provee una instancia singleton de [ErrorHandlingInterceptor] para manejo centralizado de errores HTTP.
+     */
+    single { ErrorHandlingInterceptor() }
+
+    /**
      * Provee una instancia singleton de [OkHttpClient], configurado con los interceptores.
+     * Los timeouts se configuran usando las constantes definidas en [NetworkConfig].
+     * 
+     * Orden de interceptores:
+     * 1. AuthInterceptor - Maneja autenticación y refresh token
+     * 2. HttpLoggingInterceptor - Loguea peticiones y respuestas
+     * 3. ErrorHandlingInterceptor - Maneja errores HTTP de forma centralizada
+     * 4. ConnectionErrorInterceptor - Maneja errores de conexión
      */
     single {
         OkHttpClient.Builder()
             .addInterceptor(get<AuthInterceptor>())
             .addInterceptor(get<HttpLoggingInterceptor>())
+            .addInterceptor(get<ErrorHandlingInterceptor>())
             .addInterceptor(get<ConnectionErrorInterceptor>())
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(NetworkConfig.CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(NetworkConfig.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(NetworkConfig.WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 

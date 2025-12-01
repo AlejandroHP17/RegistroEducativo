@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.usecase.evaluation
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
 import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepository
@@ -36,7 +36,7 @@ class GetListWorkEvaluationFormativeFieldUseCase (
      * {@inheritDoc}
      */
     suspend operator fun invoke(): ModelResult<ModelWorkTypeFormativeField, ModelError> {
-        val formativeFieldId = preference.getPreferenceInt(PreferenceKeys.ID_FORMATIVE_FIELD)?: return ErrorResult(
+        val formativeFieldId = preference.getIdFormativeField()?: return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 

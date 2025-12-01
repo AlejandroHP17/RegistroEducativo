@@ -1,6 +1,5 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 
 /**
@@ -27,9 +26,6 @@ class SaveFormativeFieldIdSelectedUseCase (
      * @param id El ID de la materia a guardar. Si es nulo, se guarda un valor por defecto (-1).
      */
     operator fun invoke(id: Int?) {
-        preference.savePreferenceInt(
-            PreferenceKeys.ID_FORMATIVE_FIELD,
-            id?:-1
-        )
+        preference.setIdFormativeField(id ?: -1)
     }
 }

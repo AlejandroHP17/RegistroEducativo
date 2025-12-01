@@ -2,7 +2,6 @@ package com.mx.liftechnology.registroeducativo.main.ui.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +42,7 @@ class SplashViewModel(
         viewModelScope.launch {
             // Las operaciones de I/O (SharedPreferences) deben ejecutarse en el dispatcher de I/O
             val isLoggedIn = withContext(dispatcherProvider.io) {
-                preferenceUseCase.getPreferenceBoolean(PreferenceKeys.REMEMBER_LOGIN)
+                preferenceUseCase.getRememberLogin()
             }
             _navigate.value = isLoggedIn
         }

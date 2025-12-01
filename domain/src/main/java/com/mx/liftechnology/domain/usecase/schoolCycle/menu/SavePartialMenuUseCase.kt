@@ -1,6 +1,5 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
 import java.time.LocalDate
@@ -50,11 +49,11 @@ class SavePartialMenuUseCase (
 
         element?.let {
             val result = ("${it.startDate}/${it.endDate}")
-            preference.savePreferenceString(PreferenceKeys.RANGE_DATES_PARTIAL, result)
-            preference.savePreferenceInt(PreferenceKeys.ID_PARTIAL, it.partialId)
-        }?:{
-            preference.savePreferenceString(PreferenceKeys.RANGE_DATES_PARTIAL, null)
-            preference.savePreferenceInt(PreferenceKeys.ID_PARTIAL, -1)
+            preference.setRangeDatesPartial(result)
+            preference.setIdPartial(it.partialId ?: -1)
+        } ?: run {
+            preference.setRangeDatesPartial(null)
+            preference.setIdPartial(-1)
         }
         return element
     }

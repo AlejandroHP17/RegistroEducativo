@@ -1,6 +1,5 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
 
@@ -27,12 +26,9 @@ class UpdatePartialMenuUseCase(
      * @param partial de [com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain] representa el parcial seleccionado.
      */
     operator fun invoke(partial: ModelDialogGroupPartialDomain?) {
-        preference.savePreferenceInt(
-            PreferenceKeys.ID_PARTIAL,
-            partial?.partialId?: -1
-        )
+        preference.setIdPartial(partial?.partialId ?: -1)
         val result = ("${partial?.startDate}/${partial?.endDate}")
-        preference.savePreferenceString(PreferenceKeys.RANGE_DATES_PARTIAL, result)
+        preference.setRangeDatesPartial(result)
     }
 
 }

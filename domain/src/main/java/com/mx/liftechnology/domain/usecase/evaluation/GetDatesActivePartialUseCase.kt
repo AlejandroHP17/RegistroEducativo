@@ -1,6 +1,5 @@
 package com.mx.liftechnology.domain.usecase.evaluation
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 
 /**
@@ -25,6 +24,6 @@ class GetDatesActivePartialUseCase (private val preference: PreferenceUseCase) {
      * @return Un `String` que representa el rango de fechas (ej: "2024-01-01/2024-02-28"), o `null` si no se encuentra.
      */
     suspend operator fun invoke() : String? {
-        return preference.getPreferenceString(PreferenceKeys.RANGE_DATES_PARTIAL)
+        return preference.getRangeDatesPartial()
     }
 }

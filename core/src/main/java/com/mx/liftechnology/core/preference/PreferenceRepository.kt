@@ -14,6 +14,9 @@ import androidx.security.crypto.MasterKey
 /**
  * Interfaz para acceder y gestionar SharedPreferences.
  * Define los métodos para obtener, guardar y limpiar las preferencias.
+ * 
+ * Esta interfaz proporciona acceso directo a SharedPreferences.
+ * Para un acceso con tipos seguros, usar [PreferenceUseCase] con el sistema [Preference].
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -42,6 +45,14 @@ interface PreferenceRepository {
      * @return `true` si las preferencias se limpiaron correctamente, `false` en caso contrario.
      */
     fun cleanPreference() : Boolean
+    
+    /**
+     * Obtiene la instancia de SharedPreferences subyacente.
+     * Útil para acceder directamente cuando se necesita.
+     *
+     * @return La instancia de SharedPreferences.
+     */
+    fun getSharedPreferences(): SharedPreferences
 }
 
 /**
@@ -147,5 +158,12 @@ class PreferenceRepositoryImpl(
     override fun cleanPreference(): Boolean {
         securePrefs.edit { clear() }
         return true
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    override fun getSharedPreferences(): SharedPreferences {
+        return securePrefs
     }
 }

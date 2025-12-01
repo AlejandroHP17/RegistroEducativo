@@ -1,11 +1,10 @@
 package com.mx.liftechnology.domain.usecase.auth
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
-import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
+import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
@@ -47,8 +46,8 @@ class GetDataUserUseCase(
      * @return `true` si las preferencias se guardaron correctamente, `false` en caso contrario.
      */
     private fun savePreferences(result: ModelGetUserData, remember: Boolean) {
-        preference.savePreferenceInt(PreferenceKeys.ID_USER, result.userId)
-        preference.savePreferenceInt(PreferenceKeys.ID_USER_LEVEL, result.accessLevelId)
-        preference.savePreferenceBoolean(PreferenceKeys.REMEMBER_LOGIN, remember)
+        preference.setIdUser(result.userId)
+        preference.setIdUserLevel(result.accessLevelId?:0)
+        preference.setRememberLogin(remember)
     }
 }

@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.partial
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
 import com.mx.liftechnology.data.util.ModelError
@@ -39,7 +39,7 @@ class GetListPartialUseCase(
      * o un estado de error específico en caso de fallo.
      */
     suspend operator fun invoke(): ModelResult<MutableList<ModelDatePeriodDomain>?, ModelError> {
-        val cycleSchoolId= preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
+        val cycleSchoolId= preference.getIdCycleSchool()
         if(cycleSchoolId == null) return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
         return runCatching {getListPartialRepository.executeGetListPartial(cycleSchoolId) }.fold(

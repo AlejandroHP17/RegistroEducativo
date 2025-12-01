@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
 import com.mx.liftechnology.data.util.ErrorResult
@@ -40,7 +40,7 @@ class GetListPartialMenuUseCase (
      */
      suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, ModelError> {
         val cycleSchoolId =
-            preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL) ?: return ErrorResult(
+            preference.getIdCycleSchool() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 

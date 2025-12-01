@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.network.api.RequestEditStudent
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.repository.student.EditStudentRepository
@@ -36,8 +36,8 @@ class EditStudentUseCase (
         phoneNumber: String,
         studentId: Int?
     ): ModelResult<ModelStudentData?, ModelError> {
-        val teacherId= preference.getPreferenceInt(PreferenceKeys.ID_USER)
-        val cycleSchoolId = preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
+        val teacherId= preference.getIdUser()
+        val cycleSchoolId = preference.getIdCycleSchool()
 
         if(teacherId == null || cycleSchoolId == null || studentId == null ) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA

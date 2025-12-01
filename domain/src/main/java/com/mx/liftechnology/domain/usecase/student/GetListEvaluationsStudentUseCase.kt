@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
 import com.mx.liftechnology.data.repository.student.GetListEvaluationsStudentRepository
@@ -24,8 +24,8 @@ class GetListEvaluationsStudentUseCase(
         workDateTo : String? = null
 
     ): ModelResult<List<ModelEvaluationsStudent>, ModelError> {
-        val schoolCycleId = preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
-        val partialId = preference.getPreferenceInt(PreferenceKeys.ID_PARTIAL)
+        val schoolCycleId = preference.getIdCycleSchool()
+        val partialId = preference.getIdPartial()
 
         if (schoolCycleId == null || partialId == null || studentId == null || workTypeId== null || formativeFieldId == null) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA

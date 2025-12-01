@@ -5,7 +5,6 @@
  */
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
@@ -50,8 +49,8 @@ class RegisterStudentUseCase(
         birthday: String,
         phoneNumber: String
     ): ModelResult<ModelStudentData?, ModelError> {
-        val teacherId= preference.getPreferenceInt(PreferenceKeys.ID_USER)
-        val cycleSchoolId = preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
+        val teacherId = preference.getIdUser()
+        val cycleSchoolId = preference.getIdCycleSchool()
 
         if(teacherId == null || cycleSchoolId == null ) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA

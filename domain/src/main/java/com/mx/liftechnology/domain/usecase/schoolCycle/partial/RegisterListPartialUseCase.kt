@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.partial
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
@@ -41,7 +41,7 @@ class RegisterListPartialUseCase(
     suspend operator fun invoke(
         adapterPeriods: List<ModelDatePeriodDomain>
     ): ModelResult<List<ModelListPartialData?>, ModelError> {
-        val cycleSchoolId = preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
+        val cycleSchoolId = preference.getIdCycleSchool()
 
         if(cycleSchoolId == null || adapterPeriods.isEmpty()) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA

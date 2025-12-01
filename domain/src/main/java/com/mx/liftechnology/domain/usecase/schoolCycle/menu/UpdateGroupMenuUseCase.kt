@@ -5,7 +5,6 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
 
@@ -24,9 +23,8 @@ class UpdateGroupMenuUseCase(private val preference: PreferenceUseCase) {
      * @param selected El grupo seleccionado.
      */
     operator fun invoke(selected: ModelDialogStudentGroupDomain) {
-        preference.savePreferenceInt(
-            PreferenceKeys.ID_CYCLE_SCHOOL,
-            selected.item?.cycleSchoolId
-        )
+        selected.item?.cycleSchoolId?.let { id ->
+            preference.setIdCycleSchool(id)
+        }
     }
 }

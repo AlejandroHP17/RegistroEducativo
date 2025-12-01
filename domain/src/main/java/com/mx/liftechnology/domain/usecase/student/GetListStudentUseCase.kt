@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.core.preference.PreferenceKeys
+
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.student.GetStudentRepository
 import com.mx.liftechnology.data.util.ErrorResult
@@ -33,7 +33,7 @@ class GetListStudentUseCase(
      */
     suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>, ModelError> {
         val cycleSchoolId =
-            preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL) ?: return ErrorResult(
+            preference.getIdCycleSchool() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 

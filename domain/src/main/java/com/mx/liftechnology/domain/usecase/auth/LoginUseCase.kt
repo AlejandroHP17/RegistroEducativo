@@ -1,7 +1,6 @@
 package com.mx.liftechnology.domain.usecase.auth
 
 import android.os.Build
-import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.location.LocationHelper
 import com.mx.liftechnology.core.util.location.LocationResult
@@ -73,8 +72,8 @@ class LoginUseCase(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        preference.savePreferenceString(PreferenceKeys.ACCESS_TOKEN, result.data.accessToken)
-                        preference.savePreferenceString(PreferenceKeys.REFRESH_TOKEN, result.data.refreshToken)
+                        preference.setAccessToken(result.data.accessToken)
+                        preference.setRefreshToken(result.data.refreshToken)
                         getDataUserUseCase.invoke(remember)
                     }
                     is ErrorResult -> {
