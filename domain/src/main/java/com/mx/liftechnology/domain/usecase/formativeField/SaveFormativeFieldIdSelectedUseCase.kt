@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 
 /**
@@ -28,7 +28,7 @@ class SaveFormativeFieldIdSelectedUseCase (
      */
     operator fun invoke(id: Int?) {
         preference.savePreferenceInt(
-            ModelPreference.ID_FORMATIVE_FIELD,
+            PreferenceKeys.ID_FORMATIVE_FIELD,
             id?:-1
         )
     }

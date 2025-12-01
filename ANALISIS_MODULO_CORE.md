@@ -10,26 +10,36 @@ El módulo `core` contiene funcionalidades transversales y herramientas comparti
 
 ### 1.1 Problemas Identificados
 
-#### ❌ Inconsistencias en Nombres de Archivos
+#### ✅ Inconsistencias en Nombres de Archivos - **CORREGIDO**
 - **Problema**: Mezcla de convenciones en nombres de archivos
   - `consoleExtensions.kt` (camelCase) vs `LocationHelper.kt` (PascalCase)
   - `ModelPreference.kt` vs `ModelSelectorForm.kt` (diferentes patrones)
   - `preferenceModule.kt` (camelCase) vs `NetworkModule.kt` (PascalCase)
 
 **Recomendación**: Estandarizar a PascalCase para todos los archivos:
-- `ConsoleExtensions.kt`
-- `PreferenceModule.kt`
+- `ConsoleExtensions.kt` ✅
+- `PreferenceModule.kt` ✅
 
-#### ❌ Nomenclatura de Clases y Objetos
+**Estado**: ✅ **COMPLETADO** - Todos los archivos han sido renombrados a PascalCase:
+- `consoleExtensions.kt` → `ConsoleExtensions.kt`
+- `preferenceModule.kt` → `PreferenceModule.kt`
+- `ModelPreference.kt` → `PreferenceKeys.kt`
+- `ModelSelectorForm.kt` → `FormSelector.kt`
+
+#### ✅ Nomenclatura de Clases y Objetos - **CORREGIDO**
 - **Problema**: Inconsistencias en nombres
   - `ModelPreference` (prefijo "Model" innecesario para constantes)
   - `ModelSelectorForm` (debería ser más descriptivo)
   - `PreferenceRepository` vs `PreferenceUseCase` (confusión entre responsabilidades)
 
 **Recomendación**: 
-- Renombrar `ModelPreference` a `PreferenceKeys` o `PreferenceConstants`
-- Renombrar `ModelSelectorForm` a `FormSelector` o `SelectorForm`
-- Clarificar la diferencia entre `PreferenceRepository` y `PreferenceUseCase`
+- Renombrar `ModelPreference` a `PreferenceKeys` o `PreferenceConstants` ✅
+- Renombrar `ModelSelectorForm` a `FormSelector` o `SelectorForm` ✅
+- Clarificar la diferencia entre `PreferenceRepository` y `PreferenceUseCase` ⚠️ (pendiente)
+
+**Estado**: ✅ **COMPLETADO** - Las clases y objetos han sido renombrados:
+- `ModelPreference` → `PreferenceKeys` (actualizado en 26 archivos)
+- `ModelSelectorForm` → `FormSelector`
 
 #### ❌ Nomenclatura de API Calls
 - **Problema**: Nombres inconsistentes

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.evaluation
 
 import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepository
 import com.mx.liftechnology.data.util.ErrorResult
@@ -17,9 +17,9 @@ class RegisterWorkTypeEvaluationsUseCase(
     private val registerWorkTypeEvaluationsRepository: RegisterWorkTypeEvaluationsRepository
 ) {
     suspend operator fun invoke(workTypeId: Int?, nameWork: String?, workDate: String?, studentListUI: List<ModelCardDomain>):  ModelResult<Boolean, ModelError>{
-        val formativeFieldId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD)
-        val partialId= preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
-        val cycleSchoolId= preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+        val formativeFieldId = preference.getPreferenceInt(PreferenceKeys.ID_FORMATIVE_FIELD)
+        val partialId= preference.getPreferenceInt(PreferenceKeys.ID_PARTIAL)
+        val cycleSchoolId= preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
 
         if(formativeFieldId == null || partialId == null || cycleSchoolId == null || workDate == null || nameWork == null|| workTypeId == null) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA

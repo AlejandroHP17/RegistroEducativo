@@ -12,7 +12,7 @@ package com.mx.liftechnology.core.preference
  * @author Pelkidev
  * @version 1.0.0
  */
-object ModelPreference {
+object PreferenceKeys {
     /** Clave para almacenar el estado de inicio de sesión del usuario. */
     const val REMEMBER_LOGIN = "LOGIN"
     /** Clave para almacenar el token de acceso del usuario. */

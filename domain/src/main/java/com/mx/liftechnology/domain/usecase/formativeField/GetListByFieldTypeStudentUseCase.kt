@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelByFieldTypeStudentData
 import com.mx.liftechnology.data.repository.formativeField.GetListByFieldTypeStudentRepository
@@ -17,7 +17,7 @@ class GetListByFieldTypeStudentUseCase(
 ) {
 
     suspend operator fun invoke(workTypeId: Int?, workName: String?, workDate: String?): ModelResult<ModelByFieldTypeStudentData, ModelError> {
-        val formativeFieldId = preference.getPreferenceInt(ModelPreference.ID_FORMATIVE_FIELD) ?: return ErrorResult(
+        val formativeFieldId = preference.getPreferenceInt(PreferenceKeys.ID_FORMATIVE_FIELD) ?: return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 

@@ -17,7 +17,7 @@ import kotlinx.parcelize.Parcelize
  * @version 1.0.0
  */
 @Parcelize
-enum class ModelSelectorForm(val value: Int) : Parcelable {
+enum class FormSelector(val value: Int) : Parcelable {
     /** Representa el campo de nombre. */
     NAME(1),
 

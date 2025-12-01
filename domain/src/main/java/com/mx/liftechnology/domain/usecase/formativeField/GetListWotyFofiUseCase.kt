@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiRepository
@@ -18,7 +18,7 @@ class GetListWotyFofiUseCase(
 
     suspend operator fun invoke() : ModelResult<ModelWotyFofiData, ModelError> {
         val schoolCycleId =
-            preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) ?: return ErrorResult(
+            preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL) ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 

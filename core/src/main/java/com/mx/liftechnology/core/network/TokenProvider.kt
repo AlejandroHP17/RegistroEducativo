@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.core.network
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 
 /**
@@ -23,15 +23,15 @@ class TokenProvider(private val preference: PreferenceUseCase) {
      * @return El token, o `null` si no se encuentra ninguno.
      */
     fun getToken(): String? {
-        return preference.getPreferenceString(ModelPreference.ACCESS_TOKEN)
+        return preference.getPreferenceString(PreferenceKeys.ACCESS_TOKEN)
     }
 
     fun getRefreshToken(): String?{
-        return preference.getPreferenceString(ModelPreference.REFRESH_TOKEN)
+        return preference.getPreferenceString(PreferenceKeys.REFRESH_TOKEN)
     }
 
     fun saveNewToken(token: String?){
-        preference.savePreferenceString(ModelPreference.ACCESS_TOKEN, token)
+        preference.savePreferenceString(PreferenceKeys.ACCESS_TOKEN, token)
     }
 
     fun closeSession() =

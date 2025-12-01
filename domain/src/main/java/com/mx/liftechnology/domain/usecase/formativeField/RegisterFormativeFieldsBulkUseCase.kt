@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.usecase.formativeField
 
 import com.mx.liftechnology.core.network.apiCall.formativeField.RequestEvaluations
 import com.mx.liftechnology.core.network.apiCall.formativeField.RequestWorkType
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
@@ -45,8 +45,8 @@ class RegisterFormativeFieldsBulkUseCase(
         updatedList: MutableList<ModelSpinnersWorkMethods>?,
         name: String
     ): ModelResult<ModelFormativeFieldData, ModelError> {
-        val partialId= preference.getPreferenceInt(ModelPreference.ID_PARTIAL)
-        val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+        val partialId= preference.getPreferenceInt(PreferenceKeys.ID_PARTIAL)
+        val cycleSchoolId = preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
 
         if(cycleSchoolId == null || partialId == null || updatedList.isNullOrEmpty()) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA

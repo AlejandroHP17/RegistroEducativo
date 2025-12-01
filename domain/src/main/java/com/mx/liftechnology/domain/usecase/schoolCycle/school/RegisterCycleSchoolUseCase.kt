@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.domain.usecase.schoolCycle.school
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository
@@ -50,7 +50,7 @@ class RegisterCycleSchoolUseCase(
         shiftName: String,
         labelCycleState : String
     ): ModelResult<ModelRegisterSchoolCycleData, ModelError> {
-        val teacherId = preference.getPreferenceInt(ModelPreference.ID_USER)
+        val teacherId = preference.getPreferenceInt(PreferenceKeys.ID_USER)
 
         if(schoolId < 1 || periodCatalogId < 1 || grade < 1
             || group.isNullOrEmpty() || cycle < 1 || teacherId == null) return ErrorResult(

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
 import com.mx.liftechnology.data.util.ErrorResult
@@ -33,7 +33,7 @@ class GetGroupMenuUseCase(
      * @return Un [ModelResult] que contiene la información del grupo o un error.
      */
     suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, ModelError> {
-        val userId = preference.getPreferenceInt(ModelPreference.ID_USER_LEVEL)
+        val userId = preference.getPreferenceInt(PreferenceKeys.ID_USER_LEVEL)
         if (userId == null) ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
         return runCatching { menuRepository.executeGetCycleSchool( userId!!) }.fold(
             onSuccess = { result ->
@@ -66,18 +66,18 @@ class GetGroupMenuUseCase(
      */
     private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
         return convertedResult.let { itemParent ->
-            if (preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) == -1) {
+            if (preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL) == -1) {
                 val item = itemParent.firstOrNull { it.item?.cycleSchoolId != null }
                 item?.item?.cycleSchoolId?.let { id ->
                     preference.savePreferenceInt(
-                        ModelPreference.ID_CYCLE_SCHOOL,
+                        PreferenceKeys.ID_CYCLE_SCHOOL,
                         id
                     )
                 }
                 buildOneInformation(item)
             } else {
                 val itemImprovised = itemParent.firstOrNull { onlyData ->
-                    preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL) == onlyData.item?.cycleSchoolId
+                    preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL) == onlyData.item?.cycleSchoolId
                 }
                 buildOneInformation(itemImprovised)
             }

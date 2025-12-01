@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.core.preference.ModelPreference
+import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.formativeField.GetListFormativeFieldRepository
 import com.mx.liftechnology.data.util.ModelError
@@ -32,7 +32,7 @@ class GetListSubjectUseCase (
      * @return Un [ModelResult] que contiene la lista de materias o un estado de error.
      */
     suspend operator fun invoke(): ModelResult<List<ModelFormatFormativeFieldsDomain>?, ModelError> {
-        val cycleSchoolId = preference.getPreferenceInt(ModelPreference.ID_CYCLE_SCHOOL)
+        val cycleSchoolId = preference.getPreferenceInt(PreferenceKeys.ID_CYCLE_SCHOOL)
 
         if(cycleSchoolId == null) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
