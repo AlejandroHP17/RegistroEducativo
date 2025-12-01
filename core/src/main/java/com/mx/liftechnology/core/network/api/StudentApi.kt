@@ -23,7 +23,7 @@ interface StudentApi {
      * Obtiene la lista de estudiantes.
      */
     @GET(Environment.END_POINT_GET_STUDENT)
-    suspend fun getListStudents(@Query("school_cycle_id") cycleSchoolId: Int): Response<ResponseGeneric<List<ResponseGetStudent>?>>
+    suspend fun getListStudents(@Query("school_cycle_id") cycleSchoolId: Int): Response<ResponseGeneric<List<ResponseGetStudent>>>
 
     /**
      * Registra un nuevo estudiante.

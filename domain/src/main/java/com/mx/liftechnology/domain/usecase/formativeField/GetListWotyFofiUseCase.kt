@@ -22,7 +22,7 @@ class GetListWotyFofiUseCase(
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return runCatching {getListWotyFofiRepository.executeGetListWotyFofi(schoolCycleId)}.fold(
+        return runCatching {getListWotyFofiRepository.getList(schoolCycleId)}.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

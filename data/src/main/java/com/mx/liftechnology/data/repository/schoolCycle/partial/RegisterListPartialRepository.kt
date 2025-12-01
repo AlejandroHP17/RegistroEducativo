@@ -8,15 +8,12 @@ package com.mx.liftechnology.data.repository.schoolCycle.partial
 import com.mx.liftechnology.core.network.api.RequestPartials
 import com.mx.liftechnology.core.network.api.RequestRegisterPartial
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToModelListPartialData
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para el registro de una lista de parciales.
@@ -27,12 +24,13 @@ import retrofit2.HttpException
  */
 fun interface RegisterListPartialRepository{
   /**
-   * Ejecuta la petición de registro de una lista de parciales.
+   * Registra una lista de parciales.
    *
-   * @param request Los datos de la petición de registro.
+   * @param adapterPeriods La lista de períodos a registrar.
+   * @param cycleSchoolId El ID del ciclo escolar.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeRegisterListPartial(
+  suspend fun register(
       adapterPeriods: List<ModelDatePeriod>,
       cycleSchoolId: Int
   ): ModelResult<List<ModelListPartialData?>, NetworkModelError>
@@ -53,11 +51,10 @@ class RegisterListPartialRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeRegisterListPartial(
+    override suspend fun register(
         adapterPeriods: List<ModelDatePeriod>,
         cycleSchoolId: Int
     ): ModelResult<List<ModelListPartialData?>, NetworkModelError> {
-
         val listAdapter: MutableList<RequestPartials> = mutableListOf()
         adapterPeriods.forEachIndexed { index,  data ->
             val part = data.date.split("/")
@@ -73,17 +70,6 @@ class RegisterListPartialRepositoryImpl(
 
         val request = RequestRegisterPartial(listPartials = listAdapter)
 
-        return try {
-            val response = schoolCycleApi.registerListPartial(request)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListPartialData())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return schoolCycleApi.registerListPartial(request).executeOrError { it.toData() }
     }
 }

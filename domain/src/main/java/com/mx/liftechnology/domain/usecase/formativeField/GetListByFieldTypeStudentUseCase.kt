@@ -23,7 +23,7 @@ class GetListByFieldTypeStudentUseCase(
 
         if(workTypeId == null)return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
-        return runCatching { getListByFieldTypeStudentRepository.executeGetListByFieldTypeStudent(
+        return runCatching { getListByFieldTypeStudentRepository.getByFieldType(
             formativeFieldId = formativeFieldId,
             workTypeId = workTypeId,
             workName = workName,

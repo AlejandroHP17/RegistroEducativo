@@ -67,7 +67,7 @@ class LoginUseCase(
         val deviceId = deviceIdHelper.getDeviceId()
 
         // 3. Ejecución de la llamada de red
-        return runCatching { repositoryLogin.executeLogin(
+        return runCatching { repositoryLogin.login(
             email = email.lowercase().trim(),
             password = pass,
             latitude = latitude,

@@ -6,14 +6,11 @@
 package com.mx.liftechnology.data.repository.formativeField
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelListFormativeFields
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.NetworkException
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de la lista de materias.
@@ -24,11 +21,12 @@ import retrofit2.HttpException
  */
 fun interface GetListFormativeFieldRepository{
     /**
-     * Ejecuta la petición para obtener la lista de materias.
+     * Obtiene la lista de materias formativas.
      *
+     * @param cycleSchoolId El ID del ciclo escolar.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListFormativeFields(cycleSchoolId: Int)
+    suspend fun getList(cycleSchoolId: Int)
     : ModelResult<List<FormativeFieldData>, NetworkModelError>
 }
 
@@ -47,20 +45,9 @@ class GetListFormativeFieldRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListFormativeFields(
+    override suspend fun getList(
         cycleSchoolId: Int
     ) : ModelResult<List<FormativeFieldData>, NetworkModelError> {
-        return try {
-            val response = formativeFieldApi.getListFormativeFields(cycleSchoolId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListFormativeFields())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e:Exception){
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return formativeFieldApi.getListFormativeFields(cycleSchoolId).executeOrError { it.toData() }
     }
 }

@@ -7,14 +7,11 @@ package com.mx.liftechnology.data.repository.schoolCycle.school
 
 import com.mx.liftechnology.core.network.api.RequestRegisterSchoolCycle
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToRegisterCycleSchool
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para el registro de escuelas.
@@ -25,12 +22,18 @@ import retrofit2.HttpException
  */
 fun interface RegisterCycleSchoolRepository{
   /**
-   * Ejecuta la petición de registro de una escuela.
+   * Registra un ciclo escolar.
    *
-   * @param request Los datos de la petición de registro.
+   * @param teacherId El ID del profesor.
+   * @param schoolId El ID de la escuela.
+   * @param name El nombre del ciclo.
+   * @param cycleLabel La etiqueta del ciclo.
+   * @param grade El grado.
+   * @param nameGroup El nombre del grupo.
+   * @param periodCatalogId El ID del catálogo de períodos.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeRegisterCycleSchool(
+  suspend fun register(
       teacherId : Int,
       schoolId : Int,
       name : String,
@@ -56,7 +59,7 @@ class RegisterCycleSchoolRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeRegisterCycleSchool(
+    override suspend fun register(
         teacherId : Int,
         schoolId : Int,
         name : String,
@@ -65,7 +68,6 @@ class RegisterCycleSchoolRepositoryImpl(
         nameGroup : String,
         periodCatalogId : Int
     ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError> {
-
         val request = RequestRegisterSchoolCycle(
             teacherId = teacherId,
             schoolId = schoolId,
@@ -77,17 +79,6 @@ class RegisterCycleSchoolRepositoryImpl(
             isActive = true
         )
 
-        return try {
-            val response = schoolCycleApi.registerSchoolCycle(request)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToRegisterCycleSchool())
-                } ?:  ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return schoolCycleApi.registerSchoolCycle(request).executeOrError { it.toData() }
     }
 }

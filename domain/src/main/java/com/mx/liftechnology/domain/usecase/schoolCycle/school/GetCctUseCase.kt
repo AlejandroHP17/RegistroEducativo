@@ -37,7 +37,7 @@ class GetCctUseCase(
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la información de la escuela o un estado de error.
      */
     suspend operator fun invoke(cct: String): ModelResult<ModelResultSchoolDomain, ModelError> {
-        return runCatching { getCctRepository.executeGetCct(cct) }.fold(
+        return runCatching { getCctRepository.getCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

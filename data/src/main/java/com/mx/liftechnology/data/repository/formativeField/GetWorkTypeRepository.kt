@@ -6,14 +6,11 @@
 package com.mx.liftechnology.data.repository.formativeField
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelListWorkTypeData
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.NetworkException
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de tipos de evaluación.
@@ -24,11 +21,12 @@ import retrofit2.HttpException
  */
 fun interface GetWorkTypeRepository{
     /**
-     * Ejecuta la petición para obtener la lista de tipos de evaluación.
+     * Obtiene la lista de tipos de trabajo.
      *
+     * @param teacherId El ID del profesor.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListWorkType(teacherId: Int)
+    suspend fun getList(teacherId: Int)
             : ModelResult<List<ModelWorkTypeData>, NetworkModelError>
 }
 
@@ -47,21 +45,10 @@ class GetWorkTypeRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListWorkType(
+    override suspend fun getList(
         teacherId: Int
     ): ModelResult<List<ModelWorkTypeData>, NetworkModelError> {
-        return try {
-            val response = formativeFieldApi.getListWorkType(teacherId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListWorkTypeData())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return formativeFieldApi.getListWorkType(teacherId).executeOrError { it.toData() }
     }
 
 }

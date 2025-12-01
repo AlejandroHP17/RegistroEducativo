@@ -6,14 +6,11 @@
 package com.mx.liftechnology.data.repository.schoolCycle.partial
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToModelListPartialsData
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de la lista de parciales.
@@ -24,11 +21,12 @@ import retrofit2.HttpException
  */
 fun interface GetListPartialRepository{
   /**
-   * Ejecuta la petición para obtener la lista de parciales.
+   * Obtiene la lista de parciales.
    *
+   * @param schoolCycleId El ID del ciclo escolar.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeGetListPartial(
+  suspend fun getList(
       schoolCycleId : Int
   ): ModelResult<List<ModelListPartialData>, NetworkModelError>
 }
@@ -48,20 +46,9 @@ class GetListPartialRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListPartial(
+    override suspend fun getList(
         schoolCycleId : Int
     ): ModelResult<List<ModelListPartialData>, NetworkModelError> {
-        return try {
-            val response = schoolCycleApi.getListPartial(schoolCycleId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListPartialsData())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return schoolCycleApi.getListPartial(schoolCycleId).executeOrError { it.toData() }
     }
 }

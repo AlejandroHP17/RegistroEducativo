@@ -6,14 +6,11 @@
 package com.mx.liftechnology.data.repository.schoolCycle.school
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToRegisterSchool
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de CCT.
@@ -24,12 +21,12 @@ import retrofit2.HttpException
  */
 fun interface GetCctRepository{
   /**
-   * Ejecuta la petición para obtener los datos de una escuela a partir de su CCT.
+   * Obtiene los datos de una escuela a partir de su CCT.
    *
    * @param cct El CCT de la escuela.
    * @return Un [ModelResult] que indica el resultado de la operación.
    */
-  suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkModelError>
+  suspend fun getCct(cct:String): ModelResult<ModelCCTData, NetworkModelError>
 }
 
 /**
@@ -47,18 +44,7 @@ class GetCctRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkModelError> {
-        return try {
-            val response = schoolCycleApi.getCct(cct)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToRegisterSchool())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+    override suspend fun getCct(cct:String): ModelResult<ModelCCTData, NetworkModelError> {
+        return schoolCycleApi.getCct(cct).executeOrError { it.toData() }
     }
 }

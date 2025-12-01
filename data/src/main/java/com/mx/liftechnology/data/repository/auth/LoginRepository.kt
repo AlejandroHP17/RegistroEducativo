@@ -7,14 +7,11 @@ package com.mx.liftechnology.data.repository.auth
 
 import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.core.network.api.RequestLogin
-import com.mx.liftechnology.data.mapper.AuthMapper.mapperToGetLoginData
+import com.mx.liftechnology.data.mapper.AuthMapper.toData
 import com.mx.liftechnology.data.model.auth.LoginData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para el inicio de sesión.
@@ -25,12 +22,16 @@ import retrofit2.HttpException
  */
 fun interface LoginRepository {
     /**
-     * Ejecuta la petición de inicio de sesión.
+     * Realiza la petición de inicio de sesión.
      *
-     * @param request Los datos de la petición de inicio de sesión.
+     * @param email El correo electrónico del usuario.
+     * @param password La contraseña del usuario.
+     * @param latitude La latitud de la ubicación.
+     * @param longitude La longitud de la ubicación.
+     * @param imei El identificador del dispositivo.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeLogin(
+    suspend fun login(
         email : String,
         password : String,
         latitude : Double,
@@ -52,19 +53,15 @@ class LoginRepositoryImpl(
 ) : LoginRepository {
 
     /**
-     * Realiza la llamada de red para el inicio de sesión y gestiona la respuesta.
-     *
-     * La anotación `{@inheritDoc}` indica que esta documentación hereda y cumple
-     * el contrato definido en [LoginRepository.executeLogin].
+     * {@inheritDoc}
      */
-    override suspend fun executeLogin(
+    override suspend fun login(
         email : String,
         password : String,
         latitude : Double,
         longitude : Double,
         imei : String
     ): ModelResult<LoginData, NetworkModelError> {
-
         val request = RequestLogin(
             email = email,
             password = password,
@@ -73,13 +70,7 @@ class LoginRepositoryImpl(
             imei = imei
         )
 
-        return try {
-            val response = authApi.login(request)
-            if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToGetLoginData())
-            else ErrorResult(NetworkException.handleException(HttpException(response)))
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return authApi.login(request).executeOrError { it.toData() }
     }
 }
 

@@ -38,7 +38,7 @@ class GetListSubjectUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getListFormativeFieldRepository.executeGetListFormativeFields(cycleSchoolId) }.fold(
+        return runCatching { getListFormativeFieldRepository.getList(cycleSchoolId) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {

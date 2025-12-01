@@ -7,14 +7,11 @@ package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.RequestRegisterStudent
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelStudent
+import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.data.model.student.StudentData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para el registro de estudiantes.
@@ -25,12 +22,20 @@ import retrofit2.HttpException
  */
 fun interface RegisterStudentRepository{
     /**
-     * Ejecuta la petición de registro de un estudiante.
+     * Registra un nuevo estudiante.
      *
-     * @param request Los datos de la petición de registro.
+     * @param name El nombre del estudiante.
+     * @param lastName El apellido paterno del estudiante.
+     * @param secondLastName El apellido materno del estudiante.
+     * @param curp La CURP del estudiante.
+     * @param birthday La fecha de nacimiento del estudiante.
+     * @param phoneNumber El número de teléfono del estudiante.
+     * @param teacherId El ID del profesor.
+     * @param schoolCycleId El ID del ciclo escolar.
+     * @param isActive Indica si el estudiante está activo.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeRegisterStudent(
+    suspend fun register(
         name: String,
         lastName: String,
         secondLastName: String,
@@ -59,7 +64,7 @@ class RegisterStudentRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeRegisterStudent(
+    override suspend fun register(
         name: String,
         lastName: String,
         secondLastName: String,
@@ -81,17 +86,6 @@ class RegisterStudentRepositoryImpl(
             schoolCycleId = schoolCycleId,
             isActive = true
         )
-        return try {
-            val response = studentApi.registerStudent(request)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelStudent())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return studentApi.registerStudent(request).executeOrError { it.toData() }
     }
 }

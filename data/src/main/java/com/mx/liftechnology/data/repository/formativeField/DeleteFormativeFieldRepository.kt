@@ -1,12 +1,9 @@
 package com.mx.liftechnology.data.repository.formativeField
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.NetworkException
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de CCT.
@@ -17,30 +14,19 @@ import retrofit2.HttpException
  */
 fun interface DeleteFormativeFieldRepository{
     /**
-     * Ejecuta la petición para obtener los datos de una escuela a partir de su CCT.
+     * Elimina un campo formativo.
      *
-     * @param studentId pertenece al estudiante.
+     * @param fieldId El ID del campo formativo a eliminar.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeFormativeFieldsStudent(fieldId: Int): ModelResult<String, NetworkModelError>
+    suspend fun delete(fieldId: Int): ModelResult<String, NetworkModelError>
 }
 
 
 class DeleteFormativeFieldRepositoryImpl (
     private val formativeFieldApi: FormativeFieldApi
 ) : DeleteFormativeFieldRepository {
-    override suspend fun executeFormativeFieldsStudent(fieldId: Int): ModelResult<String, NetworkModelError> {
-        return try {
-            val response = formativeFieldApi.deleteFormativeField(fieldId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it)
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+    override suspend fun delete(fieldId: Int): ModelResult<String, NetworkModelError> {
+        return formativeFieldApi.deleteFormativeField(fieldId).executeOrError { it }
     }
 }

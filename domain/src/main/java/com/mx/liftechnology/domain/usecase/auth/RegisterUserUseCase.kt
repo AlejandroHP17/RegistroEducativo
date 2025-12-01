@@ -33,7 +33,7 @@ class RegisterUserUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching{ registerUserRepository.executeRegisterUser(
+        return runCatching{ registerUserRepository.register(
             email = email,
             pass = pass,
             activationCode = activationCode

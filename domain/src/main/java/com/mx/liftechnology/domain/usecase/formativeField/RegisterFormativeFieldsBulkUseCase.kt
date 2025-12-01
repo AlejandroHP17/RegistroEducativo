@@ -73,7 +73,7 @@ class RegisterFormativeFieldsBulkUseCase(
         }
 
 
-        return runCatching {registerFormativeFieldsBulkRepository.executeRegisterFormativeFieldsBulk(
+        return runCatching {registerFormativeFieldsBulkRepository.registerBulk(
             cycleSchoolId = cycleSchoolId,
             formativeFieldName = name.trim(),
             code = name.trim(),

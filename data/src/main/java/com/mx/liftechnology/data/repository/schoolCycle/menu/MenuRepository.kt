@@ -6,14 +6,13 @@
 package com.mx.liftechnology.data.repository.schoolCycle.menu
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.mapperToCycleSchool
+import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para el menú principal.
@@ -24,13 +23,13 @@ import retrofit2.HttpException
  */
 fun interface MenuRepository{
     /**
-     * Ejecuta la petición para obtener la lista de grupos.
+     * Obtiene la lista de ciclos escolares.
      *
-     * @param request Los datos de la petición.
+     * @param teacherId El ID del profesor.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetCycleSchool(
-        request: Int
+    suspend fun getCycleSchool(
+        teacherId: Int
     ): ModelResult<List<ModelSchoolCycleData>, NetworkModelError>
 }
 
@@ -49,17 +48,17 @@ class MenuRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetCycleSchool(request: Int): ModelResult<List<ModelSchoolCycleData>, NetworkModelError> {
-        return try {
-            val response = schoolCycleApi.getGroup(teacherId = request)
-            if (response.isSuccessful && response.body()?.data != null) {
-                if(response.body()?.data?.isNotEmpty() == true) SuccessResult(response.body()?.data.mapperToCycleSchool())
-                else ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
+    override suspend fun getCycleSchool(teacherId: Int): ModelResult<List<ModelSchoolCycleData>, NetworkModelError> {
+        val result = schoolCycleApi.getGroup(teacherId = teacherId).executeOrError { it.toData() }
+        return when (result) {
+            is SuccessResult -> {
+                if (result.data.isNotEmpty()) {
+                    result
+                } else {
+                    ErrorResult(NetworkModelError.EMPTY)
+                }
             }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
+            is ErrorResult -> result
         }
     }
 }

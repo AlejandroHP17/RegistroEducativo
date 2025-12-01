@@ -32,7 +32,7 @@ class GetListEvaluationsStudentUseCase(
         )
 
         return runCatching {
-            getListEvaluationsStudentRepository.executeGetListEvaluationsStudent(
+            getListEvaluationsStudentRepository.getListEvaluations(
                 schoolCycleId = schoolCycleId,
                 partialId = partialId,
                 formativeFieldId = formativeFieldId,

@@ -42,7 +42,7 @@ class GetListWorkTypeUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getWorkTypeRepository.executeGetListWorkType(teacherId) }.fold(
+        return runCatching { getWorkTypeRepository.getList(teacherId) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

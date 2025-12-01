@@ -6,14 +6,11 @@
 package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelListStudent
+import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.data.model.student.StudentData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de la lista de estudiantes.
@@ -24,11 +21,12 @@ import retrofit2.HttpException
  */
 fun interface GetStudentRepository{
     /**
-     * Ejecuta la petición para obtener la lista de estudiantes.
+     * Obtiene la lista de estudiantes.
      *
+     * @param cycleSchoolId El ID del ciclo escolar.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListStudent(cycleSchoolId: Int)
+    suspend fun getStudents(cycleSchoolId: Int)
     : ModelResult<List<StudentData?>, NetworkModelError>
 }
 
@@ -47,20 +45,9 @@ class GetStudentRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListStudent(
+    override suspend fun getStudents(
         cycleSchoolId: Int
     ) : ModelResult<List<StudentData?>, NetworkModelError> {
-        return try {
-            val response = studentApi.getListStudents(cycleSchoolId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListStudent())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e:Exception){
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return studentApi.getListStudents(cycleSchoolId).executeOrError { it.toData() }
     }
 }

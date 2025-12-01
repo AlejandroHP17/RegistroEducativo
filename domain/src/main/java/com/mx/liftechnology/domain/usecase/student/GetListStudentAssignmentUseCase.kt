@@ -45,7 +45,7 @@ class GetListStudentAssignmentUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getStudentRepository.executeGetListStudent(cycleSchoolId) }.fold(
+        return runCatching { getStudentRepository.getStudents(cycleSchoolId) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {

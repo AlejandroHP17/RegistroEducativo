@@ -55,7 +55,7 @@ class RegisterStudentUseCase(
         if(teacherId == null || cycleSchoolId == null ) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
-        return runCatching { crudStudentRepository.executeRegisterStudent(
+        return runCatching { crudStudentRepository.register(
             name = name.trim(),
             lastName = lastName.trim(),
             secondLastName = secondLastName.trim(),

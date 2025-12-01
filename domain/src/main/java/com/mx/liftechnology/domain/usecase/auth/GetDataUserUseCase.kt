@@ -16,7 +16,7 @@ class GetDataUserUseCase(
     suspend operator fun invoke(remember: Boolean): ModelResult<ModelGetUserData, ModelError> {
 
         // 2. Ejecución de la llamada de red
-        return runCatching { getDataUserRepository.executeGetData() }.fold(
+        return runCatching { getDataUserRepository.getData() }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

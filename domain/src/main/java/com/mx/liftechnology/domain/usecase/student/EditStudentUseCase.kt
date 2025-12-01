@@ -55,7 +55,7 @@ class EditStudentUseCase (
             isActive = true
         )
 
-        return runCatching { editStudentRepository.executeEditStudent(request, studentId) }.fold(
+        return runCatching { editStudentRepository.edit(request, studentId) }.fold(
             onSuccess = { result ->
                 when(result){
                     is SuccessResult -> {

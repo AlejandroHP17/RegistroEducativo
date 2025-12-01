@@ -9,14 +9,11 @@ import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.core.network.api.RequestEvaluations
 import com.mx.liftechnology.core.network.api.RequestRegisterFormativeField
 import com.mx.liftechnology.core.network.api.RequestWorkType
-import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelListFormativeFields
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para el registro de materias.
@@ -27,12 +24,16 @@ import retrofit2.HttpException
  */
 fun interface RegisterFormativeFieldsBulkRepository{
     /**
-     * Ejecuta la petición de registro de una materia.
+     * Registra una materia formativa en bulk.
      *
-     * @param request Los datos de la petición de registro.
+     * @param cycleSchoolId El ID del ciclo escolar.
+     * @param formativeFieldName El nombre de la materia formativa.
+     * @param code El código de la materia.
+     * @param workTypes La lista de tipos de trabajo.
+     * @param evaluations La lista de evaluaciones.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeRegisterFormativeFieldsBulk(
+    suspend fun registerBulk(
         cycleSchoolId : Int,
         formativeFieldName : String,
         code : String,
@@ -57,7 +58,7 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeRegisterFormativeFieldsBulk(
+    override suspend fun registerBulk(
         cycleSchoolId : Int,
         formativeFieldName : String,
         code : String,
@@ -72,17 +73,6 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
             evaluations = evaluations,
         )
 
-        return try {
-            val response = formativeFieldApi.registerFormativeFieldsBulk(request)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelListFormativeFields())
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e:Exception){
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return formativeFieldApi.registerFormativeFieldsBulk(request).executeOrError { it.toData() }
     }
 }

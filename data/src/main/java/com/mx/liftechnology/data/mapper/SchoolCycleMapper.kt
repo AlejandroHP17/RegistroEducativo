@@ -10,70 +10,115 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
+import kotlin.jvm.JvmName
 
 object SchoolCycleMapper {
 
-    fun List<ResponseGroupTeacher>?.mapperToCycleSchool(): List<ModelSchoolCycleData> {
-        return this?.mapIndexed { index, cycle ->
-            ModelSchoolCycleData(
-                teacherId = cycle.teacherId,
-                schoolId = cycle.schoolId,
-                name = cycle.name,
-                grade = cycle.grade,
-                group = cycle.groupName,
-                isActive = cycle.isActive,
-                cycleSchoolId = cycle.schoolCycleId
-            )
-        }?:emptyList()
-    }
-
-
-    fun List<ResponseGetPartials>.mapperToModelListPartialsData(): List<ModelListPartialData>{
-        return this.mapIndexed { index, partials ->
-            ModelListPartialData(
-                description = partials.description,
-                startDate = partials.startDate,
-                endDate = partials.endDate,
-                partialId = partials.partialId
-            )
-        }
-    }
-
-    fun List<ResponseRegisterPartial>.mapperToModelListPartialData(): List<ModelListPartialData>{
-        return this.mapIndexed { index, partials ->
-            ModelListPartialData(
-                description = partials.description,
-                startDate = partials.startDate,
-                endDate = partials.endDate,
-                partialId = partials.partialId
-            )
-        }
-    }
-
-    fun ResponseCctSchool.mapperToRegisterSchool(): ModelCCTData {
-        return ModelCCTData(
-            id = this.schoolId,
-            cct = this.cct,
-            schoolTypeId = this.schoolTypeId,
-            schoolName = this.schoolName,
-            shiftName = this.shiftName,
-            periodCatalog = this.periodCatalog?.map { catalog ->
-                ModelCCTDataPeriodCatalog(
-                    id = catalog.id,
-                    typeName = catalog.typeName,
-                    periodNumber = catalog.periodNumber
+    /**
+     * Convierte una lista de [ResponseGroupTeacher] a una lista de [ModelSchoolCycleData] con manejo seguro de nulos.
+     *
+     * @receiver Una lista de objetos de respuesta de la API para obtener ciclos escolares.
+     * @return Una lista de objetos [ModelSchoolCycleData] con los datos mapeados. Los elementos nulos son omitidos.
+     */
+    @JvmName("toDataFromResponseGroupTeacherList")
+    fun List<ResponseGroupTeacher>?.toData(): List<ModelSchoolCycleData> {
+        return this?.mapNotNull { cycle ->
+            cycle?.let {
+                ModelSchoolCycleData(
+                    teacherId = it.teacherId,
+                    schoolId = it.schoolId,
+                    name = it.name,
+                    grade = it.grade,
+                    group = it.groupName,
+                    isActive = it.isActive,
+                    cycleSchoolId = it.schoolCycleId
                 )
-            } ?: emptyList()
-        )
+            }
+        } ?: emptyList()
     }
 
-    fun ResponseRegisterSchoolCycle.mapperToRegisterCycleSchool(): ModelRegisterSchoolCycleData {
-        return ModelRegisterSchoolCycleData(
-            teacherId = this.teacherId,
-            schoolId = this.schoolId,
-            name = this.name,
-            isActive = this.isActive,
-            idCycleSchool = this.schoolCycleId
-        )
+    /**
+     * Convierte una lista de [ResponseGetPartials] a una lista de [ModelListPartialData] con manejo seguro de nulos.
+     *
+     * @receiver Una lista de objetos de respuesta de la API para obtener parciales.
+     * @return Una lista de objetos [ModelListPartialData] con los datos mapeados. Los elementos nulos son omitidos.
+     */
+    @JvmName("toDataFromResponseGetPartialsList")
+    fun List<ResponseGetPartials>?.toData(): List<ModelListPartialData> {
+        return this?.mapNotNull { partials ->
+            partials?.let {
+                ModelListPartialData(
+                    description = it.description,
+                    startDate = it.startDate,
+                    endDate = it.endDate,
+                    partialId = it.partialId
+                )
+            }
+        } ?: emptyList()
+    }
+
+    /**
+     * Convierte una lista de [ResponseRegisterPartial] a una lista de [ModelListPartialData] con manejo seguro de nulos.
+     *
+     * @receiver Una lista de objetos de respuesta de la API para registrar parciales.
+     * @return Una lista de objetos [ModelListPartialData] con los datos mapeados. Los elementos nulos son omitidos.
+     */
+    @JvmName("toDataFromResponseRegisterPartialList")
+    fun List<ResponseRegisterPartial>?.toData(): List<ModelListPartialData> {
+        return this?.mapNotNull { partials ->
+            partials?.let {
+                ModelListPartialData(
+                    description = it.description,
+                    startDate = it.startDate,
+                    endDate = it.endDate,
+                    partialId = it.partialId
+                )
+            }
+        } ?: emptyList()
+    }
+
+    /**
+     * Convierte un [ResponseCctSchool] a [ModelCCTData] con manejo seguro de nulos.
+     *
+     * @receiver El objeto de respuesta de la API para obtener datos de CCT de escuela.
+     * @return Un objeto [ModelCCTData] con los datos mapeados, o null si el receiver es null.
+     */
+    fun ResponseCctSchool?.toData(): ModelCCTData? {
+        return this?.let {
+            ModelCCTData(
+                id = schoolId,
+                cct = cct,
+                schoolTypeId = schoolTypeId,
+                schoolName = schoolName,
+                shiftName = shiftName,
+                periodCatalog = periodCatalog?.mapNotNull { catalog ->
+                    catalog?.let {
+                        ModelCCTDataPeriodCatalog(
+                            id = it.id,
+                            typeName = it.typeName,
+                            periodNumber = it.periodNumber
+                        )
+                    }
+                } ?: emptyList()
+            )
+        }
+    }
+
+    /**
+     * Convierte un [ResponseRegisterSchoolCycle] a [ModelRegisterSchoolCycleData] con manejo seguro de nulos.
+     *
+     * @receiver El objeto de respuesta de la API para registrar ciclo escolar.
+     * @return Un objeto [ModelRegisterSchoolCycleData] con los datos mapeados, o null si el receiver es null.
+     */
+    fun ResponseRegisterSchoolCycle?.toData(): ModelRegisterSchoolCycleData? {
+        return this?.let {
+            ModelRegisterSchoolCycleData(
+                teacherId = teacherId,
+                schoolId = schoolId,
+                name = name,
+                isActive = isActive,
+                idCycleSchool = schoolCycleId
+            )
+        }
     }
 }

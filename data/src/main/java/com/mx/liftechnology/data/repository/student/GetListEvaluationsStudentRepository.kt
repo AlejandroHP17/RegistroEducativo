@@ -1,17 +1,14 @@
 package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.mapper.StudentMapper.mapperToModelEvaluationsStudent
+import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 fun interface GetListEvaluationsStudentRepository{
-    suspend fun executeGetListEvaluationsStudent(
+    suspend fun getListEvaluations(
         schoolCycleId: Int,
         partialId: Int,
         formativeFieldId: Int,
@@ -25,7 +22,7 @@ fun interface GetListEvaluationsStudentRepository{
 class GetListEvaluationsStudentRepositoryImpl(
     private val studentApi: StudentApi
 ):GetListEvaluationsStudentRepository {
-    override suspend fun executeGetListEvaluationsStudent(
+    override suspend fun getListEvaluations(
         schoolCycleId: Int,
         partialId: Int,
         formativeFieldId: Int,
@@ -35,26 +32,15 @@ class GetListEvaluationsStudentRepositoryImpl(
         workDateFrom : String?,
         workDateTo: String?
     ): ModelResult<List <ModelEvaluationsStudent>, NetworkModelError> {
-        return try{
-            val response = studentApi.getListEvaluations(
-                formativeFieldId = formativeFieldId,
-                partialId = partialId,
-                workTypeId = workTypeId,
-                schoolCycleId = schoolCycleId,
-                studentId = studentId,
-                workDate = workDate,
-                workDateFrom = workDateFrom,
-                workDateTo = workDateTo,
-            )
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelEvaluationsStudent())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        }catch (e:Exception){
-            ErrorResult(NetworkException.handleException(e))
-        }
+        return studentApi.getListEvaluations(
+            formativeFieldId = formativeFieldId,
+            partialId = partialId,
+            workTypeId = workTypeId,
+            schoolCycleId = schoolCycleId,
+            studentId = studentId,
+            workDate = workDate,
+            workDateFrom = workDateFrom,
+            workDateTo = workDateTo,
+        ).executeOrError { it.toData() }
     }
 }

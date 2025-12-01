@@ -12,7 +12,7 @@ class DeleteStudentUseCase(
 ) {
 
     suspend operator fun invoke (studentId: Int): ModelResult<String, ModelError>{
-        return runCatching { deleteStudentRepository.executeDeleteStudent(studentId) }.fold(
+        return runCatching { deleteStudentRepository.delete(studentId) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

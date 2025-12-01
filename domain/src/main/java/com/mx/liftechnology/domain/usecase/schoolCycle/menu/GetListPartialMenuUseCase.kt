@@ -44,7 +44,7 @@ class GetListPartialMenuUseCase (
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return runCatching { getListPartialRepository.executeGetListPartial(cycleSchoolId) }.fold(
+        return runCatching { getListPartialRepository.getList(cycleSchoolId) }.fold(
              onSuccess = { result ->
                  when (result){
                      is SuccessResult -> {

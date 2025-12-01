@@ -33,7 +33,7 @@ interface SchoolCycleApi {
      * Obtiene la lista de parciales.
      */
     @GET(Environment.END_POINT_GET_PARTIAL)
-    suspend fun getListPartial(@Query("school_cycle_id") schoolCycleId: Int): Response<ResponseGeneric<List<ResponseGetPartials>?>>
+    suspend fun getListPartial(@Query("school_cycle_id") schoolCycleId: Int): Response<ResponseGeneric<List<ResponseGetPartials>>>
 
     /**
      * Registra un ciclo escolar.
@@ -45,7 +45,7 @@ interface SchoolCycleApi {
      * Registra una lista de parciales.
      */
     @POST(Environment.END_POINT_REGISTER_PARTIAL)
-    suspend fun registerListPartial(@Body request: RequestRegisterPartial): Response<ResponseGeneric<List<ResponseRegisterPartial>?>>
+    suspend fun registerListPartial(@Body request: RequestRegisterPartial): Response<ResponseGeneric<List<ResponseRegisterPartial>>>
 }
 
 // Data classes for requests and responses

@@ -55,7 +55,7 @@ class RegisterListPartialUseCase(
             )
         }
 
-        return runCatching { registerListPartialRepository.executeRegisterListPartial(
+        return runCatching { registerListPartialRepository.register(
             adapterPeriods = adapter,
             cycleSchoolId = cycleSchoolId
         ) }.fold(

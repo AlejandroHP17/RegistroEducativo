@@ -22,13 +22,13 @@ interface FormativeFieldApi {
      * Obtiene la lista de campos formativos.
      */
     @GET(Environment.END_POINT_GET_FORMATIVE_FIELDS)
-    suspend fun getListFormativeFields(@Query("school_cycle_id") cycleSchoolId: Int): Response<ResponseGeneric<List<ResponseGetListFormativeField>?>>
+    suspend fun getListFormativeFields(@Query("school_cycle_id") cycleSchoolId: Int): Response<ResponseGeneric<List<ResponseGetListFormativeField>>>
 
     /**
      * Obtiene la lista de tipos de trabajo.
      */
     @GET(Environment.END_POINT_GET_WORK_TYPE)
-    suspend fun getListWorkType(@Query("teacher_id") teacherId: Int): Response<ResponseGeneric<List<ResponseGetListWorkType>?>>
+    suspend fun getListWorkType(@Query("teacher_id") teacherId: Int): Response<ResponseGeneric<List<ResponseGetListWorkType>>>
 
     /**
      * Obtiene el tipo de trabajo por campo formativo.

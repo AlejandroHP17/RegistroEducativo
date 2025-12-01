@@ -25,7 +25,7 @@ class RegisterWorkTypeEvaluationsUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { registerWorkTypeEvaluationsRepository.executeRegisterWorkTyperEvaluations(
+        return runCatching { registerWorkTypeEvaluationsRepository.register(
             formativeFieldId = formativeFieldId,
             partialId = partialId,
             workTypeId = workTypeId,

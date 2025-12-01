@@ -57,7 +57,7 @@ class RegisterCycleSchoolUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { registerCycleSchoolRepository.executeRegisterCycleSchool(
+        return runCatching { registerCycleSchoolRepository.register(
             teacherId = teacherId,
             schoolId = schoolId,
             name = "Ciclo $labelCycleState, $grade$group, $cct",

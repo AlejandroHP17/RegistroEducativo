@@ -40,7 +40,7 @@ class GetListWorkEvaluationFormativeFieldUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getListWorkTypeFormativeFieldRepository.executeGetListWorkTypeFormativeField(
+        return runCatching { getListWorkTypeFormativeFieldRepository.getList(
             formativeFieldId) }.fold(
             onSuccess = { result ->
                 when (result) {

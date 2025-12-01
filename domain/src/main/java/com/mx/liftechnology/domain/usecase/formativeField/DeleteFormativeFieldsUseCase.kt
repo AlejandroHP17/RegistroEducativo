@@ -12,7 +12,7 @@ class DeleteFormativeFieldsUseCase(
 ) {
 
     suspend operator fun invoke (fieldId: Int): ModelResult<String, ModelError>{
-        return runCatching { deleteFormativeFieldRepository.executeFormativeFieldsStudent(fieldId) }.fold(
+        return runCatching { deleteFormativeFieldRepository.delete(fieldId) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

@@ -21,7 +21,7 @@ class GetWorkTypeByFormativeFieldUseCase (
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return runCatching { getWorkTypeByFormativeFieldsRepository.executeGetWorkTyperByFormativeFields(formativeFieldId = formativeFieldId) }.fold(
+        return runCatching { getWorkTypeByFormativeFieldsRepository.getByFormativeField(formativeFieldId = formativeFieldId) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {

@@ -1,12 +1,9 @@
 package com.mx.liftechnology.data.repository.student
 
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.NetworkException
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de CCT.
@@ -17,30 +14,19 @@ import retrofit2.HttpException
  */
 fun interface DeleteStudentRepository{
     /**
-     * Ejecuta la petición para obtener los datos de una escuela a partir de su CCT.
+     * Elimina un estudiante.
      *
-     * @param studentId pertenece al estudiante.
+     * @param studentId El ID del estudiante a eliminar.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkModelError>
+    suspend fun delete(studentId: Int): ModelResult<String, NetworkModelError>
 }
 
 
 class DeleteStudentRepositoryImpl (
     private val studentApi: StudentApi
 ) : DeleteStudentRepository {
-    override suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkModelError> {
-        return try {
-            val response = studentApi.deleteStudent(studentId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it)
-                } ?: ErrorResult(NetworkException.handleException(NullPointerException()))
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+    override suspend fun delete(studentId: Int): ModelResult<String, NetworkModelError> {
+        return studentApi.deleteStudent(studentId).executeOrError { it }
     }
 }

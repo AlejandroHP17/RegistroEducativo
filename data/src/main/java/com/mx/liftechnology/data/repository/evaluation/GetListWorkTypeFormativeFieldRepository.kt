@@ -6,14 +6,11 @@
 package com.mx.liftechnology.data.repository.evaluation
 
 import com.mx.liftechnology.core.network.api.EvaluationApi
-import com.mx.liftechnology.data.mapper.FormativeFieldMapper.mapperToModelWorkTypeFormativeField
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkException
 import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
-import retrofit2.HttpException
+import com.mx.liftechnology.data.util.executeOrError
 
 /**
  * Interfaz del repositorio para la obtención de la lista de tipos de evaluación.
@@ -24,11 +21,12 @@ import retrofit2.HttpException
  */
 fun interface GetListWorkTypeFormativeFieldRepository {
     /**
-     * Ejecuta la petición para obtener la lista de tipos de evaluación.
+     * Obtiene la lista de tipos de trabajo por campo formativo.
      *
+     * @param formativeFieldId El ID del campo formativo.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun executeGetListWorkTypeFormativeField(formativeFieldId:Int) : ModelResult<ModelWorkTypeFormativeField, NetworkModelError>
+    suspend fun getList(formativeFieldId:Int) : ModelResult<ModelWorkTypeFormativeField, NetworkModelError>
 }
 
 /**
@@ -45,18 +43,7 @@ class GetListWorkTypeFormativeFieldRepositoryImpl (
     /**
      * {@inheritDoc}
      */
-    override suspend fun executeGetListWorkTypeFormativeField(formativeFieldId:Int): ModelResult<ModelWorkTypeFormativeField, NetworkModelError> {
-        return try {
-            val response = evaluationApi.getListWorkTypeStudent(formativeFieldId)
-            if (response.isSuccessful && response.body() != null) {
-                response.body()?.data?.let {
-                    SuccessResult(it.mapperToModelWorkTypeFormativeField())
-                } ?: ErrorResult(NetworkModelError.EMPTY)
-            } else {
-                ErrorResult(NetworkException.handleException(HttpException(response)))
-            }
-        } catch (e: Exception) {
-            ErrorResult(NetworkException.handleException(e))
-        }
+    override suspend fun getList(formativeFieldId:Int): ModelResult<ModelWorkTypeFormativeField, NetworkModelError> {
+        return evaluationApi.getListWorkTypeStudent(formativeFieldId).executeOrError { it.toData() }
     }
 }

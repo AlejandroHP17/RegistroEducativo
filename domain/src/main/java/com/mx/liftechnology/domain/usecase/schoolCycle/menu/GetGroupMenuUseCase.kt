@@ -34,7 +34,7 @@ class GetGroupMenuUseCase(
     suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, ModelError> {
         val userId = preference.getIdUserLevel()
         if (userId == null) ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
-        return runCatching { menuRepository.executeGetCycleSchool( userId!!) }.fold(
+        return runCatching { menuRepository.getCycleSchool(userId!!) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
