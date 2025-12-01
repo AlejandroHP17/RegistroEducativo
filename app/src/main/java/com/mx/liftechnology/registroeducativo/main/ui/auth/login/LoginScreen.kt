@@ -31,16 +31,16 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingA
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ModifierOrientation
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
-import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Login screen.
+ * Pantalla de inicio de sesión.
  *
- * @param navController The navigation controller.
- * @param loginViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
- * @param onSuccess A lambda to be invoked when the login is successful.
+ * @param navController El controlador de navegación.
+ * @param loginViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido.
+ * @param onSuccess Lambda que se invoca cuando el inicio de sesión es exitoso.
  */
 @Composable
 fun LoginScreen(
@@ -84,21 +84,21 @@ fun LoginScreen(
                 onPassChanged = { loginViewModel.onPassChanged(it) },
                 onRememberChanged = { loginViewModel.onRememberChanged(it) }
             ),
-            navigate = { navController.navigate(LoginRoutes.FORGET_PASSWORD.route) }
+            navigate = { navController.navigate(AppRoutes.Auth.FORGET_PASSWORD) }
         )
 
         ActionLoginScreen { loginViewModel.validateFieldsCompose() }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        FooterLoginScreen { navController.navigate(LoginRoutes.REGISTER_USER.route) }
+        FooterLoginScreen { navController.navigate(AppRoutes.Auth.REGISTER_USER) }
     }
 
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 /**
- * The header of the Login screen.
+ * Encabezado de la pantalla de inicio de sesión.
  */
 @Composable
 fun HeaderLoginScreen() {
@@ -113,11 +113,11 @@ fun HeaderLoginScreen() {
 }
 
 /**
- * The body of the Login screen.
+ * Cuerpo de la pantalla de inicio de sesión.
  *
- * @param inputState The state of the input fields.
- * @param callbacks The callbacks for the input fields.
- * @param navigate A lambda to be invoked to navigate to the "Forget Password" screen.
+ * @param inputState El estado de los campos de entrada.
+ * @param callbacks Los callbacks para los campos de entrada.
+ * @param navigate Lambda que se invoca para navegar a la pantalla de "Olvidé mi contraseña".
  */
 @Composable
 fun BodyLoginScreen(
@@ -154,9 +154,9 @@ fun BodyLoginScreen(
 }
 
 /**
- * The action button of the Login screen.
+ * Botón de acción de la pantalla de inicio de sesión.
  *
- * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ * @param validateFieldsCompose Lambda que se invoca cuando se hace clic en el botón de acción.
  */
 @Composable
 fun ActionLoginScreen(

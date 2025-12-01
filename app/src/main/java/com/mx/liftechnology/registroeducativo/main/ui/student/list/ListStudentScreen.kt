@@ -17,14 +17,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingA
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericListScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Student List screen.
+ * Pantalla de lista de estudiantes.
  *
- * @param navController The navigation controller.
- * @param listStudentViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación.
+ * @param listStudentViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun ListStudentScreen(
@@ -48,9 +48,7 @@ fun ListStudentScreen(
             onReturnClick = { navController.popBackStack() },
             onActionClick = {
                 navController.navigateWithParams(
-                    MainRoutes.RegisterStudent.createRoutes(
-                        null
-                    )
+                    AppRoutes.Main.registerStudent(null)
                 )
             }
         )
@@ -63,14 +61,14 @@ fun ListStudentScreen(
             callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
-                        MainRoutes.AssignmentStudent.createRoutes(
+                        AppRoutes.Main.assignmentStudent(
                             listStudentViewModel.getStudent(it)
                         )
                     )
                 },
                 onEdit = {
                     navController.navigateWithParams(
-                        MainRoutes.RegisterStudent.createRoutes(
+                        AppRoutes.Main.registerStudent(
                             listStudentViewModel.getStudent(it)
                         )
                     )
@@ -81,9 +79,7 @@ fun ListStudentScreen(
             ),
             onAction = {
                 navController.navigateWithParams(
-                    MainRoutes.RegisterStudent.createRoutes(
-                        null
-                    )
+                    AppRoutes.Main.registerStudent(null)
                 )
             }
         )

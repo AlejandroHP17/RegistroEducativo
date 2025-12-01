@@ -41,7 +41,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingA
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextField
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -71,7 +71,7 @@ fun RegisterSchoolScreen(
             when (event) {
                 is UiEvent.Navigate -> {
                     navController.navigate(event.route) {
-                        popUpTo(MainRoutes.Menu.route) { inclusive = true }
+                        popUpTo(AppRoutes.Main.MENU) { inclusive = true }
                     }
                 }
                 else -> { /* Otros eventos se manejan en otros lugares */ }

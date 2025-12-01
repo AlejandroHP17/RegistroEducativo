@@ -33,7 +33,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.MyGridSc
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextSubHeader
 import com.mx.liftechnology.registroeducativo.main.ui.principal.SharedViewModel
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -202,10 +202,10 @@ private fun RegisterAreaMenuScreen(
         TextSubHeader(MenuScreenObject.ADAPTER_CONTROL_REGISTER)
         MyGridScreen(uiData.evaluationItems, 660.dp) { selectedItem ->
             when (selectedItem.id) {
-                menuItemsRegister[0] -> navController(MainRoutes.ListStudent.route)
-                menuItemsRegister[1] -> navController(MainRoutes.ListFormativeFields.route)
-                menuItemsRegister[2] -> navController(MainRoutes.Calendar.route)
-                menuItemsRegister[3] -> navController(MainRoutes.RegisterPartial.route)
+                menuItemsRegister[0] -> navController(AppRoutes.Main.LIST_STUDENT)
+                menuItemsRegister[1] -> navController(AppRoutes.Main.LIST_FORMATIVE_FIELDS)
+                menuItemsRegister[2] -> navController(AppRoutes.Main.CALENDAR)
+                menuItemsRegister[3] -> navController(AppRoutes.Main.REGISTER_PARTIAL)
 
                 menuItemsRegister[4] -> test()
             }
@@ -230,8 +230,8 @@ private fun ControlAreaMenuScreen(
     TextSubHeader(MenuScreenObject.ADAPTER_CONTROL)
     MyGridScreen(uiData.controlItems, 220.dp) { selectedItem ->
         when (selectedItem.id) {
-            menuItemsControl[0] -> navController(MainRoutes.RegisterSchool.route)
-            menuItemsControl[1] -> navController(MainRoutes.Profile.route)
+            menuItemsControl[0] -> navController(AppRoutes.Main.REGISTER_SCHOOL)
+            menuItemsControl[1] -> navController(AppRoutes.Main.PROFILE)
         }
     }
 

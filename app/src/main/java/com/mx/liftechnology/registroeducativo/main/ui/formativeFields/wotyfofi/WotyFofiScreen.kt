@@ -21,15 +21,15 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofi
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Subject Assignment screen.
+ * Pantalla de asignación de materia.
  *
- * @param navController The navigation controller.
- * @param backStackEntry The back stack entry for this screen.
- * @param wotyFofiViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación.
+ * @param backStackEntry La entrada del back stack para esta pantalla.
+ * @param wotyFofiViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun AssignmentSubjectScreen(
@@ -68,7 +68,7 @@ fun AssignmentSubjectScreen(
                 onExpandedTitle = { wotyFofiViewModel.updateExpandedTitle(it) },
                 onExpandedSubTitle = {subItem, parentItem -> wotyFofiViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
-            onAction = { navController.navigate(MainRoutes.RegisterAssignment.createRoutes(uiState.formativeFields))},
+            onAction = { navController.navigate(AppRoutes.Main.registerAssignment(uiState.formativeFields))},
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)

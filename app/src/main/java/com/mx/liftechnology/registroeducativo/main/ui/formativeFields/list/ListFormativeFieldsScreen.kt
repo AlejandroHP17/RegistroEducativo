@@ -18,14 +18,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericListScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
 import com.mx.liftechnology.registroeducativo.main.util.navigateWithState
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Formative Fields List screen.
+ * Pantalla de lista de materias formativas.
  *
- * @param navController The navigation controller.
- * @param listFormativeFieldsViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación.
+ * @param listFormativeFieldsViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun ListFormativeFieldsScreen(
@@ -46,7 +46,7 @@ fun ListFormativeFieldsScreen(
             description = stringResource(R.string.empty_subject_2),
             button = stringResource(R.string.add_button),
             onReturnClick = { navController.popBackStack() },
-            onActionClick = { navController.navigateWithParams(MainRoutes.RegisterFormativeField.route) }
+            onActionClick = { navController.navigateWithParams(AppRoutes.Main.REGISTER_FORMATIVE_FIELD) }
         )
     } else {
         GenericListScreen(
@@ -57,7 +57,7 @@ fun ListFormativeFieldsScreen(
             callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
-                        MainRoutes.AssignmentSubject.createRoutes(
+                        AppRoutes.Main.assignmentSubject(
                             listFormativeFieldsViewModel.getFormativeFields(it)
                         )
                     )
@@ -65,7 +65,7 @@ fun ListFormativeFieldsScreen(
                 onEdit = {},
                 onDelete = { listFormativeFieldsViewModel.deleteFormativeField(it) }
             ),
-            onAction = { navController.navigateWithState(MainRoutes.RegisterFormativeField.route) }
+            onAction = { navController.navigateWithState(AppRoutes.Main.REGISTER_FORMATIVE_FIELD) }
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)

@@ -30,7 +30,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.Checkbo
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.background
 
 /**
- * A composable function for previewing the components in this file.
+ * Función composable para previsualizar los componentes en este archivo.
  */
 @Preview(showBackground = true)
 @Composable
@@ -52,11 +52,11 @@ fun TestComponents() {
 }
 
 /**
- * A header component with a back button.
+ * Componente de encabezado con botón de retroceso.
  *
- * @param title The title of the header.
- * @param body The body text of the header.
- * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param title El título del encabezado.
+ * @param body El texto del cuerpo del encabezado.
+ * @param onReturnClick Lambda que se invoca cuando se hace clic en el botón de retroceso.
  */
 @Composable
 fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) {
@@ -82,10 +82,10 @@ fun ComponentHeaderBack(title: String, body: String, onReturnClick: () -> Unit) 
 }
 
 /**
- * A header component with a back button but no body text.
+ * Componente de encabezado con botón de retroceso pero sin texto de cuerpo.
  *
- * @param title The title of the header.
- * @param onReturnClick A lambda to be invoked when the back button is clicked.
+ * @param title El título del encabezado.
+ * @param onReturnClick Lambda que se invoca cuando se hace clic en el botón de retroceso.
  */
 @Composable
 fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
@@ -107,10 +107,10 @@ fun ComponentHeaderBackWithout(title: String, onReturnClick: () -> Unit) {
 }
 
 /**
- * A simple header component.
+ * Componente de encabezado simple.
  *
- * @param title The title of the header.
- * @param body The body text of the header.
+ * @param title El título del encabezado.
+ * @param body El texto del cuerpo del encabezado.
  */
 @Composable
 fun ComponentHeader(title: String, body: String) {
@@ -131,11 +131,11 @@ fun ComponentHeader(title: String, body: String) {
 }
 
 /**
- * A component with a mix of regular and clickable text.
+ * Componente con una mezcla de texto regular y texto clickeable.
  *
- * @param text The regular text.
- * @param textClick The clickable text.
- * @param onTextClick A lambda to be invoked when the clickable text is clicked.
+ * @param text El texto regular.
+ * @param textClick El texto clickeable.
+ * @param onTextClick Lambda que se invoca cuando se hace clic en el texto clickeable.
  */
 @Composable
 fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit) {
@@ -154,11 +154,11 @@ fun ComponentTextMix(text: String, textClick: String, onTextClick: () -> Unit) {
 }
 
 /**
- * A component with a checkbox and clickable text.
+ * Componente con un checkbox y texto clickeable.
  *
- * @param checkBox The checked state of the checkbox.
- * @param checkBoxClick A lambda to be invoked when the checkbox is clicked.
- * @param textClick A lambda to be invoked when the clickable text is clicked.
+ * @param checkBox El estado marcado del checkbox.
+ * @param checkBoxClick Lambda que se invoca cuando se hace clic en el checkbox.
+ * @param textClick Lambda que se invoca cuando se hace clic en el texto clickeable.
  */
 @Composable
 fun ComponentCheckBoxAndText(
@@ -198,12 +198,12 @@ fun ComponentCheckBoxAndText(
 }
 
 /**
- * A header component for the main schoolCycle.
+ * Componente de encabezado para el ciclo escolar principal.
  *
- * @param title The title of the header.
- * @param body The body text of the header.
- * @param partial The text for the partial.
- * @param onClick A lambda to be invoked when the header is clicked.
+ * @param title El título del encabezado.
+ * @param body El texto del cuerpo del encabezado.
+ * @param partial El texto para el parcial.
+ * @param onClick Lambda que se invoca cuando se hace clic en el encabezado.
  */
 @Composable
 fun ComponentHeaderMenu(

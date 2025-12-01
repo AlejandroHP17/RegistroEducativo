@@ -38,11 +38,11 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 /**
- * A dialog for selecting a date range.
+ * Diálogo para seleccionar un rango de fechas.
  *
- * @param showDialog Whether the dialog is shown.
- * @param onDismiss A lambda to be invoked when the dialog is dismissed.
- * @param onDateSelected A lambda to be invoked when a date range is selected.
+ * @param showDialog Si el diálogo está visible.
+ * @param onDismiss Lambda que se invoca cuando se cierra el diálogo.
+ * @param onDateSelected Lambda que se invoca cuando se selecciona un rango de fechas.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -152,12 +152,12 @@ fun DateRangePickerDialog(
 }
 
 /**
- * A dialog for selecting a single date.
+ * Diálogo para seleccionar una fecha única.
  *
- * @param showDialog Whether the dialog is shown.
- * @param dialogState The state of the dialog.
- * @param onDismiss A lambda to be invoked when the dialog is dismissed.
- * @param onDateSelected A lambda to be invoked when a date is selected.
+ * @param showDialog Si el diálogo está visible.
+ * @param dialogState El estado del diálogo.
+ * @param onDismiss Lambda que se invoca cuando se cierra el diálogo.
+ * @param onDateSelected Lambda que se invoca cuando se selecciona una fecha.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

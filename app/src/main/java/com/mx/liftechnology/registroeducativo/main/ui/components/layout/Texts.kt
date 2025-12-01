@@ -19,7 +19,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.background
 
 /**
- * A composable function for previewing the text components in this file.
+ * Función composable para previsualizar los componentes de texto en este archivo.
  */
 @Preview(showBackground = true)
 @Composable
@@ -74,9 +74,9 @@ fun TestText() {
 }
 
 /**
- * A composable that displays a header text.
+ * Composable que muestra un texto de encabezado.
  *
- * @param title The text to display.
+ * @param title El texto a mostrar.
  */
 @Composable
 fun TextHeader(
@@ -91,9 +91,9 @@ fun TextHeader(
 }
 
 /**
- * A composable that displays a sub-header text.
+ * Composable que muestra un texto de sub-encabezado.
  *
- * @param title The text to display.
+ * @param title El texto a mostrar.
  */
 @Composable
 fun TextSubHeader(
@@ -108,10 +108,10 @@ fun TextSubHeader(
 }
 
 /**
- * A composable that displays a description text.
+ * Composable que muestra un texto de descripción.
  *
- * @param text The text to display.
- * @param modifier The modifier to be applied to the component.
+ * @param text El texto a mostrar.
+ * @param modifier El modificador a aplicar al componente.
  */
 @Composable
 fun TextDescription(
@@ -127,10 +127,10 @@ fun TextDescription(
 }
 
 /**
- * A composable that displays a clickable link text.
+ * Composable que muestra un texto de enlace clickeable.
  *
- * @param text The text to display.
- * @param onTextClick A lambda to be invoked when the text is clicked.
+ * @param text El texto a mostrar.
+ * @param onTextClick Lambda que se invoca cuando se hace clic en el texto.
  */
 @Composable
 fun TextLink(text: String, onTextClick: () -> Unit) {
@@ -143,9 +143,9 @@ fun TextLink(text: String, onTextClick: () -> Unit) {
 }
 
 /**
- * A composable that displays a body text.
+ * Composable que muestra un texto de cuerpo.
  *
- * @param text The text to display.
+ * @param text El texto a mostrar.
  */
 @Composable
 fun TextBody(text: String) {
@@ -159,9 +159,9 @@ fun TextBody(text: String) {
 }
 
 /**
- * A composable that displays a title text for a dialog.
+ * Composable que muestra un texto de título para un diálogo.
  *
- * @param text The text to display.
+ * @param text El texto a mostrar.
  */
 @Composable
 fun TextTitleDialog(text: String) {

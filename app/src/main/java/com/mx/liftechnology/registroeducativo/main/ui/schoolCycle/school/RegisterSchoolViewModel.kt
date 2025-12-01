@@ -32,7 +32,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import com.mx.liftechnology.registroeducativo.main.util.getPeriodsByType
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import com.mx.liftechnology.registroeducativo.main.util.toSelectPeriod
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -324,7 +324,7 @@ class RegisterSchoolViewModel(
                             )
                         }
                         // Emitir evento de navegación en lugar de depender del estado
-                        _uiEvent.emit(UiEvent.Navigate(MainRoutes.Menu.withReload(true)))
+                        _uiEvent.emit(UiEvent.Navigate(AppRoutes.Main.menuWithReload(true)))
                     }
 
                     is ErrorResult -> {

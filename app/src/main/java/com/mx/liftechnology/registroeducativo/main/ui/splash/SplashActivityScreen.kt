@@ -14,12 +14,12 @@ import com.mx.liftechnology.core.util.LocationHelper
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The splash screen of the application.
+ * Pantalla de splash de la aplicación.
  *
- * @param splashViewModel The ViewModel for this screen.
- * @param onNavigateToLogin A lambda to be invoked to navigate to the login screen.
- * @param onNavigateToMain A lambda to be invoked to navigate to the main screen.
- * @param onPermissionDenied A lambda to be invoked when the location permission is denied.
+ * @param splashViewModel El ViewModel para esta pantalla.
+ * @param onNavigateToLogin Lambda que se invoca para navegar a la pantalla de login.
+ * @param onNavigateToMain Lambda que se invoca para navegar a la pantalla principal.
+ * @param onPermissionDenied Lambda que se invoca cuando se deniega el permiso de ubicación.
  */
 @Composable
 fun SplashScreen(

@@ -28,11 +28,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the User Registration screen.
+ * ViewModel para la pantalla de registro de usuario.
  *
- * @property dispatcherProvider The provider for Coroutine dispatchers.
- * @property registerUserUseCase The use case for handling user registration.
- * @property validateFieldsUseCase The use case for validating input fields.
+ * @property dispatcherProvider El proveedor de dispatchers de Corrutinas.
+ * @property registerUserUseCase El caso de uso para manejar el registro de usuario.
+ * @property validateFieldsUseCase El caso de uso para validar los campos de entrada.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -43,11 +43,11 @@ class RegisterUserViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUserUiState())
-    /** The UI state for the screen. */
+    /** El estado de la UI para la pantalla. */
     val uiState: StateFlow<RegisterUserUiState> = _uiState.asStateFlow()
 
     private val _inputState = MutableStateFlow(RegisterUserUiInputs())
-    /** The state of the input fields. */
+    /** El estado de los campos de entrada. */
     val inputState: StateFlow<RegisterUserUiInputs> = _inputState.asStateFlow()
     private val inputStateVM: RegisterUserUiInputs get() = _inputState.value
 
@@ -56,9 +56,9 @@ class RegisterUserViewModel(
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     /**
-     * Called when the email input changes.
+     * Se llama cuando cambia la entrada de email.
      *
-     * @param email The new email value.
+     * @param email El nuevo valor del email.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -66,9 +66,9 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Called when the password input changes.
+     * Se llama cuando cambia la entrada de contraseña.
      *
-     * @param pass The new password value.
+     * @param pass El nuevo valor de la contraseña.
      */
     fun onPassChanged(pass: ModelStateOutFieldText) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -76,9 +76,9 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Called when the repeated password input changes.
+     * Se llama cuando cambia la entrada de contraseña repetida.
      *
-     * @param repeatPass The new repeated password value.
+     * @param repeatPass El nuevo valor de la contraseña repetida.
      */
     fun onRepeatPassChanged(repeatPass: ModelStateOutFieldText) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -86,9 +86,9 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Called when the activation code input changes.
+     * Se llama cuando cambia la entrada del código de activación.
      *
-     * @param code The new activation code value.
+     * @param code El nuevo valor del código de activación.
      */
     fun onCodeChanged(code: ModelStateOutFieldText) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -171,10 +171,10 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Gets the rules for the password.
+     * Obtiene las reglas para la contraseña.
      *
-     * @param context The application context.
-     * @return A string containing the formatted rules.
+     * @param context El contexto de la aplicación.
+     * @return Un string que contiene las reglas formateadas.
      */
     fun getRules(context: Context): String {
         val listRules = context.resources?.getStringArray(R.array.rules_pass)
@@ -183,9 +183,9 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show True para mostrar el toast, false para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina

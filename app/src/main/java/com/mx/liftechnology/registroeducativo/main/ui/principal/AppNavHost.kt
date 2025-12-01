@@ -39,8 +39,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentScreen
-import com.mx.liftechnology.registroeducativo.main.util.navigation.LoginRoutes
-import com.mx.liftechnology.registroeducativo.main.util.navigation.MainRoutes
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 
 /**
  * Host de navegación principal de la aplicación.
@@ -63,37 +62,37 @@ fun AppNavHost(
     LaunchedEffect(uiState.sessionExpired) {
         if(uiState.sessionExpired){
             sharedViewModel.sessionExpired()
-            navigationController.navigate(LoginRoutes.LOGIN.route)
+            navigationController.navigate(AppRoutes.Auth.LOGIN)
         }
 
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        NavHost(navController = navigationController, startDestination = "splash") {
-            composable("splash") {
+        NavHost(navController = navigationController, startDestination = AppRoutes.Splash.SPLASH) {
+            composable(AppRoutes.Splash.SPLASH) {
                 SplashScreen(
-                    onNavigateToMain = { navigationController.navigate(MainRoutes.Menu.route) { popUpTo("splash") { inclusive = true } } },
-                    onNavigateToLogin = { navigationController.navigate(LoginRoutes.LOGIN.route) { popUpTo("splash") { inclusive = true } } },
+                    onNavigateToMain = { navigationController.navigate(AppRoutes.Main.MENU) { popUpTo(AppRoutes.Splash.SPLASH) { inclusive = true } } },
+                    onNavigateToLogin = { navigationController.navigate(AppRoutes.Auth.LOGIN) { popUpTo(AppRoutes.Splash.SPLASH) { inclusive = true } } },
                     onPermissionDenied = { }
                 )
             }
 
             // Flujo de Login
-            composable(LoginRoutes.LOGIN.route){ LoginScreen(
+            composable(AppRoutes.Auth.LOGIN){ LoginScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
-                onSuccess = {navigationController.navigate(MainRoutes.Menu.route){popUpTo(LoginRoutes.LOGIN.route) { inclusive = true } } }
+                onSuccess = {navigationController.navigate(AppRoutes.Main.MENU){popUpTo(AppRoutes.Auth.LOGIN) { inclusive = true } } }
             )}
-            composable(LoginRoutes.REGISTER_USER.route){ RegisterUserScreen(
+            composable(AppRoutes.Auth.REGISTER_USER){ RegisterUserScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
                 ) }
-            composable(LoginRoutes.FORGET_PASSWORD.route){ ForgetPasswordScreen(navigationController) }
+            composable(AppRoutes.Auth.FORGET_PASSWORD){ ForgetPasswordScreen(navigationController) }
 
             // Flujo Principal
             composable(
-                route = MainRoutes.Menu.route,
+                route = AppRoutes.Main.MENU_WITH_RELOAD,
                 arguments = listOf(
                     navArgument("reload") {
                         type = NavType.BoolType
@@ -104,31 +103,31 @@ fun AppNavHost(
                 reload = it.arguments?.getBoolean("reload") ?: false,
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
-                onCloseSession = {navigationController.navigate(LoginRoutes.LOGIN.route){popUpTo(MainRoutes.Menu.route) { inclusive = true } }}
+                onCloseSession = {navigationController.navigate(AppRoutes.Auth.LOGIN){popUpTo(AppRoutes.Main.MENU) { inclusive = true } }}
             ) }
-            composable(MainRoutes.ListStudent.route){ ListStudentScreen(navigationController) }
-            composable(MainRoutes.ListFormativeFields.route){ ListFormativeFieldsScreen(navigationController) }
-            composable(MainRoutes.Calendar.route){ CalendarScreen(navigationController) }
+            composable(AppRoutes.Main.LIST_STUDENT){ ListStudentScreen(navigationController) }
+            composable(AppRoutes.Main.LIST_FORMATIVE_FIELDS){ ListFormativeFieldsScreen(navigationController) }
+            composable(AppRoutes.Main.CALENDAR){ CalendarScreen(navigationController) }
 
-            composable(MainRoutes.RegisterSchool.route){ RegisterSchoolScreen(
+            composable(AppRoutes.Main.REGISTER_SCHOOL){ RegisterSchoolScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel
             ) }
 
-            composable(MainRoutes.RegisterFormativeField.route){ RegisterSubjectScreen(
+            composable(AppRoutes.Main.REGISTER_FORMATIVE_FIELD){ RegisterSubjectScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel) }
-            composable(MainRoutes.RegisterPartial.route){ RegisterPartialScreen(
+            composable(AppRoutes.Main.REGISTER_PARTIAL){ RegisterPartialScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel) }
-            composable(MainRoutes.Profile.route){ ProfileScreen(
+            composable(AppRoutes.Main.PROFILE){ ProfileScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
                 onCloseSession = { restoreActivity() }
             )}
 
             composable(
-                route = MainRoutes.RegisterStudent.route,
+                route = AppRoutes.Main.REGISTER_STUDENT,
                 arguments = listOf(navArgument("student") {
                     nullable = true
                     defaultValue = ""
@@ -142,7 +141,7 @@ fun AppNavHost(
             }
 
             composable(
-                route = MainRoutes.AssignmentStudent.route,
+                route = AppRoutes.Main.ASSIGNMENT_STUDENT,
                 arguments = listOf(navArgument("student") {
                     nullable = true
                     defaultValue = ""
@@ -155,7 +154,7 @@ fun AppNavHost(
             }
 
             composable(
-                route = MainRoutes.AssignmentSubject.route,
+                route = AppRoutes.Main.ASSIGNMENT_SUBJECT,
                 arguments = listOf(navArgument("subject") {
                     nullable = true
                     defaultValue = ""
@@ -168,7 +167,7 @@ fun AppNavHost(
             }
 
             composable(
-                route = MainRoutes.RegisterAssignment.route,
+                route = AppRoutes.Main.REGISTER_ASSIGNMENT,
                 arguments = listOf(navArgument("subject") {
                     nullable = true
                     defaultValue = ""
