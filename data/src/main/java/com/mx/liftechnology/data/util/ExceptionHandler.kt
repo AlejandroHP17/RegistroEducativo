@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.util
 
-import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.core.util.extension.logInfo
 
 /**
  * Objeto que gestiona las excepciones y las convierte en un [com.mx.liftechnology.domain.util.NetworkError].

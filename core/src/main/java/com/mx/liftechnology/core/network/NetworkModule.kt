@@ -6,7 +6,7 @@
 package com.mx.liftechnology.core.network
 
 import com.mx.liftechnology.core.network.environment.Environment
-import com.mx.liftechnology.core.util.SessionManager
+import com.mx.liftechnology.core.util.session.SessionManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.dsl.singleOf

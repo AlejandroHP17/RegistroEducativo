@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mx.liftechnology.core.util.LocationHelper
+import com.mx.liftechnology.core.util.location.LocationHelper
 import org.koin.androidx.compose.koinViewModel
 
 /**

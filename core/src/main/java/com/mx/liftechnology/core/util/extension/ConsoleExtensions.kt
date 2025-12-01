@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.util.extension
 
 import timber.log.Timber
 
@@ -42,3 +42,4 @@ inline fun <reified T : Any> T.logDebug(message: String, name: String = "Desarro
 inline fun <reified T : Any> T.logs(message: String, name: String = "Desarrollo: ") {
         logInfo(message, name)
 }
+

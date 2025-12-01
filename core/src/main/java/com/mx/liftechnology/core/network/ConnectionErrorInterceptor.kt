@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.core.network
 
-import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.core.util.extension.logInfo
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

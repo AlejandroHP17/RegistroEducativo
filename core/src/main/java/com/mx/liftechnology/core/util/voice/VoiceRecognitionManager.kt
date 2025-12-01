@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.util.voice
 
 import android.Manifest
 import android.content.Context
@@ -221,3 +221,4 @@ class VoiceRecognitionManager(private val context: Context) {
         }
     }
 }
+

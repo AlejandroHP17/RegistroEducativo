@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.principal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.core.util.SessionManager
+import com.mx.liftechnology.core.util.session.SessionManager
 import com.mx.liftechnology.registroeducativo.main.model.ShareUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI

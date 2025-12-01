@@ -7,7 +7,7 @@ package com.mx.liftechnology.core.network
 
 import com.google.gson.Gson
 import com.mx.liftechnology.core.network.environment.Environment
-import com.mx.liftechnology.core.util.SessionManager
+import com.mx.liftechnology.core.util.session.SessionManager
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType

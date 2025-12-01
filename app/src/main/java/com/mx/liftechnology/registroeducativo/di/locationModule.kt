@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.util.LocationHelper
+import com.mx.liftechnology.core.util.location.LocationHelper
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

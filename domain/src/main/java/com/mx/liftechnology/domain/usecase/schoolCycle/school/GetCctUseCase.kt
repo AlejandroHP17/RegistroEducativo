@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.school
 
-import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.core.util.extension.logInfo
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
 import com.mx.liftechnology.data.util.ModelError

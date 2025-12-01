@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.util.form
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -36,3 +36,4 @@ enum class FormSelector(val value: Int) : Parcelable {
     /** Representa el campo de fecha de nacimiento. */
     BIRTHDAY(6),
 }
+

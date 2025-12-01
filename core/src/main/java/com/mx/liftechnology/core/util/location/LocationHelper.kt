@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.util.location
 
 import android.Manifest
 import android.app.Activity
@@ -176,3 +176,4 @@ class LocationHelper(private val context: Context) {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.core.util
+package com.mx.liftechnology.core.util.session
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -17,3 +17,4 @@ class SessionManager {
     }
 
 }
+

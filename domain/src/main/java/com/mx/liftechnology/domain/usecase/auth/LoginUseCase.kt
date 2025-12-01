@@ -3,8 +3,8 @@ package com.mx.liftechnology.domain.usecase.auth
 import android.os.Build
 import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.core.util.LocationHelper
-import com.mx.liftechnology.core.util.LocationResult
+import com.mx.liftechnology.core.util.location.LocationHelper
+import com.mx.liftechnology.core.util.location.LocationResult
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.repository.auth.LoginRepository
 import com.mx.liftechnology.data.util.ErrorResult

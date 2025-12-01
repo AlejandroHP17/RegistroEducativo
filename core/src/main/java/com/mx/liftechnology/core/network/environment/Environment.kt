@@ -6,7 +6,7 @@
 package com.mx.liftechnology.core.network.environment
 
 import android.os.Build
-import com.mx.liftechnology.core.util.logInfo
+import com.mx.liftechnology.core.util.extension.logInfo
 
 /**
  * Objeto que contiene las constantes para los endpoints de la API y la URL base.
