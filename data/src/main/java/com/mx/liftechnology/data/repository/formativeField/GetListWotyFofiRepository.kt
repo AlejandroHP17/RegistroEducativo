@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWotyFofiApiCall
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListWotyFofi
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -15,11 +15,11 @@ fun interface GetListWotyFofiRepository {
 }
 
 class GetListWotyFofiRepositoryImpl(
-    private val getListWotyFofiApiCall: GetListWotyFofiApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ):GetListWotyFofiRepository{
     override suspend fun executeGetListWotyFofi(schoolCycleId: Int): ModelResult<ModelWotyFofiData, NetworkModelError> {
         return try{
-            val response = getListWotyFofiApiCall.callApi(schoolCycleId)
+            val response = formativeFieldApi.getListWotyFofi(schoolCycleId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListWotyFofi())

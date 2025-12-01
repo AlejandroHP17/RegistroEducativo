@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.GroupApiCall
+import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepository
 import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepositoryImpl
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
@@ -23,7 +23,10 @@ import retrofit2.Retrofit
  */
 val registerEvaluationModule = module {
 
-    factory { get<Retrofit>().create(GroupApiCall::class.java) }
+    /**
+     * Provides an instance of [EvaluationApi].
+     */
+    factory { get<Retrofit>().create(EvaluationApi::class.java) }
 
     /**
      * Provides a singleton instance of [ValidateFieldsEvaluationUseCase].

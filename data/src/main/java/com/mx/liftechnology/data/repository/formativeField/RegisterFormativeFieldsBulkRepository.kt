@@ -5,10 +5,10 @@
  */
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.RegisterFormativeFieldsBulkApiCall
-import com.mx.liftechnology.core.network.apiCall.formativeField.RequestEvaluations
-import com.mx.liftechnology.core.network.apiCall.formativeField.RequestRegisterFormativeField
-import com.mx.liftechnology.core.network.apiCall.formativeField.RequestWorkType
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
+import com.mx.liftechnology.core.network.api.RequestEvaluations
+import com.mx.liftechnology.core.network.api.RequestRegisterFormativeField
+import com.mx.liftechnology.core.network.api.RequestWorkType
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListFormativeFields
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -51,7 +51,7 @@ fun interface RegisterFormativeFieldsBulkRepository{
  * @version 1.0.0
  */
 class RegisterFormativeFieldsBulkRepositoryImpl(
-    private val registerFormativeFieldsBulkApiCall: RegisterFormativeFieldsBulkApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ) : RegisterFormativeFieldsBulkRepository {
 
     /**
@@ -73,7 +73,7 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
         )
 
         return try {
-            val response = registerFormativeFieldsBulkApiCall.callApi(request)
+            val response = formativeFieldApi.registerFormativeFieldsBulk(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListFormativeFields())

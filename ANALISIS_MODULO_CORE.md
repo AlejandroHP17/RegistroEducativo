@@ -41,7 +41,7 @@ El módulo `core` contiene funcionalidades transversales y herramientas comparti
 - `ModelPreference` → `PreferenceKeys` (actualizado en 26 archivos)
 - `ModelSelectorForm` → `FormSelector`
 
-#### ❌ Nomenclatura de API Calls
+#### ✅ Nomenclatura de API Calls
 - **Problema**: Nombres inconsistentes
   - `GetDataUserApiCall` vs `LoginApiCall` (diferentes patrones)
   - Algunos usan `Get*`, otros `Register*`, otros solo el nombre
@@ -60,6 +60,36 @@ interface AuthApi {
     suspend fun getUserData(): Response<UserDataResponse>
 }
 ```
+
+**Estado**: ✅ **COMPLETADO** - Interfaces agrupadas creadas y migración finalizada:
+- ✅ `AuthApi` - Completado (login, register, getUserData)
+- ✅ `StudentApi` - Completado (getStudents, registerStudent, editStudent, deleteStudent, getListEvaluations)
+- ✅ `FormativeFieldApi` - Completado (todos los métodos relacionados)
+- ✅ `SchoolCycleApi` - Completado (todos los métodos relacionados)
+- ✅ `EvaluationApi` - Completado (registerWorkTypeEvaluations, getListWorkTypeStudent)
+
+**Migración completada**:
+- ✅ Repositorios de autenticación actualizados (LoginRepository, GetDataUserRepository, RegisterUserRepository)
+- ✅ Módulos de DI de autenticación actualizados (loginUserModule, registerUserModule)
+- ✅ Mappers actualizados (AuthDataToDomainMapper)
+- ✅ Repositorios de Student actualizados (GetStudentRepository, RegisterStudentRepository, EditStudentRepository, DeleteStudentRepository, GetListEvaluationsStudentRepository)
+- ✅ Módulo de DI de Student actualizado (crudStudentModule)
+- ✅ Mapper de Student actualizado (StudentDataToDomainMapper)
+- ✅ Use case de Student actualizado (EditStudentUseCase)
+- ✅ Repositorios de FormativeField actualizados (GetListFormativeFieldRepository, GetWorkTypeRepository, GetWorkTypeByFormativeFieldsRepository, GetListWotyFofiRepository, GetListByFieldTypeStudentRepository, RegisterFormativeFieldsBulkRepository, DeleteFormativeFieldRepository)
+- ✅ Módulos de DI de FormativeField actualizados (crudFormativeFieldModule, wotyFofiModule)
+- ✅ Mapper de FormativeField actualizado (FormativeFieldDataToDomainMapper)
+- ✅ Use case de FormativeField actualizado (RegisterFormativeFieldsBulkUseCase)
+- ✅ Repositorios de SchoolCycle actualizados (GetCctRepository, RegisterCycleSchoolRepository, GetListPartialRepository, RegisterListPartialRepository, MenuRepository)
+- ✅ Módulos de DI de SchoolCycle actualizados (registerSchoolModule, crudPartialModule, menuModule)
+- ✅ Mapper de SchoolCycle actualizado (SchoolCycleDataToDomainMapper)
+- ✅ Repositorios de Evaluation actualizados (RegisterWorkTypeEvaluationsRepository, GetListWorkTypeFormativeFieldRepository)
+- ✅ Módulo de DI de Evaluation actualizado (registerEvaluationModule)
+- ✅ Use case de Evaluation actualizado (RegisterWorkTypeEvaluationsUseCase)
+
+**Completado**:
+- ✅ Archivos antiguos de API Calls eliminados (22 archivos eliminados)
+- ✅ Todas las referencias actualizadas para usar las nuevas interfaces agrupadas
 
 ---
 

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetWorkTypeApiCall
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
 import com.mx.liftechnology.data.util.ErrorResult
@@ -14,11 +14,11 @@ fun interface GetWorkTypeByFormativeFieldsRepository {
     suspend fun executeGetWorkTyperByFormativeFields(formativeFieldId: Int): ModelResult<ModelWorkTypeByFormativeField, NetworkModelError>
 }
 class GetWorkTypeByFormativeFieldsRepositoryImpl(
-    private val getWorkTypeApiCall: GetWorkTypeApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ): GetWorkTypeByFormativeFieldsRepository{
     override suspend fun executeGetWorkTyperByFormativeFields(formativeFieldId: Int): ModelResult<ModelWorkTypeByFormativeField, NetworkModelError> {
         return try {
-            val response = getWorkTypeApiCall.callApi(formativeFieldId)
+            val response = formativeFieldApi.getWorkTypeByFormativeField(formativeFieldId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelWorkTypeByFormativeField())

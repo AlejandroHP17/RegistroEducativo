@@ -5,9 +5,9 @@
  */
 package com.mx.liftechnology.data.repository.schoolCycle.partial
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RegisterListPartialApiCall
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestPartials
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestRegisterPartial
+import com.mx.liftechnology.core.network.api.RequestPartials
+import com.mx.liftechnology.core.network.api.RequestRegisterPartial
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToModelListPartialData
 import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
@@ -47,7 +47,7 @@ fun interface RegisterListPartialRepository{
  * @version 1.0.0
  */
 class RegisterListPartialRepositoryImpl(
-    private val registerListPartialApiCall: RegisterListPartialApiCall,
+    private val schoolCycleApi: SchoolCycleApi,
 ) : RegisterListPartialRepository {
 
     /**
@@ -74,7 +74,7 @@ class RegisterListPartialRepositoryImpl(
         val request = RequestRegisterPartial(listPartials = listAdapter)
 
         return try {
-            val response = registerListPartialApiCall.callApi(request)
+            val response = schoolCycleApi.registerListPartial(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListPartialData())

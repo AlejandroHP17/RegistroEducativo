@@ -1,10 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.evaluation.GetListWorkTypeStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.formativeField.DeleteFormativeFieldApiCall
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListFormativeFieldsApiCall
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWorkTypeApiCall
-import com.mx.liftechnology.core.network.apiCall.formativeField.RegisterFormativeFieldsBulkApiCall
+import com.mx.liftechnology.core.network.api.EvaluationApi
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepository
 import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepository
@@ -39,29 +36,14 @@ import retrofit2.Retrofit
 val crudFormativeFieldModule = module {
 
     /**
-     * Provides an instance of [RegisterFormativeFieldsBulkApiCall].
+     * Provides an instance of [FormativeFieldApi].
      */
-    factory { get<Retrofit>().create(RegisterFormativeFieldsBulkApiCall::class.java) }
+    factory { get<Retrofit>().create(FormativeFieldApi::class.java) }
 
     /**
-     * Provides an instance of [GetListFormativeFieldsApiCall].
+     * Provides an instance of [EvaluationApi].
      */
-    factory { get<Retrofit>().create(GetListFormativeFieldsApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetListWorkTypeStudentApiCall].
-     */
-    factory { get<Retrofit>().create(GetListWorkTypeStudentApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetListWorkTypeApiCall].
-     */
-    factory { get<Retrofit>().create(GetListWorkTypeApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetListWorkTypeApiCall].
-     */
-    factory { get<Retrofit>().create(DeleteFormativeFieldApiCall::class.java) }
+    factory { get<Retrofit>().create(EvaluationApi::class.java) }
 
     /**
      * Provides a singleton instance of [GetListWorkTypeFormativeFieldRepository].

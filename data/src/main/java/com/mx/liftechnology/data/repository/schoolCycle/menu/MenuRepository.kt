@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.schoolCycle.menu
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.GroupApiCall
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToCycleSchool
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -43,7 +43,7 @@ fun interface MenuRepository{
  * @version 1.0.0
  */
 class MenuRepositoryImpl(
-    private val groupApiCall: GroupApiCall
+    private val schoolCycleApi: SchoolCycleApi
 ): MenuRepository {
 
     /**
@@ -51,7 +51,7 @@ class MenuRepositoryImpl(
      */
     override suspend fun executeGetCycleSchool(request: Int): ModelResult<List<ModelSchoolCycleData>, NetworkModelError> {
         return try {
-            val response = groupApiCall.callApi(teacherId = request)
+            val response = schoolCycleApi.getGroup(teacherId = request)
             if (response.isSuccessful && response.body()?.data != null) {
                 if(response.body()?.data?.isNotEmpty() == true) SuccessResult(response.body()?.data.mapperToCycleSchool())
                 else ErrorResult(NetworkModelError.EMPTY)

@@ -1,9 +1,9 @@
 package com.mx.liftechnology.data.mapper
 
-import com.mx.liftechnology.core.network.apiCall.student.ResponseEditStudent
-import com.mx.liftechnology.core.network.apiCall.student.ResponseGetListEvaluationsStudent
-import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
-import com.mx.liftechnology.core.network.apiCall.student.ResponseRegisterStudent
+import com.mx.liftechnology.core.network.api.ResponseEditStudent
+import com.mx.liftechnology.core.network.api.ResponseGetListEvaluationsStudent
+import com.mx.liftechnology.core.network.api.ResponseGetStudent
+import com.mx.liftechnology.core.network.api.ResponseRegisterStudent
 import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
 import com.mx.liftechnology.data.model.student.ModelStudentData
 

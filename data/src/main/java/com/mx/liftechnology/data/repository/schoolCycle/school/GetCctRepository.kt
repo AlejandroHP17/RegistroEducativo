@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.schoolCycle.school
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetCctApiCall
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRegisterSchool
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -41,7 +41,7 @@ fun interface GetCctRepository{
  * @version 1.0.0
  */
 class GetCctRepositoryImpl(
-    private val cctApiCall: GetCctApiCall
+    private val schoolCycleApi: SchoolCycleApi
 ) : GetCctRepository {
 
     /**
@@ -49,7 +49,7 @@ class GetCctRepositoryImpl(
      */
     override suspend fun executeGetCct(cct:String): ModelResult<ModelCCTData, NetworkModelError> {
         return try {
-            val response = cctApiCall.callApi(cct)
+            val response = schoolCycleApi.getCct(cct)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToRegisterSchool())

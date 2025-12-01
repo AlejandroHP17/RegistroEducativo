@@ -6,7 +6,7 @@
 package com.mx.liftechnology.domain.model.formativeFields
 
 import android.os.Parcelable
-import com.mx.liftechnology.core.network.apiCall.formativeField.ResponseGetListFormativeField
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import kotlinx.parcelize.Parcelize
 
@@ -31,10 +31,10 @@ data class ModelFormatFormativeFieldsDomain(
 ): Parcelable
 
 /**
- * Función de extensión para convertir una lista de [ResponseGetListFormativeField] (modelo de red)
+ * Función de extensión para convertir una lista de [FormativeFieldApi.ResponseGetListFormativeField] (modelo de red)
  * a una lista de [ModelFormatFormativeFieldsDomain] (modelo de dominio).
  *
- * @receiver Una lista nulable de objetos [ResponseGetListFormativeField].
+ * @receiver Una lista nulable de objetos [FormativeFieldApi.ResponseGetListFormativeField].
  * @return Una lista de [ModelFormatFormativeFieldsDomain], donde los elementos nulos de la entrada han sido omitidos.
  *
  * @author Pelkidev

@@ -1,9 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.student.DeleteStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.student.EditStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.student.GetListStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.student.RegisterStudentApiCall
+import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.repository.student.DeleteStudentRepository
 import com.mx.liftechnology.data.repository.student.DeleteStudentRepositoryImpl
 import com.mx.liftechnology.data.repository.student.EditStudentRepository
@@ -39,24 +36,9 @@ import retrofit2.Retrofit
 val crudStudentModule = module {
 
     /**
-     * Provides an instance of [RegisterStudentApiCall].
+     * Provides an instance of [StudentApi].
      */
-    factory { get<Retrofit>().create(RegisterStudentApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetListStudentApiCall].
-     */
-    factory { get<Retrofit>().create(GetListStudentApiCall::class.java) }
-
-    /**
-     * Provides an instance of [DeleteStudentApiCall].
-     */
-    factory { get<Retrofit>().create(DeleteStudentApiCall::class.java) }
-
-    /**
-     * Provides an instance of [EditStudentApiCall].
-     */
-    factory { get<Retrofit>().create(EditStudentApiCall::class.java) }
+    factory { get<Retrofit>().create(StudentApi::class.java) }
 
     /**
      * Provides a singleton instance of [RegisterStudentRepository].

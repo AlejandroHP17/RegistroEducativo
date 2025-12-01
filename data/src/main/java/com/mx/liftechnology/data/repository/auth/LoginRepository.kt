@@ -5,8 +5,8 @@
  */
 package com.mx.liftechnology.data.repository.auth
 
-import com.mx.liftechnology.core.network.apiCall.auth.LoginApiCall
-import com.mx.liftechnology.core.network.apiCall.auth.RequestLogin
+import com.mx.liftechnology.core.network.api.AuthApi
+import com.mx.liftechnology.core.network.api.RequestLogin
 import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToGetLoginData
 import com.mx.liftechnology.data.model.auth.ModelLoginData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -48,7 +48,7 @@ fun interface LoginRepository {
  * @version 1.0.0
  */
 class LoginRepositoryImpl(
-    private val loginApiCall: LoginApiCall,
+    private val authApi: AuthApi,
 ) : LoginRepository {
 
     /**
@@ -74,7 +74,7 @@ class LoginRepositoryImpl(
         )
 
         return try {
-            val response = loginApiCall.callApi(request)
+            val response = authApi.login(request)
             if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToGetLoginData())
             else ErrorResult(NetworkException.handleException(HttpException(response)))
         } catch (e: Exception) {

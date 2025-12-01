@@ -1,10 +1,10 @@
 package com.mx.liftechnology.data.mapper
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseCctSchool
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGetPartials
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGroupTeacher
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseRegisterPartial
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseRegisterSchoolCycle
+import com.mx.liftechnology.core.network.api.ResponseCctSchool
+import com.mx.liftechnology.core.network.api.ResponseGetPartials
+import com.mx.liftechnology.core.network.api.ResponseGroupTeacher
+import com.mx.liftechnology.core.network.api.ResponseRegisterPartial
+import com.mx.liftechnology.core.network.api.ResponseRegisterSchoolCycle
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
 import com.mx.liftechnology.data.model.schoolCycle.ModelCCTDataPeriodCatalog
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
@@ -57,11 +57,11 @@ object SchoolCycleDataToDomainMapper {
             schoolTypeId = this.schoolTypeId,
             schoolName = this.schoolName,
             shiftName = this.shiftName,
-            periodCatalog = this.periodCatalog?.map {
+            periodCatalog = this.periodCatalog?.map { catalog ->
                 ModelCCTDataPeriodCatalog(
-                    id = it.id,
-                    typeName = it.typeName,
-                    periodNumber = it.periodNumber
+                    id = catalog.id,
+                    typeName = catalog.typeName,
+                    periodNumber = catalog.periodNumber
                 )
             } ?: emptyList()
         )

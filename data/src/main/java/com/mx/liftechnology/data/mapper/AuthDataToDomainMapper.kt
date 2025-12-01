@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.mapper
 
-import com.mx.liftechnology.core.network.apiCall.auth.ResponseDataUser
-import com.mx.liftechnology.core.network.apiCall.auth.ResponseLogin
-import com.mx.liftechnology.core.network.apiCall.auth.ResponseRegisterUser
+import com.mx.liftechnology.core.network.api.ResponseDataUser
+import com.mx.liftechnology.core.network.api.ResponseLogin
+import com.mx.liftechnology.core.network.api.ResponseRegisterUser
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.model.auth.ModelLoginData
 import com.mx.liftechnology.data.model.auth.ModelRegisterUserData

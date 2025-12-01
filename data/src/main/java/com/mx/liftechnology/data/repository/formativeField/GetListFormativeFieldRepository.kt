@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListFormativeFieldsApiCall
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListFormativeFields
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -41,7 +41,7 @@ fun interface GetListFormativeFieldRepository{
  * @version 1.0.0
  */
 class GetListFormativeFieldRepositoryImpl(
-    private val getListFormativeFieldsApiCall : GetListFormativeFieldsApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ) : GetListFormativeFieldRepository {
 
     /**
@@ -51,7 +51,7 @@ class GetListFormativeFieldRepositoryImpl(
         cycleSchoolId: Int
     ) : ModelResult<List<ModelFormativeFieldData>, NetworkModelError> {
         return try {
-            val response = getListFormativeFieldsApiCall.callApi(cycleSchoolId)
+            val response = formativeFieldApi.getListFormativeFields(cycleSchoolId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListFormativeFields())

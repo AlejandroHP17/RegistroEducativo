@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListByFieldTypeStudentApiCall
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelByFieldTypeStudentData
 import com.mx.liftechnology.data.model.formativeField.ModelByFieldTypeStudentData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -20,7 +20,7 @@ fun interface GetListByFieldTypeStudentRepository {
 }
 
 class GetListByFieldTypeStudentRepositoryImpl(
-    private val getListByFieldTypeStudentApiCall: GetListByFieldTypeStudentApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ):GetListByFieldTypeStudentRepository{
     override suspend fun executeGetListByFieldTypeStudent(
         formativeFieldId : Int,
@@ -29,8 +29,8 @@ class GetListByFieldTypeStudentRepositoryImpl(
         workDate : String?
     ): ModelResult<ModelByFieldTypeStudentData, NetworkModelError> {
         return try{
-            val response = getListByFieldTypeStudentApiCall.callApi(
-                formativeFieldId= formativeFieldId,
+            val response = formativeFieldApi.getListByFieldTypeStudent(
+                formativeFieldId = formativeFieldId,
                 workTypeId = workTypeId,
                 workName = workName,
                 workDate = workDate

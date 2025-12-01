@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.student
 
-import com.mx.liftechnology.core.network.apiCall.student.GetListStudentApiCall
+import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelListStudent
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -41,7 +41,7 @@ fun interface GetStudentRepository{
  * @version 1.0.0
  */
 class GetStudentRepositoryImpl(
-    private val getListStudentApiCall : GetListStudentApiCall
+    private val studentApi: StudentApi
 ) : GetStudentRepository {
 
     /**
@@ -51,7 +51,7 @@ class GetStudentRepositoryImpl(
         cycleSchoolId: Int
     ) : ModelResult<List<ModelStudentData?>, NetworkModelError> {
         return try {
-            val response = getListStudentApiCall.callApi(cycleSchoolId)
+            val response = studentApi.getListStudents(cycleSchoolId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListStudent())

@@ -5,8 +5,8 @@
  */
 package com.mx.liftechnology.data.repository.student
 
-import com.mx.liftechnology.core.network.apiCall.student.RegisterStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.student.RequestRegisterStudent
+import com.mx.liftechnology.core.network.api.RequestRegisterStudent
+import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelStudent
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -53,7 +53,7 @@ fun interface RegisterStudentRepository{
  * @version 1.0.0
  */
 class RegisterStudentRepositoryImpl(
-    private val registerStudentApiCall: RegisterStudentApiCall,
+    private val studentApi: StudentApi,
 ) : RegisterStudentRepository {
 
     /**
@@ -82,7 +82,7 @@ class RegisterStudentRepositoryImpl(
             isActive = true
         )
         return try {
-            val response = registerStudentApiCall.callApi(request)
+            val response = studentApi.registerStudent(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelStudent())

@@ -5,7 +5,8 @@
  */
 package com.mx.liftechnology.domain.model.student
 
-import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.api.ResponseGetStudent
+import com.mx.liftechnology.core.network.api.StudentApi
 
 /**
  * Modelo de datos que representa a un estudiante para el registro de una asignación en la capa de dominio.
@@ -28,11 +29,11 @@ data class ModelStudentRegisterAssignmentDomain (
 )
 
 /**
- * Función de extensión para convertir una lista de [ResponseGetStudent] (modelo de red)
+ * Función de extensión para convertir una lista de [StudentApi.ResponseGetStudent] (modelo de red)
  * a una lista de [ModelStudentRegisterAssignmentDomain] (modelo de dominio).
  * La lista resultante está ordenada alfabéticamente por el nombre completo del estudiante.
  *
- * @receiver Una lista nulable de objetos [ResponseGetStudent].
+ * @receiver Una lista nulable de objetos [StudentApi.ResponseGetStudent].
  * @return Una lista de [ModelStudentRegisterAssignmentDomain]. Si la lista de entrada es nula, vacía o contiene solo nulos, devuelve una lista vacía.
  *
  * @author Pelkidev

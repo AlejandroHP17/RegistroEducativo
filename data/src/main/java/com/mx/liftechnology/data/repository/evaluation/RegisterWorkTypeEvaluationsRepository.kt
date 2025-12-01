@@ -1,8 +1,8 @@
 package com.mx.liftechnology.data.repository.evaluation
 
-import com.mx.liftechnology.core.network.apiCall.evaluation.RegisterWorkTypeEvaluationsApiCall
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestWorkTypeEvaluations
+import com.mx.liftechnology.core.network.api.EvaluationApi
+import com.mx.liftechnology.core.network.api.RequestListGrades
+import com.mx.liftechnology.core.network.api.RequestWorkTypeEvaluations
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkException
@@ -22,7 +22,7 @@ fun interface RegisterWorkTypeEvaluationsRepository{
     ) : ModelResult<Boolean, NetworkModelError>
 }
 class RegisterWorkTypeEvaluationsRepositoryImpl (
-    val registerWorkTypeEvaluationsApiCall: RegisterWorkTypeEvaluationsApiCall
+    private val evaluationApi: EvaluationApi
 ): RegisterWorkTypeEvaluationsRepository{
     override suspend fun executeRegisterWorkTyperEvaluations(
         formativeFieldId : Int,
@@ -34,7 +34,7 @@ class RegisterWorkTypeEvaluationsRepositoryImpl (
         grades : List<RequestListGrades>
     ): ModelResult<Boolean, NetworkModelError> {
 
-        val request= RequestWorkTypeEvaluations(
+        val request = RequestWorkTypeEvaluations(
             formativeFieldId = formativeFieldId,
             partialId = partialId,
             workTypeId = workTypeId,
@@ -45,7 +45,7 @@ class RegisterWorkTypeEvaluationsRepositoryImpl (
         )
 
         return try {
-            val response = registerWorkTypeEvaluationsApiCall.callApi(request)
+            val response = evaluationApi.registerWorkTypeEvaluations(request)
             if(response.isSuccessful && response.body() != null){
                 SuccessResult(true)
             } else {

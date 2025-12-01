@@ -5,8 +5,8 @@
  */
 package com.mx.liftechnology.data.repository.schoolCycle.school
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RegisterSchoolCycleApiCall
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RequestRegisterSchoolCycle
+import com.mx.liftechnology.core.network.api.RequestRegisterSchoolCycle
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToRegisterCycleSchool
 import com.mx.liftechnology.data.model.schoolCycle.ModelRegisterSchoolCycleData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -50,7 +50,7 @@ fun interface RegisterCycleSchoolRepository{
  * @version 1.0.0
  */
 class RegisterCycleSchoolRepositoryImpl(
-    private val registerSchoolCycleApiCall: RegisterSchoolCycleApiCall
+    private val schoolCycleApi: SchoolCycleApi
 ) : RegisterCycleSchoolRepository {
 
     /**
@@ -73,12 +73,12 @@ class RegisterCycleSchoolRepositoryImpl(
             cycleLabel = "",
             grade = grade,
             nameGroup = nameGroup,
-            periodCatalogId =periodCatalogId,
+            periodCatalogId = periodCatalogId,
             isActive = true
         )
 
         return try {
-            val response = registerSchoolCycleApiCall.callApi(request)
+            val response = schoolCycleApi.registerSchoolCycle(request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToRegisterCycleSchool())

@@ -1,19 +1,35 @@
-package com.mx.liftechnology.core.network.apiCall.evaluation
+package com.mx.liftechnology.core.network.api
 
 import com.google.gson.annotations.SerializedName
 import com.mx.liftechnology.core.model.ResponseGeneric
 import com.mx.liftechnology.core.network.environment.Environment
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
-fun interface RegisterWorkTypeEvaluationsApiCall {
+/**
+ * Interfaz agrupada para todas las operaciones relacionadas con evaluaciones.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+interface EvaluationApi {
+    /**
+     * Registra evaluaciones de tipo de trabajo.
+     */
     @POST(Environment.END_POINT_REGISTER_STUDENT_WORK_BULK)
-    suspend fun callApi(
-        @Body request: RequestWorkTypeEvaluations
-    ): Response<ResponseGeneric<ResponseWorkTypeEvaluations>>
+    suspend fun registerWorkTypeEvaluations(@Body request: RequestWorkTypeEvaluations): Response<ResponseGeneric<ResponseWorkTypeEvaluations>>
+
+    /**
+     * Obtiene la lista de tipos de trabajo por estudiante.
+     */
+    @GET(Environment.END_POINT_GET_WORK_TYPE_STUDENT)
+    suspend fun getListWorkTypeStudent(@Query("formative_field_id") formativeFieldId: Int): Response<ResponseGeneric<ResponseGetListWorkStudents>>
 }
 
+// Data classes for requests and responses
 data class RequestWorkTypeEvaluations(
     @SerializedName("formative_field_id")
     val formativeFieldId: Int,
@@ -28,7 +44,7 @@ data class RequestWorkTypeEvaluations(
     @SerializedName("school_cycle_id")
     val schoolCycleId: Int?,
     @SerializedName("grades")
-    val grades : List<RequestListGrades>
+    val grades: List<RequestListGrades>
 )
 
 data class RequestListGrades(
@@ -83,7 +99,35 @@ data class ResponseCreatedWorks(
     @SerializedName("formative_field_name")
     val formativeFieldName: String?,
     @SerializedName("partial_name")
-    val partialName : String?,
+    val partialName: String?,
     @SerializedName("work_type_name")
-    val workTypeName : String?,
+    val workTypeName: String?,
 )
+
+data class ResponseGetListWorkStudents(
+    @SerializedName("formative_field_id")
+    val formativeFieldId: Int,
+    @SerializedName("name_formative_field")
+    val nameFormativeField: String,
+    @SerializedName("list_of_works")
+    val listWorks: List<ResponseListWork>,
+)
+
+data class ResponseListWork(
+    @SerializedName("id")
+    val workId: Int,
+    @SerializedName("name")
+    val workName: String,
+    @SerializedName("list_of_work_student")
+    val listWorks: List<ResponseListWorkStudent>,
+)
+
+data class ResponseListWorkStudent(
+    @SerializedName("id")
+    val workStudentId: Int,
+    @SerializedName("name")
+    val workStudentName: String,
+    @SerializedName("work_date")
+    val workStudentDate: String?,
+)
+

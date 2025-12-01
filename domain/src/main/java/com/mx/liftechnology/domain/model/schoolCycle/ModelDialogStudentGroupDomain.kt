@@ -6,7 +6,7 @@
 
 package com.mx.liftechnology.domain.model.schoolCycle
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseGroupTeacher
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
 
 /**
@@ -31,9 +31,9 @@ data class ModelDialogStudentGroupDomain (
 )
 
 /**
- * Extension property to convert a list of [ResponseGroupTeacher] to a list of [ModelDialogStudentGroupDomain].
+ * Extension property to convert a list of [SchoolCycleApi.ResponseGroupTeacher] to a list of [ModelDialogStudentGroupDomain].
  *
- * @receiver A nullable list of [ResponseGroupTeacher] objects.
+ * @receiver A nullable list of [SchoolCycleApi.ResponseGroupTeacher] objects.
  * @return A list of [ModelDialogStudentGroupDomain] objects.
  *
  * @author Pelkidev

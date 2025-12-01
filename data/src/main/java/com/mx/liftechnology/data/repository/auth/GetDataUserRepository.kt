@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.auth
 
-import com.mx.liftechnology.core.network.apiCall.auth.GetDataUserApiCall
+import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToGetUserData
 import com.mx.liftechnology.data.model.auth.ModelGetUserData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -15,12 +15,12 @@ fun interface GetDataUserRepository{
 }
 
 class GetDataUserRepositoryImpl(
-    private val getDataUserApiCall: GetDataUserApiCall
+    private val authApi: AuthApi
 ) : GetDataUserRepository {
 
     override suspend fun executeGetData(): ModelResult<ModelGetUserData, NetworkModelError> {
         return try {
-            val response = getDataUserApiCall.callApi()
+            val response = authApi.getUserData()
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToGetUserData())

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.student
 
-import com.mx.liftechnology.core.network.apiCall.student.EditStudentApiCall
-import com.mx.liftechnology.core.network.apiCall.student.RequestEditStudent
+import com.mx.liftechnology.core.network.api.RequestEditStudent
+import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.mapper.StudentDataToDomainMapper.mapperToModelStudent
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -23,12 +23,12 @@ fun interface EditStudentRepository{
 }
 
 class EditStudentRepositoryImpl (
-    private val editStudentApiCall: EditStudentApiCall
+    private val studentApi: StudentApi
 ) : EditStudentRepository {
     override suspend fun executeEditStudent(request: RequestEditStudent, studentId: Int)
     : ModelResult<ModelStudentData, NetworkModelError> {
         return try {
-            val response = editStudentApiCall.callApi(studentId, request )
+            val response = studentApi.editStudent(studentId, request)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelStudent())

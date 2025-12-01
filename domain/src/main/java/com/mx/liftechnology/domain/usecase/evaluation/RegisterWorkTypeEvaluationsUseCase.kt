@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.evaluation
 
-import com.mx.liftechnology.core.network.apiCall.evaluation.RequestListGrades
+import com.mx.liftechnology.core.network.api.RequestListGrades
 import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepository

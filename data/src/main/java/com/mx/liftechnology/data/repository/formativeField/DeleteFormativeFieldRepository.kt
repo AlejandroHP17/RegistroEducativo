@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.DeleteFormativeFieldApiCall
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
@@ -27,11 +27,11 @@ fun interface DeleteFormativeFieldRepository{
 
 
 class DeleteFormativeFieldRepositoryImpl (
-    private val deleteFormativeFieldApiCall: DeleteFormativeFieldApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ) : DeleteFormativeFieldRepository {
     override suspend fun executeFormativeFieldsStudent(fieldId: Int): ModelResult<String, NetworkModelError> {
         return try {
-            val response = deleteFormativeFieldApiCall.callApi(fieldId)
+            val response = formativeFieldApi.deleteFormativeField(fieldId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it)

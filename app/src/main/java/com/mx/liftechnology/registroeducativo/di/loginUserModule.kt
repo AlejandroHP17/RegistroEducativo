@@ -1,7 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.auth.GetDataUserApiCall
-import com.mx.liftechnology.core.network.apiCall.auth.LoginApiCall
+import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
 import com.mx.liftechnology.data.repository.auth.GetDataUserRepositoryImpl
 import com.mx.liftechnology.data.repository.auth.LoginRepository
@@ -26,14 +25,9 @@ import retrofit2.Retrofit
 val loginUserModule = module {
 
     /**
-     * Provides an instance of [LoginApiCall].
+     * Provides an instance of [AuthApi].
      */
-    factory { get<Retrofit>().create(LoginApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetDataUserApiCall].
-     */
-    factory { get<Retrofit>().create(GetDataUserApiCall::class.java) }
+    factory { get<Retrofit>().create(AuthApi::class.java) }
 
     /**
      * Provides a singleton instance of [LoginRepository].

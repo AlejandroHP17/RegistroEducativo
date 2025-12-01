@@ -1,7 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetListPartialApiCall
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RegisterListPartialApiCall
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
 import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepositoryImpl
 import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepository
@@ -28,14 +27,9 @@ import retrofit2.Retrofit
 val crudPartialModule = module {
 
     /**
-     * Provides an instance of [RegisterListPartialApiCall].
+     * Provides an instance of [SchoolCycleApi].
      */
-    factory { get<Retrofit>().create(RegisterListPartialApiCall::class.java) }
-
-    /**
-     * Provides an instance of [GetListPartialApiCall].
-     */
-    factory { get<Retrofit>().create(GetListPartialApiCall::class.java) }
+    factory { get<Retrofit>().create(SchoolCycleApi::class.java) }
 
     /**
      * Provides a singleton instance of [RegisterListPartialRepository].

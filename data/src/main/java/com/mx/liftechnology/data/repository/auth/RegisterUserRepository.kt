@@ -1,7 +1,7 @@
 package com.mx.liftechnology.data.repository.auth
 
-import com.mx.liftechnology.core.network.apiCall.auth.RegisterUserApiCall
-import com.mx.liftechnology.core.network.apiCall.auth.RequestRegisterUser
+import com.mx.liftechnology.core.network.api.AuthApi
+import com.mx.liftechnology.core.network.api.RequestRegisterUser
 import com.mx.liftechnology.data.mapper.AuthDataToDomainMapper.mapperToRegisterUser
 import com.mx.liftechnology.data.model.auth.ModelRegisterUserData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -42,7 +42,7 @@ fun interface RegisterUserRepository{
  * @version 1.0.0
  */
 class RegisterUserRepositoryImpl(
-    private val registerUserApiCall: RegisterUserApiCall
+    private val authApi: AuthApi
 ) : RegisterUserRepository {
 
     /**
@@ -64,7 +64,7 @@ class RegisterUserRepositoryImpl(
         )
 
         return try {
-            val response = registerUserApiCall.callApi(request)
+            val response = authApi.register(request)
             if (response.isSuccessful && response.body()?.data != null) SuccessResult(response.body()?.data!!.mapperToRegisterUser())
             else  ErrorResult(NetworkException.handleException(HttpException(response)))
         } catch (e: Exception) {

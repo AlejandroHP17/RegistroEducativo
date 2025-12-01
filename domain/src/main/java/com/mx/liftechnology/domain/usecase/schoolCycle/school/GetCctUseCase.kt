@@ -62,7 +62,7 @@ class GetCctUseCase(
      * Construye los modelos de datos para los spinners basándose en la información de la escuela.
      * Genera listas para el ciclo escolar, el grado y el grupo según el tipo de escuela.
      *
-     * @param data Los datos de [com.mx.liftechnology.core.network.apiCall.schoolCycle.ResponseCctSchool] recibidos del repositorio.
+     * @param data Los datos de [com.mx.liftechnology.core.network.api.SchoolCycleApi.ResponseCctSchool] recibidos del repositorio.
      * @return Un [com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain] que contiene las listas de strings para los spinners.
      */
     private fun buildLogicSpinner(data: ModelCCTData): ModelSpinnerSchoolDomain {

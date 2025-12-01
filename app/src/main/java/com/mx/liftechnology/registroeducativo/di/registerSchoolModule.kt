@@ -1,8 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetCctApiCall
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.RegisterSchoolCycleApiCall
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
 import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepositoryImpl
 import com.mx.liftechnology.data.repository.schoolCycle.school.RegisterCycleSchoolRepository
@@ -27,14 +26,9 @@ import retrofit2.Retrofit
 val registerSchoolModule = module {
 
     /**
-     * Provides an instance of [GetCctApiCall].
+     * Provides an instance of [SchoolCycleApi].
      */
-    factory { get<Retrofit>().create(GetCctApiCall::class.java) }
-
-    /**
-     * Provides an instance of [RegisterSchoolCycleApiCall].
-     */
-    factory { get<Retrofit>().create(RegisterSchoolCycleApiCall::class.java) }
+    factory { get<Retrofit>().create(SchoolCycleApi::class.java) }
 
     /**
      * Provides an instance of [GetCctUseCase].

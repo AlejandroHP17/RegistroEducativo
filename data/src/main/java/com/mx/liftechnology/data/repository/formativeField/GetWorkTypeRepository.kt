@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.GetListWorkTypeApiCall
+import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.mapper.FormativeFieldDataToDomainMapper.mapperToModelListWorkTypeData
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -41,7 +41,7 @@ fun interface GetWorkTypeRepository{
  * @version 1.0.0
  */
 class GetWorkTypeRepositoryImpl(
-    private val getListWorkTypeApiCall: GetListWorkTypeApiCall
+    private val formativeFieldApi: FormativeFieldApi
 ) : GetWorkTypeRepository {
 
     /**
@@ -51,7 +51,7 @@ class GetWorkTypeRepositoryImpl(
         teacherId: Int
     ): ModelResult<List<ModelWorkTypeData>, NetworkModelError> {
         return try {
-            val response = getListWorkTypeApiCall.callApi(teacherId)
+            val response = formativeFieldApi.getListWorkType(teacherId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListWorkTypeData())

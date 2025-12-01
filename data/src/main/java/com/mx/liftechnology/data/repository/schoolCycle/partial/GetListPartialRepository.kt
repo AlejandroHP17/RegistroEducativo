@@ -5,7 +5,7 @@
  */
 package com.mx.liftechnology.data.repository.schoolCycle.partial
 
-import com.mx.liftechnology.core.network.apiCall.schoolCycle.GetListPartialApiCall
+import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleDataToDomainMapper.mapperToModelListPartialsData
 import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
 import com.mx.liftechnology.data.util.ErrorResult
@@ -42,7 +42,7 @@ fun interface GetListPartialRepository{
  * @version 1.0.0
  */
 class GetListPartialRepositoryImpl(
-    private val getListPartialApiCall: GetListPartialApiCall
+    private val schoolCycleApi: SchoolCycleApi
 ) : GetListPartialRepository {
 
     /**
@@ -52,7 +52,7 @@ class GetListPartialRepositoryImpl(
         schoolCycleId : Int
     ): ModelResult<List<ModelListPartialData>, NetworkModelError> {
         return try {
-            val response = getListPartialApiCall.callApi(schoolCycleId)
+            val response = schoolCycleApi.getListPartial(schoolCycleId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it.mapperToModelListPartialsData())

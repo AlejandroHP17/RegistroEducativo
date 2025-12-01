@@ -6,7 +6,7 @@
 package com.mx.liftechnology.domain.model.student
 
 import android.os.Parcelable
-import com.mx.liftechnology.core.network.apiCall.student.ResponseGetStudent
+import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.model.student.ModelStudentData
 import kotlinx.parcelize.Parcelize
 
@@ -39,10 +39,10 @@ data class ModelStudentDomain(
 ) : Parcelable
 
 /**
- * Función de extensión para convertir una lista de [ResponseGetStudent] (modelo de red)
+ * Función de extensión para convertir una lista de [StudentApi.ResponseGetStudent] (modelo de red)
  * a una lista de [ModelStudentDomain] (modelo de dominio).
  *
- * @receiver Una lista nulable de objetos [ResponseGetStudent].
+ * @receiver Una lista nulable de objetos [StudentApi.ResponseGetStudent].
  * @return Una lista de objetos [ModelStudentDomain]. Si la lista de entrada es nula o contiene elementos nulos, estos son omitidos.
  * @author Pelkidev
  * @version 1.0.0

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.core.network.apiCall.formativeField.RequestEvaluations
-import com.mx.liftechnology.core.network.apiCall.formativeField.RequestWorkType
+import com.mx.liftechnology.core.network.api.RequestEvaluations
+import com.mx.liftechnology.core.network.api.RequestWorkType
 import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.formativeField.ModelFormativeFieldData

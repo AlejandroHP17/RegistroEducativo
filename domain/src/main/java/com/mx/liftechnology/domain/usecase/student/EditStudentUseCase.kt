@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.core.network.apiCall.student.RequestEditStudent
+import com.mx.liftechnology.core.network.api.RequestEditStudent
 import com.mx.liftechnology.core.preference.PreferenceKeys
 import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.data.model.student.ModelStudentData
@@ -43,7 +43,7 @@ class EditStudentUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val request = RequestEditStudent(
+        val request = com.mx.liftechnology.core.network.api.RequestEditStudent(
             name = name,
             lastName = lastName,
             secondLastName = secondLastName,

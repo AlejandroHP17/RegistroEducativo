@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.student
 
-import com.mx.liftechnology.core.network.apiCall.student.DeleteStudentApiCall
+import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
@@ -27,11 +27,11 @@ fun interface DeleteStudentRepository{
 
 
 class DeleteStudentRepositoryImpl (
-    private val deleteStudentApiCall: DeleteStudentApiCall
+    private val studentApi: StudentApi
 ) : DeleteStudentRepository {
     override suspend fun executeDeleteStudent(studentId: Int): ModelResult<String, NetworkModelError> {
         return try {
-            val response = deleteStudentApiCall.callApi(studentId)
+            val response = studentApi.deleteStudent(studentId)
             if (response.isSuccessful && response.body() != null) {
                 response.body()?.data?.let {
                     SuccessResult(it)
