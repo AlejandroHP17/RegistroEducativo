@@ -75,7 +75,6 @@ fun RegisterUserScreen(
     LaunchedEffect(uiState.controlToast) {
         if (uiState.controlToast.showToast) {
             sharedViewModel.modifyShowToast(uiState.controlToast)
-            // Oculta el toast en el ViewModel local después de propagarlo
             registerUserViewModel.modifyShowToast(false)
         }
     }

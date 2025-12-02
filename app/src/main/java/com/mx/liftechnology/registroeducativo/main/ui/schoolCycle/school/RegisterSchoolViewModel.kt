@@ -323,7 +323,7 @@ class RegisterSchoolViewModel(
                                 )
                             )
                         }
-                        // Emitir evento de navegación en lugar de depender del estado
+                        
                         _uiEvent.emit(UiEvent.Navigate(AppRoutes.Main.menuWithReload(true)))
                     }
 
@@ -350,7 +350,7 @@ class RegisterSchoolViewModel(
                     else -> {}
                 }
             } else {
-                // Si hay errores de validación, solo actualizar el estado
+                
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
@@ -407,7 +407,7 @@ class RegisterSchoolViewModel(
      * @version 1.0.0
      */
     fun modifyShowToast(show: Boolean) {
-        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        
         _uiState.update {
             it.copy(
                 controlToast = it.controlToast.copy(showToast = show)

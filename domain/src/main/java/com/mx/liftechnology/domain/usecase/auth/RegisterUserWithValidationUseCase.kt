@@ -1,6 +1,5 @@
 package com.mx.liftechnology.domain.usecase.auth
 
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 
 /**

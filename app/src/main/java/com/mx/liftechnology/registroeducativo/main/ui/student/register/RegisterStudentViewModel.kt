@@ -223,7 +223,7 @@ class RegisterStudentViewModel(
                                 typeToast = ModelStateTypeToastUI.SUCCESS
                             )
                         ) }
-                        // Emitir evento de navegación en lugar de depender del estado
+                        
                         _uiEvent.emit(UiEvent.NavigateBack)
                     }
 
@@ -255,7 +255,7 @@ class RegisterStudentViewModel(
                     else -> {}
                 }
             } else {
-                // Si hay errores de validación, solo actualizar el estado
+                
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
@@ -333,7 +333,7 @@ class RegisterStudentViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        
         _uiState.update {
             it.copy(
                 controlToast = it.controlToast.copy(showToast = show)

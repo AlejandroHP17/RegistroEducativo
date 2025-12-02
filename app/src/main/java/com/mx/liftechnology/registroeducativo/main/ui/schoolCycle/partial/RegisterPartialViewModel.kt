@@ -140,7 +140,7 @@ class RegisterPartialViewModel(
                                 typeToast = ModelStateTypeToastUI.SUCCESS
                             )
                         ) }
-                        // Emitir evento de navegación en lugar de depender del estado
+                        
                         _uiEvent.emit(UiEvent.NavigateBack)
                     }
                     is ErrorResult -> {
@@ -166,7 +166,7 @@ class RegisterPartialViewModel(
                     else -> {}
                 }
             } else {
-                // Si hay errores de validación, solo actualizar el estado
+                
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }

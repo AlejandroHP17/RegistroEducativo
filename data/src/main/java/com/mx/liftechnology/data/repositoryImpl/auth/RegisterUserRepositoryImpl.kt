@@ -2,7 +2,7 @@ package com.mx.liftechnology.data.repositoryImpl.auth
 
 import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.core.network.api.RequestRegisterUser
-import com.mx.liftechnology.data.mapper.AuthMapper.toData
+import com.mx.liftechnology.data.mapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.util.executeOrError

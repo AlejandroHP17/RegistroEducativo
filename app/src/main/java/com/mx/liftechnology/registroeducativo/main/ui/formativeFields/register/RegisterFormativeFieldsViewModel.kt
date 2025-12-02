@@ -184,7 +184,7 @@ class RegisterFormativeFieldsViewModel(
                     else -> {}
                 }
             } else {
-                // Si hay errores de validación, solo actualizar el estado
+                
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
@@ -229,7 +229,7 @@ class RegisterFormativeFieldsViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
+        
         _uiState.update {
             it.copy(
                 controlToast = it.controlToast.copy(showToast = show)

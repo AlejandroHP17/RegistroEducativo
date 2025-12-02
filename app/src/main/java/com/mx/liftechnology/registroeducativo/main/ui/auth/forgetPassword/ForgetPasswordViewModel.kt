@@ -7,7 +7,6 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCase
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiState
-import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,22 +16,22 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel for the "Forget Password" screen.
  *
- * @property dispatcherProvider The provider for Coroutine dispatchers.
  * @property validateFieldsUseCase The use case for validating input fields.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class ForgetPasswordViewModel(
-    private val dispatcherProvider: DispatcherProvider,
     private val validateFieldsUseCase: ValidateLoginFieldsUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
+
     /** The UI state for the screen. */
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     private val _emailState = MutableStateFlow(ModelStateOutFieldText())
+
     /** The state of the email input field. */
     val emailState: StateFlow<ModelStateOutFieldText> = _emailState.asStateFlow()
 
@@ -42,7 +41,6 @@ class ForgetPasswordViewModel(
      * @param email The new email value.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _emailState.update { email }
     }
 
@@ -51,7 +49,6 @@ class ForgetPasswordViewModel(
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
-            // Las validaciones son operaciones síncronas simples
             val emailState = validateFieldsUseCase.validateEmailCompose(_emailState.value.valueText)
             _emailState.update { emailState }
         }

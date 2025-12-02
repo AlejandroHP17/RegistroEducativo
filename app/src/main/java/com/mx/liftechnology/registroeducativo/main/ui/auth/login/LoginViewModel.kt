@@ -121,7 +121,7 @@ class LoginViewModel(
                                 )
                             )
                         }
-                        // Emitir evento de navegación en lugar de depender del estado
+                        
                         _uiEvent.emit(UiEvent.NavigateToHome)
                     }
 
@@ -147,7 +147,7 @@ class LoginViewModel(
                     else ->{}
                 }
             } else {
-                // Si hay errores de validación, solo actualizar el estado
+                
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }
@@ -159,7 +159,6 @@ class LoginViewModel(
      * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
-        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
         _uiState.update {
             it.copy(
                 controlToast = it.controlToast.copy(showToast = show)
