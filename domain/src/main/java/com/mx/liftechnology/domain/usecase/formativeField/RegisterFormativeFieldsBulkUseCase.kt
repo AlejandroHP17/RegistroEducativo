@@ -10,7 +10,7 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.toFormativeFieldDomain
-import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeFieldsBulkRepository
 
 /**
@@ -74,7 +74,7 @@ class RegisterFormativeFieldsBulkUseCase(
      * ```
      */
     suspend operator fun invoke(
-        updatedList: MutableList<ModelSpinnersWorkMethods>?,
+        updatedList: MutableList<SpinnersWorkMethodsDomain>?,
         name: String
     ): ModelResult<FormativeFieldDomain, ModelError> {
         val partialId = preference.getIdPartial()

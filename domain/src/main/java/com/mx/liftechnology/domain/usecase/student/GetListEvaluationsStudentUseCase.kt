@@ -5,7 +5,7 @@ import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
-import com.mx.liftechnology.domain.model.student.EvaluationsStudent
+import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
 
 /**
@@ -74,7 +74,7 @@ class GetListEvaluationsStudentUseCase(
         workDateFrom : String? = null,
         workDateTo : String? = null
 
-    ): ModelResult<List<EvaluationsStudent>, ModelError> {
+    ): ModelResult<List<EvaluationsStudentDomain>, ModelError> {
         val schoolCycleId = preference.getIdCycleSchool()
         val partialId = preference.getIdPartial()
 

@@ -5,7 +5,7 @@ import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
-import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeByFormativeField
+import com.mx.liftechnology.domain.model.evaluation.WorkTypeByFormativeFieldDomain
 import com.mx.liftechnology.domain.repository.evaluation.GetWorkTypeByFormativeFieldsRepository
 
 /**
@@ -28,7 +28,7 @@ class GetWorkTypeByFormativeFieldUseCase (
      * Obtiene el ID del campo formativo desde las preferencias y recupera los tipos de trabajo asociados.
      *
      * @return Un [com.mx.liftechnology.core.util.models.ModelResult] que contiene los tipos de trabajo asociados al campo formativo
-     * ([ModelWorkTypeByFormativeField]) en caso de éxito, o un estado de error específico en caso de fallo.
+     * ([WorkTypeByFormativeFieldDomain]) en caso de éxito, o un estado de error específico en caso de fallo.
      *
      * Posibles errores:
      * - [com.mx.liftechnology.core.util.models.LocalModelError.USER_INCOMPLETE_DATA] si no hay un campo formativo seleccionado en las preferencias
@@ -47,7 +47,7 @@ class GetWorkTypeByFormativeFieldUseCase (
      * }
      * ```
      */
-    suspend operator fun invoke(): ModelResult<ModelWorkTypeByFormativeField, ModelError> {
+    suspend operator fun invoke(): ModelResult<WorkTypeByFormativeFieldDomain, ModelError> {
         val formativeFieldId =
             preference.getIdFormativeField() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA

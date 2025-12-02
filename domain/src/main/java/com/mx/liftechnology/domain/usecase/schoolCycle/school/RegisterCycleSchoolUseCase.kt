@@ -13,7 +13,7 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.schoolCycle.ModelRegisterSchoolCycleData
+import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
 import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository
 
 /**
@@ -49,7 +49,7 @@ class RegisterCycleSchoolUseCase(
         cycle: Int,
         shiftName: String,
         labelCycleState : String
-    ): ModelResult<ModelRegisterSchoolCycleData, ModelError> {
+    ): ModelResult<RegisterSchoolCycleDomain, ModelError> {
         val teacherId = preference.getIdUser()
 
         if(schoolId < 1 || periodCatalogId < 1 || grade < 1

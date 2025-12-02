@@ -8,7 +8,7 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.ModelByFieldTypeStudentData
+import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
 import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
 
 /**
@@ -36,7 +36,7 @@ class GetListByFieldTypeStudentUseCase(
      * @param workName El nombre del trabajo para filtrar. Opcional.
      * @param workDate La fecha del trabajo para filtrar (formato de fecha). Opcional.
      * @return Un [ModelResult] que contiene los datos de estudiantes filtrados
-     * ([ModelByFieldTypeStudentData]) en caso de éxito, o un estado de error específico en caso de fallo.
+     * ([ByFieldTypeStudentDomain]) en caso de éxito, o un estado de error específico en caso de fallo.
      *
      * Posibles errores:
      * - [LocalModelError.USER_INCOMPLETE_DATA] si no hay un campo formativo seleccionado en las preferencias o si workTypeId es null
@@ -66,7 +66,7 @@ class GetListByFieldTypeStudentUseCase(
      * }
      * ```
      */
-    suspend operator fun invoke(workTypeId: Int?, workName: String?, workDate: String?): ModelResult<ModelByFieldTypeStudentData, ModelError> {
+    suspend operator fun invoke(workTypeId: Int?, workName: String?, workDate: String?): ModelResult<ByFieldTypeStudentDomain, ModelError> {
         val formativeFieldId = preference.getIdFormativeField() ?: return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )

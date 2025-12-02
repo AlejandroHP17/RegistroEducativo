@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.repository.formativeFields
 
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.formativeFields.ModelByFieldTypeStudentData
+import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
 
 fun interface GetListByFieldTypeStudentRepository {
     suspend fun getByFieldType(
@@ -10,5 +10,5 @@ fun interface GetListByFieldTypeStudentRepository {
         workTypeId : Int,
         workName : String?,
         workDate : String?
-    ): ModelResult<ModelByFieldTypeStudentData, NetworkModelError>
+    ): ModelResult<ByFieldTypeStudentDomain, NetworkModelError>
 }

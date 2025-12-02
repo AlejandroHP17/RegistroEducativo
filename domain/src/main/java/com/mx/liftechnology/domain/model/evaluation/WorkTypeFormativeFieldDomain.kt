@@ -1,18 +1,18 @@
 package com.mx.liftechnology.domain.model.evaluation
 
-data class ModelWorkTypeFormativeField(
+data class WorkTypeFormativeFieldDomain(
     val formativeFieldId: Int,
     val nameFormativeField: String,
-    val listWorks: List<ModelListWorkFormativeField>,
+    val listWorks: List<ListWorkFormativeFieldDomain>,
 )
 
-data class ModelListWorkFormativeField(
+data class ListWorkFormativeFieldDomain(
     val workId: Int,
     val workName: String,
-    val listWorks:  List<ModelListWorkStudentFormativeField>,
+    val listWorks:  List<ListWorkStudentFormativeFieldDomain>,
 )
 
-data class ModelListWorkStudentFormativeField(
+data class ListWorkStudentFormativeFieldDomain(
     val workStudentId: Int,
     val workStudentName: String,
     val workStudentDate: String?,

@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.repository.evaluation
 
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeFormativeField
+import com.mx.liftechnology.domain.model.evaluation.WorkTypeFormativeFieldDomain
 
 /**
  * Interfaz del repositorio para la obtención de la lista de tipos de evaluación.
@@ -18,5 +18,5 @@ fun interface GetListWorkTypeFormativeFieldRepository {
      * @param formativeFieldId El ID del campo formativo.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun getList(formativeFieldId:Int) : ModelResult<ModelWorkTypeFormativeField, NetworkModelError>
+    suspend fun getList(formativeFieldId:Int) : ModelResult<WorkTypeFormativeFieldDomain, NetworkModelError>
 }

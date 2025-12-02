@@ -5,6 +5,7 @@ package com.mx.liftechnology.domain.model.schoolCycle
  * @author Pelkidev
  * @version 1.0.0
  */
+
 /**
  * Modelo de datos para un ítem del menú principal.
  * Se utiliza para representar las opciones en las pantallas de menú, como el registro o el control.
@@ -15,7 +16,7 @@ package com.mx.liftechnology.domain.model.schoolCycle
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelPrincipalMenuDomain(
+data class PrincipalMenuDomain(
     val id: String,
     val image: Int?,
     val titleCard: String?

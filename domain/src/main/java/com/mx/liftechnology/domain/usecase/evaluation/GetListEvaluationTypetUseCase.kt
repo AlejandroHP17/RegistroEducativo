@@ -13,7 +13,7 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeFormativeField
+import com.mx.liftechnology.domain.model.evaluation.WorkTypeFormativeFieldDomain
 import com.mx.liftechnology.domain.repository.evaluation.GetListWorkTypeFormativeFieldRepository
 
 
@@ -35,7 +35,7 @@ class GetListWorkEvaluationFormativeFieldUseCase (
     /**
      * {@inheritDoc}
      */
-    suspend operator fun invoke(): ModelResult<ModelWorkTypeFormativeField, ModelError> {
+    suspend operator fun invoke(): ModelResult<WorkTypeFormativeFieldDomain, ModelError> {
         val formativeFieldId = preference.getIdFormativeField()?: return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )

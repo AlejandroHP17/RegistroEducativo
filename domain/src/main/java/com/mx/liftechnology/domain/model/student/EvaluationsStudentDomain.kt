@@ -28,7 +28,7 @@ package com.mx.liftechnology.domain.model.student
  * @author Pelkidev
  * @version 1.0.0
  */
-data class EvaluationsStudent(
+data class EvaluationsStudentDomain(
     val studentId: Int,
     val evaluationName: String,
     val grade: Double?,

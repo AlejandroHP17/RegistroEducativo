@@ -30,6 +30,5 @@ fun interface RegisterFormativeFieldsBulkRepository{
         code : String,
         workTypes : List<RequestWorkType>,
         evaluations :  List<RequestEvaluations>
-    )
-            : ModelResult<FormativeFieldData, NetworkModelError>
+    ): ModelResult<FormativeFieldData, NetworkModelError>
 }

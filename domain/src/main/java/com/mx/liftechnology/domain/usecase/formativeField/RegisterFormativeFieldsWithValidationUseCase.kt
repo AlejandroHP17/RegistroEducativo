@@ -3,7 +3,7 @@ package com.mx.liftechnology.domain.usecase.formativeField
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
-import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 
 /**
  * Caso de uso que combina la validación de campos de registro de materia formativa con la ejecución del registro.
@@ -22,7 +22,7 @@ class RegisterFormativeFieldsWithValidationUseCase(
 ) {
     data class ValidationResult(
         val validationResult: ModelValidationResult<FormativeFieldDomain>,
-        val updatedListAdapter: MutableList<ModelSpinnersWorkMethods>?
+        val updatedListAdapter: MutableList<SpinnersWorkMethodsDomain>?
     )
 
     /**
@@ -38,7 +38,7 @@ class RegisterFormativeFieldsWithValidationUseCase(
     suspend operator fun invoke(
         subject: String?,
         options: String?,
-        listAdapter: MutableList<ModelSpinnersWorkMethods>?
+        listAdapter: MutableList<SpinnersWorkMethodsDomain>?
     ): ValidationResult {
         // 1. Validar todos los campos
         val nameState = validateFieldsUseCase.validateNameCompose(subject)

@@ -19,7 +19,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelSpinnersWorkMethods(
+data class SpinnersWorkMethodsDomain(
     val position: Int,
     val workTypeId: Int?,
     val name: ModelStateOutFieldText,

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.school
 
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
-import com.mx.liftechnology.domain.model.schoolCycle.ModelRegisterSchoolCycleData
+import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
 
 /**
  * Caso de uso que combina la validación de campos de registro de escuela con la ejecución del registro.
@@ -45,7 +45,7 @@ class RegisterSchoolWithValidationUseCase(
         schoolId: Int,
         periodCatalogId: Int,
         shiftName: String
-    ): ModelValidationResult<ModelRegisterSchoolCycleData> {
+    ): ModelValidationResult<RegisterSchoolCycleDomain> {
         // 1. Validar todos los campos
         val cctState = validateFieldsUseCase.validateCctCompose(cct)
         val typeState = validateFieldsUseCase.validateTypeCompose(type)

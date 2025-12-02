@@ -8,7 +8,7 @@ package com.mx.liftechnology.data.repositoryImpl.schoolCycle.school
 import com.mx.liftechnology.core.network.api.RequestRegisterSchoolCycle
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
-import com.mx.liftechnology.domain.model.schoolCycle.ModelRegisterSchoolCycleData
+import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.util.executeOrError
@@ -38,7 +38,7 @@ class RegisterCycleSchoolRepositoryImpl(
         grade : String,
         nameGroup : String,
         periodCatalogId : Int
-    ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError> {
+    ): ModelResult<RegisterSchoolCycleDomain, NetworkModelError> {
         val request = RequestRegisterSchoolCycle(
             teacherId = teacherId,
             schoolId = schoolId,

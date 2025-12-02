@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
@@ -39,14 +39,14 @@ interface ValidateFieldsFormativeFieldsUseCase {
      * @param listJobs La lista de métodos de trabajo a validar.
      * @return Una lista mutable con los estados de validación actualizados, o nulo si la entrada es nula.
      */
-    fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>?
+    fun validateListJobsCompose(listJobs: MutableList<SpinnersWorkMethodsDomain>?): MutableList<SpinnersWorkMethodsDomain>?
 
     /**
      * Valida que la suma de los porcentajes de todos los métodos de trabajo sea igual a 100.
      * @param listJobs La lista de métodos de trabajo a validar.
      * @return Un [ModelStateOutFieldText] que indica si la suma de porcentajes es correcta.
      */
-    fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText
+    fun validPercentCompose(listJobs: MutableList<SpinnersWorkMethodsDomain>?): ModelStateOutFieldText
 }
 
 /**
@@ -87,7 +87,7 @@ class ValidateFieldsFormativeFieldsUseCaseImp : ValidateFieldsFormativeFieldsUse
     /**
      * {@inheritDoc}
      */
-    override fun validateListJobsCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): MutableList<ModelSpinnersWorkMethods>? {
+    override fun validateListJobsCompose(listJobs: MutableList<SpinnersWorkMethodsDomain>?): MutableList<SpinnersWorkMethodsDomain>? {
         return listJobs?.map { item ->
             val isNameInvalid = item.name.valueText.isNullOrEmpty()
             val isPercentInvalid = item.percent.valueText.isNullOrEmpty()
@@ -110,7 +110,7 @@ class ValidateFieldsFormativeFieldsUseCaseImp : ValidateFieldsFormativeFieldsUse
     /**
      * {@inheritDoc}
      */
-    override fun validPercentCompose(listJobs: MutableList<ModelSpinnersWorkMethods>?): ModelStateOutFieldText {
+    override fun validPercentCompose(listJobs: MutableList<SpinnersWorkMethodsDomain>?): ModelStateOutFieldText {
         return when {
             listJobs?.let { jobs ->
                 jobs.all { (it.percent.valueText.toIntOrNull() ?: 0) > 0 } 

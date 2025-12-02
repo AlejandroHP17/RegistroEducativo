@@ -12,7 +12,7 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.data.R
-import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
+import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuLocalRepository
 
 /**

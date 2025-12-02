@@ -20,7 +20,7 @@ package com.mx.liftechnology.domain.model.schoolCycle
  */
 data class DialogStudentGroupDomain (
     val selected : Boolean?,
-    val item : ModelSchoolCycleDomain?,
+    val item : SchoolCycleDomain?,
     val nameItem : String?,
     val listItemPartial : List<DialogGroupPartialDomain>?,
     val itemPartial: DialogGroupPartialDomain?,
@@ -28,15 +28,15 @@ data class DialogStudentGroupDomain (
 )
 
 /**
- * Propiedad de extensión para convertir una lista de [ModelSchoolCycleDomain] a una lista de [DialogStudentGroupDomain].
+ * Propiedad de extensión para convertir una lista de [SchoolCycleDomain] a una lista de [DialogStudentGroupDomain].
  *
- * @receiver Una lista de objetos [ModelSchoolCycleDomain].
+ * @receiver Una lista de objetos [SchoolCycleDomain].
  * @return Una lista de objetos [DialogStudentGroupDomain].
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ModelSchoolCycleDomain>.toDialogStudentGroupDomainList: List<DialogStudentGroupDomain>
+val List<SchoolCycleDomain>.toDialogStudentGroupDomainList: List<DialogStudentGroupDomain>
     get() = this.map { cycle ->
         DialogStudentGroupDomain(
             selected = false,

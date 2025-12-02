@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
-import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
+import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState

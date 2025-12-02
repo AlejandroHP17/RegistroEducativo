@@ -8,23 +8,23 @@ import com.mx.liftechnology.core.network.api.ResponseRegisterSchoolCycle
 import com.mx.liftechnology.domain.model.schoolCycle.CCTDomain
 import com.mx.liftechnology.domain.model.schoolCycle.CCTPeriodCatalogDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelRegisterSchoolCycleData
-import com.mx.liftechnology.domain.model.schoolCycle.ModelSchoolCycleDomain
+import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
+import com.mx.liftechnology.domain.model.schoolCycle.SchoolCycleDomain
 import kotlin.jvm.JvmName
 
 object SchoolCycleMapper {
 
     /**
-     * Convierte una lista de [ResponseGroupTeacher] a una lista de [ModelSchoolCycleDomain] con manejo seguro de nulos.
+     * Convierte una lista de [ResponseGroupTeacher] a una lista de [SchoolCycleDomain] con manejo seguro de nulos.
      *
      * @receiver Una lista de objetos de respuesta de la API para obtener ciclos escolares.
-     * @return Una lista de objetos [ModelSchoolCycleDomain] con los datos mapeados. Los elementos nulos son omitidos.
+     * @return Una lista de objetos [SchoolCycleDomain] con los datos mapeados. Los elementos nulos son omitidos.
      */
     @JvmName("toDataFromResponseGroupTeacherList")
-    fun List<ResponseGroupTeacher>?.toData(): List<ModelSchoolCycleDomain> {
+    fun List<ResponseGroupTeacher>?.toData(): List<SchoolCycleDomain> {
         return this?.mapNotNull { cycle ->
             cycle?.let {
-                ModelSchoolCycleDomain(
+                SchoolCycleDomain(
                     teacherId = it.teacherId,
                     schoolId = it.schoolId,
                     name = it.name,
@@ -105,14 +105,14 @@ object SchoolCycleMapper {
     }
 
     /**
-     * Convierte un [ResponseRegisterSchoolCycle] a [ModelRegisterSchoolCycleData] con manejo seguro de nulos.
+     * Convierte un [ResponseRegisterSchoolCycle] a [RegisterSchoolCycleDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para registrar ciclo escolar.
-     * @return Un objeto [ModelRegisterSchoolCycleData] con los datos mapeados, o null si el receiver es null.
+     * @return Un objeto [RegisterSchoolCycleDomain] con los datos mapeados, o null si el receiver es null.
      */
-    fun ResponseRegisterSchoolCycle?.toData(): ModelRegisterSchoolCycleData? {
+    fun ResponseRegisterSchoolCycle?.toData(): RegisterSchoolCycleDomain? {
         return this?.let {
-            ModelRegisterSchoolCycleData(
+            RegisterSchoolCycleDomain(
                 teacherId = teacherId,
                 schoolId = schoolId,
                 name = name,

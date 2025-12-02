@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.repository.schoolCycle.school
 
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.schoolCycle.ModelRegisterSchoolCycleData
+import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
 
 /**
  * Interfaz del repositorio para el registro de escuelas.
@@ -32,5 +32,5 @@ fun interface RegisterCycleSchoolRepository{
         grade : String,
         nameGroup : String,
         periodCatalogId : Int
-    ): ModelResult<ModelRegisterSchoolCycleData, NetworkModelError>
+    ): ModelResult<RegisterSchoolCycleDomain, NetworkModelError>
 }

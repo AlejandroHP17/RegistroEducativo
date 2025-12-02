@@ -2,7 +2,7 @@ package com.mx.liftechnology.data.repositoryImpl.student
 
 import com.mx.liftechnology.core.network.api.WorkTypeApi
 import com.mx.liftechnology.data.mapper.StudentMapper.toData
-import com.mx.liftechnology.domain.model.student.EvaluationsStudent
+import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.util.executeOrError
@@ -21,7 +21,7 @@ class GetListEvaluationsStudentRepositoryImpl(
         workDate: String?,
         workDateFrom : String?,
         workDateTo: String?
-    ): ModelResult<List <EvaluationsStudent>, NetworkModelError> {
+    ): ModelResult<List <EvaluationsStudentDomain>, NetworkModelError> {
         return workTypeApi.getListEvaluations(
             formativeFieldId = formativeFieldId,
             partialId = partialId,

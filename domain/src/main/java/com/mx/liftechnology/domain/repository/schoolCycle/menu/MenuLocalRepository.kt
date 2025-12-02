@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.repository.schoolCycle.menu
 
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
-import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
+import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 
 interface MenuLocalRepository {
 

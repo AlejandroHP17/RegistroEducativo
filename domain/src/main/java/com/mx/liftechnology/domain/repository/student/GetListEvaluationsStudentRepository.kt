@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.repository.student
 
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.student.EvaluationsStudent
+import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 
 fun interface GetListEvaluationsStudentRepository{
     suspend fun getListEvaluations(
@@ -14,5 +14,5 @@ fun interface GetListEvaluationsStudentRepository{
         workDate: String?,
         workDateFrom : String?,
         workDateTo: String?
-    ): ModelResult<List<EvaluationsStudent>, NetworkModelError>
+    ): ModelResult<List<EvaluationsStudentDomain>, NetworkModelError>
 }

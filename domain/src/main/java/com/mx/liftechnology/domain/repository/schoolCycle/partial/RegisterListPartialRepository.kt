@@ -2,8 +2,8 @@ package com.mx.liftechnology.domain.repository.schoolCycle.partial
 
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriod
 
 /**
  * Interfaz del repositorio para el registro de una lista de parciales.
@@ -21,7 +21,7 @@ fun interface RegisterListPartialRepository{
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend fun register(
-        adapterPeriods: List<ModelDatePeriod>,
+        adapterPeriods: List<DatePeriodDomain>,
         cycleSchoolId: Int
     ): ModelResult<List<ListPartialDomain?>, NetworkModelError>
 }

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.model.schoolCycle
 
-data class ModelSchoolCycleDomain(
+data class SchoolCycleDomain(
     val teacherId: Int,
     val schoolId: Int,
     val name: String,

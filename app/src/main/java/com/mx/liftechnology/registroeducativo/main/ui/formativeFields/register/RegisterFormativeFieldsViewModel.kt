@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
@@ -99,7 +99,7 @@ class RegisterFormativeFieldsViewModel(
     fun onOptionsChanged(options: String) {
         if (options.toIntOrNull() != null && options.toInt() > 0) {
             val list = MutableList(options.toInt()) { index ->
-                ModelSpinnersWorkMethods(
+                SpinnersWorkMethodsDomain(
                     position = index,
                     name = "".stringToModelStateOutFieldText(),
                     percent = "".stringToModelStateOutFieldText(),

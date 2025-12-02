@@ -1,17 +1,17 @@
 package com.mx.liftechnology.domain.model.formativeFields
 
-data class ModelWotyFofiDomain(
-    val formativeFields: List<ResponseFormativeFieldsDomain>,
+data class WotyFofiDomain(
+    val formativeFields: List<ListFormativeFieldsDomain>,
 )
 
-data class ResponseFormativeFieldsDomain(
+data class ListFormativeFieldsDomain(
     val formativeFieldId: Int,
     val formativeFieldName: String,
     val code: String,
-    val listWorkTypes: List<ResponseWorkTypesDomain>
+    val listWorkTypes: List<ListWorkTypesDomain>
 )
 
-data class ResponseWorkTypesDomain(
+data class ListWorkTypesDomain(
     val workTypeId: Int,
     val workTypeName: String,
     val evaluationWeight: String

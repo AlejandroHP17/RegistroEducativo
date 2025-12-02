@@ -4,7 +4,7 @@ import com.mx.liftechnology.core.network.api.ResponseEditStudent
 import com.mx.liftechnology.core.network.api.ResponseGetListEvaluationsStudent
 import com.mx.liftechnology.core.network.api.ResponseGetStudent
 import com.mx.liftechnology.core.network.api.ResponseRegisterStudent
-import com.mx.liftechnology.domain.model.student.EvaluationsStudent
+import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import kotlin.jvm.JvmName
 
@@ -76,16 +76,16 @@ object StudentMapper {
     }
 
     /**
-     * Convierte una lista de [ResponseGetListEvaluationsStudent] a una lista de [EvaluationsStudent] con manejo seguro de nulos.
+     * Convierte una lista de [ResponseGetListEvaluationsStudent] a una lista de [EvaluationsStudentDomain] con manejo seguro de nulos.
      *
      * @receiver Una lista de objetos de respuesta de la API para obtener evaluaciones de estudiantes.
-     * @return Una lista de objetos [EvaluationsStudent] con los datos mapeados. Los elementos nulos son omitidos.
+     * @return Una lista de objetos [EvaluationsStudentDomain] con los datos mapeados. Los elementos nulos son omitidos.
      */
     @JvmName("toDataFromResponseGetListEvaluationsStudentList")
-    fun List<ResponseGetListEvaluationsStudent>?.toData(): List<EvaluationsStudent> {
+    fun List<ResponseGetListEvaluationsStudent>?.toData(): List<EvaluationsStudentDomain> {
         return this?.mapNotNull { evaluation ->
             evaluation?.let {
-                EvaluationsStudent(
+                EvaluationsStudentDomain(
                     studentId = it.studentId,
                     evaluationName = it.evaluationName,
                     grade = it.grade,

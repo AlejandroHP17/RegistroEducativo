@@ -2,7 +2,7 @@ package com.mx.liftechnology.domain.repository.schoolCycle.menu
 
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.schoolCycle.ModelSchoolCycleDomain
+import com.mx.liftechnology.domain.model.schoolCycle.SchoolCycleDomain
 
 /**
  * Interfaz del repositorio para el menú principal.
@@ -20,5 +20,5 @@ fun interface MenuRepository{
      */
     suspend fun getCycleSchool(
         teacherId: Int
-    ): ModelResult<List<ModelSchoolCycleDomain>, NetworkModelError>
+    ): ModelResult<List<SchoolCycleDomain>, NetworkModelError>
 }

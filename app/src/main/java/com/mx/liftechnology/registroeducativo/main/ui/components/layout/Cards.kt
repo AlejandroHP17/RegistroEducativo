@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
-import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
+import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain

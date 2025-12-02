@@ -9,10 +9,10 @@ import com.mx.liftechnology.core.network.api.RequestPartials
 import com.mx.liftechnology.core.network.api.RequestRegisterPartial
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriod
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
 import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
 
@@ -33,12 +33,12 @@ class RegisterListPartialRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun register(
-        adapterPeriods: List<ModelDatePeriod>,
+        adapterPeriods: List<DatePeriodDomain>,
         cycleSchoolId: Int
     ): ModelResult<List<ListPartialDomain?>, NetworkModelError> {
         val listAdapter: MutableList<RequestPartials> = mutableListOf()
         adapterPeriods.forEachIndexed { index,  data ->
-            val part = data.date.split("/")
+            val part = data.date.valueText.split("/")
             listAdapter.add(
                 RequestPartials(
                     cycleSchoolId = cycleSchoolId,

@@ -19,9 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
+import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
-import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
@@ -190,7 +190,7 @@ fun DialogPartialList(
 @Composable
 fun EvaluationPercentList(
     listWorkMethods :List<WorkTypeDomain?>,
-    items: List<ModelSpinnersWorkMethods>,
+    items: List<SpinnersWorkMethodsDomain>,
     onNameChange:(Pair<WorkTypeDomain?, Int>) -> Unit,
     onPercentChange:(Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
