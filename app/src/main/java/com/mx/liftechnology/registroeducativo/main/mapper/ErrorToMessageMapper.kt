@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.data.util.UserError
+import com.mx.liftechnology.core.util.models.UserError
 import com.mx.liftechnology.registroeducativo.R
 
 /**
@@ -29,7 +29,7 @@ object ErrorToMessageMapper {
             UserError.NO_INTERNET -> R.string.toast_error_no_internet
             UserError.UNAUTHORIZED -> getUnauthorizedError(context)
             UserError.USER_NOT_ACTIVE -> R.string.toast_error_inactive_user
-            UserError.WITHOUT_ACCESS -> R.string.toast_error_register_partials
+            UserError.WITHOUT_ACCESS -> getWithoutAccessError(context)
             UserError.LOGS -> null // No se muestra al usuario
         }
     }
@@ -71,6 +71,16 @@ object ErrorToMessageMapper {
         return when (context) {
             ErrorContext.LOGIN -> R.string.toast_error_login_user
             else -> R.string.toast_error_generic
+        }
+    }
+
+    /**
+     * Obtiene el mensaje de error de autorización según el contexto.
+     */
+    private fun getWithoutAccessError(context: ErrorContext): Int {
+        return when (context) {
+            ErrorContext.LOGIN -> R.string.toast_error_coordinate_mexico
+            else -> R.string.toast_error_register_partials
         }
     }
 

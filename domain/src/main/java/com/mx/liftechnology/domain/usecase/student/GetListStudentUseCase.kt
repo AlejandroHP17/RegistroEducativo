@@ -2,14 +2,14 @@ package com.mx.liftechnology.domain.usecase.student
 
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.student.GetStudentRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.student.toStudentDomainList
+import com.mx.liftechnology.domain.repository.student.GetStudentRepository
 
 /**
  * Caso de uso para obtener la lista de estudiantes.

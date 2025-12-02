@@ -2,11 +2,10 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.data.util.UserError
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsWithValidationUseCase
@@ -48,7 +47,6 @@ class RegisterFormativeFieldsViewModel(
      * @param subject The new subject name.
      */
     fun onSubjectChanged(subject: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _uiState.update { it.copy(subject = subject) }
     }
 
@@ -57,8 +55,7 @@ class RegisterFormativeFieldsViewModel(
      *
      * @param value A pair containing the new workType type and the index of the item that changed.
      */
-    fun onNameChange(value: Pair<ModelWorkTypeData?, Int>) {
-        // Actualizaciones de estado simples no necesitan corrutinas
+    fun onNameChange(value: Pair<WorkTypeDomain?, Int>) {
         _uiState.update {
             it.copy(
                 listAdapter = it.listAdapter?.map { subject ->
@@ -81,7 +78,6 @@ class RegisterFormativeFieldsViewModel(
      * @param value A pair containing the new percentage and the index of the item that changed.
      */
     fun onPercentChange(value: Pair<ModelStateOutFieldText, Int>) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _uiState.update {
             it.copy(
                 listAdapter = it.listAdapter?.map { subject ->
@@ -101,7 +97,6 @@ class RegisterFormativeFieldsViewModel(
      * @param options The new number of options.
      */
     fun onOptionsChanged(options: String) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         if (options.toIntOrNull() != null && options.toInt() > 0) {
             val list = MutableList(options.toInt()) { index ->
                 ModelSpinnersWorkMethods(
@@ -216,7 +211,7 @@ class RegisterFormativeFieldsViewModel(
                     _uiState.update {
                         it.copy(
                             listWorkMethods = listOf(
-                                ModelWorkTypeData(
+                                WorkTypeDomain(
                                     workTypeId = -1,
                                     name = "Nuevo",
                                 ),

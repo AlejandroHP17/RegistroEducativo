@@ -1,8 +1,8 @@
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.data.repository.student.DeleteStudentRepository
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.domain.repository.student.DeleteStudentRepository
 
 /**
  * Caso de uso para eliminar un estudiante del sistema.
@@ -37,7 +37,7 @@ class DeleteStudentUseCase(
      * }
      * ```
      */
-    suspend operator fun invoke (studentId: Int): ModelResult<String, ModelError>{
+    suspend operator fun invoke (studentId: Int): ModelResult<String, ModelError> {
         return deleteStudentRepository.delete(studentId)
     }
 }

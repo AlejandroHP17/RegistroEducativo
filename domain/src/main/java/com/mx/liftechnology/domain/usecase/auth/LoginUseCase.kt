@@ -4,13 +4,13 @@ import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.device.DeviceIdHelper
 import com.mx.liftechnology.core.util.location.LocationHelper
 import com.mx.liftechnology.core.util.location.LocationResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.auth.UserDomain
-import com.mx.liftechnology.data.repository.auth.LoginRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.domain.repository.auth.LoginRepository
 
 /**
  * Caso de uso para gestionar el inicio de sesión de un usuario.
@@ -58,7 +58,7 @@ class LoginUseCase(
             }
             is LocationResult.Error -> {
                 // Si no se puede obtener la ubicación, usar valores por defecto
-                0.0 to 0.0
+                19.4596 to -99.1112
             }
         }
 

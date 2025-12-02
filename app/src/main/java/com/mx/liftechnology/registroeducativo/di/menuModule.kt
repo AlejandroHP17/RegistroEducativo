@@ -1,9 +1,9 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuLocalRepository
-import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
-import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.schoolCycle.menu.MenuLocalRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.schoolCycle.menu.MenuRepositoryImpl
+import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlRegisterUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetGroupMenuUseCase
@@ -31,9 +31,9 @@ val menuModule = module {
     factory { get<Retrofit>().create(SchoolCycleApi::class.java) }
 
     /**
-     * Provides a singleton instance of [MenuLocalRepository].
+     * Provides a singleton instance of [MenuLocalRepositoryImpl].
      */
-    single { MenuLocalRepository(androidContext()) }
+    single { MenuLocalRepositoryImpl(androidContext()) }
 
     /**
      * Provides a singleton instance of [MenuRepository].

@@ -39,8 +39,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
+import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
@@ -56,8 +56,6 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWarning
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
 import java.time.LocalDate
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextDescription
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextFieldEditable
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldNumeric
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
@@ -101,7 +99,7 @@ fun CustomCardView() {
 
 
         GridItem(
-            item = ModelPrincipalMenuData(
+            item = PrincipalMenuDomain(
                 id = "1",
                 image = com.mx.liftechnology.data.R.drawable.ic_students,
                 titleCard = "texto"
@@ -117,7 +115,7 @@ fun CustomCardView() {
 
         EvaluationPercentItem(
             listWorkMethods = listOf(
-                ModelWorkTypeData(
+                WorkTypeDomain(
                     workTypeId = 1,
                     name = "hola"
                 )
@@ -392,8 +390,8 @@ fun ComplexCard(
  */
 @Composable
 fun GridItem(
-    item: ModelPrincipalMenuData,
-    onItemClick: (ModelPrincipalMenuData) -> Unit,
+    item: PrincipalMenuDomain,
+    onItemClick: (PrincipalMenuDomain) -> Unit,
 ) { 
     Card(
         modifier = Modifier
@@ -465,10 +463,10 @@ fun DialogGroupItem(
  */
 @Composable
 fun EvaluationPercentItem(
-    listWorkMethods: List<ModelWorkTypeData?>,
+    listWorkMethods: List<WorkTypeDomain?>,
     name: ModelStateOutFieldText,
     percent: ModelStateOutFieldText,
-    onNameChange: (ModelWorkTypeData?) -> Unit,
+    onNameChange: (WorkTypeDomain?) -> Unit,
     onPercentChange: (ModelStateOutFieldText) -> Unit,
 ) {
     Row(

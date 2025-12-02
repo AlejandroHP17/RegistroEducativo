@@ -4,20 +4,20 @@ import com.mx.liftechnology.core.network.api.ResponseEditStudent
 import com.mx.liftechnology.core.network.api.ResponseGetListEvaluationsStudent
 import com.mx.liftechnology.core.network.api.ResponseGetStudent
 import com.mx.liftechnology.core.network.api.ResponseRegisterStudent
-import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
-import com.mx.liftechnology.data.model.student.StudentData
+import com.mx.liftechnology.domain.model.student.EvaluationsStudent
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import kotlin.jvm.JvmName
 
 object StudentMapper {
     /**
-     * Convierte un [ResponseEditStudent] a [StudentData] con manejo seguro de nulos.
+     * Convierte un [ResponseEditStudent] a [StudentDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para editar estudiante.
-     * @return Un objeto [StudentData] con los datos mapeados, o null si el receiver es null.
+     * @return Un objeto [StudentDomain] con los datos mapeados, o null si el receiver es null.
      */
-    fun ResponseEditStudent?.toData(): StudentData? {
+    fun ResponseEditStudent?.toData(): StudentDomain? {
         return this?.let {
-            StudentData(
+            StudentDomain(
                 curp = curp,
                 name = name,
                 lastName = lastName,
@@ -25,23 +25,22 @@ object StudentMapper {
                 birthday = birthday,
                 phoneNumber = phoneNumber,
                 userId = studentId,
-                studentId = studentId,
-                isActive = isActive
+                studentId = studentId
             )
         }
     }
 
     /**
-     * Convierte una lista de [ResponseGetStudent] a una lista de [StudentData] con manejo seguro de nulos.
+     * Convierte una lista de [ResponseGetStudent] a una lista de [StudentDomain] con manejo seguro de nulos.
      *
      * @receiver Una lista de objetos de respuesta de la API para obtener estudiantes.
-     * @return Una lista de objetos [StudentData] con los datos mapeados. Los elementos nulos son omitidos.
+     * @return Una lista de objetos [StudentDomain] con los datos mapeados. Los elementos nulos son omitidos.
      */
     @JvmName("toDataFromResponseGetStudentList")
-    fun List<ResponseGetStudent>?.toData(): List<StudentData> {
+    fun List<ResponseGetStudent>?.toData(): List<StudentDomain> {
         return this?.mapNotNull { student ->
             student?.let {
-                StudentData(
+                StudentDomain(
                     curp = it.curp,
                     name = it.name,
                     lastName = it.lastName,
@@ -49,22 +48,21 @@ object StudentMapper {
                     birthday = it.birthday,
                     phoneNumber = it.phoneNumber,
                     userId = it.userId,
-                    studentId = it.studentId,
-                    isActive = it.isActive
+                    studentId = it.studentId
                 )
             }
         } ?: emptyList()
     }
 
     /**
-     * Convierte un [ResponseRegisterStudent] a [StudentData] con manejo seguro de nulos.
+     * Convierte un [ResponseRegisterStudent] a [StudentDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para registrar estudiante.
-     * @return Un objeto [StudentData] con los datos mapeados, o null si el receiver es null.
+     * @return Un objeto [StudentDomain] con los datos mapeados, o null si el receiver es null.
      */
-    fun ResponseRegisterStudent?.toData(): StudentData? {
+    fun ResponseRegisterStudent?.toData(): StudentDomain? {
         return this?.let {
-            StudentData(
+            StudentDomain(
                 curp = curp,
                 name = name,
                 lastName = lastName,
@@ -72,23 +70,22 @@ object StudentMapper {
                 birthday = birthday,
                 phoneNumber = phoneNumber,
                 userId = studentId,
-                studentId = studentId,
-                isActive = isActive
+                studentId = studentId
             )
         }
     }
 
     /**
-     * Convierte una lista de [ResponseGetListEvaluationsStudent] a una lista de [ModelEvaluationsStudent] con manejo seguro de nulos.
+     * Convierte una lista de [ResponseGetListEvaluationsStudent] a una lista de [EvaluationsStudent] con manejo seguro de nulos.
      *
      * @receiver Una lista de objetos de respuesta de la API para obtener evaluaciones de estudiantes.
-     * @return Una lista de objetos [ModelEvaluationsStudent] con los datos mapeados. Los elementos nulos son omitidos.
+     * @return Una lista de objetos [EvaluationsStudent] con los datos mapeados. Los elementos nulos son omitidos.
      */
     @JvmName("toDataFromResponseGetListEvaluationsStudentList")
-    fun List<ResponseGetListEvaluationsStudent>?.toData(): List<ModelEvaluationsStudent> {
+    fun List<ResponseGetListEvaluationsStudent>?.toData(): List<EvaluationsStudent> {
         return this?.mapNotNull { evaluation ->
             evaluation?.let {
-                ModelEvaluationsStudent(
+                EvaluationsStudent(
                     studentId = it.studentId,
                     evaluationName = it.evaluationName,
                     grade = it.grade,

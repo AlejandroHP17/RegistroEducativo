@@ -2,10 +2,10 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
  */
 class ListFormativeFieldsViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val getListSubjectUseCase: GetListSubjectUseCase,
+    private val getListFormativeFieldUseCase: GetListFormativeFieldUseCase,
     private val deleteFormativeFieldsUseCase: DeleteFormativeFieldsUseCase
 ) : ViewModel() {
 
@@ -48,7 +48,7 @@ class ListFormativeFieldsViewModel(
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
-                getListSubjectUseCase.invoke()
+                getListFormativeFieldUseCase.invoke()
             }
 
             when(result) {

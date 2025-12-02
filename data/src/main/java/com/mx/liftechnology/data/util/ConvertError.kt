@@ -5,8 +5,13 @@
  */
 package com.mx.liftechnology.data.util
 
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.UserError
+
 /**
- * Función de extensión que convierte un [ModelError] (de la capa de datos) a un [UserError] (para la UI).
+ * Función de extensión que convierte un [com.mx.liftechnology.core.util.models.ModelError] (de la capa de datos) a un [com.mx.liftechnology.core.util.models.UserError] (para la UI).
  *
  * **Propósito:**
  * Esta función actúa como un puente entre la capa de datos y la capa de presentación,
@@ -35,10 +40,10 @@ package com.mx.liftechnology.data.util
  * - Otros errores → `LOGS` (no se muestran al usuario)
  *
  * @receiver El error de la capa de datos a convertir.
- * @return Un [UserError] que indica cómo debe mostrarse el error al usuario.
+ * @return Un [com.mx.liftechnology.core.util.models.UserError] que indica cómo debe mostrarse el error al usuario.
  *
- * @see ModelError Para ver los tipos de errores disponibles.
- * @see UserError Para ver los tipos de errores de UI disponibles.
+ * @see com.mx.liftechnology.core.util.models.ModelError Para ver los tipos de errores disponibles.
+ * @see com.mx.liftechnology.core.util.models.UserError Para ver los tipos de errores de UI disponibles.
  * @see com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper Para un mapeo más completo.
  *
  * @author Pelkidev

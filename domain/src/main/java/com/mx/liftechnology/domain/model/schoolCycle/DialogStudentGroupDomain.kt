@@ -6,9 +6,6 @@
 
 package com.mx.liftechnology.domain.model.schoolCycle
 
-import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
-
 /**
  * Modelo de datos que representa un grupo de estudiantes en un diálogo de selección.
  *
@@ -23,7 +20,7 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
  */
 data class DialogStudentGroupDomain (
     val selected : Boolean?,
-    val item : ModelSchoolCycleData?,
+    val item : ModelSchoolCycleDomain?,
     val nameItem : String?,
     val listItemPartial : List<DialogGroupPartialDomain>?,
     val itemPartial: DialogGroupPartialDomain?,
@@ -31,15 +28,15 @@ data class DialogStudentGroupDomain (
 )
 
 /**
- * Propiedad de extensión para convertir una lista de [ModelSchoolCycleData] a una lista de [DialogStudentGroupDomain].
+ * Propiedad de extensión para convertir una lista de [ModelSchoolCycleDomain] a una lista de [DialogStudentGroupDomain].
  *
- * @receiver Una lista de objetos [ModelSchoolCycleData].
+ * @receiver Una lista de objetos [ModelSchoolCycleDomain].
  * @return Una lista de objetos [DialogStudentGroupDomain].
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ModelSchoolCycleData>.toDialogStudentGroupDomainList: List<DialogStudentGroupDomain>
+val List<ModelSchoolCycleDomain>.toDialogStudentGroupDomainList: List<DialogStudentGroupDomain>
     get() = this.map { cycle ->
         DialogStudentGroupDomain(
             selected = false,

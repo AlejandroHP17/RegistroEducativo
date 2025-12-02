@@ -18,7 +18,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
@@ -197,7 +197,7 @@ private fun BodyRegisterSubject(
 @Composable
 private fun ColumnRegisterSubject(
     uiState: RegisterSubjectUiState,
-    onNameChange: (Pair<ModelWorkTypeData?, Int>) -> Unit,
+    onNameChange: (Pair<WorkTypeDomain?, Int>) -> Unit,
     onPercentChange: (Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
     EvaluationPercentList(

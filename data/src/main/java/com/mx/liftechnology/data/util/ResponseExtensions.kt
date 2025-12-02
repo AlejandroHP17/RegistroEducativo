@@ -14,6 +14,10 @@
 package com.mx.liftechnology.data.util
 
 import com.mx.liftechnology.core.model.ResponseGeneric
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.SuccessResult
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -54,7 +58,7 @@ import retrofit2.Response
  *
  * @param mapper Función que transforma el tipo de datos de la respuesta (`T`) al tipo de dominio (`R`).
  *               Puede retornar `null` si los datos no son válidos, lo que resultará en un error `EMPTY`.
- * @return Un [ModelResult] que contiene el resultado mapeado en caso de éxito, o un error en caso de fallo.
+ * @return Un [com.mx.liftechnology.core.util.models.ModelResult] que contiene el resultado mapeado en caso de éxito, o un error en caso de fallo.
  *
  * @see NetworkException Para ver cómo se manejan las excepciones.
  * @see executeOrErrorDirect Para respuestas sin wrapper genérico.

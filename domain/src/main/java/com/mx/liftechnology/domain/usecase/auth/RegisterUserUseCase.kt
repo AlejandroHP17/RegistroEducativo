@@ -1,11 +1,12 @@
 package com.mx.liftechnology.domain.usecase.auth
 
-import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
+import com.mx.liftechnology.domain.repository.auth.RegisterUserRepository
+
 
 /**
  * Caso de uso para gestionar el registro de un nuevo usuario.

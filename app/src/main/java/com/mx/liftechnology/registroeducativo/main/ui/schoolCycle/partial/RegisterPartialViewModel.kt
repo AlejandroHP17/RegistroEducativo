@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterPartialWithValidationUseCase
@@ -177,7 +177,6 @@ class RegisterPartialViewModel(
      */
     fun getListPartialCompose(){
         viewModelScope.launch {
-            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
                 getListPartialUseCase.invoke()
             }
@@ -212,7 +211,6 @@ class RegisterPartialViewModel(
      * @param show True to show the toast, false to hide it.
      */
     fun modifyShowToast(show: Boolean) {
-        // Las actualizaciones de estado ya están en el hilo principal, no necesitan corrutina
         _uiState.update {
             it.copy(
                 controlToast = it.controlToast.copy(showToast = show)

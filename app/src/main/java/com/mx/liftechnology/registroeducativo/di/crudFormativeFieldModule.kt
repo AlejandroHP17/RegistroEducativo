@@ -2,19 +2,19 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepository
-import com.mx.liftechnology.data.repository.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepository
-import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.GetListFormativeFieldRepository
-import com.mx.liftechnology.data.repository.formativeField.GetListFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
-import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepository
-import com.mx.liftechnology.data.repository.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.formativeField.DeleteFormativeFieldRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListFormativeFieldRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.formativeField.GetWorkTypeRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
+import com.mx.liftechnology.domain.repository.evaluation.GetListWorkTypeFormativeFieldRepository
+import com.mx.liftechnology.domain.repository.formativeFields.DeleteFormativeFieldRepository
+import com.mx.liftechnology.domain.repository.formativeFields.GetListFormativeFieldRepository
+import com.mx.liftechnology.domain.repository.formativeFields.GetWorkTypeRepository
+import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeFieldsBulkRepository
 import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWorkTypeUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.RegisterFormativeFieldsBulkUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.ValidateFieldsFormativeFieldsUseCase
@@ -90,9 +90,9 @@ val crudFormativeFieldModule = module {
     singleOf(::RegisterFormativeFieldsBulkUseCase)
 
     /**
-     * Provides a singleton instance of [GetListSubjectUseCase].
+     * Provides a singleton instance of [GetListFormativeFieldUseCase].
      */
-    singleOf(::GetListSubjectUseCase)
+    singleOf(::GetListFormativeFieldUseCase)
 
     /**
      * Provides a singleton instance of [GetListWorkTypeUseCase].

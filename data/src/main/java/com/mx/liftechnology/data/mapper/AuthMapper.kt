@@ -3,23 +3,23 @@ package com.mx.liftechnology.data.mapper
 import com.mx.liftechnology.core.network.api.ResponseDataUser
 import com.mx.liftechnology.core.network.api.ResponseLogin
 import com.mx.liftechnology.core.network.api.ResponseRegisterUser
-import com.mx.liftechnology.data.model.auth.ModelGetUserData
-import com.mx.liftechnology.data.model.auth.LoginData
-import com.mx.liftechnology.data.model.auth.ModelRegisterUserData
+import com.mx.liftechnology.domain.model.auth.LoginDomain
+import com.mx.liftechnology.domain.model.auth.RegisterUserDomain
+import com.mx.liftechnology.domain.model.auth.UserDomain
 
 object AuthMapper {
     /**
-     * Convierte un [ResponseDataUser] a [ModelGetUserData] con manejo seguro de nulos.
+     * Convierte un [ResponseDataUser] a [UserDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para obtener datos de usuario.
-     * @return Un objeto [ModelGetUserData] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
+     * @return Un objeto [UserDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
      */
-    fun ResponseDataUser?.toData(): ModelGetUserData? {
+    fun ResponseDataUser?.toData(): UserDomain? {
         return this?.let {
             val emailValue = email
             val userIdValue = userId
             if (emailValue != null && userIdValue != null) {
-                ModelGetUserData(
+                UserDomain(
                     email = emailValue,
                     name = name,
                     lastName = lastName,
@@ -35,17 +35,17 @@ object AuthMapper {
     }
 
     /**
-     * Convierte un [ResponseLogin] a [LoginData] con manejo seguro de nulos.
+     * Convierte un [ResponseLogin] a [LoginDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para login.
-     * @return Un objeto [LoginData] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
+     * @return Un objeto [LoginDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
      */
-    fun ResponseLogin?.toData(): LoginData? {
+    fun ResponseLogin?.toData(): LoginDomain? {
         return this?.let {
             val accessToken = accessToken
             val refreshToken = refreshToken
             if (accessToken != null && refreshToken != null) {
-                LoginData(
+                LoginDomain(
                     accessToken = accessToken,
                     refreshToken = refreshToken,
                     tokenType = tokenType
@@ -62,13 +62,13 @@ object AuthMapper {
      * @receiver El objeto de respuesta de la API para registrar usuario.
      * @return Un objeto [ModelRegisterUserData] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
      */
-    fun ResponseRegisterUser?.toData(): ModelRegisterUserData? {
+    fun ResponseRegisterUser?.toData(): RegisterUserDomain? {
         return this?.let {
             val emailValue = email
             val userIdValue = id
             val accessLevelValue = accessLevel
             if (emailValue != null && userIdValue != null && accessLevelValue != null) {
-                ModelRegisterUserData(
+                RegisterUserDomain(
                     email = emailValue,
                     firstName = firstName,
                     lastName = lastName,

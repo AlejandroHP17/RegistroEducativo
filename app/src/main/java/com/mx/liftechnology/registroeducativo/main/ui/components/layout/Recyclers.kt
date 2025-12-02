@@ -19,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
@@ -40,22 +40,22 @@ import java.time.LocalDate
 @Composable
 fun MyGridScreenPreview() {
     val items = listOf(
-        ModelPrincipalMenuData(
+        PrincipalMenuDomain(
             id = "hola",
             image = R.drawable.ic_launcher_foreground,
             titleCard = "text"
         ),
-        ModelPrincipalMenuData(
+        PrincipalMenuDomain(
             id = "hola",
             image = R.drawable.ic_launcher_foreground,
             titleCard = "text"
         ),
-        ModelPrincipalMenuData(
+        PrincipalMenuDomain(
             id = "hola",
             image = R.drawable.ic_launcher_foreground,
             titleCard = "text"
         ),
-        ModelPrincipalMenuData(
+        PrincipalMenuDomain(
             id = "hola",
             image = R.drawable.ic_launcher_foreground,
             titleCard = "text"
@@ -99,9 +99,9 @@ fun MyGridScreenPreview() {
  */
 @Composable
 fun MyGridScreen(
-    items: List<ModelPrincipalMenuData>,
+    items: List<PrincipalMenuDomain>,
     height: Dp,
-    onItemClick: (ModelPrincipalMenuData) -> Unit,
+    onItemClick: (PrincipalMenuDomain) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -189,9 +189,9 @@ fun DialogPartialList(
  */
 @Composable
 fun EvaluationPercentList(
-    listWorkMethods :List<ModelWorkTypeData?>,
+    listWorkMethods :List<WorkTypeDomain?>,
     items: List<ModelSpinnersWorkMethods>,
-    onNameChange:(Pair<ModelWorkTypeData?, Int>) -> Unit,
+    onNameChange:(Pair<WorkTypeDomain?, Int>) -> Unit,
     onPercentChange:(Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
     LazyColumn {

@@ -6,9 +6,10 @@
 package com.mx.liftechnology.data.util
 
 import com.mx.liftechnology.core.util.extension.logInfo
+import com.mx.liftechnology.core.util.models.NetworkModelError
 
 /**
- * Objeto que gestiona las excepciones y las convierte en [NetworkModelError].
+ * Objeto que gestiona las excepciones y las convierte en [com.mx.liftechnology.core.util.models.NetworkModelError].
  * Centraliza el manejo de errores de red y de servidor, traduciéndolos a un modelo de error unificado.
  *
  * **Propósito:**
@@ -37,7 +38,7 @@ import com.mx.liftechnology.core.util.extension.logInfo
  * - `HttpException` con código HTTP → Error específico según código (400, 401, 404, etc.)
  * - Otras excepciones → `UNKNOWN`
  *
- * @see NetworkModelError Para ver todos los tipos de errores disponibles.
+ * @see com.mx.liftechnology.core.util.models.NetworkModelError Para ver todos los tipos de errores disponibles.
  * @see ResponseExtensions Para ver cómo se usa en las funciones de extensión.
  *
  * @author Pelkidev
@@ -45,7 +46,7 @@ import com.mx.liftechnology.core.util.extension.logInfo
  */
 object NetworkException {
     /**
-     * Gestiona una [Throwable] y la convierte en un [NetworkModelError].
+     * Gestiona una [Throwable] y la convierte en un [com.mx.liftechnology.core.util.models.NetworkModelError].
      *
      * Analiza el tipo de excepción y la convierte en el error de red correspondiente.
      * También registra el error en los logs para debugging.
@@ -62,7 +63,7 @@ object NetworkException {
      * - Otros → `UNKNOWN`
      *
      * @param exception La excepción a gestionar. Puede ser cualquier tipo de [Throwable].
-     * @return Un [NetworkModelError] que representa la excepción gestionada.
+     * @return Un [com.mx.liftechnology.core.util.models.NetworkModelError] que representa la excepción gestionada.
      *
      * @author Pelkidev
      * @version 1.0.0

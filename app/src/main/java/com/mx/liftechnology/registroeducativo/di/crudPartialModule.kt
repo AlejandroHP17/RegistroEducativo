@@ -1,10 +1,10 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepository
-import com.mx.liftechnology.data.repository.schoolCycle.partial.GetListPartialRepositoryImpl
-import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.schoolCycle.partial.GetListPartialRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.schoolCycle.partial.RegisterListPartialRepositoryImpl
+import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartialRepository
+import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.SavePartialMenuUseCase

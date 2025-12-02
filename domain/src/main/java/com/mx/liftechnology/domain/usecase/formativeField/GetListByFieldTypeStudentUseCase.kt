@@ -2,14 +2,14 @@ package com.mx.liftechnology.domain.usecase.formativeField
 
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.formativeField.ModelByFieldTypeStudentData
-import com.mx.liftechnology.data.repository.formativeField.GetListByFieldTypeStudentRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.SuccessResult
+import com.mx.liftechnology.domain.model.formativeFields.ModelByFieldTypeStudentData
+import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
 
 /**
  * Caso de uso para obtener la lista de estudiantes filtrados por tipo de campo formativo.

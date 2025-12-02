@@ -2,15 +2,15 @@ package com.mx.liftechnology.registroeducativo.main.ui.evaluation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterEvaluationWithValidationUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetWorkTypeByFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText

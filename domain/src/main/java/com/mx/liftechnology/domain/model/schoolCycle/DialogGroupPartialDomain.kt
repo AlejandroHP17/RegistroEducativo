@@ -5,8 +5,6 @@
  */
 package com.mx.liftechnology.domain.model.schoolCycle
 
-import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
-
 
 /**
  * Modelo de datos de dominio para un parcial en un diálogo de selección.
@@ -35,7 +33,7 @@ data class DialogGroupPartialDomain(
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ModelListPartialData?>?.toDialogGroupPartialDomainList: List<DialogGroupPartialDomain>
+val List<ListPartialDomain?>?.toDialogGroupPartialDomainList: List<DialogGroupPartialDomain>
     get() = this?.mapIndexedNotNull { index, partial ->
         partial?.let {
             DialogGroupPartialDomain(

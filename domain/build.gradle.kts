@@ -22,5 +22,4 @@ dependencies {
     implementation(libs.bundles.koin)
 
     implementation(project(":core"))
-    implementation(project(":data"))
 }

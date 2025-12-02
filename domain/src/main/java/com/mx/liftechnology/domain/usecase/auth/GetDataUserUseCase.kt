@@ -1,14 +1,14 @@
 package com.mx.liftechnology.domain.usecase.auth
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.auth.UserDomain
 import com.mx.liftechnology.domain.model.auth.toDomain
+import com.mx.liftechnology.domain.repository.auth.GetDataUserRepository
 
 /**
  * Caso de uso para obtener los datos del usuario autenticado.
@@ -77,7 +77,7 @@ class GetDataUserUseCase(
      * @param userData Los datos del usuario de la capa de datos (necesarios para guardar preferencias).
      * @param remember Indica si se debe guardar la sesión.
      */
-    private fun savePreferences(userData: com.mx.liftechnology.data.model.auth.ModelGetUserData, remember: Boolean) {
+    private fun savePreferences(userData: UserDomain, remember: Boolean) {
         preference.setIdUser(userData.userId)
         preference.setIdUserLevel(userData.accessLevelId ?: 0)
         preference.setRememberLogin(remember)

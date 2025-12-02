@@ -19,6 +19,7 @@
 
     <!-- login -->
     <string name="toast_error_login_user">Usuario o contraseña incorrectos, por favor valide nuevamente su información</string>
+    <string name="toast_error_coordinate_mexico">Se encuentra fuera de zona de seguridad, no puede iniciar sesión</string>
     <!-- register user -->
     <string name="toast_error_register_user">El correo ya existe, intente con otro correo o inicie sesión</string>
 

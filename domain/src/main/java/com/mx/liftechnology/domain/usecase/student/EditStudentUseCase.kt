@@ -1,16 +1,15 @@
 package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.network.api.RequestEditStudent
-
 import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.student.toStudentDomain
-import com.mx.liftechnology.data.repository.student.EditStudentRepository
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.domain.repository.student.EditStudentRepository
 
 /**
  * Caso de uso para editar la información de un estudiante existente.
@@ -79,7 +78,7 @@ class EditStudentUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val request = com.mx.liftechnology.core.network.api.RequestEditStudent(
+        val request = RequestEditStudent(
             name = name,
             lastName = lastName,
             secondLastName = secondLastName,
@@ -93,10 +92,10 @@ class EditStudentUseCase (
 
         val result = editStudentRepository.edit(request, studentId)
         return when (result) {
-            is com.mx.liftechnology.data.util.SuccessResult -> {
-                com.mx.liftechnology.data.util.SuccessResult(result.data.toStudentDomain())
+            is SuccessResult -> {
+                SuccessResult(result.data.toStudentDomain())
             }
-            is com.mx.liftechnology.data.util.ErrorResult -> result
+            is ErrorResult -> result
         }
     }
 }

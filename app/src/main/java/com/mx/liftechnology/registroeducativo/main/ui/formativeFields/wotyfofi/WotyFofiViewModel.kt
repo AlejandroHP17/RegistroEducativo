@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase

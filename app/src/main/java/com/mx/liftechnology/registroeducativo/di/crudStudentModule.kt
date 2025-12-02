@@ -1,21 +1,19 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.repository.student.DeleteStudentRepository
-import com.mx.liftechnology.data.repository.student.DeleteStudentRepositoryImpl
-import com.mx.liftechnology.data.repository.student.EditStudentRepository
-import com.mx.liftechnology.data.repository.student.EditStudentRepositoryImpl
-import com.mx.liftechnology.data.repository.student.GetStudentRepository
-import com.mx.liftechnology.data.repository.student.GetStudentRepositoryImpl
-import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
-import com.mx.liftechnology.data.repository.student.RegisterStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.student.DeleteStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.student.EditStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.student.GetStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.student.RegisterStudentRepositoryImpl
+import com.mx.liftechnology.domain.repository.student.DeleteStudentRepository
+import com.mx.liftechnology.domain.repository.student.EditStudentRepository
+import com.mx.liftechnology.domain.repository.student.GetStudentRepository
+import com.mx.liftechnology.domain.repository.student.RegisterStudentRepository
 import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.EditStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.ModifyOneStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.ModifyOneStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.student.RegisterStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCaseImp
@@ -76,12 +74,6 @@ val crudStudentModule = module {
      */
     singleOf(::GetListStudentUseCase)
 
-    /**
-     * Provides a singleton instance of [ModifyOneStudentUseCase].
-     */
-    singleOf(::ModifyOneStudentUseCaseImp) {
-        bind<ModifyOneStudentUseCase>()
-    }
 
     /**
      * Provides a singleton instance of [ValidateVoiceStudentUseCase].

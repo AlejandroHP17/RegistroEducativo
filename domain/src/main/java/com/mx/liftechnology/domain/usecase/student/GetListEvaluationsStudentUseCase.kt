@@ -1,13 +1,12 @@
 package com.mx.liftechnology.domain.usecase.student
 
-
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
-import com.mx.liftechnology.data.repository.student.GetListEvaluationsStudentRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.domain.model.student.EvaluationsStudent
+import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
 
 /**
  * Caso de uso para obtener la lista de evaluaciones de un estudiante.
@@ -75,7 +74,7 @@ class GetListEvaluationsStudentUseCase(
         workDateFrom : String? = null,
         workDateTo : String? = null
 
-    ): ModelResult<List<ModelEvaluationsStudent>, ModelError> {
+    ): ModelResult<List<EvaluationsStudent>, ModelError> {
         val schoolCycleId = preference.getIdCycleSchool()
         val partialId = preference.getIdPartial()
 

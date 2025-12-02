@@ -91,6 +91,7 @@ object Environment {
     private fun isRunningOnEmulator(): Boolean {
         return (Build.FINGERPRINT.contains("generic") ||
                 Build.FINGERPRINT.contains("emulator") ||
+                Build.FINGERPRINT.contains("sdk_gphone") ||
                 Build.MODEL.contains("Emulator") ||
                 Build.MANUFACTURER.contains("Genymotion") ||
                 Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic") ||

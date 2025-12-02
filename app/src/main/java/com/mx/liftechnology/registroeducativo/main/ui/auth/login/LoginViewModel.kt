@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.LoginWithValidationUseCase
 import com.mx.liftechnology.registroeducativo.R
@@ -61,7 +61,6 @@ class LoginViewModel(
      * @param email El nuevo valor del email.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(emailInputState = email) }
     }
 
@@ -71,7 +70,6 @@ class LoginViewModel(
      * @param pass El nuevo valor de la contraseña.
      */
     fun onPassChanged(pass: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(passInputState = pass) }
     }
 
@@ -81,7 +79,6 @@ class LoginViewModel(
      * @param remember El nuevo estado del checkbox.
      */
     fun onRememberChanged(remember: Boolean) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(isRemember = remember) }
     }
 

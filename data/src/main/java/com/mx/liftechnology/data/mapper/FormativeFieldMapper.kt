@@ -14,19 +14,19 @@ import com.mx.liftechnology.core.network.api.ResponseListWork
 import com.mx.liftechnology.core.network.api.ResponseListWorkStudent
 import com.mx.liftechnology.core.network.api.ResponseWorkTypeDetail
 import com.mx.liftechnology.core.network.api.ResponseWorkTypes
-import com.mx.liftechnology.data.model.formativeField.ModelByFieldTypeStudentData
-import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
-import com.mx.liftechnology.data.model.formativeField.ModelGetListByFieldStudentData
-import com.mx.liftechnology.data.model.formativeField.ModelGetListByFieldTypeStudentData
-import com.mx.liftechnology.data.model.formativeField.ModelListWorkFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelListWorkStudentFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeDetail
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
-import com.mx.liftechnology.data.model.formativeField.ResponseFormativeFieldsData
-import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
+import com.mx.liftechnology.domain.model.formativeFields.ModelByFieldTypeStudentData
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldData
+import com.mx.liftechnology.domain.model.formativeFields.ModelGetListByFieldStudentData
+import com.mx.liftechnology.domain.model.formativeFields.ModelGetListByFieldTypeStudentData
+import com.mx.liftechnology.domain.model.evaluation.ModelListWorkFormativeField
+import com.mx.liftechnology.domain.model.evaluation.ModelListWorkStudentFormativeField
+import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeByFormativeField
+import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeDetail
+import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeFormativeField
+import com.mx.liftechnology.domain.model.formativeFields.ModelWotyFofiDomain
+import com.mx.liftechnology.domain.model.formativeFields.ResponseFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.ResponseWorkTypesDomain
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import kotlin.jvm.JvmName
 
 object FormativeFieldMapper {
@@ -56,10 +56,10 @@ object FormativeFieldMapper {
      * @return Una lista de objetos [ModelWorkTypeData] con los datos mapeados. Los elementos nulos son omitidos.
      */
     @JvmName("toDataFromResponseGetListWorkTypeList")
-    fun List<ResponseGetListWorkType>?.toData(): List<ModelWorkTypeData> {
+    fun List<ResponseGetListWorkType>?.toData(): List<WorkTypeDomain> {
         return this?.mapNotNull { workType ->
             workType?.let {
-                ModelWorkTypeData(
+                WorkTypeDomain(
                     workTypeId = it.workTypeId,
                     name = it.name
                 )
@@ -84,28 +84,28 @@ object FormativeFieldMapper {
     }
 
     /**
-     * Convierte un [ResponseGetListWotyFofi] a [ModelWotyFofiData] con manejo seguro de nulos.
+     * Convierte un [ResponseGetListWotyFofi] a [ModelWotyFofiDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para obtener la lista de tipos de trabajo por campo formativo.
-     * @return Un objeto [ModelWotyFofiData] con los datos mapeados, o null si el receiver es null.
+     * @return Un objeto [ModelWotyFofiDomain] con los datos mapeados, o null si el receiver es null.
      */
-    fun ResponseGetListWotyFofi?.toData(): ModelWotyFofiData? {
+    fun ResponseGetListWotyFofi?.toData(): ModelWotyFofiDomain? {
         return this?.let {
-            ModelWotyFofiData(
+            ModelWotyFofiDomain(
                 formativeFields = formativeFields?.mapNotNull { it.toData() } ?: emptyList()
             )
         }
     }
 
     /**
-     * Convierte un [ResponseWorkTypes] a [ResponseWorkTypesData] con manejo seguro de nulos.
+     * Convierte un [ResponseWorkTypes] a [ResponseWorkTypesDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para tipos de trabajo.
-     * @return Un objeto [ResponseWorkTypesData] con los datos mapeados, o null si el receiver es null.
+     * @return Un objeto [ResponseWorkTypesDomain] con los datos mapeados, o null si el receiver es null.
      */
-    fun ResponseWorkTypes?.toData(): ResponseWorkTypesData? {
+    fun ResponseWorkTypes?.toData(): ResponseWorkTypesDomain? {
         return this?.let {
-            ResponseWorkTypesData(
+            ResponseWorkTypesDomain(
                 workTypeId = workTypeId,
                 workTypeName = workTypeName,
                 evaluationWeight = evaluationWeight
@@ -114,14 +114,14 @@ object FormativeFieldMapper {
     }
 
     /**
-     * Convierte un [ResponseFormativeFields] a [ResponseFormativeFieldsData] con manejo seguro de nulos.
+     * Convierte un [ResponseFormativeFields] a [ResponseFormativeFieldsDomain] con manejo seguro de nulos.
      *
      * @receiver El objeto de respuesta de la API para campos formativos.
-     * @return Un objeto [ResponseFormativeFieldsData] con los datos mapeados, o null si el receiver es null.
+     * @return Un objeto [ResponseFormativeFieldsDomain] con los datos mapeados, o null si el receiver es null.
      */
-    fun ResponseFormativeFields?.toData(): ResponseFormativeFieldsData? {
+    fun ResponseFormativeFields?.toData(): ResponseFormativeFieldsDomain? {
         return this?.let {
-            ResponseFormativeFieldsData(
+            ResponseFormativeFieldsDomain(
                 formativeFieldId = formativeFieldId,
                 formativeFieldName = formativeFieldName,
                 code = code,

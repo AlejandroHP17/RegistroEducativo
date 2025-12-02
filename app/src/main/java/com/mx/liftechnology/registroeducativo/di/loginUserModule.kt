@@ -1,10 +1,10 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.AuthApi
-import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
-import com.mx.liftechnology.data.repository.auth.GetDataUserRepositoryImpl
-import com.mx.liftechnology.data.repository.auth.LoginRepository
-import com.mx.liftechnology.data.repository.auth.LoginRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.auth.GetDataUserRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.auth.LoginRepositoryImpl
+import com.mx.liftechnology.domain.repository.auth.GetDataUserRepository
+import com.mx.liftechnology.domain.repository.auth.LoginRepository
 import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCaseImp
 import com.mx.liftechnology.domain.usecase.auth.GetDataUserUseCase

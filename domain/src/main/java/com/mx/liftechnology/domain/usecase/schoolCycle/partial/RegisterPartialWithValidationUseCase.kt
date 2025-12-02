@@ -1,9 +1,8 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.partial
 
-import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
 
 /**
  * Caso de uso que combina la validación de campos de registro de parciales con la ejecución del registro.
@@ -31,7 +30,7 @@ class RegisterPartialWithValidationUseCase(
      * - Un flag que indica si todas las validaciones pasaron
      */
     data class ValidationResult(
-        val validationResult: ModelValidationResult<List<ModelListPartialData?>>,
+        val validationResult: ModelValidationResult<List<ListPartialDomain?>>,
         val updatedListCalendar: List<DatePeriodDomain>?
     )
 

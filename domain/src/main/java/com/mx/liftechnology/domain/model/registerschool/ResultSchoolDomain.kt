@@ -5,7 +5,8 @@
  */
 package com.mx.liftechnology.domain.model.registerschool
 
-import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
+import com.mx.liftechnology.domain.model.schoolCycle.CCTDomain
+
 
 /**
  * Modelo de datos que representa el resultado de la búsqueda de una escuela en la capa de dominio.
@@ -19,5 +20,5 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
  */
 data class ResultSchoolDomain(
     val spinners :SchoolSpinnerDomain,
-    val result :  ModelCCTData
+    val result : CCTDomain
 )

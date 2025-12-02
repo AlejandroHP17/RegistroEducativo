@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
@@ -37,7 +37,7 @@ data class RegisterSubjectUiState(
         listOf("1", "2", "3", "4", "5", "6", "7", "8", "9")
             .mapNotNull { it.toModelCustomSpinner() },
     val listAdapter: List<ModelSpinnersWorkMethods>? = null,
-    val listWorkMethods: List<ModelWorkTypeData?> = emptyList(),
+    val listWorkMethods: List<WorkTypeDomain?> = emptyList(),
 
     )
 

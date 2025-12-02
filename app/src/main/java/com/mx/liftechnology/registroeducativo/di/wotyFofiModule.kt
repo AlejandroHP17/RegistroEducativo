@@ -2,18 +2,17 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
-import com.mx.liftechnology.data.repository.formativeField.GetListByFieldTypeStudentRepository
-import com.mx.liftechnology.data.repository.formativeField.GetListByFieldTypeStudentRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiRepository
-import com.mx.liftechnology.data.repository.formativeField.GetListWotyFofiRepositoryImpl
-import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepository
-import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeByFormativeFieldsRepositoryImpl
-import com.mx.liftechnology.data.repository.student.GetListEvaluationsStudentRepository
-import com.mx.liftechnology.data.repository.student.GetListEvaluationsStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListByFieldTypeStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListWotyFofiRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.evaluation.GetWorkTypeByFormativeFieldsRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.student.GetListEvaluationsStudentRepositoryImpl
+import com.mx.liftechnology.domain.repository.evaluation.GetWorkTypeByFormativeFieldsRepository
+import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
+import com.mx.liftechnology.domain.repository.formativeFields.GetListWotyFofiRepository
+import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
 import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetWorkTypeByFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.evaluation.GetWorkTypeByFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.WotyFofiViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentViewModel

@@ -2,13 +2,13 @@ package com.mx.liftechnology.domain.usecase.formativeField
 
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
-import com.mx.liftechnology.data.repository.formativeField.GetWorkTypeRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
+import com.mx.liftechnology.domain.repository.formativeFields.GetWorkTypeRepository
 
 /**
  * @file Define el caso de uso para obtener la lista de tipos de evaluación disponibles.
@@ -36,7 +36,7 @@ class GetListWorkTypeUseCase(
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la lista de [com.mx.liftechnology.core.network.api.FormativeFieldApi.ResponseGetListWorkType] en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelWorkTypeData>, ModelError> {
+    suspend operator fun invoke(): ModelResult<List<WorkTypeDomain>, ModelError> {
         val teacherId = preference.getIdUser() ?: return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )

@@ -1,7 +1,8 @@
 package com.mx.liftechnology.domain.model.generic
 
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+
 
 /**
  * Modelo que encapsula el resultado de una validación de formulario junto con el resultado de la operación.

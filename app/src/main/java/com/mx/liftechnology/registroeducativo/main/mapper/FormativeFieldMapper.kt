@@ -1,10 +1,10 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.data.model.formativeField.ModelListWorkStudentFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
-import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
-import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
+import com.mx.liftechnology.domain.model.evaluation.ModelListWorkStudentFormativeField
+import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeByFormativeField
+import com.mx.liftechnology.domain.model.evaluation.ModelWorkTypeFormativeField
+import com.mx.liftechnology.domain.model.formativeFields.ModelWotyFofiDomain
+import com.mx.liftechnology.domain.model.formativeFields.ResponseWorkTypesDomain
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
@@ -78,7 +78,7 @@ object FormativeFieldMapper {
      * @param wotyFofiData Los datos de trabajo por campo formativo.
      * @return Una lista de ModelComplexCard formateada para mostrar en la UI.
      */
-    fun ModelWotyFofiData.toComplexCardUI(): List<ModelComplexCard> {
+    fun ModelWotyFofiDomain.toComplexCardUI(): List<ModelComplexCard> {
         val formativeFields = this.formativeFields
         if (formativeFields.isNullOrEmpty()) return emptyList()
         
@@ -108,7 +108,7 @@ object FormativeFieldMapper {
      * @param workTypesData Los datos del tipo de trabajo.
      * @return Un ModelSubComplexCard o null si los datos no son válidos.
      */
-    fun ResponseWorkTypesData.toData(): ModelSubComplexCard? {
+    fun ResponseWorkTypesDomain.toData(): ModelSubComplexCard? {
         val workTypeId = this.workTypeId
         val workTypeName = this.workTypeName
         

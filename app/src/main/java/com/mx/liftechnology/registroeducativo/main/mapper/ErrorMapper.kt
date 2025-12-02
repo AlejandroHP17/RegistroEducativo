@@ -1,9 +1,9 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.UserError
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.UserError
 
 /**
  * Mapper centralizado para convertir errores de la capa de datos a errores de UI.

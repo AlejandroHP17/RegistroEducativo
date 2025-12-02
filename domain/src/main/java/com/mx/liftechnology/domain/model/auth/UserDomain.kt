@@ -5,8 +5,6 @@
  */
 package com.mx.liftechnology.domain.model.auth
 
-import com.mx.liftechnology.data.model.auth.ModelGetUserData
-
 /**
  * Modelo de dominio que representa la información de un usuario autenticado en el sistema.
  * Este modelo contiene los datos del usuario obtenidos después de un inicio de sesión exitoso.
@@ -42,7 +40,7 @@ data class UserDomain(
 )
 
 /**
- * Función de extensión para convertir un [ModelGetUserData] (modelo de datos) a un [UserDomain] (modelo de dominio).
+ * Función de extensión para convertir un [UserDomain] (modelo de datos) a un [UserDomain] (modelo de dominio).
  *
  * @receiver El modelo de datos del usuario.
  * @return Un [UserDomain] equivalente.
@@ -50,7 +48,7 @@ data class UserDomain(
  * @author Pelkidev
  * @version 1.0.0
  */
-fun ModelGetUserData.toDomain(): UserDomain {
+fun UserDomain.toDomain(): UserDomain {
     return UserDomain(
         email = email,
         name = name,

@@ -1,8 +1,9 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepository
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.domain.repository.formativeFields.DeleteFormativeFieldRepository
+
 
 /**
  * Caso de uso para eliminar un campo formativo del sistema.
@@ -37,7 +38,7 @@ class DeleteFormativeFieldsUseCase(
      * }
      * ```
      */
-    suspend operator fun invoke (fieldId: Int): ModelResult<String, ModelError>{
+    suspend operator fun invoke (fieldId: Int): ModelResult<String, ModelError> {
         return deleteFormativeFieldRepository.delete(fieldId)
     }
 }

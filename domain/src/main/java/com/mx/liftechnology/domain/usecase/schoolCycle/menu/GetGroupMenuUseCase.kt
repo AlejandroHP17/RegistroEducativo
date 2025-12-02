@@ -1,15 +1,15 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.repository.schoolCycle.menu.MenuRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.InfoStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.toDialogStudentGroupDomainList
+import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
 
 /**
  * Caso de uso para obtener la lista de grupos del menú, seleccionar uno por defecto y procesar la información.

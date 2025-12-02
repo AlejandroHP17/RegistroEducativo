@@ -25,4 +25,5 @@ dependencies {
     implementation(libs.bundles.test)
 
     implementation(project(":core"))
+    implementation(project(":domain"))
 }

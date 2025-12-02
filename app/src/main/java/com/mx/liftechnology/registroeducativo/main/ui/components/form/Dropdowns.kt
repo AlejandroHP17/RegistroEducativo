@@ -27,7 +27,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
+import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -35,7 +35,6 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
-import com.mx.liftechnology.registroeducativo.main.ui.components.form.personalizeColors
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 
 /**
@@ -55,7 +54,7 @@ fun SpinnerScreen() {
             value ="Otro",
             id= 3),
         )
-    val options2 = listOf(ModelWorkTypeData(workTypeId = 1, name = "hola"))
+    val options2 = listOf(WorkTypeDomain(workTypeId = 1, name = "hola"))
     var selectedOption by remember { mutableStateOf(options[0]) }
 
     Column {
@@ -174,10 +173,10 @@ fun DropdownTextField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownTextFieldEditable(
-    options: List<ModelWorkTypeData?>,
+    options: List<WorkTypeDomain?>,
     selectedOption: ModelStateOutFieldText,
     label: String,
-    onOptionSelected: (ModelWorkTypeData?) -> Unit,
+    onOptionSelected: (WorkTypeDomain?) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedOptions by remember { mutableStateOf("".stringToModelStateOutFieldText()) }
@@ -201,7 +200,7 @@ fun DropdownTextFieldEditable(
                         selectedOptions = newValue.stringToModelStateOutFieldText()
                     }
                     onOptionSelected(
-                        ModelWorkTypeData(
+                        WorkTypeDomain(
                         workTypeId = -1,
                         name = newValue
                     )

@@ -7,16 +7,16 @@ package com.mx.liftechnology.domain.usecase.schoolCycle.partial
 
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.schoolCycle.ModelDatePeriod
-import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
-import com.mx.liftechnology.data.repository.schoolCycle.partial.RegisterListPartialRepository
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.LocalModelError
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriod
+import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
 
 /**
  * Caso de uso para registrar una lista de parciales.
@@ -40,7 +40,7 @@ class RegisterListPartialUseCase(
      */
     suspend operator fun invoke(
         adapterPeriods: List<DatePeriodDomain>
-    ): ModelResult<List<ModelListPartialData?>, ModelError> {
+    ): ModelResult<List<ListPartialDomain?>, ModelError> {
         val cycleSchoolId = preference.getIdCycleSchool()
 
         if(cycleSchoolId == null || adapterPeriods.isEmpty()) return ErrorResult(

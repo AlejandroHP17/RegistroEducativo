@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import androidx.compose.ui.graphics.Color
-import com.mx.liftechnology.data.model.schoolCycle.ModelCCTDataPeriodCatalog
+import com.mx.liftechnology.domain.model.schoolCycle.CCTPeriodCatalogDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
@@ -39,7 +39,7 @@ data class RegisterSchoolUiSemiAutomaticData(
     val schoolName: ModelStateOutFieldText = ModelStateOutFieldText(),
     val schoolId: Int = 0,
     val shiftName: ModelStateOutFieldText = ModelStateOutFieldText(),
-    val periodCatalog:List<ModelCCTDataPeriodCatalog>? = null,
+    val periodCatalog:List<CCTPeriodCatalogDomain>? = null,
     val spinner: SpinnerSchoolUi? = null,
     val read: Boolean = true,
 )

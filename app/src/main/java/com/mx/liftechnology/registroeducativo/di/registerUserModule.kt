@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.AuthApi
-import com.mx.liftechnology.data.repository.auth.RegisterUserRepository
-import com.mx.liftechnology.data.repository.auth.RegisterUserRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.auth.RegisterUserRepositoryImpl
+import com.mx.liftechnology.domain.repository.auth.RegisterUserRepository
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserViewModel
 import org.koin.core.module.dsl.bind

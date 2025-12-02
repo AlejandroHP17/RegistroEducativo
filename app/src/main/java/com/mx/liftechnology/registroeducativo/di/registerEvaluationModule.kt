@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.EvaluationApi
-import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepository
-import com.mx.liftechnology.data.repository.evaluation.RegisterWorkTypeEvaluationsRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.evaluation.RegisterWorkTypeEvaluationsRepositoryImpl
+import com.mx.liftechnology.domain.repository.evaluation.RegisterWorkTypeEvaluationsRepository
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterWorkTypeEvaluationsUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase

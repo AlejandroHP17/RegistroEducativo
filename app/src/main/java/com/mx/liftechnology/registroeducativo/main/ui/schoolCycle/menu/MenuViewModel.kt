@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase

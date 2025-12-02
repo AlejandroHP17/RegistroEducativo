@@ -1,15 +1,15 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.school
 
 import com.mx.liftechnology.core.util.extension.logInfo
-import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData
-import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
-import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.SchoolSpinnerDomain
+import com.mx.liftechnology.domain.model.schoolCycle.CCTDomain
+import com.mx.liftechnology.domain.repository.schoolCycle.school.GetCctRepository
 
 /**
  * @file Define el caso de uso para validar una CCT (Clave de Centro de Trabajo) y obtener la información de la escuela.
@@ -57,7 +57,7 @@ class GetCctUseCase(
      * @param data Los datos de [com.mx.liftechnology.core.network.api.SchoolCycleApi.ResponseCctSchool] recibidos del repositorio.
      * @return Un [SchoolSpinnerDomain] que contiene las listas de strings para los spinners.
      */
-    private fun buildLogicSpinner(data: ModelCCTData): SchoolSpinnerDomain {
+    private fun buildLogicSpinner(data: CCTDomain): SchoolSpinnerDomain {
 
         // --- TYPE (Anual, Semestral, etc) ---
         val types = data.periodCatalog

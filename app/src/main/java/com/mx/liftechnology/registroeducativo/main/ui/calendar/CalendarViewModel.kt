@@ -2,10 +2,10 @@ package com.mx.liftechnology.registroeducativo.main.ui.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
  */
 class CalendarViewModel(
     private val dispatcherProvider: DispatcherProvider,
-    private val getListSubjectUseCase: GetListSubjectUseCase,
+    private val getListFormativeFieldUseCase: GetListFormativeFieldUseCase,
     private val getListStudentUseCase: GetListStudentUseCase
 ) : ViewModel() {
 

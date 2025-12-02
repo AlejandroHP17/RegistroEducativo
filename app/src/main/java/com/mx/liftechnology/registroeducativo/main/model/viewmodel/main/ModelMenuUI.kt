@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
-import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
+import com.mx.liftechnology.domain.repository.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
@@ -59,6 +59,6 @@ data class MenuUiDialog(
  * @version 1.0.0
  */
 data class MenuUiData (
-    val evaluationItems: List<ModelPrincipalMenuData> = listOf(),
-    val controlItems: List<ModelPrincipalMenuData> = listOf(),
+    val evaluationItems: List<PrincipalMenuDomain> = listOf(),
+    val controlItems: List<PrincipalMenuDomain> = listOf(),
 )

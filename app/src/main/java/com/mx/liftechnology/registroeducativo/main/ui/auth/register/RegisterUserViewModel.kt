@@ -3,8 +3,8 @@ package com.mx.liftechnology.registroeducativo.main.ui.auth.register
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mx.liftechnology.data.util.ErrorResult
-import com.mx.liftechnology.data.util.SuccessResult
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserWithValidationUseCase
 import com.mx.liftechnology.registroeducativo.R
@@ -31,8 +31,7 @@ import kotlinx.coroutines.withContext
  * ViewModel para la pantalla de registro de usuario.
  *
  * @property dispatcherProvider El proveedor de dispatchers de Corrutinas.
- * @property registerUserUseCase El caso de uso para manejar el registro de usuario.
- * @property validateFieldsUseCase El caso de uso para validar los campos de entrada.
+ * @property RegisterUserWithValidationUseCase El caso de uso para manejar el registro de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -61,7 +60,6 @@ class RegisterUserViewModel(
      * @param email El nuevo valor del email.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(emailInputState = email) }
     }
 
@@ -71,7 +69,6 @@ class RegisterUserViewModel(
      * @param pass El nuevo valor de la contraseña.
      */
     fun onPassChanged(pass: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(passInputState = pass) }
     }
 
@@ -81,7 +78,6 @@ class RegisterUserViewModel(
      * @param repeatPass El nuevo valor de la contraseña repetida.
      */
     fun onRepeatPassChanged(repeatPass: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(repeatPassInputState = repeatPass) }
     }
 
@@ -91,7 +87,6 @@ class RegisterUserViewModel(
      * @param code El nuevo valor del código de activación.
      */
     fun onCodeChanged(code: ModelStateOutFieldText) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         _inputState.update { it.copy(codeInputState = code) }
     }
 
