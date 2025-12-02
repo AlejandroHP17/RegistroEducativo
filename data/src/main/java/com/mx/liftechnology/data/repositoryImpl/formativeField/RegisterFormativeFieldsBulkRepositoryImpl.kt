@@ -13,7 +13,7 @@ import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeFieldsBulkRepository
 
 /**
@@ -46,6 +46,9 @@ class RegisterFormativeFieldsBulkRepositoryImpl(
             evaluations = evaluations,
         )
 
-        return formativeFieldApi.registerFormativeFieldsBulk(request).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { formativeFieldApi.registerFormativeFieldsBulk(request) },
+            mapper = { it.toData() }
+        )
     }
 }

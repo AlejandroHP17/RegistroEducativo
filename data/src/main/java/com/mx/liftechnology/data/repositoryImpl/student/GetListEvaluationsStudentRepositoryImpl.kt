@@ -5,7 +5,7 @@ import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
 
 
@@ -22,15 +22,20 @@ class GetListEvaluationsStudentRepositoryImpl(
         workDateFrom : String?,
         workDateTo: String?
     ): ModelResult<List <EvaluationsStudentDomain>, NetworkModelError> {
-        return workTypeApi.getListEvaluations(
-            formativeFieldId = formativeFieldId,
-            partialId = partialId,
-            workTypeId = workTypeId,
-            schoolCycleId = schoolCycleId,
-            studentId = studentId,
-            workDate = workDate,
-            workDateFrom = workDateFrom,
-            workDateTo = workDateTo,
-        ).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = {
+                workTypeApi.getListEvaluations(
+                    formativeFieldId = formativeFieldId,
+                    partialId = partialId,
+                    workTypeId = workTypeId,
+                    schoolCycleId = schoolCycleId,
+                    studentId = studentId,
+                    workDate = workDate,
+                    workDateFrom = workDateFrom,
+                    workDateTo = workDateTo,
+                )
+            },
+            mapper = { it.toData() }
+        )
     }
 }

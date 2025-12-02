@@ -10,7 +10,7 @@ import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.repository.student.RegisterStudentRepository
 
@@ -51,6 +51,9 @@ class RegisterStudentRepositoryImpl(
             schoolCycleId = schoolCycleId,
             isActive = true
         )
-        return studentApi.registerStudent(request).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { studentApi.registerStudent(request) },
+            mapper = { it.toData() }
+        )
     }
 }

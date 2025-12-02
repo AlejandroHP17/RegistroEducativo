@@ -75,7 +75,12 @@ class AuthInterceptor(
         val request = chain.request()
 
         if (!requiresAuth(request)) {
-            return chain.proceed(request)
+            return try {
+                chain.proceed(request)
+            } catch (e: java.io.IOException) {
+                // Si hay un error de conexión, lo propagamos para que sea manejado por el sistema de errores
+                throw e
+            }
         }
 
         val accessToken = tokenProvider.getToken()
@@ -83,7 +88,13 @@ class AuthInterceptor(
             .addHeader("Authorization", "Bearer $accessToken")
             .build()
 
-        val response = chain.proceed(authRequest)
+        val response = try {
+            chain.proceed(authRequest)
+        } catch (e: java.io.IOException) {
+            // Si hay un error de conexión en la petición autenticada, lo propagamos
+            // para que sea manejado por el sistema de errores (ResponseExtensions.executeOrError)
+            throw e
+        }
 
         if (response.code == 401) {
             response.close()
@@ -103,25 +114,46 @@ class AuthInterceptor(
                 .post(refreshBody)
                 .build()
 
-            val refreshResponse = chain.proceed(refreshRequest)
+            val refreshResponse = try {
+                chain.proceed(refreshRequest)
+            } catch (e: java.io.IOException) {
+                // Si hay un error de conexión al intentar refrescar el token,
+                // cerramos la sesión y propagamos el error
+                tokenProvider.closeSession()
+                runBlocking { sessionManager.notifySessionExpired() }
+                throw e
+            }
 
             if (refreshResponse.isSuccessful) {
+                try {
+                    val rawBody = refreshResponse.peekBody(Long.MAX_VALUE).string()
+                    val root = JSONObject(rawBody)
+                    val data = root.getJSONObject("data")
+                    val newAccess = data.getString("access_token")
 
-                val rawBody = refreshResponse.peekBody(Long.MAX_VALUE).string()
-                val root = JSONObject(rawBody)
-                val data = root.getJSONObject("data")
-                val newAccess = data.getString("access_token")
+                    tokenProvider.saveNewToken(newAccess)
 
-                tokenProvider.saveNewToken(newAccess)
+                    refreshResponse.close()
 
-                refreshResponse.close()
+                    val retryRequest = request.newBuilder()
+                        .addHeader("Authorization", "Bearer $newAccess")
+                        .build()
 
-                val retryRequest = request.newBuilder()
-                    .addHeader("Authorization", "Bearer $newAccess")
-                    .build()
-
-                return chain.proceed(retryRequest)
+                    return try {
+                        chain.proceed(retryRequest)
+                    } catch (e: java.io.IOException) {
+                        // Si hay un error de conexión al reintentar la petición, lo propagamos
+                        throw e
+                    }
+                } catch (e: Exception) {
+                    // Si hay un error al procesar la respuesta del refresh, cerramos la sesión
+                    refreshResponse.close()
+                    tokenProvider.closeSession()
+                    runBlocking { sessionManager.notifySessionExpired() }
+                    throw e
+                }
             } else {
+                refreshResponse.close()
                 tokenProvider.closeSession()
                 runBlocking { sessionManager.notifySessionExpired() }
             }

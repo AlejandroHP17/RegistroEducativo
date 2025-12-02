@@ -5,7 +5,7 @@ import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
 
 
@@ -18,11 +18,16 @@ class GetListByFieldTypeStudentRepositoryImpl(
         workName : String?,
         workDate : String?
     ): ModelResult<ByFieldTypeStudentDomain, NetworkModelError> {
-        return formativeFieldApi.getListByFieldTypeStudent(
-            formativeFieldId = formativeFieldId,
-            workTypeId = workTypeId,
-            workName = workName,
-            workDate = workDate
-        ).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = {
+                formativeFieldApi.getListByFieldTypeStudent(
+                    formativeFieldId = formativeFieldId,
+                    workTypeId = workTypeId,
+                    workName = workName,
+                    workDate = workDate
+                )
+            },
+            mapper = { it.toData() }
+        )
     }
 }

@@ -12,7 +12,7 @@ import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
 
 /**
@@ -31,7 +31,10 @@ class MenuRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun getCycleSchool(teacherId: Int): ModelResult<List<SchoolCycleDomain>, NetworkModelError> {
-        val result = schoolCycleApi.getGroup(teacherId = teacherId).executeOrError { it.toData() }
+        val result = safeApiCall(
+            apiCall = { schoolCycleApi.getGroup(teacherId = teacherId) },
+            mapper = { it.toData() }
+        )
         return when (result) {
             is SuccessResult -> {
                 if (result.data.isNotEmpty()) {

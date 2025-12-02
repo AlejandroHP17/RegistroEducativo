@@ -145,3 +145,79 @@ suspend fun <T, R> Response<T>.executeOrErrorDirect(
     }
 }
 
+/**
+ * Función wrapper que ejecuta una llamada suspendida de Retrofit y maneja automáticamente
+ * los errores de conexión, retornando directamente un ModelResult.
+ *
+ * Esta función es necesaria porque las llamadas suspendidas de Retrofit pueden lanzar
+ * excepciones (como ConnectException) antes de obtener un Response, y esas excepciones
+ * deben ser capturadas para evitar que la app crashee.
+ *
+ * **Uso:**
+ * ```kotlin
+ * override suspend fun login(...): ModelResult<LoginData, NetworkModelError> {
+ *     val request = RequestLogin(...)
+ *     return safeApiCall(
+ *         apiCall = { authApi.login(request) },
+ *         mapper = { it.toData() }
+ *     )
+ * }
+ * ```
+ *
+ * @param apiCall La llamada suspendida a la API que retorna un Response<ResponseGeneric<T>>.
+ * @param mapper Función que transforma el tipo de datos de la respuesta (`T`) al tipo de dominio (`R`).
+ * @return Un ModelResult que contiene el resultado mapeado en caso de éxito, o un error en caso de fallo.
+ *
+ * @see executeOrError Para ver cómo se procesa el Response.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+suspend fun <T, R> safeApiCall(
+    apiCall: suspend () -> Response<ResponseGeneric<T>>,
+    mapper: (T) -> R?
+): ModelResult<R, NetworkModelError> {
+    return try {
+        val response = apiCall()
+        response.executeOrError(mapper)
+    } catch (e: Exception) {
+        // Capturamos cualquier excepción que ocurra antes de obtener el Response
+        // (como ConnectException, UnknownHostException, etc.)
+        ErrorResult(NetworkException.handleException(e))
+    }
+}
+
+/**
+ * Función wrapper similar a [safeApiCall] pero para respuestas sin wrapper genérico.
+ *
+ * **Uso:**
+ * ```kotlin
+ * override suspend fun getData(): ModelResult<DataModel, NetworkModelError> {
+ *     return safeApiCallDirect(
+ *         apiCall = { api.getData() },
+ *         mapper = { it.toData() }
+ *     )
+ * }
+ * ```
+ *
+ * @param apiCall La llamada suspendida a la API que retorna un Response<T>.
+ * @param mapper Función que transforma el tipo de datos de la respuesta (`T`) al tipo de dominio (`R`).
+ * @return Un ModelResult que contiene el resultado mapeado en caso de éxito, o un error en caso de fallo.
+ *
+ * @see safeApiCall Para respuestas con wrapper genérico.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+suspend fun <T, R> safeApiCallDirect(
+    apiCall: suspend () -> Response<T>,
+    mapper: (T) -> R?
+): ModelResult<R, NetworkModelError> {
+    return try {
+        val response = apiCall()
+        response.executeOrErrorDirect(mapper)
+    } catch (e: Exception) {
+        // Capturamos cualquier excepción que ocurra antes de obtener el Response
+        // (como ConnectException, UnknownHostException, etc.)
+        ErrorResult(NetworkException.handleException(e))
+    }
+}
+

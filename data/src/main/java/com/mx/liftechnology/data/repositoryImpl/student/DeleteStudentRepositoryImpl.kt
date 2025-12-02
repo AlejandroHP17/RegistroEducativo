@@ -8,7 +8,7 @@ package com.mx.liftechnology.data.repositoryImpl.student
 import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.student.DeleteStudentRepository
 
 /**
@@ -26,6 +26,9 @@ class DeleteStudentRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun delete(studentId: Int): ModelResult<String, NetworkModelError> {
-        return studentApi.deleteStudent(studentId).executeOrError { it }
+        return safeApiCall(
+            apiCall = { studentApi.deleteStudent(studentId) },
+            mapper = { it }
+        )
     }
 }

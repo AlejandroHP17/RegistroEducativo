@@ -9,7 +9,7 @@ import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.repository.formativeFields.GetWorkTypeRepository
 
@@ -32,7 +32,10 @@ class GetWorkTypeRepositoryImpl(
     override suspend fun getList(
         teacherId: Int
     ): ModelResult<List<WorkTypeDomain>, NetworkModelError> {
-        return formativeFieldApi.getListWorkType(teacherId).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { formativeFieldApi.getListWorkType(teacherId) },
+            mapper = { it.toData() }
+        )
     }
 
 }

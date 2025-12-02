@@ -9,7 +9,7 @@ import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
 import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartialRepository
 
@@ -32,6 +32,9 @@ class GetListPartialRepositoryImpl(
     override suspend fun getList(
         schoolCycleId : Int
     ): ModelResult<List<ListPartialDomain>, NetworkModelError> {
-        return schoolCycleApi.getListPartial(schoolCycleId).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { schoolCycleApi.getListPartial(schoolCycleId) },
+            mapper = { it.toData() }
+        )
     }
 }

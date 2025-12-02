@@ -5,7 +5,7 @@ import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.repository.student.EditStudentRepository
 
@@ -15,6 +15,9 @@ class EditStudentRepositoryImpl (
 ) : EditStudentRepository {
     override suspend fun edit(request: RequestEditStudent, studentId: Int)
     : ModelResult<StudentDomain, NetworkModelError> {
-        return studentApi.editStudent(studentId, request).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { studentApi.editStudent(studentId, request) },
+            mapper = { it.toData() }
+        )
     }
 }

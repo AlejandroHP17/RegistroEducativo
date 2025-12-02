@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.model.auth.LoginDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.mapper.toData
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.auth.LoginRepository
 
 /**
@@ -44,7 +44,10 @@ class LoginRepositoryImpl(
             imei = imei
         )
 
-        return authApi.login(request).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { authApi.login(request) },
+            mapper = { it.toData() }
+        )
     }
 }
 

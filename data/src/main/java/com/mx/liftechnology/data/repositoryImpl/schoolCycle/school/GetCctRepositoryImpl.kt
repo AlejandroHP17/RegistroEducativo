@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.domain.model.schoolCycle.CCTDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.schoolCycle.school.GetCctRepository
 
 
@@ -30,6 +30,9 @@ class GetCctRepositoryImpl(
      * {@inheritDoc}
      */
     override suspend fun getCct(cct:String): ModelResult<CCTDomain, NetworkModelError> {
-        return schoolCycleApi.getCct(cct).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { schoolCycleApi.getCct(cct) },
+            mapper = { it.toData() }
+        )
     }
 }

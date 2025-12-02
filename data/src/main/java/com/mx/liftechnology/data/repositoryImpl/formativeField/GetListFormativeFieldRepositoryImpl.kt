@@ -10,7 +10,7 @@ import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.formativeFields.GetListFormativeFieldRepository
 
 
@@ -32,6 +32,9 @@ class GetListFormativeFieldRepositoryImpl(
     override suspend fun getList(
         cycleSchoolId: Int
     ) : ModelResult<List<FormativeFieldData>, NetworkModelError> {
-        return formativeFieldApi.getListFormativeFields(cycleSchoolId).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { formativeFieldApi.getListFormativeFields(cycleSchoolId) },
+            mapper = { it.toData() }
+        )
     }
 }

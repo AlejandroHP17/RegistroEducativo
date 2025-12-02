@@ -11,7 +11,7 @@ import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository
 
 
@@ -50,6 +50,9 @@ class RegisterCycleSchoolRepositoryImpl(
             isActive = true
         )
 
-        return schoolCycleApi.registerSchoolCycle(request).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { schoolCycleApi.registerSchoolCycle(request) },
+            mapper = { it.toData() }
+        )
     }
 }

@@ -11,7 +11,7 @@ import com.mx.liftechnology.core.network.api.SchoolCycleApi
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
 import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
@@ -51,6 +51,9 @@ class RegisterListPartialRepositoryImpl(
 
         val request = RequestRegisterPartial(listPartials = listAdapter)
 
-        return schoolCycleApi.registerListPartial(request).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { schoolCycleApi.registerListPartial(request) },
+            mapper = { it.toData() }
+        )
     }
 }

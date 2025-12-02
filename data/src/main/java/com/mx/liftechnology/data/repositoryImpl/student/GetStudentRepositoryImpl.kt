@@ -9,7 +9,7 @@ import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.repository.student.GetStudentRepository
 
@@ -31,6 +31,9 @@ class GetStudentRepositoryImpl(
     override suspend fun getStudents(
         cycleSchoolId: Int
     ) : ModelResult<List<StudentDomain?>, NetworkModelError> {
-        return studentApi.getListStudents(cycleSchoolId).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { studentApi.getListStudents(cycleSchoolId) },
+            mapper = { it.toData() }
+        )
     }
 }

@@ -5,14 +5,17 @@ import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.domain.model.formativeFields.WotyFofiDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.util.executeOrError
+import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.formativeFields.GetListWotyFofiRepository
 
 class GetListWotyFofiRepositoryImpl(
     private val formativeFieldApi: FormativeFieldApi
 ): GetListWotyFofiRepository {
     override suspend fun getList(schoolCycleId: Int): ModelResult<WotyFofiDomain, NetworkModelError> {
-        return formativeFieldApi.getListWotyFofi(schoolCycleId).executeOrError { it.toData() }
+        return safeApiCall(
+            apiCall = { formativeFieldApi.getListWotyFofi(schoolCycleId) },
+            mapper = { it.toData() }
+        )
     }
 
 }
