@@ -12,7 +12,6 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.toDialogGroupPartialDomainList
 import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
@@ -44,19 +43,13 @@ class GetListPartialMenuUseCase (
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return runCatching { getListPartialRepository.getList(cycleSchoolId) }.fold(
-             onSuccess = { result ->
-                 when (result){
-                     is SuccessResult -> {
-                         val convertedResult = result.data.toDialogGroupPartialDomainList
-                         SuccessResult(convertedResult)
-                     }
-                     is ErrorResult -> {
-                         ErrorResult(result.error)
-                     }
-                 }
-             },
-             onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
-         )
+        val result = getListPartialRepository.getList(cycleSchoolId)
+        return when (result) {
+            is SuccessResult -> {
+                val convertedResult = result.data.toDialogGroupPartialDomainList
+                SuccessResult(convertedResult)
+            }
+            is ErrorResult -> result
+        }
     }
 }

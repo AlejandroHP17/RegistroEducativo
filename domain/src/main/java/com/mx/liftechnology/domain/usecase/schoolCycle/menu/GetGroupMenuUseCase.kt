@@ -6,7 +6,6 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.InfoStudentGroupDomain
@@ -33,27 +32,21 @@ class GetGroupMenuUseCase(
      */
     suspend operator fun invoke(): ModelResult<InfoStudentGroupDomain, ModelError> {
         val userId = preference.getIdUserLevel()
-        if (userId == null) ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
-        return runCatching { menuRepository.getCycleSchool(userId!!) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        val convertedResult = result.data.toDialogStudentGroupDomainList
-                        SuccessResult(
-                            InfoStudentGroupDomain(
-                                listSchool = convertedResult,
-                                infoSchoolSelected = selectOneGroup(convertedResult)
-                            )
-                        )
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
-        )
+            ?: return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
+        
+        val result = menuRepository.getCycleSchool(userId)
+        return when (result) {
+            is SuccessResult -> {
+                val convertedResult = result.data.toDialogStudentGroupDomainList
+                SuccessResult(
+                    InfoStudentGroupDomain(
+                        listSchool = convertedResult,
+                        infoSchoolSelected = selectOneGroup(convertedResult)
+                    )
+                )
+            }
+            is ErrorResult -> result
+        }
     }
 
     /**

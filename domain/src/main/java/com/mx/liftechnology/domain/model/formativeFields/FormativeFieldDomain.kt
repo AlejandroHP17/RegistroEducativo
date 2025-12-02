@@ -31,6 +31,27 @@ data class FormativeFieldDomain(
 ): Parcelable
 
 /**
+ * Función de extensión para convertir un [FormativeFieldData] (modelo de datos) a un [FormativeFieldDomain] (modelo de dominio).
+ *
+ * @receiver Un objeto [FormativeFieldData] nulable.
+ * @param position La posición del campo formativo en una lista.
+ * @return Un objeto [FormativeFieldDomain] equivalente, o null si el receiver es null.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+fun FormativeFieldData?.toFormativeFieldDomain(position: Int = 0): FormativeFieldDomain? {
+    return this?.let {
+        FormativeFieldDomain(
+            position = position,
+            name = it.name,
+            percent = null,
+            formativeFieldId = it.formativeFieldID
+        )
+    }
+}
+
+/**
  * Función de extensión para convertir una lista de [FormativeFieldData] (modelo de datos)
  * a una lista de [FormativeFieldDomain] (modelo de dominio).
  *
@@ -42,13 +63,6 @@ data class FormativeFieldDomain(
  */
 fun List<FormativeFieldData?>?.toFormativeFieldDomainList() :List<FormativeFieldDomain>{
     return this?.mapIndexedNotNull { index, response ->
-        response?.let {
-            FormativeFieldDomain(
-                position = index,
-                name = it.name,
-                percent = null,
-                formativeFieldId = it.formativeFieldID
-            )
-        }
+        response?.toFormativeFieldDomain(index)
     }?: emptyList()
 }

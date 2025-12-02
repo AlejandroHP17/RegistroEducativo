@@ -12,7 +12,6 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.student.toStudentDomainList
@@ -45,19 +44,13 @@ class GetListStudentAssignmentUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getStudentRepository.getStudents(cycleSchoolId) }.fold(
-            onSuccess = { result ->
-                when(result){
-                    is SuccessResult -> {
-                        if (result.data.isNullOrEmpty()) ErrorResult(LocalModelError.EMPTY)
-                        else SuccessResult(result.data.toStudentDomainList())
-                    }
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
-        )
+        val result = getStudentRepository.getStudents(cycleSchoolId)
+        return when (result) {
+            is SuccessResult -> {
+                if (result.data.isNullOrEmpty()) ErrorResult(LocalModelError.EMPTY)
+                else SuccessResult(result.data.toStudentDomainList())
+            }
+            is ErrorResult -> result
+        }
     }
 }

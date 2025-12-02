@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.student
 
-import com.mx.liftechnology.data.model.student.StudentData
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 
 /**
@@ -39,7 +39,7 @@ class RegisterStudentWithValidationUseCase(
         curp: String?,
         birthday: String?,
         phoneNumber: String?
-    ): ModelValidationResult<StudentData?> {
+    ): ModelValidationResult<StudentDomain?> {
         // 1. Validar todos los campos
         val nameState = validateFieldsUseCase.validateName(name)
         val lastNameState = validateFieldsUseCase.validateLastName(lastName)

@@ -8,7 +8,6 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -42,20 +41,13 @@ class GetListWorkTypeUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getWorkTypeRepository.getList(teacherId) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
-                        else SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
-        )
+        val result = getWorkTypeRepository.getList(teacherId)
+        return when (result) {
+            is SuccessResult -> {
+                if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
+                else result
+            }
+            is ErrorResult -> result
+        }
     }
 }

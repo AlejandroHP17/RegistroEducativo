@@ -12,7 +12,6 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
@@ -42,31 +41,26 @@ class GetListPartialUseCase(
         val cycleSchoolId= preference.getIdCycleSchool()
         if(cycleSchoolId == null) return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
-        return runCatching {getListPartialRepository.getList(cycleSchoolId) }.fold(
-            onSuccess = { result ->
-                when(result){
-                    is SuccessResult -> {
-                        val listDate = result.data.mapIndexed { index, item ->
-                            DatePeriodDomain(
-                                position = index,
-                                date = ModelStateOutFieldText(
-                                    valueText = "${item.startDate} / ${item.endDate}",
-                                    isError = false,
-                                    errorMessage = ""),
-                                partialCycleGroup = item.partialId
-                            )
-                        }.toMutableList()
-                        if (listDate.isNotEmpty()) {
-                            SuccessResult(listDate)
-                        }
-                        else ErrorResult(LocalModelError.EMPTY)
-                    }
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
+        val result = getListPartialRepository.getList(cycleSchoolId)
+        return when (result) {
+            is SuccessResult -> {
+                val listDate = result.data.mapIndexed { index, item ->
+                    DatePeriodDomain(
+                        position = index,
+                        date = ModelStateOutFieldText(
+                            valueText = "${item.startDate} / ${item.endDate}",
+                            isError = false,
+                            errorMessage = ""),
+                        partialCycleGroup = item.partialId
+                    )
+                }.toMutableList()
+                if (listDate.isNotEmpty()) {
+                    SuccessResult(listDate)
+                } else {
+                    ErrorResult(LocalModelError.EMPTY)
                 }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
-        )
+            }
+            is ErrorResult -> result
+        }
     }
 }

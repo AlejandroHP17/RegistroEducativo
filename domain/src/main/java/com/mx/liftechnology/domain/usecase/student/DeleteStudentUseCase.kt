@@ -2,29 +2,42 @@ package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.data.repository.student.DeleteStudentRepository
 import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
 
+/**
+ * Caso de uso para eliminar un estudiante del sistema.
+ * Encapsula la lógica de negocio para eliminar un estudiante mediante su identificador.
+ *
+ * @property deleteStudentRepository El repositorio para las operaciones de eliminación de estudiantes.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class DeleteStudentUseCase(
     private val deleteStudentRepository: DeleteStudentRepository
 ) {
 
+    /**
+     * Ejecuta el proceso de eliminación de un estudiante.
+     *
+     * @param studentId El identificador único del estudiante a eliminar.
+     * @return Un [ModelResult] que contiene un mensaje de confirmación en caso de éxito,
+     * o un estado de error específico en caso de fallo.
+     *
+     * Posibles errores:
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] de validación si el estudiante no existe o no se puede eliminar
+     *
+     * @example
+     * ```
+     * val result = deleteStudentUseCase(123)
+     * when (result) {
+     *     is SuccessResult -> println("Estudiante eliminado: ${result.data}")
+     *     is ErrorResult -> println("Error: ${result.error}")
+     * }
+     * ```
+     */
     suspend operator fun invoke (studentId: Int): ModelResult<String, ModelError>{
-        return runCatching { deleteStudentRepository.delete(studentId) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
-        )
+        return deleteStudentRepository.delete(studentId)
     }
 }

@@ -5,7 +5,6 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -33,18 +32,14 @@ class RegisterUserUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching{ registerUserRepository.register(
+        val result = registerUserRepository.register(
             email = email,
             pass = pass,
             activationCode = activationCode
-        ) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> { SuccessResult(true) }
-                    is ErrorResult -> { ErrorResult(result.error) }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
         )
+        return when (result) {
+            is SuccessResult -> SuccessResult(true)
+            is ErrorResult -> result
+        }
     }
 }

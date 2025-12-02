@@ -7,7 +7,6 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.toFormativeFieldDomainList
@@ -38,19 +37,13 @@ class GetListSubjectUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getListFormativeFieldRepository.getList(cycleSchoolId) }.fold(
-            onSuccess = { result ->
-                when(result){
-                    is SuccessResult -> {
-                        if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
-                        else SuccessResult(result.data.toFormativeFieldDomainList())
-                    }
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
-        )
+        val result = getListFormativeFieldRepository.getList(cycleSchoolId)
+        return when (result) {
+            is SuccessResult -> {
+                if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
+                else SuccessResult(result.data.toFormativeFieldDomainList())
+            }
+            is ErrorResult -> result
+        }
     }
 }

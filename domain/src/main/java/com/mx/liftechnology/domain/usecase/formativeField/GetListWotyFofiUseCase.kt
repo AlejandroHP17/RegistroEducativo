@@ -8,34 +8,54 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
 
+/**
+ * Caso de uso para obtener la lista de tipos de trabajo y campos formativos asociados a un ciclo escolar.
+ * Encapsula la lógica de negocio para recuperar la relación entre tipos de trabajo y campos formativos
+ * basándose en el ciclo escolar seleccionado en las preferencias del usuario.
+ *
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
+ * @property getListWotyFofiRepository El repositorio para obtener la lista de tipos de trabajo y campos formativos.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListWotyFofiUseCase(
     private val preference: PreferenceUseCase,
     private val getListWotyFofiRepository: GetListWotyFofiRepository
 ) {
 
+    /**
+     * Ejecuta el proceso de obtención de la lista de tipos de trabajo y campos formativos.
+     * Obtiene el ID del ciclo escolar desde las preferencias y recupera la lista asociada.
+     *
+     * @return Un [ModelResult] que contiene los datos de tipos de trabajo y campos formativos
+     * ([ModelWotyFofiData]) en caso de éxito, o un estado de error específico en caso de fallo.
+     *
+     * Posibles errores:
+     * - [LocalModelError.USER_INCOMPLETE_DATA] si no hay un ciclo escolar seleccionado en las preferencias
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] si no se encuentran datos para el ciclo escolar
+     *
+     * @example
+     * ```
+     * val result = getListWotyFofiUseCase()
+     * when (result) {
+     *     is SuccessResult -> {
+     *         val data = result.data
+     *         println("Tipos de trabajo y campos formativos: ${data}")
+     *     }
+     *     is ErrorResult -> println("Error: ${result.error}")
+     * }
+     * ```
+     */
     suspend operator fun invoke() : ModelResult<ModelWotyFofiData, ModelError> {
         val schoolCycleId =
             preference.getIdCycleSchool() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return runCatching {getListWotyFofiRepository.getList(schoolCycleId)}.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
-        )
+        return getListWotyFofiRepository.getList(schoolCycleId)
 
     }
 }

@@ -8,13 +8,65 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
 
+/**
+ * Caso de uso para obtener la lista de evaluaciones de un estudiante.
+ * Encapsula la lógica de negocio para recuperar las evaluaciones de un estudiante específico,
+ * permitiendo filtrar por tipo de trabajo, campo formativo y rango de fechas.
+ *
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
+ * @property getListEvaluationsStudentRepository El repositorio para obtener la lista de evaluaciones del estudiante.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class GetListEvaluationsStudentUseCase(
     private val preference: PreferenceUseCase,
     private val getListEvaluationsStudentRepository: GetListEvaluationsStudentRepository,
 ) {
+    /**
+     * Ejecuta el proceso de obtención de la lista de evaluaciones de un estudiante.
+     * Obtiene los IDs necesarios desde las preferencias (ciclo escolar y parcial) y recupera
+     * las evaluaciones del estudiante con los filtros proporcionados.
+     *
+     * @param workTypeId El identificador del tipo de trabajo. Requerido.
+     * @param studentId El identificador único del estudiante. Requerido.
+     * @param formativeFieldId El identificador del campo formativo. Requerido.
+     * @param workDate La fecha específica de trabajo para filtrar (formato de fecha). Opcional.
+     * @param workDateFrom La fecha de inicio del rango para filtrar evaluaciones. Opcional.
+     * @param workDateTo La fecha de fin del rango para filtrar evaluaciones. Opcional.
+     * @return Un [ModelResult] que contiene la lista de evaluaciones del estudiante
+     * ([List<ModelEvaluationsStudent>]) en caso de éxito, o un estado de error específico en caso de fallo.
+     *
+     * Posibles errores:
+     * - [LocalModelError.USER_INCOMPLETE_DATA] si faltan datos necesarios (schoolCycleId, partialId, studentId, workTypeId o formativeFieldId)
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] si no se encuentran evaluaciones con los criterios proporcionados
+     *
+     * @example
+     * ```
+     * // Obtener todas las evaluaciones de un estudiante
+     * val result = getListEvaluationsStudentUseCase(
+     *     workTypeId = 1,
+     *     studentId = 123,
+     *     formativeFieldId = 5
+     * )
+     *
+     * // Obtener evaluaciones en un rango de fechas
+     * val resultWithDates = getListEvaluationsStudentUseCase(
+     *     workTypeId = 1,
+     *     studentId = 123,
+     *     formativeFieldId = 5,
+     *     workDateFrom = "2024-01-01",
+     *     workDateTo = "2024-12-31"
+     * )
+     *
+     * when (result) {
+     *     is SuccessResult -> println("Evaluaciones encontradas: ${result.data.size}")
+     *     is ErrorResult -> println("Error: ${result.error}")
+     * }
+     * ```
+     */
     suspend operator fun invoke(
         workTypeId: Int?,
         studentId: Int?,
@@ -31,30 +83,15 @@ class GetListEvaluationsStudentUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching {
-            getListEvaluationsStudentRepository.getListEvaluations(
-                schoolCycleId = schoolCycleId,
-                partialId = partialId,
-                formativeFieldId = formativeFieldId,
-                workTypeId = workTypeId,
-                studentId = studentId,
-                workDate = workDate,
-                workDateFrom = workDateFrom,
-                workDateTo = workDateTo
-            )
-        }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
+        return getListEvaluationsStudentRepository.getListEvaluations(
+            schoolCycleId = schoolCycleId,
+            partialId = partialId,
+            formativeFieldId = formativeFieldId,
+            workTypeId = workTypeId,
+            studentId = studentId,
+            workDate = workDate,
+            workDateFrom = workDateFrom,
+            workDateTo = workDateTo
         )
 
     }

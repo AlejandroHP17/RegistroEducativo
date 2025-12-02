@@ -4,13 +4,12 @@ import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.device.DeviceIdHelper
 import com.mx.liftechnology.core.util.location.LocationHelper
 import com.mx.liftechnology.core.util.location.LocationResult
-import com.mx.liftechnology.data.model.auth.ModelGetUserData
+import com.mx.liftechnology.domain.model.auth.UserDomain
 import com.mx.liftechnology.data.repository.auth.LoginRepository
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
 /**
@@ -41,11 +40,11 @@ class LoginUseCase(
      * @param pass La contraseña del usuario.
      * @param remember Indica si la sesión del usuario debe ser recordada.
      * @return Un [ModelResult] que puede ser:
-     * - [SuccessResult<UserLogin>] si el inicio de sesión es exitoso.
+     * - [SuccessResult<UserDomain>] si el inicio de sesión es exitoso.
      * - [ErrorResult<LocalModelError>] si hay un error de validación local (campos vacíos).
      * - [ErrorResult<NetworkModelError>] si hay un error de red o del servidor.
      */
-    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<ModelGetUserData, ModelError> {
+    suspend operator fun invoke (email: String?, pass: String?, remember: Boolean = false): ModelResult<UserDomain, ModelError> {
         // 1. Validación de Lógica de Negocio (Local)
         if (email.isNullOrBlank() || pass.isNullOrBlank()) {
             return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
@@ -67,26 +66,20 @@ class LoginUseCase(
         val deviceId = deviceIdHelper.getDeviceId()
 
         // 3. Ejecución de la llamada de red
-        return runCatching { repositoryLogin.login(
+        val result = repositoryLogin.login(
             email = email.lowercase().trim(),
             password = pass,
             latitude = latitude,
             longitude = longitude,
             imei = deviceId
-        ) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        preference.setAccessToken(result.data.accessToken)
-                        preference.setRefreshToken(result.data.refreshToken)
-                        getDataUserUseCase.invoke(remember)
-                    }
-                    is ErrorResult -> {
-                        ErrorResult(result.error) // Mapea el error de la capa de datos al dominio
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) } // Captura excepciones como problemas de conectividad
         )
+        return when (result) {
+            is SuccessResult -> {
+                preference.setAccessToken(result.data.accessToken)
+                preference.setRefreshToken(result.data.refreshToken)
+                getDataUserUseCase.invoke(remember)
+            }
+            is ErrorResult -> result
+        }
     }
 }

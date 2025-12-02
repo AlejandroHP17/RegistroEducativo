@@ -2,29 +2,42 @@ package com.mx.liftechnology.domain.usecase.formativeField
 
 import com.mx.liftechnology.data.repository.formativeField.DeleteFormativeFieldRepository
 import com.mx.liftechnology.data.util.ModelError
-import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
 
+/**
+ * Caso de uso para eliminar un campo formativo del sistema.
+ * Encapsula la lógica de negocio para eliminar un campo formativo mediante su identificador.
+ *
+ * @property deleteFormativeFieldRepository El repositorio para las operaciones de eliminación de campos formativos.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class DeleteFormativeFieldsUseCase(
     private val deleteFormativeFieldRepository: DeleteFormativeFieldRepository
 ) {
 
+    /**
+     * Ejecuta el proceso de eliminación de un campo formativo.
+     *
+     * @param fieldId El identificador único del campo formativo a eliminar.
+     * @return Un [ModelResult] que contiene un mensaje de confirmación en caso de éxito,
+     * o un estado de error específico en caso de fallo.
+     *
+     * Posibles errores:
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] de validación si el campo formativo no existe o no se puede eliminar
+     *
+     * @example
+     * ```
+     * val result = deleteFormativeFieldsUseCase(456)
+     * when (result) {
+     *     is SuccessResult -> println("Campo formativo eliminado: ${result.data}")
+     *     is ErrorResult -> println("Error: ${result.error}")
+     * }
+     * ```
+     */
     suspend operator fun invoke (fieldId: Int): ModelResult<String, ModelError>{
-        return runCatching { deleteFormativeFieldRepository.delete(fieldId) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
-        )
+        return deleteFormativeFieldRepository.delete(fieldId)
     }
 }

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.formativeField
 
-import com.mx.liftechnology.data.model.formativeField.FormativeFieldData
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
@@ -21,7 +21,7 @@ class RegisterFormativeFieldsWithValidationUseCase(
     private val registerFormativeFieldsBulkUseCase: RegisterFormativeFieldsBulkUseCase
 ) {
     data class ValidationResult(
-        val validationResult: ModelValidationResult<FormativeFieldData>,
+        val validationResult: ModelValidationResult<FormativeFieldDomain>,
         val updatedListAdapter: MutableList<ModelSpinnersWorkMethods>?
     )
 

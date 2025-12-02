@@ -6,7 +6,6 @@ import com.mx.liftechnology.data.repository.schoolCycle.school.GetCctRepository
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ResultSchoolDomain
@@ -37,24 +36,17 @@ class GetCctUseCase(
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la información de la escuela o un estado de error.
      */
     suspend operator fun invoke(cct: String): ModelResult<ResultSchoolDomain, ModelError> {
-        return runCatching { getCctRepository.getCct(cct) }.fold(
-            onSuccess = { result ->
-                when (result) {
-                    is SuccessResult -> {
-                        val response = ResultSchoolDomain(
-                            buildLogicSpinner(result.data),
-                            result.data
-                        )
-                        SuccessResult(response)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN) }
-        )
+        val result = getCctRepository.getCct(cct)
+        return when (result) {
+            is SuccessResult -> {
+                val response = ResultSchoolDomain(
+                    buildLogicSpinner(result.data),
+                    result.data
+                )
+                SuccessResult(response)
+            }
+            is ErrorResult -> result
+        }
     }
 
 

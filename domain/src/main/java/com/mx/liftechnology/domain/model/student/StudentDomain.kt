@@ -39,6 +39,29 @@ data class StudentDomain(
 ) : Parcelable
 
 /**
+ * Función de extensión para convertir un [StudentData] (modelo de datos) a un [StudentDomain] (modelo de dominio).
+ *
+ * @receiver Un objeto [StudentData] nulable.
+ * @return Un objeto [StudentDomain] equivalente, o null si el receiver es null.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+fun StudentData?.toStudentDomain(): StudentDomain? {
+    return this?.let {
+        StudentDomain(
+            studentId = it.studentId,
+            curp = it.curp,
+            birthday = it.birthday,
+            phoneNumber = it.phoneNumber,
+            userId = it.userId,
+            name = it.name,
+            lastName = it.lastName,
+            secondLastName = it.secondLastName
+        )
+    }
+}
+
+/**
  * Función de extensión para convertir una lista de [StudentData] (modelo de datos)
  * a una lista de [StudentDomain] (modelo de dominio).
  *
@@ -48,18 +71,5 @@ data class StudentDomain(
  * @version 1.0.0
  */
 fun List<StudentData?>?.toStudentDomainList(): List<StudentDomain> {
-    return this?.mapNotNull { response ->
-        response?.let {
-            StudentDomain(
-                studentId = response.studentId,
-                curp = response.curp,
-                birthday = response.birthday,
-                phoneNumber = response.phoneNumber,
-                userId = response.userId,
-                name = response.name,
-                lastName = response.lastName,
-                secondLastName = response.secondLastName
-            )
-        }
-    } ?: emptyList()
+    return this?.mapNotNull { it.toStudentDomain() } ?: emptyList()
 }

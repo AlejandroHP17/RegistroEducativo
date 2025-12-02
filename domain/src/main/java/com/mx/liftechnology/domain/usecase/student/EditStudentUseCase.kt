@@ -3,21 +3,33 @@ package com.mx.liftechnology.domain.usecase.student
 import com.mx.liftechnology.core.network.api.RequestEditStudent
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.student.StudentData
+import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.toStudentDomain
 import com.mx.liftechnology.data.repository.student.EditStudentRepository
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 
+/**
+ * Caso de uso para editar la información de un estudiante existente.
+ * Encapsula la lógica de negocio para actualizar los datos de un estudiante mediante su identificador.
+ *
+ * @property editStudentRepository El repositorio para las operaciones de edición de estudiantes.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 class EditStudentUseCase (
     private val editStudentRepository: EditStudentRepository,
     private val preference: PreferenceUseCase
 ){
     /**
-     * Ejecuta el proceso de registro de un estudiante.
+     * Ejecuta el proceso de edición de un estudiante.
+     * Valida que existan los datos necesarios (ID de profesor, ciclo escolar e ID del estudiante)
+     * y actualiza la información del estudiante en el sistema.
      *
      * @param name El nombre del estudiante.
      * @param lastName El apellido paterno del estudiante.
@@ -25,7 +37,31 @@ class EditStudentUseCase (
      * @param curp La CURP del estudiante.
      * @param birthday La fecha de nacimiento del estudiante.
      * @param phoneNumber El número de teléfono del estudiante.
-     * @return Un [ModelResult] que indica el resultado de la operación de registro.
+     * @param studentId El identificador único del estudiante a editar.
+     * @return Un [ModelResult] que contiene los datos actualizados del estudiante ([StudentDomain]) en caso de éxito,
+     * o un estado de error específico en caso de fallo.
+     *
+     * Posibles errores:
+     * - [LocalModelError.USER_INCOMPLETE_DATA] si faltan datos necesarios (teacherId, cycleSchoolId o studentId)
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] de validación si los datos proporcionados no son válidos
+     *
+     * @example
+     * ```
+     * val result = editStudentUseCase(
+     *     name = "Juan",
+     *     lastName = "Pérez",
+     *     secondLastName = "García",
+     *     curp = "PEGJ950101HDFRRN01",
+     *     birthday = "1995-01-01",
+     *     phoneNumber = "5551234567",
+     *     studentId = 123
+     * )
+     * when (result) {
+     *     is SuccessResult -> println("Estudiante actualizado: ${result.data?.name}")
+     *     is ErrorResult -> println("Error: ${result.error}")
+     * }
+     * ```
      */
     suspend operator fun invoke(
         name: String,
@@ -35,7 +71,7 @@ class EditStudentUseCase (
         birthday: String,
         phoneNumber: String,
         studentId: Int?
-    ): ModelResult<StudentData?, ModelError> {
+    ): ModelResult<StudentDomain?, ModelError> {
         val teacherId= preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()
 
@@ -55,19 +91,12 @@ class EditStudentUseCase (
             isActive = true
         )
 
-        return runCatching { editStudentRepository.edit(request, studentId) }.fold(
-            onSuccess = { result ->
-                when(result){
-                    is SuccessResult -> {
-                        SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
-        )
+        val result = editStudentRepository.edit(request, studentId)
+        return when (result) {
+            is com.mx.liftechnology.data.util.SuccessResult -> {
+                com.mx.liftechnology.data.util.SuccessResult(result.data.toStudentDomain())
+            }
+            is com.mx.liftechnology.data.util.ErrorResult -> result
+        }
     }
 }

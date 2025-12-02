@@ -1,6 +1,6 @@
 package com.mx.liftechnology.domain.usecase.auth
 
-import com.mx.liftechnology.data.model.auth.ModelGetUserData
+import com.mx.liftechnology.domain.model.auth.UserDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 
@@ -34,7 +34,7 @@ class LoginWithValidationUseCase(
         email: String?,
         pass: String?,
         remember: Boolean = false
-    ): ModelValidationResult<ModelGetUserData> {
+    ): ModelValidationResult<UserDomain> {
         // 1. Validar todos los campos
         val emailState = validateFieldsUseCase.validateEmailCompose(email)
         val passState = validateFieldsUseCase.validatePassCompose(pass)

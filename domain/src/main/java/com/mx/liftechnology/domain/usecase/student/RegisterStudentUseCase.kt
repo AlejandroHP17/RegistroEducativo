@@ -6,14 +6,13 @@
 package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.data.model.student.StudentData
+import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.toStudentDomain
 import com.mx.liftechnology.data.repository.student.RegisterStudentRepository
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
-import com.mx.liftechnology.data.util.NetworkModelError
-import com.mx.liftechnology.data.util.SuccessResult
 
 /**
  * Caso de uso para registrar un único estudiante.
@@ -48,14 +47,14 @@ class RegisterStudentUseCase(
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ModelResult<StudentData?, ModelError> {
+    ): ModelResult<StudentDomain?, ModelError> {
         val teacherId = preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()
 
         if(teacherId == null || cycleSchoolId == null ) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
-        return runCatching { crudStudentRepository.register(
+        val result = crudStudentRepository.register(
             name = name.trim(),
             lastName = lastName.trim(),
             secondLastName = secondLastName.trim(),
@@ -65,19 +64,12 @@ class RegisterStudentUseCase(
             teacherId = teacherId,
             schoolCycleId = cycleSchoolId,
             isActive = true
-        ) }.fold(
-            onSuccess = { result ->
-                when(result){
-                    is SuccessResult -> {
-                        SuccessResult(result.data)
-                    }
-
-                    is ErrorResult -> {
-                        ErrorResult(result.error)
-                    }
-                }
-            },
-            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
         )
+        return when (result) {
+            is com.mx.liftechnology.data.util.SuccessResult -> {
+                com.mx.liftechnology.data.util.SuccessResult(result.data.toStudentDomain())
+            }
+            is com.mx.liftechnology.data.util.ErrorResult -> result
+        }
     }
 }
