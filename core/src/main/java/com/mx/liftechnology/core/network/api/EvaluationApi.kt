@@ -44,14 +44,14 @@ data class RequestWorkTypeEvaluations(
     @SerializedName("school_cycle_id")
     val schoolCycleId: Int?,
     @SerializedName("grades")
-    val grades: List<RequestListGrades>
+    val grades: List<RequestListGrades>,
 )
 
 data class RequestListGrades(
     @SerializedName("student_id")
     val studentId: Int,
     @SerializedName("grade")
-    val grade: Double?
+    val grade: Double?,
 )
 
 data class ResponseWorkTypeEvaluations(
@@ -70,7 +70,7 @@ data class ResponseWorkTypeEvaluations(
     @SerializedName("work_type_name")
     val workTypeName: String,
     @SerializedName("name")
-    val nameWork: String
+    val nameWork: String,
 )
 
 data class ResponseCreatedWorks(

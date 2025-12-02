@@ -8,6 +8,8 @@ package com.mx.liftechnology.core.preference
 import android.content.Context
 import android.content.SharedPreferences
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -29,14 +31,12 @@ val preferenceModule = module {
     /**
      * Provee una instancia singleton de [PreferenceRepository].
      */
-    single<PreferenceRepository> {
-        PreferenceRepositoryImpl(get())
+    singleOf(::PreferenceRepositoryImpl){
+        bind<PreferenceRepository>()
     }
 
     /**
      * Provee una instancia singleton de [PreferenceUseCase].
      */
-    single {
-        PreferenceUseCase(get())
-    }
+    singleOf(::PreferenceUseCase)
 }

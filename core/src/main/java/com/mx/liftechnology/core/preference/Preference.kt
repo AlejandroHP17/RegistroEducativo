@@ -6,6 +6,7 @@
 package com.mx.liftechnology.core.preference
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /**
  * Clase sellada que representa una preferencia con tipo seguro.
@@ -42,7 +43,7 @@ sealed class Preference<T> {
         override val key = PreferenceKeys.ACCESS_TOKEN
         override fun get(prefs: SharedPreferences): String? = prefs.getString(key, null)
         override fun set(prefs: SharedPreferences, value: String) {
-            prefs.edit().putString(key, value).apply()
+            prefs.edit { putString(key, value) }
         }
     }
     
@@ -53,7 +54,7 @@ sealed class Preference<T> {
         override val key = PreferenceKeys.REFRESH_TOKEN
         override fun get(prefs: SharedPreferences): String? = prefs.getString(key, null)
         override fun set(prefs: SharedPreferences, value: String) {
-            prefs.edit().putString(key, value).apply()
+            prefs.edit { putString(key, value) }
         }
     }
     
@@ -62,9 +63,9 @@ sealed class Preference<T> {
      */
     object RememberLogin : Preference<Boolean>() {
         override val key = PreferenceKeys.REMEMBER_LOGIN
-        override fun get(prefs: SharedPreferences): Boolean? = prefs.getBoolean(key, false)
+        override fun get(prefs: SharedPreferences): Boolean = prefs.getBoolean(key, false)
         override fun set(prefs: SharedPreferences, value: Boolean) {
-            prefs.edit().putBoolean(key, value).apply()
+            prefs.edit { putBoolean(key, value) }
         }
     }
     
@@ -76,7 +77,7 @@ sealed class Preference<T> {
         override fun get(prefs: SharedPreferences): Int? = 
             if (prefs.contains(key)) prefs.getInt(key, -1) else null
         override fun set(prefs: SharedPreferences, value: Int) {
-            prefs.edit().putInt(key, value).apply()
+            prefs.edit { putInt(key, value) }
         }
     }
     
@@ -88,7 +89,7 @@ sealed class Preference<T> {
         override fun get(prefs: SharedPreferences): Int? = 
             if (prefs.contains(key)) prefs.getInt(key, -1) else null
         override fun set(prefs: SharedPreferences, value: Int) {
-            prefs.edit().putInt(key, value).apply()
+            prefs.edit { putInt(key, value) }
         }
     }
     
@@ -100,7 +101,7 @@ sealed class Preference<T> {
         override fun get(prefs: SharedPreferences): Int? = 
             if (prefs.contains(key)) prefs.getInt(key, -1) else null
         override fun set(prefs: SharedPreferences, value: Int) {
-            prefs.edit().putInt(key, value).apply()
+            prefs.edit { putInt(key, value) }
         }
     }
     
@@ -112,7 +113,7 @@ sealed class Preference<T> {
         override fun get(prefs: SharedPreferences): Int? = 
             if (prefs.contains(key)) prefs.getInt(key, -1) else null
         override fun set(prefs: SharedPreferences, value: Int) {
-            prefs.edit().putInt(key, value).apply()
+            prefs.edit { putInt(key, value) }
         }
     }
     
@@ -135,7 +136,7 @@ sealed class Preference<T> {
         override val key = PreferenceKeys.RANGE_DATES_PARTIAL
         override fun get(prefs: SharedPreferences): String? = prefs.getString(key, null)
         override fun set(prefs: SharedPreferences, value: String) {
-            prefs.edit().putString(key, value).apply()
+            prefs.edit { putString(key, value) }
         }
     }
 }

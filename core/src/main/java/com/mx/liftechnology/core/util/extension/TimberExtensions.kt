@@ -7,6 +7,8 @@ package com.mx.liftechnology.core.util.extension
 
 import timber.log.Timber
 
+const val log = "Desarrollo"
+
 /**
  * Registra un mensaje de información en la consola utilizando Timber.
  * Esta función de extensión toma el nombre de la clase como tag para una fácil identificación.
@@ -16,7 +18,7 @@ import timber.log.Timber
  * @author Pelkidev
  * @version 1.0.0
  */
-inline fun <reified T : Any> T.logInfo(message: String, name: String = "Desarrollo: ") {
+inline fun <reified T : Any> T.logInfo(message: String, name: String = "$log: ") {
         val tag = this::class.java.simpleName
         Timber.tag(tag).i("$name  $message")
 }
@@ -30,16 +32,7 @@ inline fun <reified T : Any> T.logInfo(message: String, name: String = "Desarrol
  * @author Pelkidev
  * @version 1.0.0
  */
-inline fun <reified T : Any> T.logDebug(message: String, name: String = "Desarrollo: ") {
+inline fun <reified T : Any> T.logDebug(message: String, name: String = "$log: ") {
         val tag = this::class.java.simpleName
         Timber.tag(tag).d("$name  $message")
 }
-
-/**
- * @deprecated Usar logInfo() o logDebug() en su lugar. Esta función se mantiene por compatibilidad.
- */
-@Deprecated("Usar logInfo() o logDebug() en su lugar", ReplaceWith("logInfo(message, name)"))
-inline fun <reified T : Any> T.logs(message: String, name: String = "Desarrollo: ") {
-        logInfo(message, name)
-}
-

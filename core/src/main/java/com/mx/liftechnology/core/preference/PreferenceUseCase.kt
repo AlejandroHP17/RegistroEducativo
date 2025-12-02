@@ -6,6 +6,7 @@
 package com.mx.liftechnology.core.preference
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 
 /**
  * Caso de uso para gestionar el acceso a SharedPreferences.
@@ -29,66 +30,6 @@ class PreferenceUseCase(private val preference: PreferenceRepository) {
         get() = preference.getSharedPreferences()
 
     /**
-     * Guarda un valor booleano en las preferencias.
-     *
-     * @param name El nombre de la preferencia a guardar.
-     * @param value El valor a guardar.
-     */
-    fun savePreferenceBoolean(name: String, value: Boolean) {
-        preference.savePreference(name, value)
-    }
-
-    /**
-     * Obtiene un valor booleano de las preferencias.
-     *
-     * @param name El nombre de la preferencia a obtener.
-     * @return El valor booleano guardado, o `false` si no se encuentra.
-     */
-    fun getPreferenceBoolean(name: String): Boolean {
-        return preference.getPreference(name, false)
-    }
-
-    /**
-     * Guarda un valor de tipo String en las preferencias.
-     *
-     * @param name El nombre de la preferencia a guardar.
-     * @param value El valor a guardar.
-     */
-    fun savePreferenceString(name: String, value: String?) {
-        preference.savePreference(name, value)
-    }
-
-    /**
-     * Obtiene un valor de tipo String de las preferencias.
-     *
-     * @param name El nombre de la preferencia a obtener.
-     * @return El valor de tipo String guardado, o `null` si no se encuentra.
-     */
-    fun getPreferenceString(name: String): String? {
-        return preference.getPreference(name, null)
-    }
-
-    /**
-     * Guarda un valor entero en las preferencias.
-     *
-     * @param name El nombre de la preferencia a guardar.
-     * @param value El valor a guardar.
-     */
-    fun savePreferenceInt(name: String, value: Int?) {
-        preference.savePreference(name, value)
-    }
-
-    /**
-     * Obtiene un valor entero de las preferencias.
-     *
-     * @param name El nombre de la preferencia a obtener.
-     * @return El valor entero guardado, o `-1` si no se encuentra.
-     */
-    fun getPreferenceInt(name: String): Int? {
-        return preference.getPreference(name, -1)
-    }
-
-    /**
      * Limpia todas las preferencias guardadas.
      *
      * @return `true` si las preferencias se limpiaron correctamente, `false` en caso contrario.
@@ -96,8 +37,6 @@ class PreferenceUseCase(private val preference: PreferenceRepository) {
     fun cleanPreference(): Boolean {
         return preference.cleanPreference()
     }
-    
-    // ========== Métodos con tipos seguros usando Preference ==========
     
     /**
      * Obtiene el valor de una preferencia usando el sistema de tipos seguros.
@@ -236,7 +175,7 @@ class PreferenceUseCase(private val preference: PreferenceRepository) {
             set(Preference.RangeDatesPartial, range)
         } else {
             // Para eliminar, usamos el método directo
-            prefs.edit().remove(Preference.RangeDatesPartial.key).apply()
+            prefs.edit { remove(Preference.RangeDatesPartial.key) }
         }
     }
     

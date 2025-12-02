@@ -33,7 +33,6 @@ object PreferenceKeys {
     /** Clave para almacenar el ID del parcial seleccionado. */
     const val ID_PARTIAL = "ID_PARTIAL"
 
-
     /** Clave para almacenar el rango de fechas del parcial activo. */
     const val RANGE_DATES_PARTIAL= "RANGE_DATES_PARTIAL"
 }

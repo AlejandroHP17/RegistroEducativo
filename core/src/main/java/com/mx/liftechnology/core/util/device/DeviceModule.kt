@@ -16,6 +16,7 @@ import org.koin.dsl.module
  * @version 1.0.0
  */
 val deviceModule = module {
+
     /**
      * Provee una instancia singleton de [DeviceIdHelper] para obtener identificadores únicos del dispositivo.
      * Utiliza ANDROID_ID de forma segura para identificar dispositivos de manera única.

@@ -4,15 +4,20 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.net.Uri
-import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.DENIED
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.LOCATION_ERROR
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.MESSAGE
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.NEGATIVE_BUTTON
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.POSITIVE_BUTTON
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.TITLE
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.UNAVAILABLE
+import com.mx.liftechnology.core.util.location.MessageLocationHelper.UNKNOWN_ERROR
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -23,6 +28,17 @@ import kotlin.coroutines.resume
 sealed class LocationResult {
     data class Success(val location: Location) : LocationResult()
     data class Error(val message: String) : LocationResult()
+}
+
+private object MessageLocationHelper{
+    const val TITLE = "Permiso de Ubicación"
+    const val MESSAGE = "Esta aplicación necesita acceso a tu ubicación para funcionar correctamente."
+    const val POSITIVE_BUTTON = "Conceder permiso"
+    const val NEGATIVE_BUTTON = "Cancelar"
+    const val DENIED = "Permiso de ubicación no concedido"
+    const val UNAVAILABLE = "La ubicación no está disponible"
+    const val LOCATION_ERROR = "Error al obtener ubicación:"
+    const val UNKNOWN_ERROR = "Error desconocido"
 }
 
 /**
@@ -97,48 +113,13 @@ class LocationHelper(private val context: Context) {
 
     private fun showPermissionRationaleDialog(permissionLauncher: ActivityResultLauncher<String>) {
         AlertDialog.Builder(context)
-            .setTitle("Permiso de Ubicación")
-            .setMessage("Esta aplicación necesita acceso a tu ubicación para funcionar correctamente.")
-            .setPositiveButton("Conceder permiso") { _, _ ->
+            .setTitle(TITLE)
+            .setMessage(MESSAGE)
+            .setPositiveButton(POSITIVE_BUTTON) { _, _ ->
                 permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
             }
-            .setNegativeButton("Cancelar") { _, _ ->
+            .setNegativeButton(NEGATIVE_BUTTON) { _, _ ->
             }
-            .show()
-    }
-
-    /**
-     * Gestiona el resultado de una solicitud de permiso.
-     *
-     * @param isGranted `true` si el permiso fue concedido, `false` en caso contrario.
-     * @param callback El callback para notificar el resultado.
-     */
-    fun handlePermissionResult(isGranted: Boolean, callback: LocationCallback) {
-        if (isGranted) {
-            getLastKnownLocation(callback)
-        } else {
-            if (context is Activity && !ActivityCompat.shouldShowRequestPermissionRationale(
-                    context,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            ) {
-                showSettingsDialog()
-            } else {
-                callback.onPermissionDenied()
-            }
-        }
-    }
-
-    private fun showSettingsDialog() {
-        AlertDialog.Builder(context)
-            .setTitle("Permiso Necesario")
-            .setMessage("Para usar esta aplicación, habilita el permiso de ubicación desde Configuración.")
-            .setPositiveButton("Abrir Configuración") { _, _ ->
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                intent.data = Uri.fromParts("package", context.packageName, null)
-                context.startActivity(intent)
-            }
-            .setNegativeButton("Cancelar", null)
             .show()
     }
 
@@ -161,7 +142,7 @@ class LocationHelper(private val context: Context) {
      */
     suspend fun getCurrentLocation(): LocationResult = suspendCancellableCoroutine { continuation ->
         if (!hasLocationPermission()) {
-            continuation.resume(LocationResult.Error("Permiso de ubicación no concedido"))
+            continuation.resume(LocationResult.Error(DENIED))
             return@suspendCancellableCoroutine
         }
 
@@ -169,10 +150,10 @@ class LocationHelper(private val context: Context) {
             if (location != null) {
                 continuation.resume(LocationResult.Success(location))
             } else {
-                continuation.resume(LocationResult.Error("La ubicación no está disponible"))
+                continuation.resume(LocationResult.Error(UNAVAILABLE))
             }
         }.addOnFailureListener { exception ->
-            continuation.resume(LocationResult.Error("Error al obtener ubicación: ${exception.message ?: "Error desconocido"}"))
+            continuation.resume(LocationResult.Error("$LOCATION_ERROR ${exception.message ?: UNKNOWN_ERROR}"))
         }
     }
 }

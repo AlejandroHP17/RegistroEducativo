@@ -38,5 +38,4 @@ class TokenProvider(private val preference: PreferenceUseCase) {
     fun closeSession() =
         preference.cleanPreference()
 
-
 }

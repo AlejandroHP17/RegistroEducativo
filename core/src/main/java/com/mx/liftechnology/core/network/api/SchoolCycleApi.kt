@@ -48,7 +48,9 @@ interface SchoolCycleApi {
     suspend fun registerListPartial(@Body request: RequestRegisterPartial): Response<ResponseGeneric<List<ResponseRegisterPartial>>>
 }
 
-// Data classes for requests and responses
+/**
+ * Sección para registro escolar
+ * */
 data class RequestRegisterSchoolCycle(
     @SerializedName("teacher_id")
     val teacherId: Int,
@@ -93,6 +95,9 @@ data class ResponseRegisterSchoolCycle(
     val teacherName: String,
 )
 
+/**
+ * Sección para obtener la informacion de la escuela por CCT
+ * */
 data class ResponseCctSchool(
     @SerializedName("cct")
     val cct: String,
@@ -129,6 +134,9 @@ data class ResponsePeriodCatalog(
     val createdAt: String
 )
 
+/**
+ * Sección para obtener los grupos del profesor
+ * */
 data class ResponseGroupTeacher(
     @SerializedName("teacher_id")
     val teacherId: Int,
@@ -156,6 +164,9 @@ data class ResponseGroupTeacher(
     val createdAt: String
 )
 
+/**
+ * Sección para el registro de parciales al ciclo escolar
+ * */
 data class RequestRegisterPartial(
     @SerializedName("partials")
     val listPartials: List<RequestPartials?>
@@ -187,6 +198,9 @@ data class ResponseRegisterPartial(
     val createdAt: String?
 )
 
+/**
+ * Sección para obtener los parciales del ciclo escolar activo
+ * */
 data class ResponseGetPartials(
     @SerializedName("school_cycle_id")
     val schoolCycleId: Int,
@@ -201,4 +215,3 @@ data class ResponseGetPartials(
     @SerializedName("created_at")
     val createdAt: String
 )
-

@@ -65,14 +65,12 @@ class ConnectionErrorInterceptor : Interceptor {
             logInfo("Conexión exitosa - Status: ${response.code}")
             return response
         } catch (e: IOException) {
-            // Log detallado del error de conexión para diagnóstico
-            // Nota: El error se relanza para que sea manejado por la capa superior
             logInfo("  ❌ Conexión fallida")
             logInfo("  Tipo de error: ${e.javaClass.simpleName}")
             logInfo("  Mensaje: ${e.message ?: "Sin mensaje"}")
             logInfo("  Causa: ${e.cause?.message ?: "N/A"}")
             logInfo("  Stack trace: ${e.stackTrace.take(3).joinToString("\n    ") { it.toString() }}")
-            throw e // Relanzar para que sea manejado por la capa de repositorio
+            throw e
         }
     }
 }

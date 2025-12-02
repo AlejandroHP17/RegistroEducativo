@@ -34,7 +34,9 @@ interface AuthApi {
     suspend fun getUserData(): Response<ResponseGeneric<ResponseDataUser>>
 }
 
-// Data classes for requests and responses
+/**
+ * Sección para el login
+ * */
 data class RequestLogin(
     @SerializedName("email")
     val email: String,
@@ -57,6 +59,9 @@ data class ResponseLogin(
     val tokenType: String?,
 )
 
+/**
+ * Sección para el registro de usuario
+ * */
 data class RequestRegisterUser(
     @SerializedName("email")
     val email: String,
@@ -87,6 +92,9 @@ data class ResponseRegisterUser(
     val createdAt: String
 )
 
+/**
+ * Sección para obtener los datos del usuario
+ * */
 data class ResponseDataUser(
     @SerializedName("email")
     val email: String,
@@ -107,4 +115,3 @@ data class ResponseDataUser(
     @SerializedName("created_at")
     val createdAt: String,
 )
-

@@ -7,7 +7,6 @@ package com.mx.liftechnology.core.util.device
 
 import android.content.Context
 import android.provider.Settings
-import android.util.Log
 
 /**
  * Clase de ayuda para obtener identificadores únicos del dispositivo de forma segura.
@@ -54,7 +53,6 @@ class DeviceIdHelper(private val context: Context) {
                 androidId
             }
         } catch (e: Exception) {
-            Log.e("DeviceIdHelper", "Error al obtener ANDROID_ID: ${e.message}", e)
             getFallbackDeviceId()
         }
     }

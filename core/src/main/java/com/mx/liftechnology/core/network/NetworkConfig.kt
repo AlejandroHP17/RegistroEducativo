@@ -14,12 +14,12 @@ package com.mx.liftechnology.core.network
  */
 object NetworkConfig {
     /** Timeout para establecer la conexión, en segundos. */
-    const val CONNECT_TIMEOUT_SECONDS = 20L
+    const val CONNECT_TIMEOUT_SECONDS = 15L
 
     /** Timeout para leer datos de la conexión, en segundos. */
-    const val READ_TIMEOUT_SECONDS = 20L
+    const val READ_TIMEOUT_SECONDS = 155L
 
     /** Timeout para escribir datos en la conexión, en segundos. */
-    const val WRITE_TIMEOUT_SECONDS = 20L
+    const val WRITE_TIMEOUT_SECONDS = 15L
 }
 

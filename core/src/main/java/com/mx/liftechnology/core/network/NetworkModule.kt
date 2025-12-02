@@ -7,6 +7,7 @@ package com.mx.liftechnology.core.network
 
 import com.mx.liftechnology.core.BuildConfig
 import com.mx.liftechnology.core.network.environment.Environment
+import com.mx.liftechnology.core.util.extension.logDebug
 import com.mx.liftechnology.core.util.session.SessionManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,7 +29,7 @@ val networkModule = module {
     /**
      * Provee una instancia singleton de [TokenProvider].
      */
-    single { TokenProvider(get()) }
+    singleOf(::TokenProvider)
 
     /**
      * Provee una instancia singleton de [HttpLoggingInterceptor] para el registro de las peticiones.
@@ -37,7 +38,7 @@ val networkModule = module {
     single {
         val logging = HttpLoggingInterceptor { message ->
             if (!message.startsWith("<!DOCTYPE html>")) {
-                timber.log.Timber.d(message)
+                logDebug(message)
             }
         }.apply {
             level = if (BuildConfig.DEBUG) {
@@ -59,12 +60,12 @@ val networkModule = module {
      * Este interceptor loguea información detallada de las peticiones y captura errores de conexión (IOException)
      * para facilitar el debugging de problemas de red de bajo nivel.
      */
-    single { ConnectionErrorInterceptor() }
+    singleOf ( ::ConnectionErrorInterceptor )
 
     /**
      * Provee una instancia singleton de [ErrorHandlingInterceptor] para manejo centralizado de errores HTTP.
      */
-    single { ErrorHandlingInterceptor() }
+    singleOf ( ::ErrorHandlingInterceptor )
 
     /**
      * Provee una instancia singleton de [OkHttpClient], configurado con los interceptores.
@@ -93,7 +94,6 @@ val networkModule = module {
      */
     single {
         val baseUrl = Environment.URL_BASE
-        timber.log.Timber.d("NetworkModule: Configurando Retrofit con URL base: $baseUrl")
         Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(get())
