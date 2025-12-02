@@ -14,8 +14,8 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.schoolCycle.ListPartialToConvertModelDialogGroupPartialDomains
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.toDialogGroupPartialDomainList
+import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
 
 /**
  * Caso de uso para obtener la lista de parciales del menú.
@@ -35,10 +35,10 @@ class GetListPartialMenuUseCase (
      * Ejecuta el proceso para obtener la lista de parciales.
      * Construye la petición, la envía a través del repositorio y transforma la respuesta en un estado de la UI.
      *
-     * @return Un [ModelResult] que contiene la lista de parciales ([ModelDialogGroupPartialDomain]) en caso de éxito,
+     * @return Un [ModelResult] que contiene la lista de parciales ([DialogGroupPartialDomain]) en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-     suspend operator fun invoke(): ModelResult<List<ModelDialogGroupPartialDomain>, ModelError> {
+     suspend operator fun invoke(): ModelResult<List<DialogGroupPartialDomain>, ModelError> {
         val cycleSchoolId =
             preference.getIdCycleSchool() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA
@@ -48,7 +48,7 @@ class GetListPartialMenuUseCase (
              onSuccess = { result ->
                  when (result){
                      is SuccessResult -> {
-                         val convertedResult = result.data.ListPartialToConvertModelDialogGroupPartialDomains
+                         val convertedResult = result.data.toDialogGroupPartialDomainList
                          SuccessResult(convertedResult)
                      }
                      is ErrorResult -> {

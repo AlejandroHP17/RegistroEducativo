@@ -14,8 +14,8 @@ import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.student.toModelStudentList
+import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.toStudentDomainList
 
 /**
  * Caso de uso para obtener la lista de estudiantes para el registro de una nueva asignación.
@@ -37,7 +37,7 @@ class GetListStudentAssignmentUseCase (
      * @return Un [ModelResult] que contiene la lista de estudiantes formateada para el registro de asignación,
      * o un estado de error si la operación falla.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>?, ModelError> {
+    suspend operator fun invoke(): ModelResult<List<StudentDomain>?, ModelError> {
         val cycleSchoolId =
             preference.getIdCycleSchool()
 
@@ -50,7 +50,7 @@ class GetListStudentAssignmentUseCase (
                 when(result){
                     is SuccessResult -> {
                         if (result.data.isNullOrEmpty()) ErrorResult(LocalModelError.EMPTY)
-                        else SuccessResult(result.data.toModelStudentList())
+                        else SuccessResult(result.data.toStudentDomainList())
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)

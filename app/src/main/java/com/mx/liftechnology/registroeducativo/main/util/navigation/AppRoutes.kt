@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.util.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 
 /**
  * Objeto centralizado que contiene todas las rutas de la aplicación organizadas por módulo.
@@ -60,45 +60,45 @@ object AppRoutes {
         }
 
         /**
-         * Crea la ruta para la pantalla de registro de estudiante, pasando un objeto [ModelStudentDomain] como parámetro.
+         * Crea la ruta para la pantalla de registro de estudiante, pasando un objeto [StudentDomain] como parámetro.
          *
          * @param student El objeto estudiante a pasar (opcional, para edición).
          * @return La ruta completa con el estudiante serializado en formato JSON.
          */
-        fun registerStudent(student: ModelStudentDomain?): String {
+        fun registerStudent(student: StudentDomain?): String {
             val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "registerStudent?student=$studentJson"
         }
 
         /**
-         * Crea la ruta para la pantalla de asignación de estudiante, pasando un objeto [ModelStudentDomain] como parámetro.
+         * Crea la ruta para la pantalla de asignación de estudiante, pasando un objeto [StudentDomain] como parámetro.
          *
          * @param student El objeto estudiante a pasar.
          * @return La ruta completa con el estudiante serializado en formato JSON.
          */
-        fun assignmentStudent(student: ModelStudentDomain?): String {
+        fun assignmentStudent(student: StudentDomain?): String {
             val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "assignment?student=$studentJson"
         }
 
         /**
-         * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [ModelFormatFormativeFieldsDomain] como parámetro.
+         * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [FormativeFieldDomain] como parámetro.
          *
          * @param subject El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun assignmentSubject(subject: ModelFormatFormativeFieldsDomain?): String {
+        fun assignmentSubject(subject: FormativeFieldDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "assignment?subject=$subjectJson"
         }
 
         /**
-         * Crea la ruta para la pantalla de registro de asignación, pasando un objeto [ModelFormatFormativeFieldsDomain] como parámetro.
+         * Crea la ruta para la pantalla de registro de asignación, pasando un objeto [FormativeFieldDomain] como parámetro.
          *
          * @param subject El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun registerAssignment(subject: ModelFormatFormativeFieldsDomain?): String {
+        fun registerAssignment(subject: FormativeFieldDomain?): String {
             val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "registerassignment?subject=$subjectJson"
         }

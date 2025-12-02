@@ -43,7 +43,7 @@ import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
@@ -130,7 +130,7 @@ fun CustomCardView() {
 
         RegisterPartialListItem(
             index = 1,
-            date = ModelDatePeriodDomain(
+            date = DatePeriodDomain(
                 position = 1,
                 date = "hola".stringToModelStateOutFieldText(),
                 partialCycleGroup = 0
@@ -551,7 +551,7 @@ fun EvaluationStudentItem(
 @Composable
 fun RegisterPartialListItem(
     index: Int,
-    date: ModelDatePeriodDomain,
+    date: DatePeriodDomain,
     isActive: Boolean = true,
     onDateChange: (Pair<LocalDate?, LocalDate?>) -> Unit,
 ) {

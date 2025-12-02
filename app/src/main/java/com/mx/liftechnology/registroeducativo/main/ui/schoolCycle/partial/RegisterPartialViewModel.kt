@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterPartialWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
@@ -62,7 +62,7 @@ class RegisterPartialViewModel(
         // Actualizaciones de estado simples no necesitan corrutinas
         if (partial.toIntOrNull() != null && partial.toInt() > 0) {
             val list = MutableList(partial.toInt()) { index ->
-                ModelDatePeriodDomain(
+                DatePeriodDomain(
                     position = index,
                     date = "".stringToModelStateOutFieldText(),
                     partialCycleGroup = 0

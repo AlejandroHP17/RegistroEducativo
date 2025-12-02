@@ -9,8 +9,8 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
-import com.mx.liftechnology.domain.model.student.toModelStudentList
+import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.toStudentDomainList
 
 /**
  * Caso de uso para obtener la lista de estudiantes.
@@ -31,7 +31,7 @@ class GetListStudentUseCase(
      *
      * @return Un [ModelResult] que contiene la lista de estudiantes o un estado de error.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelStudentDomain>, ModelError> {
+    suspend operator fun invoke(): ModelResult<List<StudentDomain>, ModelError> {
         val cycleSchoolId =
             preference.getIdCycleSchool() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA
@@ -42,7 +42,7 @@ class GetListStudentUseCase(
                 when(result){
                     is SuccessResult -> {
                         if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
-                        else SuccessResult(result.data.toModelStudentList())
+                        else SuccessResult(result.data.toStudentDomainList())
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)

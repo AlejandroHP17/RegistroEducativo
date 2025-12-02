@@ -23,7 +23,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -72,10 +72,10 @@ fun RegisterEvaluationScreen(
 
     LaunchedEffect(Unit) {
         registerEvaluationViewModel.getListStudent()
-        val formativeField: ModelFormatFormativeFieldsDomain? = if (formativeFieldJson.isNullOrEmpty()) {
+        val formativeField: FormativeFieldDomain? = if (formativeFieldJson.isNullOrEmpty()) {
             null
         } else {
-            Gson().fromJson(formativeFieldJson, ModelFormatFormativeFieldsDomain::class.java)
+            Gson().fromJson(formativeFieldJson, FormativeFieldDomain::class.java)
         }
 
         registerEvaluationViewModel.updateFormativeField(formativeField)

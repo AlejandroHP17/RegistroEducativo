@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -78,7 +78,7 @@ private fun ListFormativeFieldsPreview(){
 
     val dataState = ListFormativeFieldsUiData(
         formativeFieldsList = listOf(
-            ModelFormatFormativeFieldsDomain(
+            FormativeFieldDomain(
                 position = 1,
                 name = "test",
                 percent = "100",

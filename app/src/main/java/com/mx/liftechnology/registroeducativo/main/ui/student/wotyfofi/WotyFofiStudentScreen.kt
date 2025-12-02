@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
@@ -43,10 +43,10 @@ fun WotyFofiStudentScreen(
     val studentJson = backStackEntry.arguments?.getString("student")
 
     LaunchedEffect(Unit) {
-        val student: ModelStudentDomain? = if (studentJson.isNullOrEmpty()) {
+        val student: StudentDomain? = if (studentJson.isNullOrEmpty()) {
             null
         } else {
-            Gson().fromJson(studentJson, ModelStudentDomain::class.java)
+            Gson().fromJson(studentJson, StudentDomain::class.java)
         }
         wotyFofiStudentViewModel.updateStudent(student)
         wotyFofiStudentViewModel.getListWotyFofi()

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.menu
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -29,12 +29,12 @@ class SavePartialMenuUseCase (
      * Si se encuentra un parcial, guarda su ID y rango de fechas en las preferencias.
      *
      * @param listPartial La lista de parciales disponibles para la selección.
-     * @return El [com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain] que fue seleccionado como activo, o `null` si la lista es nula o vacía.
+     * @return El [com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain] que fue seleccionado como activo, o `null` si la lista es nula o vacía.
      */
     operator fun invoke (
         listPartial :
-        List<ModelDialogGroupPartialDomain>?
-    ): ModelDialogGroupPartialDomain?  {
+        List<DialogGroupPartialDomain>?
+    ): DialogGroupPartialDomain?  {
 
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")

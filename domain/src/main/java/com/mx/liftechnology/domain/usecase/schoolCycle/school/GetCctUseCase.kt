@@ -9,8 +9,8 @@ import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
-import com.mx.liftechnology.domain.model.registerschool.ModelResultSchoolDomain
-import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
+import com.mx.liftechnology.domain.model.registerschool.ResultSchoolDomain
+import com.mx.liftechnology.domain.model.registerschool.SchoolSpinnerDomain
 
 /**
  * @file Define el caso de uso para validar una CCT (Clave de Centro de Trabajo) y obtener la información de la escuela.
@@ -36,12 +36,12 @@ class GetCctUseCase(
      * @param cct La Clave de Centro de Trabajo a validar.
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la información de la escuela o un estado de error.
      */
-    suspend operator fun invoke(cct: String): ModelResult<ModelResultSchoolDomain, ModelError> {
+    suspend operator fun invoke(cct: String): ModelResult<ResultSchoolDomain, ModelError> {
         return runCatching { getCctRepository.getCct(cct) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        val response = ModelResultSchoolDomain(
+                        val response = ResultSchoolDomain(
                             buildLogicSpinner(result.data),
                             result.data
                         )
@@ -63,9 +63,9 @@ class GetCctUseCase(
      * Genera listas para el ciclo escolar, el grado y el grupo según el tipo de escuela.
      *
      * @param data Los datos de [com.mx.liftechnology.core.network.api.SchoolCycleApi.ResponseCctSchool] recibidos del repositorio.
-     * @return Un [com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain] que contiene las listas de strings para los spinners.
+     * @return Un [SchoolSpinnerDomain] que contiene las listas de strings para los spinners.
      */
-    private fun buildLogicSpinner(data: ModelCCTData): ModelSpinnerSchoolDomain {
+    private fun buildLogicSpinner(data: ModelCCTData): SchoolSpinnerDomain {
 
         // --- TYPE (Anual, Semestral, etc) ---
         val types = data.periodCatalog
@@ -114,7 +114,7 @@ class GetCctUseCase(
             }
         } else emptyList()
 
-        return ModelSpinnerSchoolDomain(
+        return SchoolSpinnerDomain(
             type = types,
             cycle = cycles,
             grade = grades,

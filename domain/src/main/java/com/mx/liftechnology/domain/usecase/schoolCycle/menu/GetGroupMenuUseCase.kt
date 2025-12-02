@@ -8,9 +8,9 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelInfoStudentGroupDomain
-import com.mx.liftechnology.domain.model.schoolCycle.RGTtoConvertModelDialogStudentGroupDomains
+import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.schoolCycle.InfoStudentGroupDomain
+import com.mx.liftechnology.domain.model.schoolCycle.toDialogStudentGroupDomainList
 
 /**
  * Caso de uso para obtener la lista de grupos del menú, seleccionar uno por defecto y procesar la información.
@@ -31,16 +31,16 @@ class GetGroupMenuUseCase(
      *
      * @return Un [ModelResult] que contiene la información del grupo o un error.
      */
-    suspend operator fun invoke(): ModelResult<ModelInfoStudentGroupDomain, ModelError> {
+    suspend operator fun invoke(): ModelResult<InfoStudentGroupDomain, ModelError> {
         val userId = preference.getIdUserLevel()
         if (userId == null) ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
         return runCatching { menuRepository.getCycleSchool(userId!!) }.fold(
             onSuccess = { result ->
                 when (result) {
                     is SuccessResult -> {
-                        val convertedResult = result.data.RGTtoConvertModelDialogStudentGroupDomains
+                        val convertedResult = result.data.toDialogStudentGroupDomainList
                         SuccessResult(
-                            ModelInfoStudentGroupDomain(
+                            InfoStudentGroupDomain(
                                 listSchool = convertedResult,
                                 infoSchoolSelected = selectOneGroup(convertedResult)
                             )
@@ -61,9 +61,9 @@ class GetGroupMenuUseCase(
      * Si el usuario tiene un grupo seleccionado previamente, lo selecciona desde las preferencias.
      *
      * @param convertedResult La lista de grupos para seleccionar.
-     * @return El [ModelDialogStudentGroupDomain] seleccionado.
+     * @return El [DialogStudentGroupDomain] seleccionado.
      */
-    private fun selectOneGroup(convertedResult: List<ModelDialogStudentGroupDomain>): ModelDialogStudentGroupDomain {
+    private fun selectOneGroup(convertedResult: List<DialogStudentGroupDomain>): DialogStudentGroupDomain {
         return convertedResult.let { itemParent ->
             if (preference.getIdCycleSchool() == -1) {
                 val item = itemParent.firstOrNull { it.item?.cycleSchoolId != null }
@@ -81,13 +81,13 @@ class GetGroupMenuUseCase(
     }
 
     /**
-     * Reconstruye los datos en un nuevo objeto [ModelDialogStudentGroupDomain].
+     * Reconstruye los datos en un nuevo objeto [DialogStudentGroupDomain].
      *
-     * @param convertedResult El objeto [ModelDialogStudentGroupDomain] de origen.
-     * @return El nuevo objeto [ModelDialogStudentGroupDomain] creado.
+     * @param convertedResult El objeto [DialogStudentGroupDomain] de origen.
+     * @return El nuevo objeto [DialogStudentGroupDomain] creado.
      */
-    private fun buildOneInformation(convertedResult: ModelDialogStudentGroupDomain?): ModelDialogStudentGroupDomain {
-        val modelResponse = ModelDialogStudentGroupDomain(
+    private fun buildOneInformation(convertedResult: DialogStudentGroupDomain?): DialogStudentGroupDomain {
+        val modelResponse = DialogStudentGroupDomain(
             selected = convertedResult?.selected,
             item = convertedResult?.item,
             nameItem = convertedResult?.nameItem,

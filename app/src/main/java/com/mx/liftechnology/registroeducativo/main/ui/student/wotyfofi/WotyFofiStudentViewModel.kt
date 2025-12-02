@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
@@ -46,7 +46,7 @@ class WotyFofiStudentViewModel (
      *
      * @param student The new student.
      */
-    fun updateStudent(student: ModelStudentDomain?) {
+    fun updateStudent(student: StudentDomain?) {
         _uiState.update { it.copy(student =  student) }
     }
 

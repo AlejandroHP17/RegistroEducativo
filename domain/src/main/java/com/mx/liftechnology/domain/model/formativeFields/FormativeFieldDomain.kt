@@ -23,7 +23,7 @@ import kotlinx.parcelize.Parcelize
  * @version 1.0.0
  */
 @Parcelize
-data class ModelFormatFormativeFieldsDomain(
+data class FormativeFieldDomain(
     val position:Int,
     var name: String?,
     var percent: String?,
@@ -31,19 +31,19 @@ data class ModelFormatFormativeFieldsDomain(
 ): Parcelable
 
 /**
- * Función de extensión para convertir una lista de [FormativeFieldApi.ResponseGetListFormativeField] (modelo de red)
- * a una lista de [ModelFormatFormativeFieldsDomain] (modelo de dominio).
+ * Función de extensión para convertir una lista de [FormativeFieldData] (modelo de datos)
+ * a una lista de [FormativeFieldDomain] (modelo de dominio).
  *
- * @receiver Una lista nulable de objetos [FormativeFieldApi.ResponseGetListFormativeField].
- * @return Una lista de [ModelFormatFormativeFieldsDomain], donde los elementos nulos de la entrada han sido omitidos.
+ * @receiver Una lista nulable de objetos [FormativeFieldData].
+ * @return Una lista de [FormativeFieldDomain], donde los elementos nulos de la entrada han sido omitidos.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<FormativeFieldData?>?.toModelListFormativeFields() :List<ModelFormatFormativeFieldsDomain>{
+fun List<FormativeFieldData?>?.toFormativeFieldDomainList() :List<FormativeFieldDomain>{
     return this?.mapIndexedNotNull { index, response ->
         response?.let {
-            ModelFormatFormativeFieldsDomain(
+            FormativeFieldDomain(
                 position = index,
                 name = it.name,
                 percent = null,

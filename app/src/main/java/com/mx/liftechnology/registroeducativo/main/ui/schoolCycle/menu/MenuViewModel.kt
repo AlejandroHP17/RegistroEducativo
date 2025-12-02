@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlRegisterUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetGroupMenuUseCase
@@ -114,7 +114,7 @@ class MenuViewModel(
      *
      * @param nameItem The selected group.
      */
-    fun updateGroup(nameItem: ModelDialogStudentGroupDomain) {
+    fun updateGroup(nameItem: DialogStudentGroupDomain) {
         viewModelScope.launch {
             // Actualizaciones de estado simples no necesitan dispatcher específico
             _dialogState.update { it.copy(studentGroupItem = nameItem) }
@@ -234,7 +234,7 @@ class MenuViewModel(
      *
      * @param partialItem The selected partial.
      */
-    fun updatePartial(partialItem: ModelDialogGroupPartialDomain?) {
+    fun updatePartial(partialItem: DialogGroupPartialDomain?) {
         viewModelScope.launch {
             // Actualizaciones de estado simples no necesitan dispatcher específico
             _dialogState.update {

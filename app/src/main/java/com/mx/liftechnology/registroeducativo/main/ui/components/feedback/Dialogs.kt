@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
@@ -99,14 +99,14 @@ fun AlertDialogConfirm(
 @Composable
 fun AlertDialogMenu(
     uiDialog: MenuUiDialog,
-    itemSelectedReturn: (ModelDialogStudentGroupDomain) -> Unit,
-    itemSelectedPartialReturn: (ModelDialogGroupPartialDomain?) -> Unit,
+    itemSelectedReturn: (DialogStudentGroupDomain) -> Unit,
+    itemSelectedPartialReturn: (DialogGroupPartialDomain?) -> Unit,
     selectType : Boolean,
     dismiss: () -> Unit
 ) {
     val openDialog = remember { mutableStateOf(true) }
-    val itemSelected = remember { mutableStateOf<ModelDialogStudentGroupDomain?>(null) }
-    val itemPartialSelected = remember { mutableStateOf<ModelDialogGroupPartialDomain?>(null) }
+    val itemSelected = remember { mutableStateOf<DialogStudentGroupDomain?>(null) }
+    val itemPartialSelected = remember { mutableStateOf<DialogGroupPartialDomain?>(null) }
 
     if (openDialog.value) {
 

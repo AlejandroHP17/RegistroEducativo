@@ -15,7 +15,7 @@ import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 
 /**
  * Caso de uso para obtener la lista de parciales.
@@ -35,10 +35,10 @@ class GetListPartialUseCase(
      * Ejecuta el proceso de obtención de la lista de parciales.
      * Construye la petición, la envía a través del repositorio y transforma la respuesta en un estado de la UI.
      *
-     * @return Un [ModelResult] que contiene una lista mutable de [ModelDatePeriodDomain] en caso de éxito,
+     * @return Un [ModelResult] que contiene una lista mutable de [DatePeriodDomain] en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
-    suspend operator fun invoke(): ModelResult<MutableList<ModelDatePeriodDomain>?, ModelError> {
+    suspend operator fun invoke(): ModelResult<MutableList<DatePeriodDomain>?, ModelError> {
         val cycleSchoolId= preference.getIdCycleSchool()
         if(cycleSchoolId == null) return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
@@ -47,7 +47,7 @@ class GetListPartialUseCase(
                 when(result){
                     is SuccessResult -> {
                         val listDate = result.data.mapIndexed { index, item ->
-                            ModelDatePeriodDomain(
+                            DatePeriodDomain(
                                 position = index,
                                 date = ModelStateOutFieldText(
                                     valueText = "${item.startDate} / ${item.endDate}",

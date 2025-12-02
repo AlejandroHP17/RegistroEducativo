@@ -6,7 +6,7 @@
 package com.mx.liftechnology.domain.usecase.schoolCycle.partial
 
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelCodeInputs
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 
@@ -31,14 +31,14 @@ interface ValidateFieldsRegisterPartialUseCase{
      * @param adapterPeriods La lista de períodos de fechas a validar.
      * @return La lista de períodos con sus estados de validación actualizados, o `null` si la entrada es nula.
      */
-    fun validateAdapter(adapterPeriods: List<ModelDatePeriodDomain>?):  List<ModelDatePeriodDomain>?
+    fun validateAdapter(adapterPeriods: List<DatePeriodDomain>?):  List<DatePeriodDomain>?
 
     /**
      * Comprueba si hay algún error en la lista de períodos del adaptador.
      * @param adapterPeriods La lista de períodos a comprobar.
      * @return Un [ModelStateOutFieldText] que indica si se encontró algún error en la lista.
      */
-    fun validateAdapterError(adapterPeriods: List<ModelDatePeriodDomain>?): ModelStateOutFieldText
+    fun validateAdapterError(adapterPeriods: List<DatePeriodDomain>?): ModelStateOutFieldText
 }
 
 /**
@@ -61,7 +61,7 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
     /**
      * {@inheritDoc}
      */
-    override fun validateAdapter(adapterPeriods: List<ModelDatePeriodDomain>?): List<ModelDatePeriodDomain>?{
+    override fun validateAdapter(adapterPeriods: List<DatePeriodDomain>?): List<DatePeriodDomain>?{
         return adapterPeriods?.map { item ->
             val isDateInvalid = item.date.valueText.isNullOrEmpty()
             item.copy(
@@ -76,7 +76,7 @@ class ValidateFieldsRegisterPartialUseCaseImp : ValidateFieldsRegisterPartialUse
     /**
      * {@inheritDoc}
      */
-    override fun validateAdapterError(adapterPeriods: List<ModelDatePeriodDomain>?):ModelStateOutFieldText{
+    override fun validateAdapterError(adapterPeriods: List<DatePeriodDomain>?):ModelStateOutFieldText{
         return if (adapterPeriods?.any { it.date.isError } == true) {
             ModelStateOutFieldText(isError = true, errorMessage = ModelCodeInputs.SP_NOT_OPTION)
         } else {

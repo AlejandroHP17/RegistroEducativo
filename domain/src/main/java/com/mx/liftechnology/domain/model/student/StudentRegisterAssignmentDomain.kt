@@ -20,7 +20,7 @@ import com.mx.liftechnology.core.network.api.StudentApi
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelStudentRegisterAssignmentDomain (
+data class StudentRegisterAssignmentDomain (
     val studentId : String?,
     val curp : String?,
     val completeName : String?,
@@ -29,23 +29,23 @@ data class ModelStudentRegisterAssignmentDomain (
 )
 
 /**
- * Función de extensión para convertir una lista de [StudentApi.ResponseGetStudent] (modelo de red)
- * a una lista de [ModelStudentRegisterAssignmentDomain] (modelo de dominio).
+ * Función de extensión para convertir una lista de [ResponseGetStudent] (modelo de red)
+ * a una lista de [StudentRegisterAssignmentDomain] (modelo de dominio).
  * La lista resultante está ordenada alfabéticamente por el nombre completo del estudiante.
  *
- * @receiver Una lista nulable de objetos [StudentApi.ResponseGetStudent].
- * @return Una lista de [ModelStudentRegisterAssignmentDomain]. Si la lista de entrada es nula, vacía o contiene solo nulos, devuelve una lista vacía.
+ * @receiver Una lista nulable de objetos [ResponseGetStudent].
+ * @return Una lista de [StudentRegisterAssignmentDomain]. Si la lista de entrada es nula, vacía o contiene solo nulos, devuelve una lista vacía.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<ResponseGetStudent?>?.toModelStudentRegisterAssignmentList(): List<ModelStudentRegisterAssignmentDomain> {
+fun List<ResponseGetStudent?>?.toStudentRegisterAssignmentDomainList(): List<StudentRegisterAssignmentDomain> {
     return this
         ?.filterNotNull() // Elimina elementos nulos para seguridad.
         ?.sortedBy { "${it.lastName} ${it.secondLastName} ${it.name}" } // Ordena la lista por nombre completo.
         ?.mapIndexed { index, response ->
             val completeName = "${response.lastName} ${response.secondLastName} ${response.name}"
-            ModelStudentRegisterAssignmentDomain(
+            StudentRegisterAssignmentDomain(
                 studentId = response.studentId.toString(),
                 curp = response.curp,
                 completeName = completeName,

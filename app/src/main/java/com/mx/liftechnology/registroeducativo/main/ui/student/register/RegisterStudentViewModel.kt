@@ -9,7 +9,7 @@ import com.mx.liftechnology.data.util.ErrorResult
 import com.mx.liftechnology.data.util.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.EditStudentWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.student.RegisterStudentWithValidationUseCase
@@ -266,7 +266,7 @@ class RegisterStudentViewModel(
      *
      * @param student The student data.
      */
-    fun getArguments(student: ModelStudentDomain) {
+    fun getArguments(student: StudentDomain) {
         // Actualizaciones de estado simples no necesitan corrutinas
         _uiInputs.update {
             it.copy(

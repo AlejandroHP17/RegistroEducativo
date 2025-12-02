@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
-import com.mx.liftechnology.domain.model.registerschool.ModelSpinnerSchoolDomain
+import com.mx.liftechnology.domain.model.registerschool.SchoolSpinnerDomain
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.SpinnerSchoolUi
 
 /**
@@ -14,13 +14,13 @@ import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.SpinnerS
 object SchoolCycleMapper {
 
     /**
-     * Convierte ModelSpinnerSchoolDomain a SpinnerSchoolUi.
+     * Convierte SchoolSpinnerDomain a SpinnerSchoolUi.
      * Valida que los datos del spinner sean válidos antes de mapearlos.
      *
      * @param spinnerSchoolDomain El modelo del dominio con los datos del spinner.
      * @return Un SpinnerSchoolUi con los datos formateados para la UI.
      */
-    fun ModelSpinnerSchoolDomain?.toUi(): SpinnerSchoolUi {
+    fun SchoolSpinnerDomain?.toUi(): SpinnerSchoolUi {
         if (this == null) {
             return SpinnerSchoolUi(
                 type = null,

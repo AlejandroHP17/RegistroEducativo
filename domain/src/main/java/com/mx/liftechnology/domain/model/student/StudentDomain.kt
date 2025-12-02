@@ -27,7 +27,7 @@ import kotlinx.parcelize.Parcelize
  * @version 1.0.0
  */
 @Parcelize
-data class ModelStudentDomain(
+data class StudentDomain(
     val studentId : Int?,
     val curp : String?,
     val birthday : String?,
@@ -39,18 +39,18 @@ data class ModelStudentDomain(
 ) : Parcelable
 
 /**
- * Función de extensión para convertir una lista de [StudentApi.ResponseGetStudent] (modelo de red)
- * a una lista de [ModelStudentDomain] (modelo de dominio).
+ * Función de extensión para convertir una lista de [StudentData] (modelo de datos)
+ * a una lista de [StudentDomain] (modelo de dominio).
  *
- * @receiver Una lista nulable de objetos [StudentApi.ResponseGetStudent].
- * @return Una lista de objetos [ModelStudentDomain]. Si la lista de entrada es nula o contiene elementos nulos, estos son omitidos.
+ * @receiver Una lista nulable de objetos [StudentData].
+ * @return Una lista de objetos [StudentDomain]. Si la lista de entrada es nula o contiene elementos nulos, estos son omitidos.
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<StudentData?>?.toModelStudentList(): List<ModelStudentDomain> {
+fun List<StudentData?>?.toStudentDomainList(): List<StudentDomain> {
     return this?.mapNotNull { response ->
         response?.let {
-            ModelStudentDomain(
+            StudentDomain(
                 studentId = response.studentId,
                 curp = response.curp,
                 birthday = response.birthday,

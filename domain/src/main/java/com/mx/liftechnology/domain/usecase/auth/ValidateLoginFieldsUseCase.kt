@@ -17,7 +17,7 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
  * @author Pelkidev
  * @version 1.0.0
  */
-interface ValidateFieldsLoginFlowUseCase {
+interface ValidateLoginFieldsUseCase {
     /**
      * Valida una dirección de correo electrónico.
      * @param email El email a validar.
@@ -56,12 +56,12 @@ interface ValidateFieldsLoginFlowUseCase {
 }
 
 /**
- * Implementación de [ValidateFieldsLoginFlowUseCase].
+ * Implementación de [ValidateLoginFieldsUseCase].
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-class ValidateFieldsLoginFlowUseCaseImp : ValidateFieldsLoginFlowUseCase {
+class ValidateLoginFieldsUseCaseImp : ValidateLoginFieldsUseCase {
     /**
      * {@inheritDoc}
      */

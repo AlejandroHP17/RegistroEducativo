@@ -21,27 +21,27 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelSchoolCycleData
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelDialogStudentGroupDomain (
+data class DialogStudentGroupDomain (
     val selected : Boolean?,
     val item : ModelSchoolCycleData?,
     val nameItem : String?,
-    val listItemPartial : List<ModelDialogGroupPartialDomain>?,
-    val itemPartial: ModelDialogGroupPartialDomain?,
+    val listItemPartial : List<DialogGroupPartialDomain>?,
+    val itemPartial: DialogGroupPartialDomain?,
     val namePartial : String?
 )
 
 /**
- * Extension property to convert a list of [SchoolCycleApi.ResponseGroupTeacher] to a list of [ModelDialogStudentGroupDomain].
+ * Propiedad de extensión para convertir una lista de [ModelSchoolCycleData] a una lista de [DialogStudentGroupDomain].
  *
- * @receiver A nullable list of [SchoolCycleApi.ResponseGroupTeacher] objects.
- * @return A list of [ModelDialogStudentGroupDomain] objects.
+ * @receiver Una lista de objetos [ModelSchoolCycleData].
+ * @return Una lista de objetos [DialogStudentGroupDomain].
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ModelSchoolCycleData>.RGTtoConvertModelDialogStudentGroupDomains: List<ModelDialogStudentGroupDomain>
+val List<ModelSchoolCycleData>.toDialogStudentGroupDomainList: List<DialogStudentGroupDomain>
     get() = this.map { cycle ->
-        ModelDialogStudentGroupDomain(
+        DialogStudentGroupDomain(
             selected = false,
             item = cycle,
             nameItem = cycle.name,

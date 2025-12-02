@@ -9,8 +9,8 @@ import com.mx.liftechnology.data.util.LocalModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
-import com.mx.liftechnology.domain.model.formativeFields.toModelListFormativeFields
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.toFormativeFieldDomainList
 
 /**
  * Caso de uso para obtener la lista de materias.
@@ -31,7 +31,7 @@ class GetListSubjectUseCase (
      *
      * @return Un [ModelResult] que contiene la lista de materias o un estado de error.
      */
-    suspend operator fun invoke(): ModelResult<List<ModelFormatFormativeFieldsDomain>?, ModelError> {
+    suspend operator fun invoke(): ModelResult<List<FormativeFieldDomain>?, ModelError> {
         val cycleSchoolId = preference.getIdCycleSchool()
 
         if(cycleSchoolId == null) return ErrorResult(
@@ -43,7 +43,7 @@ class GetListSubjectUseCase (
                 when(result){
                     is SuccessResult -> {
                         if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
-                        else SuccessResult(result.data.toModelListFormativeFields())
+                        else SuccessResult(result.data.toFormativeFieldDomainList())
                     }
                     is ErrorResult -> {
                         ErrorResult(result.error)

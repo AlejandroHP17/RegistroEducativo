@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
@@ -47,7 +47,7 @@ class WotyFofiViewModel (
      *
      * @param subject The new subject.
      */
-    fun updateSubject(subject: ModelFormatFormativeFieldsDomain?) {
+    fun updateSubject(subject: FormativeFieldDomain?) {
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             withContext(dispatcherProvider.io) {

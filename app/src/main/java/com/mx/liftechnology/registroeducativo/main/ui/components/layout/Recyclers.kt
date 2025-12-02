@@ -21,12 +21,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeData
 import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.ModelSpinnersWorkMethods
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogGroupPartialDomain
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
@@ -63,7 +63,7 @@ fun MyGridScreenPreview() {
     )
 
     val items2 = listOf(
-        ModelDialogStudentGroupDomain(
+        DialogStudentGroupDomain(
             selected = false,
             item = null,
             nameItem = "Hola mundo",
@@ -71,7 +71,7 @@ fun MyGridScreenPreview() {
             itemPartial = null,
             namePartial = null
         ),
-        ModelDialogStudentGroupDomain(
+        DialogStudentGroupDomain(
             selected = true,
             item = null,
             nameItem = "Hola mundo",
@@ -81,7 +81,7 @@ fun MyGridScreenPreview() {
         ),
     )
 
-    val items3 = listOf(ModelFormatFormativeFieldsDomain(1,"hola","mundo",1))
+    val items3 = listOf(FormativeFieldDomain(1,"hola","mundo",1))
 
     Column {
         MyGridScreen(items, 410.dp) {}
@@ -129,8 +129,8 @@ fun MyGridScreen(
  */
 @Composable
 fun DialogGroupList(
-    items: List<ModelDialogStudentGroupDomain>,
-    onItemSelected: (ModelDialogStudentGroupDomain) -> Unit,
+    items: List<DialogStudentGroupDomain>,
+    onItemSelected: (DialogStudentGroupDomain) -> Unit,
 ) {
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
@@ -156,8 +156,8 @@ fun DialogGroupList(
  */
 @Composable
 fun DialogPartialList(
-    items: List<ModelDialogGroupPartialDomain>?,
-    onItemSelected: (ModelDialogGroupPartialDomain) -> Unit,
+    items: List<DialogGroupPartialDomain>?,
+    onItemSelected: (DialogGroupPartialDomain) -> Unit,
 ) {
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
@@ -239,7 +239,7 @@ fun EvaluationStudentList(
  */
 @Composable
 fun RegisterPartialList(
-    items: List<ModelDatePeriodDomain>,
+    items: List<DatePeriodDomain>,
     isActive: Boolean,
     onDateChange:(Pair<Pair<LocalDate?, LocalDate?>, Int>) -> Unit
 ) {

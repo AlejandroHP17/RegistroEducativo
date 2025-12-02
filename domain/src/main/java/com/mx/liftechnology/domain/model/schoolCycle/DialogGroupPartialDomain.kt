@@ -19,7 +19,7 @@ import com.mx.liftechnology.data.model.schoolCycle.ModelListPartialData
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelDialogGroupPartialDomain(
+data class DialogGroupPartialDomain(
     val partialId: Int?,
     val startDate: String,
     val endDate: String,
@@ -27,18 +27,18 @@ data class ModelDialogGroupPartialDomain(
 )
 
 /**
- * Propiedad de extensión para convertir una lista de [ResponseGetPartial] (modelo de red)
- * a una lista de [ModelDialogGroupPartialDomain] (modelo de dominio).
+ * Propiedad de extensión para convertir una lista de [ModelListPartialData] (modelo de datos)
+ * a una lista de [DialogGroupPartialDomain] (modelo de dominio).
  *
- * @receiver Una lista nulable de objetos [ResponseGetPartial].
- * @return Una lista de objetos [ModelDialogGroupPartialDomain]. Si la lista de entrada es nula o contiene elementos nulos, estos son omitidos.
+ * @receiver Una lista nulable de objetos [ModelListPartialData].
+ * @return Una lista de objetos [DialogGroupPartialDomain]. Si la lista de entrada es nula o contiene elementos nulos, estos son omitidos.
  * @author Pelkidev
  * @version 1.0.0
  */
-val List<ModelListPartialData?>?.ListPartialToConvertModelDialogGroupPartialDomains: List<ModelDialogGroupPartialDomain>
+val List<ModelListPartialData?>?.toDialogGroupPartialDomainList: List<DialogGroupPartialDomain>
     get() = this?.mapIndexedNotNull { index, partial ->
         partial?.let {
-            ModelDialogGroupPartialDomain(
+            DialogGroupPartialDomain(
                 partialId = it.partialId,
                 startDate = it.startDate ?: "",
                 endDate = it.endDate?: "",

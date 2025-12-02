@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.student.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
@@ -75,9 +75,9 @@ class ListStudentViewModel(
      * Gets a student by its ID.
      *
      * @param item The custom card model of the student to get.
-     * @return The [ModelStudentDomain] object, or null if not found.
+     * @return The [StudentDomain] object, or null if not found.
      */
-    fun getStudent(item: ModelCustomCard): ModelStudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
+    fun getStudent(item: ModelCustomCard): StudentDomain? = _dataState.value.studentList?.find { it.studentId == item.id }
 
     fun deleteStudent(card: ModelCustomCard) {
         viewModelScope.launch {

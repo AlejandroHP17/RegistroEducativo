@@ -16,7 +16,7 @@ import com.mx.liftechnology.domain.model.generic.ModelValidationResult
  * @version 1.0.0
  */
 class LoginWithValidationUseCase(
-    private val validateFieldsUseCase: ValidateFieldsLoginFlowUseCase,
+    private val validateFieldsUseCase: ValidateLoginFieldsUseCase,
     private val loginUseCase: LoginUseCase
 ) {
     /**

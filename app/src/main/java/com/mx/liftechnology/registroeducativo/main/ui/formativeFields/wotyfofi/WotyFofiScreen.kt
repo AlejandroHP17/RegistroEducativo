@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
@@ -43,10 +43,10 @@ fun AssignmentSubjectScreen(
     val subjectJson = backStackEntry.arguments?.getString("subject")
 
     LaunchedEffect(Unit) {
-        val subject: ModelFormatFormativeFieldsDomain? = if (subjectJson.isNullOrEmpty()) {
+        val subject: FormativeFieldDomain? = if (subjectJson.isNullOrEmpty()) {
             null
         } else {
-            Gson().fromJson(subjectJson, ModelFormatFormativeFieldsDomain::class.java)
+            Gson().fromJson(subjectJson, FormativeFieldDomain::class.java)
         }
         wotyFofiViewModel.updateSubject(subject)
         wotyFofiViewModel.getListWotyFofi()

@@ -5,7 +5,7 @@ import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeByFormativeFi
 import com.mx.liftechnology.data.model.formativeField.ModelWorkTypeFormativeField
 import com.mx.liftechnology.data.model.formativeField.ModelWotyFofiData
 import com.mx.liftechnology.data.model.formativeField.ResponseWorkTypesData
-import com.mx.liftechnology.domain.model.formativeFields.ModelFormatFormativeFieldsDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
@@ -27,7 +27,7 @@ object FormativeFieldMapper {
      * @param subjects La lista de materias del dominio a convertir.
      * @return Una lista de ModelCustomCard formateada para mostrar en la UI.
      */
-    fun mapSubjectListToCustomCard(subjects: List<ModelFormatFormativeFieldsDomain>?): List<ModelCustomCard> {
+    fun mapSubjectListToCustomCard(subjects: List<FormativeFieldDomain>?): List<ModelCustomCard> {
         if (subjects == null) return emptyList()
         
         return subjects.mapNotNull { subject ->

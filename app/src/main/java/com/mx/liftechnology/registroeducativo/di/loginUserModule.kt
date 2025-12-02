@@ -5,8 +5,8 @@ import com.mx.liftechnology.data.repository.auth.GetDataUserRepository
 import com.mx.liftechnology.data.repository.auth.GetDataUserRepositoryImpl
 import com.mx.liftechnology.data.repository.auth.LoginRepository
 import com.mx.liftechnology.data.repository.auth.LoginRepositoryImpl
-import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCase
-import com.mx.liftechnology.domain.usecase.auth.ValidateFieldsLoginFlowUseCaseImp
+import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCase
+import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCaseImp
 import com.mx.liftechnology.domain.usecase.auth.GetDataUserUseCase
 import com.mx.liftechnology.domain.usecase.auth.LoginUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.auth.login.LoginViewModel
@@ -54,10 +54,10 @@ val loginUserModule = module {
     singleOf(::GetDataUserUseCase)
 
     /**
-     * Provides a singleton instance of [ValidateFieldsLoginFlowUseCase].
+     * Provides a singleton instance of [ValidateLoginFieldsUseCase].
      */
-    singleOf(::ValidateFieldsLoginFlowUseCaseImp) {
-        bind<ValidateFieldsLoginFlowUseCase>()
+    singleOf(::ValidateLoginFieldsUseCaseImp) {
+        bind<ValidateLoginFieldsUseCase>()
     }
 
     /**

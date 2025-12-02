@@ -36,7 +36,7 @@ class RegisterEvaluationWithValidationUseCase(
         nameAssignment: String?,
         date: String?,
         workTypeId: Int?,
-        studentListUI: List<com.mx.liftechnology.domain.model.evaluation.ModelCardDomain>
+        studentListUI: List<com.mx.liftechnology.domain.model.evaluation.CardDomain>
     ): ModelValidationResult<Boolean> {
         // 1. Validar todos los campos
         val nameJobState = validateFieldsUseCase.validateNameJob(nameJob)

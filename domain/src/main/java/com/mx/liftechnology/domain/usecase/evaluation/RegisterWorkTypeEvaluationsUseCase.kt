@@ -10,13 +10,13 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.evaluation.ModelCardDomain
+import com.mx.liftechnology.domain.model.evaluation.CardDomain
 
 class RegisterWorkTypeEvaluationsUseCase(
     private val preference : PreferenceUseCase,
     private val registerWorkTypeEvaluationsRepository: RegisterWorkTypeEvaluationsRepository
 ) {
-    suspend operator fun invoke(workTypeId: Int?, nameWork: String?, workDate: String?, studentListUI: List<ModelCardDomain>):  ModelResult<Boolean, ModelError>{
+    suspend operator fun invoke(workTypeId: Int?, nameWork: String?, workDate: String?, studentListUI: List<CardDomain>):  ModelResult<Boolean, ModelError>{
         val formativeFieldId = preference.getIdFormativeField()
         val partialId= preference.getIdPartial()
         val cycleSchoolId= preference.getIdCycleSchool()
@@ -49,7 +49,7 @@ class RegisterWorkTypeEvaluationsUseCase(
         )
     }
 
-    private fun List<ModelCardDomain>.toCredentialStudent()  : List<RequestListGrades>{
+    private fun List<CardDomain>.toCredentialStudent()  : List<RequestListGrades>{
         return this.map { student ->
             RequestListGrades(
                 studentId = student.studentId,

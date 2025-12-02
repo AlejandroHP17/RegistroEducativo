@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import com.mx.liftechnology.data.model.schoolCycle.ModelPrincipalMenuData
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDialogStudentGroupDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -30,7 +30,7 @@ data class MenuUiState(
  * @version 1.0.0
  */
 data class MenuUiDialog(
-    val studentGroupItem: ModelDialogStudentGroupDomain = ModelDialogStudentGroupDomain(
+    val studentGroupItem: DialogStudentGroupDomain = DialogStudentGroupDomain(
         selected = false,
         item = null,
         nameItem = null,
@@ -38,8 +38,8 @@ data class MenuUiDialog(
         itemPartial = null,
         namePartial = null
     ),
-    val studentGroupList: List<ModelDialogStudentGroupDomain> = listOf(
-        ModelDialogStudentGroupDomain(
+    val studentGroupList: List<DialogStudentGroupDomain> = listOf(
+        DialogStudentGroupDomain(
             selected = false,
             item = null,
             nameItem = null,

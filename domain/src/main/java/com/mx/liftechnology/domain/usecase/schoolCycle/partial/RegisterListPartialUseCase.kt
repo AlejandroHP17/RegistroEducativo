@@ -16,7 +16,7 @@ import com.mx.liftechnology.data.util.ModelError
 import com.mx.liftechnology.data.util.ModelResult
 import com.mx.liftechnology.data.util.NetworkModelError
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.schoolCycle.ModelDatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 
 /**
  * Caso de uso para registrar una lista de parciales.
@@ -39,7 +39,7 @@ class RegisterListPartialUseCase(
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
     suspend operator fun invoke(
-        adapterPeriods: List<ModelDatePeriodDomain>
+        adapterPeriods: List<DatePeriodDomain>
     ): ModelResult<List<ModelListPartialData?>, ModelError> {
         val cycleSchoolId = preference.getIdCycleSchool()
 

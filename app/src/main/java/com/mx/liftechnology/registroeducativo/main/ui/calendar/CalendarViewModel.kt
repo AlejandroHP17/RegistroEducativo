@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.data.util.SuccessResult
-import com.mx.liftechnology.domain.model.student.ModelStudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListSubjectUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -110,7 +110,7 @@ class CalendarViewModel(
         }
     }
 
-    private fun List<ModelStudentDomain>?.convertModelCustomCard2(): List<ModelCustomCard> {
+    private fun List<StudentDomain>?.convertModelCustomCard2(): List<ModelCustomCard> {
         return this?.sortedWith(
             compareBy(
                 { it.lastName ?: "" },
