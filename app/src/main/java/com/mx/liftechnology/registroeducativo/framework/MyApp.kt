@@ -21,6 +21,7 @@ import com.mx.liftechnology.registroeducativo.di.sharedModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
 import com.mx.liftechnology.registroeducativo.di.validationModule
 import com.mx.liftechnology.registroeducativo.di.voiceModule
+import com.mx.liftechnology.registroeducativo.di.workTypeModule
 import com.mx.liftechnology.registroeducativo.di.wotyFofiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
@@ -70,7 +71,8 @@ class MyApp : Application() {
                 wotyFofiModule,
                 registerEvaluationModule,
                 calendarModule,
-                validationModule
+                validationModule,
+                workTypeModule
             )
         }
     }

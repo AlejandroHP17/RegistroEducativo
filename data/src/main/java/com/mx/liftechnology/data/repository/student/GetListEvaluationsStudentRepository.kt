@@ -1,6 +1,6 @@
 package com.mx.liftechnology.data.repository.student
 
-import com.mx.liftechnology.core.network.api.StudentApi
+import com.mx.liftechnology.core.network.api.WorkTypeApi
 import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.data.model.student.ModelEvaluationsStudent
 import com.mx.liftechnology.data.util.ModelResult
@@ -20,7 +20,7 @@ fun interface GetListEvaluationsStudentRepository{
     ): ModelResult<List<ModelEvaluationsStudent>, NetworkModelError>
 }
 class GetListEvaluationsStudentRepositoryImpl(
-    private val studentApi: StudentApi
+    private val workTypeApi: WorkTypeApi
 ):GetListEvaluationsStudentRepository {
     override suspend fun getListEvaluations(
         schoolCycleId: Int,
@@ -32,7 +32,7 @@ class GetListEvaluationsStudentRepositoryImpl(
         workDateFrom : String?,
         workDateTo: String?
     ): ModelResult<List <ModelEvaluationsStudent>, NetworkModelError> {
-        return studentApi.getListEvaluations(
+        return workTypeApi.getListEvaluations(
             formativeFieldId = formativeFieldId,
             partialId = partialId,
             workTypeId = workTypeId,

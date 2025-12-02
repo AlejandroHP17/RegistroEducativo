@@ -52,17 +52,9 @@ class ConnectionErrorInterceptor : Interceptor {
      */
     override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
-        
-        // Log de información de la petición antes de enviarla
-        logInfo("Intentando conectar a:")
-        logInfo("  URL: ${request.url}")
-        logInfo("  Host: ${request.url.host}")
-        logInfo("  Port: ${request.url.port}")
-        logInfo("  Método: ${request.method}")
-        
+
         try {
             val response = chain.proceed(request)
-            logInfo("Conexión exitosa - Status: ${response.code}")
             return response
         } catch (e: IOException) {
             logInfo("  ❌ Conexión fallida")
