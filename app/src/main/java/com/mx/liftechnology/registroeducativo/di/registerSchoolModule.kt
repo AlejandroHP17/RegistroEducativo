@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.di
 
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.repositoryImpl.schoolCycle.school.GetCctRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.schoolCycle.school.RegisterCycleSchoolRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.school.GetCctRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.schoolCycle.RegisterCycleSchoolRepositoryImpl
 import com.mx.liftechnology.domain.repository.schoolCycle.school.GetCctRepository
 import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase

@@ -1,9 +1,4 @@
-/**
- * @file Define el repositorio local para la funcionalidad del menú principal.
- * @author Pelkidev
- * @version 1.0.0
- */
-package com.mx.liftechnology.data.repositoryImpl.schoolCycle.menu
+package com.mx.liftechnology.data.repositoryImpl.menu
 
 import android.content.Context
 import com.mx.liftechnology.core.util.models.ErrorResult
@@ -15,6 +10,11 @@ import com.mx.liftechnology.data.R
 import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuLocalRepository
 
+/**
+ * @file Define el repositorio local para la funcionalidad del menú principal.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 /**
  * Repositorio local para acceder a los datos del menú desde los recursos de la aplicación.
  * Esta clase se encarga de construir la lista de elementos del menú principal.
@@ -28,7 +28,7 @@ class MenuLocalRepositoryImpl(private val context: Context
     /**
      * Obtiene la lista de ítems para el menú de control.
      *
-     * @return Una lista de [PrincipalMenuDomain] para el menú de control.
+     * @return Una lista de [com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain] para el menú de control.
      */
     override suspend fun getControlMenu(): ModelResult<List<PrincipalMenuDomain>, ModelError> {
         val listMenuItems = context.resources.getStringArray(R.array.menu_items_control)
@@ -67,7 +67,7 @@ class MenuLocalRepositoryImpl(private val context: Context
             R.drawable.ic_export
         )
         return try{
-            SuccessResult (listMenuItems.mapIndexed { index, description ->
+            SuccessResult(listMenuItems.mapIndexed { index, description ->
                 PrincipalMenuDomain(
                     id = description,
                     image = imageResources[index],

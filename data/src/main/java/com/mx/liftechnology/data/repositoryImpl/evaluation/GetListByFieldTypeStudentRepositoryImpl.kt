@@ -1,16 +1,15 @@
-package com.mx.liftechnology.data.repositoryImpl.formativeField
+package com.mx.liftechnology.data.repositoryImpl.evaluation
 
-import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
-import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
+import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
 import com.mx.liftechnology.data.util.safeApiCall
+import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
 import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
 
-
 class GetListByFieldTypeStudentRepositoryImpl(
-    private val formativeFieldApi: FormativeFieldApi
+    private val evaluationApi: EvaluationApi
 ): GetListByFieldTypeStudentRepository {
     override suspend fun getByFieldType(
         formativeFieldId : Int,
@@ -20,7 +19,7 @@ class GetListByFieldTypeStudentRepositoryImpl(
     ): ModelResult<ByFieldTypeStudentDomain, NetworkModelError> {
         return safeApiCall(
             apiCall = {
-                formativeFieldApi.getListByFieldTypeStudent(
+                evaluationApi.getListByFieldTypeStudent(
                     formativeFieldId = formativeFieldId,
                     workTypeId = workTypeId,
                     workName = workName,

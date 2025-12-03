@@ -17,11 +17,6 @@ import retrofit2.http.Query
  * @version 1.0.0
  */
 interface SchoolCycleApi {
-    /**
-     * Obtiene información de una escuela por CCT.
-     */
-    @GET(Environment.END_POINT_GET_CCT)
-    suspend fun getCct(@Path("cct") cct: String): Response<ResponseGeneric<ResponseCctSchool>>
 
     /**
      * Obtiene la lista de grupos de un profesor.
@@ -30,22 +25,10 @@ interface SchoolCycleApi {
     suspend fun getGroup(@Query("teacher_id") teacherId: Int): Response<ResponseGeneric<List<ResponseGroupTeacher>?>>
 
     /**
-     * Obtiene la lista de parciales.
-     */
-    @GET(Environment.END_POINT_GET_PARTIAL)
-    suspend fun getListPartial(@Query("school_cycle_id") schoolCycleId: Int): Response<ResponseGeneric<List<ResponseGetPartials>>>
-
-    /**
      * Registra un ciclo escolar.
      */
     @POST(Environment.END_POINT_REGISTER_SCHOOL_CYCLE)
     suspend fun registerSchoolCycle(@Body request: RequestRegisterSchoolCycle): Response<ResponseGeneric<ResponseRegisterSchoolCycle>>
-
-    /**
-     * Registra una lista de parciales.
-     */
-    @POST(Environment.END_POINT_REGISTER_PARTIAL)
-    suspend fun registerListPartial(@Body request: RequestRegisterPartial): Response<ResponseGeneric<List<ResponseRegisterPartial>>>
 }
 
 /**
@@ -95,44 +78,6 @@ data class ResponseRegisterSchoolCycle(
     val teacherName: String,
 )
 
-/**
- * Sección para obtener la informacion de la escuela por CCT
- * */
-data class ResponseCctSchool(
-    @SerializedName("cct")
-    val cct: String,
-    @SerializedName("school_type_id")
-    val schoolTypeId: Int,
-    @SerializedName("name")
-    val schoolName: String,
-    @SerializedName("postal_code")
-    val postalCode: String?,
-    @SerializedName("latitude")
-    val latitude: String?,
-    @SerializedName("longitude")
-    val longitude: String?,
-    @SerializedName("shift_id")
-    val shiftId: Int?,
-    @SerializedName("shift_name")
-    val shiftName: String?,
-    @SerializedName("id")
-    val schoolId: Int,
-    @SerializedName("created_at")
-    val createdAt: String,
-    @SerializedName("period_catalog")
-    val periodCatalog: List<ResponsePeriodCatalog>?
-)
-
-data class ResponsePeriodCatalog(
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("type_name")
-    val typeName: String,
-    @SerializedName("period_number")
-    val periodNumber: Int,
-    @SerializedName("created_at")
-    val createdAt: String
-)
 
 /**
  * Sección para obtener los grupos del profesor
@@ -160,58 +105,6 @@ data class ResponseGroupTeacher(
     val isActive: Boolean?,
     @SerializedName("id")
     val schoolCycleId: Int,
-    @SerializedName("created_at")
-    val createdAt: String
-)
-
-/**
- * Sección para el registro de parciales al ciclo escolar
- * */
-data class RequestRegisterPartial(
-    @SerializedName("partials")
-    val listPartials: List<RequestPartials?>
-)
-
-data class RequestPartials(
-    @SerializedName("school_cycle_id")
-    val cycleSchoolId: Int?,
-    @SerializedName("name")
-    val description: String?,
-    @SerializedName("start_date")
-    val startDate: String?,
-    @SerializedName("end_date")
-    val endDate: String?
-)
-
-data class ResponseRegisterPartial(
-    @SerializedName("school_cycle_id")
-    val cycleSchoolId: Int?,
-    @SerializedName("name")
-    val description: String,
-    @SerializedName("start_date")
-    val startDate: String?,
-    @SerializedName("end_date")
-    val endDate: String?,
-    @SerializedName("id")
-    val partialId: Int,
-    @SerializedName("created_at")
-    val createdAt: String?
-)
-
-/**
- * Sección para obtener los parciales del ciclo escolar activo
- * */
-data class ResponseGetPartials(
-    @SerializedName("school_cycle_id")
-    val schoolCycleId: Int,
-    @SerializedName("name")
-    val description: String,
-    @SerializedName("start_date")
-    val startDate: String?,
-    @SerializedName("end_date")
-    val endDate: String?,
-    @SerializedName("id")
-    val partialId: Int,
     @SerializedName("created_at")
     val createdAt: String
 )

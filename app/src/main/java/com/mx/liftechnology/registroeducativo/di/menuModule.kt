@@ -1,8 +1,8 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.SchoolCycleApi
-import com.mx.liftechnology.data.repositoryImpl.schoolCycle.menu.MenuLocalRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.schoolCycle.menu.MenuRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.menu.MenuLocalRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.schoolCycle.MenuRepositoryImpl
 import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlMenuUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.GetControlRegisterUseCase

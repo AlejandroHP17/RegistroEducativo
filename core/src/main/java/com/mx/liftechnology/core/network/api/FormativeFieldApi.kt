@@ -24,17 +24,7 @@ interface FormativeFieldApi {
     @GET(Environment.END_POINT_GET_FORMATIVE_FIELDS)
     suspend fun getListFormativeFields(@Query("school_cycle_id") cycleSchoolId: Int): Response<ResponseGeneric<List<ResponseGetListFormativeField>>>
 
-    /**
-     * Obtiene la lista de tipos de trabajo.
-     */
-    @GET(Environment.END_POINT_GET_WORK_TYPE)
-    suspend fun getListWorkType(@Query("teacher_id") teacherId: Int): Response<ResponseGeneric<List<ResponseGetListWorkType>>>
 
-    /**
-     * Obtiene el tipo de trabajo por campo formativo.
-     */
-    @GET(Environment.END_POINT_GET_WORK_TYPE_BY)
-    suspend fun getWorkTypeByFormativeField(@Path("formative_field_id") formativeFieldId: Int): Response<ResponseGeneric<ResponseGetWorkType>>
 
     /**
      * Obtiene la lista de campos formativos con tipos de trabajo.
@@ -42,16 +32,6 @@ interface FormativeFieldApi {
     @GET(Environment.END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE)
     suspend fun getListWotyFofi(@Path("school_cycle_id") schoolCycleId: Int): Response<ResponseGeneric<ResponseGetListWotyFofi>>
 
-    /**
-     * Obtiene la lista de estudiantes por tipo de campo.
-     */
-    @GET(Environment.END_POINT_GET_FIELD_TYPE_STUDENTS)
-    suspend fun getListByFieldTypeStudent(
-        @Query("formative_field_id") formativeFieldId: Int,
-        @Query("work_type_id") workTypeId: Int,
-        @Query("work_name") workName: String?,
-        @Query("work_date") workDate: String?
-    ): Response<ResponseGeneric<ResponseGetByFieldTypeStudent>>
 
     /**
      * Registra campos formativos en bulk.
@@ -124,34 +104,7 @@ data class ResponseGetListFormativeField(
     val createdAt: String
 )
 
-data class ResponseGetListWorkType(
-    @SerializedName("id")
-    val workTypeId: Int,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("teacher_id")
-    val teacherId: Int,
-    @SerializedName("created_at")
-    val createAt: String
-)
 
-data class ResponseGetWorkType(
-    @SerializedName("formative_field_name")
-    val formativeFieldName: String,
-    @SerializedName("formative_field_id")
-    val formativeFieldId: Int,
-    @SerializedName("work_types")
-    val workTypes: List<ResponseWorkTypeDetail>
-)
-
-data class ResponseWorkTypeDetail(
-    @SerializedName("work_type_name")
-    val workTypeName: String,
-    @SerializedName("work_type_id")
-    val workTypeId: Int,
-    @SerializedName("evaluation_weight")
-    val evaluationWeight: String
-)
 
 data class ResponseGetListWotyFofi(
     @SerializedName("school_cycle_id")

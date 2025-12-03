@@ -3,9 +3,9 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.data.repositoryImpl.schoolCycle.partial
+package com.mx.liftechnology.data.repositoryImpl.partial
 
-import com.mx.liftechnology.core.network.api.SchoolCycleApi
+import com.mx.liftechnology.core.network.api.PartialApi
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
@@ -23,7 +23,7 @@ import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartial
  * @version 1.0.0
  */
 class GetListPartialRepositoryImpl(
-    private val schoolCycleApi: SchoolCycleApi
+    private val partialApi: PartialApi
 ) : GetListPartialRepository {
 
     /**
@@ -33,7 +33,7 @@ class GetListPartialRepositoryImpl(
         schoolCycleId : Int
     ): ModelResult<List<ListPartialDomain>, NetworkModelError> {
         return safeApiCall(
-            apiCall = { schoolCycleApi.getListPartial(schoolCycleId) },
+            apiCall = { partialApi.getListPartial(schoolCycleId) },
             mapper = { it.toData() }
         )
     }

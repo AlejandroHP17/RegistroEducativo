@@ -5,7 +5,7 @@ import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.DeleteFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.formativeField.GetWorkTypeRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.workType.GetWorkTypeRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
 import com.mx.liftechnology.domain.repository.evaluation.GetListWorkTypeFormativeFieldRepository
 import com.mx.liftechnology.domain.repository.formativeFields.DeleteFormativeFieldRepository

@@ -1,16 +1,15 @@
-package com.mx.liftechnology.data.repositoryImpl.student
+package com.mx.liftechnology.data.repositoryImpl.evaluation
 
-import com.mx.liftechnology.core.network.api.WorkTypeApi
-import com.mx.liftechnology.data.mapper.StudentMapper.toData
-import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
+import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.StudentMapper.toData
 import com.mx.liftechnology.data.util.safeApiCall
+import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
 
-
 class GetListEvaluationsStudentRepositoryImpl(
-    private val workTypeApi: WorkTypeApi
+    private val evaluationApi: EvaluationApi
 ): GetListEvaluationsStudentRepository {
     override suspend fun getListEvaluations(
         schoolCycleId: Int,
@@ -21,10 +20,10 @@ class GetListEvaluationsStudentRepositoryImpl(
         workDate: String?,
         workDateFrom : String?,
         workDateTo: String?
-    ): ModelResult<List <EvaluationsStudentDomain>, NetworkModelError> {
+    ): ModelResult<List<EvaluationsStudentDomain>, NetworkModelError> {
         return safeApiCall(
             apiCall = {
-                workTypeApi.getListEvaluations(
+                evaluationApi.getListEvaluations(
                     formativeFieldId = formativeFieldId,
                     partialId = partialId,
                     workTypeId = workTypeId,

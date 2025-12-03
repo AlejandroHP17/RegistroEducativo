@@ -2,10 +2,10 @@ package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.core.network.api.StudentApi
-import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListByFieldTypeStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListByFieldTypeStudentRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListWotyFofiRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.evaluation.GetWorkTypeByFormativeFieldsRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.student.GetListEvaluationsStudentRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.workType.GetWorkTypeByFormativeFieldsRepositoryImpl
+import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListEvaluationsStudentRepositoryImpl
 import com.mx.liftechnology.domain.repository.evaluation.GetWorkTypeByFormativeFieldsRepository
 import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
 import com.mx.liftechnology.domain.repository.formativeFields.GetListWotyFofiRepository

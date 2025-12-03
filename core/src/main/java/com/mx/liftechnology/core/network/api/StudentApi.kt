@@ -35,7 +35,10 @@ interface StudentApi {
      * Edita un estudiante existente.
      */
     @PUT(Environment.END_POINT_EDIT_STUDENT)
-    suspend fun editStudent(@Path("student_id") studentId: Int, @Body request: RequestEditStudent): Response<ResponseGeneric<ResponseEditStudent>>
+    suspend fun editStudent(
+        @Path("student_id") studentId: Int,
+        @Body request: RequestEditStudent
+    ): Response<ResponseGeneric<ResponseEditStudent>>
 
     /**
      * Elimina un estudiante.
@@ -43,7 +46,7 @@ interface StudentApi {
     @DELETE(Environment.END_POINT_DELETE_STUDENT)
     suspend fun deleteStudent(@Path("student_id") studentId: Int): Response<ResponseGeneric<String>>
 
-    }
+}
 
 // Data classes for requests and responses
 data class RequestRegisterStudent(
