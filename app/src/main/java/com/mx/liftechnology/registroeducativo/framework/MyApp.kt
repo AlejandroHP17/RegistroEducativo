@@ -9,33 +9,28 @@ import android.app.Application
 import com.mx.liftechnology.core.network.util.networkModule
 import com.mx.liftechnology.core.preference.preferenceModule
 import com.mx.liftechnology.core.util.device.deviceModule
+import com.mx.liftechnology.registroeducativo.di.authModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.authDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.calendarModule
-import com.mx.liftechnology.registroeducativo.di.crudFormativeFieldModule
-import com.mx.liftechnology.registroeducativo.di.crudPartialModule
-import com.mx.liftechnology.registroeducativo.di.crudStudentModule
+import com.mx.liftechnology.registroeducativo.di.formativeFieldModule
+import com.mx.liftechnology.registroeducativo.di.studentModule
 import com.mx.liftechnology.registroeducativo.di.dispatcherModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.evaluationDataCoreModule
-import com.mx.liftechnology.registroeducativo.di.forgetPasswordModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.formativeFieldDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.locationModule
-import com.mx.liftechnology.registroeducativo.di.loginUserModule
-import com.mx.liftechnology.registroeducativo.di.menuModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.partialDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.profileModule
-import com.mx.liftechnology.registroeducativo.di.registerEvaluationModule
-import com.mx.liftechnology.registroeducativo.di.registerSchoolModule
-import com.mx.liftechnology.registroeducativo.di.registerUserModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.schoolCycleDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.schoolDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.sharedModule
 import com.mx.liftechnology.registroeducativo.di.splashModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.studentDataCoreModule
-import com.mx.liftechnology.registroeducativo.di.validationModule
 import com.mx.liftechnology.registroeducativo.di.voiceModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.workTypeDataCoreModule
+import com.mx.liftechnology.registroeducativo.di.evaluationModule
+import com.mx.liftechnology.registroeducativo.di.schoolCycleModule
+import com.mx.liftechnology.registroeducativo.di.shareDomainModule
 import com.mx.liftechnology.registroeducativo.di.workTypeModule
-import com.mx.liftechnology.registroeducativo.di.wotyFofiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import timber.log.Timber
@@ -93,6 +88,13 @@ class MyApp : Application() {
                 studentDataCoreModule,
                 workTypeDataCoreModule,
 
+                authModule,
+                evaluationModule,
+                formativeFieldModule,
+                schoolCycleModule,
+                shareDomainModule,
+                studentModule,
+                workTypeModule,
 
                 sharedModule,
                 voiceModule,
@@ -102,20 +104,8 @@ class MyApp : Application() {
                 preferenceModule,
                 deviceModule,
                 splashModule,
-                loginUserModule,
-                registerUserModule,
-                forgetPasswordModule,
-                menuModule,
-                registerSchoolModule,
-                crudPartialModule,
-                crudStudentModule,
-                crudFormativeFieldModule,
                 profileModule,
-                wotyFofiModule,
-                registerEvaluationModule,
                 calendarModule,
-                validationModule,
-                workTypeModule
             )
         }
     }

@@ -1,7 +1,6 @@
 package com.mx.liftechnology.domain.usecase.auth
 
 import com.mx.liftechnology.domain.model.auth.UserDomain
-import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 
 /**
@@ -16,7 +15,7 @@ import com.mx.liftechnology.domain.model.generic.ModelValidationResult
  * @version 1.0.0
  */
 class LoginWithValidationUseCase(
-    private val validateFieldsUseCase: ValidateLoginFieldsUseCase,
+    private val validateFieldsUseCase: ValidateAuthFieldsUseCase,
     private val loginUseCase: LoginUseCase
 ) {
     /**
