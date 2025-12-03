@@ -11,8 +11,8 @@ import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterEvaluationWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.GetWorkTypeByFormativeFieldUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
-import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
+import com.mx.liftechnology.domain.usecase.share.SaveFormativeFieldIdSelectedUseCase
+import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toCustomSpinnerList

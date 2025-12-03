@@ -37,17 +37,17 @@ object AppRoutes {
         const val REGISTER_STUDENT = "registerStudent?student={student}"
         
         // Rutas de materias formativas
-        const val LIST_FORMATIVE_FIELDS = "listSubject"
-        const val REGISTER_FORMATIVE_FIELD = "registerSubject"
+        const val LIST_FORMATIVE_FIELDS = "listFormativeFields"
+        const val REGISTER_FORMATIVE_FIELD = "registerFormativeFields"
         
         // Rutas de ciclos escolares
         const val REGISTER_SCHOOL = "registerSchool"
         const val REGISTER_PARTIAL = "registerPartial"
         
         // Rutas de asignaciones
-        const val ASSIGNMENT_STUDENT = "assignment?student={student}"
-        const val ASSIGNMENT_SUBJECT = "assignment?subject={subject}"
-        const val REGISTER_ASSIGNMENT = "registerassignment?subject={subject}"
+        const val WOTYFOFI_STUDENT = "wotyfofi?student={student}"
+        const val ASSIGNMENT_FORMATIVE_FIELD = "assignment?formativeField={formativeField}"
+        const val REGISTER_ASSIGNMENT = "registerassignment?formativeField={formativeField}"
 
         /**
          * Crea la ruta del menú con el parámetro de recarga.
@@ -84,23 +84,23 @@ object AppRoutes {
         /**
          * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [FormativeFieldDomain] como parámetro.
          *
-         * @param subject El objeto materia a pasar.
+         * @param formativeField El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun assignmentSubject(subject: FormativeFieldDomain?): String {
-            val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
-            return "assignment?subject=$subjectJson"
+        fun assignmentFormativeField(formativeField: FormativeFieldDomain?): String {
+            val formativeFieldJson = formativeField?.let { Uri.encode(Gson().toJson(it)) } ?: ""
+            return "assignment?formativeField=$formativeFieldJson"
         }
 
         /**
          * Crea la ruta para la pantalla de registro de asignación, pasando un objeto [FormativeFieldDomain] como parámetro.
          *
-         * @param subject El objeto materia a pasar.
+         * @param formativeField El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun registerAssignment(subject: FormativeFieldDomain?): String {
-            val subjectJson = subject?.let { Uri.encode(Gson().toJson(it)) } ?: ""
-            return "registerassignment?subject=$subjectJson"
+        fun registerAssignment(formativeField: FormativeFieldDomain?): String {
+            val formativeFieldJson = formativeField?.let { Uri.encode(Gson().toJson(it)) } ?: ""
+            return "registerassignment?formativeField=$formativeFieldJson"
         }
     }
 

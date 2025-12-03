@@ -28,7 +28,7 @@ class RegisterFormativeFieldsWithValidationUseCase(
     /**
      * Valida los campos del formulario de registro de materia formativa y, si son válidos, ejecuta el registro.
      *
-     * @param subject El nombre de la materia.
+     * @param formativeField El nombre de la materia.
      * @param options El número de opciones (métodos de trabajo).
      * @param listAdapter La lista de métodos de trabajo con sus porcentajes.
      * @return Un [ValidationResult] que contiene:
@@ -36,17 +36,17 @@ class RegisterFormativeFieldsWithValidationUseCase(
      * - La lista de adaptadores actualizada con los estados de validación
      */
     suspend operator fun invoke(
-        subject: String?,
+        formativeField: String?,
         options: String?,
         listAdapter: MutableList<SpinnersWorkMethodsDomain>?
     ): ValidationResult {
         // 1. Validar todos los campos
-        val nameState = validateFieldsUseCase.validateNameCompose(subject)
+        val nameState = validateFieldsUseCase.validateNameCompose(formativeField)
         val optionState = validateFieldsUseCase.validateOptionCompose(options)
         val updatedListState = validateFieldsUseCase.validateListJobsCompose(listAdapter)
 
         val validationStates = mutableMapOf<String, ModelStateOutFieldText>(
-            "subject" to nameState,
+            "formativeField" to nameState,
             "options" to optionState
         )
 
@@ -71,7 +71,7 @@ class RegisterFormativeFieldsWithValidationUseCase(
         // 5. Si todas las validaciones pasaron, ejecutar la operación
         val operationResult = registerFormativeFieldsBulkUseCase.invoke(
             updatedList = updatedListState,
-            name = subject ?: ""
+            name = formativeField ?: ""
         )
 
         // 6. Retornar resultado con validación exitosa y resultado de la operación

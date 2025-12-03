@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
+import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
@@ -36,7 +36,7 @@ class CalendarViewModel(
     val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
-    /** The data state for subjects. */
+    /** The data state for formativeField. */
     val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
     private val _dataState2 = MutableStateFlow(ListStudentUiData())
@@ -44,7 +44,7 @@ class CalendarViewModel(
     val dataState2: StateFlow<ListStudentUiData> = _dataState2.asStateFlow()
 
     /**
-     * Gets the list of subjects.
+     * Gets the list of formativeField.
      */
     /*fun getSubject() {
         viewModelScope.launch (dispatcherProvider.main){

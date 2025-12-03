@@ -2,6 +2,7 @@ package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
+import com.mx.liftechnology.domain.usecase.share.ValidateFieldsStudentUseCase
 
 /**
  * Caso de uso que combina la validación de campos de edición de estudiante con la ejecución de la edición.

@@ -14,7 +14,7 @@ import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
-import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
+import com.mx.liftechnology.domain.repository.partial.RegisterListPartialRepository
 
 
 /**

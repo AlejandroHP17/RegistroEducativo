@@ -24,14 +24,14 @@ object FormativeFieldMapper {
      * Convierte una lista de materias del dominio a una lista de ModelCustomCard para la UI.
      * Valida que cada materia tenga un ID válido antes de mapearla.
      *
-     * @param subjects La lista de materias del dominio a convertir.
+     * @param formativeFields La lista de materias del dominio a convertir.
      * @return Una lista de ModelCustomCard formateada para mostrar en la UI.
      */
-    fun mapSubjectListToCustomCard(subjects: List<FormativeFieldDomain>?): List<ModelCustomCard> {
-        if (subjects == null) return emptyList()
+    fun mapFormativeFieldListToCustomCard(formativeFields: List<FormativeFieldDomain>?): List<ModelCustomCard> {
+        if (formativeFields == null) return emptyList()
         
-        return subjects.mapNotNull { subject ->
-            val id = subject.formativeFieldId
+        return formativeFields.mapNotNull { formativeField ->
+            val id = formativeField.formativeFieldId
             if (id == null || id <= 0) {
                 // Log o manejo de error si es necesario
                 null
@@ -39,7 +39,7 @@ object FormativeFieldMapper {
                 ModelCustomCard(
                     id = id,
                     numberList = "",
-                    nameCard = subject.name?.takeIf { it.isNotBlank() } ?: "Sin nombre"
+                    nameCard = formativeField.name?.takeIf { it.isNotBlank() } ?: "Sin nombre"
                 )
             }
         }

@@ -21,10 +21,10 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 interface ValidateFieldsFormativeFieldsUseCase {
     /**
      * Valida el nombre de la materia.
-     * @param nameSubject El nombre de la materia a validar.
+     * @param nameFormativeField El nombre de la materia a validar.
      * @return Un [ModelStateOutFieldText] con el resultado de la validación.
      */
-    fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText
+    fun validateNameCompose(nameFormativeField: String?): ModelStateOutFieldText
 
     /**
      * Valida una opción seleccionada (ej: número de trabajos).
@@ -59,14 +59,14 @@ class ValidateFieldsFormativeFieldsUseCaseImp : ValidateFieldsFormativeFieldsUse
     /**
      * {@inheritDoc}
      */
-    override fun validateNameCompose(nameSubject: String?): ModelStateOutFieldText {
+    override fun validateNameCompose(nameFormativeField: String?): ModelStateOutFieldText {
         return when {
-            nameSubject.isNullOrEmpty() -> nameSubject.stringToModelStateOutFieldText(
+            nameFormativeField.isNullOrEmpty() -> nameFormativeField.stringToModelStateOutFieldText(
                 isError = true,
                 errorMessage = ModelCodeInputs.ET_EMPTY
             )
 
-            else -> nameSubject.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
+            else -> nameFormativeField.stringToModelStateOutFieldText(errorMessage = ModelCodeInputs.ET_CORRECT_FORMAT)
         }
     }
 

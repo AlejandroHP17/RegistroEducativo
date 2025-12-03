@@ -10,8 +10,8 @@ package com.mx.liftechnology.registroeducativo.di.dataCore
 import com.mx.liftechnology.core.network.api.SchoolApi
 import com.mx.liftechnology.data.repositoryImpl.school.GetCctRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.schoolCycle.RegisterCycleSchoolRepositoryImpl
-import com.mx.liftechnology.domain.repository.schoolCycle.school.GetCctRepository
-import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository
+import com.mx.liftechnology.domain.repository.school.GetCctRepository
+import com.mx.liftechnology.domain.repository.school.RegisterCycleSchoolRepository
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

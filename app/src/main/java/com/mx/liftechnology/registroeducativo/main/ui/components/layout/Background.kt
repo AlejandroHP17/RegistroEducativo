@@ -38,9 +38,6 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgFirst
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorBgSecond
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextSubHeader
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.TextDescription
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonReturn
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonActionShort
 
@@ -127,9 +124,9 @@ fun ModifierOrientation():Modifier{
 @Composable
 private fun EmptyStateView() {
     EmptyState(
-        painterResource(id = R.drawable.ic_empty_subject),
-        stringResource(R.string.empty_subject_1),
-        stringResource(R.string.empty_subject_1),
+        painterResource(id = R.drawable.ic_empty_formative_field),
+        stringResource(R.string.empty_formative_field_1),
+        stringResource(R.string.empty_formative_field_1),
         stringResource(R.string.add_button),
         {}) {}
 }

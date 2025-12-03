@@ -23,7 +23,7 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSubjectUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterFormativeFieldUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
@@ -37,14 +37,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Subject Registration screen.
+ * The formativeField Registration screen.
  *
  * @param navController The navigation controller.
  * @param sharedViewModel The shared ViewModel.
  * @param registerFormativeFieldsViewModel The ViewModel for this screen.
  */
 @Composable
-fun RegisterSubjectScreen(
+fun RegisterFormativeFieldScreen(
     navController: NavHostController,
     sharedViewModel: SharedViewModel,
     registerFormativeFieldsViewModel: RegisterFormativeFieldsViewModel = koinViewModel(),
@@ -75,7 +75,7 @@ fun RegisterSubjectScreen(
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }) { HeaderRegisterSubject(navigate = { navController.popBackStack() }) }
+            }) { HeaderRegisterFormativeField(navigate = { navController.popBackStack() }) }
 
         Column(
             modifier = Modifier.constrainAs(body) {
@@ -83,9 +83,9 @@ fun RegisterSubjectScreen(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-            BodyRegisterSubject(
+            BodyRegisterFormativeField(
                 uiState = uiState,
-                onSubjectChanged = { registerFormativeFieldsViewModel.onSubjectChanged(it) },
+                onFormativeFieldChanged = { registerFormativeFieldsViewModel.onFormativeFieldChanged(it) },
                 onOptionsChanged = { registerFormativeFieldsViewModel.onOptionsChanged(it) }
             )
         }
@@ -99,7 +99,7 @@ fun RegisterSubjectScreen(
                 height = Dimension.fillToConstraints
             }) {
             if (uiState.options.valueText.isNotEmpty() && uiState.options.valueText.toInt() > 0) {
-                ColumnRegisterSubject(
+                ColumnRegisterFormativeField(
                     uiState = uiState,
                     onNameChange = { registerFormativeFieldsViewModel.onNameChange(it) },
                     onPercentChange = { registerFormativeFieldsViewModel.onPercentChange(it) }
@@ -113,51 +113,51 @@ fun RegisterSubjectScreen(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-            ActionRegisterSubject { registerFormativeFieldsViewModel.validateFieldsCompose() }
+            ActionRegisterFormativeField { registerFormativeFieldsViewModel.validateFieldsCompose() }
         }
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
 }
 
 /**
- * The header of the Subject Registration screen.
+ * The header of the Formative Field Registration screen.
  *
  * @param navigate A lambda to be invoked when the back button is clicked.
  */
 @Composable
-private fun HeaderRegisterSubject(
+private fun HeaderRegisterFormativeField(
     navigate: () -> Unit,
 ) {
     ComponentHeaderBack(
-        title = stringResource(R.string.register_subject_name),
-        body = stringResource(R.string.register_subject_name_description),
+        title = stringResource(R.string.register_formative_field),
+        body = stringResource(R.string.register_formative_field_name_description),
         onReturnClick = { navigate() })
 }
 
 /**
- * The body of the Subject Registration screen.
+ * The body of the Formative Field Registration screen.
  *
  * @param uiState The UI state for the screen.
- * @param onSubjectChanged A lambda to be invoked when the subject name changes.
+ * @param onFormativeFieldChanged A lambda to be invoked when the formativeField name changes.
  * @param onOptionsChanged A lambda to be invoked when the number of options changes.
  */
 @Composable
-private fun BodyRegisterSubject(
-    uiState: RegisterSubjectUiState,
-    onSubjectChanged: (ModelStateOutFieldText) -> Unit,
+private fun BodyRegisterFormativeField(
+    uiState: RegisterFormativeFieldUiState,
+    onFormativeFieldChanged: (ModelStateOutFieldText) -> Unit,
     onOptionsChanged: (String) -> Unit,
 ) {
     TextFieldGeneric(
-        modelText = uiState.subject,
+        modelText = uiState.formativeField,
         enable = true,
-        label = stringResource(id = R.string.form_subject_field),
+        label = stringResource(id = R.string.form_formative_field_field),
         regex = COMPLEX_TEXT,
-        onBoxChanged = {onSubjectChanged(it)}
+        onBoxChanged = {onFormativeFieldChanged(it)}
     )
 
     CustomSpace(dimensionResource(R.dimen.margin_between))
 
-    TextBody(stringResource(R.string.register_subject_name_description_2))
+    TextBody(stringResource(R.string.register_formative_field_name_description_2))
 
     CustomSpace(dimensionResource(R.dimen.margin_divided))
 
@@ -169,7 +169,7 @@ private fun BodyRegisterSubject(
             modifier = Modifier.weight(5f)
         ) {
             CustomSpace(dimensionResource(R.dimen.margin_outer))
-            TextBody(stringResource(R.string.register_subject_name_description_3))
+            TextBody(stringResource(R.string.register_formative_field_name_description_3))
         }
 
         Box(
@@ -179,7 +179,7 @@ private fun BodyRegisterSubject(
                 options = uiState.listOptions,
                 selectedOption = uiState.options,
                 read = uiState.read,
-                label = stringResource(id = R.string.form_subject_options),
+                label = stringResource(id = R.string.form_formative_field_options),
                 onOptionSelected = { onOptionsChanged(it.value!!) }
             )
         }
@@ -188,15 +188,15 @@ private fun BodyRegisterSubject(
 }
 
 /**
- * The column of the Subject Registration screen.
+ * The column of the Formative Field Registration screen.
  *
  * @param uiState The UI state for the screen.
  * @param onNameChange A lambda to be invoked when the name of an item changes.
  * @param onPercentChange A lambda to be invoked when the percentage of an item changes.
  */
 @Composable
-private fun ColumnRegisterSubject(
-    uiState: RegisterSubjectUiState,
+private fun ColumnRegisterFormativeField(
+    uiState: RegisterFormativeFieldUiState,
     onNameChange: (Pair<WorkTypeDomain?, Int>) -> Unit,
     onPercentChange: (Pair<ModelStateOutFieldText, Int>) -> Unit,
 ) {
@@ -209,12 +209,12 @@ private fun ColumnRegisterSubject(
 }
 
 /**
- * The action button of the Subject Registration screen.
+ * The action button of the Formative Field Registration screen.
  *
  * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
  */
 @Composable
-private fun ActionRegisterSubject(
+private fun ActionRegisterFormativeField(
     validateFieldsCompose: () -> Unit,
 ) {
     ButtonAction(
@@ -240,7 +240,7 @@ private fun RegisterFormativeFieldsPreview(){
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
-            }) { HeaderRegisterSubject(navigate = {} )}
+            }) { HeaderRegisterFormativeField(navigate = {} )}
 
         Column(
             modifier = Modifier.constrainAs(body) {
@@ -248,9 +248,9 @@ private fun RegisterFormativeFieldsPreview(){
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-            BodyRegisterSubject(
-                uiState = RegisterSubjectUiState(),
-                onSubjectChanged = {  },
+            BodyRegisterFormativeField(
+                uiState = RegisterFormativeFieldUiState(),
+                onFormativeFieldChanged = {  },
                 onOptionsChanged = { }
             )
         }
@@ -264,8 +264,8 @@ private fun RegisterFormativeFieldsPreview(){
                 height = Dimension.fillToConstraints
             }) {
 
-            ColumnRegisterSubject(
-                uiState = RegisterSubjectUiState(),
+            ColumnRegisterFormativeField(
+                uiState = RegisterFormativeFieldUiState(),
                 onNameChange = { },
                 onPercentChange = { }
             )
@@ -278,7 +278,7 @@ private fun RegisterFormativeFieldsPreview(){
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             }) {
-            ActionRegisterSubject { }
+            ActionRegisterFormativeField { }
         }
     }
 }

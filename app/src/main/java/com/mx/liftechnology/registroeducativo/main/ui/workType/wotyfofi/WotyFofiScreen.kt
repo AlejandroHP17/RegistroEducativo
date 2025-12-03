@@ -32,7 +32,7 @@ import org.koin.androidx.compose.koinViewModel
  * @param wotyFofiViewModel El ViewModel para esta pantalla.
  */
 @Composable
-fun AssignmentSubjectScreen(
+fun AssignmentFormativeFieldScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
     wotyFofiViewModel: WotyFofiViewModel = koinViewModel(),
@@ -40,15 +40,15 @@ fun AssignmentSubjectScreen(
 
     val uiState by wotyFofiViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by wotyFofiViewModel.dataState.collectAsStateWithLifecycle()
-    val subjectJson = backStackEntry.arguments?.getString("subject")
+    val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
 
     LaunchedEffect(Unit) {
-        val subject: FormativeFieldDomain? = if (subjectJson.isNullOrEmpty()) {
+        val formativeField: FormativeFieldDomain? = if (formativeFieldJson.isNullOrEmpty()) {
             null
         } else {
-            Gson().fromJson(subjectJson, FormativeFieldDomain::class.java)
+            Gson().fromJson(formativeFieldJson, FormativeFieldDomain::class.java)
         }
-        wotyFofiViewModel.updateSubject(subject)
+        wotyFofiViewModel.updateFormativeField(formativeField)
         wotyFofiViewModel.getListWotyFofi()
     }
 
@@ -61,7 +61,7 @@ fun AssignmentSubjectScreen(
 
         GenericJobsScreen(
             title = uiState.formativeFields?.name ?: "Desconocido",
-            description = stringResource(R.string.assignment_subject_description),
+            description = stringResource(R.string.assignment_formative_field_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = WotyFofiUiCallbacks(

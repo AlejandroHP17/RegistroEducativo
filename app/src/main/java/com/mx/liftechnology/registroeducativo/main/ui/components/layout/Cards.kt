@@ -479,7 +479,7 @@ fun EvaluationPercentItem(
             DropdownTextFieldEditable(
                 options = listWorkMethods,
                 selectedOption = name,
-                label = stringResource(R.string.form_subject_evaluation),
+                label = stringResource(R.string.form_formative_field_evaluation),
                 onOptionSelected = {
                     onNameChange(it)
                 }
@@ -491,7 +491,7 @@ fun EvaluationPercentItem(
                 modelText = percent,
                 enable = true,
                 maxNumberCharacter = 4,
-                label = stringResource(id = R.string.form_subject_percent),
+                label = stringResource(id = R.string.form_formative_field_percent),
                 onBoxChanged = {onPercentChange(it)}
             )
         }

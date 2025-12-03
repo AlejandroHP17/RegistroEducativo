@@ -11,7 +11,7 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
-import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartialRepository
+import com.mx.liftechnology.domain.repository.partial.GetListPartialRepository
 
 
 /**

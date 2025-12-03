@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
+import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData

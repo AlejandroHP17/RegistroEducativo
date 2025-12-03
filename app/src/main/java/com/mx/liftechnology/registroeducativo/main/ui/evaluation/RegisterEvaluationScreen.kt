@@ -66,7 +66,7 @@ fun RegisterEvaluationScreen(
     val uiState by registerEvaluationViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by registerEvaluationViewModel.dataState.collectAsStateWithLifecycle()
     val dialogState by registerEvaluationViewModel.dialogState.collectAsStateWithLifecycle()
-    val formativeFieldJson = backStackEntry.arguments?.getString("subject")
+    val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
 
     val showDialog = remember { mutableStateOf(false) }
 

@@ -7,7 +7,7 @@ import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
-import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository
+import com.mx.liftechnology.domain.repository.school.RegisterCycleSchoolRepository
 
 /**
  * @file Define el repositorio para la funcionalidad de registro de escuelas.
@@ -15,7 +15,7 @@ import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSc
  * @version 1.0.0
  */
 /**
- * Implementación de [com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository].
+ * Implementación de [RegisterCycleSchoolRepository].
  * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
  * @property registerSchoolCycleApiCall La llamada a la API para el registro de escuelas.

@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
-import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListWotyFofiUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListEvaluationsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData

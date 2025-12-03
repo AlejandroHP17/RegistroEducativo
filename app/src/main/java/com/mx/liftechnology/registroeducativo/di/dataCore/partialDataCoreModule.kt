@@ -10,8 +10,8 @@ package com.mx.liftechnology.registroeducativo.di.dataCore
 import com.mx.liftechnology.core.network.api.PartialApi
 import com.mx.liftechnology.data.repositoryImpl.partial.GetListPartialRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.partial.RegisterListPartialRepositoryImpl
-import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartialRepository
-import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
+import com.mx.liftechnology.domain.repository.partial.GetListPartialRepository
+import com.mx.liftechnology.domain.repository.partial.RegisterListPartialRepository
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

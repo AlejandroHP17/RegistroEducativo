@@ -41,23 +41,23 @@ fun ListFormativeFieldsScreen(
 
     if (dataState.formativeFieldsList.isNullOrEmpty()) {
         GenericEmptyScreen(
-            image = painterResource(id = R.drawable.ic_empty_subject),
-            title = stringResource(R.string.empty_subject_1),
-            description = stringResource(R.string.empty_subject_2),
+            image = painterResource(id = R.drawable.ic_empty_formative_field),
+            title = stringResource(R.string.empty_formative_field_1),
+            description = stringResource(R.string.empty_formative_field_2),
             button = stringResource(R.string.add_button),
             onReturnClick = { navController.popBackStack() },
             onActionClick = { navController.navigateWithParams(AppRoutes.Main.REGISTER_FORMATIVE_FIELD) }
         )
     } else {
         GenericListScreen(
-            title = stringResource(R.string.get_subject_name),
+            title = stringResource(R.string.get_formative_field_name),
             textButton = stringResource(R.string.add_button),
             items = dataState.formativeFieldsListUI,
             onReturnClick = { navController.popBackStack() },
             callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
-                        AppRoutes.Main.assignmentSubject(
+                        AppRoutes.Main.assignmentFormativeField(
                             listFormativeFieldsViewModel.getFormativeFields(it)
                         )
                     )
@@ -89,16 +89,16 @@ private fun ListFormativeFieldsPreview(){
 
     if (dataState.formativeFieldsList.isNullOrEmpty()) {
         GenericEmptyScreen(
-            image = painterResource(id = R.drawable.ic_empty_subject),
-            title = stringResource(R.string.empty_subject_1),
-            description = stringResource(R.string.empty_subject_2),
+            image = painterResource(id = R.drawable.ic_empty_formative_field),
+            title = stringResource(R.string.empty_formative_field_1),
+            description = stringResource(R.string.empty_formative_field_2),
             button = stringResource(R.string.add_button),
             onReturnClick = { },
             onActionClick = { }
         )
     } else {
         GenericListScreen(
-            title = stringResource(R.string.get_subject_name),
+            title = stringResource(R.string.get_formative_field_name),
             textButton = stringResource(R.string.add_button),
             items = dataState.formativeFieldsListUI,
             onReturnClick = { },

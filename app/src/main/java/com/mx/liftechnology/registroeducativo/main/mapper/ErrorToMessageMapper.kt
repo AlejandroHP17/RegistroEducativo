@@ -45,7 +45,7 @@ object ErrorToMessageMapper {
             ErrorContext.EDIT_STUDENT -> R.string.toast_error_edit_student
             ErrorContext.REGISTER_SCHOOL -> R.string.toast_error_register_school
             ErrorContext.REGISTER_PARTIAL -> R.string.toast_error_register_partials
-            ErrorContext.REGISTER_SUBJECT -> R.string.toast_error_register_subject
+            ErrorContext.REGISTER_FORMATIVE_FIELD -> R.string.toast_error_register_formative_field
             ErrorContext.REGISTER_ASSIGNMENT -> R.string.toast_error_register_assignment
             ErrorContext.GENERIC -> R.string.toast_error_generic
         }
@@ -94,7 +94,7 @@ object ErrorToMessageMapper {
         EDIT_STUDENT,
         REGISTER_SCHOOL,
         REGISTER_PARTIAL,
-        REGISTER_SUBJECT,
+        REGISTER_FORMATIVE_FIELD,
         REGISTER_ASSIGNMENT,
         GENERIC
     }

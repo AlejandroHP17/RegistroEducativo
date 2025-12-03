@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
-import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListWorkEvaluationFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListByFieldTypeStudentUseCase
+import com.mx.liftechnology.domain.usecase.share.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
@@ -45,15 +45,15 @@ class WotyFofiViewModel (
     /**
      * Actualiza la materia actual.
      *
-     * @param subject La nueva materia.
+     * @param formativeField La nueva materia.
      */
-    fun updateSubject(subject: FormativeFieldDomain?) {
+    fun updateFormativeField(formativeField: FormativeFieldDomain?) {
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             withContext(dispatcherProvider.io) {
-                saveFormativeFieldIdSelectedUseCase.invoke(subject?.formativeFieldId)
+                saveFormativeFieldIdSelectedUseCase.invoke(formativeField?.formativeFieldId)
             }
-            _uiState.update { it.copy(formativeFields = subject) }
+            _uiState.update { it.copy(formativeFields = formativeField) }
         }
     }
 

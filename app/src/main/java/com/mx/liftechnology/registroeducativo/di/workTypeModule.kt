@@ -1,9 +1,9 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
-import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListWorkEvaluationFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListByFieldTypeStudentUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListWotyFofiUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListEvaluationsStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent.WotyFofiStudentViewModel
 import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.WotyFofiViewModel
 import org.koin.core.module.dsl.singleOf

@@ -8,7 +8,7 @@ import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.SchoolCycleDomain
-import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
+import com.mx.liftechnology.domain.repository.menu.MenuRepository
 
 /**
  * @file Define el repositorio para la funcionalidad del menú principal.
@@ -16,7 +16,7 @@ import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
  * @version 1.0.0
  */
 /**
- * Implementación de [com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository].
+ * Implementación de [MenuRepository].
  * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
  * @property groupApiCall La llamada a la API para obtener la lista de grupos.

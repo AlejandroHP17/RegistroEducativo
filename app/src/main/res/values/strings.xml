@@ -7,8 +7,8 @@
     <string name="next">Siguiente</string>
     <string name="cancel">Cancelar</string>
 
-    <string name="empty_subject_1">Sin Campos Formativos</string>
-    <string name="empty_subject_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
+    <string name="empty_formative_field_1">Sin Campos Formativos</string>
+    <string name="empty_formative_field_2">No encontramos algún campo formativo vinculado al ciclo escolar actual, por favor agregue uno</string>
     <string name="empty_student_1">Sin Alumnos</string>
     <string name="empty_student_2">No encontramos algún alumno vinculado al ciclo escolar actual, por favor agregue uno</string>
 
@@ -62,20 +62,20 @@
     <string name="register_student_register">REGISTRAR</string>
 
     <!-- Register Flow -->
-    <string name="register_subject_name">Registra tu campo formativo</string>
-    <string name="register_subject_name_description">Ingresa los datos del campo formativo</string>
-    <string name="register_subject_name_description_2">Ingresa los tipos de trabajo que se evaluaran en dicho campo formativo y su porcentaje correspondiente a la calificación final, el porcentaje total debe ser 100%</string>
-    <string name="register_subject_name_description_3">Opciones de evaluación por campo formativo</string>
+    <string name="register_formative_field">Registra tu campo formativo</string>
+    <string name="register_formative_field_name_description">Ingresa los datos del campo formativo</string>
+    <string name="register_formative_field_name_description_2">Ingresa los tipos de trabajo que se evaluaran en dicho campo formativo y su porcentaje correspondiente a la calificación final, el porcentaje total debe ser 100%</string>
+    <string name="register_formative_field_name_description_3">Opciones de evaluación por campo formativo</string>
 
 
     <!-- Gets Flow -->
     <string name="get_student_name">Lista de alumnos</string>
-    <string name="get_subject_name">Lista de campos formativos</string>
+    <string name="get_formative_field_name">Lista de campos formativos</string>
 
 
     <!-- Gets Flow -->
     <string name="assignment_name">Campo formativo</string>
-    <string name="assignment_subject_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
+    <string name="assignment_formative_field_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de alumnos contenidos por cada trabajo realizado</string>
     <string name="assignment_student_description">Despliega el listado de trabajo por campo formativo y posteriormente puedes desplegar el listado de trabajos con calificación del alumno</string>
     <string name="assignment_type_evaluate">Tipo de trabajo a evaluar</string>
 

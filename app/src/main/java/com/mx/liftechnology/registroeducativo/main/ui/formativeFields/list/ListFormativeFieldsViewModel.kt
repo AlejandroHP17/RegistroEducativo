@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Subject List screen.
+ * ViewModel for the formativeField List screen.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -40,7 +40,7 @@ class ListFormativeFieldsViewModel(
     val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
     /**
-     * Gets the list of subjects.
+     * Gets the list of formativeFields.
      */
     fun getFormativeFields() {
         viewModelScope.launch {
@@ -56,7 +56,7 @@ class ListFormativeFieldsViewModel(
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
                         formativeFieldsList = result.data,
-                        formativeFieldsListUI = FormativeFieldMapper.mapSubjectListToCustomCard(result.data),
+                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(result.data),
                     ) }
                 }
                 else -> {
@@ -68,9 +68,9 @@ class ListFormativeFieldsViewModel(
     }
 
     /**
-     * Gets a subject by its ID.
+     * Gets a formativeField by its ID.
      *
-     * @param item The custom card model of the subject to get.
+     * @param item The custom card model of the formativeField to get.
      * @return The [FormativeFieldDomain] object, or null if not found.
      */
     fun getFormativeFields(item: ModelCustomCard): FormativeFieldDomain? = _dataState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }

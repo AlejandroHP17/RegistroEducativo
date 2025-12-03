@@ -28,6 +28,8 @@ import com.mx.liftechnology.registroeducativo.di.dataCore.studentDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.voiceModule
 import com.mx.liftechnology.registroeducativo.di.dataCore.workTypeDataCoreModule
 import com.mx.liftechnology.registroeducativo.di.evaluationModule
+import com.mx.liftechnology.registroeducativo.di.menuModule
+import com.mx.liftechnology.registroeducativo.di.partialModule
 import com.mx.liftechnology.registroeducativo.di.schoolCycleModule
 import com.mx.liftechnology.registroeducativo.di.shareDomainModule
 import com.mx.liftechnology.registroeducativo.di.workTypeModule
@@ -91,6 +93,8 @@ class MyApp : Application() {
                 authModule,
                 evaluationModule,
                 formativeFieldModule,
+                menuModule,
+                partialModule,
                 schoolCycleModule,
                 shareDomainModule,
                 studentModule,

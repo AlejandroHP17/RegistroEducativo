@@ -1,14 +1,14 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.domain.usecase.auth.ValidateAuthFieldsUseCase
-import com.mx.liftechnology.domain.usecase.auth.ValidateAuthFieldsUseCaseImp
-import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
-import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCase
-import com.mx.liftechnology.domain.usecase.schoolCycle.partial.ValidateFieldsRegisterPartialUseCaseImp
-import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCase
-import com.mx.liftechnology.domain.usecase.student.ValidateFieldsStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.share.ValidateAuthFieldsUseCase
+import com.mx.liftechnology.domain.usecase.share.ValidateAuthFieldsUseCaseImp
+import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.share.SaveFormativeFieldIdSelectedUseCase
+import com.mx.liftechnology.domain.usecase.share.ValidateFieldsRegisterPartialUseCase
+import com.mx.liftechnology.domain.usecase.share.ValidateFieldsRegisterPartialUseCaseImp
+import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
+import com.mx.liftechnology.domain.usecase.share.ValidateFieldsStudentUseCase
+import com.mx.liftechnology.domain.usecase.share.ValidateFieldsStudentUseCaseImp
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module

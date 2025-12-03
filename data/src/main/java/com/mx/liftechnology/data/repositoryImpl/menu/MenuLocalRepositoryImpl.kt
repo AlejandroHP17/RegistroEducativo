@@ -8,7 +8,7 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.data.R
 import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
-import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuLocalRepository
+import com.mx.liftechnology.domain.repository.menu.MenuLocalRepository
 
 /**
  * @file Define el repositorio local para la funcionalidad del menú principal.
@@ -61,7 +61,7 @@ class MenuLocalRepositoryImpl(private val context: Context
         val listMenuItems = context.resources.getStringArray(R.array.menu_items_register)
         val imageResources = arrayOf(
             R.drawable.ic_students,
-            R.drawable.ic_subject,
+            R.drawable.ic_formative_field,
             R.drawable.ic_calendars,
             R.drawable.ic_partial,
             R.drawable.ic_export

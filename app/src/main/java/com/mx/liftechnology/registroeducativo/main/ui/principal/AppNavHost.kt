@@ -34,8 +34,8 @@ import com.mx.liftechnology.registroeducativo.main.ui.calendar.CalendarScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.ShowCustomAnimated
 import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsScreen
-import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.AssignmentSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterFormativeFieldScreen
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.AssignmentFormativeFieldScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
@@ -136,7 +136,7 @@ fun AppNavHost(
                 sharedViewModel = sharedViewModel
             ) }
 
-            composable(AppRoutes.Main.REGISTER_FORMATIVE_FIELD){ RegisterSubjectScreen(
+            composable(AppRoutes.Main.REGISTER_FORMATIVE_FIELD){ RegisterFormativeFieldScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel) }
             composable(AppRoutes.Main.REGISTER_PARTIAL){ RegisterPartialScreen(
@@ -163,7 +163,7 @@ fun AppNavHost(
             }
 
             composable(
-                route = AppRoutes.Main.ASSIGNMENT_STUDENT,
+                route = AppRoutes.Main.WOTYFOFI_STUDENT,
                 arguments = listOf(navArgument("student") {
                     nullable = true
                     defaultValue = ""
@@ -176,13 +176,13 @@ fun AppNavHost(
             }
 
             composable(
-                route = AppRoutes.Main.ASSIGNMENT_SUBJECT,
-                arguments = listOf(navArgument("subject") {
+                route = AppRoutes.Main.ASSIGNMENT_FORMATIVE_FIELD,
+                arguments = listOf(navArgument("formativeField") {
                     nullable = true
                     defaultValue = ""
                 })
             ) { backStackEntry ->
-                AssignmentSubjectScreen(
+                AssignmentFormativeFieldScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry
                 )
@@ -190,7 +190,7 @@ fun AppNavHost(
 
             composable(
                 route = AppRoutes.Main.REGISTER_ASSIGNMENT,
-                arguments = listOf(navArgument("subject") {
+                arguments = listOf(navArgument("formativeField") {
                     nullable = true
                     defaultValue = ""
                 })

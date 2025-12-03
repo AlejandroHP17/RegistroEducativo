@@ -2,6 +2,7 @@ package com.mx.liftechnology.domain.usecase.auth
 
 import com.mx.liftechnology.domain.model.auth.UserDomain
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
+import com.mx.liftechnology.domain.usecase.share.ValidateAuthFieldsUseCase
 
 /**
  * Caso de uso que combina la validación de campos de login con la ejecución del login.

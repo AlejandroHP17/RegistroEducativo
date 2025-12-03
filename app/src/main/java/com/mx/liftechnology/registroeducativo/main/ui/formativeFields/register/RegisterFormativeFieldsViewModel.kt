@@ -16,7 +16,7 @@ import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSubjectUiState
+import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterFormativeFieldUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,17 +37,17 @@ class RegisterFormativeFieldsViewModel(
     private val getListWorkTypeUseCase: GetListWorkTypeUseCase,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(RegisterSubjectUiState())
+    private val _uiState = MutableStateFlow(RegisterFormativeFieldUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<RegisterSubjectUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterFormativeFieldUiState> = _uiState.asStateFlow()
 
     /**
      * Se llama cuando cambia el nombre de la materia.
      *
-     * @param subject El nuevo nombre de la materia.
+     * @param formativeField El nuevo nombre de la materia.
      */
-    fun onSubjectChanged(subject: ModelStateOutFieldText) {
-        _uiState.update { it.copy(subject = subject) }
+    fun onFormativeFieldChanged(formativeField: ModelStateOutFieldText) {
+        _uiState.update { it.copy(formativeField = formativeField) }
     }
 
     /**
@@ -58,14 +58,14 @@ class RegisterFormativeFieldsViewModel(
     fun onNameChange(value: Pair<WorkTypeDomain?, Int>) {
         _uiState.update {
             it.copy(
-                listAdapter = it.listAdapter?.map { subject ->
-                    if (subject.position == value.second) {
-                        subject.copy(
+                listAdapter = it.listAdapter?.map { formativeField ->
+                    if (formativeField.position == value.second) {
+                        formativeField.copy(
                             name = value.first?.name.stringToModelStateOutFieldText(),
                             workTypeId = value.first?.workTypeId,
                         )
                     } else {
-                        subject
+                        formativeField
                     }
                 },
             )
@@ -80,11 +80,11 @@ class RegisterFormativeFieldsViewModel(
     fun onPercentChange(value: Pair<ModelStateOutFieldText, Int>) {
         _uiState.update {
             it.copy(
-                listAdapter = it.listAdapter?.map { subject ->
-                    if (subject.position == value.second) {
-                        subject.copy(percent = value.first)
+                listAdapter = it.listAdapter?.map { formativeField ->
+                    if (formativeField.position == value.second) {
+                        formativeField.copy(percent = value.first)
                     } else {
-                        subject
+                        formativeField
                     }
                 },
             )
@@ -111,7 +111,7 @@ class RegisterFormativeFieldsViewModel(
                 it.copy(
                     options = options.stringToModelStateOutFieldText(),
                     listAdapter = list,
-                    subject = it.subject.valueText.stringToModelStateOutFieldText()
+                    formativeField = it.formativeField.valueText.stringToModelStateOutFieldText()
                 )
             }
         }
@@ -128,7 +128,7 @@ class RegisterFormativeFieldsViewModel(
             // El Use Case combina validación + operación
             val result = withContext(dispatcherProvider.io) {
                 registerFormativeFieldsWithValidationUseCase.invoke(
-                    subject = _uiState.value.subject.valueText,
+                    formativeField = _uiState.value.formativeField.valueText,
                     options = _uiState.value.options.valueText,
                     listAdapter = _uiState.value.listAdapter?.toMutableList()
                 )
@@ -139,7 +139,7 @@ class RegisterFormativeFieldsViewModel(
             // Actualizar los estados de validación de los campos
             _uiState.update {
                 it.copy(
-                    subject = validationResult.validationStates["subject"] ?: it.subject,
+                    formativeField = validationResult.validationStates["formativeField"] ?: it.formativeField,
                     options = validationResult.validationStates["options"] ?: it.options,
                     listAdapter = result.updatedListAdapter
                 )
@@ -152,7 +152,7 @@ class RegisterFormativeFieldsViewModel(
                         _uiState.update { it.copy(
                             uiState = ModelStateUIEnum.SUCCESS,
                             controlToast = ToastUiState(
-                                messageToast = R.string.toast_success_register_subject,
+                                messageToast = R.string.toast_success_register_formative_field,
                                 showToast = true,
                                 typeToast = ModelStateTypeToastUI.SUCCESS
                             )
@@ -162,7 +162,7 @@ class RegisterFormativeFieldsViewModel(
                         val userError = ErrorMapper.mapErrorToUI(operationResult.error)
                         val messageRes = ErrorToMessageMapper.mapErrorToMessage(
                             error = userError,
-                            context = ErrorToMessageMapper.ErrorContext.REGISTER_SUBJECT
+                            context = ErrorToMessageMapper.ErrorContext.REGISTER_FORMATIVE_FIELD
                         )
 
                         _uiState.update {

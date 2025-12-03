@@ -1,0 +1,75 @@
+/**
+ * @file Define el caso de uso para registrar una lista de parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+package com.mx.liftechnology.domain.usecase.partial
+
+
+import com.mx.liftechnology.core.preference.PreferenceUseCase
+import com.mx.liftechnology.core.util.models.ErrorResult
+import com.mx.liftechnology.core.util.models.LocalModelError
+import com.mx.liftechnology.core.util.models.ModelError
+import com.mx.liftechnology.core.util.models.ModelResult
+import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.core.util.models.SuccessResult
+import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
+import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
+import com.mx.liftechnology.domain.repository.partial.RegisterListPartialRepository
+
+/**
+ * Caso de uso para registrar una lista de parciales.
+ * Encapsula la lógica de negocio para construir la petición y enviarla al repositorio para su registro.
+ *
+ * @property registerListPartialRepository El repositorio para registrar la lista de parciales.
+ * @property preference El caso de uso para gestionar las preferencias del usuario.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+class RegisterListPartialUseCase(
+    private val registerListPartialRepository: RegisterListPartialRepository,
+    private val preference: PreferenceUseCase
+) {
+    /**
+     * Ejecuta el proceso de registro de una lista de parciales.
+     *
+     * @param adapterPeriods La lista de períodos de fechas a registrar.
+     * @return Un [ModelResult] que indica el resultado de la operación.
+     */
+    suspend operator fun invoke(
+        adapterPeriods: List<DatePeriodDomain>
+    ): ModelResult<List<ListPartialDomain?>, ModelError> {
+        val cycleSchoolId = preference.getIdCycleSchool()
+
+        if(cycleSchoolId == null || adapterPeriods.isEmpty()) return ErrorResult(
+            LocalModelError.USER_INCOMPLETE_DATA
+        )
+
+        val adapter = adapterPeriods.map {
+            DatePeriodDomain(
+                position = it.position,
+                date = it.date,
+                partialCycleGroup = it.partialCycleGroup
+            )
+        }
+
+        return runCatching { registerListPartialRepository.register(
+            adapterPeriods = adapter,
+            cycleSchoolId = cycleSchoolId
+        ) }.fold(
+            onSuccess = { result ->
+                when(result){
+                    is SuccessResult -> {
+                        if(result.data.isNotEmpty()) SuccessResult(result.data)
+                        else ErrorResult(NetworkModelError.NOT_FOUND)
+                    }
+                    is ErrorResult -> {
+                        ErrorResult(result.error)
+                    }
+                }
+            },
+            onFailure = { ErrorResult(NetworkModelError.UNKNOWN)}
+        )
+    }
+}
