@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.api.SchoolCycleApi
+
 import com.mx.liftechnology.data.repositoryImpl.menu.MenuLocalRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.schoolCycle.MenuRepositoryImpl
 import com.mx.liftechnology.domain.repository.schoolCycle.menu.MenuRepository
@@ -15,7 +15,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import retrofit2.Retrofit
+
 
 /**
  * Koin module for schoolCycle-related dependencies.
@@ -25,22 +25,13 @@ import retrofit2.Retrofit
  */
 val menuModule = module {
 
-    /**
-     * Provides an instance of [SchoolCycleApi].
-     */
-    factory { get<Retrofit>().create(SchoolCycleApi::class.java) }
 
     /**
      * Provides a singleton instance of [MenuLocalRepositoryImpl].
      */
     single { MenuLocalRepositoryImpl(androidContext()) }
 
-    /**
-     * Provides a singleton instance of [MenuRepository].
-     */
-    singleOf(::MenuRepositoryImpl) {
-        bind<MenuRepository>()
-    }
+
 
     /**
      * Provides a singleton instance of [GetControlMenuUseCase].

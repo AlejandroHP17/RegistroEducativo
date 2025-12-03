@@ -3,9 +3,10 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.network
+package com.mx.liftechnology.core.network.interceptor
 
 import com.google.gson.Gson
+import com.mx.liftechnology.core.network.util.TokenProvider
 import com.mx.liftechnology.core.network.environment.Environment
 import com.mx.liftechnology.core.util.session.SessionManager
 import kotlinx.coroutines.runBlocking
@@ -15,6 +16,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
+import java.io.IOException
 
 /**
  * Interceptor de OkHttp que gestiona la autenticación y el refresh de tokens de forma automática.
@@ -77,7 +79,7 @@ class AuthInterceptor(
         if (!requiresAuth(request)) {
             return try {
                 chain.proceed(request)
-            } catch (e: java.io.IOException) {
+            } catch (e: IOException) {
                 // Si hay un error de conexión, lo propagamos para que sea manejado por el sistema de errores
                 throw e
             }
@@ -90,7 +92,7 @@ class AuthInterceptor(
 
         val response = try {
             chain.proceed(authRequest)
-        } catch (e: java.io.IOException) {
+        } catch (e: IOException) {
             // Si hay un error de conexión en la petición autenticada, lo propagamos
             // para que sea manejado por el sistema de errores (ResponseExtensions.executeOrError)
             throw e
@@ -116,7 +118,7 @@ class AuthInterceptor(
 
             val refreshResponse = try {
                 chain.proceed(refreshRequest)
-            } catch (e: java.io.IOException) {
+            } catch (e: IOException) {
                 // Si hay un error de conexión al intentar refrescar el token,
                 // cerramos la sesión y propagamos el error
                 tokenProvider.closeSession()
@@ -141,7 +143,7 @@ class AuthInterceptor(
 
                     return try {
                         chain.proceed(retryRequest)
-                    } catch (e: java.io.IOException) {
+                    } catch (e: IOException) {
                         // Si hay un error de conexión al reintentar la petición, lo propagamos
                         throw e
                     }

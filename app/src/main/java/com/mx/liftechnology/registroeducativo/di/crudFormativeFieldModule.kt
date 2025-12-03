@@ -1,7 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.api.EvaluationApi
-import com.mx.liftechnology.core.network.api.FormativeFieldApi
+
 import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.DeleteFormativeFieldRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListFormativeFieldRepositoryImpl
@@ -25,7 +24,6 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import retrofit2.Retrofit
 
 /**
  * Koin module for subject-related CRUD dependencies.
@@ -35,49 +33,6 @@ import retrofit2.Retrofit
  */
 val crudFormativeFieldModule = module {
 
-    /**
-     * Provides an instance of [FormativeFieldApi].
-     */
-    factory { get<Retrofit>().create(FormativeFieldApi::class.java) }
-
-    /**
-     * Provides an instance of [EvaluationApi].
-     */
-    factory { get<Retrofit>().create(EvaluationApi::class.java) }
-
-    /**
-     * Provides a singleton instance of [GetListWorkTypeFormativeFieldRepository].
-     */
-    singleOf(::GetListWorkTypeFormativeFieldRepositoryImpl) {
-        bind<GetListWorkTypeFormativeFieldRepository>()
-    }
-
-    /**
-     * Provides a singleton instance of [GetListFormativeFieldRepository].
-     */
-    singleOf(::GetListFormativeFieldRepositoryImpl) {
-        bind<GetListFormativeFieldRepository>()
-    }
-
-    /**
-     * Provides a singleton instance of [RegisterFormativeFieldsBulkRepository].
-     */
-    singleOf(::RegisterFormativeFieldsBulkRepositoryImpl) {
-        bind<RegisterFormativeFieldsBulkRepository>()
-    }
-
-    /**
-     * Provides a singleton instance of [GetWorkTypeRepository].
-     */
-    singleOf(::GetWorkTypeRepositoryImpl) {
-        bind<GetWorkTypeRepository>()
-    }
-    /**
-     * Provides a singleton instance of [GetWorkTypeRepository].
-     */
-    singleOf(::DeleteFormativeFieldRepositoryImpl) {
-        bind<DeleteFormativeFieldRepository>()
-    }
 
     /**
      * Provides a singleton instance of [GetListWorkEvaluationFormativeFieldUseCase].

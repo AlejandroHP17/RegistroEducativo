@@ -3,10 +3,13 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.network
+package com.mx.liftechnology.core.network.util
 
 import com.mx.liftechnology.core.BuildConfig
 import com.mx.liftechnology.core.network.environment.Environment
+import com.mx.liftechnology.core.network.interceptor.AuthInterceptor
+import com.mx.liftechnology.core.network.interceptor.ConnectionErrorInterceptor
+import com.mx.liftechnology.core.network.interceptor.ErrorHandlingInterceptor
 import com.mx.liftechnology.core.util.extension.logDebug
 import com.mx.liftechnology.core.util.session.SessionManager
 import okhttp3.OkHttpClient
@@ -53,19 +56,19 @@ val networkModule = module {
     /**
      * Provee una instancia singleton de [AuthInterceptor] para la autenticación.
      */
-    singleOf ( ::AuthInterceptor )
+    singleOf (::AuthInterceptor)
 
     /**
      * Provee una instancia singleton de [ConnectionErrorInterceptor] para diagnóstico y logging de conectividad.
      * Este interceptor loguea información detallada de las peticiones y captura errores de conexión (IOException)
      * para facilitar el debugging de problemas de red de bajo nivel.
      */
-    singleOf ( ::ConnectionErrorInterceptor )
+    singleOf (::ConnectionErrorInterceptor)
 
     /**
      * Provee una instancia singleton de [ErrorHandlingInterceptor] para manejo centralizado de errores HTTP.
      */
-    singleOf ( ::ErrorHandlingInterceptor )
+    singleOf (::ErrorHandlingInterceptor)
 
     /**
      * Provee una instancia singleton de [OkHttpClient], configurado con los interceptores.

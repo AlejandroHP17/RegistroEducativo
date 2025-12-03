@@ -1,7 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.core.network.api.StudentApi
+
 import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListByFieldTypeStudentRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListWotyFofiRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.workType.GetWorkTypeByFormativeFieldsRepositoryImpl
@@ -20,7 +19,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import retrofit2.Retrofit
+
 
 /**
  * Koin module for assignment-related dependencies.
@@ -29,31 +28,6 @@ import retrofit2.Retrofit
  * @version 1.0.0
  */
 val wotyFofiModule = module {
-    /**
-     * Provides an instance of [FormativeFieldApi].
-     */
-    factory { get<Retrofit>().create(FormativeFieldApi::class.java) }
-
-    /**
-     * Provides an instance of [StudentApi].
-     */
-    factory { get<Retrofit>().create(StudentApi::class.java) }
-
-    /**
-     * Provides a singleton instance of [RegisterUserRepository].
-     */
-    singleOf(::GetListWotyFofiRepositoryImpl){
-        bind<GetListWotyFofiRepository>()
-    }
-    singleOf(::GetWorkTypeByFormativeFieldsRepositoryImpl){
-        bind<GetWorkTypeByFormativeFieldsRepository>()
-    }
-    singleOf(::GetListEvaluationsStudentRepositoryImpl){
-        bind<GetListEvaluationsStudentRepository>()
-    }
-    singleOf(::GetListByFieldTypeStudentRepositoryImpl){
-        bind<GetListByFieldTypeStudentRepository>()
-    }
 
     singleOf(::GetListWotyFofiUseCase)
     singleOf(::GetWorkTypeByFormativeFieldUseCase)

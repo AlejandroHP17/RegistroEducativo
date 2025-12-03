@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.network
+package com.mx.liftechnology.core.network.util
 
 /**
  * Objeto que contiene las constantes de configuración para las operaciones de red,

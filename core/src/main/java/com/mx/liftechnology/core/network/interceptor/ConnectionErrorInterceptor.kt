@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.core.network
+package com.mx.liftechnology.core.network.interceptor
 
 import com.mx.liftechnology.core.util.extension.logInfo
 import okhttp3.Interceptor

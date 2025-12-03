@@ -9,8 +9,5 @@ import retrofit2.Retrofit
  * @version 1.0.0
  */
 val workTypeModule = module {
-    /**
-     * Provides an instance of [WorkTypeApi].
-     */
-    factory { get<Retrofit>().create(WorkTypeApi::class.java) }
+
 }

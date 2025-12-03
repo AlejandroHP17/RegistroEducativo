@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.network.api.SchoolCycleApi
+
 import com.mx.liftechnology.data.repositoryImpl.partial.GetListPartialRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.partial.RegisterListPartialRepositoryImpl
 import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartialRepository
@@ -16,7 +16,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
-import retrofit2.Retrofit
+
 
 /**
  * Koin module for partial-related CRUD dependencies.
@@ -26,23 +26,8 @@ import retrofit2.Retrofit
  */
 val crudPartialModule = module {
 
-    /**
-     * Provides an instance of [SchoolCycleApi].
-     */
-    factory { get<Retrofit>().create(SchoolCycleApi::class.java) }
 
-    /**
-     * Provides a singleton instance of [RegisterListPartialRepository].
-     */
-    singleOf(::RegisterListPartialRepositoryImpl){
-        bind<RegisterListPartialRepository>()
-    }
-    /**
-     * Provides a singleton instance of [GetListPartialRepository].
-     */
-    singleOf(::GetListPartialRepositoryImpl){
-        bind<GetListPartialRepository>()
-    }
+
 
     /**
      * Provides a singleton instance of [RegisterListPartialUseCase].
