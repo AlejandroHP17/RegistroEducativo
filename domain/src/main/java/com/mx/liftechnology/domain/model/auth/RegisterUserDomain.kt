@@ -1,3 +1,8 @@
+/**
+ * @file Define el modelo de dominio para el registro de usuario.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.domain.model.auth
 
 /**

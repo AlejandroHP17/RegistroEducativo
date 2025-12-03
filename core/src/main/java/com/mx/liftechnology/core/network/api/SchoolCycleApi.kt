@@ -32,8 +32,20 @@ interface SchoolCycleApi {
 }
 
 /**
- * Sección para registro escolar
- * */
+ * Data class que representa la petición para registrar un ciclo escolar.
+ *
+ * @property teacherId El ID del profesor que registra el ciclo escolar.
+ * @property schoolId El ID de la escuela asociada al ciclo escolar.
+ * @property name El nombre del ciclo escolar.
+ * @property cycleLabel La etiqueta del ciclo (ej: "2024-2025").
+ * @property grade El grado escolar.
+ * @property nameGroup El nombre del grupo.
+ * @property periodCatalogId El ID del catálogo de periodos.
+ * @property isActive Indica si el ciclo escolar está activo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterSchoolCycle(
     @SerializedName("teacher_id")
     val teacherId: Int,
@@ -53,6 +65,24 @@ data class RequestRegisterSchoolCycle(
     val isActive: Boolean?,
 )
 
+/**
+ * Data class que representa la respuesta del servidor después de registrar un ciclo escolar.
+ *
+ * @property teacherId El ID del profesor que registró el ciclo escolar.
+ * @property schoolId El ID de la escuela asociada al ciclo escolar.
+ * @property name El nombre del ciclo escolar.
+ * @property cycleLabel La etiqueta del ciclo.
+ * @property grade El grado escolar.
+ * @property nameGroup El nombre del grupo.
+ * @property periodCatalogId El ID del catálogo de periodos.
+ * @property isActive Indica si el ciclo escolar está activo.
+ * @property schoolCycleId El ID único del ciclo escolar generado por el servidor.
+ * @property createdAt La fecha y hora de creación del registro.
+ * @property teacherName El nombre del profesor.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseRegisterSchoolCycle(
     @SerializedName("teacher_id")
     val teacherId: Int,
@@ -80,8 +110,24 @@ data class ResponseRegisterSchoolCycle(
 
 
 /**
- * Sección para obtener los grupos del profesor
- * */
+ * Data class que representa un grupo de un profesor obtenido del servidor.
+ *
+ * @property teacherId El ID del profesor.
+ * @property schoolId El ID de la escuela.
+ * @property name El nombre del ciclo escolar.
+ * @property description La descripción del ciclo escolar.
+ * @property year El año del ciclo escolar.
+ * @property cycleLabel La etiqueta del ciclo.
+ * @property grade El grado escolar.
+ * @property groupName El nombre del grupo.
+ * @property periodCatalogId El ID del catálogo de periodos.
+ * @property isActive Indica si el ciclo escolar está activo.
+ * @property schoolCycleId El ID único del ciclo escolar.
+ * @property createdAt La fecha y hora de creación del registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGroupTeacher(
     @SerializedName("teacher_id")
     val teacherId: Int,

@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Assignment Registration screen.
+ * ViewModel para la pantalla de registro de asignaciones.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -58,11 +58,11 @@ class RegisterEvaluationViewModel(
     val uiState: StateFlow<RegisterAssignmentUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(RegisterAssignmentUiData())
-    /** The data state for the screen. */
+    /** El estado de datos de la pantalla. */
     val dataState: StateFlow<RegisterAssignmentUiData> = _dataState.asStateFlow()
 
     private val _dialogState = MutableStateFlow(ModelCustomCalendar())
-    /** The state for the date picker dialog. */
+    /** El estado del diálogo de selección de fecha. */
     val dialogState: StateFlow<ModelCustomCalendar> = _dialogState.asStateFlow()
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
@@ -70,9 +70,9 @@ class RegisterEvaluationViewModel(
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     /**
-     * Updates the current subject.
+     * Actualiza la materia actual.
      *
-     * @param formativeField The new subject.
+     * @param formativeField La nueva materia.
      */
     fun updateFormativeField(formativeField: FormativeFieldDomain?) {
         viewModelScope.launch {
@@ -113,9 +113,9 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Called when the name of the job changes.
+     * Se llama cuando cambia el nombre del trabajo.
      *
-     * @param name The new name.
+     * @param name El nuevo nombre.
      */
     fun onNameChanged(name: ModelStateOutFieldText) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -123,9 +123,9 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Called when the date changes.
+     * Se llama cuando cambia la fecha.
      *
-     * @param date The new date.
+     * @param date La nueva fecha.
      */
     fun onDateChanged(date: String) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -135,9 +135,9 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Called when the name of the assignment changes.
+     * Se llama cuando cambia el nombre de la asignación.
      *
-     * @param assignment The new assignment.
+     * @param assignment La nueva asignación.
      */
     fun onNameAssignmentChanged(assignment: ModelCustomSpinner) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -150,9 +150,9 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Called when a student's score changes.
+     * Se llama cuando cambia la calificación de un estudiante.
      *
-     * @param data A pair containing the student ID and the new score.
+     * @param data Un par que contiene el ID del estudiante y la nueva calificación.
      */
     fun onScoreChange(data: Pair<String, String>) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -218,10 +218,7 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to register the assignment if they are valid.
-     */
-    /**
-     * Validates the input fields and proceeds to register the assignment if they are valid.
+     * Valida los campos de entrada y procede a registrar la asignación si son válidos.
      * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFields() {
@@ -298,7 +295,7 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Updates the date range for the active partial.
+     * Actualiza el rango de fechas para el parcial activo.
      */
     fun updateDates(){
         viewModelScope.launch {

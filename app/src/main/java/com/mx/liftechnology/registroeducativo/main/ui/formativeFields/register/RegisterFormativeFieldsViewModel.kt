@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Subject Registration screen.
+ * ViewModel para la pantalla de registro de materias.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -42,18 +42,18 @@ class RegisterFormativeFieldsViewModel(
     val uiState: StateFlow<RegisterSubjectUiState> = _uiState.asStateFlow()
 
     /**
-     * Called when the subject name changes.
+     * Se llama cuando cambia el nombre de la materia.
      *
-     * @param subject The new subject name.
+     * @param subject El nuevo nombre de la materia.
      */
     fun onSubjectChanged(subject: ModelStateOutFieldText) {
         _uiState.update { it.copy(subject = subject) }
     }
 
     /**
-     * Called when the name of a work method changes.
+     * Se llama cuando cambia el nombre de un método de trabajo.
      *
-     * @param value A pair containing the new workType type and the index of the item that changed.
+     * @param value Un par que contiene el nuevo tipo de trabajo y el índice del elemento que cambió.
      */
     fun onNameChange(value: Pair<WorkTypeDomain?, Int>) {
         _uiState.update {
@@ -73,9 +73,9 @@ class RegisterFormativeFieldsViewModel(
     }
 
     /**
-     * Called when the percentage of a work method changes.
+     * Se llama cuando cambia el porcentaje de un método de trabajo.
      *
-     * @param value A pair containing the new percentage and the index of the item that changed.
+     * @param value Un par que contiene el nuevo porcentaje y el índice del elemento que cambió.
      */
     fun onPercentChange(value: Pair<ModelStateOutFieldText, Int>) {
         _uiState.update {
@@ -92,9 +92,9 @@ class RegisterFormativeFieldsViewModel(
     }
 
     /**
-     * Called when the number of options changes.
+     * Se llama cuando cambia el número de opciones.
      *
-     * @param options The new number of options.
+     * @param options El nuevo número de opciones.
      */
     fun onOptionsChanged(options: String) {
         if (options.toIntOrNull() != null && options.toInt() > 0) {
@@ -118,10 +118,7 @@ class RegisterFormativeFieldsViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to register the subject if they are valid.
-     */
-    /**
-     * Validates the input fields and proceeds to register the subject if they are valid.
+     * Valida los campos de entrada y procede a registrar la materia si son válidos.
      * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFieldsCompose() {

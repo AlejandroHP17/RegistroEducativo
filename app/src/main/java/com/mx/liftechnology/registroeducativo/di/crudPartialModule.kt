@@ -1,10 +1,11 @@
 package com.mx.liftechnology.registroeducativo.di
 
+/**
+ * @file Define el módulo de Koin para dependencias CRUD relacionadas con parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
-import com.mx.liftechnology.data.repositoryImpl.partial.GetListPartialRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.partial.RegisterListPartialRepositoryImpl
-import com.mx.liftechnology.domain.repository.schoolCycle.partial.GetListPartialRepository
-import com.mx.liftechnology.domain.repository.schoolCycle.partial.RegisterListPartialRepository
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.menu.SavePartialMenuUseCase
@@ -17,9 +18,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-
 /**
- * Koin module for partial-related CRUD dependencies.
+ * Módulo de Koin para dependencias CRUD relacionadas con parciales.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -30,34 +30,34 @@ val crudPartialModule = module {
 
 
     /**
-     * Provides a singleton instance of [RegisterListPartialUseCase].
+     * Proporciona una instancia singleton de [RegisterListPartialUseCase].
      */
     singleOf(::RegisterListPartialUseCase)
 
     /**
-     * Provides a singleton instance of [GetListPartialUseCase].
+     * Proporciona una instancia singleton de [GetListPartialUseCase].
      */
     singleOf(::GetListPartialUseCase)
 
     /**
-     * Provides a singleton instance of [ValidateFieldsRegisterPartialUseCase].
+     * Proporciona una instancia singleton de [ValidateFieldsRegisterPartialUseCase].
      */
     singleOf(::ValidateFieldsRegisterPartialUseCaseImp) {
         bind<ValidateFieldsRegisterPartialUseCase>()
     }
 
     /**
-     * Provides a singleton instance of [SavePartialMenuUseCase].
+     * Proporciona una instancia singleton de [SavePartialMenuUseCase].
      */
     singleOf(::SavePartialMenuUseCase)
 
     /**
-     * Provides a singleton instance of [UpdatePartialMenuUseCase].
+     * Proporciona una instancia singleton de [UpdatePartialMenuUseCase].
      */
     singleOf(::UpdatePartialMenuUseCase)
 
     /**
-     * Provides an instance of [RegisterPartialViewModel].
+     * Proporciona una instancia de [RegisterPartialViewModel].
      */
     viewModelOf(::RegisterPartialViewModel)
 }

@@ -1,8 +1,11 @@
 package com.mx.liftechnology.registroeducativo.di
 
+/**
+ * @file Define el módulo de Koin para dependencias relacionadas con el registro de asignaciones.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
-import com.mx.liftechnology.data.repositoryImpl.evaluation.RegisterWorkTypeEvaluationsRepositoryImpl
-import com.mx.liftechnology.domain.repository.evaluation.RegisterWorkTypeEvaluationsRepository
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterWorkTypeEvaluationsUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.ValidateFieldsEvaluationUseCase
@@ -16,7 +19,7 @@ import org.koin.dsl.module
 
 
 /**
- * Koin module for assignment registration-related dependencies.
+ * Módulo de Koin para dependencias relacionadas con el registro de asignaciones.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -24,7 +27,7 @@ import org.koin.dsl.module
 val registerEvaluationModule = module {
 
     /**
-     * Provides a singleton instance of [ValidateFieldsEvaluationUseCase].
+     * Proporciona una instancia singleton de [ValidateFieldsEvaluationUseCase].
      */
     singleOf(::ValidateFieldsEvaluationUseCaseImp) {
         bind<ValidateFieldsEvaluationUseCase>()
@@ -33,19 +36,19 @@ val registerEvaluationModule = module {
 
 
     /**
-     * Provides a singleton instance of [SaveFormativeFieldIdSelectedUseCase].
+     * Proporciona una instancia singleton de [SaveFormativeFieldIdSelectedUseCase].
      */
     singleOf(::SaveFormativeFieldIdSelectedUseCase)
 
     /**
-     * Provides a singleton instance of [GetDatesActivePartialUseCase].
+     * Proporciona una instancia singleton de [GetDatesActivePartialUseCase].
      */
     singleOf(::GetDatesActivePartialUseCase)
 
     singleOf(::RegisterWorkTypeEvaluationsUseCase)
 
     /**
-     * Provides an instance of [RegisterEvaluationViewModel].
+     * Proporciona una instancia de [RegisterEvaluationViewModel].
      */
     viewModelOf(::RegisterEvaluationViewModel)
 }

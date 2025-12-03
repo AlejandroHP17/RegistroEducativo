@@ -12,7 +12,7 @@ import org.koin.dsl.module
  */
 val locationModule = module {
     /**
-     * Provides a singleton instance of [LocationHelper].
+     * Provee una instancia de  [LocationHelper].
      */
     singleOf(::LocationHelper)
 }

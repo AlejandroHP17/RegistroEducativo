@@ -1,3 +1,8 @@
+/**
+ * @file Define el gestor de reconocimiento de voz para la aplicación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.util.voice
 
 import android.Manifest
@@ -19,6 +24,21 @@ import java.util.Locale
 /**
  * Gestiona la funcionalidad de reconocimiento de voz.
  * Esta clase encapsula la lógica para iniciar, detener y procesar los resultados del `SpeechRecognizer`.
+ *
+ * **Funcionalidades:**
+ * - Inicia y detiene el reconocimiento de voz
+ * - Gestiona automáticamente los reintentos en caso de errores
+ * - Proporciona StateFlows para observar resultados y errores
+ * - Maneja permisos de audio
+ *
+ * **Uso:**
+ * ```kotlin
+ * val voiceManager = VoiceRecognitionManager(context)
+ * voiceManager.resultsStateFlow.collect { results ->
+ *     // Procesar resultados
+ * }
+ * voiceManager.startListening()
+ * ```
  *
  * @property context El contexto de la aplicación, necesario para acceder a los servicios de reconocimiento de voz.
  * @author Pelkidev

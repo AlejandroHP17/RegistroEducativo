@@ -14,7 +14,7 @@ import org.koin.dsl.module
  */
 val dispatcherModule = module {
     /**
-     * Provides a singleton instance of [DispatcherProvider].
+     * Provee una instancia de  [DispatcherProvider].
      */
     singleOf(::DefaultDispatcherProvider) {
         bind<DispatcherProvider>()

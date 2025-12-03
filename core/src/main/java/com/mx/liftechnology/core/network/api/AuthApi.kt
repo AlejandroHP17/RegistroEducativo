@@ -35,8 +35,17 @@ interface AuthApi {
 }
 
 /**
- * Sección para el login
- * */
+ * Data class que representa la petición de inicio de sesión.
+ *
+ * @property email El correo electrónico del usuario.
+ * @property password La contraseña del usuario.
+ * @property latitude La latitud de la ubicación del dispositivo.
+ * @property longitude La longitud de la ubicación del dispositivo.
+ * @property imei El identificador único del dispositivo (IMEI o equivalente).
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestLogin(
     @SerializedName("email")
     val email: String,
@@ -50,6 +59,16 @@ data class RequestLogin(
     val imei: String
 )
 
+/**
+ * Data class que representa la respuesta del servidor después de un inicio de sesión exitoso.
+ *
+ * @property accessToken El token de acceso para autenticar peticiones posteriores.
+ * @property refreshToken El token de refresco para renovar el access token cuando expire.
+ * @property tokenType El tipo de token (generalmente "Bearer").
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseLogin(
     @SerializedName("access_token")
     val accessToken: String,
@@ -60,8 +79,15 @@ data class ResponseLogin(
 )
 
 /**
- * Sección para el registro de usuario
- * */
+ * Data class que representa la petición para registrar un nuevo usuario.
+ *
+ * @property email El correo electrónico del usuario.
+ * @property password La contraseña del usuario.
+ * @property activationCode El código de activación requerido para el registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterUser(
     @SerializedName("email")
     val email: String,
@@ -71,6 +97,22 @@ data class RequestRegisterUser(
     val activationCode: String
 )
 
+/**
+ * Data class que representa la respuesta del servidor después de registrar un usuario.
+ *
+ * @property email El correo electrónico del usuario registrado.
+ * @property firstName El nombre del usuario.
+ * @property lastName El apellido del usuario.
+ * @property phone El número de teléfono del usuario.
+ * @property accessLevel El nivel de acceso asignado al usuario.
+ * @property accessCode El ID del código de acceso utilizado.
+ * @property isActive Indica si la cuenta del usuario está activa.
+ * @property id El ID único del usuario generado por el servidor.
+ * @property createdAt La fecha y hora de creación del registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseRegisterUser(
     @SerializedName("email")
     val email: String,
@@ -93,8 +135,21 @@ data class ResponseRegisterUser(
 )
 
 /**
- * Sección para obtener los datos del usuario
- * */
+ * Data class que representa los datos del usuario obtenidos del servidor.
+ *
+ * @property email El correo electrónico del usuario.
+ * @property name El nombre del usuario.
+ * @property lastName El apellido del usuario.
+ * @property phone El número de teléfono del usuario.
+ * @property accessLevelId El ID del nivel de acceso del usuario.
+ * @property accessCodeId El ID del código de acceso del usuario.
+ * @property isActive Indica si la cuenta del usuario está activa.
+ * @property userId El ID único del usuario.
+ * @property createdAt La fecha y hora de creación del registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseDataUser(
     @SerializedName("email")
     val email: String,

@@ -1,16 +1,13 @@
 package com.mx.liftechnology.registroeducativo.di
 
+/**
+ * @file Define el módulo de Koin para dependencias CRUD relacionadas con estudiantes.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
-import com.mx.liftechnology.data.repositoryImpl.student.DeleteStudentRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.student.EditStudentRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.student.GetStudentRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.student.RegisterStudentRepositoryImpl
-import com.mx.liftechnology.domain.repository.student.DeleteStudentRepository
-import com.mx.liftechnology.domain.repository.student.EditStudentRepository
-import com.mx.liftechnology.domain.repository.student.GetStudentRepository
-import com.mx.liftechnology.domain.repository.student.RegisterStudentRepository
-import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
-import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCaseImp
+import com.mx.liftechnology.domain.usecase.student.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.ValidateVoiceStudentUseCaseImp
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.EditStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.GetListStudentUseCase
@@ -25,8 +22,10 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 
+
+
 /**
- * Koin module for student-related CRUD dependencies.
+ * Módulo de Koin para dependencias CRUD relacionadas con estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -34,45 +33,45 @@ import org.koin.dsl.module
 val crudStudentModule = module {
 
     /**
-     * Provides a singleton instance of [RegisterStudentUseCase].
+     * Proporciona una instancia singleton de [RegisterStudentUseCase].
      */
     singleOf(::RegisterStudentUseCase)
 
     /**
-     * Provides a singleton instance of [GetListStudentUseCase].
+     * Proporciona una instancia singleton de [GetListStudentUseCase].
      */
     singleOf(::GetListStudentUseCase)
 
 
     /**
-     * Provides a singleton instance of [ValidateVoiceStudentUseCase].
+     * Proporciona una instancia singleton de [ValidateVoiceStudentUseCase].
      */
     singleOf(::ValidateVoiceStudentUseCaseImp) {
         bind<ValidateVoiceStudentUseCase>()
     }
 
     /**
-     * Provides a singleton instance of [ValidateFieldsStudentUseCase].
+     * Proporciona una instancia singleton de [ValidateFieldsStudentUseCase].
      */
     singleOf(::ValidateFieldsStudentUseCaseImp) {
         bind<ValidateFieldsStudentUseCase>()
     }
     /**
-     * Provides a singleton instance of [ValidateFieldsStudentUseCase].
+     * Proporciona una instancia singleton de [DeleteStudentUseCase].
      */
     singleOf(::DeleteStudentUseCase)
     /**
-     * Provides a singleton instance of [ValidateFieldsStudentUseCase].
+     * Proporciona una instancia singleton de [EditStudentUseCase].
      */
     singleOf(::EditStudentUseCase)
 
     /**
-     * Provides an instance of [RegisterStudentViewModel].
+     * Proporciona una instancia de [RegisterStudentViewModel].
      */
     viewModelOf(::RegisterStudentViewModel)
 
     /**
-     * Provides an instance of [ListStudentViewModel].
+     * Proporciona una instancia de [ListStudentViewModel].
      */
     viewModelOf(::ListStudentViewModel)
 }

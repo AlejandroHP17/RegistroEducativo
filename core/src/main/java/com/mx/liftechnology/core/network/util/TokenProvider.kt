@@ -25,16 +25,30 @@ class TokenProvider(private val preference: PreferenceUseCase) {
         return preference.getAccessToken()
     }
 
+    /**
+     * Obtiene el token de refresco guardado.
+     *
+     * @return El token de refresco, o `null` si no se encuentra ninguno.
+     */
     fun getRefreshToken(): String?{
         return preference.getRefreshToken()
     }
 
+    /**
+     * Guarda un nuevo token de acceso.
+     *
+     * @param token El nuevo token de acceso a guardar. Si es `null`, no se guarda nada.
+     */
     fun saveNewToken(token: String?){
         if (token != null) {
             preference.setAccessToken(token)
         }
     }
 
+    /**
+     * Cierra la sesión del usuario limpiando todas las preferencias guardadas.
+     * Esto incluye tokens de acceso, tokens de refresco y otros datos de sesión.
+     */
     fun closeSession() =
         preference.cleanPreference()
 

@@ -12,7 +12,7 @@ import org.koin.dsl.module
  */
 val profileModule = module {
     /**
-     * Provides an instance of [ProfileViewModel].
+     * Proporciona una instancia singleton de [ProfileViewModel].
      */
     viewModelOf(::ProfileViewModel)
 }

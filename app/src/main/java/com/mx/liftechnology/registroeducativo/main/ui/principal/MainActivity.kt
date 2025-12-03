@@ -25,9 +25,9 @@ import org.koin.androidx.compose.koinViewModel
 class MainActivity : AppCompatActivity() {
 
     /**
-     * Called when the activity is first created.
+     * Se llama cuando la actividad se crea por primera vez.
      *
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in [onSaveInstanceState].
+     * @param savedInstanceState Si la actividad se está reinicializando después de haber sido cerrada previamente, este Bundle contiene los datos que suministró más recientemente en [onSaveInstanceState].
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,18 +1,22 @@
 package com.mx.liftechnology.registroeducativo.di
+/**
+ * @file Define el módulo de Koin para dependencias relacionadas con el registro de usuario.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
-
-import com.mx.liftechnology.data.repositoryImpl.auth.RegisterUserRepositoryImpl
-import com.mx.liftechnology.domain.repository.auth.RegisterUserRepository
 import com.mx.liftechnology.domain.usecase.auth.RegisterUserUseCase
 import com.mx.liftechnology.registroeducativo.main.ui.auth.register.RegisterUserViewModel
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 
+
+
+
 /**
- * Koin module for user registration-related dependencies.
+ * Módulo de Koin para dependencias relacionadas con el registro de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -20,12 +24,12 @@ import org.koin.dsl.module
 val registerUserModule = module {
 
     /**
-     * Provides a singleton instance of [RegisterUserUseCase].
+     * Proporciona una instancia singleton de [RegisterUserUseCase].
      */
     singleOf(::RegisterUserUseCase)
 
     /**
-     * Provides an instance of [RegisterUserViewModel].
+     * Proporciona una instancia de [RegisterUserViewModel].
      */
     viewModelOf(::RegisterUserViewModel)
 }

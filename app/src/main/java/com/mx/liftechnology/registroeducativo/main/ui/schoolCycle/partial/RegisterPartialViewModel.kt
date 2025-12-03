@@ -46,7 +46,7 @@ class RegisterPartialViewModel(
     val uiState: StateFlow<RegisterPartialUiState> = _uiState.asStateFlow()
 
     private val _uiData = MutableStateFlow(RegisterPartialUiData())
-    /** The data state for the screen. */
+    /** El estado de datos de la pantalla. */
     val uiData: StateFlow<RegisterPartialUiData> = _uiData.asStateFlow()
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
@@ -54,9 +54,9 @@ class RegisterPartialViewModel(
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
     /**
-     * Called when the number of partials changes.
+     * Se llama cuando cambia el número de parciales.
      *
-     * @param partial The new number of partials.
+     * @param partial El nuevo número de parciales.
      */
     fun onPartialChanged(partial: String) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -79,9 +79,9 @@ class RegisterPartialViewModel(
     }
 
     /**
-     * Called when a date range changes.
+     * Se llama cuando cambia un rango de fechas.
      *
-     * @param data A pair containing the date range and the index of the item that changed.
+     * @param data Un par que contiene el rango de fechas y el índice del elemento que cambió.
      */
     fun onDateChange(data: Pair<Pair<LocalDate?, LocalDate?>, Int>) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -103,7 +103,7 @@ class RegisterPartialViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to register the partials if they are valid.
+     * Valida los campos de entrada y procede a registrar los parciales si son válidos.
      * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFieldsCompose() {

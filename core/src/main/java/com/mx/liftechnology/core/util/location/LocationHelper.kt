@@ -1,3 +1,8 @@
+/**
+ * @file Define el gestor de ubicación para obtener la localización del dispositivo.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.util.location
 
 import android.Manifest
@@ -24,12 +29,32 @@ import kotlin.coroutines.resume
 /**
  * Resultado de una operación de ubicación.
  * Puede ser un éxito con una [Location] o un error con un mensaje.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
  */
 sealed class LocationResult {
+    /**
+     * Representa un resultado exitoso con la ubicación obtenida.
+     *
+     * @property location La ubicación del dispositivo.
+     */
     data class Success(val location: Location) : LocationResult()
+    
+    /**
+     * Representa un resultado fallido con un mensaje de error.
+     *
+     * @property message El mensaje de error que describe qué salió mal.
+     */
     data class Error(val message: String) : LocationResult()
 }
 
+/**
+ * Objeto que contiene los mensajes y constantes utilizados en el diálogo de permisos de ubicación.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 private object MessageLocationHelper{
     const val TITLE = "Permiso de Ubicación"
     const val MESSAGE = "Esta aplicación necesita acceso a tu ubicación para funcionar correctamente."
@@ -67,6 +92,10 @@ class LocationHelper(private val context: Context) {
 
     /**
      * Interfaz de callback para notificar el resultado de la obtención de la ubicación.
+     * Se utiliza en el método [requestLocation] para manejar resultados de forma asíncrona.
+     *
+     * @author Pelkidev
+     * @version 1.0.0
      */
     interface LocationCallback {
         /**

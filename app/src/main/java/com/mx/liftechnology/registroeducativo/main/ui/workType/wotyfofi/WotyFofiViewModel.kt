@@ -1,11 +1,12 @@
-package com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi
+package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.usecase.formativeField.GetListWotyFofiUseCase
-import com.mx.liftechnology.domain.usecase.student.GetListEvaluationsStudentUseCase
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.GetListByFieldTypeStudentUseCase
+import com.mx.liftechnology.domain.usecase.formativeField.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
@@ -22,39 +23,45 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Student Assignment screen.
+ * ViewModel para la pantalla de asignación de materias.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-class WotyFofiStudentViewModel (
+class WotyFofiViewModel (
     private val dispatcherProvider: DispatcherProvider,
-    private val getListWotyFofiUseCase: GetListWotyFofiUseCase,
-    private val getListEvaluationsStudentUseCase: GetListEvaluationsStudentUseCase
-
-    ): ViewModel() {
+    private val getListWorkEvaluationFormativeFieldUseCase: GetListWorkEvaluationFormativeFieldUseCase,
+    private val getListByFieldTypeStudentUseCase: GetListByFieldTypeStudentUseCase,
+    private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase
+): ViewModel() {
     private val _uiState = MutableStateFlow(WotyFofiUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
     val uiState: StateFlow<WotyFofiUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(WotyFofiUiData())
-    /** The data state for the screen. */
+    /** El estado de datos de la pantalla. */
     val dataState: StateFlow<WotyFofiUiData> = _dataState.asStateFlow()
 
     /**
-     * Updates the current student.
+     * Actualiza la materia actual.
      *
-     * @param student The new student.
+     * @param subject La nueva materia.
      */
-    fun updateStudent(student: StudentDomain?) {
-        _uiState.update { it.copy(student =  student) }
+    fun updateSubject(subject: FormativeFieldDomain?) {
+        viewModelScope.launch {
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            withContext(dispatcherProvider.io) {
+                saveFormativeFieldIdSelectedUseCase.invoke(subject?.formativeFieldId)
+            }
+            _uiState.update { it.copy(formativeFields = subject) }
+        }
     }
 
     fun getListWotyFofi(){
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
-                getListWotyFofiUseCase.invoke()
+                getListWorkEvaluationFormativeFieldUseCase.invoke()
             }
 
             when (result) {
@@ -72,10 +79,11 @@ class WotyFofiStudentViewModel (
         }
     }
 
+
     /**
-     * Updates the expanded state of the title card.
+     * Actualiza el estado expandido de la tarjeta de título.
      *
-     * @param expanded True to expand, false to collapse.
+     * @param expanded `true` para expandir, `false` para colapsar.
      */
     fun updateExpandedTitle(expanded: ModelComplexCard?) {
         _dataState.update { currentState ->
@@ -106,17 +114,22 @@ class WotyFofiStudentViewModel (
                 }
             )
         }
-        getListEvaluations(subItem.idSubTitle, parentItem.idTitle)
+        getListEvaluationsStudents(subItem.idSubTitle, subItem.nameSubTitle, subItem.date, parentItem.idTitle)
     }
 
-    fun getListEvaluations(workTypeId: Int?, idTitle: Int?) {
+    private fun getListEvaluationsStudents(
+        idSubTitle: Int?,
+        workName: String?,
+        workDate: String?,
+        idTitle: Int?
+    ) {
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
-                getListEvaluationsStudentUseCase.invoke(
-                    formativeFieldId = idTitle,
-                    workTypeId = workTypeId,
-                    studentId = _uiState.value.student?.studentId
+                getListByFieldTypeStudentUseCase.invoke(
+                    workTypeId = idTitle,
+                    workName = workName,
+                    workDate = workDate
                 )
             }
 
@@ -127,13 +140,13 @@ class WotyFofiStudentViewModel (
                             dataCard = currentState.dataCard?.map { card ->
                                 if (card.idTitle == idTitle) {
                                     val updatedList = card.list?.map { subCard ->
-                                        if (subCard?.idSubTitle == workTypeId) {
+                                        if (subCard?.idSubTitle == idSubTitle) {
                                             subCard?.copy(
-                                                list = result.data.map { item ->
+                                                list = result.data.works.firstOrNull()?.listStudents?.map { item ->
                                                     ModelSubSubComplexCard(
-                                                        idDescription = item.evaluationId,
-                                                        nameDescription = item.evaluationName,
-                                                        grade = item.grade,
+                                                        idDescription = item.studentId,
+                                                        nameDescription = item.studentName,
+                                                        grade = item.grade?.toDouble(),
                                                         isShowDescription = true
                                                     )
                                                 }
@@ -154,4 +167,5 @@ class WotyFofiStudentViewModel (
             }
         }
     }
+
 }

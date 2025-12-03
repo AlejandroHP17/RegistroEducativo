@@ -1,4 +1,11 @@
-package com.mx.liftechnology.registroeducativo.di
+package com.mx.liftechnology.registroeducativo.di.dataCore
+
+/**
+ * @file Define el módulo de Koin para dependencias de datos relacionadas con evaluaciones.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
 
 import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListByFieldTypeStudentRepositoryImpl
@@ -14,10 +21,16 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+/**
+ * Módulo de Koin para dependencias de datos relacionadas con evaluaciones.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 val evaluationDataCoreModule = module {
 
     /**
-     * Provides an instance of [EvaluationApi].
+     * Proporciona una instancia de [EvaluationApi].
      */
     factory { get<Retrofit>().create(EvaluationApi::class.java) }
 
@@ -30,7 +43,7 @@ val evaluationDataCoreModule = module {
     }
 
     /**
-     * Provides a singleton instance of [GetListWorkTypeFormativeFieldRepository].
+     * Proporciona una instancia singleton de [GetListWorkTypeFormativeFieldRepository].
      */
     singleOf(::GetListWorkTypeFormativeFieldRepositoryImpl) {
         bind<GetListWorkTypeFormativeFieldRepository>()

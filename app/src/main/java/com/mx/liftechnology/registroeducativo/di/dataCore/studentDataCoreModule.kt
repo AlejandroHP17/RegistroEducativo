@@ -1,4 +1,11 @@
-package com.mx.liftechnology.registroeducativo.di
+package com.mx.liftechnology.registroeducativo.di.dataCore
+
+/**
+ * @file Define el módulo de Koin para dependencias de datos relacionadas con estudiantes.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
 
 import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.data.repositoryImpl.student.DeleteStudentRepositoryImpl
@@ -14,35 +21,41 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+/**
+ * Módulo de Koin para dependencias de datos relacionadas con estudiantes.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 val studentDataCoreModule = module {
     /**
-     * Provides an instance of [StudentApi].
+     * Proporciona una instancia de [StudentApi].
      */
     factory { get<Retrofit>().create(StudentApi::class.java) }
 
     /**
-     * Provides a singleton instance of [GetStudentRepository].
+     * Proporciona una instancia singleton de [DeleteStudentRepository].
      */
     singleOf(::DeleteStudentRepositoryImpl) {
         bind<DeleteStudentRepository>()
     }
 
     /**
-     * Provides a singleton instance of [GetStudentRepository].
+     * Proporciona una instancia singleton de [EditStudentRepository].
      */
     singleOf(::EditStudentRepositoryImpl) {
         bind<EditStudentRepository>()
     }
 
     /**
-     * Provides a singleton instance of [GetStudentRepository].
+     * Proporciona una instancia singleton de [GetStudentRepository].
      */
     singleOf(::GetStudentRepositoryImpl) {
         bind<GetStudentRepository>()
     }
 
     /**
-     * Provides a singleton instance of [RegisterStudentRepository].
+     * Proporciona una instancia singleton de [RegisterStudentRepository].
      */
     singleOf(::RegisterStudentRepositoryImpl) {
         bind<RegisterStudentRepository>()

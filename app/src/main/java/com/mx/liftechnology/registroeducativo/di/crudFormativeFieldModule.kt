@@ -1,16 +1,9 @@
 package com.mx.liftechnology.registroeducativo.di
 
+/**
+ * @file Define el módulo de Koin para dependencias CRUD relacionadas con materias.
+ */
 
-import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.formativeField.DeleteFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.formativeField.GetListFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.workType.GetWorkTypeRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.formativeField.RegisterFormativeFieldsBulkRepositoryImpl
-import com.mx.liftechnology.domain.repository.evaluation.GetListWorkTypeFormativeFieldRepository
-import com.mx.liftechnology.domain.repository.formativeFields.DeleteFormativeFieldRepository
-import com.mx.liftechnology.domain.repository.formativeFields.GetListFormativeFieldRepository
-import com.mx.liftechnology.domain.repository.formativeFields.GetWorkTypeRepository
-import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeFieldsBulkRepository
 import com.mx.liftechnology.domain.usecase.evaluation.GetListWorkEvaluationFormativeFieldUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.formativeField.GetListFormativeFieldUseCase
@@ -25,8 +18,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
+
 /**
- * Koin module for subject-related CRUD dependencies.
+ * Módulo de Koin para dependencias CRUD relacionadas con materias.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -35,44 +29,44 @@ val crudFormativeFieldModule = module {
 
 
     /**
-     * Provides a singleton instance of [GetListWorkEvaluationFormativeFieldUseCase].
+     * Proporciona una instancia singleton de [GetListWorkEvaluationFormativeFieldUseCase].
      */
     singleOf(::GetListWorkEvaluationFormativeFieldUseCase)
 
     /**
-     * Provides a singleton instance of [RegisterFormativeFieldsBulkUseCase].
+     * Proporciona una instancia singleton de [RegisterFormativeFieldsBulkUseCase].
      */
     singleOf(::RegisterFormativeFieldsBulkUseCase)
 
     /**
-     * Provides a singleton instance of [GetListFormativeFieldUseCase].
+     * Proporciona una instancia singleton de [GetListFormativeFieldUseCase].
      */
     singleOf(::GetListFormativeFieldUseCase)
 
     /**
-     * Provides a singleton instance of [GetListWorkTypeUseCase].
+     * Proporciona una instancia singleton de [GetListWorkTypeUseCase].
      */
     singleOf(::GetListWorkTypeUseCase)
 
     /**
-     * Provides a singleton instance of [GetListWorkTypeUseCase].
+     * Proporciona una instancia singleton de [DeleteFormativeFieldsUseCase].
      */
     singleOf(::DeleteFormativeFieldsUseCase)
 
     /**
-     * Provides a singleton instance of [ValidateFieldsFormativeFieldsUseCase].
+     * Proporciona una instancia singleton de [ValidateFieldsFormativeFieldsUseCase].
      */
     singleOf(::ValidateFieldsFormativeFieldsUseCaseImp) {
         bind<ValidateFieldsFormativeFieldsUseCase>()
     }
 
     /**
-     * Provides an instance of [RegisterFormativeFieldsViewModel].
+     * Proporciona una instancia de [RegisterFormativeFieldsViewModel].
      */
     viewModelOf(::RegisterFormativeFieldsViewModel)
 
     /**
-     * Provides an instance of [ListFormativeFieldsViewModel].
+     * Proporciona una instancia de [ListFormativeFieldsViewModel].
      */
     viewModelOf(::ListFormativeFieldsViewModel)
 }

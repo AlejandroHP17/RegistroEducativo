@@ -1,4 +1,10 @@
-package com.mx.liftechnology.registroeducativo.di
+package com.mx.liftechnology.registroeducativo.di.dataCore
+
+/**
+ * @file Define el módulo de Koin para dependencias de datos relacionadas con escuelas.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
 
 import com.mx.liftechnology.core.network.api.SchoolApi
@@ -11,18 +17,25 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+
+/**
+ * Módulo de Koin para dependencias de datos relacionadas con escuelas.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 val schoolDataCoreModule = module {
     factory { get<Retrofit>().create(SchoolApi::class.java) }
 
     /**
-     * Provides a singleton instance of [GetCctRepository].
+     * Proporciona una instancia singleton de [GetCctRepository].
      */
     singleOf(::GetCctRepositoryImpl){
         bind<GetCctRepository>()
     }
 
     /**
-     * Provides a singleton instance of [RegisterCycleSchoolRepository].
+     * Proporciona una instancia singleton de [RegisterCycleSchoolRepository].
      */
     singleOf(::RegisterCycleSchoolRepositoryImpl){
         bind<RegisterCycleSchoolRepository>()

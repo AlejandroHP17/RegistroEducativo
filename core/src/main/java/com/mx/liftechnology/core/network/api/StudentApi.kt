@@ -48,7 +48,22 @@ interface StudentApi {
 
 }
 
-// Data classes for requests and responses
+/**
+ * Data class que representa la petición para registrar un nuevo estudiante.
+ *
+ * @property name El nombre del estudiante.
+ * @property lastName El apellido paterno del estudiante.
+ * @property secondLastName El apellido materno del estudiante.
+ * @property curp La CURP del estudiante.
+ * @property birthday La fecha de nacimiento del estudiante en formato de cadena.
+ * @property phoneNumber El número de teléfono del estudiante.
+ * @property schoolCycleId El ID del ciclo escolar al que pertenece el estudiante.
+ * @property isActive Indica si el estudiante está activo.
+ * @property teacherId El ID del profesor asociado al estudiante.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestRegisterStudent(
     @SerializedName("first_name")
     val name: String,
@@ -70,6 +85,24 @@ data class RequestRegisterStudent(
     val teacherId: Int
 )
 
+/**
+ * Data class que representa la respuesta del servidor después de registrar un estudiante.
+ *
+ * @property curp La CURP del estudiante registrado.
+ * @property name El nombre del estudiante.
+ * @property lastName El apellido paterno del estudiante.
+ * @property secondLastName El apellido materno del estudiante.
+ * @property birthday La fecha de nacimiento del estudiante.
+ * @property phoneNumber El número de teléfono del estudiante.
+ * @property schoolCycleId El ID del ciclo escolar al que pertenece el estudiante.
+ * @property isActive Indica si el estudiante está activo.
+ * @property teacherId El ID del profesor asociado al estudiante.
+ * @property studentId El ID único del estudiante generado por el servidor.
+ * @property createdAt La fecha y hora de creación del registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseRegisterStudent(
     @SerializedName("curp")
     val curp: String,
@@ -95,6 +128,23 @@ data class ResponseRegisterStudent(
     val createdAt: String
 )
 
+/**
+ * Data class que representa la petición para editar un estudiante existente.
+ * Todos los campos son opcionales para permitir actualizaciones parciales.
+ *
+ * @property name El nombre del estudiante (opcional).
+ * @property lastName El apellido paterno del estudiante (opcional).
+ * @property secondLastName El apellido materno del estudiante (opcional).
+ * @property curp La CURP del estudiante (opcional).
+ * @property birthday La fecha de nacimiento del estudiante (opcional).
+ * @property phoneNumber El número de teléfono del estudiante (opcional).
+ * @property cycleSchoolId El ID del ciclo escolar (opcional).
+ * @property isActive Indica si el estudiante está activo (opcional).
+ * @property teacherId El ID del profesor asociado (opcional).
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestEditStudent(
     @SerializedName("first_name")
     val name: String?,
@@ -116,6 +166,24 @@ data class RequestEditStudent(
     val teacherId: Int?,
 )
 
+/**
+ * Data class que representa la respuesta del servidor después de editar un estudiante.
+ *
+ * @property curp La CURP del estudiante.
+ * @property name El nombre del estudiante.
+ * @property lastName El apellido paterno del estudiante.
+ * @property secondLastName El apellido materno del estudiante.
+ * @property birthday La fecha de nacimiento del estudiante.
+ * @property phoneNumber El número de teléfono del estudiante.
+ * @property schoolCycleId El ID del ciclo escolar al que pertenece el estudiante.
+ * @property isActive Indica si el estudiante está activo.
+ * @property teacherId El ID del profesor asociado al estudiante.
+ * @property studentId El ID único del estudiante.
+ * @property createdAt La fecha y hora de creación del registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseEditStudent(
     @SerializedName("curp")
     val curp: String,
@@ -141,6 +209,24 @@ data class ResponseEditStudent(
     val createdAt: String
 )
 
+/**
+ * Data class que representa la información de un estudiante obtenida del servidor.
+ *
+ * @property curp La CURP del estudiante.
+ * @property name El nombre del estudiante.
+ * @property lastName El apellido paterno del estudiante.
+ * @property secondLastName El apellido materno del estudiante.
+ * @property birthday La fecha de nacimiento del estudiante.
+ * @property phoneNumber El número de teléfono del estudiante.
+ * @property userId El ID del usuario asociado al estudiante.
+ * @property schoolCycleId El ID del ciclo escolar al que pertenece el estudiante.
+ * @property isActive Indica si el estudiante está activo.
+ * @property studentId El ID único del estudiante.
+ * @property createdAt La fecha y hora de creación del registro.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetStudent(
     @SerializedName("curp")
     val curp: String,

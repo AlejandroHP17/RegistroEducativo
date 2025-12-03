@@ -3,7 +3,7 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.domain.usecase
+package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import java.text.SimpleDateFormat

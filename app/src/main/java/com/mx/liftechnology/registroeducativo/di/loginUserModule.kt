@@ -1,10 +1,11 @@
 package com.mx.liftechnology.registroeducativo.di
 
+/**
+ * @file Define el módulo de Koin para dependencias relacionadas con el inicio de sesión.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
-import com.mx.liftechnology.data.repositoryImpl.auth.GetDataUserRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.auth.LoginRepositoryImpl
-import com.mx.liftechnology.domain.repository.auth.GetDataUserRepository
-import com.mx.liftechnology.domain.repository.auth.LoginRepository
 import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCase
 import com.mx.liftechnology.domain.usecase.auth.ValidateLoginFieldsUseCaseImp
 import com.mx.liftechnology.domain.usecase.auth.GetDataUserUseCase
@@ -17,7 +18,7 @@ import org.koin.dsl.module
 
 
 /**
- * Koin module for login-related dependencies.
+ * Módulo de Koin para dependencias relacionadas con el inicio de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -26,24 +27,24 @@ val loginUserModule = module {
 
 
     /**
-     * Provides a singleton instance of [LoginUseCase].
+     * Proporciona una instancia singleton de [LoginUseCase].
      */
     singleOf(::LoginUseCase)
 
     /**
-     * Provides a singleton instance of [GetDataUserUseCase].
+     * Proporciona una instancia singleton de [GetDataUserUseCase].
      */
     singleOf(::GetDataUserUseCase)
 
     /**
-     * Provides a singleton instance of [ValidateLoginFieldsUseCase].
+     * Proporciona una instancia singleton de [ValidateLoginFieldsUseCase].
      */
     singleOf(::ValidateLoginFieldsUseCaseImp) {
         bind<ValidateLoginFieldsUseCase>()
     }
 
     /**
-     * Provides an instance of [LoginViewModel].
+     * Proporciona una instancia de [LoginViewModel].
      */
     viewModelOf(::LoginViewModel)
 }

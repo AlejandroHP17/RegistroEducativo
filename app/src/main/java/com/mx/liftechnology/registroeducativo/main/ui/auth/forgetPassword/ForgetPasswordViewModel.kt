@@ -27,25 +27,25 @@ class ForgetPasswordViewModel(
 
     private val _uiState = MutableStateFlow(LoginUiState())
 
-    /** The UI state for the screen. */
+    /** El estado de la UI para la pantalla. */
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     private val _emailState = MutableStateFlow(ModelStateOutFieldText())
 
-    /** The state of the email input field. */
+    /** El estado del campo de entrada de correo electrónico. */
     val emailState: StateFlow<ModelStateOutFieldText> = _emailState.asStateFlow()
 
     /**
-     * Called when the email input changes.
+     * Se llama cuando cambia el campo de entrada de correo electrónico.
      *
-     * @param email The new email value.
+     * @param email El nuevo valor del correo electrónico.
      */
     fun onEmailChanged(email: ModelStateOutFieldText) {
         _emailState.update { email }
     }
 
     /**
-     * Validates the input fields and updates their states.
+     * Valida los campos de entrada y actualiza sus estados.
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {

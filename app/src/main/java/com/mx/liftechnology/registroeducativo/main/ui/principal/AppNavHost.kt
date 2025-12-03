@@ -1,3 +1,8 @@
+/**
+ * @file Define el host de navegación principal de la aplicación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.registroeducativo.main.ui.principal
 
 import androidx.compose.foundation.layout.Box
@@ -30,7 +35,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.ShowCu
 import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterSubjectScreen
-import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi.AssignmentSubjectScreen
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.AssignmentSubjectScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
@@ -38,15 +43,32 @@ import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.Registe
 import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.student.wotyfofi.WotyFofiStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent.WotyFofiStudentScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 
 /**
  * Host de navegación principal de la aplicación.
- * Define el grafo de navegación y las pantallas correspondientes a cada ruta.
+ * 
+ * **Responsabilidades:**
+ * - Define el grafo de navegación completo de la aplicación
+ * - Gestiona la navegación entre pantallas
+ * - Maneja la expiración de sesión y redirige al login
+ * - Muestra toasts globales
+ * - Bloquea la interacción durante transiciones de navegación
  *
- * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas.
+ * **Rutas principales:**
+ * - **Splash**: Pantalla de inicio
+ * - **Auth**: Login, registro, recuperación de contraseña
+ * - **Main**: Menú, estudiantes, materias, calendario, perfil, etc.
+ *
+ * **Funcionalidades especiales:**
+ * - Observa el estado de expiración de sesión y redirige automáticamente
+ * - Muestra toasts globales que aparecen sobre toda la navegación
+ * - Bloquea la interacción del usuario durante transiciones de pantalla
+ *
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas y gestión de estado global.
  * @param restoreActivity Lambda para reiniciar la actividad principal, útil para flujos como el cierre de sesión.
+ *
  * @author Pelkidev
  * @version 1.0.0
  */

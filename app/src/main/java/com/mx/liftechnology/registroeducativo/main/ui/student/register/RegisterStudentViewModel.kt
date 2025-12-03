@@ -10,7 +10,7 @@ import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.generic.ModelVoiceConstants
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.usecase.ValidateVoiceStudentUseCase
+import com.mx.liftechnology.domain.usecase.student.ValidateVoiceStudentUseCase
 import com.mx.liftechnology.domain.usecase.student.EditStudentWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.student.RegisterStudentWithValidationUseCase
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
@@ -160,9 +160,6 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to register the student if they are valid.
-     */
-    /**
      * Valida los campos de entrada y, si son válidos, procede con el registro o edición del estudiante.
      * La lógica de validación + operación está encapsulada en los Use Cases.
      */
@@ -283,7 +280,7 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Called when the ViewModel is cleared.
+     * Se llama cuando el ViewModel es limpiado.
      */
     override fun onCleared() {
         super.onCleared()

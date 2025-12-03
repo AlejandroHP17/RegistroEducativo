@@ -25,14 +25,14 @@ class SplashViewModel(
     val navigate: StateFlow<Boolean?> = _navigate
 
     /**
-     * Called when the required permissions have been granted.
+     * Se llama cuando se han concedido los permisos requeridos.
      */
     fun onPermissionGranted() {
         getNavigation()
     }
 
     /**
-     * Called when the required permissions have been denied.
+     * Se llama cuando se han denegado los permisos requeridos.
      */
     fun onPermissionDenied() {
         _navigate.value = null

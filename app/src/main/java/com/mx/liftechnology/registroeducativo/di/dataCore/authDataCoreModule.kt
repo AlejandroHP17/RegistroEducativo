@@ -1,5 +1,10 @@
-package com.mx.liftechnology.registroeducativo.di
+package com.mx.liftechnology.registroeducativo.di.dataCore
 
+/**
+ * @file Define el módulo de Koin para dependencias de datos relacionadas con autenticación.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.data.repositoryImpl.auth.GetDataUserRepositoryImpl
 import com.mx.liftechnology.data.repositoryImpl.auth.LoginRepositoryImpl
@@ -12,29 +17,37 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+
+
+/**
+ * Módulo de Koin para dependencias de datos relacionadas con autenticación.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 val authDataCoreModule = module {
 
     /**
-     * Provides an instance of [AuthApi].
+     * Proporciona una instancia de [AuthApi].
      */
     factory { get<Retrofit>().create(AuthApi::class.java) }
 
     /**
-     * Provides a singleton instance of [LoginRepository].
+     * Proporciona una instancia singleton de [GetDataUserRepository].
      */
     singleOf(::GetDataUserRepositoryImpl) {
         bind<GetDataUserRepository>()
     }
 
     /**
-     * Provides a singleton instance of [LoginRepository].
+     * Proporciona una instancia singleton de [LoginRepository].
      */
     singleOf(::LoginRepositoryImpl) {
         bind<LoginRepository>()
     }
 
     /**
-     * Provides a singleton instance of [RegisterUserRepository].
+     * Proporciona una instancia singleton de [RegisterUserRepository].
      */
     singleOf(::RegisterUserRepositoryImpl){
         bind<RegisterUserRepository>()

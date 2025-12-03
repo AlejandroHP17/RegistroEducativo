@@ -1,4 +1,11 @@
-package com.mx.liftechnology.registroeducativo.di
+package com.mx.liftechnology.registroeducativo.di.dataCore
+
+/**
+ * @file Define el módulo de Koin para dependencias de datos relacionadas con campos formativos.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+
 
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.data.repositoryImpl.formativeField.DeleteFormativeFieldRepositoryImpl
@@ -15,35 +22,41 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+/**
+ * Módulo de Koin para dependencias de datos relacionadas con campos formativos.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 val formativeFieldDataCoreModule = module {
     /**
-     * Provides an instance of [FormativeFieldApi].
+     * Proporciona una instancia de [FormativeFieldApi].
      */
     factory { get<Retrofit>().create(FormativeFieldApi::class.java) }
 
     /**
-     * Provides a singleton instance of [GetWorkTypeRepository].
+     * Proporciona una instancia singleton de [DeleteFormativeFieldRepository].
      */
     singleOf(::DeleteFormativeFieldRepositoryImpl) {
         bind<DeleteFormativeFieldRepository>()
     }
 
     /**
-     * Provides a singleton instance of [GetListFormativeFieldRepository].
+     * Proporciona una instancia singleton de [GetListFormativeFieldRepository].
      */
     singleOf(::GetListFormativeFieldRepositoryImpl) {
         bind<GetListFormativeFieldRepository>()
     }
 
     /**
-     * Provides a singleton instance of [RegisterUserRepository].
+     * Proporciona una instancia singleton de [GetListWotyFofiRepository].
      */
     singleOf(::GetListWotyFofiRepositoryImpl){
         bind<GetListWotyFofiRepository>()
     }
 
     /**
-     * Provides a singleton instance of [RegisterFormativeFieldsBulkRepository].
+     * Proporciona una instancia singleton de [RegisterFormativeFieldsBulkRepository].
      */
     singleOf(::RegisterFormativeFieldsBulkRepositoryImpl) {
         bind<RegisterFormativeFieldsBulkRepository>()

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.wotyfofi
+package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
@@ -25,33 +25,32 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * Pantalla de asignación de materia.
+ * Pantalla de asignación de estudiante.
  *
  * @param navController El controlador de navegación.
  * @param backStackEntry La entrada del back stack para esta pantalla.
- * @param wotyFofiViewModel El ViewModel para esta pantalla.
+ * @param wotyFofiStudentViewModel El ViewModel para esta pantalla.
  */
 @Composable
-fun AssignmentSubjectScreen(
+fun WotyFofiStudentScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    wotyFofiViewModel: WotyFofiViewModel = koinViewModel(),
+    wotyFofiStudentViewModel: WotyFofiStudentViewModel = koinViewModel(),
 ) {
 
-    val uiState by wotyFofiViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by wotyFofiViewModel.dataState.collectAsStateWithLifecycle()
-    val subjectJson = backStackEntry.arguments?.getString("subject")
+    val uiState by wotyFofiStudentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by wotyFofiStudentViewModel.dataState.collectAsStateWithLifecycle()
+    val studentJson = backStackEntry.arguments?.getString("student")
 
     LaunchedEffect(Unit) {
-        val subject: FormativeFieldDomain? = if (subjectJson.isNullOrEmpty()) {
+        val student: StudentDomain? = if (studentJson.isNullOrEmpty()) {
             null
         } else {
-            Gson().fromJson(subjectJson, FormativeFieldDomain::class.java)
+            Gson().fromJson(studentJson, StudentDomain::class.java)
         }
-        wotyFofiViewModel.updateSubject(subject)
-        wotyFofiViewModel.getListWotyFofi()
+        wotyFofiStudentViewModel.updateStudent(student)
+        wotyFofiStudentViewModel.getListWotyFofi()
     }
-
 
     Box(
         modifier = Modifier
@@ -60,13 +59,13 @@ fun AssignmentSubjectScreen(
     ) {
 
         GenericJobsScreen(
-            title = uiState.formativeFields?.name ?: "Desconocido",
-            description = stringResource(R.string.assignment_subject_description),
+            title = uiState.student?.name ?: "Desconocido",
+            description = stringResource(R.string.assignment_student_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = WotyFofiUiCallbacks(
-                onExpandedTitle = { wotyFofiViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = {subItem, parentItem -> wotyFofiViewModel.updateExpandedSubTitle(subItem, parentItem ) },
+                onExpandedTitle = { wotyFofiStudentViewModel.updateExpandedTitle(it) },
+                onExpandedSubTitle = {subItem, parentItem -> wotyFofiStudentViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
             onAction = { navController.navigate(AppRoutes.Main.registerAssignment(uiState.formativeFields))},
         )
@@ -77,7 +76,7 @@ fun AssignmentSubjectScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun WotyFofiFormativeFieldsPreview(){
+private fun WotyFofiStudentPreview(){
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +90,7 @@ private fun WotyFofiFormativeFieldsPreview(){
             onReturnClick = {},
             complexCallbacks = WotyFofiUiCallbacks(
                 onExpandedTitle = {  },
-                onExpandedSubTitle = { subItem, parentItem ->
+                onExpandedSubTitle = { _, _ ->
                 }
             ),
             onAction = { },

@@ -9,7 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
- * Interfaz agrupada para todas las operaciones relacionadas con estudiantes.
+ * Interfaz agrupada para todas las operaciones relacionadas con tipos de trabajo.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -29,6 +29,17 @@ interface WorkTypeApi {
 
 }
 
+/**
+ * Data class que representa un tipo de trabajo en la lista.
+ *
+ * @property workTypeId El ID único del tipo de trabajo.
+ * @property name El nombre del tipo de trabajo.
+ * @property teacherId El ID del profesor que creó el tipo de trabajo.
+ * @property createAt La fecha y hora de creación del tipo de trabajo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetListWorkType(
     @SerializedName("id")
     val workTypeId: Int,
@@ -40,6 +51,16 @@ data class ResponseGetListWorkType(
     val createAt: String
 )
 
+/**
+ * Data class que representa la respuesta con tipos de trabajo agrupados por campo formativo.
+ *
+ * @property formativeFieldName El nombre del campo formativo.
+ * @property formativeFieldId El ID del campo formativo.
+ * @property workTypes La lista de tipos de trabajo asociados al campo formativo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetWorkType(
     @SerializedName("formative_field_name")
     val formativeFieldName: String,
@@ -49,6 +70,16 @@ data class ResponseGetWorkType(
     val workTypes: List<ResponseWorkTypeDetail>
 )
 
+/**
+ * Data class que representa los detalles de un tipo de trabajo.
+ *
+ * @property workTypeName El nombre del tipo de trabajo.
+ * @property workTypeId El ID único del tipo de trabajo.
+ * @property evaluationWeight El peso de evaluación del tipo de trabajo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseWorkTypeDetail(
     @SerializedName("work_type_name")
     val workTypeName: String,

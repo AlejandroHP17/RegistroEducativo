@@ -57,7 +57,20 @@ interface EvaluationApi {
 
 }
 
-// Data classes for requests and responses
+/**
+ * Data class que representa la petición para registrar evaluaciones de tipo de trabajo.
+ *
+ * @property formativeFieldId El ID del campo formativo.
+ * @property partialId El ID del parcial.
+ * @property workTypeId El ID del tipo de trabajo.
+ * @property nameWork El nombre del trabajo o evaluación.
+ * @property workDate La fecha del trabajo.
+ * @property schoolCycleId El ID del ciclo escolar.
+ * @property grades La lista de calificaciones de los estudiantes.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestWorkTypeEvaluations(
     @SerializedName("formative_field_id")
     val formativeFieldId: Int,
@@ -75,6 +88,15 @@ data class RequestWorkTypeEvaluations(
     val grades: List<RequestListGrades>,
 )
 
+/**
+ * Data class que representa la calificación de un estudiante en una evaluación.
+ *
+ * @property studentId El ID del estudiante.
+ * @property grade La calificación obtenida por el estudiante (puede ser nula si no se ha calificado).
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RequestListGrades(
     @SerializedName("student_id")
     val studentId: Int,
@@ -82,6 +104,21 @@ data class RequestListGrades(
     val grade: Double?,
 )
 
+/**
+ * Data class que representa la respuesta del servidor después de registrar evaluaciones.
+ *
+ * @property createdWorks La lista de trabajos creados.
+ * @property totalStudentsWithGrade El total de estudiantes con calificación.
+ * @property totalStudentsWithoutGrade El total de estudiantes sin calificación.
+ * @property formativeFieldName El nombre del campo formativo.
+ * @property partialName El nombre del parcial.
+ * @property workTypeId El ID del tipo de trabajo.
+ * @property workTypeName El nombre del tipo de trabajo.
+ * @property nameWork El nombre del trabajo o evaluación.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseWorkTypeEvaluations(
     @SerializedName("created")
     val createdWorks: List<ResponseCreatedWorks>,
@@ -101,6 +138,27 @@ data class ResponseWorkTypeEvaluations(
     val nameWork: String,
 )
 
+/**
+ * Data class que representa un trabajo creado en la respuesta del servidor.
+ *
+ * @property studentId El ID del estudiante.
+ * @property formativeFieldId El ID del campo formativo.
+ * @property partialId El ID del parcial.
+ * @property workTypeId El ID del tipo de trabajo.
+ * @property nameWork El nombre del trabajo.
+ * @property grade La calificación del estudiante.
+ * @property workDate La fecha del trabajo.
+ * @property workId El ID único del trabajo generado por el servidor.
+ * @property teacherId El ID del profesor.
+ * @property createdAt La fecha y hora de creación del registro.
+ * @property studentName El nombre del estudiante.
+ * @property formativeFieldName El nombre del campo formativo.
+ * @property partialName El nombre del parcial.
+ * @property workTypeName El nombre del tipo de trabajo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseCreatedWorks(
     @SerializedName("student_id")
     val studentId: Int,
@@ -132,6 +190,16 @@ data class ResponseCreatedWorks(
     val workTypeName: String?,
 )
 
+/**
+ * Data class que representa la respuesta con la lista de trabajos agrupados por campo formativo.
+ *
+ * @property formativeFieldId El ID del campo formativo.
+ * @property nameFormativeField El nombre del campo formativo.
+ * @property listWorks La lista de trabajos asociados al campo formativo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetListWorkStudents(
     @SerializedName("formative_field_id")
     val formativeFieldId: Int,
@@ -141,6 +209,16 @@ data class ResponseGetListWorkStudents(
     val listWorks: List<ResponseListWork>,
 )
 
+/**
+ * Data class que representa un trabajo en la lista.
+ *
+ * @property workId El ID único del trabajo.
+ * @property workName El nombre del trabajo.
+ * @property listWorks La lista de trabajos de estudiantes asociados a este trabajo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseListWork(
     @SerializedName("id")
     val workId: Int,
@@ -150,6 +228,16 @@ data class ResponseListWork(
     val listWorks: List<ResponseListWorkStudent>,
 )
 
+/**
+ * Data class que representa un trabajo de estudiante en la lista.
+ *
+ * @property workStudentId El ID único del trabajo de estudiante.
+ * @property workStudentName El nombre del trabajo de estudiante.
+ * @property workStudentDate La fecha del trabajo de estudiante.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseListWorkStudent(
     @SerializedName("id")
     val workStudentId: Int,
@@ -159,6 +247,24 @@ data class ResponseListWorkStudent(
     val workStudentDate: String?,
 )
 
+/**
+ * Data class que representa una evaluación de un estudiante obtenida del servidor.
+ *
+ * @property evaluationId El ID único de la evaluación.
+ * @property studentId El ID del estudiante.
+ * @property formativeFieldId El ID del campo formativo.
+ * @property workTypeId El ID del tipo de trabajo.
+ * @property evaluationName El nombre de la evaluación.
+ * @property grade La calificación obtenida por el estudiante (puede ser nula si no se ha calificado).
+ * @property workDate La fecha del trabajo.
+ * @property createdAt La fecha y hora de creación del registro.
+ * @property studentName El nombre del estudiante.
+ * @property formativeFieldName El nombre del campo formativo.
+ * @property workTypeName El nombre del tipo de trabajo.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class ResponseGetListEvaluationsStudent(
     @SerializedName("id")
     val evaluationId: Int,

@@ -1,4 +1,10 @@
-package com.mx.liftechnology.registroeducativo.di
+package com.mx.liftechnology.registroeducativo.di.dataCore
+
+/**
+ * @file Define el módulo de Koin para dependencias de datos relacionadas con parciales.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
 
 import com.mx.liftechnology.core.network.api.PartialApi
@@ -11,19 +17,26 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+
+/**
+ * Módulo de Koin para dependencias de datos relacionadas con parciales.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 val partialDataCoreModule = module {
 
     factory { get<Retrofit>().create(PartialApi::class.java) }
 
     /**
-     * Provides a singleton instance of [GetListPartialRepository].
+     * Proporciona una instancia singleton de [GetListPartialRepository].
      */
     singleOf(::GetListPartialRepositoryImpl){
         bind<GetListPartialRepository>()
     }
 
     /**
-     * Provides a singleton instance of [RegisterListPartialRepository].
+     * Proporciona una instancia singleton de [RegisterListPartialRepository].
      */
     singleOf(::RegisterListPartialRepositoryImpl){
         bind<RegisterListPartialRepository>()

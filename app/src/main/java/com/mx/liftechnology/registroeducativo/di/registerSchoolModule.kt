@@ -1,10 +1,11 @@
 package com.mx.liftechnology.registroeducativo.di
 
+/**
+ * @file Define el módulo de Koin para dependencias relacionadas con el registro de escuela.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 
-import com.mx.liftechnology.data.repositoryImpl.school.GetCctRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.schoolCycle.RegisterCycleSchoolRepositoryImpl
-import com.mx.liftechnology.domain.repository.schoolCycle.school.GetCctRepository
-import com.mx.liftechnology.domain.repository.schoolCycle.school.RegisterCycleSchoolRepository
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.GetCctUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.RegisterCycleSchoolUseCase
 import com.mx.liftechnology.domain.usecase.schoolCycle.school.ValidateFieldsRegisterSchoolUseCase
@@ -17,7 +18,7 @@ import org.koin.dsl.module
 
 
 /**
- * Koin module for school registration-related dependencies.
+ * Módulo de Koin para dependencias relacionadas con el registro de escuela.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -26,7 +27,7 @@ val registerSchoolModule = module {
 
 
     /**
-     * Provides an instance of [GetCctUseCase].
+     * Proporciona una instancia de [GetCctUseCase].
      */
     factory{GetCctUseCase(get()) }
 
@@ -35,19 +36,19 @@ val registerSchoolModule = module {
 
 
     /**
-     * Provides an instance of [RegisterCycleSchoolUseCase].
+     * Proporciona una instancia de [RegisterCycleSchoolUseCase].
      */
     singleOf(::RegisterCycleSchoolUseCase)
 
     /**
-     * Provides a singleton instance of [ValidateFieldsRegisterSchoolUseCase].
+     * Proporciona una instancia singleton de [ValidateFieldsRegisterSchoolUseCase].
      */
     singleOf(::ValidateFieldsRegisterSchoolUseCaseImp){
         bind<ValidateFieldsRegisterSchoolUseCase>()
     }
 
     /**
-     * Provides an instance of [RegisterSchoolViewModel].
+     * Proporciona una instancia de [RegisterSchoolViewModel].
      */
     viewModelOf(::RegisterSchoolViewModel)
 }
