@@ -1,103 +1,394 @@
 # Análisis del Módulo DOMAIN - Arquitectura Android
 
 > **Análisis realizado por**: Experto Senior en Arquitectura Android  
-> **Fecha**: Enero 2025  
-> **Estado**: 🔴 **CRÍTICO** - Violaciones graves de Clean Architecture
+> **Fecha**: Diciembre 2025  
+> **Estado**: 🟢 **ESTABLE** - Buena estructura, mejoras menores necesarias
 
 ## 📋 Resumen Ejecutivo
 
-El módulo `domain` es el **corazón de la aplicación** y debe contener **únicamente lógica de negocio pura**, independiente de frameworks y otras capas. Sin embargo, el análisis revela **violaciones críticas** de los principios de Clean Architecture que comprometen la mantenibilidad, testabilidad y escalabilidad del proyecto.
+El módulo `domain` es el **corazón de la aplicación** y contiene la **lógica de negocio pura**, independiente de frameworks y otras capas. El análisis revela una **buena estructura general** con use cases bien organizados, interfaces de repositorio correctamente ubicadas y correcta separación de dependencias. Se identifican algunas mejoras menores relacionadas con dependencias de Android y use cases que solo delegan.
 
 ### Estado Actual
-- **Total de Use Cases**: 47
-- **Use Cases documentados**: 46 (98% de cobertura) ✅
-- **Dependencias incorrectas**: 🔴 **CRÍTICO** - Domain depende de Data
-- **Interfaces de repositorio**: ❌ Ubicadas en módulo incorrecto (data)
+- **Total de Use Cases**: 46
+- **Use Cases documentados**: ~98% ✅
+- **Interfaces de repositorio**: ✅ Correctamente ubicadas en domain/repository/
+- **Dependencias**: ✅ Correctas (solo core, no data)
 - **Testing**: ❌ No implementado
-- **Violaciones de arquitectura**: 214 imports de data/core en domain
+- **Modelos con Parcelable**: ⚠️ 2 modelos (mejorable)
 
 ---
 
-## 🔴 Problemas Críticos de Arquitectura
+## ✅ Fortalezas del Módulo
 
-### 1. Violación de Dependencias (Clean Architecture)
+### 1. Arquitectura Correcta
 
-#### ❌ Problema Crítico #1: Domain depende de Data
-
-**Evidencia:**
+**Separación de dependencias:**
 ```kotlin
 // domain/build.gradle.kts
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":data"))  // ❌ VIOLACIÓN CRÍTICA
+    implementation(project(":core"))  // ✅ Solo utilidades
+    // NO hay dependencia de data ✅
 }
 ```
 
-**Impacto:**
-- ❌ **Violación del principio de inversión de dependencias**
-- ❌ **Domain no puede ser testeado independientemente**
-- ❌ **Acoplamiento fuerte entre capas**
-- ❌ **Imposible reutilizar lógica de negocio en otros proyectos**
+**Fortalezas:**
+- ✅ No depende de `data` (correcto)
+- ✅ Solo depende de `core` (utilidades compartidas)
+- ✅ Cumple con Clean Architecture
+- ✅ Domain puede ser testeado independientemente
 
-**Regla de Clean Architecture:**
-> Las dependencias deben apuntar **hacia adentro**. Domain NO debe depender de Data.
+### 2. Interfaces de Repositorio Correctamente Ubicadas
 
-#### ❌ Problema Crítico #2: Modelos de Dominio importan Modelos de Data
-
-**Ejemplos encontrados:**
-
-```kotlin
-// domain/model/auth/UserDomain.kt
-import com.mx.liftechnology.data.model.auth.ModelGetUserData  // ❌
-
-// domain/model/student/StudentDomain.kt
-import com.mx.liftechnology.data.model.student.StudentData  // ❌
-import com.mx.liftechnology.core.network.api.StudentApi  // ❌
-
-// domain/model/registerschool/ResultSchoolDomain.kt
-import com.mx.liftechnology.data.model.schoolCycle.ModelCCTData  // ❌
+**Estructura:**
+```
+domain/repository/
+├── auth/
+│   ├── GetDataUserRepository.kt
+│   ├── LoginRepository.kt
+│   └── RegisterUserRepository.kt
+├── student/
+│   ├── DeleteStudentRepository.kt
+│   ├── EditStudentRepository.kt
+│   ├── GetStudentRepository.kt
+│   └── RegisterStudentRepository.kt
+└── ...
 ```
 
-**Impacto:**
-- ❌ **Acoplamiento directo con la capa de datos**
-- ❌ **Cambios en Data afectan Domain**
-- ❌ **Imposible testear modelos de dominio aisladamente**
-
-#### ❌ Problema Crítico #3: Funciones de Mapeo en Modelos de Dominio
+**Fortalezas:**
+- ✅ Interfaces en `domain/repository/` (correcto)
+- ✅ Implementaciones en `data/repositoryImpl/` (correcto)
+- ✅ Inversión de dependencias correcta
+- ✅ 23 interfaces bien organizadas
 
 **Ejemplo:**
 ```kotlin
-// domain/model/auth/UserDomain.kt
-fun ModelGetUserData.toDomain(): UserDomain {  // ❌
-    // Mapeo aquí
+// domain/repository/auth/LoginRepository.kt
+fun interface LoginRepository {
+    suspend fun login(...): ModelResult<LoginDomain, NetworkModelError>
+}
+
+// data/repositoryImpl/auth/LoginRepositoryImpl.kt
+class LoginRepositoryImpl(
+    private val authApi: AuthApi,
+) : LoginRepository {
+    // Implementación
 }
 ```
 
-**Problema:**
-- Las funciones de mapeo **deben estar en la capa de datos**, no en domain
-- Domain no debe conocer la existencia de modelos de data
+### 3. Use Cases Bien Organizados
 
-**Solución:**
+**Estructura:**
+```
+domain/usecase/
+├── auth/              # 5 use cases
+├── evaluation/        # 5 use cases
+├── formativeField/    # 6 use cases
+├── menu/              # 7 use cases
+├── partial/           # 3 use cases
+├── school/            # 4 use cases
+├── share/             # 6 use cases
+├── student/           # 6 use cases
+└── workType/          # 4 use cases
+```
+
+**Fortalezas:**
+- ✅ Agrupados por feature
+- ✅ Encapsulación de lógica de negocio
+- ✅ Uso de operador `invoke` para ejecución
+- ✅ Documentación excelente (~98%)
+- ✅ Validaciones de negocio presentes
+
+**Ejemplo:**
 ```kotlin
-// data/mapper/AuthMapper.kt
-fun ModelGetUserData.toDomain(): UserDomain {
-    // Mapeo aquí
+class LoginUseCase(
+    private val repositoryLogin: LoginRepository,
+    private val locationHelper: LocationHelper,
+    private val deviceIdHelper: DeviceIdHelper,
+    private val preference: PreferenceUseCase,
+    private val getDataUserUseCase: GetDataUserUseCase
+) {
+    suspend operator fun invoke(
+        email: String?,
+        pass: String?,
+        remember: Boolean = false
+    ): ModelResult<UserDomain, ModelError> {
+        // Validación de lógica de negocio
+        if (email.isNullOrBlank() || pass.isNullOrBlank()) {
+            return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
+        }
+        // Lógica de negocio...
+    }
 }
 ```
 
-#### ❌ Problema Crítico #4: Use Cases importan Repositorios de Data
+### 4. Modelos de Dominio Bien Estructurados
+
+**Estructura:**
+```
+domain/model/
+├── auth/
+├── evaluation/
+├── formativeFields/
+├── generic/
+├── registerschool/
+├── schoolCycle/
+└── student/
+```
+
+**Fortalezas:**
+- ✅ Modelos independientes de frameworks
+- ✅ Representan conceptos de negocio
+- ✅ Bien documentados
+- ✅ Organizados por feature
+
+### 5. Sistema de Validación
+
+**ModelValidationResult:**
+```kotlin
+data class ModelValidationResult<T>(
+    val validationStates: Map<String, ModelStateOutFieldText>,
+    val operationResult: ModelResult<T, ModelError>? = null,
+    val isValid: Boolean
+)
+```
+
+**Fortalezas:**
+- ✅ Permite combinar validación + operación
+- ✅ Proporciona estados de validación detallados
+- ✅ Facilita actualización de UI
+
+**Ejemplo de uso:**
+```kotlin
+class LoginWithValidationUseCase(
+    private val validateFieldsUseCase: ValidateAuthFieldsUseCase,
+    private val loginUseCase: LoginUseCase
+) {
+    suspend operator fun invoke(...): ModelValidationResult<UserDomain> {
+        // Validar campos
+        val emailState = validateFieldsUseCase.validateEmailCompose(email)
+        val passState = validateFieldsUseCase.validatePassCompose(pass)
+        
+        // Si hay errores, retornar resultado de validación fallida
+        if (hasErrors) {
+            return ModelValidationResult.invalid(validationStates)
+        }
+        
+        // Si todas las validaciones pasaron, ejecutar la operación
+        val operationResult = loginUseCase.invoke(email, pass, remember)
+        return ModelValidationResult.valid(validationStates, operationResult)
+    }
+}
+```
+
+---
+
+## ⚠️ Áreas de Mejora
+
+### 1. Modelos con Dependencias de Android
+
+#### ⚠️ Problema: Algunos modelos usan Parcelable
 
 **Ejemplos:**
 ```kotlin
-// domain/usecase/auth/LoginUseCase.kt
-import com.mx.liftechnology.data.repository.auth.LoginRepository  // ❌
-import com.mx.liftechnology.data.util.ErrorResult  // ❌
-import com.mx.liftechnology.data.util.ModelResult  // ❌
+// domain/model/student/StudentDomain.kt
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class StudentDomain(...) : Parcelable  // ⚠️
+
+// domain/model/formativeFields/FormativeFieldDomain.kt
+@Parcelize
+data class FormativeFieldDomain(...) : Parcelable  // ⚠️
 ```
 
 **Problema:**
-- Use Cases deben depender de **interfaces definidas en domain**, no de implementaciones de data
-- `ModelResult` y tipos de error deben estar en domain, no en data
+- Domain debe ser **puro Kotlin**, sin dependencias de Android
+- Parcelable debe aplicarse en la capa de presentación (app)
+
+**Recomendación:**
+```kotlin
+// domain/model/student/Student.kt
+data class Student(...)  // ✅ Sin Parcelable
+
+// app/model/StudentUi.kt
+@Parcelize
+data class StudentUi(...) : Parcelable  // ✅ Parcelable en UI
+```
+
+**Impacto:** Bajo - Solo afecta 2 modelos, fácil de corregir
+
+### 2. Use Cases que Solo Delegan
+
+#### ⚠️ Problema: Algunos use cases solo delegan al repositorio
+
+**Ejemplo:**
+```kotlin
+class DeleteStudentUseCase(
+    private val deleteStudentRepository: DeleteStudentRepository
+) {
+    suspend operator fun invoke(studentId: Int): ModelResult<String, ModelError> {
+        return deleteStudentRepository.delete(studentId)  // ⚠️ Solo delega
+    }
+}
+```
+
+**Problema:**
+- No agregan valor
+- Añaden complejidad innecesaria
+- Más código que mantener
+
+**Recomendación:**
+- Si solo delega, **eliminar el Use Case** y usar el repositorio directamente en ViewModel
+- O **agregar lógica de negocio** (validaciones, transformaciones, etc.)
+
+**Ejemplo mejorado:**
+```kotlin
+class DeleteStudentUseCase(
+    private val deleteStudentRepository: DeleteStudentRepository
+) {
+    suspend operator fun invoke(studentId: Int): ModelResult<String, ModelError> {
+        // Agregar validación de negocio
+        if (studentId <= 0) {
+            return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
+        }
+        // Lógica adicional si es necesaria
+        return deleteStudentRepository.delete(studentId)
+    }
+}
+```
+
+### 3. Funciones de Extensión Redundantes
+
+#### ⚠️ Problema: Funciones que retornan el mismo tipo
+
+**Ejemplo:**
+```kotlin
+// domain/model/student/StudentDomain.kt
+fun StudentDomain?.toStudentDomain(): StudentDomain? {
+    return this?.let {
+        StudentDomain(...)  // ⚠️ Retorna el mismo tipo
+    }
+}
+```
+
+**Problema:**
+- Función redundante que no hace conversión real
+- Puede confundir
+
+**Recomendación:** Eliminar estas funciones o moverlas a donde realmente se necesiten
+
+### 4. Uso de `fun interface` en lugar de `interface`
+
+#### ⚠️ Problema: Limita a una sola función
+
+**Estado actual:**
+```kotlin
+// domain/repository/auth/LoginRepository.kt
+fun interface LoginRepository {
+    suspend fun login(...): ModelResult<LoginDomain, NetworkModelError>
+}
+```
+
+**Problema:**
+- `fun interface` solo permite una función
+- Limita la extensibilidad
+- No permite agrupar operaciones relacionadas
+
+**Recomendación**: Cambiar a `interface` normal cuando se agrupen repositorios
+```kotlin
+// domain/repository/auth/AuthRepository.kt
+interface AuthRepository {
+    suspend fun login(...): ModelResult<LoginDomain, NetworkModelError>
+    suspend fun getUserData(): ModelResult<UserDomain, NetworkModelError>
+    suspend fun register(...): ModelResult<RegisterUserDomain, NetworkModelError>
+}
+```
+
+### 5. Modelos con Muchos Campos Opcionales
+
+#### ⚠️ Observación: Algunos modelos tienen muchos campos opcionales
+
+**Ejemplo:**
+```kotlin
+data class StudentDomain(
+    val studentId : Int?,
+    val curp : String?,
+    val birthday : String?,    // ⚠️ Debería ser LocalDate
+    val phoneNumber : String?,
+    val userId : Int?,
+    val name : String?,
+    val lastName : String?,
+    val secondLastName : String?
+)
+```
+
+**Recomendación:**
+- Usar tipos específicos (LocalDate en lugar de String para fechas)
+- Hacer campos requeridos cuando sea apropiado
+- Usar valores por defecto cuando sea posible
+
+**Ejemplo mejorado:**
+```kotlin
+data class Student(
+    val id: Int,                    // ✅ Requerido
+    val name: String,               // ✅ Requerido
+    val lastName: String,           // ✅ Requerido
+    val secondLastName: String? = null,  // ✅ Opcional con default
+    val curp: String? = null,
+    val birthday: LocalDate? = null,     // ✅ Tipo específico
+    val phoneNumber: String? = null,
+    val userId: Int? = null
+)
+```
+
+### 6. Testing
+
+#### ❌ Problema Crítico: Falta de tests
+- **No se encontraron tests para Use Cases**
+- **No se encontraron tests para validaciones**
+- **No se encontraron tests para modelos**
+- Solo existe `ExampleUnitTest.kt` que no prueba nada real
+
+**Impacto:**
+- ❌ Imposible validar lógica de negocio
+- ❌ Alto riesgo de regresiones
+- ❌ Refactorización peligrosa
+
+**Recomendación:**
+```kotlin
+// domain/src/test/java/.../usecase/auth/LoginUseCaseTest.kt
+class LoginUseCaseTest {
+    @Test
+    fun `login returns success when credentials are valid`() = runTest {
+        // Given
+        val mockRepository = mockk<LoginRepository> {
+            coEvery { login(any(), any(), any(), any(), any()) } returns 
+                SuccessResult(LoginDomain(...))
+        }
+        val useCase = LoginUseCase(mockRepository, ...)
+        
+        // When
+        val result = useCase("email@test.com", "password", false)
+        
+        // Then
+        assertTrue(result is SuccessResult)
+    }
+    
+    @Test
+    fun `login returns error when email is blank`() = runTest {
+        // Given
+        val useCase = LoginUseCase(...)
+        
+        // When
+        val result = useCase("", "password", false)
+        
+        // Then
+        assertTrue(result is ErrorResult)
+        assertEquals(LocalModelError.USER_INCOMPLETE_DATA, result.error)
+    }
+}
+```
 
 ---
 
@@ -116,47 +407,35 @@ domain/src/main/java/com/mx/liftechnology/domain/
 │   ├── registerschool/
 │   ├── schoolCycle/
 │   └── student/
+├── repository/               # Interfaces de repositorio ✅
+│   ├── auth/
+│   ├── evaluation/
+│   ├── formativeFields/
+│   ├── menu/
+│   ├── partial/
+│   ├── school/
+│   └── student/
 ├── usecase/                  # Casos de uso
 │   ├── auth/
 │   ├── evaluation/
 │   ├── formativeField/
-│   ├── schoolCycle/
-│   └── student/
+│   ├── menu/
+│   ├── partial/
+│   ├── school/
+│   ├── share/
+│   ├── student/
+│   └── workType/
 └── util/                     # Utilidades
+    └── extension/
+        └── StringExtension.kt
 ```
 
-#### ⚠️ Áreas de Mejora
-
-**Problema 1**: Falta carpeta `repository/` para interfaces
-```
-domain/
-├── model/
-├── usecase/
-├── repository/          # ❌ FALTA - Interfaces de repositorio deben estar aquí
-└── util/
-```
-
-**Problema 2**: Modelos genéricos mezclados con específicos
-```
-model/
-├── generic/                  # Modelos genéricos
-│   ├── ModelCodeError.kt
-│   ├── ModelCodeInputs.kt
-│   └── ...
-└── student/                  # Modelos específicos
-```
-
-**Recomendación**: Reorganizar por tipo:
-```
-model/
-├── common/                   # Modelos compartidos
-│   ├── Error.kt
-│   ├── Result.kt
-│   └── Validation.kt
-├── auth/
-├── student/
-└── ...
-```
+**Fortalezas:**
+- ✅ Separación clara por responsabilidad
+- ✅ Agrupación lógica por feature
+- ✅ Interfaces de repositorio en domain (correcto)
+- ✅ Fácil de navegar
+- ✅ Escalable
 
 ---
 
@@ -168,502 +447,200 @@ model/
 - ✅ Encapsulación de lógica de negocio
 - ✅ Uso de operador `invoke` para ejecución
 - ✅ Validaciones de negocio
-- ✅ Documentación KDoc completa (98%)
+- ✅ Documentación excelente (~98%)
+- ✅ Dependencias inyectadas correctamente
 
-#### ❌ Problemas Arquitectónicos
+#### ⚠️ Problemas Identificados
 
-**Problema 1**: Use Cases dependen de implementaciones, no interfaces
+**Problema 1**: Algunos use cases solo delegan
+- `DeleteStudentUseCase` solo delega al repositorio
+- No agregan valor
 
-**Antes (Incorrecto):**
-```kotlin
-class LoginUseCase(
-    private val repositoryLogin: LoginRepository,  // ❌ Interface en data
-    private val locationHelper: LocationHelper,    // ✅ OK (core)
-    private val deviceIdHelper: DeviceIdHelper,    // ✅ OK (core)
-    private val preference: PreferenceUseCase,     // ✅ OK (core)
-    private val getDataUserUseCase: GetDataUserUseCase
-)
-```
+**Recomendación**: Eliminar o agregar lógica de negocio
 
-**Después (Correcto):**
-```kotlin
-// domain/repository/AuthRepository.kt
-interface AuthRepository {
-    suspend fun login(...): Result<User>
-    suspend fun getUserData(): Result<User>
-}
-
-// domain/usecase/auth/LoginUseCase.kt
-class LoginUseCase(
-    private val authRepository: AuthRepository,  // ✅ Interface en domain
-    private val locationHelper: LocationHelper,
-    private val deviceIdHelper: DeviceIdHelper,
-    private val preference: PreferenceUseCase,
-    private val getDataUserUseCase: GetDataUserUseCase
-)
-```
-
-**Problema 2**: Use Cases que solo delegan al repositorio
-
-**Ejemplo:**
-```kotlin
-class DeleteStudentUseCase(
-    private val deleteStudentRepository: DeleteStudentRepository
-) {
-    suspend operator fun invoke(studentId: Int): ModelResult<String, ModelError> {
-        return deleteStudentRepository.delete(studentId)  // ❌ Solo delega
-    }
-}
-```
-
-**Recomendación:**
-- Si solo delega, **eliminar el Use Case** y usar el repositorio directamente en ViewModel
-- O **agregar lógica de negocio** (validaciones, transformaciones, etc.)
-
-**Problema 3**: Uso de `ModelResult` de data en lugar de domain
-
-**Antes:**
-```kotlin
-import com.mx.liftechnology.data.util.ModelResult  // ❌
-import com.mx.liftechnology.data.util.ModelError   // ❌
-```
-
-**Después:**
-```kotlin
-// domain/model/common/Result.kt
-sealed class Result<out T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Error(val exception: Throwable) : Result<Nothing>()
-}
-
-// domain/model/common/DomainError.kt
-sealed class DomainError {
-    object UserIncompleteData : DomainError()
-    object NetworkError : DomainError()
-    // ...
-}
-```
+**Problema 2**: Uso de `ModelResult` de core
+- ✅ Correcto: `ModelResult` está en `core/util/models/`
+- ✅ No hay dependencia de `data`
 
 ### 3.2 Modelos de Dominio
 
-#### ❌ Problemas Identificados
+#### ✅ Buenas Prácticas
+- ✅ Modelos independientes de frameworks (excepto 2 con Parcelable)
+- ✅ Representan conceptos de negocio
+- ✅ Bien documentados
+- ✅ Organizados por feature
 
-**Problema 1**: Modelos con muchos campos opcionales
+#### ⚠️ Áreas de Mejora
 
-```kotlin
-data class StudentDomain(
-    val studentId : Int?,      // ❌ ¿Por qué opcional?
-    val curp : String?,
-    val birthday : String?,    // ❌ Debería ser LocalDate
-    val phoneNumber : String?,
-    val userId : Int?,
-    val name : String?,        // ❌ ¿Nombre opcional?
-    val lastName : String?,
-    val secondLastName : String?
-)
-```
+**Problema 1**: Algunos modelos con Parcelable
+- `StudentDomain` y `FormativeFieldDomain` usan Parcelable
+- Debería estar en la capa de presentación
 
-**Recomendación:**
-```kotlin
-data class Student(
-    val id: Int,                    // ✅ Requerido
-    val name: String,               // ✅ Requerido
-    val lastName: String,           // ✅ Requerido
-    val secondLastName: String? = null,  // ✅ Opcional con default
-    val curp: String? = null,
-    val birthday: LocalDate? = null,     // ✅ Tipo específico
-    val phoneNumber: String? = null,
-    val userId: Int? = null
-)
-```
+**Problema 2**: Funciones de extensión redundantes
+- `StudentDomain?.toStudentDomain()` retorna el mismo tipo
+- Debería eliminarse o moverse
 
-**Problema 2**: Uso de `String?` para fechas
+### 3.3 Interfaces de Repositorio
 
-**Recomendación:**
-```kotlin
-import java.time.LocalDate
+#### ✅ Excelente Implementación
+- ✅ Interfaces en `domain/repository/` (correcto)
+- ✅ Implementaciones en `data/repositoryImpl/` (correcto)
+- ✅ Inversión de dependencias correcta
+- ✅ 23 interfaces bien organizadas
 
-data class Student(
-    val birthday: LocalDate? = null,  // ✅ Tipo específico
-    // ...
-)
-```
+#### ⚠️ Observación
 
-**Problema 3**: Modelos de dominio con dependencias de Android
-
-```kotlin
-import android.os.Parcelable  // ❌ Domain no debe depender de Android
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class StudentDomain(...) : Parcelable  // ❌
-```
-
-**Problema:**
-- Domain debe ser **puro Kotlin**, sin dependencias de Android
-- Parcelable debe aplicarse en la capa de presentación (app)
-
-**Solución:**
-```kotlin
-// domain/model/student/Student.kt
-data class Student(...)  // ✅ Sin Parcelable
-
-// app/model/StudentUi.kt
-@Parcelize
-data class StudentUi(...) : Parcelable  // ✅ Parcelable en UI
-```
-
----
-
-## 🔄 Dependencias entre Capas
-
-### 4.1 Estado Actual
-
-#### ❌ Violaciones Críticas
-
-**Problema**: El módulo `domain` depende de `data` y `core`
-
-```kotlin
-// domain/build.gradle.kts
-dependencies {
-    implementation(project(":core"))  // ⚠️ Aceptable si es solo utilidades
-    implementation(project(":data"))  // ❌ PROHIBIDO
-}
-```
-
-**Regla de Clean Architecture:**
-```
-app → domain ← data
-     ↑
-    core (utilidades compartidas)
-```
-
-**Dependencias correctas:**
-- ✅ `app` → `domain`, `data`, `core`
-- ✅ `data` → `domain`, `core`
-- ✅ `domain` → `core` (solo utilidades, no frameworks)
-- ❌ `domain` → `data` (PROHIBIDO)
-
-### 4.2 Solución Propuesta
-
-**Paso 1**: Crear interfaces de repositorio en domain
-```
-domain/
-└── repository/
-    ├── AuthRepository.kt
-    ├── StudentRepository.kt
-    ├── FormativeFieldRepository.kt
-    └── ...
-```
-
-**Paso 2**: Mover tipos comunes a domain
-```
-domain/
-└── model/
-    └── common/
-        ├── Result.kt
-        ├── DomainError.kt
-        └── Validation.kt
-```
-
-**Paso 3**: Eliminar dependencia de data en domain
-```kotlin
-// domain/build.gradle.kts
-dependencies {
-    // implementation(project(":data"))  // ❌ ELIMINAR
-    implementation(project(":core"))     // ✅ Solo utilidades puras
-}
-```
-
-**Paso 4**: Implementar interfaces en data
-```kotlin
-// data/repository/AuthRepositoryImpl.kt
-class AuthRepositoryImpl(
-    private val api: AuthApi
-) : AuthRepository {  // ✅ Implementa interfaz de domain
-    // ...
-}
-```
+**Uso de `fun interface`:**
+- Limita a una sola función
+- Dificulta agrupación por entidad
+- Considerar cambiar a `interface` normal cuando se agrupen
 
 ---
 
 ## 📝 Nomenclatura y Convenciones
 
-### 5.1 Problemas Identificados
+### 4.1 Estado Actual
 
-#### ❌ Inconsistencias en Nombres de Use Cases
+#### ✅ Mayormente Consistente
+- ✅ Nombres descriptivos
+- ✅ Convenciones de Kotlin seguidas
+- ✅ Documentación presente
+
+#### ⚠️ Inconsistencias Menores
+
+**Use Cases:**
 - `LoginUseCase` vs `GetDataUserUseCase` (diferentes patrones)
 - `ValidateFieldsLoginFlowUseCase` (muy largo)
 - `GetListWorkEvaluationFormativeFieldUseCase` (extremadamente largo)
-- `RegisterFormativeFieldsBulkUseCase` vs `RegisterStudentUseCase` (inconsistencia en "Bulk")
 
 **Recomendación**: Estandarizar a un patrón consistente:
 - `*UseCase` para todos los casos de uso
 - Nombres descriptivos pero concisos
 - Usar verbos claros: `Get`, `Create`, `Update`, `Delete`, `Validate`
 
-**Ejemplos:**
-- ✅ `LoginUseCase`
-- ✅ `GetUserDataUseCase`
-- ✅ `ValidateLoginFieldsUseCase` (en lugar de `ValidateFieldsLoginFlowUseCase`)
-- ✅ `GetWorkEvaluationListUseCase` (en lugar de `GetListWorkEvaluationFormativeFieldUseCase`)
-
-#### ❌ Nomenclatura de Modelos de Dominio
-- Todos los modelos usan el prefijo `Model*Domain`
-  - `ModelStudentDomain`
-  - `ModelFormatFormativeFieldsDomain`
-  - `ModelSpinnerSchoolDomain`
+**Modelos:**
+- Todos usan el sufijo `*Domain` (consistente)
+- Algunos tienen prefijo `Model*` (redundante)
 
 **Recomendación**: Simplificar nombres (el prefijo "Model" es redundante):
-- `Student`
-- `FormativeField`
-- `SchoolSpinner`
-
-O mantener el sufijo `Domain` si ayuda a diferenciar:
-- `StudentDomain`
-- `FormativeFieldDomain`
-- `SchoolSpinnerDomain`
+- `StudentDomain` en lugar de `ModelStudentDomain`
+- `FormativeFieldDomain` en lugar de `ModelFormatFormativeFieldsDomain`
 
 ---
 
 ## 🧪 Testing
 
-### 6.1 Estado Actual
+### 5.1 Estado Actual
 
 #### ❌ Problema Crítico
 - **No se encontraron tests para Use Cases**
 - **No se encontraron tests para validaciones**
 - **No se encontraron tests para modelos**
+- Solo existe `ExampleUnitTest.kt` que no prueba nada real
 
-**Impacto:**
-- ❌ Imposible validar lógica de negocio
-- ❌ Alto riesgo de regresiones
-- ❌ Refactorización peligrosa
+### 5.2 Recomendación
 
-### 6.2 Recomendación
+**Implementar tests para:**
 
-**Implementar tests unitarios:**
-
+1. **Use Cases:**
 ```kotlin
-// domain/src/test/java/.../usecase/auth/LoginUseCaseTest.kt
 class LoginUseCaseTest {
     @Test
-    fun `login returns success when credentials are valid`() = runTest {
-        // Given
-        val mockRepository = mockk<AuthRepository> {
-            coEvery { login(any(), any(), any(), any(), any()) } returns 
-                Result.Success(User(...))
-        }
-        val useCase = LoginUseCase(mockRepository, ...)
-        
-        // When
-        val result = useCase("email@test.com", "password", false)
-        
-        // Then
-        assertTrue(result is Result.Success)
-    }
-    
+    fun `login returns success when credentials are valid`() = runTest { ... }
     @Test
-    fun `login returns error when email is blank`() = runTest {
-        // Given
-        val useCase = LoginUseCase(...)
-        
-        // When
-        val result = useCase("", "password", false)
-        
-        // Then
-        assertTrue(result is Result.Error)
-        assertEquals(DomainError.UserIncompleteData, result.error)
-    }
+    fun `login returns error when email is blank`() = runTest { ... }
 }
 ```
 
----
+2. **Validaciones:**
+```kotlin
+class ValidateAuthFieldsUseCaseTest {
+    @Test
+    fun `validateEmail returns error when email is invalid`() { ... }
+}
+```
 
-## 📊 Métricas y Estadísticas
-
-### 7.1 Cobertura de Documentación
-- **Use Cases documentados**: 46/47 (98%) ✅
-- **Modelos documentados**: ~80%
-- **Interfaces documentadas**: ~60%
-
-### 7.2 Violaciones de Arquitectura
-- **Imports de data en domain**: 214 ❌
-- **Imports de core en domain**: Aceptable (utilidades)
-- **Dependencias incorrectas**: 1 crítica (domain → data)
-
-### 7.3 Complejidad
-- **Use Cases totales**: 47
-- **Use Cases que solo delegan**: ~15 (32%)
-- **Use Cases con lógica de negocio**: ~32 (68%)
+3. **Modelos:**
+```kotlin
+class StudentDomainTest {
+    @Test
+    fun `student domain has required fields`() { ... }
+}
+```
 
 ---
 
 ## 🎯 Recomendaciones Prioritarias
 
-### 🔴 Alta Prioridad (Crítico)
-
-1. **Eliminar dependencia de `domain` hacia `data`**
-   - Mover interfaces de repositorio a `domain/repository/`
-   - Crear tipos `Result` y `Error` en domain
-   - Mover funciones de mapeo a data/mapper
-
-2. **Refactorizar modelos de dominio**
-   - Eliminar dependencias de Android (Parcelable)
-   - Eliminar imports de modelos de data
-   - Usar tipos específicos (LocalDate en lugar de String)
-
-3. **Crear sistema de tipos común en domain**
-   - `domain/model/common/Result.kt`
-   - `domain/model/common/DomainError.kt`
-   - `domain/model/common/Validation.kt`
-
-4. **Mover interfaces de repositorio a domain**
-   - Crear `domain/repository/` con todas las interfaces
-   - Implementar interfaces en `data/repository/`
-
 ### 🟡 Media Prioridad
 
-1. **Simplificar nombres de Use Cases** (más concisos)
-2. **Eliminar Use Cases que solo delegan** al repositorio
-3. **Simplificar nombres de modelos** (eliminar prefijo "Model")
-4. **Crear validadores separados** para lógica de validación
-5. **Centralizar validaciones comunes**
+1. **Eliminar Parcelable de modelos de dominio**
+   - Mover Parcelable a capa de presentación
+   - Mantener domain puro Kotlin
+
+2. **Eliminar o mejorar Use Cases que solo delegan**
+   - Agregar lógica de negocio
+   - O eliminar y usar repositorio directamente
+
+3. **Eliminar funciones de extensión redundantes**
+   - Limpiar funciones que no hacen conversión real
+
+4. **Implementar tests**
+   - Tests para Use Cases críticos (alta prioridad)
+   - Tests para validaciones (alta prioridad)
 
 ### 🟢 Baja Prioridad
 
-1. **Reorganizar modelos genéricos** en carpeta `common`
-2. **Optimizar modelos** con valores por defecto
-3. **Revisar y simplificar** funciones de extensión
-4. **Agregar más ejemplos** en documentación de Use Cases complejos
+1. **Simplificar nombres de Use Cases** (más concisos)
+2. **Estandarizar nomenclatura de modelos** (eliminar prefijo "Model")
+3. **Mejorar tipos de datos** (LocalDate en lugar de String para fechas)
+4. **Considerar agrupar repositorios** por entidad (cambiar `fun interface` a `interface`)
 
 ---
 
-## 📚 Ejemplos de Refactorización
+## 📊 Métricas y Estadísticas
 
-### Ejemplo 1: Mover Interfaces de Repositorio
+### 6.1 Cobertura
+- **Use Cases documentados**: ~98% ✅
+- **Modelos documentados**: ~85% ✅
+- **Interfaces documentadas**: ~90% ✅
+- **Testing**: 0% ❌
 
-**Antes:**
-```kotlin
-// data/repository/auth/LoginRepository.kt
-fun interface LoginRepository {
-    suspend fun executeLogin(...): ModelResult<ModelLoginData, NetworkModelError>
-}
-```
+### 6.2 Complejidad
+- **Use Cases totales**: 46
+- **Interfaces de repositorio**: 23
+- **Modelos de dominio**: ~30
+- **Use Cases que solo delegan**: ~10 (22%)
+- **Use Cases con lógica de negocio**: ~36 (78%)
 
-**Después:**
-```kotlin
-// domain/repository/AuthRepository.kt
-interface AuthRepository {
-    suspend fun login(...): Result<User>
-    suspend fun getUserData(): Result<User>
-    suspend fun register(...): Result<Boolean>
-}
-
-// data/repository/auth/AuthRepositoryImpl.kt
-class AuthRepositoryImpl(
-    private val api: AuthApi
-) : AuthRepository {
-    override suspend fun login(...): Result<User> {
-        // Implementación
-    }
-}
-```
-
-### Ejemplo 2: Crear Sistema de Result en Domain
-
-**Antes:**
-```kotlin
-import com.mx.liftechnology.data.util.ModelResult  // ❌
-import com.mx.liftechnology.data.util.ModelError   // ❌
-```
-
-**Después:**
-```kotlin
-// domain/model/common/Result.kt
-sealed class Result<out T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Error(val error: DomainError) : Result<Nothing>()
-}
-
-// domain/model/common/DomainError.kt
-sealed class DomainError {
-    object UserIncompleteData : DomainError()
-    object NetworkError : DomainError()
-    object Unauthorized : DomainError()
-    data class Unknown(val message: String) : DomainError()
-}
-```
-
-### Ejemplo 3: Refactorizar Modelo de Dominio
-
-**Antes:**
-```kotlin
-// domain/model/student/StudentDomain.kt
-import com.mx.liftechnology.data.model.student.StudentData  // ❌
-import android.os.Parcelable  // ❌
-
-@Parcelize
-data class StudentDomain(
-    val studentId : Int?,
-    val name : String?,
-    val birthday : String?,
-    // ...
-) : Parcelable
-
-fun StudentData?.toStudentDomain(): StudentDomain? {  // ❌
-    // ...
-}
-```
-
-**Después:**
-```kotlin
-// domain/model/student/Student.kt
-import java.time.LocalDate  // ✅
-
-data class Student(
-    val id: Int,
-    val name: String,
-    val lastName: String,
-    val secondLastName: String? = null,
-    val curp: String? = null,
-    val birthday: LocalDate? = null,
-    val phoneNumber: String? = null,
-    val userId: Int? = null
-)
-
-// data/mapper/StudentMapper.kt
-fun StudentData.toDomain(): Student {  // ✅
-    return Student(
-        id = studentId ?: 0,
-        name = name ?: "",
-        // ...
-    )
-}
-```
+### 6.3 Dependencias
+- **Depende de**: `core` (utilidades) ✅
+- **No depende de**: `data`, `app` ✅ (correcto)
+- **Usado por**: `app`, `data`
 
 ---
 
 ## 🎓 Conclusión
 
-El módulo DOMAIN tiene **problemas críticos de arquitectura** que violan los principios fundamentales de Clean Architecture:
+El módulo DOMAIN tiene una **buena estructura general** con use cases bien organizados, interfaces de repositorio correctamente ubicadas y correcta separación de dependencias. Cumple con los principios de Clean Architecture y está bien documentado.
 
-### Problemas Críticos
-1. ❌ **Dependencias incorrectas** (domain depende de data)
-2. ❌ **Interfaces de repositorio en capa incorrecta**
-3. ❌ **Modelos de dominio acoplados a data**
-4. ❌ **Falta de testing**
+### Fortalezas
+- ✅ Arquitectura correcta (no depende de data)
+- ✅ Interfaces de repositorio en domain (correcto)
+- ✅ Use cases bien organizados y documentados
+- ✅ Sistema de validación bien diseñado
+- ✅ Modelos de dominio bien estructurados
+- ✅ Documentación excelente
 
-### Impacto
-- **Mantenibilidad**: Baja - Cambios en data afectan domain
-- **Testabilidad**: Muy baja - Imposible testear domain aisladamente
-- **Escalabilidad**: Baja - Difícil agregar nuevas features
-- **Reutilización**: Imposible - Domain no puede usarse en otros proyectos
+### Debilidades
+- ⚠️ Algunos modelos con Parcelable (2 modelos)
+- ⚠️ Algunos use cases solo delegan (~10)
+- ⚠️ Funciones de extensión redundantes
+- ❌ Falta de testing (crítico)
 
 ### Prioridad de Acción
-Las mejoras propuestas son **fundamentales** y deben implementarse **inmediatamente** para mantener la arquitectura limpia y los principios de Clean Architecture. Sin estas correcciones, el proyecto acumulará deuda técnica que será cada vez más costosa de resolver.
+Las mejoras propuestas son de **prioridad media**. El módulo está en buen estado y las mejoras son principalmente para robustez (testing) y limpieza (eliminar Parcelable, funciones redundantes). La falta de testing es el punto más crítico a abordar.
 
 ---
 
 **Análisis realizado siguiendo las mejores prácticas de Clean Architecture y Android Architecture Guidelines.**
-

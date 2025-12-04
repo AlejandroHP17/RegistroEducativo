@@ -1,19 +1,21 @@
 # Análisis del Módulo CORE - Arquitectura Android
 
 > **Análisis realizado por**: Experto Senior en Arquitectura Android  
-> **Fecha**: Enero 2025  
+> **Fecha**: Diciembre 2025  
 > **Estado**: 🟢 **ESTABLE** - Bien estructurado, pocas mejoras necesarias
 
 ## 📋 Resumen Ejecutivo
 
-El módulo `core` contiene funcionalidades transversales y herramientas compartidas por toda la aplicación. El análisis revela una **excelente estructura** con configuración de red robusta, gestión de preferencias bien diseñada y utilidades bien organizadas.
+El módulo `core` contiene funcionalidades transversales y herramientas compartidas por toda la aplicación. El análisis revela una **excelente estructura** con configuración de red robusta, gestión de preferencias bien diseñada con tipos seguros, utilidades bien organizadas y un sistema de manejo de errores consistente.
 
 ### Estado Actual
-- **Configuración de red**: ✅ Excelente
-- **Gestión de preferencias**: ✅ Bien diseñada con tipos seguros
-- **Utilidades**: ✅ Bien organizadas
-- **Documentación**: ✅ Buena cobertura
-- **Testing**: ❌ No implementado
+- **Configuración de red**: ✅ Excelente (3 interceptores, detección automática de entorno)
+- **Gestión de preferencias**: ✅ Excelente (tipos seguros, encriptación)
+- **Utilidades**: ✅ Bien organizadas (device, location, voice, session)
+- **Modelos compartidos**: ✅ Bien definidos (ModelResult, errores)
+- **Documentación**: ✅ Excelente cobertura
+- **Testing**: ❌ No implementado (solo ExampleUnitTest)
+- **Dependencias**: ✅ Correctas (no depende de domain ni data)
 
 ---
 
@@ -23,11 +25,11 @@ El módulo `core` contiene funcionalidades transversales y herramientas comparti
 
 **Componentes:**
 - ✅ `NetworkModule` - Configuración de Koin bien estructurada
-- ✅ `NetworkConfig` - Constantes centralizadas
+- ✅ `NetworkConfig` - Constantes centralizadas para timeouts
 - ✅ `Environment` - Detección automática de emulador/dispositivo
-- ✅ `AuthInterceptor` - Manejo de tokens
-- ✅ `ErrorHandlingInterceptor` - Manejo centralizado de errores
-- ✅ `ConnectionErrorInterceptor` - Manejo de errores de conexión
+- ✅ `TokenProvider` - Gestión centralizada de tokens
+- ✅ 3 interceptores especializados y bien documentados
+- ✅ 8 APIs definidas (AuthApi, StudentApi, etc.)
 
 **Ejemplo de buena práctica:**
 ```kotlin
@@ -39,18 +41,49 @@ val networkModule = module {
             .addInterceptor(get<ErrorHandlingInterceptor>())
             .addInterceptor(get<ConnectionErrorInterceptor>())
             .connectTimeout(NetworkConfig.CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .readTimeout(NetworkConfig.READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .writeTimeout(NetworkConfig.WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .build()
     }
 }
 ```
 
+**Fortalezas:**
+- ✅ Interceptores bien separados por responsabilidad
+- ✅ Detección automática de entorno (emulador vs dispositivo)
+- ✅ Configuración de timeouts centralizada
+- ✅ Logging condicional (solo en DEBUG)
+- ✅ Manejo de errores HTTP centralizado
+
+#### 1.1 Interceptores Especializados
+
+**AuthInterceptor:**
+- ✅ Maneja autenticación y refresh de tokens automáticamente
+- ✅ Reintenta peticiones después de refresh exitoso
+- ✅ Notifica expiración de sesión
+- ✅ Maneja endpoints que no requieren autenticación
+
+**ErrorHandlingInterceptor:**
+- ✅ Categoriza errores HTTP (4xx, 5xx)
+- ✅ Loguea información detallada de errores
+- ✅ Facilita diagnóstico y debugging
+
+**ConnectionErrorInterceptor:**
+- ✅ Diagnostica errores de conectividad de bajo nivel
+- ✅ Loguea información detallada de fallos de conexión
+- ✅ Complementa a ErrorHandlingInterceptor
+
 ### 2. Gestión de Preferencias con Tipos Seguros
 
 **Sistema de tipos seguros:**
 ```kotlin
-sealed class Preference<T>(val key: String, val defaultValue: T) {
-    object AccessToken : Preference<String>("access_token", "")
-    object IdUser : Preference<Int>("id_user", -1)
+sealed class Preference<T> {
+    abstract val key: String
+    abstract fun get(prefs: SharedPreferences): T?
+    abstract fun set(prefs: SharedPreferences, value: T)
+    
+    object AccessToken : Preference<String>() { ... }
+    object IdUser : Preference<Int>() { ... }
     // ...
 }
 ```
@@ -64,10 +97,35 @@ class PreferenceUseCase(private val preference: PreferenceRepository) {
 }
 ```
 
+**Repositorio con encriptación:**
+```kotlin
+class PreferenceRepositoryImpl(
+    private val applicationContext: Context,
+) : PreferenceRepository {
+    private val securePrefs: SharedPreferences by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        EncryptedSharedPreferences.create(...)
+    }
+}
+```
+
 **Fortalezas:**
 - ✅ Tipos seguros evitan errores de runtime
+- ✅ Encriptación con EncryptedSharedPreferences
+- ✅ Thread-safe con lazy initialization
 - ✅ Métodos de conveniencia para preferencias comunes
-- ✅ Encapsulación correcta
+- ✅ 9 preferencias bien definidas
+- ✅ Manejo de errores en inicialización (fallback)
+
+**Preferencias definidas:**
+- `AccessToken` - Token de acceso
+- `RefreshToken` - Token de refresco
+- `RememberLogin` - Recordar inicio de sesión
+- `IdUser` - ID del usuario
+- `IdUserLevel` - ID del nivel de usuario
+- `IdCycleSchool` - ID del ciclo escolar
+- `IdFormativeField` - ID del campo formativo
+- `IdPartial` - ID del parcial
+- `RangeDatesPartial` - Rango de fechas del parcial
 
 ### 3. Utilidades Bien Organizadas
 
@@ -75,22 +133,91 @@ class PreferenceUseCase(private val preference: PreferenceRepository) {
 ```
 core/util/
 ├── device/
-│   ├── DeviceIdHelper.kt
-│   └── DeviceModule.kt
+│   ├── DeviceIdHelper.kt      # IDs únicos de dispositivo
+│   └── DeviceModule.kt        # Módulo de Koin
 ├── location/
-│   └── LocationHelper.kt
+│   └── LocationHelper.kt      # Gestión de ubicación
 ├── session/
-│   └── SessionManager.kt
+│   └── SessionManager.kt      # Gestión de sesión
 ├── voice/
-│   └── VoiceRecognitionManager.kt
-└── extension/
-    └── TimberExtensions.kt
+│   └── VoiceRecognitionManager.kt  # Reconocimiento de voz
+├── extension/
+│   └── TimberExtensions.kt    # Extensiones de logging
+└── models/
+    └── ModelResult.kt         # Resultados y errores
 ```
 
 **Fortalezas:**
 - ✅ Agrupación lógica por funcionalidad
 - ✅ Helpers bien documentados
 - ✅ Módulos de Koin para inyección
+- ✅ Manejo de errores con tipos seguros
+
+#### 3.1 DeviceIdHelper
+- ✅ Usa ANDROID_ID de forma segura
+- ✅ Fallback cuando ANDROID_ID no está disponible
+- ✅ Manejo de emuladores
+
+#### 3.2 LocationHelper
+- ✅ Manejo de permisos con diálogos
+- ✅ Resultado type-safe con `LocationResult`
+- ✅ Función suspend para corutinas
+- ✅ Callback para uso tradicional
+
+#### 3.3 VoiceRecognitionManager
+- ✅ StateFlows para resultados y errores
+- ✅ Reintentos automáticos en caso de errores
+- ✅ Manejo de permisos
+- ✅ Gestión de ciclo de vida
+
+#### 3.4 SessionManager
+- ✅ SharedFlow para eventos de expiración
+- ✅ Notificación centralizada de expiración
+- ✅ Desacoplado de otros componentes
+
+### 4. Sistema de Manejo de Errores
+
+**ModelResult bien diseñado:**
+```kotlin
+sealed class ModelResult<out D, out E: ModelError>
+
+data class SuccessResult<out D>(val data: D) : ModelResult<D, Nothing>()
+data class ErrorResult<out E: ModelError>(val error: E) : ModelResult<Nothing, E>()
+```
+
+**Tipos de error bien definidos:**
+- ✅ `LocalModelError` - Errores de validación local
+- ✅ `NetworkModelError` - Errores de red (con códigos HTTP)
+- ✅ `UserError` - Errores para mostrar al usuario
+
+**Fortalezas:**
+- ✅ Type-safe con sealed classes
+- ✅ Separación clara de tipos de error
+- ✅ Fácil de usar con when expressions
+- ✅ Documentación completa
+
+### 5. Environment y Configuración
+
+**Detección automática de entorno:**
+```kotlin
+object Environment {
+    val URL_BASE: String
+        get() {
+            val isEmulator = isRunningOnEmulator()
+            return if (isEmulator) {
+                BuildConfig.EMULATOR_BASE_URL
+            } else {
+                BuildConfig.DEVICE_BASE_URL
+            }
+        }
+}
+```
+
+**Fortalezas:**
+- ✅ Detección automática de emulador/dispositivo
+- ✅ URLs configurables por build type
+- ✅ Endpoints centralizados
+- ✅ Logging para debugging
 
 ---
 
@@ -102,6 +229,13 @@ core/util/
 - No se encontraron tests para utilidades
 - No se encontraron tests para gestión de preferencias
 - No se encontraron tests para configuración de red
+- No se encontraron tests para interceptores
+- Solo existe `ExampleUnitTest.kt` que no prueba nada real
+
+**Impacto:**
+- ❌ Imposible validar lógica crítica
+- ❌ Alto riesgo de regresiones
+- ❌ Refactorización peligrosa
 
 **Recomendación:**
 ```kotlin
@@ -120,24 +254,63 @@ class PreferenceUseCaseTest {
         assertEquals(123, result)
     }
 }
+
+// core/src/test/java/.../network/interceptor/AuthInterceptorTest.kt
+class AuthInterceptorTest {
+    @Test
+    fun `interceptor adds token to authenticated requests`() {
+        // Test implementation
+    }
+}
 ```
 
 ### 2. Manejo de Errores en Utilidades
 
-**Problema**: Algunas utilidades no manejan errores explícitamente
+**Estado actual:**
+- ✅ `LocationHelper` tiene `LocationResult` (bien)
+- ✅ `VoiceRecognitionManager` tiene StateFlows de error (bien)
+- ⚠️ `DeviceIdHelper` maneja errores pero no los expone
 
-**Ejemplo:**
+**Recomendación**: Considerar resultados type-safe para todas las utilidades:
 ```kotlin
-// Mejorar manejo de errores
-sealed class LocationResult {
-    data class Success(val location: Location) : LocationResult()
-    data class Error(val exception: Throwable) : LocationResult()
+sealed class DeviceIdResult {
+    data class Success(val deviceId: String) : DeviceIdResult()
+    data class Error(val exception: Throwable) : DeviceIdResult()
 }
 ```
 
 ### 3. Documentación
 
-**Estado**: Buena, pero podría mejorarse con más ejemplos de uso
+**Estado**: Excelente, pero podría mejorarse con más ejemplos de uso
+
+**Recomendación**: Agregar ejemplos de uso en la documentación de clases principales
+
+### 4. Inconsistencia en Preferencias
+
+**Problema menor**: Una preferencia usa `apply()` en lugar de `edit { }`:
+```kotlin
+// IdPartial usa apply() directamente
+override fun set(prefs: SharedPreferences, value: Int) {
+    prefs.edit().putInt(key, value).apply()
+}
+
+// Otras usan edit { }
+override fun set(prefs: SharedPreferences, value: Int) {
+    prefs.edit { putInt(key, value) }
+}
+```
+
+**Recomendación**: Estandarizar a `edit { }` para consistencia
+
+### 5. Timeouts de Red
+
+**Observación**: `READ_TIMEOUT_SECONDS = 155L` es muy alto (2.5 minutos)
+
+**Análisis**: 
+- Puede ser intencional para operaciones largas
+- Pero podría causar problemas de UX si no se maneja bien
+
+**Recomendación**: Documentar por qué es tan alto o considerar timeouts más cortos con reintentos
 
 ---
 
@@ -148,25 +321,143 @@ sealed class LocationResult {
 #### ✅ Excelente Organización
 ```
 core/src/main/java/com/mx/liftechnology/core/
+├── model/
+│   └── ResponseGeneric.kt
 ├── network/
-│   ├── api/              # Interfaces de API
-│   ├── environment/      # Configuración de entorno
-│   ├── NetworkModule.kt
-│   ├── NetworkConfig.kt
-│   └── interceptors/     # Interceptores
+│   ├── api/                    # Interfaces de API (8 archivos)
+│   │   ├── AuthApi.kt
+│   │   ├── StudentApi.kt
+│   │   └── ...
+│   ├── environment/
+│   │   └── Environment.kt      # URLs y endpoints
+│   ├── interceptor/            # Interceptores (3 archivos)
+│   │   ├── AuthInterceptor.kt
+│   │   ├── ErrorHandlingInterceptor.kt
+│   │   └── ConnectionErrorInterceptor.kt
+│   └── util/
+│       ├── NetworkConfig.kt    # Constantes de configuración
+│       ├── NetworkModule.kt    # Módulo de Koin
+│       └── TokenProvider.kt    # Gestión de tokens
 ├── preference/
-│   ├── Preference.kt
-│   ├── PreferenceKeys.kt
-│   ├── PreferenceModule.kt
-│   ├── PreferenceRepository.kt
-│   └── PreferenceUseCase.kt
-├── security/
-│   └── SecureTokenStorage.kt
+│   ├── Preference.kt           # Sistema de tipos seguros
+│   ├── PreferenceKeys.kt       # Claves de preferencias
+│   ├── preferenceModule.kt     # Módulo de Koin
+│   ├── PreferenceRepository.kt # Interfaz e implementación
+│   └── PreferenceUseCase.kt    # Caso de uso
 └── util/
     ├── device/
+    │   ├── DeviceIdHelper.kt
+    │   └── DeviceModule.kt
+    ├── extension/
+    │   └── TimberExtensions.kt
     ├── location/
+    │   └── LocationHelper.kt
+    ├── models/
+    │   └── ModelResult.kt      # Resultados y errores
     ├── session/
+    │   └── SessionManager.kt
     └── voice/
+        └── VoiceRecognitionManager.kt
+```
+
+**Fortalezas:**
+- ✅ Separación clara por responsabilidad
+- ✅ Agrupación lógica
+- ✅ Fácil de navegar
+- ✅ Escalable
+
+---
+
+## 🏗️ Arquitectura y Patrones
+
+### 3.1 Separación de Responsabilidades
+
+#### ✅ Excelente
+- ✅ No depende de `domain` ni `data` (correcto)
+- ✅ Proporciona utilidades compartidas
+- ✅ Modelos compartidos bien definidos
+- ✅ Interceptores desacoplados
+
+### 3.2 Patrones Utilizados
+
+**Patrones identificados:**
+- ✅ **Sealed Classes**: Para tipos seguros (Preference, ModelResult, LocationResult)
+- ✅ **Repository Pattern**: PreferenceRepository
+- ✅ **Use Case Pattern**: PreferenceUseCase
+- ✅ **Provider Pattern**: TokenProvider
+- ✅ **Manager Pattern**: SessionManager, VoiceRecognitionManager
+- ✅ **Interceptor Pattern**: Para red
+- ✅ **Extension Functions**: TimberExtensions
+
+### 3.3 Gestión de Estado
+
+**StateFlows y SharedFlows:**
+- ✅ `SessionManager` usa `SharedFlow` para eventos
+- ✅ `VoiceRecognitionManager` usa `StateFlow` para resultados y errores
+- ✅ Bien implementado y documentado
+
+---
+
+## 📝 Nomenclatura y Convenciones
+
+### 4.1 Estado Actual
+
+#### ✅ Consistente
+- ✅ Nombres descriptivos
+- ✅ Convenciones de Kotlin seguidas
+- ✅ Documentación presente
+
+**Ejemplos:**
+- `PreferenceUseCase` - Claro y descriptivo
+- `AuthInterceptor` - Nombre descriptivo
+- `LocationResult` - Tipo de resultado claro
+- `DeviceIdHelper` - Helper bien nombrado
+
+---
+
+## 🧪 Testing
+
+### 5.1 Estado Actual
+
+#### ❌ Problema Crítico
+- **No se encontraron tests para utilidades**
+- **No se encontraron tests para gestión de preferencias**
+- **No se encontraron tests para configuración de red**
+- **No se encontraron tests para interceptores**
+- Solo existe `ExampleUnitTest.kt` que no prueba nada real
+
+### 5.2 Recomendación
+
+**Implementar tests para:**
+
+1. **Preferencias:**
+```kotlin
+class PreferenceUseCaseTest {
+    @Test
+    fun `getIdUser returns saved value`() { ... }
+    @Test
+    fun `setIdUser saves value correctly`() { ... }
+    @Test
+    fun `cleanPreference removes all values`() { ... }
+}
+```
+
+2. **Interceptores:**
+```kotlin
+class AuthInterceptorTest {
+    @Test
+    fun `interceptor adds token to authenticated requests`() { ... }
+    @Test
+    fun `interceptor refreshes token on 401`() { ... }
+}
+```
+
+3. **Utilidades:**
+```kotlin
+class LocationHelperTest {
+    @Test
+    fun `getCurrentLocation returns error when permission denied`() { ... }
+}
 ```
 
 ---
@@ -176,48 +467,75 @@ core/src/main/java/com/mx/liftechnology/core/
 ### 🟡 Media Prioridad
 
 1. **Implementar tests** para utilidades críticas
-2. **Mejorar manejo de errores** en utilidades
-3. **Agregar más ejemplos** en documentación
+   - Preferencias (alta prioridad)
+   - Interceptores (alta prioridad)
+   - Utilidades (media prioridad)
+
+2. **Estandarizar preferencias**
+   - Usar `edit { }` consistentemente
+   - Revisar todas las preferencias
+
+3. **Documentar timeouts**
+   - Explicar por qué READ_TIMEOUT es tan alto
+   - O considerar reducirlo
 
 ### 🟢 Baja Prioridad
 
-1. **Revisar y optimizar** interceptores
-2. **Considerar caché** para preferencias frecuentes
-3. **Agregar métricas** de rendimiento
+1. **Agregar más ejemplos** en documentación
+   - Ejemplos de uso de utilidades
+   - Ejemplos de manejo de errores
+
+2. **Considerar resultados type-safe** para todas las utilidades
+   - DeviceIdHelper podría retornar DeviceIdResult
+
+3. **Revisar y optimizar** interceptores
+   - Verificar orden de interceptores
+   - Optimizar logging si es necesario
 
 ---
 
 ## 📊 Métricas y Estadísticas
 
-### 3.1 Cobertura
-- **Documentación**: ~85%
+### 6.1 Cobertura
+- **Documentación**: ~95% ✅
 - **Testing**: 0% ❌
 
-### 3.2 Complejidad
-- **Módulos de Koin**: 1
-- **Utilidades**: ~10
-- **Interceptores**: 4
+### 6.2 Complejidad
+- **Módulos de Koin**: 2 (networkModule, preferenceModule)
+- **Utilidades**: 4 (device, location, voice, session)
+- **Interceptores**: 3
+- **APIs definidas**: 8
+- **Preferencias definidas**: 9
+- **Modelos compartidos**: 2 (ModelResult, ResponseGeneric)
+
+### 6.3 Dependencias
+- **Depende de**: Android SDK, Retrofit, OkHttp, Koin, Timber, etc.
+- **No depende de**: `domain`, `data` ✅ (correcto)
+- **Usado por**: `app`, `data`, `domain`
 
 ---
 
 ## 🎓 Conclusión
 
-El módulo CORE está **bien estructurado** y cumple su función como módulo de utilidades compartidas. La configuración de red es robusta y el sistema de preferencias está bien diseñado.
+El módulo CORE está **muy bien estructurado** y cumple excelentemente su función como módulo de utilidades compartidas. La configuración de red es robusta, el sistema de preferencias está excelentemente diseñado con tipos seguros y encriptación, y las utilidades están bien organizadas.
 
 ### Fortalezas
-- ✅ Configuración de red excelente
-- ✅ Sistema de preferencias con tipos seguros
-- ✅ Utilidades bien organizadas
-- ✅ Documentación presente
+- ✅ Configuración de red excelente con interceptores especializados
+- ✅ Sistema de preferencias con tipos seguros y encriptación
+- ✅ Utilidades bien organizadas y documentadas
+- ✅ Sistema de manejo de errores consistente
+- ✅ Detección automática de entorno
+- ✅ No depende de domain ni data (correcto)
+- ✅ Documentación excelente
 
 ### Debilidades
-- ❌ Falta de testing
-- ⚠️ Manejo de errores podría mejorarse en algunas utilidades
+- ❌ Falta de testing (crítico)
+- ⚠️ Inconsistencia menor en preferencias (apply vs edit)
+- ⚠️ Timeout de lectura muy alto (documentar o revisar)
 
 ### Prioridad de Acción
-Las mejoras propuestas son de **prioridad media-baja**. El módulo está en buen estado y las mejoras son principalmente para robustez y mantenibilidad a largo plazo.
+Las mejoras propuestas son de **prioridad media**. El módulo está en muy buen estado y las mejoras son principalmente para robustez (testing) y consistencia. La falta de testing es el punto más crítico a abordar.
 
 ---
 
 **Análisis realizado siguiendo las mejores prácticas de Clean Architecture y Android Architecture Guidelines.**
-

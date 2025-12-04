@@ -7,7 +7,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
- * Koin module for dispatcher-related dependencies.
+ * Este módulo se encarga de proveer las instancias necesarias para [DispatcherProvider].
  *
  * @author Pelkidev
  * @version 1.0.0

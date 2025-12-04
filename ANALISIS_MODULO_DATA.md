@@ -1,93 +1,95 @@
 # Análisis del Módulo DATA - Arquitectura Android
 
 > **Análisis realizado por**: Experto Senior en Arquitectura Android  
-> **Fecha**: Enero 2025  
-> **Estado**: 🟡 **MEJORABLE** - Buena estructura, pero interfaces en lugar incorrecto
+> **Fecha**: Diciembre 2025  
+> **Estado**: 🟢 **ESTABLE** - Buena estructura, mejoras menores necesarias
 
 ## 📋 Resumen Ejecutivo
 
-El módulo `data` es responsable de la gestión de datos y la comunicación con fuentes de datos externas (API, base de datos local). El análisis revela una **buena estructura general** con mappers bien organizados y manejo de errores consistente, pero con **problemas arquitectónicos** relacionados con la ubicación de interfaces de repositorio.
+El módulo `data` es responsable de la gestión de datos y la comunicación con fuentes de datos externas (API). El análisis revela una **buena estructura general** con mappers bien organizados, manejo de errores consistente y correcta separación de responsabilidades. Las interfaces de repositorio están correctamente ubicadas en `domain`, y las implementaciones en `data`.
 
 ### Estado Actual
-- **Total de Repositorios**: 23
-- **Repositorios documentados**: ~90% ✅
-- **Mappers organizados**: ✅ Bien estructurados
+- **Total de Repositorios**: 23 implementaciones
+- **Repositorios documentados**: ~95% ✅
+- **Mappers organizados**: ✅ Bien estructurados (6 mappers)
 - **Manejo de errores**: ✅ Consistente y bien implementado
-- **Interfaces de repositorio**: ❌ Ubicadas en módulo incorrecto (deben estar en domain)
-
----
-
-## 🔴 Problemas Arquitectónicos
-
-### 1. Interfaces de Repositorio en Módulo Incorrecto
-
-#### ❌ Problema Crítico: Interfaces en Data en lugar de Domain
-
-**Evidencia:**
-```kotlin
-// data/repository/auth/LoginRepository.kt
-fun interface LoginRepository {  // ❌ Debe estar en domain
-    suspend fun login(...): ModelResult<LoginData, NetworkModelError>
-}
-```
-
-**Problema:**
-- Las interfaces de repositorio **deben estar en domain** para cumplir con Clean Architecture
-- Domain debe definir los contratos, data los implementa
-- Actualmente viola el principio de inversión de dependencias
-
-**Solución:**
-```kotlin
-// domain/repository/AuthRepository.kt
-interface AuthRepository {
-    suspend fun login(...): Result<User>
-}
-
-// data/repository/AuthRepositoryImpl.kt
-class AuthRepositoryImpl(
-    private val api: AuthApi
-) : AuthRepository {  // ✅ Implementa interfaz de domain
-    // ...
-}
-```
-
-### 2. ModelResult en Data en lugar de Domain
-
-#### ⚠️ Problema: Tipos de Result en capa incorrecta
-
-**Evidencia:**
-```kotlin
-// data/util/ModelResult.kt
-sealed class ModelResult<out D, out E: ModelError>  // ❌ Debe estar en domain
-```
-
-**Problema:**
-- `ModelResult` y `ModelError` son conceptos de dominio, no de datos
-- Domain debe definir cómo se representan los resultados
-- Data solo implementa la conversión
-
-**Solución:**
-```kotlin
-// domain/model/common/Result.kt
-sealed class Result<out T> {
-    data class Success<T>(val data: T) : Result<T>()
-    data class Error(val error: DomainError) : Result<Nothing>()
-}
-
-// data/util/DataResultMapper.kt
-fun <T> ModelResult<T, NetworkModelError>.toDomain(): Result<T> {
-    return when (this) {
-        is SuccessResult -> Result.Success(data)
-        is ErrorResult -> Result.Error(error.toDomainError())
-    }
-}
-```
+- **Interfaces de repositorio**: ✅ Correctamente ubicadas en domain
+- **Testing**: ❌ No implementado
 
 ---
 
 ## ✅ Fortalezas del Módulo
 
-### 1. Mappers Bien Organizados
+### 1. Arquitectura Correcta
+
+**Separación de responsabilidades:**
+- ✅ Interfaces de repositorio en `domain/repository/`
+- ✅ Implementaciones en `data/repositoryImpl/`
+- ✅ ModelResult en `core/util/models/` (correcto)
+- ✅ Mappers en `data/mapper/`
+
+**Ejemplo:**
+```kotlin
+// domain/repository/auth/LoginRepository.kt
+fun interface LoginRepository {
+    suspend fun login(...): ModelResult<LoginDomain, NetworkModelError>
+}
+
+// data/repositoryImpl/auth/LoginRepositoryImpl.kt
+class LoginRepositoryImpl(
+    private val authApi: AuthApi,
+) : LoginRepository {
+    override suspend fun login(...): ModelResult<LoginDomain, NetworkModelError> {
+        return safeApiCall(
+            apiCall = { authApi.login(request) },
+            mapper = { it.toData() }
+        )
+    }
+}
+```
+
+**Fortalezas:**
+- ✅ Cumple con Clean Architecture
+- ✅ Domain define contratos, data los implementa
+- ✅ Inversión de dependencias correcta
+- ✅ Separación clara de concerns
+
+### 2. Manejo de Errores Consistente
+
+**Sistema centralizado:**
+```kotlin
+suspend fun <T, R> safeApiCall(
+    apiCall: suspend () -> Response<ResponseGeneric<T>>,
+    mapper: (T) -> R?
+): ModelResult<R, NetworkModelError> {
+    return try {
+        val response = apiCall()
+        response.executeOrError(mapper)
+    } catch (e: Exception) {
+        ErrorResult(NetworkException.handleException(e))
+    }
+}
+```
+
+**Componentes:**
+- ✅ `safeApiCall` - Wrapper para llamadas de API
+- ✅ `executeOrError` - Manejo de respuestas con wrapper genérico
+- ✅ `executeOrErrorDirect` - Manejo de respuestas sin wrapper
+- ✅ `NetworkException` - Conversión de excepciones a errores tipados
+
+**Fortalezas:**
+- ✅ Manejo centralizado de errores
+- ✅ Conversión automática de excepciones
+- ✅ Mapeo de códigos HTTP a errores tipados
+- ✅ Manejo de errores de conexión
+- ✅ Documentación excelente
+
+**Mapeo de errores:**
+- `UnknownHostException` / `ConnectException` → `NO_INTERNET`
+- `SocketTimeoutException` → `TIMEOUT`
+- `HttpException` → Errores específicos (400, 401, 404, etc.)
+
+### 3. Mappers Bien Organizados
 
 **Estructura:**
 ```
@@ -103,241 +105,177 @@ data/mapper/
 **Buenas Prácticas:**
 - ✅ Mappers agrupados por entidad
 - ✅ Funciones de extensión para conversión
-- ✅ Manejo seguro de nulos
+- ✅ Manejo seguro de nulos con `mapNotNull`
 - ✅ Validación de campos requeridos
+- ✅ Uso de `@JvmName` para sobrecarga de funciones
 
 **Ejemplo:**
 ```kotlin
-object AuthMapper {
-    fun ResponseDataUser?.toData(): ModelGetUserData? {
+object StudentMapper {
+    fun ResponseRegisterStudent?.toData(): StudentDomain? {
         return this?.let {
-            val emailValue = email
-            val userIdValue = userId
-            if (emailValue != null && userIdValue != null) {
-                ModelGetUserData(...)
-            } else null
+            StudentDomain(
+                curp = curp,
+                name = name,
+                lastName = lastName,
+                // ...
+            )
         }
     }
-}
-```
-
-### 2. Manejo de Errores Consistente
-
-**Componentes:**
-- ✅ `ModelResult` - Tipo sellado para resultados
-- ✅ `NetworkModelError` - Errores de red tipados
-- ✅ `LocalModelError` - Errores locales tipados
-- ✅ `NetworkException` - Conversión de excepciones
-- ✅ `ResponseExtensions` - Funciones de extensión para Retrofit
-
-**Ejemplo:**
-```kotlin
-suspend fun <T, R> Response<ResponseGeneric<T>>.executeOrError(
-    mapper: (T) -> R?
-): ModelResult<R, NetworkModelError> {
-    return try {
-        if (isSuccessful) {
-            val mappedResult = mapper(body?.data)
-            mappedResult?.let { SuccessResult(it) } 
-                ?: ErrorResult(NetworkModelError.EMPTY)
-        } else {
-            ErrorResult(NetworkException.handleException(HttpException(this)))
-        }
-    } catch (e: Exception) {
-        ErrorResult(NetworkException.handleException(e))
+    
+    @JvmName("toDataFromResponseGetStudentList")
+    fun List<ResponseGetStudent>?.toData(): List<StudentDomain> {
+        return this?.mapNotNull { student ->
+            student?.let { /* ... */ }
+        } ?: emptyList()
     }
 }
 ```
-
-### 3. Repositorios Bien Estructurados
-
-**Patrón consistente:**
-```kotlin
-// Interface
-fun interface LoginRepository {
-    suspend fun login(...): ModelResult<LoginData, NetworkModelError>
-}
-
-// Implementación
-class LoginRepositoryImpl(
-    private val authApi: AuthApi
-) : LoginRepository {
-    override suspend fun login(...): ModelResult<LoginData, NetworkModelError> {
-        return authApi.login(request).executeOrError { it.toData() }
-    }
-}
-```
-
-**Fortalezas:**
-- ✅ Separación clara entre interfaz e implementación
-- ✅ Uso consistente de `executeOrError`
-- ✅ Mappers aplicados en el repositorio
-- ✅ Documentación KDoc presente
-
----
-
-## 📁 Estructura y Organización
-
-### 2.1 Organización de Paquetes
-
-#### ✅ Bien Organizado
-```
-data/src/main/java/com/mx/liftechnology/data/
-├── mapper/              # Mappers de datos a dominio
-├── model/              # Modelos de datos
-│   ├── auth/
-│   ├── evaluation/
-│   ├── formativeField/
-│   ├── schoolCycle/
-│   └── student/
-├── repository/         # Implementaciones de repositorios
-│   ├── auth/
-│   ├── evaluation/
-│   ├── formativeField/
-│   ├── schoolCycle/
-│   └── student/
-└── util/              # Utilidades
-    ├── ModelResult.kt
-    ├── ExceptionHandler.kt
-    └── ResponseExtensions.kt
-```
-
-#### ⚠️ Áreas de Mejora
-
-**Problema 1**: Repositorios muy granulares
-- `GetStudentRepository`, `RegisterStudentRepository`, `EditStudentRepository`, `DeleteStudentRepository`
-- Cada operación tiene su propio repositorio
-
-**Recomendación**: Agrupar por entidad
-```kotlin
-// domain/repository/StudentRepository.kt
-interface StudentRepository {
-    suspend fun getStudents(cycleSchoolId: Int): Result<List<Student>>
-    suspend fun getStudent(id: Int): Result<Student>
-    suspend fun createStudent(request: CreateStudentRequest): Result<Student>
-    suspend fun updateStudent(id: Int, request: UpdateStudentRequest): Result<Student>
-    suspend fun deleteStudent(id: Int): Result<Unit>
-}
-```
-
----
-
-## 🏗️ Arquitectura y Patrones
-
-### 3.1 Repositorios
-
-#### ✅ Buenas Prácticas Aplicadas
-- ✅ Separación interfaz/implementación
-- ✅ Uso de funciones de extensión para manejo de errores
-- ✅ Mappers aplicados consistentemente
-- ✅ Documentación presente
-
-#### ⚠️ Problemas Identificados
-
-**Problema 1**: Uso de `fun interface` en lugar de `interface`
-
-**Antes:**
-```kotlin
-fun interface LoginRepository {  // ⚠️ Limita a una sola función
-    suspend fun login(...): ModelResult<LoginData, NetworkModelError>
-}
-```
-
-**Después:**
-```kotlin
-interface AuthRepository {  // ✅ Permite múltiples métodos
-    suspend fun login(...): Result<User>
-    suspend fun getUserData(): Result<User>
-    suspend fun register(...): Result<Boolean>
-}
-```
-
-**Problema 2**: Retornan modelos de data en lugar de domain
-
-**Antes:**
-```kotlin
-suspend fun login(...): ModelResult<LoginData, NetworkModelError>  // ❌
-```
-
-**Después:**
-```kotlin
-suspend fun login(...): Result<User>  // ✅ Retorna modelo de domain
-```
-
-### 3.2 Mappers
-
-#### ✅ Excelente Implementación
 
 **Fortalezas:**
 - ✅ Manejo seguro de nulos
 - ✅ Validación de campos requeridos
 - ✅ Funciones de extensión limpias
 - ✅ Agrupados por entidad
+- ✅ Documentación presente
 
-**Ejemplo de buena práctica:**
+### 4. Repositorios Bien Estructurados
+
+**Patrón consistente:**
 ```kotlin
-fun ResponseDataUser?.toData(): ModelGetUserData? {
-    return this?.let {
-        val emailValue = email
-        val userIdValue = userId
-        if (emailValue != null && userIdValue != null) {
-            ModelGetUserData(
-                email = emailValue,
-                userId = userIdValue,
-                // ...
-            )
-        } else null
+class LoginRepositoryImpl(
+    private val authApi: AuthApi,
+) : LoginRepository {
+    override suspend fun login(...): ModelResult<LoginDomain, NetworkModelError> {
+        val request = RequestLogin(...)
+        return safeApiCall(
+            apiCall = { authApi.login(request) },
+            mapper = { it.toData() }
+        )
     }
 }
 ```
 
-### 3.3 Modelos de Datos
+**Fortalezas:**
+- ✅ Separación clara entre interfaz e implementación
+- ✅ Uso consistente de `safeApiCall`
+- ✅ Mappers aplicados en el repositorio
+- ✅ Documentación KDoc presente
+- ✅ Dependencias inyectadas correctamente
 
-#### ✅ Buenas Prácticas
-- ✅ Modelos reflejan estructura de API
-- ✅ Uso de data classes
-- ✅ Campos opcionales manejados correctamente
+### 5. Organización de Paquetes
 
-#### ⚠️ Áreas de Mejora
+**Estructura clara:**
+```
+data/src/main/java/com/mx/liftechnology/data/
+├── mapper/              # Mappers de datos a dominio
+│   ├── AuthMapper.kt
+│   ├── StudentMapper.kt
+│   └── ...
+├── model/              # Modelos de datos (pocos, la mayoría en core/network/api)
+│   ├── evaluation/
+│   ├── formativeField/
+│   ├── schoolCycle/
+│   └── student/
+├── repositoryImpl/     # Implementaciones de repositorios
+│   ├── auth/
+│   ├── evaluation/
+│   ├── formativeField/
+│   ├── menu/
+│   ├── partial/
+│   ├── school/
+│   ├── schoolCycle/
+│   ├── student/
+│   └── workType/
+└── util/              # Utilidades
+    ├── ExceptionHandler.kt
+    └── ResponseExtensions.kt
+```
 
-**Problema**: Prefijo "Model" redundante
-- `ModelStudentData` → `StudentData`
-- `ModelLoginData` → `LoginData`
+**Fortalezas:**
+- ✅ Separación clara por responsabilidad
+- ✅ Agrupación lógica por feature
+- ✅ Fácil de navegar
+- ✅ Escalable
 
 ---
 
-## 📝 Nomenclatura y Convenciones
+## ⚠️ Áreas de Mejora
 
-### 4.1 Problemas Identificados
+### 1. Repositorios Muy Granulares
 
-#### ❌ Inconsistencias en Nombres de Repositorios
-- `GetStudentRepository` vs `RegisterStudentRepository` (diferentes prefijos)
-- `GetListFormativeFieldRepository` vs `GetListWotyFofiRepository` (inconsistencia en "List")
-- `DeleteFormativeFieldRepository` vs `EditStudentRepository` (diferentes verbos)
+#### ⚠️ Problema: Cada operación tiene su propio repositorio
 
-**Recomendación**: Estandarizar a un patrón consistente:
-- `*Repository` para interfaces
-- `*RepositoryImpl` para implementaciones
-- Agrupar por entidad en lugar de por operación
+**Estado actual:**
+- `GetStudentRepository`, `RegisterStudentRepository`, `EditStudentRepository`, `DeleteStudentRepository`
+- `GetListFormativeFieldRepository`, `DeleteFormativeFieldRepository`, `RegisterFormativeFieldsBulkRepository`
+- `GetListPartialRepository`, `RegisterListPartialRepository`
 
-#### ❌ Nomenclatura de Modelos de Datos
-- Todos los modelos usan el prefijo `Model*Data`
-  - `ModelStudentData`
-  - `ModelLoginData`
-  - `ModelFormativeFieldData`
+**Problema:**
+- Muchos repositorios pequeños
+- Dificulta el mantenimiento
+- Más complejidad en inyección de dependencias
 
-**Recomendación**: Simplificar nombres:
-- `StudentData`
-- `LoginData`
-- `FormativeFieldData`
+**Recomendación**: Agrupar por entidad
+```kotlin
+// domain/repository/student/StudentRepository.kt
+interface StudentRepository {
+    suspend fun getStudents(cycleSchoolId: Int): ModelResult<List<StudentDomain>, NetworkModelError>
+    suspend fun getStudent(id: Int): ModelResult<StudentDomain, NetworkModelError>
+    suspend fun createStudent(request: CreateStudentRequest): ModelResult<StudentDomain, NetworkModelError>
+    suspend fun updateStudent(id: Int, request: UpdateStudentRequest): ModelResult<StudentDomain, NetworkModelError>
+    suspend fun deleteStudent(id: Int): ModelResult<Unit, NetworkModelError>
+}
 
----
+// data/repositoryImpl/student/StudentRepositoryImpl.kt
+class StudentRepositoryImpl(
+    private val studentApi: StudentApi
+) : StudentRepository {
+    // Implementación de todos los métodos
+}
+```
 
-## 🧪 Testing
+**Beneficios:**
+- ✅ Menos repositorios (de 23 a ~8-10)
+- ✅ Más fácil de mantener
+- ✅ Mejor organización
+- ✅ Menos complejidad en DI
 
-### 5.1 Estado Actual
+### 2. Uso de `fun interface` en lugar de `interface`
 
-#### ❌ Problema Crítico
+#### ⚠️ Problema: Limita a una sola función
+
+**Estado actual:**
+```kotlin
+// domain/repository/auth/LoginRepository.kt
+fun interface LoginRepository {
+    suspend fun login(...): ModelResult<LoginDomain, NetworkModelError>
+}
+```
+
+**Problema:**
+- `fun interface` solo permite una función
+- Limita la extensibilidad
+- No permite agrupar operaciones relacionadas
+
+**Recomendación**: Cambiar a `interface` normal
+```kotlin
+// domain/repository/auth/AuthRepository.kt
+interface AuthRepository {
+    suspend fun login(...): ModelResult<LoginDomain, NetworkModelError>
+    suspend fun getUserData(): ModelResult<UserDomain, NetworkModelError>
+    suspend fun register(...): ModelResult<RegisterUserDomain, NetworkModelError>
+}
+```
+
+**Beneficios:**
+- ✅ Permite múltiples métodos
+- ✅ Facilita agrupación por entidad
+- ✅ Más flexible
+
+### 3. Testing
+
+#### ❌ Problema Crítico: Falta de tests
 - **No se encontraron tests para repositorios**
 - **No se encontraron tests para mappers**
 - **No se encontraron tests para manejo de errores**
@@ -346,16 +284,14 @@ fun ResponseDataUser?.toData(): ModelGetUserData? {
 - ❌ Imposible validar conversión de datos
 - ❌ Alto riesgo de regresiones en mappers
 - ❌ Refactorización peligrosa
+- ❌ No hay garantías de calidad
 
-### 5.2 Recomendación
-
-**Implementar tests unitarios:**
-
+**Recomendación:**
 ```kotlin
 // data/src/test/java/.../mapper/AuthMapperTest.kt
 class AuthMapperTest {
     @Test
-    fun `toData returns ModelGetUserData when response is valid`() {
+    fun `toData returns UserDomain when response is valid`() {
         // Given
         val response = ResponseDataUser(
             email = "test@example.com",
@@ -372,9 +308,9 @@ class AuthMapperTest {
     }
     
     @Test
-    fun `toData returns null when email is null`() {
+    fun `toData returns null when response is null`() {
         // Given
-        val response = ResponseDataUser(email = null, userId = 1)
+        val response: ResponseDataUser? = null
         
         // When
         val result = response.toData()
@@ -383,78 +319,303 @@ class AuthMapperTest {
         assertNull(result)
     }
 }
+
+// data/src/test/java/.../repositoryImpl/auth/LoginRepositoryImplTest.kt
+class LoginRepositoryImplTest {
+    @Test
+    fun `login returns SuccessResult when API call succeeds`() = runTest {
+        // Given
+        val mockApi = mock<AuthApi>()
+        val repository = LoginRepositoryImpl(mockApi)
+        // ...
+        
+        // When
+        val result = repository.login(...)
+        
+        // Then
+        assertTrue(result is SuccessResult)
+    }
+}
+```
+
+### 4. Modelos de Datos
+
+#### ⚠️ Observación: Pocos modelos en data/model
+
+**Estado actual:**
+- La mayoría de modelos de respuesta están en `core/network/api/` (correcto)
+- Solo hay algunos modelos específicos en `data/model/`
+
+**Análisis:**
+- ✅ Está bien que los modelos de respuesta de API estén en `core`
+- ⚠️ Algunos modelos podrían estar mejor organizados
+
+**Recomendación**: Mantener como está, pero documentar mejor la organización
+
+### 5. Nomenclatura de Repositorios
+
+#### ⚠️ Problema: Inconsistencias menores
+
+**Ejemplos:**
+- `GetStudentRepository` vs `GetListFormativeFieldRepository` (diferentes prefijos)
+- `GetListWotyFofiRepository` vs `GetListFormativeFieldRepository` (inconsistencia en "List")
+- `DeleteFormativeFieldRepository` vs `EditStudentRepository` (diferentes verbos)
+
+**Recomendación**: Estandarizar cuando se agrupen por entidad
+- `StudentRepository` con métodos: `getStudents`, `getStudent`, `createStudent`, `updateStudent`, `deleteStudent`
+- `FormativeFieldRepository` con métodos: `getFormativeFields`, `getFormativeField`, `createFormativeField`, etc.
+
+---
+
+## 📁 Estructura y Organización
+
+### 2.1 Organización de Paquetes
+
+#### ✅ Bien Organizado
+```
+data/src/main/java/com/mx/liftechnology/data/
+├── mapper/              # Mappers de datos a dominio (6 archivos)
+│   ├── AuthMapper.kt
+│   ├── CalendarMapper.kt
+│   ├── EvaluationsMapper.kt
+│   ├── FormativeFieldMapper.kt
+│   ├── SchoolCycleMapper.kt
+│   └── StudentMapper.kt
+├── model/              # Modelos de datos (pocos)
+│   ├── evaluation/
+│   ├── formativeField/
+│   ├── schoolCycle/
+│   └── student/
+├── repositoryImpl/     # Implementaciones de repositorios (23 archivos)
+│   ├── auth/           # 3 repositorios
+│   ├── evaluation/     # 4 repositorios
+│   ├── formativeField/ # 4 repositorios
+│   ├── menu/           # 1 repositorio
+│   ├── partial/        # 2 repositorios
+│   ├── school/         # 1 repositorio
+│   ├── schoolCycle/    # 2 repositorios
+│   ├── student/        # 4 repositorios
+│   └── workType/       # 2 repositorios
+└── util/              # Utilidades (2 archivos)
+    ├── ExceptionHandler.kt
+    └── ResponseExtensions.kt
+```
+
+**Fortalezas:**
+- ✅ Separación clara por responsabilidad
+- ✅ Agrupación lógica por feature
+- ✅ Fácil de navegar
+- ✅ Escalable
+
+---
+
+## 🏗️ Arquitectura y Patrones
+
+### 3.1 Repositorios
+
+#### ✅ Buenas Prácticas Aplicadas
+- ✅ Separación interfaz/implementación
+- ✅ Interfaces en domain, implementaciones en data
+- ✅ Uso de funciones de extensión para manejo de errores
+- ✅ Mappers aplicados consistentemente
+- ✅ Documentación presente
+- ✅ Dependencias inyectadas correctamente
+
+#### ⚠️ Problemas Identificados
+
+**Problema 1**: Repositorios muy granulares
+- 23 repositorios para ~8-10 entidades
+- Cada operación tiene su propio repositorio
+
+**Problema 2**: Uso de `fun interface`
+- Limita a una sola función
+- Dificulta agrupación por entidad
+
+### 3.2 Mappers
+
+#### ✅ Excelente Implementación
+
+**Fortalezas:**
+- ✅ Manejo seguro de nulos
+- ✅ Validación de campos requeridos
+- ✅ Funciones de extensión limpias
+- ✅ Agrupados por entidad
+- ✅ Uso de `@JvmName` para sobrecarga
+- ✅ Documentación presente
+
+**Ejemplo de buena práctica:**
+```kotlin
+object StudentMapper {
+    fun ResponseRegisterStudent?.toData(): StudentDomain? {
+        return this?.let {
+            StudentDomain(
+                curp = curp,
+                name = name,
+                // ...
+            )
+        }
+    }
+    
+    @JvmName("toDataFromResponseGetStudentList")
+    fun List<ResponseGetStudent>?.toData(): List<StudentDomain> {
+        return this?.mapNotNull { student ->
+            student?.let { /* ... */ }
+        } ?: emptyList()
+    }
+}
+```
+
+### 3.3 Manejo de Errores
+
+#### ✅ Excelente Implementación
+
+**Componentes:**
+- ✅ `safeApiCall` - Wrapper para llamadas de API
+- ✅ `executeOrError` - Manejo de respuestas con wrapper
+- ✅ `executeOrErrorDirect` - Manejo de respuestas sin wrapper
+- ✅ `NetworkException` - Conversión de excepciones
+
+**Fortalezas:**
+- ✅ Manejo centralizado
+- ✅ Conversión automática de excepciones
+- ✅ Mapeo de códigos HTTP
+- ✅ Manejo de errores de conexión
+- ✅ Documentación excelente
+
+---
+
+## 📝 Nomenclatura y Convenciones
+
+### 4.1 Estado Actual
+
+#### ✅ Mayormente Consistente
+- ✅ Nombres descriptivos
+- ✅ Convenciones de Kotlin seguidas
+- ✅ Documentación presente
+
+#### ⚠️ Inconsistencias Menores
+
+**Repositorios:**
+- `GetStudentRepository` vs `GetListFormativeFieldRepository`
+- `GetListWotyFofiRepository` vs `GetListFormativeFieldRepository`
+- `DeleteFormativeFieldRepository` vs `EditStudentRepository`
+
+**Recomendación**: Estandarizar cuando se agrupen por entidad
+
+---
+
+## 🧪 Testing
+
+### 5.1 Estado Actual
+
+#### ❌ Problema Crítico
+- **No se encontraron tests para repositorios**
+- **No se encontraron tests para mappers**
+- **No se encontraron tests para manejo de errores**
+
+### 5.2 Recomendación
+
+**Implementar tests para:**
+
+1. **Mappers:**
+```kotlin
+class AuthMapperTest {
+    @Test
+    fun `toData returns UserDomain when response is valid`() { ... }
+    @Test
+    fun `toData returns null when response is null`() { ... }
+}
+```
+
+2. **Repositorios:**
+```kotlin
+class LoginRepositoryImplTest {
+    @Test
+    fun `login returns SuccessResult when API call succeeds`() = runTest { ... }
+    @Test
+    fun `login returns ErrorResult when API call fails`() = runTest { ... }
+}
+```
+
+3. **Manejo de errores:**
+```kotlin
+class NetworkExceptionTest {
+    @Test
+    fun `handleException maps UnknownHostException to NO_INTERNET`() { ... }
+    @Test
+    fun `handleException maps HttpException 404 to NOT_FOUND`() { ... }
+}
 ```
 
 ---
 
 ## 🎯 Recomendaciones Prioritarias
 
-### 🔴 Alta Prioridad
-
-1. **Mover interfaces de repositorio a domain**
-   - Crear `domain/repository/` con todas las interfaces
-   - Implementar interfaces en `data/repository/`
-   - Actualizar dependencias
-
-2. **Mover ModelResult a domain**
-   - Crear `domain/model/common/Result.kt`
-   - Crear `domain/model/common/DomainError.kt`
-   - Mantener `ModelResult` en data solo para conversión interna
-
-3. **Agrupar repositorios por entidad**
-   - `StudentRepository` con todos los métodos CRUD
-   - `AuthRepository` con todos los métodos de autenticación
-   - Reducir número de repositorios
-
 ### 🟡 Media Prioridad
 
-1. **Simplificar nombres de modelos** (eliminar prefijo "Model")
-2. **Cambiar `fun interface` a `interface`** para permitir múltiples métodos
-3. **Implementar tests** para repositorios y mappers
-4. **Documentar mappers** con ejemplos
+1. **Agrupar repositorios por entidad**
+   - Reducir de 23 a ~8-10 repositorios
+   - Facilitar mantenimiento
+   - Mejor organización
+
+2. **Cambiar `fun interface` a `interface`**
+   - Permitir múltiples métodos
+   - Facilitar agrupación por entidad
+
+3. **Implementar tests**
+   - Tests para mappers (alta prioridad)
+   - Tests para repositorios (alta prioridad)
+   - Tests para manejo de errores (media prioridad)
 
 ### 🟢 Baja Prioridad
 
-1. **Revisar y optimizar** funciones de extensión
-2. **Agregar más validaciones** en mappers
-3. **Considerar caché local** para mejor rendimiento
+1. **Estandarizar nomenclatura** cuando se agrupen repositorios
+2. **Revisar y optimizar** funciones de extensión si es necesario
+3. **Agregar más validaciones** en mappers si es necesario
 
 ---
 
 ## 📊 Métricas y Estadísticas
 
 ### 6.1 Cobertura
-- **Repositorios documentados**: ~90%
-- **Mappers documentados**: ~80%
-- **Modelos documentados**: ~70%
+- **Repositorios documentados**: ~95% ✅
+- **Mappers documentados**: ~90% ✅
+- **Utilidades documentadas**: ~100% ✅
+- **Testing**: 0% ❌
 
 ### 6.2 Complejidad
-- **Repositorios totales**: 23
+- **Repositorios totales**: 23 implementaciones
 - **Mappers totales**: 6
-- **Modelos de datos**: ~20
+- **Utilidades**: 2 (ExceptionHandler, ResponseExtensions)
+- **Modelos de datos**: ~5 (la mayoría en core/network/api)
+
+### 6.3 Dependencias
+- **Depende de**: `core`, `domain`
+- **No depende de**: `app` ✅ (correcto)
+- **Usado por**: `app` (a través de domain)
 
 ---
 
 ## 🎓 Conclusión
 
-El módulo DATA tiene una **buena estructura general** con mappers bien organizados y manejo de errores consistente. Sin embargo, presenta **problemas arquitectónicos** relacionados con la ubicación de interfaces y tipos comunes.
+El módulo DATA tiene una **buena estructura general** con mappers bien organizados, manejo de errores consistente y correcta separación de responsabilidades. Las interfaces de repositorio están correctamente ubicadas en `domain`, y las implementaciones en `data`, cumpliendo con Clean Architecture.
 
 ### Fortalezas
-- ✅ Mappers bien estructurados y consistentes
+- ✅ Arquitectura correcta (interfaces en domain, implementaciones en data)
 - ✅ Manejo de errores robusto y centralizado
+- ✅ Mappers bien estructurados y consistentes
 - ✅ Repositorios con patrón claro
 - ✅ Documentación presente
+- ✅ Organización clara de paquetes
 
 ### Debilidades
-- ❌ Interfaces de repositorio en módulo incorrecto
-- ❌ ModelResult en capa incorrecta
-- ❌ Repositorios muy granulares
-- ❌ Falta de testing
+- ⚠️ Repositorios muy granulares (23 repositorios)
+- ⚠️ Uso de `fun interface` limita extensibilidad
+- ❌ Falta de testing (crítico)
 
 ### Prioridad de Acción
-Las mejoras propuestas son **importantes** para mantener la arquitectura limpia. La corrección de la ubicación de interfaces es crítica para cumplir con Clean Architecture.
+Las mejoras propuestas son de **prioridad media**. El módulo está en buen estado y las mejoras son principalmente para facilitar el mantenimiento (agrupar repositorios) y robustez (testing). La falta de testing es el punto más crítico a abordar.
 
 ---
 
 **Análisis realizado siguiendo las mejores prácticas de Clean Architecture y Android Architecture Guidelines.**
-
