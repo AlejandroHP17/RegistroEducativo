@@ -15,7 +15,7 @@ package com.mx.liftechnology.domain.model.auth
  *
  * **Uso:**
  * Este modelo se utiliza en:
- * - [LoginRepository] para almacenar la respuesta del servidor
+ * - [LoginDomain] para almacenar la respuesta del servidor
  * - [TokenProvider] para guardar y recuperar los tokens
  * - Mappers para convertir entre modelos de red y modelos de dominio
  *
@@ -23,7 +23,7 @@ package com.mx.liftechnology.domain.model.auth
  * @property refreshToken El token de refresco utilizado para obtener un nuevo accessToken cuando expire. No puede ser nulo.
  * @property tokenType El tipo de token (generalmente "Bearer"). Puede ser nulo.
  *
- * @see com.mx.liftechnology.core.network.provider.TokenProvider Para ver cómo se utilizan estos tokens.
+ * @see TokenProvider Para ver cómo se utilizan estos tokens.
  *
  * @author Pelkidev
  * @version 1.0.0

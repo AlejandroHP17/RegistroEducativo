@@ -125,7 +125,7 @@ sealed class Preference<T> {
         override fun get(prefs: SharedPreferences): Int? = 
             if (prefs.contains(key)) prefs.getInt(key, -1) else null
         override fun set(prefs: SharedPreferences, value: Int) {
-            prefs.edit().putInt(key, value).apply()
+            prefs.edit { putInt(key, value) }
         }
     }
     
