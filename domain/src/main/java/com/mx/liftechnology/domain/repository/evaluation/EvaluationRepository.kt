@@ -14,7 +14,7 @@ import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
  * Agrupa todas las operaciones relacionadas con evaluaciones y tipos de trabajo.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 interface EvaluationRepository {
     /**

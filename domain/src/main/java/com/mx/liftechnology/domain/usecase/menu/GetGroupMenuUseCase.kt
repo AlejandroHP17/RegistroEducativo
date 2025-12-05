@@ -9,19 +9,19 @@ import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.InfoStudentGroupDomain
 import com.mx.liftechnology.domain.model.schoolCycle.toDialogStudentGroupDomainList
-import com.mx.liftechnology.domain.repository.menu.MenuRepository
+import com.mx.liftechnology.domain.repository.schoolCycle.SchoolCycleRepository
 
 /**
  * Caso de uso para obtener la lista de grupos del menú, seleccionar uno por defecto y procesar la información.
  *
- * @property menuRepository El repositorio para las operaciones relacionadas con el menú.
+ * @property schoolCycleRepository El repositorio para las operaciones relacionadas con ciclos escolares.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetGroupMenuUseCase(
-    private val menuRepository: MenuRepository,
+    private val schoolCycleRepository: SchoolCycleRepository,
     private val preference: PreferenceUseCase,
 ) {
 
@@ -34,7 +34,7 @@ class GetGroupMenuUseCase(
         val userId = preference.getIdUserLevel()
             ?: return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
         
-        val result = menuRepository.getCycleSchool(userId)
+        val result = schoolCycleRepository.getCycleSchool(userId)
         return when (result) {
             is SuccessResult -> {
                 val convertedResult = result.data.toDialogStudentGroupDomainList

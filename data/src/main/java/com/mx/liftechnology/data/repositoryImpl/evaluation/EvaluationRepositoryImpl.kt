@@ -23,7 +23,7 @@ import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
  *
  * @property evaluationApi La llamada a la API para operaciones de evaluaciones.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 class EvaluationRepositoryImpl(
     private val evaluationApi: EvaluationApi

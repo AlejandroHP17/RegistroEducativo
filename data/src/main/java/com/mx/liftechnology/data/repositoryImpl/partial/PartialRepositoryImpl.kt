@@ -19,7 +19,7 @@ import com.mx.liftechnology.domain.repository.partial.PartialRepository
  *
  * @property partialApi La llamada a la API para operaciones de parciales.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 class PartialRepositoryImpl(
     private val partialApi: PartialApi

@@ -1,18 +1,15 @@
 package com.mx.liftechnology.data.repositoryImpl.student
 
-import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.core.network.api.RequestEditStudent
 import com.mx.liftechnology.core.network.api.RequestRegisterStudent
 import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.mapper.EvaluationsMapper.toEvaluationsStudentDomain
 import com.mx.liftechnology.data.mapper.StudentMapper.toEditStudentDomain
 import com.mx.liftechnology.data.mapper.StudentMapper.toListStudentDomain
 import com.mx.liftechnology.data.mapper.StudentMapper.toStudentDomain
 import com.mx.liftechnology.data.mapper.StudentMapper.toStringDomain
 import com.mx.liftechnology.data.util.safeApiCall
-import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.repository.student.StudentRepository
 
@@ -22,9 +19,8 @@ import com.mx.liftechnology.domain.repository.student.StudentRepository
  * para todas las operaciones relacionadas con estudiantes.
  *
  * @property studentApi La llamada a la API para operaciones de estudiantes.
- * @property evaluationApi La llamada a la API para operaciones de evaluaciones.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 class StudentRepositoryImpl(
     private val studentApi: StudentApi

@@ -4,7 +4,6 @@ import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.core.network.api.RequestEvaluations
 import com.mx.liftechnology.core.network.api.RequestRegisterFormativeField
 import com.mx.liftechnology.core.network.api.RequestWorkType
-import com.mx.liftechnology.core.network.api.WorkTypeApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toDomain
@@ -21,13 +20,11 @@ import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepo
  * para todas las operaciones relacionadas con campos formativos.
  *
  * @property formativeFieldApi La llamada a la API para operaciones de campos formativos.
- * @property workTypeApi La llamada a la API para operaciones de tipos de trabajo.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 class FormativeFieldRepositoryImpl(
-    private val formativeFieldApi: FormativeFieldApi,
-    private val workTypeApi: WorkTypeApi
+    private val formativeFieldApi: FormativeFieldApi
 ) : FormativeFieldRepository {
 
     /**

@@ -9,21 +9,20 @@ import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
 import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
-import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepository
 
 /**
  * Caso de uso para obtener la lista de estudiantes filtrados por tipo de campo formativo.
  * Encapsula la lógica de negocio para recuperar estudiantes asociados a un campo formativo específico,
  * permitiendo filtrar por tipo de trabajo, nombre de trabajo y fecha.
  *
- * @property formativeFieldRepository El repositorio para operaciones relacionadas con campos formativos.
+ * @property evaluationRepository El repositorio para operaciones relacionadas con evaluaciones.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListByFieldTypeStudentUseCase(
-    private val formativeFieldRepository: EvaluationRepository,
+    private val evaluationRepository: EvaluationRepository,
     private val preference : PreferenceUseCase
 ) {
 
@@ -73,7 +72,7 @@ class GetListByFieldTypeStudentUseCase(
 
         if(workTypeId == null)return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
-        return runCatching { formativeFieldRepository.getByFieldType(
+        return runCatching { evaluationRepository.getByFieldType(
             formativeFieldId = formativeFieldId,
             workTypeId = workTypeId,
             workName = workName,

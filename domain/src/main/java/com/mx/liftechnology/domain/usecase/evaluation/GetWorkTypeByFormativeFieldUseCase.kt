@@ -6,7 +6,6 @@ import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.domain.model.evaluation.WorkTypeByFormativeFieldDomain
-import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
 import com.mx.liftechnology.domain.repository.workType.WorkTypeRepository
 
 /**
@@ -14,14 +13,14 @@ import com.mx.liftechnology.domain.repository.workType.WorkTypeRepository
  * Encapsula la lógica de negocio para recuperar los tipos de trabajo basándose en el campo formativo
  * seleccionado en las preferencias del usuario.
  *
- * @property evaluationRepository El repositorio para operaciones relacionadas con evaluaciones.
+ * @property workTypeRepository El repositorio para operaciones relacionadas con tipos de trabajo.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetWorkTypeByFormativeFieldUseCase (
-    private val evaluationRepository: WorkTypeRepository,
+    private val workTypeRepository: WorkTypeRepository,
     private val preference : PreferenceUseCase
 ){
     /**
@@ -54,6 +53,6 @@ class GetWorkTypeByFormativeFieldUseCase (
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return evaluationRepository.getWorkTypeByFormativeField(formativeFieldId = formativeFieldId)
+        return workTypeRepository.getWorkTypeByFormativeField(formativeFieldId = formativeFieldId)
     }
 }

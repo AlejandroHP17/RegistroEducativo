@@ -8,7 +8,6 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
-import com.mx.liftechnology.domain.repository.school.SchoolRepository
 import com.mx.liftechnology.domain.repository.schoolCycle.SchoolCycleRepository
 
 /**
@@ -20,14 +19,14 @@ import com.mx.liftechnology.domain.repository.schoolCycle.SchoolCycleRepository
  * Caso de uso para registrar una nueva escuela y asociarla a un profesor.
  * Encapsula la lógica de negocio para construir la petición de registro y manejar la respuesta del repositorio.
  *
- * @property schoolRepository El repositorio para operaciones relacionadas con escuelas y ciclos escolares.
+ * @property schoolCycleRepository El repositorio para operaciones relacionadas con ciclos escolares.
  * @property preference El caso de uso para la gestión de las preferencias de usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class RegisterCycleSchoolUseCase(
-    private val schoolRepository: SchoolCycleRepository,
+    private val schoolCycleRepository: SchoolCycleRepository,
     private val preference: PreferenceUseCase,
 ) {
 
@@ -57,7 +56,7 @@ class RegisterCycleSchoolUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { schoolRepository.registerCycleSchool(
+        return runCatching { schoolCycleRepository.registerCycleSchool(
             teacherId = teacherId,
             schoolId = schoolId,
             name = "Ciclo $labelCycleState, $grade$group, $cct",

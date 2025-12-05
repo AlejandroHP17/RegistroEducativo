@@ -10,7 +10,7 @@ import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
  * Agrupa todas las operaciones relacionadas con escuelas y ciclos escolares.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 interface SchoolRepository {
     /**

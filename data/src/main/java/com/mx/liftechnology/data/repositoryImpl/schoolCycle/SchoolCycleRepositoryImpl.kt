@@ -11,21 +11,20 @@ import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toSchoolCycleDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
 import com.mx.liftechnology.domain.model.schoolCycle.SchoolCycleDomain
-import com.mx.liftechnology.domain.repository.menu.MenuRepository
 import com.mx.liftechnology.domain.repository.schoolCycle.SchoolCycleRepository
 
 /**
- * Implementación de [SchoolCycleRepository] y [MenuRepository].
+ * Implementación de [SchoolCycleRepository].
  * Se encarga de realizar las llamadas a la API y de gestionar las respuestas de éxito y error
  * para todas las operaciones relacionadas con ciclos escolares y menú.
  *
  * @property schoolCycleApi La llamada a la API para operaciones de ciclos escolares.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 class SchoolCycleRepositoryImpl(
     private val schoolCycleApi: SchoolCycleApi
-) : SchoolCycleRepository, MenuRepository {
+) : SchoolCycleRepository {
     /**
      * {@inheritDoc}
      */

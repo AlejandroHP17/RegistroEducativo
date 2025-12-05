@@ -21,7 +21,7 @@ import com.mx.liftechnology.domain.repository.auth.AuthRepository
  *
  * @property authApi La llamada a la API para operaciones de autenticación.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 class AuthRepositoryImpl(
     private val authApi: AuthApi,

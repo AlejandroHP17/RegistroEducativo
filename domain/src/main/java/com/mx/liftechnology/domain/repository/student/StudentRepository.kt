@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.model.student.StudentDomain
  * Agrupa todas las operaciones CRUD y consultas relacionadas con estudiantes.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 interface StudentRepository {
     /**

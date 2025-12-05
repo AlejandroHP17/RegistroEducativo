@@ -7,7 +7,6 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
 import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
-import com.mx.liftechnology.domain.repository.student.StudentRepository
 
 /**
  * Caso de uso para obtener la lista de evaluaciones de un estudiante.
@@ -15,14 +14,14 @@ import com.mx.liftechnology.domain.repository.student.StudentRepository
  * permitiendo filtrar por tipo de trabajo, campo formativo y rango de fechas.
  *
  * @property preference El caso de uso para gestionar las preferencias del usuario.
- * @property studentRepository El repositorio para operaciones relacionadas con estudiantes.
+ * @property evaluationRepository El repositorio para operaciones relacionadas con evaluaciones.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListEvaluationsStudentUseCase(
     private val preference: PreferenceUseCase,
-    private val studentRepository: EvaluationRepository,
+    private val evaluationRepository: EvaluationRepository,
 ) {
     /**
      * Ejecuta el proceso de obtención de la lista de evaluaciones de un estudiante.
@@ -83,7 +82,7 @@ class GetListEvaluationsStudentUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return studentRepository.getListEvaluations(
+        return evaluationRepository.getListEvaluations(
             schoolCycleId = schoolCycleId,
             partialId = partialId,
             formativeFieldId = formativeFieldId,

@@ -11,7 +11,7 @@ import com.mx.liftechnology.domain.model.auth.UserDomain
  * Agrupa todas las operaciones relacionadas con autenticación: login, registro y obtención de datos de usuario.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 interface AuthRepository {
     /**

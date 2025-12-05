@@ -19,7 +19,7 @@ import retrofit2.Retrofit
  * Módulo de Koin para dependencias de datos relacionadas con autenticación.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 val authDataCoreModule = module {
 

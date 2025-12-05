@@ -12,7 +12,7 @@ import com.mx.liftechnology.domain.model.formativeFields.WotyFofiDomain
  * Agrupa todas las operaciones CRUD y consultas relacionadas con campos formativos.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 interface FormativeFieldRepository {
     /**

@@ -10,7 +10,7 @@ import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
  * Agrupa todas las operaciones relacionadas con parciales.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 interface PartialRepository {
     /**

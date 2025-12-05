@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.di.dataCore
 /**
  * @file Define el módulo de Koin para dependencias de datos relacionadas con escuelas.
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 
 import com.mx.liftechnology.core.network.api.SchoolApi
@@ -18,7 +18,7 @@ import retrofit2.Retrofit
  * Módulo de Koin para dependencias de datos relacionadas con escuelas.
  *
  * @author Pelkidev
- * @version 2.0.0
+ * @version 1.0.0
  */
 val schoolDataCoreModule = module {
     /**

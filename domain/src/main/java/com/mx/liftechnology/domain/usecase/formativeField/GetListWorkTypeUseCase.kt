@@ -8,7 +8,6 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
-import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepository
 import com.mx.liftechnology.domain.repository.workType.WorkTypeRepository
 
 /**
@@ -20,14 +19,14 @@ import com.mx.liftechnology.domain.repository.workType.WorkTypeRepository
  * Caso de uso para obtener la lista de tipos de evaluación.
  * Encapsula la lógica de negocio para solicitar los tipos de evaluación desde el repositorio y manejar la respuesta.
  *
- * @property formativeFieldRepository El repositorio para operaciones relacionadas con campos formativos.
+ * @property workTypeRepository El repositorio para operaciones relacionadas con tipos de trabajo.
  * @property preference El caso de uso para acceder a las preferencias del usuario (IDs de sesión, etc.).
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListWorkTypeUseCase(
-    private val formativeFieldRepository: WorkTypeRepository,
+    private val workTypeRepository: WorkTypeRepository,
     private val preference : PreferenceUseCase
 ) {
     /**
@@ -42,7 +41,7 @@ class GetListWorkTypeUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val result = formativeFieldRepository.getWorkTypeList(teacherId)
+        val result = workTypeRepository.getWorkTypeList(teacherId)
         return when (result) {
             is SuccessResult -> {
                 if (result.data.isEmpty()) ErrorResult(LocalModelError.EMPTY)
