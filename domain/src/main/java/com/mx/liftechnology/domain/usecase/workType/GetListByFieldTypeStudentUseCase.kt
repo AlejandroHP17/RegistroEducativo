@@ -8,21 +8,22 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
-import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
+import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
+import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepository
 
 /**
  * Caso de uso para obtener la lista de estudiantes filtrados por tipo de campo formativo.
  * Encapsula la lógica de negocio para recuperar estudiantes asociados a un campo formativo específico,
  * permitiendo filtrar por tipo de trabajo, nombre de trabajo y fecha.
  *
- * @property getListByFieldTypeStudentRepository El repositorio para obtener la lista de estudiantes por tipo de campo.
+ * @property formativeFieldRepository El repositorio para operaciones relacionadas con campos formativos.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListByFieldTypeStudentUseCase(
-    private val getListByFieldTypeStudentRepository: GetListByFieldTypeStudentRepository,
+    private val formativeFieldRepository: EvaluationRepository,
     private val preference : PreferenceUseCase
 ) {
 
@@ -34,14 +35,14 @@ class GetListByFieldTypeStudentUseCase(
      * @param workTypeId El identificador del tipo de trabajo. Requerido.
      * @param workName El nombre del trabajo para filtrar. Opcional.
      * @param workDate La fecha del trabajo para filtrar (formato de fecha). Opcional.
-     * @return Un [com.mx.liftechnology.core.util.models.ModelResult] que contiene los datos de estudiantes filtrados
-     * ([com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain]) en caso de éxito, o un estado de error específico en caso de fallo.
+     * @return Un [ModelResult] que contiene los datos de estudiantes filtrados
+     * ([ByFieldTypeStudentDomain]) en caso de éxito, o un estado de error específico en caso de fallo.
      *
      * Posibles errores:
-     * - [com.mx.liftechnology.core.util.models.LocalModelError.USER_INCOMPLETE_DATA] si no hay un campo formativo seleccionado en las preferencias o si workTypeId es null
-     * - [com.mx.liftechnology.core.util.models.NetworkModelError.UNKNOWN] si ocurre una excepción inesperada
-     * - [com.mx.liftechnology.core.util.models.ModelError] de red si hay problemas de conexión
-     * - [com.mx.liftechnology.core.util.models.ModelError] si no se encuentran estudiantes con los criterios proporcionados
+     * - [LocalModelError.USER_INCOMPLETE_DATA] si no hay un campo formativo seleccionado en las preferencias o si workTypeId es null
+     * - [NetworkModelError.UNKNOWN] si ocurre una excepción inesperada
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] si no se encuentran estudiantes con los criterios proporcionados
      *
      * @example
      * ```
@@ -72,7 +73,7 @@ class GetListByFieldTypeStudentUseCase(
 
         if(workTypeId == null)return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
-        return runCatching { getListByFieldTypeStudentRepository.getByFieldType(
+        return runCatching { formativeFieldRepository.getByFieldType(
             formativeFieldId = formativeFieldId,
             workTypeId = workTypeId,
             workName = workName,

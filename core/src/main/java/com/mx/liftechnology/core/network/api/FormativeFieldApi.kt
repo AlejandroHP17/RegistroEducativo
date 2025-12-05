@@ -25,7 +25,6 @@ interface FormativeFieldApi {
     suspend fun getListFormativeFields(@Query("school_cycle_id") cycleSchoolId: Int): Response<ResponseGeneric<List<ResponseGetListFormativeField>>>
 
 
-
     /**
      * Obtiene la lista de campos formativos con tipos de trabajo.
      */

@@ -8,20 +8,20 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.repository.student.EditStudentRepository
+import com.mx.liftechnology.domain.repository.student.StudentRepository
 
 /**
  * Caso de uso para editar la información de un estudiante existente.
  * Encapsula la lógica de negocio para actualizar los datos de un estudiante mediante su identificador.
  *
- * @property editStudentRepository El repositorio para las operaciones de edición de estudiantes.
+ * @property studentRepository El repositorio para operaciones relacionadas con estudiantes.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class EditStudentUseCase (
-    private val editStudentRepository: EditStudentRepository,
+    private val studentRepository: StudentRepository,
     private val preference: PreferenceUseCase
 ){
     /**
@@ -89,7 +89,7 @@ class EditStudentUseCase (
             isActive = true
         )
 
-        val result = editStudentRepository.edit(request, studentId)
+        val result = studentRepository.edit(request, studentId)
         return when (result) {
             is SuccessResult -> {
                 SuccessResult(result.data)

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
 import com.mx.liftechnology.domain.usecase.school.GetCctUseCase
-import com.mx.liftechnology.domain.usecase.school.RegisterCycleSchoolUseCase
+import com.mx.liftechnology.domain.usecase.schoolCycle.RegisterCycleSchoolUseCase
 import com.mx.liftechnology.domain.usecase.school.RegisterSchoolWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.school.ValidateFieldsRegisterSchoolUseCase
 import com.mx.liftechnology.domain.usecase.school.ValidateFieldsRegisterSchoolUseCaseImp

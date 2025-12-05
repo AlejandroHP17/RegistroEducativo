@@ -9,7 +9,7 @@ import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.ResultSchoolDomain
 import com.mx.liftechnology.domain.model.registerschool.SchoolSpinnerDomain
 import com.mx.liftechnology.domain.model.schoolCycle.CCTDomain
-import com.mx.liftechnology.domain.repository.school.GetCctRepository
+import com.mx.liftechnology.domain.repository.school.SchoolRepository
 
 /**
  * @file Define el caso de uso para validar una CCT (Clave de Centro de Trabajo) y obtener la información de la escuela.
@@ -21,12 +21,12 @@ import com.mx.liftechnology.domain.repository.school.GetCctRepository
  * Encapsula la lógica de negocio para interactuar con el repositorio y procesar la respuesta,
  * incluyendo la construcción de los datos para los spinners de la UI.
  *
- * @property getCctRepository El repositorio para la validación de la CCT.
+ * @property schoolRepository El repositorio para operaciones relacionadas con escuelas y ciclos escolares.
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetCctUseCase(
-    private val getCctRepository: GetCctRepository,
+    private val schoolRepository: SchoolRepository,
 ) {
 
     /**
@@ -36,7 +36,7 @@ class GetCctUseCase(
      * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la información de la escuela o un estado de error.
      */
     suspend operator fun invoke(cct: String): ModelResult<ResultSchoolDomain, ModelError> {
-        val result = getCctRepository.getCct(cct)
+        val result = schoolRepository.getCct(cct)
         return when (result) {
             is SuccessResult -> {
                 val response = ResultSchoolDomain(

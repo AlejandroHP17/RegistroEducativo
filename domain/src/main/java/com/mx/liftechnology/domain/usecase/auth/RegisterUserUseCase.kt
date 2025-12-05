@@ -5,20 +5,20 @@ import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.repository.auth.RegisterUserRepository
+import com.mx.liftechnology.domain.repository.auth.AuthRepository
 
 
 /**
  * Caso de uso para gestionar el registro de un nuevo usuario.
  * Encapsula la lógica de negocio para crear una cuenta, interactuando con el repositorio correspondiente.
  *
- * @property registerUserRepository El repositorio para las operaciones de registro de usuario.
+ * @property authRepository El repositorio para las operaciones de autenticación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class RegisterUserUseCase(
-    private val registerUserRepository: RegisterUserRepository
+    private val authRepository: AuthRepository
 )  {
     /**
      * Ejecuta el proceso de registro de usuario.
@@ -33,7 +33,7 @@ class RegisterUserUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        val result = registerUserRepository.register(
+        val result = authRepository.register(
             email = email,
             pass = pass,
             activationCode = activationCode

@@ -6,7 +6,8 @@ import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.domain.model.student.EvaluationsStudentDomain
-import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
+import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
+import com.mx.liftechnology.domain.repository.student.StudentRepository
 
 /**
  * Caso de uso para obtener la lista de evaluaciones de un estudiante.
@@ -14,14 +15,14 @@ import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentR
  * permitiendo filtrar por tipo de trabajo, campo formativo y rango de fechas.
  *
  * @property preference El caso de uso para gestionar las preferencias del usuario.
- * @property getListEvaluationsStudentRepository El repositorio para obtener la lista de evaluaciones del estudiante.
+ * @property studentRepository El repositorio para operaciones relacionadas con estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListEvaluationsStudentUseCase(
     private val preference: PreferenceUseCase,
-    private val getListEvaluationsStudentRepository: GetListEvaluationsStudentRepository,
+    private val studentRepository: EvaluationRepository,
 ) {
     /**
      * Ejecuta el proceso de obtención de la lista de evaluaciones de un estudiante.
@@ -34,13 +35,13 @@ class GetListEvaluationsStudentUseCase(
      * @param workDate La fecha específica de trabajo para filtrar (formato de fecha). Opcional.
      * @param workDateFrom La fecha de inicio del rango para filtrar evaluaciones. Opcional.
      * @param workDateTo La fecha de fin del rango para filtrar evaluaciones. Opcional.
-     * @return Un [com.mx.liftechnology.core.util.models.ModelResult] que contiene la lista de evaluaciones del estudiante
+     * @return Un [ModelResult] que contiene la lista de evaluaciones del estudiante
      * ([List<ModelEvaluationsStudent>]) en caso de éxito, o un estado de error específico en caso de fallo.
      *
      * Posibles errores:
-     * - [com.mx.liftechnology.core.util.models.LocalModelError.USER_INCOMPLETE_DATA] si faltan datos necesarios (schoolCycleId, partialId, studentId, workTypeId o formativeFieldId)
-     * - [com.mx.liftechnology.core.util.models.ModelError] de red si hay problemas de conexión
-     * - [com.mx.liftechnology.core.util.models.ModelError] si no se encuentran evaluaciones con los criterios proporcionados
+     * - [LocalModelError.USER_INCOMPLETE_DATA] si faltan datos necesarios (schoolCycleId, partialId, studentId, workTypeId o formativeFieldId)
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] si no se encuentran evaluaciones con los criterios proporcionados
      *
      * @example
      * ```
@@ -82,7 +83,7 @@ class GetListEvaluationsStudentUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return getListEvaluationsStudentRepository.getListEvaluations(
+        return studentRepository.getListEvaluations(
             schoolCycleId = schoolCycleId,
             partialId = partialId,
             formativeFieldId = formativeFieldId,

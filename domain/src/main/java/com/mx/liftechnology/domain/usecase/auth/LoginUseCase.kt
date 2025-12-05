@@ -10,13 +10,13 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.auth.UserDomain
-import com.mx.liftechnology.domain.repository.auth.LoginRepository
+import com.mx.liftechnology.domain.repository.auth.AuthRepository
 
 /**
  * Caso de uso para gestionar el inicio de sesión de un usuario.
  * Encapsula la lógica de negocio para validar credenciales, obtener la ubicación, interactuar con el repositorio y guardar las preferencias de sesión.
  *
- * @property repositoryLogin El repositorio para las operaciones de inicio de sesión.
+ * @property authRepository El repositorio para las operaciones de autenticación.
  * @property locationHelper Utilidad para obtener la ubicación actual del dispositivo.
  * @property deviceIdHelper Utilidad para obtener el identificador único del dispositivo de forma segura.
  * @property preference Caso de uso para la gestión de las preferencias de usuario.
@@ -25,7 +25,7 @@ import com.mx.liftechnology.domain.repository.auth.LoginRepository
  * @version 1.0.0
  */
 class LoginUseCase(
-    private val repositoryLogin: LoginRepository,
+    private val authRepository: AuthRepository,
     private val locationHelper: LocationHelper,
     private val deviceIdHelper: DeviceIdHelper,
     private val preference: PreferenceUseCase,
@@ -66,7 +66,7 @@ class LoginUseCase(
         val deviceId = deviceIdHelper.getDeviceId()
 
         // 3. Ejecución de la llamada de red
-        val result = repositoryLogin.login(
+        val result = authRepository.login(
             email = email.lowercase().trim(),
             password = pass,
             latitude = latitude,

@@ -14,20 +14,20 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
-import com.mx.liftechnology.domain.repository.partial.GetListPartialRepository
+import com.mx.liftechnology.domain.repository.partial.PartialRepository
 
 /**
  * Caso de uso para obtener la lista de parciales.
  * Encapsula la lógica de negocio para solicitar la lista de parciales, procesarla y manejar los posibles errores.
  *
- * @property getListPartialRepository El repositorio para obtener la lista de parciales desde la fuente de datos.
+ * @property partialRepository El repositorio para operaciones relacionadas con parciales.
  * @property preference El caso de uso para gestionar las preferencias del usuario, como IDs de sesión.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListPartialUseCase(
-    private val getListPartialRepository: GetListPartialRepository,
+    private val partialRepository: PartialRepository,
     private val preference: PreferenceUseCase
 )  {
     /**
@@ -41,7 +41,7 @@ class GetListPartialUseCase(
         val cycleSchoolId= preference.getIdCycleSchool()
         if(cycleSchoolId == null) return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
 
-        val result = getListPartialRepository.getList(cycleSchoolId)
+        val result = partialRepository.getList(cycleSchoolId)
         return when (result) {
             is SuccessResult -> {
                 val listDate = result.data.mapIndexed { index, item ->

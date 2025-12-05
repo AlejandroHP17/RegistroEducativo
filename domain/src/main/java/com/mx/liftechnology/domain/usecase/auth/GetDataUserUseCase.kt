@@ -8,7 +8,7 @@ import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.auth.UserDomain
 import com.mx.liftechnology.domain.model.auth.toDomain
-import com.mx.liftechnology.domain.repository.auth.GetDataUserRepository
+import com.mx.liftechnology.domain.repository.auth.AuthRepository
 
 /**
  * Caso de uso para obtener los datos del usuario autenticado.
@@ -16,14 +16,14 @@ import com.mx.liftechnology.domain.repository.auth.GetDataUserRepository
  * y guardar las preferencias de sesión.
  *
  * @property preference El caso de uso para gestionar las preferencias del usuario.
- * @property getDataUserRepository El repositorio para obtener los datos del usuario.
+ * @property authRepository El repositorio para las operaciones de autenticación.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetDataUserUseCase(
     private val preference: PreferenceUseCase,
-    private val getDataUserRepository: GetDataUserRepository,
+    private val authRepository: AuthRepository,
 ) {
     /**
      * Ejecuta el proceso de obtención de datos del usuario.
@@ -56,7 +56,7 @@ class GetDataUserUseCase(
      * ```
      */
     suspend operator fun invoke(remember: Boolean): ModelResult<UserDomain, ModelError> {
-        val result = getDataUserRepository.getData()
+        val result = authRepository.getData()
         return when (result) {
             is SuccessResult -> {
                 val userData = result.data

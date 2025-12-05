@@ -10,7 +10,7 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
-import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeFieldsBulkRepository
+import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepository
 
 /**
  * @file Define el caso de uso para registrar una nueva materia.
@@ -22,14 +22,14 @@ import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeF
  * Caso de uso para registrar una única materia.
  * Encapsula la lógica de negocio para construir la petición de registro y manejar la respuesta del repositorio.
  *
- * @property registerFormativeFieldsBulkRepository El repositorio para las operaciones de registro de materias.
+ * @property formativeFieldRepository El repositorio para operaciones relacionadas con campos formativos.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class RegisterFormativeFieldsBulkUseCase(
-    private val registerFormativeFieldsBulkRepository: RegisterFormativeFieldsBulkRepository,
+    private val formativeFieldRepository: FormativeFieldRepository,
     private val preference: PreferenceUseCase
 ) {
     /**
@@ -104,7 +104,7 @@ class RegisterFormativeFieldsBulkUseCase(
             )
         }
 
-        val result = registerFormativeFieldsBulkRepository.registerBulk(
+        val result = formativeFieldRepository.registerBulk(
             cycleSchoolId = cycleSchoolId,
             formativeFieldName = name.trim(),
             code = name.trim(),

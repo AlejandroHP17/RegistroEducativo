@@ -6,13 +6,21 @@ import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
 
 /**
- * Interfaz del repositorio para el registro de una lista de parciales.
- * Define el contrato para ejecutar la lógica de registro de una lista de parciales.
+ * Interfaz del repositorio para operaciones relacionadas con parciales.
+ * Agrupa todas las operaciones relacionadas con parciales.
  *
  * @author Pelkidev
- * @version 1.0.0
+ * @version 2.0.0
  */
-fun interface RegisterListPartialRepository{
+interface PartialRepository {
+    /**
+     * Obtiene la lista de parciales.
+     *
+     * @param schoolCycleId El ID del ciclo escolar.
+     * @return Un [ModelResult] que indica el resultado de la operación.
+     */
+    suspend fun getList(schoolCycleId: Int): ModelResult<List<ListPartialDomain>, NetworkModelError>
+
     /**
      * Registra una lista de parciales.
      *

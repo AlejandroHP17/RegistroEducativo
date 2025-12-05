@@ -14,21 +14,21 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.evaluation.WorkTypeFormativeFieldDomain
-import com.mx.liftechnology.domain.repository.evaluation.GetListWorkTypeFormativeFieldRepository
+import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
 
 
 /**
  * Implementación de [GetListWorkEvaluationFormativeFieldUseCase].
  * Encapsula la lógica de negocio para solicitar la lista de tipos de evaluación y manejar la respuesta.
  *
- * @property getListWorkTypeFormativeFieldRepository El repositorio para obtener los tipos de evaluación.
+ * @property evaluationRepository El repositorio para operaciones relacionadas con evaluaciones.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListWorkEvaluationFormativeFieldUseCase (
-    private val getListWorkTypeFormativeFieldRepository : GetListWorkTypeFormativeFieldRepository,
+    private val evaluationRepository: EvaluationRepository,
     private val preference: PreferenceUseCase
 )  {
 
@@ -40,7 +40,7 @@ class GetListWorkEvaluationFormativeFieldUseCase (
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { getListWorkTypeFormativeFieldRepository.getList(
+        return runCatching { evaluationRepository.getListWorkTypeStudent(
             formativeFieldId) }.fold(
             onSuccess = { result ->
                 when (result) {

@@ -3,19 +3,12 @@ package com.mx.liftechnology.registroeducativo.di.dataCore
 /**
  * @file Define el módulo de Koin para dependencias de datos relacionadas con evaluaciones.
  * @author Pelkidev
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-
 import com.mx.liftechnology.core.network.api.EvaluationApi
-import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListByFieldTypeStudentRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListEvaluationsStudentRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.evaluation.GetListWorkTypeFormativeFieldRepositoryImpl
-import com.mx.liftechnology.data.repositoryImpl.evaluation.RegisterWorkTypeEvaluationsRepositoryImpl
-import com.mx.liftechnology.domain.repository.evaluation.GetListWorkTypeFormativeFieldRepository
-import com.mx.liftechnology.domain.repository.evaluation.RegisterWorkTypeEvaluationsRepository
-import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
-import com.mx.liftechnology.domain.repository.student.GetListEvaluationsStudentRepository
+import com.mx.liftechnology.data.repositoryImpl.evaluation.EvaluationRepositoryImpl
+import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -25,7 +18,7 @@ import retrofit2.Retrofit
  * Módulo de Koin para dependencias de datos relacionadas con evaluaciones.
  *
  * @author Pelkidev
- * @version 1.0.0
+ * @version 2.0.0
  */
 val evaluationDataCoreModule = module {
 
@@ -34,22 +27,13 @@ val evaluationDataCoreModule = module {
      */
     factory { get<Retrofit>().create(EvaluationApi::class.java) }
 
-    singleOf(::GetListByFieldTypeStudentRepositoryImpl){
-        bind<GetListByFieldTypeStudentRepository>()
-    }
-
-    singleOf(::GetListEvaluationsStudentRepositoryImpl){
-        bind<GetListEvaluationsStudentRepository>()
-    }
-
     /**
-     * Proporciona una instancia singleton de [GetListWorkTypeFormativeFieldRepository].
+     * Proporciona una instancia singleton de [EvaluationRepository].
+     * Agrupa todas las operaciones relacionadas con evaluaciones: registrar evaluaciones,
+     * obtener lista de tipos de trabajo por campo formativo, obtener evaluaciones de estudiantes
+     * y obtener estudiantes por tipo de campo formativo.
      */
-    singleOf(::GetListWorkTypeFormativeFieldRepositoryImpl) {
-        bind<GetListWorkTypeFormativeFieldRepository>()
-    }
-
-    singleOf(::RegisterWorkTypeEvaluationsRepositoryImpl) {
-        bind<RegisterWorkTypeEvaluationsRepository>()
+    singleOf(::EvaluationRepositoryImpl) {
+        bind<EvaluationRepository>()
     }
 }

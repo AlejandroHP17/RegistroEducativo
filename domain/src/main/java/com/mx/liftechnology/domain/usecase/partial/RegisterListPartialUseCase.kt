@@ -15,20 +15,20 @@ import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
-import com.mx.liftechnology.domain.repository.partial.RegisterListPartialRepository
+import com.mx.liftechnology.domain.repository.partial.PartialRepository
 
 /**
  * Caso de uso para registrar una lista de parciales.
  * Encapsula la lógica de negocio para construir la petición y enviarla al repositorio para su registro.
  *
- * @property registerListPartialRepository El repositorio para registrar la lista de parciales.
+ * @property partialRepository El repositorio para operaciones relacionadas con parciales.
  * @property preference El caso de uso para gestionar las preferencias del usuario.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class RegisterListPartialUseCase(
-    private val registerListPartialRepository: RegisterListPartialRepository,
+    private val partialRepository: PartialRepository,
     private val preference: PreferenceUseCase
 ) {
     /**
@@ -54,7 +54,7 @@ class RegisterListPartialUseCase(
             )
         }
 
-        return runCatching { registerListPartialRepository.register(
+        return runCatching { partialRepository.register(
             adapterPeriods = adapter,
             cycleSchoolId = cycleSchoolId
         ) }.fold(

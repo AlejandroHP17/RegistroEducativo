@@ -6,7 +6,7 @@ import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.domain.model.formativeFields.WotyFofiDomain
-import com.mx.liftechnology.domain.repository.formativeFields.GetListWotyFofiRepository
+import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepository
 
 /**
  * Caso de uso para obtener la lista de tipos de trabajo y campos formativos asociados a un ciclo escolar.
@@ -14,14 +14,14 @@ import com.mx.liftechnology.domain.repository.formativeFields.GetListWotyFofiRep
  * basándose en el ciclo escolar seleccionado en las preferencias del usuario.
  *
  * @property preference El caso de uso para gestionar las preferencias del usuario.
- * @property getListWotyFofiRepository El repositorio para obtener la lista de tipos de trabajo y campos formativos.
+ * @property formativeFieldRepository El repositorio para operaciones relacionadas con campos formativos.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 class GetListWotyFofiUseCase(
     private val preference: PreferenceUseCase,
-    private val getListWotyFofiRepository: GetListWotyFofiRepository
+    private val formativeFieldRepository: FormativeFieldRepository
 ) {
 
     /**
@@ -54,7 +54,7 @@ class GetListWotyFofiUseCase(
                 LocalModelError.USER_INCOMPLETE_DATA
             )
 
-        return getListWotyFofiRepository.getList(schoolCycleId)
+        return formativeFieldRepository.getListWotyFofi(schoolCycleId)
 
     }
 }

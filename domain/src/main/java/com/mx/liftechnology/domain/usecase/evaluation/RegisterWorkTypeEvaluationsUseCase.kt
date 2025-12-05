@@ -10,11 +10,11 @@ import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.evaluation.CardDomain
-import com.mx.liftechnology.domain.repository.evaluation.RegisterWorkTypeEvaluationsRepository
+import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
 
 class RegisterWorkTypeEvaluationsUseCase(
     private val preference : PreferenceUseCase,
-    private val registerWorkTypeEvaluationsRepository: RegisterWorkTypeEvaluationsRepository
+    private val evaluationRepository: EvaluationRepository
 ) {
     suspend operator fun invoke(workTypeId: Int?, nameWork: String?, workDate: String?, studentListUI: List<CardDomain>): ModelResult<Boolean, ModelError> {
         val formativeFieldId = preference.getIdFormativeField()
@@ -25,7 +25,7 @@ class RegisterWorkTypeEvaluationsUseCase(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
-        return runCatching { registerWorkTypeEvaluationsRepository.register(
+        return runCatching { evaluationRepository.registerWorkTypeEvaluations(
             formativeFieldId = formativeFieldId,
             partialId = partialId,
             workTypeId = workTypeId,

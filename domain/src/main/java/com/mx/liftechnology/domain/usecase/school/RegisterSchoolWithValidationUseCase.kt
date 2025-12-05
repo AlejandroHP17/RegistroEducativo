@@ -2,6 +2,7 @@ package com.mx.liftechnology.domain.usecase.school
 
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
 import com.mx.liftechnology.domain.model.schoolCycle.RegisterSchoolCycleDomain
+import com.mx.liftechnology.domain.usecase.schoolCycle.RegisterCycleSchoolUseCase
 
 /**
  * Caso de uso que combina la validación de campos de registro de escuela con la ejecución del registro.
