@@ -23,9 +23,9 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelRegex
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.RegisterUserUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.auth.RegisterUserUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.auth.RegisterUserUiInputs
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldPassword

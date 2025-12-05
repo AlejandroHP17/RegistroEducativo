@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
+package com.mx.liftechnology.registroeducativo.main.model.share
 
 /**
  * Modelo de datos para una tarjeta personalizada en la UI.

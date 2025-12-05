@@ -13,9 +13,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack

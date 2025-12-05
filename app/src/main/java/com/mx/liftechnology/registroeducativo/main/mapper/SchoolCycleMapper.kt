@@ -2,7 +2,7 @@ package com.mx.liftechnology.registroeducativo.main.mapper
 
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.registerschool.SchoolSpinnerDomain
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.SpinnerSchoolUi
+import com.mx.liftechnology.registroeducativo.main.model.schoolCycle.SpinnerSchoolUi
 
 /**
  * Mapper para convertir modelos del dominio de ciclos escolares a modelos de UI.

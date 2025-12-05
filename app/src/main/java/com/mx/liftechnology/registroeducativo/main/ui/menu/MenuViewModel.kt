@@ -18,9 +18,9 @@ import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiState
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiData
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiDialog
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

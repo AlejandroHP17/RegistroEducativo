@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.login
+package com.mx.liftechnology.registroeducativo.main.model.auth
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R

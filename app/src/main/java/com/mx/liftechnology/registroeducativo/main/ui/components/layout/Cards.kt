@@ -47,9 +47,9 @@ import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorFail
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText

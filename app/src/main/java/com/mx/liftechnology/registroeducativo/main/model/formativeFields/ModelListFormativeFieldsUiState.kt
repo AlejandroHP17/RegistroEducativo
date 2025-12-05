@@ -1,10 +1,10 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
+package com.mx.liftechnology.registroeducativo.main.model.formativeFields
 
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 
 /**
  * Representa el estado de la UI para la pantalla de lista de materias.

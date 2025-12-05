@@ -9,11 +9,11 @@ import com.mx.liftechnology.domain.usecase.workType.GetListByFieldTypeStudentUse
 import com.mx.liftechnology.domain.usecase.share.SaveFormativeFieldIdSelectedUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiState
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

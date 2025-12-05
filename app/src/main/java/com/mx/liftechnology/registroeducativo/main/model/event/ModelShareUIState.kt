@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model
+package com.mx.liftechnology.registroeducativo.main.model.event
 
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState

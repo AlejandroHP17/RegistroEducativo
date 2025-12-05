@@ -7,7 +7,6 @@ import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterEvaluationWithValidationUseCase
@@ -23,11 +22,11 @@ import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMa
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiData
+import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiState
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,13 +53,13 @@ class RegisterEvaluationViewModel(
     private val registerEvaluationWithValidationUseCase: RegisterEvaluationWithValidationUseCase
     ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(RegisterAssignmentUiState())
+    private val _uiState = MutableStateFlow(RegisterEvaluationUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<RegisterAssignmentUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<RegisterEvaluationUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(RegisterAssignmentUiData())
+    private val _dataState = MutableStateFlow(RegisterEvaluationUiData())
     /** El estado de datos de la pantalla. */
-    val dataState: StateFlow<RegisterAssignmentUiData> = _dataState.asStateFlow()
+    val dataState: StateFlow<RegisterEvaluationUiData> = _dataState.asStateFlow()
 
     private val _dialogState = MutableStateFlow(ModelCustomCalendar())
     /** El estado del diálogo de selección de fecha. */

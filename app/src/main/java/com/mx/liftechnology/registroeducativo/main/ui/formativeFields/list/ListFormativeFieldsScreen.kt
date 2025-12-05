@@ -12,7 +12,7 @@ import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericListScreen

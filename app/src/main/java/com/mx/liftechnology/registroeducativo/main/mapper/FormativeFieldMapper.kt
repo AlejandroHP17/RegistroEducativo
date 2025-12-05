@@ -7,9 +7,9 @@ import com.mx.liftechnology.domain.model.formativeFields.WotyFofiDomain
 import com.mx.liftechnology.domain.model.formativeFields.ListWorkTypesDomain
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
 
 /**
  * Mapper para convertir modelos del dominio de materias formativas a modelos de UI.

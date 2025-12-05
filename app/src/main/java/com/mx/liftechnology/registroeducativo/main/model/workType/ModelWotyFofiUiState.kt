@@ -1,12 +1,12 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
+package com.mx.liftechnology.registroeducativo.main.model.workType
 
 import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
 
 /**
  * Representa el estado de la UI para la pantalla de asignación.

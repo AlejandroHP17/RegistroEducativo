@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.ui
 
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 
 /**
  * Representa los callbacks para las interacciones con un spinner o una lista de tarjetas.

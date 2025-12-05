@@ -23,8 +23,8 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterPartialUiData
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.partial.RegisterPartialUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.AlertDialogConfirm
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.DropdownTextField

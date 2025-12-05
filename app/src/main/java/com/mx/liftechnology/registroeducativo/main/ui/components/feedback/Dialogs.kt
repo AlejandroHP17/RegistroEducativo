@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiDialog
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorError
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess

@@ -22,9 +22,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiDialog
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.MenuUiState
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiData
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiDialog
+import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.AlertDialogMenu
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderMenu
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace

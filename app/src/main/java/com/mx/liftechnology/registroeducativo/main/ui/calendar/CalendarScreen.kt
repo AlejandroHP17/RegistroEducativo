@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DatePickerScreen

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
+package com.mx.liftechnology.registroeducativo.main.model.formativeFields
 
 import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain

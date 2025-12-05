@@ -17,8 +17,8 @@ import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes

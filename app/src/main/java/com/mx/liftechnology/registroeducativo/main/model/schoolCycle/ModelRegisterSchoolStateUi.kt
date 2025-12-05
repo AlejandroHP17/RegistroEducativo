@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
+package com.mx.liftechnology.registroeducativo.main.model.schoolCycle
 
 import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.model.schoolCycle.CCTPeriodCatalogDomain

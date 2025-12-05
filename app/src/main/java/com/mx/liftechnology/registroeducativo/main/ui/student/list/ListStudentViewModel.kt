@@ -9,9 +9,9 @@ import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListStudentUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
+import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiState
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

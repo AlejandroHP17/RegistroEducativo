@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
+package com.mx.liftechnology.registroeducativo.main.model.partial
 
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText

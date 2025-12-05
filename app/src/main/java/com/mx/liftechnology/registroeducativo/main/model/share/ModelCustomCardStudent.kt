@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
+package com.mx.liftechnology.registroeducativo.main.model.share
 
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 

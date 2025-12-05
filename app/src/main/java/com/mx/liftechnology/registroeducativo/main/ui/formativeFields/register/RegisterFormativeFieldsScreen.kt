@@ -23,7 +23,7 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterFormativeFieldUiState
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.RegisterFormativeFieldUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack

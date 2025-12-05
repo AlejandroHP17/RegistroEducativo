@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.usecase.share.ValidateAuthFieldsUseCase
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiState
+import com.mx.liftechnology.registroeducativo.main.model.auth.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

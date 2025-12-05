@@ -23,10 +23,10 @@ import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiInputs
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterStudentUiState
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.student.RegisterStudentUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.student.RegisterStudentUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.student.RegisterStudentUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCapitalLetter

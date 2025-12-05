@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
+package com.mx.liftechnology.registroeducativo.main.model.menu
 
 import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain

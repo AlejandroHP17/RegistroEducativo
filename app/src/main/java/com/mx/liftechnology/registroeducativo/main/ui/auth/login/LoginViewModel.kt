@@ -12,9 +12,9 @@ import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiInputs
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.login.LoginUiState
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.auth.LoginUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.auth.LoginUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -144,10 +144,10 @@ class LoginViewModel(
                             )
                         }
                     }
-                    else ->{}
+
+                    else -> {}
                 }
             } else {
-                
                 _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
             }
         }

@@ -29,10 +29,10 @@ import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterAssignmentUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiData
+import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiState
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -191,7 +191,7 @@ fun RegisterEvaluationScreen(
  */
 @Composable
 private fun HeaderRegisterAssignment(
-    uiState: RegisterAssignmentUiState,
+    uiState: RegisterEvaluationUiState,
     navController: NavHostController,
 ) {
     ComponentHeaderBackWithout(
@@ -209,7 +209,7 @@ private fun HeaderRegisterAssignment(
  */
 @Composable
 fun BodyRegisterAssignment(
-    dataState: RegisterAssignmentUiData,
+    dataState: RegisterEvaluationUiData,
     dialogState: ModelCustomCalendar,
     onNameJobChanged: (ModelStateOutFieldText) -> Unit,
     showDialog: () -> Unit,
@@ -237,7 +237,7 @@ fun BodyRegisterAssignment(
  */
 @Composable
 private fun Body2RegisterAssignment(
-    dataState: RegisterAssignmentUiData,
+    dataState: RegisterEvaluationUiData,
     onNameAssignmentChanged: (ModelCustomSpinner) -> Unit,
 ) {
     Row(
@@ -275,7 +275,7 @@ private fun Body2RegisterAssignment(
  */
 @Composable
 private fun ColumnRegisterScore(
-    dataState: RegisterAssignmentUiData,
+    dataState: RegisterEvaluationUiData,
     onScoreChange: (Pair<String, String>) -> Unit,
 ) {
     EvaluationStudentList(
@@ -325,7 +325,7 @@ private fun RegisterEvaluationPreview(){
                 end.linkTo(parent.end)
             }) {
             HeaderRegisterAssignment(
-                uiState = RegisterAssignmentUiState(),
+                uiState = RegisterEvaluationUiState(),
                 navController = NavHostController(context = LocalContext.current)
             )
         }
@@ -337,7 +337,7 @@ private fun RegisterEvaluationPreview(){
                 end.linkTo(parent.end)
             }) {
             BodyRegisterAssignment(
-                dataState = RegisterAssignmentUiData(),
+                dataState = RegisterEvaluationUiData(),
                 dialogState = ModelCustomCalendar(),
                 onNameJobChanged = {  },
                 showDialog = { }
@@ -351,7 +351,7 @@ private fun RegisterEvaluationPreview(){
                 end.linkTo(parent.end)
             }) {
             Body2RegisterAssignment(
-                dataState = RegisterAssignmentUiData(),
+                dataState = RegisterEvaluationUiData(),
                 onNameAssignmentChanged = { }
             )
         }
@@ -365,7 +365,7 @@ private fun RegisterEvaluationPreview(){
                 height = Dimension.fillToConstraints
             }) {
             ColumnRegisterScore(
-                dataState = RegisterAssignmentUiData(),
+                dataState = RegisterEvaluationUiData(),
                 onScoreChange = { }
             )
         }

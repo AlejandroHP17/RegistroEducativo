@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share
+package com.mx.liftechnology.registroeducativo.main.model.share
 
 data class ModelComplexCard( //formativeFields
     val idTitle : Int?,

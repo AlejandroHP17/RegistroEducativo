@@ -29,7 +29,7 @@ import com.mx.liftechnology.domain.model.schoolCycle.DialogGroupPartialDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 import java.time.LocalDate
 

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.model.viewmodel.events
+package com.mx.liftechnology.registroeducativo.main.model.event
 
 /**
  * Clase base sellada para eventos de UI que deben ser manejados una sola vez.
@@ -34,4 +34,3 @@ sealed class UiEvent {
      */
     data class ShowSuccess(val message: String) : UiEvent()
 }
-

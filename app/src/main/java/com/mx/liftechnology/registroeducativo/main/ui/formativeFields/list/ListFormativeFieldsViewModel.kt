@@ -8,9 +8,9 @@ import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsU
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiData
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.ListFormativeFieldsUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiState
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

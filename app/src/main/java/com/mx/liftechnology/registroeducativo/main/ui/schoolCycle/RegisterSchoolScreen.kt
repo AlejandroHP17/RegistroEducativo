@@ -26,11 +26,11 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.events.UiEvent
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiInputs
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiState
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.RegisterSchoolUiSemiAutomaticData
+import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
+import com.mx.liftechnology.registroeducativo.main.model.schoolCycle.RegisterSchoolUiInputs
+import com.mx.liftechnology.registroeducativo.main.model.schoolCycle.RegisterSchoolUiState
+import com.mx.liftechnology.registroeducativo.main.model.schoolCycle.RegisterSchoolUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.schoolCycle.RegisterSchoolUiSemiAutomaticData
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldAllCaps
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldNumeric
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldSet

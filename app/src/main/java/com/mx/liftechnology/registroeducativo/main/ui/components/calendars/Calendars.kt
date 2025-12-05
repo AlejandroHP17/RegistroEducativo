@@ -23,7 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorApprove
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText

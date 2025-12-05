@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
 import com.mx.liftechnology.domain.model.evaluation.CardDomain
-import com.mx.liftechnology.registroeducativo.main.model.viewmodel.main.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCardStudent
 
 /**
  * Mapper para convertir modelos de UI de evaluaciones a modelos del dominio.
