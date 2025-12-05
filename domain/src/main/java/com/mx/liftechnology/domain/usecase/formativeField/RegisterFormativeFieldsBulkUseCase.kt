@@ -8,8 +8,7 @@ import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
-import com.mx.liftechnology.domain.model.formativeFields.toFormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.repository.formativeFields.RegisterFormativeFieldsBulkRepository
 
@@ -40,7 +39,7 @@ class RegisterFormativeFieldsBulkUseCase(
      *
      * @param updatedList La lista de métodos de trabajo y sus porcentajes de evaluación. No puede ser nula o vacía.
      * @param name El nombre de la materia a registrar.
-     * @return Un [ModelResult] que contiene los datos del campo formativo registrado ([FormativeFieldDomainPar])
+     * @return Un [ModelResult] que contiene los datos del campo formativo registrado ([com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar])
      * en caso de éxito, o un estado de error específico en caso de fallo.
      *
      * Posibles errores:
@@ -76,7 +75,7 @@ class RegisterFormativeFieldsBulkUseCase(
     suspend operator fun invoke(
         updatedList: MutableList<SpinnersWorkMethodsDomain>?,
         name: String
-    ): ModelResult<FormativeFieldDomainPar, ModelError> {
+    ): ModelResult<FormativeFieldDomain, ModelError> {
         val partialId = preference.getIdPartial()
         val cycleSchoolId = preference.getIdCycleSchool()
 
@@ -105,7 +104,6 @@ class RegisterFormativeFieldsBulkUseCase(
             )
         }
 
-
         val result = registerFormativeFieldsBulkRepository.registerBulk(
             cycleSchoolId = cycleSchoolId,
             formativeFieldName = name.trim(),
@@ -115,9 +113,8 @@ class RegisterFormativeFieldsBulkUseCase(
         )
         return when (result) {
             is SuccessResult -> {
-                val domainData = result.data.toFormativeFieldDomain()
-                if (domainData != null) {
-                    SuccessResult(domainData)
+                if (result.data != null) {
+                    SuccessResult(result.data)
                 } else {
                     ErrorResult(LocalModelError.EMPTY)
                 }

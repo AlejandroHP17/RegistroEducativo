@@ -3,9 +3,10 @@
  * @author Pelkidev
  * @version 1.0.0
  */
-package com.mx.liftechnology.domain.model.formativeFields
+package com.mx.liftechnology.registroeducativo.main.model.formativeFields
 
 import android.os.Parcelable
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -22,11 +23,11 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class FormativeFieldDomainPar(
-    val position:Int,
+    val position: Int,
     var name: String?,
     var percent: String?,
     val formativeFieldId: Int?
-): Parcelable
+) : Parcelable
 
 /**
  * Función de extensión para convertir un [FormativeFieldDomainPar] (modelo de datos) a un [FormativeFieldDomainPar] (modelo de dominio).
@@ -38,15 +39,14 @@ data class FormativeFieldDomainPar(
  * @author Pelkidev
  * @version 1.0.0
  */
-fun FormativeFieldDomain?.toFormativeFieldDomain(position: Int = 0): FormativeFieldDomainPar? {
-    return this?.let {
-        FormativeFieldDomainPar(
-            position = position,
-            name = it.name,
-            percent = null,
-            formativeFieldId = it.formativeFieldID
-        )
-    }
+fun FormativeFieldDomain.toFormativeFieldDomain(position: Int = 0): FormativeFieldDomainPar {
+    return FormativeFieldDomainPar(
+        position = position,
+        name = this.name,
+        percent = null,
+        formativeFieldId = this.formativeFieldID
+    )
+
 }
 
 /**
@@ -59,8 +59,8 @@ fun FormativeFieldDomain?.toFormativeFieldDomain(position: Int = 0): FormativeFi
  * @author Pelkidev
  * @version 1.0.0
  */
-fun List<FormativeFieldDomain?>?.toFormativeFieldDomainList() :List<FormativeFieldDomainPar>{
-    return this?.mapIndexedNotNull { index, response ->
-        response?.toFormativeFieldDomain(index)
-    }?: emptyList()
+fun List<FormativeFieldDomain>.toFormativeFieldDomainList(): List<FormativeFieldDomainPar> {
+    return this.mapIndexed { index, response ->
+        response.toFormativeFieldDomain(index)
+    } ?: emptyList()
 }

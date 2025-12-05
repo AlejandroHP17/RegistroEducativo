@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterEvaluationWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.GetWorkTypeByFormativeFieldUseCase
@@ -27,6 +27,7 @@ import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEval
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiState
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -183,10 +184,11 @@ class RegisterEvaluationViewModel(
 
             when(result) {
                 is SuccessResult -> {
+                    val listStudent = result.data.toStudentDomainList()
                     _dataState.update {
                         it.copy(
-                            studentList = result.data,
-                            studentListUI = result.data.convertModelCustomCard()
+                            studentList = listStudent,
+                            studentListUI = listStudent.convertModelCustomCard()
                         )
                     }
                     _uiState.update {

@@ -5,7 +5,7 @@ import com.mx.liftechnology.domain.model.evaluation.WorkTypeByFormativeFieldDoma
 import com.mx.liftechnology.domain.model.evaluation.WorkTypeFormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.WotyFofiDomain
 import com.mx.liftechnology.domain.model.formativeFields.ListWorkTypesDomain
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard

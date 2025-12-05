@@ -1,6 +1,5 @@
 package com.mx.liftechnology.registroeducativo.main.model.formativeFields
 
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum

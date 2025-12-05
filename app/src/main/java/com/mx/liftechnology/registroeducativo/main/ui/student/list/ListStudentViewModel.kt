@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
@@ -12,6 +12,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiState
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -54,13 +55,14 @@ class ListStudentViewModel(
 
             when(result) {
                 is SuccessResult -> {
+                    val listFormativeField = result.data.toStudentDomainList()
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
                     _dataState.update {
                         it.copy(
-                            studentList = result.data,
-                            studentListUI = StudentMapper.mapStudentListToCustomCard(result.data)
+                            studentList = listFormativeField,
+                            studentListUI = StudentMapper.mapStudentListToCustomCard(listFormativeField)
                         )
                     }
                 }

@@ -8,8 +8,6 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
-import com.mx.liftechnology.domain.model.student.toStudentDomain
 import com.mx.liftechnology.domain.repository.student.EditStudentRepository
 
 /**
@@ -71,7 +69,7 @@ class EditStudentUseCase (
         birthday: String,
         phoneNumber: String,
         studentId: Int?
-    ): ModelResult<StudentDomainPar?, ModelError> {
+    ): ModelResult<StudentDomain?, ModelError> {
         val teacherId= preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()
 
@@ -94,7 +92,7 @@ class EditStudentUseCase (
         val result = editStudentRepository.edit(request, studentId)
         return when (result) {
             is SuccessResult -> {
-                SuccessResult(result.data.toStudentDomain())
+                SuccessResult(result.data)
             }
             is ErrorResult -> result
         }

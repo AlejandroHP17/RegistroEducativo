@@ -2,6 +2,7 @@
 
 > **Análisis realizado por**: Experto Senior en Arquitectura Android  
 > **Fecha**: Diciembre 2025  
+> **Última actualización**: Diciembre 2025  
 > **Estado**: 🟢 **ESTABLE** - Buena estructura, mejoras menores necesarias
 
 ## 📋 Resumen Ejecutivo
@@ -11,9 +12,10 @@ El módulo `data` es responsable de la gestión de datos y la comunicación con 
 ### Estado Actual
 - **Total de Repositorios**: 23 implementaciones
 - **Repositorios documentados**: ~95% ✅
-- **Mappers organizados**: ✅ Bien estructurados (6 mappers)
+- **Mappers organizados**: ✅ Bien estructurados (8 mappers)
 - **Manejo de errores**: ✅ Consistente y bien implementado
 - **Interfaces de repositorio**: ✅ Correctamente ubicadas en domain
+- **Utilidades**: ✅ Mejoradas con `safeApiCallDirect` para respuestas sin wrapper
 - **Testing**: ❌ No implementado
 
 ---
@@ -72,7 +74,8 @@ suspend fun <T, R> safeApiCall(
 ```
 
 **Componentes:**
-- ✅ `safeApiCall` - Wrapper para llamadas de API
+- ✅ `safeApiCall` - Wrapper para llamadas de API con wrapper genérico
+- ✅ `safeApiCallDirect` - Wrapper para llamadas de API sin wrapper genérico
 - ✅ `executeOrError` - Manejo de respuestas con wrapper genérico
 - ✅ `executeOrErrorDirect` - Manejo de respuestas sin wrapper
 - ✅ `NetworkException` - Conversión de excepciones a errores tipados
@@ -95,11 +98,13 @@ suspend fun <T, R> safeApiCall(
 ```
 data/mapper/
 ├── AuthMapper.kt
-├── CalendarMapper.kt
 ├── EvaluationsMapper.kt
 ├── FormativeFieldMapper.kt
+├── PartialMapper.kt
 ├── SchoolCycleMapper.kt
-└── StudentMapper.kt
+├── SchoolMapper.kt
+├── StudentMapper.kt
+└── WorkTypeMapper.kt
 ```
 
 **Buenas Prácticas:**
@@ -136,8 +141,9 @@ object StudentMapper {
 - ✅ Manejo seguro de nulos
 - ✅ Validación de campos requeridos
 - ✅ Funciones de extensión limpias
-- ✅ Agrupados por entidad
+- ✅ Agrupados por entidad (8 mappers bien organizados)
 - ✅ Documentación presente
+- ✅ Separación clara de responsabilidades por entidad
 
 ### 4. Repositorios Bien Estructurados
 
@@ -197,6 +203,33 @@ data/src/main/java/com/mx/liftechnology/data/
 - ✅ Agrupación lógica por feature
 - ✅ Fácil de navegar
 - ✅ Escalable
+
+---
+
+## 🔄 Cambios Recientes
+
+### Mejoras Implementadas
+
+1. **✅ Mappers Actualizados**
+   - **Antes**: 6 mappers (AuthMapper, CalendarMapper, EvaluationsMapper, FormativeFieldMapper, SchoolCycleMapper, StudentMapper)
+   - **Ahora**: 8 mappers (AuthMapper, EvaluationsMapper, FormativeFieldMapper, PartialMapper, SchoolCycleMapper, SchoolMapper, StudentMapper, WorkTypeMapper)
+   - **Cambios**:
+     - ✅ Se agregó `PartialMapper.kt` para mapear parciales
+     - ✅ Se agregó `SchoolMapper.kt` para mapear datos de escuelas (CCT)
+     - ✅ Se agregó `WorkTypeMapper.kt` para mapear tipos de trabajo
+     - ✅ Se eliminó `CalendarMapper.kt` (funcionalidad probablemente movida o consolidada)
+   - **Impacto**: Mejor organización y separación de responsabilidades por entidad
+
+2. **✅ Utilidades Mejoradas**
+   - **Nueva función**: `safeApiCallDirect` para respuestas sin wrapper genérico
+   - **Beneficio**: Soporte para APIs que no usan el wrapper `ResponseGeneric<T>`
+   - **Ubicación**: `ResponseExtensions.kt`
+   - **Documentación**: Excelente documentación KDoc agregada
+
+3. **✅ Documentación Mejorada**
+   - Funciones de extensión con documentación KDoc completa
+   - Ejemplos de uso en la documentación
+   - Explicación clara de cuándo usar cada función
 
 ---
 
@@ -374,13 +407,15 @@ class LoginRepositoryImplTest {
 #### ✅ Bien Organizado
 ```
 data/src/main/java/com/mx/liftechnology/data/
-├── mapper/              # Mappers de datos a dominio (6 archivos)
+├── mapper/              # Mappers de datos a dominio (8 archivos)
 │   ├── AuthMapper.kt
-│   ├── CalendarMapper.kt
 │   ├── EvaluationsMapper.kt
 │   ├── FormativeFieldMapper.kt
+│   ├── PartialMapper.kt
 │   ├── SchoolCycleMapper.kt
-│   └── StudentMapper.kt
+│   ├── SchoolMapper.kt
+│   ├── StudentMapper.kt
+│   └── WorkTypeMapper.kt
 ├── model/              # Modelos de datos (pocos)
 │   ├── evaluation/
 │   ├── formativeField/
@@ -470,7 +505,8 @@ object StudentMapper {
 #### ✅ Excelente Implementación
 
 **Componentes:**
-- ✅ `safeApiCall` - Wrapper para llamadas de API
+- ✅ `safeApiCall` - Wrapper para llamadas de API con wrapper genérico
+- ✅ `safeApiCallDirect` - Wrapper para llamadas de API sin wrapper genérico (nuevo)
 - ✅ `executeOrError` - Manejo de respuestas con wrapper
 - ✅ `executeOrErrorDirect` - Manejo de respuestas sin wrapper
 - ✅ `NetworkException` - Conversión de excepciones
@@ -480,7 +516,8 @@ object StudentMapper {
 - ✅ Conversión automática de excepciones
 - ✅ Mapeo de códigos HTTP
 - ✅ Manejo de errores de conexión
-- ✅ Documentación excelente
+- ✅ Soporte para respuestas con y sin wrapper genérico
+- ✅ Documentación excelente con ejemplos de uso
 
 ---
 
@@ -580,13 +617,14 @@ class NetworkExceptionTest {
 ### 6.1 Cobertura
 - **Repositorios documentados**: ~95% ✅
 - **Mappers documentados**: ~90% ✅
-- **Utilidades documentadas**: ~100% ✅
+- **Utilidades documentadas**: ~100% ✅ (excelente documentación KDoc)
 - **Testing**: 0% ❌
 
 ### 6.2 Complejidad
 - **Repositorios totales**: 23 implementaciones
-- **Mappers totales**: 6
+- **Mappers totales**: 8 (AuthMapper, EvaluationsMapper, FormativeFieldMapper, PartialMapper, SchoolCycleMapper, SchoolMapper, StudentMapper, WorkTypeMapper)
 - **Utilidades**: 2 (ExceptionHandler, ResponseExtensions)
+- **Funciones de extensión**: 4 (safeApiCall, safeApiCallDirect, executeOrError, executeOrErrorDirect)
 - **Modelos de datos**: ~5 (la mayoría en core/network/api)
 
 ### 6.3 Dependencias
@@ -603,9 +641,10 @@ El módulo DATA tiene una **buena estructura general** con mappers bien organiza
 ### Fortalezas
 - ✅ Arquitectura correcta (interfaces en domain, implementaciones en data)
 - ✅ Manejo de errores robusto y centralizado
-- ✅ Mappers bien estructurados y consistentes
+- ✅ Mappers bien estructurados y consistentes (8 mappers organizados por entidad)
 - ✅ Repositorios con patrón claro
-- ✅ Documentación presente
+- ✅ Utilidades mejoradas con soporte para respuestas sin wrapper
+- ✅ Documentación excelente con ejemplos de uso
 - ✅ Organización clara de paquetes
 
 ### Debilidades

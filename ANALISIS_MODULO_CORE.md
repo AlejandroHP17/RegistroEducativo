@@ -2,7 +2,8 @@
 
 > **Análisis realizado por**: Experto Senior en Arquitectura Android  
 > **Fecha**: Diciembre 2025  
-> **Estado**: 🟢 **ESTABLE** - Bien estructurado, pocas mejoras necesarias
+> **Última actualización**: Diciembre 2025  
+> **Estado**: 🟢 **ESTABLE** - Bien estructurado, mejoras implementadas
 
 ## 📋 Resumen Ejecutivo
 
@@ -24,12 +25,12 @@ El módulo `core` contiene funcionalidades transversales y herramientas comparti
 ### 1. Configuración de Red Robusta
 
 **Componentes:**
-- ✅ `NetworkModule` - Configuración de Koin bien estructurada
-- ✅ `NetworkConfig` - Constantes centralizadas para timeouts
+- ✅ `NetworkModule` - Configuración de Koin bien estructurada (incluye SessionManager)
+- ✅ `NetworkConfig` - Constantes centralizadas para timeouts (15 segundos para todos)
 - ✅ `Environment` - Detección automática de emulador/dispositivo
 - ✅ `TokenProvider` - Gestión centralizada de tokens
 - ✅ 3 interceptores especializados y bien documentados
-- ✅ 8 APIs definidas (AuthApi, StudentApi, etc.)
+- ✅ 8 APIs definidas (AuthApi, StudentApi, SchoolApi, PartialApi, SchoolCycleApi, FormativeFieldApi, WorkTypeApi, EvaluationApi)
 
 **Ejemplo de buena práctica:**
 ```kotlin
@@ -51,9 +52,10 @@ val networkModule = module {
 **Fortalezas:**
 - ✅ Interceptores bien separados por responsabilidad
 - ✅ Detección automática de entorno (emulador vs dispositivo)
-- ✅ Configuración de timeouts centralizada
+- ✅ Configuración de timeouts centralizada (15 segundos para todos)
 - ✅ Logging condicional (solo en DEBUG)
 - ✅ Manejo de errores HTTP centralizado
+- ✅ SessionManager integrado en NetworkModule
 
 #### 1.1 Interceptores Especializados
 
@@ -115,6 +117,7 @@ class PreferenceRepositoryImpl(
 - ✅ Métodos de conveniencia para preferencias comunes
 - ✅ 9 preferencias bien definidas
 - ✅ Manejo de errores en inicialización (fallback)
+- ✅ Uso consistente de `edit { }` en todas las preferencias
 
 **Preferencias definidas:**
 - `AccessToken` - Token de acceso
@@ -174,6 +177,7 @@ core/util/
 - ✅ SharedFlow para eventos de expiración
 - ✅ Notificación centralizada de expiración
 - ✅ Desacoplado de otros componentes
+- ✅ Registrado en NetworkModule para inyección de dependencias
 
 ### 4. Sistema de Manejo de Errores
 
@@ -218,6 +222,29 @@ object Environment {
 - ✅ URLs configurables por build type
 - ✅ Endpoints centralizados
 - ✅ Logging para debugging
+
+---
+
+## 🔄 Cambios Recientes
+
+### Mejoras Implementadas
+
+1. **✅ Timeouts de Red Optimizados**
+   - **Antes**: `READ_TIMEOUT_SECONDS = 155L` (2.5 minutos)
+   - **Ahora**: Todos los timeouts configurados en `15L` segundos
+   - **Impacto**: Mejor experiencia de usuario, timeouts más razonables
+   - **Ubicación**: `NetworkConfig.kt`
+
+2. **✅ Preferencias Estandarizadas**
+   - **Antes**: Inconsistencia entre `apply()` y `edit { }`
+   - **Ahora**: Todas las preferencias usan `edit { }` consistentemente
+   - **Impacto**: Código más consistente y mantenible
+   - **Ubicación**: `Preference.kt`
+
+3. **✅ SessionManager Integrado en NetworkModule**
+   - **Cambio**: `SessionManager` ahora se registra en `NetworkModule`
+   - **Impacto**: Mejor organización y agrupación lógica de dependencias relacionadas con red
+   - **Ubicación**: `NetworkModule.kt` (línea 107)
 
 ---
 
@@ -285,32 +312,16 @@ sealed class DeviceIdResult {
 
 **Recomendación**: Agregar ejemplos de uso en la documentación de clases principales
 
-### 4. Inconsistencia en Preferencias
+### 4. Timeouts de Red
 
-**Problema menor**: Una preferencia usa `apply()` en lugar de `edit { }`:
-```kotlin
-// IdPartial usa apply() directamente
-override fun set(prefs: SharedPreferences, value: Int) {
-    prefs.edit().putInt(key, value).apply()
-}
+**Estado actual**: ✅ **CORREGIDO**
+- Todos los timeouts ahora están configurados en `15L` segundos (conexión, lectura y escritura)
+- Valores razonables que mejoran la experiencia de usuario
+- Configuración consistente y centralizada en `NetworkConfig`
 
-// Otras usan edit { }
-override fun set(prefs: SharedPreferences, value: Int) {
-    prefs.edit { putInt(key, value) }
-}
-```
-
-**Recomendación**: Estandarizar a `edit { }` para consistencia
-
-### 5. Timeouts de Red
-
-**Observación**: `READ_TIMEOUT_SECONDS = 155L` es muy alto (2.5 minutos)
-
-**Análisis**: 
-- Puede ser intencional para operaciones largas
-- Pero podría causar problemas de UX si no se maneja bien
-
-**Recomendación**: Documentar por qué es tan alto o considerar timeouts más cortos con reintentos
+**Análisis previo**: 
+- Anteriormente `READ_TIMEOUT_SECONDS = 155L` era muy alto (2.5 minutos)
+- Esto ha sido corregido a `15L` segundos, un valor más apropiado
 
 ---
 
@@ -335,8 +346,8 @@ core/src/main/java/com/mx/liftechnology/core/
 │   │   ├── ErrorHandlingInterceptor.kt
 │   │   └── ConnectionErrorInterceptor.kt
 │   └── util/
-│       ├── NetworkConfig.kt    # Constantes de configuración
-│       ├── NetworkModule.kt    # Módulo de Koin
+│       ├── NetworkConfig.kt    # Constantes de configuración (timeouts: 15s)
+│       ├── NetworkModule.kt    # Módulo de Koin (incluye SessionManager)
 │       └── TokenProvider.kt    # Gestión de tokens
 ├── preference/
 │   ├── Preference.kt           # Sistema de tipos seguros
@@ -471,14 +482,6 @@ class LocationHelperTest {
    - Interceptores (alta prioridad)
    - Utilidades (media prioridad)
 
-2. **Estandarizar preferencias**
-   - Usar `edit { }` consistentemente
-   - Revisar todas las preferencias
-
-3. **Documentar timeouts**
-   - Explicar por qué READ_TIMEOUT es tan alto
-   - O considerar reducirlo
-
 ### 🟢 Baja Prioridad
 
 1. **Agregar más ejemplos** en documentación
@@ -504,9 +507,10 @@ class LocationHelperTest {
 - **Módulos de Koin**: 2 (networkModule, preferenceModule)
 - **Utilidades**: 4 (device, location, voice, session)
 - **Interceptores**: 3
-- **APIs definidas**: 8
+- **APIs definidas**: 8 (AuthApi, StudentApi, SchoolApi, PartialApi, SchoolCycleApi, FormativeFieldApi, WorkTypeApi, EvaluationApi)
 - **Preferencias definidas**: 9
 - **Modelos compartidos**: 2 (ModelResult, ResponseGeneric)
+- **Timeouts de red**: 15 segundos (conexión, lectura, escritura)
 
 ### 6.3 Dependencias
 - **Depende de**: Android SDK, Retrofit, OkHttp, Koin, Timber, etc.
@@ -530,8 +534,11 @@ El módulo CORE está **muy bien estructurado** y cumple excelentemente su funci
 
 ### Debilidades
 - ❌ Falta de testing (crítico)
-- ⚠️ Inconsistencia menor en preferencias (apply vs edit)
-- ⚠️ Timeout de lectura muy alto (documentar o revisar)
+
+### Mejoras Implementadas
+- ✅ **Timeouts de red corregidos**: Todos los timeouts ahora son 15 segundos (antes READ_TIMEOUT era 155 segundos)
+- ✅ **Preferencias estandarizadas**: Todas las preferencias ahora usan `edit { }` consistentemente
+- ✅ **SessionManager integrado**: Ahora está registrado en NetworkModule para mejor organización
 
 ### Prioridad de Acción
 Las mejoras propuestas son de **prioridad media**. El módulo está en muy buen estado y las mejoras son principalmente para robustez (testing) y consistencia. La falta de testing es el punto más crítico a abordar.

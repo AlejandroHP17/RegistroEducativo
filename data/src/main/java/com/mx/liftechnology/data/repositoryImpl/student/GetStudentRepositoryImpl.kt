@@ -25,7 +25,7 @@ class GetStudentRepositoryImpl(
      */
     override suspend fun getStudents(
         cycleSchoolId: Int
-    ) : ModelResult<List<StudentDomain?>, NetworkModelError> {
+    ) : ModelResult<List<StudentDomain>, NetworkModelError> {
         return safeApiCall(
             apiCall = { studentApi.getListStudents(cycleSchoolId) },
             mapper = { it.toListStudentDomain() }

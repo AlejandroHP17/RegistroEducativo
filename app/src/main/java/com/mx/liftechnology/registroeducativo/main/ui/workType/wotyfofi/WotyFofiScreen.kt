@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 
 /**

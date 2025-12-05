@@ -2,9 +2,9 @@ package com.mx.liftechnology.registroeducativo.main.util.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 
 /**
  * Objeto centralizado que contiene todas las rutas de la aplicación organizadas por módulo.

@@ -1,6 +1,7 @@
-package com.mx.liftechnology.domain.model.student
+package com.mx.liftechnology.registroeducativo.main.model.student
 
 import android.os.Parcelable
+import com.mx.liftechnology.domain.model.student.StudentDomain
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -32,10 +33,10 @@ data class StudentDomainPar(
 ) : Parcelable
 
 /**
- * Función de extensión para convertir un [StudentData] (modelo de datos) a un [StudentDomain] (modelo de dominio).
+ * Función de extensión para convertir un [StudentData] (modelo de datos) a un [com.mx.liftechnology.domain.model.student.StudentDomain] (modelo de dominio).
  *
  * @receiver Un objeto [StudentData] nulable.
- * @return Un objeto [StudentDomain] equivalente, o null si el receiver es null.
+ * @return Un objeto [com.mx.liftechnology.domain.model.student.StudentDomain] equivalente, o null si el receiver es null.
  * @author Pelkidev
  * @version 1.0.0
  */

@@ -19,5 +19,5 @@ fun interface GetStudentRepository{
      * @param cycleSchoolId El ID del ciclo escolar.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun getStudents(cycleSchoolId: Int): ModelResult<List<StudentDomain?>, NetworkModelError>
+    suspend fun getStudents(cycleSchoolId: Int): ModelResult<List<StudentDomain>, NetworkModelError>
 }

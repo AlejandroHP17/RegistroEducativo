@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.workType
 
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState

@@ -1,9 +1,9 @@
 package com.mx.liftechnology.registroeducativo.main.model.evaluation
 
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState

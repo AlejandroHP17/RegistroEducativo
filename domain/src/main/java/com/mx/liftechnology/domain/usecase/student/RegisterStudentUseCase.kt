@@ -7,8 +7,6 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
-import com.mx.liftechnology.domain.model.student.toStudentDomain
 import com.mx.liftechnology.domain.repository.student.RegisterStudentRepository
 
 /**
@@ -44,7 +42,7 @@ class RegisterStudentUseCase(
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ModelResult<StudentDomainPar?,
+    ): ModelResult<StudentDomain?,
             ModelError> {
         val teacherId = preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()
@@ -65,7 +63,7 @@ class RegisterStudentUseCase(
         )
         return when (result) {
             is SuccessResult -> {
-                SuccessResult(result.data.toStudentDomain())
+                SuccessResult(result.data)
             }
             is ErrorResult -> result
         }

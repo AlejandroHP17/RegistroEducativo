@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -11,6 +11,7 @@ import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiDa
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -96,10 +97,11 @@ class CalendarViewModel(
                     _uiState.update {
                         it.copy(uiState = ModelStateUIEnum.NOTHING)
                     }
+                    val listStudent = result.data.toStudentDomainList()
                     _dataState2.update {
                         it.copy(
-                            studentList = result.data,
-                            studentListUI = result.data.convertModelCustomCard2()
+                            studentList = listStudent,
+                            studentListUI = listStudent.convertModelCustomCard2()
                         )
                     }
                 }

@@ -2,7 +2,8 @@
 
 > **Análisis realizado por**: Experto Senior en Arquitectura Android  
 > **Fecha**: Diciembre 2025  
-> **Estado**: 🟡 **MEJORABLE** - Buena estructura MVVM, pero mejoras en organización
+> **Última actualización**: Diciembre 2025  
+> **Estado**: 🟢 **MEJORADO** - Buena estructura MVVM, organización mejorada
 
 ## 📋 Resumen Ejecutivo
 
@@ -139,44 +140,102 @@ modules(
 
 ---
 
+## 🔄 Cambios Recientes
+
+### Mejoras Implementadas
+
+1. **✅ Organización de Modelos UI Mejorada**
+   - **Antes**: Modelos mezclados en `viewmodel/` y `ui/` sin criterio claro
+   - **Ahora**: Modelos organizados por feature en `model/`:
+     - `model/auth/` - Modelos de autenticación
+     - `model/evaluation/` - Modelos de evaluación
+     - `model/formativeFields/` - Modelos de campos formativos
+     - `model/menu/` - Modelos de menú
+     - `model/partial/` - Modelos de parciales
+     - `model/schoolCycle/` - Modelos de ciclo escolar
+     - `model/share/` - Modelos compartidos
+     - `model/student/` - Modelos de estudiantes
+     - `model/workType/` - Modelos de tipos de trabajo
+     - `model/ui/` - Modelos de componentes UI
+     - `model/event/` - Modelos de eventos
+   - **Impacto**: Mejor organización, más fácil de navegar y mantener
+
+2. **✅ Modelos Parcelable en Capa de Presentación**
+   - **Nuevo**: `StudentDomainPar.kt` y `FormativeFieldDomainPar.kt` en la capa `app`
+   - **Beneficio**: Parcelable ahora está correctamente en la capa de presentación, no en domain
+   - **Ubicación**: `app/main/model/student/` y `app/main/model/formativeFields/`
+   - **Impacto**: Mejor separación de responsabilidades, domain más puro
+
+3. **✅ ToastUiState Estandarizado**
+   - **Cambio**: `ToastUiState` ahora está en `model/ui/ModelStateToastUI.kt`
+   - **Beneficio**: Uso consistente en todos los modelos de estado
+   - **Impacto**: Consistencia mejorada en el manejo de toasts
+
+4. **✅ Módulo locationModule Agregado**
+   - **Nuevo**: `locationModule.kt` en los módulos de Koin
+   - **Impacto**: Mejor organización de dependencias de ubicación
+
+---
+
 ## ⚠️ Problemas Identificados
 
 ### 1. Organización de Modelos UI
 
-#### ❌ Problema: Modelos mezclados con diferentes niveles de granularidad
+#### ✅ Mejorado: Modelos ahora organizados por feature
 
-**Estructura actual:**
+**Estructura actual (mejorada):**
 ```
 model/
-├── ModelShareUIState.kt          # Estado compartido (raíz)
-├── viewmodel/                    # Modelos específicos de ViewModel
-│   ├── events/
-│   │   └── UiEvent.kt
-│   ├── login/
-│   │   ├── ModelLoginUI.kt       # ❌ Nomenclatura inconsistente
-│   │   └── ModelRegisterUserUI.kt
-│   └── main/
-│       ├── ModelMenuUi.kt        # ❌ Nomenclatura inconsistente
-│       ├── ModelRegisterSchoolStateUi.kt  # ❌ Nomenclatura inconsistente
-│       ├── ModelWotyFofiUiState.kt        # ✅ Nomenclatura correcta
-│       ├── ModelListStudentUiState.kt     # ✅ Nomenclatura correcta
-│       └── share/
-│           ├── ModelComplexCard.kt
-│           └── ...
-└── ui/                           # Modelos de componentes UI
-    ├── ModelStateCalendarUI.kt
-    ├── ModelStateSpinnerUI.kt
-    ├── ModelStateToastUI.kt
-    ├── ModelStateTypeToastUI.kt
-    ├── ModelStateUIEnum.kt
-    └── ToastUiState.kt           # ❌ Nomenclatura inconsistente
+├── auth/
+│   ├── ModelLoginUI.kt
+│   └── ModelRegisterUserUI.kt
+├── evaluation/
+│   └── ModelRegisterEvaluationUiState.kt
+├── event/
+│   ├── ModelShareUIState.kt
+│   └── UiEvent.kt
+├── formativeFields/
+│   ├── FormativeFieldDomainPar.kt  # ✅ Parcelable en capa de presentación
+│   ├── ModelListFormativeFieldsUiState.kt
+│   └── ModelRegisterFormativeFieldUiState.kt
+├── menu/
+│   └── ModelMenuUi.kt
+├── partial/
+│   └── ModelRegisterPartialUiState.kt
+├── schoolCycle/
+│   └── ModelRegisterSchoolStateUi.kt
+├── share/
+│   ├── ModelComplexCard.kt
+│   ├── ModelCustomCalendar.kt
+│   ├── ModelCustomCard.kt
+│   └── ModelCustomCardStudent.kt
+├── student/
+│   ├── StudentDomainPar.kt  # ✅ Parcelable en capa de presentación
+│   ├── ModelListStudentUiState.kt
+│   └── ModelRegisterStudentUiState.kt
+├── ui/
+│   ├── ModelStateCalendarUI.kt
+│   ├── ModelStateSpinnerUI.kt
+│   ├── ModelStateToastUI.kt  # ✅ ToastUiState estandarizado
+│   ├── ModelStateTypeToastUI.kt
+│   └── ModelStateUIEnum.kt
+└── workType/
+    └── ModelWotyFofiUiState.kt
 ```
 
-**Problemas:**
-- Modelos en diferentes ubicaciones sin criterio claro
-- Algunos modelos UI en `viewmodel/`, otros en `ui/`
-- Nomenclatura inconsistente dentro de la misma carpeta
-- Mezcla de prefijos: `Model*`, `*UiState`, `*Ui`, `*UI`
+**Mejoras implementadas:**
+- ✅ Modelos organizados por feature (auth, evaluation, etc.)
+- ✅ Parcelable correctamente en capa de presentación
+- ✅ ToastUiState estandarizado y centralizado
+- ✅ Mejor separación de concerns
+
+**Pendiente:**
+- ⚠️ Nomenclatura aún inconsistente (algunos con prefijo `Model`, otros sin él)
+
+**Problemas restantes:**
+- ⚠️ Nomenclatura inconsistente (algunos con prefijo `Model`, otros sin él)
+- ⚠️ Mezcla de sufijos: `*UiState`, `*Ui`, `*UI`
+- ⚠️ Algunos archivos aún tienen prefijo `Model` innecesario
 
 **Recomendación:**
 ```
@@ -374,10 +433,18 @@ app/src/main/java/com/mx/liftechnology/registroeducativo/
     │   └── workType/
     │       ├── wotyfofi/
     │       └── wotyFofiStudent/
-    ├── model/                    # Modelos UI
-    │   ├── ModelShareUIState.kt
+    ├── model/                    # Modelos UI (organizados por feature)
+    │   ├── auth/
+    │   ├── evaluation/
+    │   ├── event/
+    │   ├── formativeFields/
+    │   ├── menu/
+    │   ├── partial/
+    │   ├── schoolCycle/
+    │   ├── share/
+    │   ├── student/
     │   ├── ui/
-    │   └── viewmodel/
+    │   └── workType/
     ├── mapper/                   # Mappers UI
     │   ├── ErrorMapper.kt
     │   ├── ErrorToMessageMapper.kt
@@ -395,17 +462,18 @@ app/src/main/java/com/mx/liftechnology/registroeducativo/
     └── MainActivity.kt
 ```
 
-#### ⚠️ Áreas de Mejora
+#### ✅ Mejoras Implementadas
 
-**Problema 1**: Modelos UI dispersos
-- Algunos en `model/viewmodel/`
-- Otros en `model/ui/`
-- Sin criterio claro de organización
+**Mejora 1**: Modelos UI organizados por feature ✅
+- Modelos ahora agrupados por funcionalidad (auth, evaluation, student, etc.)
+- Mejor separación de concerns
+- Más fácil de navegar y mantener
 
-**Problema 2**: Nomenclatura de archivos inconsistente
+**Pendiente 1**: Nomenclatura de archivos inconsistente
 - Mezcla de `Model*`, `*UiState`, `*UI`, `*Ui`
+- Algunos archivos aún tienen prefijo `Model` innecesario
 
-**Problema 3**: Mappers UI podrían mejorarse
+**Pendiente 2**: Mappers UI podrían mejorarse
 - Algunos mappers muy simples
 - Podrían usar funciones de extensión más consistentes
 
@@ -621,11 +689,10 @@ fun `navigate to login screen`() {
 
 ### 🔴 Alta Prioridad
 
-1. **Reorganizar modelos UI** con estructura clara
-   - Consolidar en `model/ui/` con subcarpetas por tipo
-   - Estandarizar nomenclatura
-
-2. **Estandarizar nomenclatura** de modelos y archivos
+1. **Estandarizar nomenclatura** de modelos y archivos
+   - ✅ Modelos ya reorganizados por feature
+   - Pendiente: Eliminar prefijo `Model` inconsistente
+   - Pendiente: Unificar sufijos (`*UiState`, `*Ui`, `*UI`)
    - Eliminar prefijo `Model`
    - Usar sufijos consistentes: `*UiState`, `*UiInputs`, etc.
 
@@ -674,19 +741,21 @@ fun `navigate to login screen`() {
 - **ViewModels totales**: 17
 - **Pantallas Compose**: 18
 - **Componentes reutilizables**: ~20 (en 12 archivos)
-- **Módulos de Koin**: 24 (16 UI + 8 dataCore)
+- **Módulos de Koin**: 24 (16 UI + 8 dataCore, incluye locationModule)
 - **Mappers UI**: 7
+- **Modelos Parcelable**: 2 (StudentDomainPar, FormativeFieldDomainPar) ✅ En capa de presentación
 
 ### 6.3 Organización
-- **Modelos UI**: ~30 archivos (necesitan reorganización)
+- **Modelos UI**: ~30 archivos (✅ Reorganizados por feature)
 - **Rutas de navegación**: ~20 rutas
 - **Módulos DI**: 24 módulos bien organizados
+- **Organización de modelos**: ✅ Por feature (auth, evaluation, student, etc.)
 
 ---
 
 ## 🎓 Conclusión
 
-El módulo APP tiene una **buena estructura general** con ViewModels bien diseñados y componentes Compose organizados. Sin embargo, presenta **problemas de organización** en modelos UI, **nomenclatura inconsistente** y **falta crítica de testing**.
+El módulo APP tiene una **buena estructura general** con ViewModels bien diseñados y componentes Compose organizados. Se han implementado **mejoras significativas en la organización de modelos UI** (ahora por feature), pero aún presenta **nomenclatura inconsistente** y **falta crítica de testing**.
 
 ### Fortalezas
 - ✅ ViewModels bien estructurados con MVVM
@@ -698,14 +767,19 @@ El módulo APP tiene una **buena estructura general** con ViewModels bien diseñ
 - ✅ Documentación presente
 
 ### Debilidades
-- ❌ Modelos UI desorganizados
-- ❌ Nomenclatura inconsistente
+- ⚠️ Nomenclatura inconsistente (mejorado pero aún pendiente)
 - ❌ Falta de testing (crítico)
 - ⚠️ Algunos ViewModels muy grandes
 - ⚠️ Algunas pantallas muy grandes
 
+### Mejoras Implementadas
+- ✅ **Modelos UI reorganizados**: Ahora organizados por feature (auth, evaluation, student, etc.)
+- ✅ **Parcelable en capa correcta**: StudentDomainPar y FormativeFieldDomainPar en capa de presentación
+- ✅ **ToastUiState estandarizado**: Uso consistente en todos los modelos de estado
+- ✅ **Mejor separación de concerns**: Modelos de componentes UI separados en `model/ui/`
+
 ### Prioridad de Acción
-Las mejoras propuestas son **importantes** para mantener la arquitectura limpia y mejorar la mantenibilidad. La reorganización de modelos UI, estandarización de nomenclatura y la implementación de tests son críticas para el futuro del proyecto.
+Las mejoras propuestas son **importantes** para mantener la arquitectura limpia y mejorar la mantenibilidad. La reorganización de modelos UI ya está implementada, quedan pendientes la estandarización completa de nomenclatura y la implementación de tests (crítica).
 
 ---
 

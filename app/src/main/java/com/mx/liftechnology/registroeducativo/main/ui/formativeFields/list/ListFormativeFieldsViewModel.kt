@@ -3,13 +3,14 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiState
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.toFormativeFieldDomainList
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,10 +54,11 @@ class ListFormativeFieldsViewModel(
 
             when(result) {
                 is SuccessResult -> {
+                    val listFormativeField = result.data?.toFormativeFieldDomainList()
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
-                        formativeFieldsList = result.data,
-                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(result.data),
+                        formativeFieldsList = listFormativeField,
+                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
                     ) }
                 }
                 else -> {

@@ -1,12 +1,4 @@
-/**
- * @file Define el modelo de dominio para un estudiante y su mapeo desde la capa de datos.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.domain.model.student
-
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
 /**
  * Modelo de datos de dominio que representa a un estudiante.
