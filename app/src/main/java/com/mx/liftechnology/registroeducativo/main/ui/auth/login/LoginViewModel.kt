@@ -121,8 +121,8 @@ class LoginViewModel(
                                 )
                             )
                         }
-                        
-                        _uiEvent.emit(UiEvent.NavigateToHome)
+                        if (result.data.accessLevelId == 1) _uiEvent.emit(UiEvent.NavigateToAdmin)
+                        else _uiEvent.emit(UiEvent.NavigateToHome)
                     }
 
                     is ErrorResult -> {

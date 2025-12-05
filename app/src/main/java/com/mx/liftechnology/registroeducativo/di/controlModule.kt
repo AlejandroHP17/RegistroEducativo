@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.registroeducativo.main.ui.control.ApiControlViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.control.ControlViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -12,7 +12,7 @@ import org.koin.dsl.module
  */
 val controlModule = module {
     /**
-     * Proporciona una instancia de [ApiControlViewModel].
+     * Proporciona una instancia de [ControlViewModel].
      */
-    viewModelOf(::ApiControlViewModel)
+    viewModelOf(::ControlViewModel)
 }

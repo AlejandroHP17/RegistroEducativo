@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
  * @author Pelkidev
  * @version 1.0.0
  */
-class ApiControlViewModel(
+class ControlViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val authRepository: AuthRepository,
     private val studentRepository: StudentRepository,
@@ -63,7 +63,7 @@ class ApiControlViewModel(
     /**
      * Consume el servicio de obtener datos de usuario.
      */
-    fun callGetUserData() {
+    fun callNewCode() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null, responseJson = "") }
             
@@ -71,6 +71,22 @@ class ApiControlViewModel(
                 authRepository.getData()
             }
             
+            handleResponse(result, "getUserData")
+        }
+    }
+
+
+    /**
+     * Consume el servicio de obtener datos de usuario.
+     */
+    fun callGetUserData() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null, responseJson = "") }
+
+            val result = withContext(dispatcherProvider.io) {
+                authRepository.getData()
+            }
+
             handleResponse(result, "getUserData")
         }
     }
@@ -250,7 +266,7 @@ class ApiControlViewModel(
         _uiState.update { it.copy(isLoading = false) }
         
         when (result) {
-            is SuccessResult -> {
+            is SuccessResult<*> -> {
                 val json = try {
                     gson.toJson(result.data)
                 } catch (e: Exception) {
@@ -263,7 +279,7 @@ class ApiControlViewModel(
                     )
                 }
             }
-            is ErrorResult -> {
+            is ErrorResult<*> -> {
                 val json = try {
                     gson.toJson(result.error)
                 } catch (e: Exception) {

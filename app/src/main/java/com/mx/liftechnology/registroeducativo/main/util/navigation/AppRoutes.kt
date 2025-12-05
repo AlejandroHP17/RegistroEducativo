@@ -118,8 +118,8 @@ object AppRoutes {
     /**
      * Ruta para la pantalla de splash.
      */
-    object Splash {
-        const val SPLASH = "splash"
+    object Control {
+        const val MENU = "menuAdmin"
     }
 }
 

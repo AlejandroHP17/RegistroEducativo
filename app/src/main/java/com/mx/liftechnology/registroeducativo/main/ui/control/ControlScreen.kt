@@ -55,9 +55,9 @@ data class ApiServiceButton(
  * @version 1.0.0
  */
 @Composable
-fun ApiControlScreen(
+fun ControlScreen(
     navController: NavHostController,
-    viewModel: ApiControlViewModel = koinViewModel()
+    viewModel: ControlViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -88,6 +88,13 @@ fun ApiControlScreen(
                 focusedTextColor = colorPrincipalText,
                 unfocusedTextColor = colorPrincipalText
             )
+        )
+
+        ApiServiceButton(
+            title = "Crear Codigo de registro",
+            description = "Nuevo codigo para registro",
+            parameterHint = "No requiere parámetros",
+            onClick = { viewModel.callNewCode() }
         )
 
         // Lista de botones de servicios
