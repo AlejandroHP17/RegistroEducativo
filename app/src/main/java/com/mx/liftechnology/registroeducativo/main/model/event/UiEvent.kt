@@ -25,6 +25,11 @@ sealed class UiEvent {
     object NavigateBack : UiEvent()
 
     /**
+     * Evento para navegar al home después de un login exitoso.
+     */
+    object NavigateToAdmin : UiEvent()
+
+    /**
      * Evento para mostrar un error.
      */
     data class ShowError(val message: String) : UiEvent()

@@ -49,4 +49,6 @@ dependencies {
 
     api(libs.bundles.timber)
     testImplementation(kotlin("test"))
+    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
 }

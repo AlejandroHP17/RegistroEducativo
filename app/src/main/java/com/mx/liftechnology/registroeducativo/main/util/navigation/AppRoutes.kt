@@ -49,6 +49,9 @@ object AppRoutes {
         const val WOTYFOFI_STUDENT = "wotyfofi?student={student}"
         const val ASSIGNMENT_FORMATIVE_FIELD = "assignment?formativeField={formativeField}"
         const val REGISTER_ASSIGNMENT = "registerassignment?formativeField={formativeField}"
+        
+        // Ruta de control de APIs
+        const val API_CONTROL = "apiControl"
 
         /**
          * Crea la ruta del menú con el parámetro de recarga.
@@ -103,6 +106,13 @@ object AppRoutes {
             val formativeFieldJson = formativeField?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "registerassignment?formativeField=$formativeFieldJson"
         }
+    }
+
+    /**
+     * Ruta para la pantalla de splash.
+     */
+    object Splash {
+        const val SPLASH = "splash"
     }
 
     /**

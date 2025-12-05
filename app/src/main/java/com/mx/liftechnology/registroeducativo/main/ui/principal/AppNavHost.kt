@@ -44,6 +44,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent.WotyFofiStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.control.ApiControlScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 
 /**
@@ -104,7 +105,8 @@ fun AppNavHost(
             composable(AppRoutes.Auth.LOGIN){ LoginScreen(
                 navController = navigationController,
                 sharedViewModel = sharedViewModel,
-                onSuccess = {navigationController.navigate(AppRoutes.Main.MENU){popUpTo(AppRoutes.Auth.LOGIN) { inclusive = true } } }
+                onSuccess = {navigationController.navigate(AppRoutes.Main.MENU){popUpTo(AppRoutes.Auth.LOGIN) { inclusive = true } } },
+                onSuccessAdmin = {navigationController.navigate(AppRoutes.Main.MENU){popUpTo(AppRoutes.Auth.LOGIN) { inclusive = true } } }
             )}
             composable(AppRoutes.Auth.REGISTER_USER){ RegisterUserScreen(
                 navController = navigationController,
@@ -130,6 +132,7 @@ fun AppNavHost(
             composable(AppRoutes.Main.LIST_STUDENT){ ListStudentScreen(navigationController) }
             composable(AppRoutes.Main.LIST_FORMATIVE_FIELDS){ ListFormativeFieldsScreen(navigationController) }
             composable(AppRoutes.Main.CALENDAR){ CalendarScreen(navigationController) }
+            composable(AppRoutes.Main.API_CONTROL){ ApiControlScreen(navigationController) }
 
             composable(AppRoutes.Main.REGISTER_SCHOOL){ RegisterSchoolScreen(
                 navController = navigationController,

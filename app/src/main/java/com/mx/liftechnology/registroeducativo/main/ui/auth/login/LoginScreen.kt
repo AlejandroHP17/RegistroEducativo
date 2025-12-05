@@ -48,6 +48,7 @@ fun LoginScreen(
     loginViewModel: LoginViewModel = koinViewModel(),
     sharedViewModel: SharedViewModel,
     onSuccess: () -> Unit,
+    onSuccessAdmin: () -> Unit,
 ) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     val inputState by loginViewModel.inputState.collectAsStateWithLifecycle()
@@ -57,6 +58,7 @@ fun LoginScreen(
         loginViewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.NavigateToHome -> onSuccess()
+                is UiEvent.NavigateToAdmin -> onSuccessAdmin()
                 else -> { /* Otros eventos se manejan en otros lugares */ }
             }
         }
