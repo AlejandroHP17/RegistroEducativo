@@ -6,9 +6,9 @@
 package com.mx.liftechnology.data.repositoryImpl.partial
 
 import com.mx.liftechnology.core.network.api.PartialApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.PartialMapper.toListPartialDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
 import com.mx.liftechnology.domain.repository.partial.GetListPartialRepository
@@ -18,7 +18,7 @@ import com.mx.liftechnology.domain.repository.partial.GetListPartialRepository
  * Implementación de [GetListPartialRepository].
  * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property getListPartialApiCall La llamada a la API para obtener la lista de parciales.
+ * @property PartialApi La llamada a la API para obtener la lista de parciales.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -34,7 +34,7 @@ class GetListPartialRepositoryImpl(
     ): ModelResult<List<ListPartialDomain>, NetworkModelError> {
         return safeApiCall(
             apiCall = { partialApi.getListPartial(schoolCycleId) },
-            mapper = { it.toData() }
+            mapper = { it.toListPartialDomain() }
         )
     }
 }

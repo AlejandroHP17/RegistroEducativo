@@ -6,7 +6,7 @@ import com.mx.liftechnology.core.util.models.LocalModelError
 import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.formativeFields.toFormativeFieldDomainList
 import com.mx.liftechnology.domain.repository.formativeFields.GetListFormativeFieldRepository
 
@@ -27,9 +27,9 @@ class GetListFormativeFieldUseCase (
     /**
      * Ejecuta el proceso para obtener la lista de materias.
      *
-     * @return Un [com.mx.liftechnology.core.util.models.ModelResult] que contiene la lista de materias o un estado de error.
+     * @return Un [ModelResult] que contiene la lista de materias o un estado de error.
      */
-    suspend operator fun invoke(): ModelResult<List<FormativeFieldDomain>?, ModelError> {
+    suspend operator fun invoke(): ModelResult<List<FormativeFieldDomainPar>?, ModelError> {
         val cycleSchoolId = preference.getIdCycleSchool()
 
         if(cycleSchoolId == null) return ErrorResult(

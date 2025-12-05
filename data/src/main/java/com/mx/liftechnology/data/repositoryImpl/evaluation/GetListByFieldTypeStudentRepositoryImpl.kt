@@ -3,7 +3,7 @@ package com.mx.liftechnology.data.repositoryImpl.evaluation
 import com.mx.liftechnology.core.network.api.EvaluationApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toData
+import com.mx.liftechnology.data.mapper.EvaluationsMapper.toByFieldTypeStudentDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
 import com.mx.liftechnology.domain.repository.formativeFields.GetListByFieldTypeStudentRepository
@@ -26,7 +26,7 @@ class GetListByFieldTypeStudentRepositoryImpl(
                     workDate = workDate
                 )
             },
-            mapper = { it.toData() }
+            mapper = { it.toByFieldTypeStudentDomain() }
         )
     }
 }

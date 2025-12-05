@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.evaluation.GetDatesActivePartialUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.RegisterEvaluationWithValidationUseCase
 import com.mx.liftechnology.domain.usecase.evaluation.GetWorkTypeByFormativeFieldUseCase
@@ -74,7 +75,7 @@ class RegisterEvaluationViewModel(
      *
      * @param formativeField La nueva materia.
      */
-    fun updateFormativeField(formativeField: FormativeFieldDomain?) {
+    fun updateFormativeField(formativeField: FormativeFieldDomainPar?) {
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             withContext(dispatcherProvider.io) {
@@ -200,7 +201,7 @@ class RegisterEvaluationViewModel(
         }
     }
 
-    private fun List<StudentDomain>?.convertModelCustomCard(): List<ModelCustomCardStudent> {
+    private fun List<StudentDomainPar>?.convertModelCustomCard(): List<ModelCustomCardStudent> {
         return this?.sortedWith(
             compareBy(
                 { it.lastName ?: "" },

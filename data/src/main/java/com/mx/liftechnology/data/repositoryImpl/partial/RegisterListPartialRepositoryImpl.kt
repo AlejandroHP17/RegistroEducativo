@@ -8,9 +8,9 @@ package com.mx.liftechnology.data.repositoryImpl.partial
 import com.mx.liftechnology.core.network.api.PartialApi
 import com.mx.liftechnology.core.network.api.RequestPartials
 import com.mx.liftechnology.core.network.api.RequestRegisterPartial
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.PartialMapper.toListRegisterPartialDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.schoolCycle.ListPartialDomain
@@ -21,7 +21,7 @@ import com.mx.liftechnology.domain.repository.partial.RegisterListPartialReposit
  * Implementación de [RegisterListPartialRepository].
  * Se encarga de realizar la llamada a la API y de gestionar las respuestas de éxito y error.
  *
- * @property registerListPartialApiCall La llamada a la API para el registro de una lista de parciales.
+ * @property PartialApi La llamada a la API para el registro de una lista de parciales.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -53,7 +53,7 @@ class RegisterListPartialRepositoryImpl(
 
         return safeApiCall(
             apiCall = { partialApi.registerListPartial(request) },
-            mapper = { it.toData() }
+            mapper = { it.toListRegisterPartialDomain() }
         )
     }
 }

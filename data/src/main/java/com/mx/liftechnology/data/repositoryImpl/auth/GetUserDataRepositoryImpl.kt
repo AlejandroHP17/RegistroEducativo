@@ -3,7 +3,7 @@ package com.mx.liftechnology.data.repositoryImpl.auth
 import com.mx.liftechnology.core.network.api.AuthApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.data.mapper.AuthMapper.toData
+import com.mx.liftechnology.data.mapper.AuthMapper.toUserDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.model.auth.UserDomain
 import com.mx.liftechnology.domain.repository.auth.GetDataUserRepository
@@ -16,7 +16,7 @@ class GetDataUserRepositoryImpl(
     override suspend fun getData(): ModelResult<UserDomain, NetworkModelError> {
         return safeApiCall(
             apiCall = { authApi.getUserData() },
-            mapper = { it.toData() }
+            mapper = { it.toUserDomain() }
         )
     }
 }

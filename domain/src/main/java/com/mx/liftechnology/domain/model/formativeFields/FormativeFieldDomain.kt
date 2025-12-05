@@ -1,66 +1,33 @@
-/**
- * @file Define el modelo de dominio para una materia y su mapeo desde la capa de datos.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.domain.model.formativeFields
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 /**
- * Modelo de datos que representa el formato de una materia en la capa de dominio.
- * Esta clase es `Parcelable` para permitir que se pase entre componentes de Android.
+ * @file Define el modelo de datos para un campo formativo.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+/**
+ * Modelo de datos que representa un campo formativo en la capa de datos.
+ * Un campo formativo es una asignatura o materia que se imparte en el ciclo escolar.
  *
- * @property position La posición de la materia en una lista.
- * @property name El nombre de la materia.
- * @property percent El valor porcentual asociado a la materia.
- * @property formativeFieldId El identificador único de la materia.
+ * **Propósito:**
+ * Este modelo actúa como un DTO (Data Transfer Object) que representa la estructura
+ * de datos de un campo formativo tal como viene del servidor.
+ *
+ * **Uso:**
+ * Este modelo se utiliza en:
+ * - Repositorios para almacenar datos recibidos de la API
+ * - Mappers para convertir entre modelos de red y modelos de dominio
+ * - Casos de uso para listar y gestionar campos formativos
+ *
+ * @property name El nombre del campo formativo (ej: "Matemáticas", "Español").
+ * @property code El código único del campo formativo.
+ * @property formativeFieldID El ID único del campo formativo en el sistema.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-@Parcelize
 data class FormativeFieldDomain(
-    val position:Int,
-    var name: String?,
-    var percent: String?,
-    val formativeFieldId: Int?
-): Parcelable
-
-/**
- * Función de extensión para convertir un [FormativeFieldData] (modelo de datos) a un [FormativeFieldDomain] (modelo de dominio).
- *
- * @receiver Un objeto [FormativeFieldData] nulable.
- * @param position La posición del campo formativo en una lista.
- * @return Un objeto [FormativeFieldDomain] equivalente, o null si el receiver es null.
- *
- * @author Pelkidev
- * @version 1.0.0
- */
-fun FormativeFieldData?.toFormativeFieldDomain(position: Int = 0): FormativeFieldDomain? {
-    return this?.let {
-        FormativeFieldDomain(
-            position = position,
-            name = it.name,
-            percent = null,
-            formativeFieldId = it.formativeFieldID
-        )
-    }
-}
-
-/**
- * Función de extensión para convertir una lista de [FormativeFieldData] (modelo de datos)
- * a una lista de [FormativeFieldDomain] (modelo de dominio).
- *
- * @receiver Una lista nulable de objetos [FormativeFieldData].
- * @return Una lista de [FormativeFieldDomain], donde los elementos nulos de la entrada han sido omitidos.
- *
- * @author Pelkidev
- * @version 1.0.0
- */
-fun List<FormativeFieldData?>?.toFormativeFieldDomainList() :List<FormativeFieldDomain>{
-    return this?.mapIndexedNotNull { index, response ->
-        response?.toFormativeFieldDomain(index)
-    }?: emptyList()
-}
+    val name: String?,
+    val code: String?,
+    val formativeFieldID: Int?
+)

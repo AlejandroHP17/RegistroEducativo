@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.formativeFields.SpinnersWorkMethodsDomain
 import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
@@ -81,7 +81,7 @@ fun MyGridScreenPreview() {
         ),
     )
 
-    val items3 = listOf(FormativeFieldDomain(1,"hola","mundo",1))
+    val items3 = listOf(FormativeFieldDomainPar(1,"hola","mundo",1))
 
     Column {
         MyGridScreen(items, 410.dp) {}

@@ -2,6 +2,7 @@ package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.domain.model.generic.ModelValidationResult
+import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.share.ValidateFieldsStudentUseCase
 
 /**
@@ -42,7 +43,7 @@ class EditStudentWithValidationUseCase(
         birthday: String?,
         phoneNumber: String?,
         studentId: Int?
-    ): ModelValidationResult<StudentDomain?> {
+    ): ModelValidationResult<StudentDomainPar?> {
         // 1. Validar todos los campos
         val nameState = validateFieldsUseCase.validateName(name)
         val lastNameState = validateFieldsUseCase.validateLastName(lastName)

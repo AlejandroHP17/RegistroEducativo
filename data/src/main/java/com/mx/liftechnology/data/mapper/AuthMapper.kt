@@ -14,47 +14,43 @@ object AuthMapper {
      * @receiver El objeto de respuesta de la API para obtener datos de usuario.
      * @return Un objeto [UserDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
      */
-    fun ResponseDataUser?.toData(): UserDomain? {
+    fun ResponseDataUser.toUserDomain(): UserDomain {
+        return UserDomain(
+            email = email,
+            name = name,
+            lastName = lastName,
+            phone = phone,
+            isActive = isActive,
+            userId = userId,
+            accessLevelId = accessLevelId
+        )
+
+    }
+    /**
+     * Convierte un [ResponseLogin] a [LoginDomain] con manejo seguro de nulos.
+     *
+     * @receiver El objeto de respuesta de la API para login.
+     * @return Un objeto [LoginDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
+     */
+    fun ResponseLogin?.toLoginDomain(): LoginDomain? {
         return this?.let {
-            UserDomain(
-                email = email,
-                name = name,
-                lastName = lastName,
-                phone = phone,
-                isActive = isActive,
-                userId = userId,
-                accessLevelId = accessLevelId
+            LoginDomain(
+                accessToken = accessToken,
+                refreshToken = refreshToken,
+                tokenType = tokenType
             )
         }
-    }
-}
 
-/**
- * Convierte un [ResponseLogin] a [LoginDomain] con manejo seguro de nulos.
- *
- * @receiver El objeto de respuesta de la API para login.
- * @return Un objeto [LoginDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
- */
-fun ResponseLogin?.toData(): LoginDomain? {
-    return this?.let {
-        LoginDomain(
-            accessToken = accessToken,
-            refreshToken = refreshToken,
-            tokenType = tokenType
-        )
     }
 
-}
-
-/**
- * Convierte un [ResponseRegisterUser] a [RegisterUserDomain] con manejo seguro de nulos.
- *
- * @receiver El objeto de respuesta de la API para registrar usuario.
- * @return Un objeto [RegisterUserDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
- */
-fun ResponseRegisterUser?.toData(): RegisterUserDomain? {
-    return this?.let {
-        RegisterUserDomain(
+    /**
+     * Convierte un [ResponseRegisterUser] a [RegisterUserDomain] con manejo seguro de nulos.
+     *
+     * @receiver El objeto de respuesta de la API para registrar usuario.
+     * @return Un objeto [RegisterUserDomain] con los datos mapeados, o null si el receiver es null o si faltan campos requeridos.
+     */
+    fun ResponseRegisterUser.toRegisterUserDomain(): RegisterUserDomain {
+        return RegisterUserDomain(
             email = email,
             firstName = firstName,
             lastName = lastName,

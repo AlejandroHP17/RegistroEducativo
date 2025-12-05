@@ -1,6 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
 import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -28,6 +29,6 @@ data class ListStudentUiState(
  * @version 1.0.0
  */
 data class ListStudentUiData(
-    val studentList: List<StudentDomain>? = null,
+    val studentList: List<StudentDomainPar>? = null,
     val studentListUI: List<ModelCustomCard> = emptyList()
 )

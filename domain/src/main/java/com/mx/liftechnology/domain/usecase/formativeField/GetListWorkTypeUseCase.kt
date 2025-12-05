@@ -33,7 +33,7 @@ class GetListWorkTypeUseCase(
      * Ejecuta el proceso para obtener la lista de tipos de evaluación.
      * Construye la petición, la envía al repositorio y transforma la respuesta en un [ModelResult].
      *
-     * @return Un [com.mx.liftechnology.data.util.ModelResult] que contiene la lista de [com.mx.liftechnology.core.network.api.FormativeFieldApi.ResponseGetListWorkType] en caso de éxito,
+     * @return Un [ModelResult] que contiene la lista de [ResponseGetListWorkType] en caso de éxito,
      * o un estado de error específico en caso de fallo.
      */
     suspend operator fun invoke(): ModelResult<List<WorkTypeDomain>, ModelError> {

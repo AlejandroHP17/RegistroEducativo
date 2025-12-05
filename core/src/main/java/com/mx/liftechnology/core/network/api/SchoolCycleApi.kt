@@ -22,7 +22,7 @@ interface SchoolCycleApi {
      * Obtiene la lista de grupos de un profesor.
      */
     @GET(Environment.END_POINT_GET_CYCLE_SCHOOL)
-    suspend fun getGroup(@Query("teacher_id") teacherId: Int): Response<ResponseGeneric<List<ResponseGroupTeacher>?>>
+    suspend fun getGroup(@Query("teacher_id") teacherId: Int): Response<ResponseGeneric<List<ResponseGroupTeacher>>>
 
     /**
      * Registra un ciclo escolar.

@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.viewmodel.main
 
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -28,6 +28,6 @@ data class ListFormativeFieldsUiState(
  * @version 1.0.0
  */
 data class ListFormativeFieldsUiData(
-    val formativeFieldsList: List<FormativeFieldDomain>? = null,
+    val formativeFieldsList: List<FormativeFieldDomainPar>? = null,
     val formativeFieldsListUI: List<ModelCustomCard> = emptyList()
 )

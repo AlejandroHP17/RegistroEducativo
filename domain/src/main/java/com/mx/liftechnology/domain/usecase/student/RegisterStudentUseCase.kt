@@ -1,8 +1,3 @@
-/**
- * @file Define el caso de uso para registrar un nuevo estudiante.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.domain.usecase.student
 
 import com.mx.liftechnology.core.preference.PreferenceUseCase
@@ -12,6 +7,7 @@ import com.mx.liftechnology.core.util.models.ModelError
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.model.student.toStudentDomain
 import com.mx.liftechnology.domain.repository.student.RegisterStudentRepository
 
@@ -48,7 +44,7 @@ class RegisterStudentUseCase(
         curp: String,
         birthday: String,
         phoneNumber: String
-    ): ModelResult<StudentDomain?,
+    ): ModelResult<StudentDomainPar?,
             ModelError> {
         val teacherId = preference.getIdUser()
         val cycleSchoolId = preference.getIdCycleSchool()

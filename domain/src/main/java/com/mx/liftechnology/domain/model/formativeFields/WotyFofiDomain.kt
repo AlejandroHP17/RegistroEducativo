@@ -1,8 +1,3 @@
-/**
- * @file Define los modelos de dominio para campos formativos con tipos de trabajo.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.domain.model.formativeFields
 
 /**

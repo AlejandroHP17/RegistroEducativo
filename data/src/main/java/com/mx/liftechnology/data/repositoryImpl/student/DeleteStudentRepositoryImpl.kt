@@ -1,13 +1,9 @@
-/**
- * @file Define el repositorio para la eliminación de estudiantes.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.data.repositoryImpl.student
 
 import com.mx.liftechnology.core.network.api.StudentApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.StudentMapper.toStringDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.student.DeleteStudentRepository
 
@@ -28,7 +24,7 @@ class DeleteStudentRepositoryImpl(
     override suspend fun delete(studentId: Int): ModelResult<String, NetworkModelError> {
         return safeApiCall(
             apiCall = { studentApi.deleteStudent(studentId) },
-            mapper = { it }
+            mapper = { it.toStringDomain() }
         )
     }
 }

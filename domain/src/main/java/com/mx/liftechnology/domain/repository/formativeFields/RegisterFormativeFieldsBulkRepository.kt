@@ -4,7 +4,8 @@ import com.mx.liftechnology.core.network.api.RequestEvaluations
 import com.mx.liftechnology.core.network.api.RequestWorkType
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldData
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 
 /**
  * Interfaz del repositorio para el registro de materias.
@@ -30,5 +31,5 @@ fun interface RegisterFormativeFieldsBulkRepository{
         code : String,
         workTypes : List<RequestWorkType>,
         evaluations :  List<RequestEvaluations>
-    ): ModelResult<FormativeFieldData, NetworkModelError>
+    ): ModelResult<FormativeFieldDomain, NetworkModelError>
 }

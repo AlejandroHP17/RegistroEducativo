@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -110,7 +111,7 @@ class CalendarViewModel(
         }
     }
 
-    private fun List<StudentDomain>?.convertModelCustomCard2(): List<ModelCustomCard> {
+    private fun List<StudentDomainPar>?.convertModelCustomCard2(): List<ModelCustomCard> {
         return this?.sortedWith(
             compareBy(
                 { it.lastName ?: "" },

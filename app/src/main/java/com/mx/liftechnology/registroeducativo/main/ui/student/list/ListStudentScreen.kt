@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.model.student.StudentDomainPar
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
@@ -91,7 +92,7 @@ fun ListStudentScreen(
 @Composable
 private fun ListStudentPreview(){
     val dataState = ListStudentUiData(
-        studentList = listOf(StudentDomain(
+        studentList = listOf(StudentDomainPar(
             studentId = 1,
             curp = "curp",
             birthday = "date",

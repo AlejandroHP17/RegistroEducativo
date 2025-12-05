@@ -8,6 +8,7 @@ package com.mx.liftechnology.data.repositoryImpl.formativeField
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.FormativeFieldMapper.toDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.formativeFields.DeleteFormativeFieldRepository
 
@@ -28,7 +29,7 @@ class DeleteFormativeFieldRepositoryImpl(
     override suspend fun delete(fieldId: Int): ModelResult<String, NetworkModelError> {
         return safeApiCall(
             apiCall = { formativeFieldApi.deleteFormativeField(fieldId) },
-            mapper = { it }
+            mapper = { it.toDomain() }
         )
     }
 }

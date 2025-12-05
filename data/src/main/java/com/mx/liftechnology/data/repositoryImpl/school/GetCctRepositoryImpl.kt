@@ -1,15 +1,10 @@
-/**
- * @file Define el repositorio para la funcionalidad de obtención de CCT.
- * @author Pelkidev
- * @version 1.0.0
- */
 package com.mx.liftechnology.data.repositoryImpl.school
 
 import com.mx.liftechnology.core.network.api.SchoolApi
-import com.mx.liftechnology.data.mapper.SchoolCycleMapper.toData
 import com.mx.liftechnology.domain.model.schoolCycle.CCTDomain
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.SchoolMapper.toCCTDomain
 import com.mx.liftechnology.data.util.safeApiCall
 import com.mx.liftechnology.domain.repository.school.GetCctRepository
 
@@ -32,7 +27,7 @@ class GetCctRepositoryImpl(
     override suspend fun getCct(cct:String): ModelResult<CCTDomain, NetworkModelError> {
         return safeApiCall(
             apiCall = { schoolApi.getCct(cct) },
-            mapper = { it.toData() }
+            mapper = { it.toCCTDomain() }
         )
     }
 }

@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomain
+import com.mx.liftechnology.domain.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
@@ -71,9 +71,9 @@ class ListFormativeFieldsViewModel(
      * Gets a formativeField by its ID.
      *
      * @param item The custom card model of the formativeField to get.
-     * @return The [FormativeFieldDomain] object, or null if not found.
+     * @return The [FormativeFieldDomainPar] object, or null if not found.
      */
-    fun getFormativeFields(item: ModelCustomCard): FormativeFieldDomain? = _dataState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }
+    fun getFormativeFields(item: ModelCustomCard): FormativeFieldDomainPar? = _dataState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }
 
     fun deleteFormativeField(card: ModelCustomCard) {
         viewModelScope.launch {

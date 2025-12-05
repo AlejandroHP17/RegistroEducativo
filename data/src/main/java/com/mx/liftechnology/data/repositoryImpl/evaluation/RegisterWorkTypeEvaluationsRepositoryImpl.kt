@@ -5,7 +5,9 @@ import com.mx.liftechnology.core.network.api.RequestListGrades
 import com.mx.liftechnology.core.network.api.RequestWorkTypeEvaluations
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
+import com.mx.liftechnology.data.mapper.EvaluationsMapper.toWorkTypeEvaluationDomain
 import com.mx.liftechnology.data.util.safeApiCall
+import com.mx.liftechnology.domain.model.evaluation.WorkTypeEvaluationDomain
 import com.mx.liftechnology.domain.repository.evaluation.RegisterWorkTypeEvaluationsRepository
 
 
@@ -20,7 +22,7 @@ class RegisterWorkTypeEvaluationsRepositoryImpl (
         workDate : String,
         schoolCycleId : Int,
         grades : List<RequestListGrades>
-    ): ModelResult<Boolean, NetworkModelError> {
+    ): ModelResult<WorkTypeEvaluationDomain, NetworkModelError> {
         val request = RequestWorkTypeEvaluations(
             formativeFieldId = formativeFieldId,
             partialId = partialId,
@@ -33,7 +35,7 @@ class RegisterWorkTypeEvaluationsRepositoryImpl (
 
         return safeApiCall(
             apiCall = { evaluationApi.registerWorkTypeEvaluations(request) },
-            mapper = { true }
+            mapper = { it.toWorkTypeEvaluationDomain() }
         )
     }
 }
