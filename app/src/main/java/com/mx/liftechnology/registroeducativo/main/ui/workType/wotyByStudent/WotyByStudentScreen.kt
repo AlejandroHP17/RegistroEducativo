@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent
+package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByStudent
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,8 +17,8 @@ import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
 import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
@@ -29,17 +29,17 @@ import org.koin.androidx.compose.koinViewModel
  *
  * @param navController El controlador de navegación.
  * @param backStackEntry La entrada del back stack para esta pantalla.
- * @param wotyFofiStudentViewModel El ViewModel para esta pantalla.
+ * @param wotyByStudentViewModel El ViewModel para esta pantalla.
  */
 @Composable
-fun WotyFofiStudentScreen(
+fun WotyByStudentScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    wotyFofiStudentViewModel: WotyFofiStudentViewModel = koinViewModel(),
+    wotyByStudentViewModel: WotyByStudentViewModel = koinViewModel(),
 ) {
 
-    val uiState by wotyFofiStudentViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by wotyFofiStudentViewModel.dataState.collectAsStateWithLifecycle()
+    val uiState by wotyByStudentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by wotyByStudentViewModel.dataState.collectAsStateWithLifecycle()
     val studentJson = backStackEntry.arguments?.getString("student")
 
     LaunchedEffect(Unit) {
@@ -48,8 +48,8 @@ fun WotyFofiStudentScreen(
         } else {
             Gson().fromJson(studentJson, StudentDomain::class.java)
         }
-        wotyFofiStudentViewModel.updateStudent(student)
-        wotyFofiStudentViewModel.getListWotyFofi()
+        wotyByStudentViewModel.updateStudent(student)
+        wotyByStudentViewModel.getListWotyFofi()
     }
 
     Box(
@@ -64,10 +64,10 @@ fun WotyFofiStudentScreen(
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = WotyFofiUiCallbacks(
-                onExpandedTitle = { wotyFofiStudentViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = {subItem, parentItem -> wotyFofiStudentViewModel.updateExpandedSubTitle(subItem, parentItem ) },
+                onExpandedTitle = { wotyByStudentViewModel.updateExpandedTitle(it) },
+                onExpandedSubTitle = {subItem, parentItem -> wotyByStudentViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
-            onAction = { navController.navigate(AppRoutes.Main.registerAssignment(uiState.formativeFields))},
+            onAction = { navController.navigate(AppRoutes.Main.registerWoty(uiState.formativeFields))},
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -76,7 +76,7 @@ fun WotyFofiStudentScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun WotyFofiStudentPreview(){
+private fun WotyByStudentPreview(){
     Box(
         modifier = Modifier
             .fillMaxSize()

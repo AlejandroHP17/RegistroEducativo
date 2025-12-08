@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi
+package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByFormativeField
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,11 +14,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
 import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
@@ -29,17 +29,17 @@ import org.koin.androidx.compose.koinViewModel
  *
  * @param navController El controlador de navegación.
  * @param backStackEntry La entrada del back stack para esta pantalla.
- * @param wotyFofiViewModel El ViewModel para esta pantalla.
+ * @param wotyByFormativeFieldViewModel El ViewModel para esta pantalla.
  */
 @Composable
-fun AssignmentFormativeFieldScreen(
+fun WotyByFormativeFieldScreen(
     navController: NavHostController,
     backStackEntry: NavBackStackEntry,
-    wotyFofiViewModel: WotyFofiViewModel = koinViewModel(),
+    wotyByFormativeFieldViewModel: WotyByFormativeFieldViewModel = koinViewModel(),
 ) {
 
-    val uiState by wotyFofiViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by wotyFofiViewModel.dataState.collectAsStateWithLifecycle()
+    val uiState by wotyByFormativeFieldViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by wotyByFormativeFieldViewModel.dataState.collectAsStateWithLifecycle()
     val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
 
     LaunchedEffect(Unit) {
@@ -48,8 +48,8 @@ fun AssignmentFormativeFieldScreen(
         } else {
             Gson().fromJson(formativeFieldJson, FormativeFieldDomainPar::class.java)
         }
-        wotyFofiViewModel.updateFormativeField(formativeField)
-        wotyFofiViewModel.getListWotyFofi()
+        wotyByFormativeFieldViewModel.updateFormativeField(formativeField)
+        wotyByFormativeFieldViewModel.getListWotyFofi()
     }
 
 
@@ -65,10 +65,10 @@ fun AssignmentFormativeFieldScreen(
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
             complexCallbacks = WotyFofiUiCallbacks(
-                onExpandedTitle = { wotyFofiViewModel.updateExpandedTitle(it) },
-                onExpandedSubTitle = {subItem, parentItem -> wotyFofiViewModel.updateExpandedSubTitle(subItem, parentItem ) },
+                onExpandedTitle = { wotyByFormativeFieldViewModel.updateExpandedTitle(it) },
+                onExpandedSubTitle = {subItem, parentItem -> wotyByFormativeFieldViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
-            onAction = { navController.navigate(AppRoutes.Main.registerAssignment(uiState.formativeFields))},
+            onAction = { navController.navigate(AppRoutes.Main.registerWoty(uiState.formativeFields))},
         )
     }
     LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
@@ -77,7 +77,7 @@ fun AssignmentFormativeFieldScreen(
 
 @Preview(showBackground = true)
 @Composable
-private fun WotyFofiFormativeFieldsPreview(){
+private fun WotyByFormativeFieldsPreview(){
     Box(
         modifier = Modifier
             .fillMaxSize()
