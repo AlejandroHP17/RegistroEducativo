@@ -8,11 +8,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
+import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericListScreen
@@ -61,7 +61,7 @@ fun ListStudentScreen(
             callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
-                        AppRoutes.Main.assignmentStudent(
+                        AppRoutes.Main.wotyStudent(
                             listStudentViewModel.getStudent(it)
                         )
                     )

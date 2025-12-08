@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.util.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 
 /**
@@ -46,8 +46,8 @@ object AppRoutes {
         const val REGISTER_PARTIAL = "registerPartial"
         
         // Rutas de asignaciones
-        const val WOTYFOFI_STUDENT = "wotyfofi?student={student}"
-        const val ASSIGNMENT_FORMATIVE_FIELD = "assignment?formativeField={formativeField}"
+        const val WOTYFOFI_STUDENT = "woty?student={student}"
+        const val ASSIGNMENT_FORMATIVE_FIELD = "woty?formativeField={formativeField}"
         const val REGISTER_ASSIGNMENT = "registerassignment?formativeField={formativeField}"
         
         // Ruta de control de APIs
@@ -80,9 +80,9 @@ object AppRoutes {
          * @param student El objeto estudiante a pasar.
          * @return La ruta completa con el estudiante serializado en formato JSON.
          */
-        fun assignmentStudent(student: StudentDomainPar?): String {
+        fun wotyStudent(student: StudentDomainPar?): String {
             val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
-            return "assignment?student=$studentJson"
+            return "woty?student=$studentJson"
         }
 
         /**
@@ -91,9 +91,9 @@ object AppRoutes {
          * @param formativeField El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun assignmentFormativeField(formativeField: FormativeFieldDomainPar?): String {
+        fun wotyFormativeField(formativeField: FormativeFieldDomainPar?): String {
             val formativeFieldJson = formativeField?.let { Uri.encode(Gson().toJson(it)) } ?: ""
-            return "assignment?formativeField=$formativeFieldJson"
+            return "woty?formativeField=$formativeFieldJson"
         }
 
         /**
@@ -102,7 +102,7 @@ object AppRoutes {
          * @param formativeField El objeto materia a pasar.
          * @return La ruta completa con la materia serializada en formato JSON.
          */
-        fun registerAssignment(formativeField: FormativeFieldDomainPar?): String {
+        fun registerWoty(formativeField: FormativeFieldDomainPar?): String {
             val formativeFieldJson = formativeField?.let { Uri.encode(Gson().toJson(it)) } ?: ""
             return "registerassignment?formativeField=$formativeFieldJson"
         }

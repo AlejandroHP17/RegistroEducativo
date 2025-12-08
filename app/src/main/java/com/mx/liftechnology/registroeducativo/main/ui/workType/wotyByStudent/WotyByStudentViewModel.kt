@@ -1,19 +1,18 @@
-package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi
+package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByStudent
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
-import com.mx.liftechnology.domain.usecase.workType.GetListWorkEvaluationFormativeFieldUseCase
-import com.mx.liftechnology.domain.usecase.workType.GetListByFieldTypeStudentUseCase
-import com.mx.liftechnology.domain.usecase.share.SaveFormativeFieldIdSelectedUseCase
+import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.domain.usecase.workType.GetListEvaluationsStudentUseCase
+import com.mx.liftechnology.domain.usecase.workType.GetListWotyFofiUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.toComplexCardUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiState
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,17 +22,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel para la pantalla de asignación de materias.
+ * ViewModel for the Student Assignment screen.
  *
  * @author Pelkidev
  * @version 1.0.0
  */
-class WotyFofiViewModel (
+class WotyByStudentViewModel (
     private val dispatcherProvider: DispatcherProvider,
-    private val getListWorkEvaluationFormativeFieldUseCase: GetListWorkEvaluationFormativeFieldUseCase,
-    private val getListByFieldTypeStudentUseCase: GetListByFieldTypeStudentUseCase,
-    private val saveFormativeFieldIdSelectedUseCase: SaveFormativeFieldIdSelectedUseCase
-): ViewModel() {
+    private val getListWotyFofiUseCase: GetListWotyFofiUseCase,
+    private val getListEvaluationsStudentUseCase: GetListEvaluationsStudentUseCase
+
+    ): ViewModel() {
     private val _uiState = MutableStateFlow(WotyFofiUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
     val uiState: StateFlow<WotyFofiUiState> = _uiState.asStateFlow()
@@ -43,25 +42,19 @@ class WotyFofiViewModel (
     val dataState: StateFlow<WotyFofiUiData> = _dataState.asStateFlow()
 
     /**
-     * Actualiza la materia actual.
+     * Actualiza el estudiante actual.
      *
-     * @param formativeField La nueva materia.
+     * @param student El nuevo estudiante.
      */
-    fun updateFormativeField(formativeField: FormativeFieldDomainPar?) {
-        viewModelScope.launch {
-            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
-            withContext(dispatcherProvider.io) {
-                saveFormativeFieldIdSelectedUseCase.invoke(formativeField?.formativeFieldId)
-            }
-            _uiState.update { it.copy(formativeFields = formativeField) }
-        }
+    fun updateStudent(student: StudentDomain?) {
+        _uiState.update { it.copy(student =  student) }
     }
 
     fun getListWotyFofi(){
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
-                getListWorkEvaluationFormativeFieldUseCase.invoke()
+                getListWotyFofiUseCase.invoke()
             }
 
             when (result) {
@@ -78,7 +71,6 @@ class WotyFofiViewModel (
             }
         }
     }
-
 
     /**
      * Actualiza el estado expandido de la tarjeta de título.
@@ -114,22 +106,17 @@ class WotyFofiViewModel (
                 }
             )
         }
-        getListEvaluationsStudents(subItem.idSubTitle, subItem.nameSubTitle, subItem.date, parentItem.idTitle)
+        getListEvaluations(subItem.idSubTitle, parentItem.idTitle)
     }
 
-    private fun getListEvaluationsStudents(
-        idSubTitle: Int?,
-        workName: String?,
-        workDate: String?,
-        idTitle: Int?
-    ) {
+    fun getListEvaluations(workTypeId: Int?, idTitle: Int?) {
         viewModelScope.launch {
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
-                getListByFieldTypeStudentUseCase.invoke(
-                    workTypeId = idTitle,
-                    workName = workName,
-                    workDate = workDate
+                getListEvaluationsStudentUseCase.invoke(
+                    formativeFieldId = idTitle,
+                    workTypeId = workTypeId,
+                    studentId = _uiState.value.student?.studentId
                 )
             }
 
@@ -140,13 +127,13 @@ class WotyFofiViewModel (
                             dataCard = currentState.dataCard?.map { card ->
                                 if (card.idTitle == idTitle) {
                                     val updatedList = card.list?.map { subCard ->
-                                        if (subCard?.idSubTitle == idSubTitle) {
+                                        if (subCard?.idSubTitle == workTypeId) {
                                             subCard?.copy(
-                                                list = result.data.works.firstOrNull()?.listStudents?.map { item ->
+                                                list = result.data.map { item ->
                                                     ModelSubSubComplexCard(
-                                                        idDescription = item.studentId,
-                                                        nameDescription = item.studentName,
-                                                        grade = item.grade?.toDouble(),
+                                                        idDescription = item.evaluationId,
+                                                        nameDescription = item.evaluationName,
+                                                        grade = item.grade,
                                                         isShowDescription = true
                                                     )
                                                 }
@@ -167,5 +154,4 @@ class WotyFofiViewModel (
             }
         }
     }
-
 }

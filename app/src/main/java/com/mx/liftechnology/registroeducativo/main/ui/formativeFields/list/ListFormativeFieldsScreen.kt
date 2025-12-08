@@ -57,7 +57,7 @@ fun ListFormativeFieldsScreen(
             callbacks = SpinnerUiCallbacks(
                 onItemClick = {
                     navController.navigateWithParams(
-                        AppRoutes.Main.assignmentFormativeField(
+                        AppRoutes.Main.wotyFormativeField(
                             listFormativeFieldsViewModel.getFormativeFields(it)
                         )
                     )
