@@ -1,0 +1,99 @@
+package com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavHostController
+import com.google.gson.Gson
+import com.mx.liftechnology.domain.model.student.StudentDomain
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
+import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
+import org.koin.androidx.compose.koinViewModel
+
+/**
+ * Pantalla de asignación de estudiante.
+ *
+ * @param navController El controlador de navegación.
+ * @param backStackEntry La entrada del back stack para esta pantalla.
+ * @param wotyFofiStudentViewModel El ViewModel para esta pantalla.
+ */
+@Composable
+fun WotyFofiStudentScreen(
+    navController: NavHostController,
+    backStackEntry: NavBackStackEntry,
+    wotyFofiStudentViewModel: WotyFofiStudentViewModel = koinViewModel(),
+) {
+
+    val uiState by wotyFofiStudentViewModel.uiState.collectAsStateWithLifecycle()
+    val dataState by wotyFofiStudentViewModel.dataState.collectAsStateWithLifecycle()
+    val studentJson = backStackEntry.arguments?.getString("student")
+
+    LaunchedEffect(Unit) {
+        val student: StudentDomain? = if (studentJson.isNullOrEmpty()) {
+            null
+        } else {
+            Gson().fromJson(studentJson, StudentDomain::class.java)
+        }
+        wotyFofiStudentViewModel.updateStudent(student)
+        wotyFofiStudentViewModel.getListWotyFofi()
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+    ) {
+
+        GenericJobsScreen(
+            title = uiState.student?.name ?: "Desconocido",
+            description = stringResource(R.string.assignment_student_description),
+            dataState = dataState,
+            onReturnClick = {navController.popBackStack()},
+            complexCallbacks = WotyFofiUiCallbacks(
+                onExpandedTitle = { wotyFofiStudentViewModel.updateExpandedTitle(it) },
+                onExpandedSubTitle = {subItem, parentItem -> wotyFofiStudentViewModel.updateExpandedSubTitle(subItem, parentItem ) },
+            ),
+            onAction = { navController.navigate(AppRoutes.Main.registerAssignment(uiState.formativeFields))},
+        )
+    }
+    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun WotyFofiStudentPreview(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
+    ) {
+
+        GenericJobsScreen(
+            title = "Desconocido",
+            description = stringResource(R.string.assignment_student_description),
+            dataState = WotyFofiUiData(),
+            onReturnClick = {},
+            complexCallbacks = WotyFofiUiCallbacks(
+                onExpandedTitle = {  },
+                onExpandedSubTitle = { _, _ ->
+                }
+            ),
+            onAction = { },
+        )
+    }
+}

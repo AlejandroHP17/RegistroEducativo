@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.dokka) apply false
 }
 
 android {
@@ -16,9 +18,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.bundles.junit.test)
+    implementation(libs.bundles.test)
     implementation(libs.bundles.koin)
 
     implementation(project(":core"))
-    implementation(project(":data"))
 }

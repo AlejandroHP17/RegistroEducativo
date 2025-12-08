@@ -11,6 +11,8 @@ val colorSuccess = Color(0xFF10B981)
 val colorError = Color(0xFF806491)
 val colorApprove = Color(0xFFB0D5B2)
 val colorDisabled = Color(0xFFC1C6D4)
+val colorWarning = Color(0xFFE2C470)
+val colorFail = Color(0xFFEA7A7A)
 
 
 val colorBgFirst = Color(0xFFFFDDF0)

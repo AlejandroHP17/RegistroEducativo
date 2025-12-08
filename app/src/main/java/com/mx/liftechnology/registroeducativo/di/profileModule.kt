@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.registroeducativo.main.ui.flowMain.profile.ProfileViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileViewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
@@ -12,7 +12,7 @@ import org.koin.dsl.module
  */
 val profileModule = module {
     /**
-     * Provides an instance of [ProfileViewModel].
+     * Proporciona una instancia singleton de [ProfileViewModel].
      */
-    viewModel { ProfileViewModel(get()) }
+    viewModelOf(::ProfileViewModel)
 }

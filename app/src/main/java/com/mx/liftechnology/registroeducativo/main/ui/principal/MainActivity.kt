@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Modifier
-import com.mx.liftechnology.registroeducativo.main.ui.components.background
+import com.mx.liftechnology.registroeducativo.main.ui.components.layout.background
 import com.mx.liftechnology.registroeducativo.main.ui.theme.AppTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -25,9 +25,9 @@ import org.koin.androidx.compose.koinViewModel
 class MainActivity : AppCompatActivity() {
 
     /**
-     * Called when the activity is first created.
+     * Se llama cuando la actividad se crea por primera vez.
      *
-     * @param savedInstanceState If the activity is being re-initialized after previously being shut down then this Bundle contains the data it most recently supplied in [onSaveInstanceState].
+     * @param savedInstanceState Si la actividad se está reinicializando después de haber sido cerrada previamente, este Bundle contiene los datos que suministró más recientemente en [onSaveInstanceState].
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

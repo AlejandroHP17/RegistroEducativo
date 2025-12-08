@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.di
 
-import com.mx.liftechnology.core.util.VoiceRecognitionManager
+import com.mx.liftechnology.core.util.voice.VoiceRecognitionManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

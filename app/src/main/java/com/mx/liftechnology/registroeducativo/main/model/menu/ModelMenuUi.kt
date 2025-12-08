@@ -1,0 +1,64 @@
+package com.mx.liftechnology.registroeducativo.main.model.menu
+
+import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
+import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
+import com.mx.liftechnology.registroeducativo.R
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+
+/**
+ * Represents the state of the Menu screen's UI.
+ *
+ * @property showControl Indicates whether the control area should be shown.
+ * @property uiState The current state of the UI (e.g., loading, error, success).
+ * @property controlToast The state for displaying toast messages.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class MenuUiState(
+    val showControl: Boolean = false,
+    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val controlToast : ToastUiState = ToastUiState(R.string.app_name,false),
+)
+
+/**
+ * Represents the state for dialogs on the Menu screen.
+ *
+ * @property studentGroupItem The currently selected student group item.
+ * @property studentGroupList The list of available student groups.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class MenuUiDialog(
+    val studentGroupItem: DialogStudentGroupDomain = DialogStudentGroupDomain(
+        selected = false,
+        item = null,
+        nameItem = null,
+        listItemPartial = null,
+        itemPartial = null,
+        namePartial = null
+    ),
+    val studentGroupList: List<DialogStudentGroupDomain> = listOf(
+        DialogStudentGroupDomain(
+            selected = false,
+            item = null,
+            nameItem = null,
+            listItemPartial = null,
+            itemPartial = null,
+            namePartial = null
+        )
+    )
+)
+
+/**
+ * Represents the data displayed on the Menu screen.
+ *
+ * @property evaluationItems The list of items for the evaluation area.
+ * @property controlItems The list of items for the control area.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+data class MenuUiData (
+    val evaluationItems: List<PrincipalMenuDomain> = listOf(),
+    val controlItems: List<PrincipalMenuDomain> = listOf(),
+)

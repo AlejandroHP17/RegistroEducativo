@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.dokka) apply false
     kotlin("jvm")
 }
 
@@ -31,11 +32,11 @@ subprojects {
 
         }
         extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-            compileSdkVersion(35)
+            compileSdkVersion(36)
 
             defaultConfig {
                 minSdk = 28
-                targetSdk = 35
+                targetSdk = 36
                 versionCode = 1
                 versionName = "0.0.1"
 

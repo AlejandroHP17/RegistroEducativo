@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.dokka) apply false
 }
 
 android {
@@ -21,8 +22,8 @@ android {
 dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.koin)
-
-
+    implementation(libs.bundles.test)
 
     implementation(project(":core"))
+    implementation(project(":domain"))
 }

@@ -6,20 +6,35 @@
     <string name="toast_success_register_school">Se creó correctamente el grupo, puedes agregar información</string>
     <string name="toast_success_register_partial">Se agregaron correctamente los parciales al ciclo escolar</string>
     <string name="toast_success_register_student">Se registró correctamente al alumno</string>
-    <string name="toast_success_register_subject">Se registró correctamente el campo formativo</string>
+    <string name="toast_success_register_formative_field">Se registró correctamente el campo formativo</string>
     <string name="toast_success_register_assignment">Se registraron correctamente las calificaciones</string>
 
+    <string name="toast_success_edit_student">Se modificó correctamente al alumno</string>
 
-    <!--- Error -->
+    <!--- ModelError -->
+    <string name="toast_error_generic">Por favor intente mas tarde, estamos teniendo problemas en la plataforma</string>
+    <string name="toast_error_no_internet">Por favor verifique su conexión a internet</string>
+    <string name="toast_error_inactive_user">Contacte al administrador, su usuario se encuentra inactivo</string>
     <string name="toast_error_validate_fields">Favor de verificar que todos los campos esten correctos</string>
+
+    <!-- login -->
     <string name="toast_error_login_user">Usuario o contraseña incorrectos, por favor valide nuevamente su información</string>
-    <string name="toast_error_register_user">No se ha podido registrar el correo. Verifique que los datos ingresados sean correctos</string>
+    <string name="toast_error_coordinate_mexico">Se encuentra fuera de zona de seguridad, no puede iniciar sesión</string>
+    <!-- register user -->
+    <string name="toast_error_register_user">El correo ya existe, intente con otro correo o inicie sesión</string>
+
+
+
+
+
     <string name="toast_error_register_school">No se ha podido registrar el grupo, vuelva a intentarlo</string>
     <string name="toast_error_update_info_ui">No se logró actualizar la información, intente más tarde</string>
     <string name="toast_error_register_partials">No de lograron crear los parciales, intente nuevamente</string>
     <string name="toast_error_register_student">No de logró registrar al alumno, intente nuevamente</string>
-    <string name="toast_error_register_subject">No de logró registrar el campo formativo, intente nuevamente</string>
+    <string name="toast_error_register_formative_field">No de logró registrar el campo formativo, intente nuevamente</string>
     <string name="toast_error_register_assignment">Hubo un error, intente nuevamente</string>
+
+    <string name="toast_error_edit_student">No se logró modificar correctamente al alumno, intente más tarde</string>
 
 
     <!--- Warning -->

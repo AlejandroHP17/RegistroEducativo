@@ -1,3 +1,8 @@
+/**
+ * @file Define la interfaz y la implementación del repositorio de preferencias, que gestiona el acceso a SharedPreferences de forma segura.
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 package com.mx.liftechnology.core.preference
 
 import android.content.Context
@@ -7,42 +12,55 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
 /**
- * Interface for accessing and managing SharedPreferences.
+ * Interfaz para acceder y gestionar SharedPreferences.
+ * Define los métodos para obtener, guardar y limpiar las preferencias.
+ * 
+ * Esta interfaz proporciona acceso directo a SharedPreferences.
+ * Para un acceso con tipos seguros, usar [PreferenceUseCase] con el sistema [Preference].
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 interface PreferenceRepository {
     /**
-     * Gets a preference value.
+     * Obtiene un valor de las preferencias.
      *
-     * @param name The name of the preference to get.
-     * @param default The default value to return if the preference is not found.
-     * @return The preference value.
+     * @param name El nombre de la preferencia a obtener.
+     * @param default El valor por defecto a devolver si la preferencia no se encuentra.
+     * @return El valor de la preferencia.
      */
     fun <T> getPreference(name: String, default: T): T
 
     /**
-     * Saves a preference value.
+     * Guarda un valor en las preferencias.
      *
-     * @param name The name of the preference to save.
-     * @param value The value to save.
+     * @param name El nombre de la preferencia a guardar.
+     * @param value El valor a guardar.
      */
     fun <T> savePreference(name: String, value: T)
 
     /**
-     * Clears all preferences.
+     * Limpia todas las preferencias.
      *
-     * @return True if the preferences were cleared successfully, false otherwise.
+     * @return `true` si las preferencias se limpiaron correctamente, `false` en caso contrario.
      */
     fun cleanPreference() : Boolean
+    
+    /**
+     * Obtiene la instancia de SharedPreferences subyacente.
+     * Útil para acceder directamente cuando se necesita.
+     *
+     * @return La instancia de SharedPreferences.
+     */
+    fun getSharedPreferences(): SharedPreferences
 }
 
 /**
- * Implementation of [PreferenceRepository] that uses [EncryptedSharedPreferences] for secure storage.
+ * Implementación de [PreferenceRepository] que utiliza [EncryptedSharedPreferences] para el almacenamiento seguro.
+ * Se encarga de inicializar las preferencias encriptadas y de gestionar las operaciones de lectura y escritura.
+ * Thread-safe mediante lazy initialization.
  *
- * @property applicationContext The application context.
- *
+ * @property applicationContext El contexto de la aplicación.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -50,16 +68,29 @@ class PreferenceRepositoryImpl(
     private val applicationContext: Context,
 ) : PreferenceRepository {
 
-    init {
-        initPreferences()
+    companion object {
+        private const val PREFS_FILENAME = "secure_prefs"
     }
 
-    private fun initPreferences() {
-        try {
+    /**
+     * SharedPreferences thread-safe mediante lazy initialization.
+     * Se inicializa la primera vez que se accede.
+     */
+    private val securePrefs: SharedPreferences by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+        initializePreferences()
+    }
+
+    /**
+     * Inicializa las preferencias encriptadas de forma thread-safe.
+     *
+     * @return La instancia de SharedPreferences encriptada.
+     */
+    private fun initializePreferences(): SharedPreferences {
+        return try {
             val masterKey = MasterKey.Builder(applicationContext)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
-            securePrefs = EncryptedSharedPreferences.create(
+            EncryptedSharedPreferences.create(
                 applicationContext,
                 PREFS_FILENAME,
                 masterKey,
@@ -67,6 +98,7 @@ class PreferenceRepositoryImpl(
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         } catch (e: Exception) {
+            // Si falla la creación encriptada, limpia las preferencias antiguas y reintenta
             applicationContext.getSharedPreferences(PREFS_FILENAME, Context.MODE_PRIVATE)
                 .edit {
                     clear()
@@ -76,7 +108,7 @@ class PreferenceRepositoryImpl(
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                 .build()
 
-            securePrefs = EncryptedSharedPreferences.create(
+            EncryptedSharedPreferences.create(
                 applicationContext,
                 PREFS_FILENAME,
                 masterKey,
@@ -84,11 +116,6 @@ class PreferenceRepositoryImpl(
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
         }
-    }
-
-    companion object {
-        private const val PREFS_FILENAME = "secure_prefs"
-        private lateinit var securePrefs: SharedPreferences
     }
 
     /**
@@ -121,7 +148,7 @@ class PreferenceRepositoryImpl(
                 is Long -> putLong(name, value)
                 else -> throw IllegalArgumentException("Unsupported preference type")
             }
-            apply()  // Save the changes asynchronously
+            apply()
         }
     }
 
@@ -131,5 +158,12 @@ class PreferenceRepositoryImpl(
     override fun cleanPreference(): Boolean {
         securePrefs.edit { clear() }
         return true
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    override fun getSharedPreferences(): SharedPreferences {
+        return securePrefs
     }
 }

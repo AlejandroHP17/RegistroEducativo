@@ -1,52 +1,56 @@
-package com.mx.liftechnology.domain.model.generic
-
 /**
- * Data class holding constants for input field validation messages.
- *
- * @property value A string value, the purpose of which should be clarified.
+ * @file Define los códigos de error para la validación de campos de entrada.
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelCodeInputs(val value: String) {
-    companion object {
-        /** Message for a correctly formatted input. */
-        const val ET_CORRECT_FORMAT: String = "Formato correcto"
+package com.mx.liftechnology.domain.model.generic
 
-        /** Message for an empty input field. */
-        const val ET_EMPTY: String = "El campo no puede estar vacío"
+/**
+ * Objeto que contiene los códigos de error para la validación de campos de entrada.
+ * Centralizar estos códigos ayuda a mantener la consistencia en los mensajes de error.
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
+object ModelCodeInputs {
+    /** Indica que el formato es correcto. */
+    const val ET_CORRECT_FORMAT = "Formato correcto"
 
-        /** Message for an empty spinner selection. */
-        const val ET_SPINNER_EMPTY: String = "Selecciona un campo"
+    /** Indica que el campo está vacío. */
+    const val ET_EMPTY = "El campo no puede estar vacío"
 
-        /** Generic message for incorrect format. */
-        const val ET_MISTAKE_FORMAT: String = "El formato es incorrecto"
+    /** Indica que el spinner está vacío. */
+    const val ET_SPINNER_EMPTY: String = "Selecciona un campo"
 
-        /** Message for incorrect user or email format. */
-        const val ET_USER_FORMAT_MISTAKE: String = "Formato de usuario o correo incorrecto"
+    /** Indica que el formato es incorrecto. */
+    const val ET_MISTAKE_FORMAT: String = "El formato es incorrecto"
 
-        /** Message for incorrect password format. */
-        const val ET_PASS_FORMAT_MISTAKE: String = "Formato de contraseña incorrecta"
+    /** Indica que el formato del email es incorrecto. */
+    const val ET_USER_FORMAT_MISTAKE = "Formato de correo incorrecto"
 
-        /** Message for mismatching passwords. */
-        const val ET_PASS_DIFFERENT_MISTAKE: String = "Las constraseñas no coinciden"
+    /** Indica que el formato de la contraseña es incorrecto. */
+    const val ET_PASS_FORMAT_MISTAKE = "Formato de contraseña incorrecto"
 
-        /** Message for incorrect CURP format. */
-        const val ET_CURP_FORMAT_MISTAKE: String = "El formato de CURP es incorrecto"
+    /** Indica que las contraseñas no coinciden. */
+    const val ET_PASS_DIFFERENT_MISTAKE = "Las contraseñas no coinciden"
 
-        /** Message for incorrect phone number format. */
-        const val ET_PHONE_NUMBER_FORMAT_MISTAKE: String = "El formato de Numero telefónico es incorrecto"
+    /** Indica que el formato de la CURP es incorrecto. */
+    const val ET_CURP_FORMAT_MISTAKE = "El formato de la CURP es incorrecto"
 
-        /** Message for a value not found. */
-        const val ET_NOT_FOUND: String = "Dato no encontrado"
+    /** Indica que el formato del número de teléfono es incorrecto. */
+    const val ET_PHONE_NUMBER_FORMAT_MISTAKE = "El formato del número de teléfono es incorrecto"
 
-        // Spinners
-        /** Message for an empty spinner selection. */
-        const val SP_NOT_OPTION: String = "No puede estar vacío"
+    /** Indica que el CCT no fue encontrado. */
+    const val ET_NOT_FOUND = "El CCT no se encontró"
 
-        /** Message for an empty job title. */
-        const val SP_NOT_JOB: String = "Vacío"
 
-        /** Message indicating that the sum of percentages must be 100. */
-        const val SP_NOT: String = "La suma debe ser 100%"
-    }
+    // Spinners
+    /** Indica que el spinner no puede estar vacío. */
+    const val SP_NOT_OPTION: String = "No puede estar vacío"
+
+    /** Indica que el spinner está vacío */
+    const val SP_NOT_JOB: String = "Vacío"
+
+    /** Indica que la suma de porcentajes no es 100. */
+    const val SP_NOT = "La suma debe ser 100%"
 }
