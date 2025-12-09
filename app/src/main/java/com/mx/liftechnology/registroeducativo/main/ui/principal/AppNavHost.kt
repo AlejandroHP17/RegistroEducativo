@@ -35,7 +35,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.feedback.ShowCu
 import com.mx.liftechnology.registroeducativo.main.ui.evaluation.RegisterEvaluationScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListFormativeFieldsScreen
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterFormativeFieldScreen
-import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.AssignmentFormativeFieldScreen
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByFormativeField.WotyByFormativeFieldScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
 import com.mx.liftechnology.registroeducativo.main.ui.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
@@ -43,7 +43,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.Registe
 import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterStudentScreen
-import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent.WotyFofiStudentScreen
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByStudent.WotyByStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.control.ControlScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 
@@ -176,7 +176,7 @@ fun AppNavHost(
                     defaultValue = ""
                 })
             ) { backStackEntry ->
-                WotyFofiStudentScreen(
+                WotyByStudentScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry
                 )
@@ -189,7 +189,7 @@ fun AppNavHost(
                     defaultValue = ""
                 })
             ) { backStackEntry ->
-                AssignmentFormativeFieldScreen(
+                WotyByFormativeFieldScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry
                 )

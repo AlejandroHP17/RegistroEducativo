@@ -4,8 +4,8 @@ import com.mx.liftechnology.domain.usecase.workType.GetListWorkEvaluationFormati
 import com.mx.liftechnology.domain.usecase.workType.GetListByFieldTypeStudentUseCase
 import com.mx.liftechnology.domain.usecase.workType.GetListWotyFofiUseCase
 import com.mx.liftechnology.domain.usecase.workType.GetListEvaluationsStudentUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyFofiStudent.WotyFofiStudentViewModel
-import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.WotyFofiViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByStudent.WotyByStudentViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByFormativeField.WotyByFormativeFieldViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
@@ -25,9 +25,9 @@ val workTypeModule = module {
     singleOf(::GetListEvaluationsStudentUseCase)
 
     /**
-     * Proporciona una instancia de [WotyFofiStudentViewModel].
+     * Proporciona una instancia de [WotyByStudentViewModel].
      */
-    viewModelOf(::WotyFofiStudentViewModel)
+    viewModelOf(::WotyByStudentViewModel)
 
 
     /**
@@ -38,7 +38,7 @@ val workTypeModule = module {
 
 
     /**
-     * Proporciona una instancia de [WotyFofiViewModel].
+     * Proporciona una instancia de [WotyByFormativeFieldViewModel].
      */
-    viewModelOf(::WotyFofiViewModel)
+    viewModelOf(::WotyByFormativeFieldViewModel)
 }

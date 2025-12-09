@@ -1,12 +1,12 @@
 package com.mx.liftechnology.registroeducativo.main.model.workType
 
-import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
+import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 
 /**
  * Representa el estado de la UI para la pantalla de asignación.
@@ -48,13 +48,3 @@ data class WotyFofiUiCallbacks(
     val onExpandedTitle:  (ModelComplexCard) -> Unit,
     val onExpandedSubTitle: (ModelSubComplexCard, ModelComplexCard)-> Unit,
 )
-
-fun FormativeFieldDomainPar?.toModelComplexCard(): ModelComplexCard {
-    return ModelComplexCard(
-        idTitle = this?.formativeFieldId,
-        nameTitle = this?.name,
-        isShowTitle = true,
-        isExpandedTitle = true,
-        list = null,
-    )
-}
