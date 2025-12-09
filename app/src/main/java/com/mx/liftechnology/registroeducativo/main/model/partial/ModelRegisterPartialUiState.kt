@@ -6,6 +6,7 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
+import java.time.LocalDate
 
 /**
  * Representa el estado de la UI para la pantalla de registro de parciales.
@@ -39,7 +40,9 @@ data class RegisterPartialUiData(
         ModelCustomSpinner("1", 1),
         ModelCustomSpinner("2", 2),
         ModelCustomSpinner("3", 3),
-        ModelCustomSpinner("4", 4)
+        ModelCustomSpinner("4", 4),
+        ModelCustomSpinner("5", 5),
     ),
     val read: Boolean = false,
+    val rangeDate : List<Pair<LocalDate,LocalDate>?>? = null,
 )

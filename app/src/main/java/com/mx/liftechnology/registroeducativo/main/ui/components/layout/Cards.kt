@@ -62,6 +62,8 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldG
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldScore
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DateRangePickerDialog
+import java.time.Instant
+import java.time.ZoneId
 
 /**
  * A composable function for previewing the cards in this file.
@@ -133,6 +135,7 @@ fun CustomCardView() {
                 date = "hola".stringToModelStateOutFieldText(),
                 partialCycleGroup = 0
             ),
+            rangeDate = null,
             onDateChange = {}
         )
 
@@ -551,15 +554,21 @@ fun RegisterPartialListItem(
     index: Int,
     date: DatePeriodDomain,
     isActive: Boolean = true,
-    onDateChange: (Pair<LocalDate?, LocalDate?>) -> Unit,
+    rangeDate : List<Pair<LocalDate,LocalDate>?>?,
+    onDateChange: (Pair<LocalDate, LocalDate>) -> Unit,
 ) {
+    val dates = Instant.ofEpochMilli(1L)
+    .atZone(ZoneId.systemDefault())
+    .toLocalDate()
 
     var showDatePicker by remember { mutableStateOf(false) }
-    var selectedDates by remember { mutableStateOf<Pair<LocalDate?, LocalDate?>>(null to null) }
+    var selectedDates by remember { mutableStateOf( dates to dates )}
 
     DateRangePickerDialog(
+        index = index,
         showDialog = showDatePicker,
         onDismiss = { showDatePicker = false },
+        rangeDate = rangeDate,
         onDateSelected = { startDate, endDate ->
             selectedDates = startDate to endDate
             onDateChange(selectedDates)

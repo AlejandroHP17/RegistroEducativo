@@ -3,7 +3,7 @@ package com.mx.liftechnology.registroeducativo.di
 import com.mx.liftechnology.domain.usecase.partial.GetListPartialUseCase
 import com.mx.liftechnology.domain.usecase.partial.RegisterListPartialUseCase
 import com.mx.liftechnology.domain.usecase.partial.RegisterPartialWithValidationUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.partial.RegisterPartialViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

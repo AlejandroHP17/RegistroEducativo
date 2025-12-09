@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial
+package com.mx.liftechnology.registroeducativo.main.ui.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -59,7 +59,6 @@ class RegisterPartialViewModel(
      * @param partial El nuevo número de parciales.
      */
     fun onPartialChanged(partial: String) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         if (partial.toIntOrNull() != null && partial.toInt() > 0) {
             val list = MutableList(partial.toInt()) { index ->
                 DatePeriodDomain(
@@ -68,11 +67,15 @@ class RegisterPartialViewModel(
                     partialCycleGroup = 0
                 )
             }
+            val listDate = MutableList(partial.toInt()){ _ ->
+                null
+            }
 
             _uiData.update {
                 it.copy(
                     numberPartials = partial.stringToModelStateOutFieldText(),
-                    listCalendar = list
+                    listCalendar = list,
+                    rangeDate = listDate
                 )
             }
         }
@@ -83,19 +86,27 @@ class RegisterPartialViewModel(
      *
      * @param data Un par que contiene el rango de fechas y el índice del elemento que cambió.
      */
-    fun onDateChange(data: Pair<Pair<LocalDate?, LocalDate?>, Int>) {
-        // Actualizaciones de estado simples no necesitan corrutinas
+    fun onDateChange(data: Pair<Pair<LocalDate, LocalDate>, Int>) {
+        val startDate = data.first.first
+        val endDate = data.first.second
         _uiData.update { currentState ->
             currentState.copy(
                 listCalendar = currentState.listCalendar?.mapIndexed { index, date ->
                     if (index == data.second) {
-                        val startDate = data.first.first?.toString() ?: ""
-                        val endDate = data.first.second?.toString() ?: ""
+
                         date.copy(
                             date = "$startDate / $endDate".stringToModelStateOutFieldText()
                         )
                     } else {
                         date
+                    }
+                },
+                rangeDate =  currentState.rangeDate?.mapIndexed { index, pair ->
+                    if (index == data.second) {
+                        Pair(startDate,endDate)
+                    }
+                    else{
+                        pair
                     }
                 }
             )

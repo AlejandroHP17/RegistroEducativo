@@ -1,5 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components.calendars
 
+import com.mx.liftechnology.core.util.extension.logInfo
 import android.icu.util.Calendar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
@@ -45,8 +46,10 @@ import java.time.format.DateTimeFormatter
  */
 @Composable
 fun DateRangePickerDialog(
+    index: Int,
     showDialog: Boolean,
     onDismiss: () -> Unit,
+    rangeDate : List<Pair<LocalDate,LocalDate>?>?,
     onDateSelected: (startDate: LocalDate, endDate: LocalDate) -> Unit,
 ) {
 
@@ -67,9 +70,20 @@ fun DateRangePickerDialog(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneId.systemDefault())
+                    .atZone(ZoneOffset.UTC)
                     .toLocalDate()
-                return endDate?.let { candidate < it } ?: true
+
+                logInfo(candidate.toString(), "pelki")
+                logInfo(rangeDate.toString(), "pelki")
+
+                val aux = rangeDate?.let { it2 ->
+                    if(it2.size > 1 && index > 0){
+                        it2[index-1]?.second?.let { candidate > it }?: true
+                    }
+                    else true
+                }?:true
+                logInfo("${(endDate?.let { candidate < it } ?: true) && aux}", "pelki")
+                return (endDate?.let { candidate < it } ?: true) && aux
             }
         }
     )
@@ -80,7 +94,13 @@ fun DateRangePickerDialog(
                 val candidate = Instant.ofEpochMilli(utcTimeMillis)
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()
-                return startDate?.let { candidate >= it } ?: true
+                val aux = rangeDate?.let { it2 ->
+                    if(it2.size > 1 && it2.size == index){
+                        it2[index+1]?.first?.let { candidate < it }?: true
+                    }
+                    else true
+                }?:true
+                return (startDate?.let { candidate >= it } ?: true) && aux
             }
         }
     )
@@ -172,7 +192,7 @@ fun DateSimplePickerDialog(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneId.systemDefault())
+                    .atZone(ZoneOffset.UTC)
                     .toLocalDate()
 
                 val split = dialogState?.rangeDate?.split("/")
@@ -244,7 +264,7 @@ fun DatePickerScreen(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneId.systemDefault())
+                    .atZone(ZoneOffset.UTC)
                     .toLocalDate()
 
                 val split = dialogState?.rangeDate?.split("/")

@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial
+package com.mx.liftechnology.registroeducativo.main.ui.partial
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -206,13 +206,12 @@ private fun BodyRegisterPartial(
 @Composable
 private fun ColumnRegisterPartial(
     uiData: RegisterPartialUiData,
-    onDateChange: (
-        Pair<Pair<LocalDate?, LocalDate?>, Int>,
-    ) -> Unit,
+    onDateChange: (Pair<Pair<LocalDate, LocalDate>, Int>) -> Unit,
 ) {
     RegisterPartialList(
         items = uiData.listCalendar!!,
         isActive = !uiData.read,
+        rangeDate = uiData.rangeDate,
         onDateChange = { onDateChange(it) })
 }
 
