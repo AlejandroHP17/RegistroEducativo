@@ -7,7 +7,7 @@ import com.mx.liftechnology.domain.usecase.menu.GetListPartialMenuUseCase
 import com.mx.liftechnology.domain.usecase.menu.SavePartialMenuUseCase
 import com.mx.liftechnology.domain.usecase.menu.UpdateGroupMenuUseCase
 import com.mx.liftechnology.domain.usecase.menu.UpdatePartialMenuUseCase
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuViewModel
+import com.mx.liftechnology.registroeducativo.main.ui.menu.MenuViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module

@@ -37,7 +37,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListF
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterFormativeFieldScreen
 import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyfofi.AssignmentFormativeFieldScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
+import com.mx.liftechnology.registroeducativo.main.ui.menu.MenuScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen

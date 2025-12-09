@@ -9,7 +9,6 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DisplayMode
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
@@ -44,7 +43,6 @@ import java.time.format.DateTimeFormatter
  * @param onDismiss Lambda que se invoca cuando se cierra el diálogo.
  * @param onDateSelected Lambda que se invoca cuando se selecciona un rango de fechas.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerDialog(
     showDialog: Boolean,
@@ -159,7 +157,6 @@ fun DateRangePickerDialog(
  * @param onDismiss Lambda que se invoca cuando se cierra el diálogo.
  * @param onDateSelected Lambda que se invoca cuando se selecciona una fecha.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateSimplePickerDialog(
     showDialog: Boolean,
@@ -234,7 +231,6 @@ fun DateSimplePickerDialog(
  * @param dialogState The state of the dialog.
  * @param onDateSelected A lambda to be invoked when a date is selected.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerScreen(
     dialogState: ModelCustomCalendar?,
@@ -260,6 +256,10 @@ fun DatePickerScreen(
             }
         }
     )
+
+    LaunchedEffect(Unit) {
+        datePickerState.displayMode = DisplayMode.Input
+    }
 
     datePickerState.selectedDateMillis?.let { millis ->
         val localDate: LocalDate = Instant.ofEpochMilli(millis)

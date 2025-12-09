@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu
+package com.mx.liftechnology.registroeducativo.main.ui.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
