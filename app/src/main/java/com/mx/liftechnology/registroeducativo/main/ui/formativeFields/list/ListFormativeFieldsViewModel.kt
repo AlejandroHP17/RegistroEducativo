@@ -64,7 +64,7 @@ class ListFormativeFieldsViewModel(
                     _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataState.update { it.copy(
                         formativeFieldsList = listFormativeField,
-                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
+                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField, true),
                     ) }
                 }
                 else -> {

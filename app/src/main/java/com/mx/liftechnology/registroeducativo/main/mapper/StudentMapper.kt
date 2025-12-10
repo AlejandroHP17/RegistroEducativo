@@ -20,7 +20,7 @@ object StudentMapper {
      * @param students La lista de estudiantes del dominio a convertir.
      * @return Una lista de ModelCustomCard ordenada y formateada para mostrar en la UI.
      */
-    fun mapStudentListToCustomCard(students: List<StudentDomainPar>?): List<CustomCard> {
+    fun mapStudentListToCustomCard(students: List<StudentDomainPar>?, isVisibleMenu: Boolean): List<CustomCard> {
         if (students == null) return emptyList()
         
         return students
@@ -52,7 +52,8 @@ object StudentMapper {
                 CustomCard(
                     id = student.studentId ?: 0,
                     numberList = (index + 1).toString(),
-                    nameCard = if (fullName.isNotBlank()) fullName else "Estudiante sin nombre"
+                    nameCard = if (fullName.isNotBlank()) fullName else "Estudiante sin nombre",
+                    isVisibleMenu = isVisibleMenu
                 )
             }
     }

@@ -14,4 +14,5 @@ data class CustomCard(
     val id: Int,
     val numberList: String?,
     val nameCard: String?,
+    val isVisibleMenu: Boolean = true
 )

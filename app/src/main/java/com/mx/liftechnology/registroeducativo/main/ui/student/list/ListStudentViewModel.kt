@@ -60,14 +60,14 @@ class ListStudentViewModel(
 
             when(result) {
                 is SuccessResult -> {
-                    val listFormativeField = result.data.toStudentDomainList()
+                    val listStudent = result.data.toStudentDomainList()
                     _uiState.update {
                         it.copy(uiState = EnumUi.NOTHING)
                     }
                     _dataState.update {
                         it.copy(
-                            studentList = listFormativeField,
-                            studentListUI = StudentMapper.mapStudentListToCustomCard(listFormativeField)
+                            studentList = listStudent,
+                            studentListUI = StudentMapper.mapStudentListToCustomCard(listStudent, true)
                         )
                     }
                 }

@@ -8,6 +8,7 @@ import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPa
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
+import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
 import com.mx.liftechnology.registroeducativo.main.model.calendar.CalendarUiState
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
@@ -75,7 +76,7 @@ class CalendarViewModel(
                     _calendarUiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataFormativeFieldState.update { it.copy(
                         formativeFieldsList = listFormativeField,
-                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
+                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField, false),
                     ) }
                 }
                 else -> {
@@ -116,7 +117,7 @@ class CalendarViewModel(
                     _dataStudentState.update {
                         it.copy(
                             studentList = listStudent,
-                            studentListUI = listStudent.convertModelCustomCard2()
+                            studentListUI = StudentMapper.mapStudentListToCustomCard(listStudent, false)
                         )
                     }
                 }

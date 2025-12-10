@@ -27,7 +27,7 @@ object FormativeFieldMapper {
      * @param formativeFields La lista de materias del dominio a convertir.
      * @return Una lista de ModelCustomCard formateada para mostrar en la UI.
      */
-    fun mapFormativeFieldListToCustomCard(formativeFields: List<FormativeFieldDomainPar>?): List<CustomCard> {
+    fun mapFormativeFieldListToCustomCard(formativeFields: List<FormativeFieldDomainPar>?, isVisibleMenu: Boolean): List<CustomCard> {
         if (formativeFields == null) return emptyList()
         
         return formativeFields.mapNotNull { formativeField ->
@@ -39,7 +39,8 @@ object FormativeFieldMapper {
                 CustomCard(
                     id = id,
                     numberList = "",
-                    nameCard = formativeField.name?.takeIf { it.isNotBlank() } ?: "Sin nombre"
+                    nameCard = formativeField.name?.takeIf { it.isNotBlank() } ?: "Sin nombre",
+                    isVisibleMenu = isVisibleMenu
                 )
             }
         }

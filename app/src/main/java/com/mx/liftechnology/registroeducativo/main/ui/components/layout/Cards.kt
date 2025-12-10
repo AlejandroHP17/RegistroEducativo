@@ -177,7 +177,7 @@ fun CustomCard(
 
             ) {
             Text(
-                text = (item.numberList ?: "0").toString(),
+                text = (item.numberList ?: "0"),
                 fontSize = dimensionResource(id = R.dimen.text_size_form).value.sp,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.margin_8dp))
             )
@@ -208,37 +208,38 @@ fun CustomCard(
                         modifier = Modifier.weight(1f)
                     )
 
-                    Box {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_more_vert),
-                            contentDescription = "More Options",
-                            modifier = Modifier
-                                .size(dimensionResource(id = R.dimen.touch_google))
-                                .padding(dimensionResource(id = R.dimen.margin_12dp))
-                                .clickable { expanded = true }
-                        )
+                    if(item.isVisibleMenu){
+                        Box {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_more_vert),
+                                contentDescription = "More Options",
+                                modifier = Modifier
+                                    .size(dimensionResource(id = R.dimen.touch_google))
+                                    .padding(dimensionResource(id = R.dimen.margin_12dp))
+                                    .clickable { expanded = true }
+                            )
 
-                        DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Editar") },
-                                onClick = {
-                                    expanded = false
-                                    callbacks.onEdit(item)
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("Eliminar") },
-                                onClick = {
-                                    expanded = false
-                                    callbacks.onDelete(item)
-                                }
-                            )
+                            DropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Editar") },
+                                    onClick = {
+                                        expanded = false
+                                        callbacks.onEdit(item)
+                                    }
+                                )
+                                DropdownMenuItem(
+                                    text = { Text("Eliminar") },
+                                    onClick = {
+                                        expanded = false
+                                        callbacks.onDelete(item)
+                                    }
+                                )
+                            }
                         }
                     }
-
                 }
             }
         }
