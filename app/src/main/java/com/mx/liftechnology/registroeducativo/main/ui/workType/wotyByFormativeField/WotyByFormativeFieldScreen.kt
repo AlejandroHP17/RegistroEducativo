@@ -51,7 +51,7 @@ fun WotyByFormativeFieldScreen(
         
         // Si date no está en arguments, intentar parsearlo desde savedStateHandle
         // Esto puede ser necesario si la ruta no coincide exactamente
-        if (date == null) {
+        /*if (date == null) {
             val savedStateHandle = backStackEntry.savedStateHandle
             val routeFromSavedState = savedStateHandle.get<String>("full_route")
             
@@ -61,7 +61,7 @@ fun WotyByFormativeFieldScreen(
                     date = extractQueryParam(route, "date")
                 }
             }
-        }
+        }*/
         
         val formativeField: FormativeFieldDomainPar? = if (formativeFieldJson.isNullOrEmpty()) {
             null

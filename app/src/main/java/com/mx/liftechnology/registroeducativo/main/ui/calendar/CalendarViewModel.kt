@@ -14,7 +14,6 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.toFormativeFieldDomainList
-import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
