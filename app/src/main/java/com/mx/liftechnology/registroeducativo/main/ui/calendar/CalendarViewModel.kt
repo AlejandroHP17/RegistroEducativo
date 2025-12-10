@@ -6,9 +6,11 @@ import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
+import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.toFormativeFieldDomainList
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
 import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
@@ -45,40 +47,33 @@ class CalendarViewModel(
     val dataState2: StateFlow<ListStudentUiData> = _dataState2.asStateFlow()
 
     /**
-     * Gets the list of formativeField.
+     * Gets the list of formativeFields.
      */
-    /*fun getSubject() {
-        viewModelScope.launch (dispatcherProvider.main){
+    fun getFormativeFields() {
+        viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
 
-            when(val result = getListSubjectUseCase.invoke()){
+            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
+            val result = withContext(dispatcherProvider.io) {
+                getListFormativeFieldUseCase.invoke()
+            }
+
+            when(result) {
                 is SuccessResult -> {
+                    val listFormativeField = result.data?.toFormativeFieldDomainList()
                     _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
                     _dataState.update { it.copy(
-                        subjectList = result.data,
-                        subjectListUI = result.data.convertModelCustomCard(),
+                        formativeFieldsList = listFormativeField,
+                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
                     ) }
                 }
                 else -> {
-                    _uiState.update {
-                        it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
-                        )
-                    }
+                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _dataState.update { it.copy(formativeFieldsList = emptyList()) }
                 }
             }
         }
     }
-
-    private fun List<ModelFormatSubjectDomain>?.convertModelCustomCard():List<ModelCustomCard>{
-        return this?.map {
-            ModelCustomCard(
-                id = it.subjectId.toString(),
-                numberList = "",
-                nameCard = "${it.name}"
-            )
-        }?: emptyList()
-    }*/
 
     /**
      * Gets the list of students.

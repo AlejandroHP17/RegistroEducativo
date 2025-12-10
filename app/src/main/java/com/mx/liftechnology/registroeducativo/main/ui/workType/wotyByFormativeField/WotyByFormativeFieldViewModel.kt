@@ -57,9 +57,8 @@ class WotyByFormativeFieldViewModel (
         }
     }
 
-    fun getListWotyFofi(){
+    fun getListWotyFormativeField(){
         viewModelScope.launch {
-            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
                 getListWorkEvaluationFormativeFieldUseCase.invoke()
             }

@@ -45,7 +45,7 @@ fun CalendarScreen (
 
 
     LaunchedEffect (Unit){
-      //  calendarViewModel.getSubject()
+        calendarViewModel.getFormativeFields()
         calendarViewModel.getListStudent()
     }
 

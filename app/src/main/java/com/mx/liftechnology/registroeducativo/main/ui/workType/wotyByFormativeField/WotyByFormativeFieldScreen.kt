@@ -49,7 +49,7 @@ fun WotyByFormativeFieldScreen(
             Gson().fromJson(formativeFieldJson, FormativeFieldDomainPar::class.java)
         }
         wotyByFormativeFieldViewModel.updateFormativeField(formativeField)
-        wotyByFormativeFieldViewModel.getListWotyFofi()
+        wotyByFormativeFieldViewModel.getListWotyFormativeField()
     }
 
 

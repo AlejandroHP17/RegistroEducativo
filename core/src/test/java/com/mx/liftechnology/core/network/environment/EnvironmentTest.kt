@@ -133,15 +133,6 @@ class EnvironmentTest {
     }
 
     @Test
-    fun `END_POINT_REGISTER_FORMATIVE_FIELDS is correctly defined`() {
-        // When
-        val endpoint = Environment.END_POINT_REGISTER_FORMATIVE_FIELDS
-
-        // Then
-        assertEquals("formative-fields/", endpoint)
-    }
-
-    @Test
     fun `END_POINT_REGISTER_FORMATIVE_FIELDS_BULK is correctly defined`() {
         // When
         val endpoint = Environment.END_POINT_REGISTER_FORMATIVE_FIELDS_BULK

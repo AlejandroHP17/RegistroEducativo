@@ -110,39 +110,35 @@ object Environment {
         get() = BuildConfig.API_VERSION
 
     /** Endpoints para el flujo de login. */
-    const val END_POINT_LOGIN = "auth/login"
-    const val END_POINT_GET_DATA= "auth/me"
-    const val END_POINT_REGISTER = "auth/register"
-    const val END_POINT_REFRESH = "auth/refresh"
+    const val END_POINT_LOGIN = "auth/login" //LoginScreen
+    const val END_POINT_GET_DATA= "auth/me" //LoginScreen
+    const val END_POINT_REGISTER = "auth/register" //RegisterUserScreen
+    const val END_POINT_REFRESH = "auth/refresh" //Todos lados
 
     /** Endpoints para el flujo de registro. */
-    const val END_POINT_REGISTER_SCHOOL_CYCLE = "cycles/"
-    const val END_POINT_REGISTER_PARTIAL = "partials/"
-    const val END_POINT_REGISTER_STUDENT = "students/"
-    const val END_POINT_REGISTER_FORMATIVE_FIELDS = "formative-fields/" // Solo agrega el campo formativo
-    const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk" //Agrega campo formativo, tipos de trabajo y tipos de trabajo asociados al campo formativo
-    const val END_POINT_REGISTER_STUDENT_WORK_BULK = "student-works/bulk"
+    const val END_POINT_REGISTER_SCHOOL_CYCLE = "cycles/" //MenuScreen
+    const val END_POINT_REGISTER_PARTIAL = "partials/" //RegisterPartialScreen
+    const val END_POINT_REGISTER_STUDENT = "students/" //RegisterStudentScreen
+    const val END_POINT_REGISTER_FORMATIVE_FIELDS_BULK = "formative-fields/bulk" //RegisterFormativeFieldScreen, Agrega campo formativo, tipos de trabajo y tipos de trabajo asociados al campo formativo
+    const val END_POINT_REGISTER_STUDENT_WORK_BULK = "student-works/bulk" //RegisterEvaluationScreen
 
     /** Endpoints para la obtención de datos. */
-    const val END_POINT_GET_PARTIAL = "partials/"
-    const val END_POINT_GET_STUDENT = "students/"
-    const val END_POINT_GET_FORMATIVE_FIELDS= "formative-fields/"
-    const val END_POINT_GET_WORK_TYPE = "work-types/"
-    const val END_POINT_GET_WORK_TYPE_BY = "work-types/by_formative_field/{formative_field_id}"
-    const val END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE = "formative-fields/by-cycle/{school_cycle_id}"
-    const val END_POINT_GET_WORK_TYPE_STUDENT = "student-works/grouped"
-    const val END_POINT_GET_WORKS_STUDENT = "student-works/"
-    const val END_POINT_GET_FIELD_TYPE_STUDENTS = "student-works/by-field-type-students"
+    const val END_POINT_GET_CYCLE_SCHOOL = "cycles/" //MenuScreen
+    const val END_POINT_GET_PARTIAL = "partials/" //MenuScreen, RegisterPartialScreen
+    const val END_POINT_GET_STUDENT = "students/" //ListStudentScreen, RegisterEvaluationScreen, CalendarScreen
+    const val END_POINT_GET_FORMATIVE_FIELDS= "formative-fields/" //ListFormativeFieldsScreen, CalendarScreen
+    const val END_POINT_GET_WORK_TYPE = "work-types/" //RegisterFormativeFieldScreen
+    const val END_POINT_GET_WORK_TYPE_BY = "work-types/by_formative_field/{formative_field_id}" //RegisterEvaluationScreen
+    const val END_POINT_GET_FORMATIVE_FIELD_WORK_TYPE = "formative-fields/by-cycle/{school_cycle_id}" //WotyByStudentScreen
+    const val END_POINT_GET_WORK_TYPE_STUDENT = "student-works/grouped" //WotyByFormativeFieldScreen
+    const val END_POINT_GET_WORKS_STUDENT = "student-works/" //WotyByStudentScreen
+    const val END_POINT_GET_FIELD_TYPE_STUDENTS = "student-works/by-field-type-students" //WotyByFormativeFieldScreen
+    const val END_POINT_GET_CCT = "schools/{cct}" //RegisterSchoolScreen
 
     /** Endpoints para borrar datos. */
-    const val END_POINT_DELETE_STUDENT = "students/{student_id}"
-    const val END_POINT_DELETE_FORMATIVE_FIELDS = "formative-fields/{field_id}"
+    const val END_POINT_DELETE_STUDENT = "students/{student_id}" //ListStudentScreen
+    const val END_POINT_DELETE_FORMATIVE_FIELDS = "formative-fields/{field_id}" //ListFormativeFieldsScreen
 
     /** Endpoints para editar datos. */
-    const val END_POINT_EDIT_STUDENT = "students/{student_id}"
-    const val END_POINT_EDIT_FORMATIVE_FIELDS = "formative-fields/{field_id}"
-
-    /** Endpoints para el flujo del menú. */
-    const val END_POINT_GET_CCT = "schools/{cct}"
-    const val END_POINT_GET_CYCLE_SCHOOL = "cycles/"
+    const val END_POINT_EDIT_STUDENT = "students/{student_id}" //RegisterStudentScreen
 }

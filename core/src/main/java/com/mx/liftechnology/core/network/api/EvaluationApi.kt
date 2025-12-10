@@ -26,7 +26,7 @@ interface EvaluationApi {
      * Obtiene la lista de tipos de trabajo por estudiante.
      */
     @GET(Environment.END_POINT_GET_WORK_TYPE_STUDENT)
-    suspend fun getListWorkTypeStudent(@Query("formative_field_id") formativeFieldId: Int): Response<ResponseGeneric<ResponseGetListWorkStudents>>
+    suspend fun getListWorkTypeFormativeField(@Query("formative_field_id") formativeFieldId: Int): Response<ResponseGeneric<ResponseGetListWorkStudents>>
 
 
     /**
