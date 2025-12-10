@@ -189,22 +189,6 @@ fun AppNavHost(
                     backStackEntry = backStackEntry
                 )
             }
-            
-            // Ruta alternativa para woty solo con student (sin date) - para compatibilidad
-            composable(
-                route = "woty?student={student}",
-                arguments = listOf(
-                    navArgument("student") {
-                        nullable = true
-                        defaultValue = ""
-                    }
-                )
-            ) { backStackEntry ->
-                WotyByStudentScreen(
-                    navController = navigationController,
-                    backStackEntry = backStackEntry
-                )
-            }
 
             // Ruta para woty con formativeField y date (ambos opcionales)
             composable(
@@ -226,21 +210,7 @@ fun AppNavHost(
                 )
             }
             
-            // Ruta alternativa para woty solo con formativeField (sin date) - para compatibilidad
-            composable(
-                route = "woty?formativeField={formativeField}",
-                arguments = listOf(
-                    navArgument("formativeField") {
-                        nullable = true
-                        defaultValue = ""
-                    }
-                )
-            ) { backStackEntry ->
-                WotyByFormativeFieldScreen(
-                    navController = navigationController,
-                    backStackEntry = backStackEntry
-                )
-            }
+
 
             composable(
                 route = AppRoutes.Main.REGISTER_ASSIGNMENT,

@@ -14,7 +14,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
-import com.mx.liftechnology.registroeducativo.main.util.extractQueryParam
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
@@ -24,6 +23,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingA
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
+import com.mx.liftechnology.core.util.extension.logInfo
 
 /**
  * Pantalla de asignaciones por campo formativo (materia).
@@ -44,11 +44,12 @@ fun WotyByFormativeFieldScreen(
 
     val uiState by wotyByFormativeFieldViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by wotyByFormativeFieldViewModel.dataState.collectAsStateWithLifecycle()
+    val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
+    val date = backStackEntry.arguments?.getString("date")
+
+
 
     LaunchedEffect(Unit) {
-        val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
-        var date = backStackEntry.arguments?.getString("date")
-        
         // Si date no está en arguments, intentar parsearlo desde savedStateHandle
         // Esto puede ser necesario si la ruta no coincide exactamente
         /*if (date == null) {
@@ -71,7 +72,7 @@ fun WotyByFormativeFieldScreen(
         
         wotyByFormativeFieldViewModel.updateFormativeField(formativeField)
         wotyByFormativeFieldViewModel.updateDate(date)
-        wotyByFormativeFieldViewModel.getListWotyFormativeField()
+        wotyByFormativeFieldViewModel.getListWotyFormativeField(formativeField)
     }
 
 
@@ -80,7 +81,6 @@ fun WotyByFormativeFieldScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-
         GenericJobsScreen(
             title = uiState.formativeFields?.name ?: "Desconocido",
             description = stringResource(R.string.assignment_formative_field_description),

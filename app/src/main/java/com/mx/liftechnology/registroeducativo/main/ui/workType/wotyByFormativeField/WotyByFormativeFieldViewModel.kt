@@ -74,10 +74,10 @@ class WotyByFormativeFieldViewModel (
         _dataState.update { it.copy(date = date) }
     }
 
-    fun getListWotyFormativeField(){
+    fun getListWotyFormativeField(formativeField: FormativeFieldDomainPar?){
         viewModelScope.launch {
             val result = withContext(dispatcherProvider.io) {
-                getListWorkEvaluationFormativeFieldUseCase.invoke()
+                getListWorkEvaluationFormativeFieldUseCase.invoke(formativeField?.formativeFieldId)
             }
 
             when (result) {

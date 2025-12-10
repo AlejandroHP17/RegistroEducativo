@@ -46,10 +46,11 @@ fun WotyByStudentScreen(
     val uiState by wotyByStudentViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by wotyByStudentViewModel.dataState.collectAsStateWithLifecycle()
 
+    // Obtener parámetros desde arguments (definidos en la ruta)
+    val studentJson = backStackEntry.arguments?.getString("student")
+    var date = backStackEntry.arguments?.getString("date")
     LaunchedEffect(Unit) {
-        // Obtener parámetros desde arguments (definidos en la ruta)
-        var studentJson = backStackEntry.arguments?.getString("student")
-        var date = backStackEntry.arguments?.getString("date")
+
         
         // Si date no está en arguments, intentar parsearlo desde savedStateHandle
         // Esto puede ser necesario si la ruta no coincide exactamente

@@ -35,8 +35,8 @@ class GetListWorkEvaluationFormativeFieldUseCase (
     /**
      * {@inheritDoc}
      */
-    suspend operator fun invoke(): ModelResult<WorkTypeFormativeFieldDomain, ModelError> {
-        val formativeFieldId = preference.getIdFormativeField()?: return ErrorResult(
+    suspend operator fun invoke(formativeFieldId: Int?): ModelResult<WorkTypeFormativeFieldDomain, ModelError> {
+        if(formativeFieldId==null) return ErrorResult(
             LocalModelError.USER_INCOMPLETE_DATA
         )
 
