@@ -47,6 +47,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByStudent.Wot
 import com.mx.liftechnology.registroeducativo.main.ui.control.ControlScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 
+
 /**
  * Host de navegación principal de la aplicación.
  * 
@@ -169,12 +170,35 @@ fun AppNavHost(
                 )
             }
 
+            // Ruta para woty con student y date (ambos opcionales)
             composable(
-                route = AppRoutes.Main.WOTYFOFI_STUDENT,
-                arguments = listOf(navArgument("student") {
-                    nullable = true
-                    defaultValue = ""
-                })
+                route = AppRoutes.Main.WOTY_STUDENT,
+                arguments = listOf(
+                    navArgument("student") {
+                        nullable = true
+                        defaultValue = ""
+                    },
+                    navArgument("date") {
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
+            ) { backStackEntry ->
+                WotyByStudentScreen(
+                    navController = navigationController,
+                    backStackEntry = backStackEntry
+                )
+            }
+            
+            // Ruta alternativa para woty solo con student (sin date) - para compatibilidad
+            composable(
+                route = "woty?student={student}",
+                arguments = listOf(
+                    navArgument("student") {
+                        nullable = true
+                        defaultValue = ""
+                    }
+                )
             ) { backStackEntry ->
                 WotyByStudentScreen(
                     navController = navigationController,
@@ -182,12 +206,35 @@ fun AppNavHost(
                 )
             }
 
+            // Ruta para woty con formativeField y date (ambos opcionales)
             composable(
-                route = AppRoutes.Main.ASSIGNMENT_FORMATIVE_FIELD,
-                arguments = listOf(navArgument("formativeField") {
-                    nullable = true
-                    defaultValue = ""
-                })
+                route = AppRoutes.Main.WOTY_FORMATIVE_FIELD,
+                arguments = listOf(
+                    navArgument("formativeField") {
+                        nullable = true
+                        defaultValue = ""
+                    },
+                    navArgument("date") {
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
+            ) { backStackEntry ->
+                WotyByFormativeFieldScreen(
+                    navController = navigationController,
+                    backStackEntry = backStackEntry
+                )
+            }
+            
+            // Ruta alternativa para woty solo con formativeField (sin date) - para compatibilidad
+            composable(
+                route = "woty?formativeField={formativeField}",
+                arguments = listOf(
+                    navArgument("formativeField") {
+                        nullable = true
+                        defaultValue = ""
+                    }
+                )
             ) { backStackEntry ->
                 WotyByFormativeFieldScreen(
                     navController = navigationController,

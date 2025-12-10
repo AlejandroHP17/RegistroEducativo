@@ -62,7 +62,8 @@ fun ListStudentScreen(
                 onItemClick = {
                     navController.navigateWithParams(
                         AppRoutes.Main.wotyStudent(
-                            listStudentViewModel.getStudent(it)
+                            listStudentViewModel.getStudent(it),
+                            null
                         )
                     )
                 },

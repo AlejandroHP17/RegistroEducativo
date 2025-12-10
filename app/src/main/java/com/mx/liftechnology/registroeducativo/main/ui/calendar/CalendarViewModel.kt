@@ -2,11 +2,14 @@ package com.mx.liftechnology.registroeducativo.main.ui.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mx.liftechnology.core.preference.PreferenceUseCase
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
+import com.mx.liftechnology.registroeducativo.main.model.calendar.CalendarUiState
+import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
@@ -21,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 /**
  * ViewModel para la pantalla de calendario.
@@ -38,27 +42,28 @@ import kotlinx.coroutines.withContext
 class CalendarViewModel(
     private val dispatcherProvider: DispatcherProvider,
     private val getListFormativeFieldUseCase: GetListFormativeFieldUseCase,
-    private val getListStudentUseCase: GetListStudentUseCase
+    private val getListStudentUseCase: GetListStudentUseCase,
+    private val preference : PreferenceUseCase
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(MenuUiState())
+    private val _calendarUiState = MutableStateFlow(CalendarUiState())
     /** El estado de la UI para la pantalla. */
-    val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
+    val calendarUiState: StateFlow<CalendarUiState> = _calendarUiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
+    private val _dataFormativeFieldState = MutableStateFlow(ListFormativeFieldsUiData())
     /** El estado de los datos para campos formativos. */
-    val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
+    val dataFormativeFieldState: StateFlow<ListFormativeFieldsUiData> = _dataFormativeFieldState.asStateFlow()
 
-    private val _dataState2 = MutableStateFlow(ListStudentUiData())
+    private val _dataStudentState = MutableStateFlow(ListStudentUiData())
     /** El estado de los datos para estudiantes. */
-    val dataState2: StateFlow<ListStudentUiData> = _dataState2.asStateFlow()
+    val dataStudentState: StateFlow<ListStudentUiData> = _dataStudentState.asStateFlow()
 
     /**
      * Obtiene la lista de campos formativos desde el servidor.
      */
     fun getFormativeFields() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
+            _calendarUiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -68,26 +73,35 @@ class CalendarViewModel(
             when(result) {
                 is SuccessResult -> {
                     val listFormativeField = result.data?.toFormativeFieldDomainList()
-                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
-                    _dataState.update { it.copy(
+                    _calendarUiState.update { it.copy(uiState = EnumUi.NOTHING) }
+                    _dataFormativeFieldState.update { it.copy(
                         formativeFieldsList = listFormativeField,
                         formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
                     ) }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
-                    _dataState.update { it.copy(formativeFieldsList = emptyList()) }
+                    _calendarUiState.update { it.copy(uiState = EnumUi.NOTHING) }
+                    _dataFormativeFieldState.update { it.copy(formativeFieldsList = emptyList()) }
                 }
             }
         }
     }
 
     /**
+     * Obtiene un campo formativo por su ID.
+     *
+     * @param item El modelo de tarjeta personalizada del campo formativo a obtener.
+     * @return El objeto [FormativeFieldDomainPar], o null si no se encuentra.
+     */
+    fun getFormativeField(item: CustomCard): FormativeFieldDomainPar? = _dataFormativeFieldState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }
+
+
+    /**
      * Obtiene la lista de estudiantes desde el servidor.
      */
     fun getListStudent() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
+            _calendarUiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -96,11 +110,11 @@ class CalendarViewModel(
 
             when(result) {
                 is SuccessResult -> {
-                    _uiState.update {
+                    _calendarUiState.update {
                         it.copy(uiState = EnumUi.NOTHING)
                     }
                     val listStudent = result.data.toStudentDomainList()
-                    _dataState2.update {
+                    _dataStudentState.update {
                         it.copy(
                             studentList = listStudent,
                             studentListUI = listStudent.convertModelCustomCard2()
@@ -108,7 +122,7 @@ class CalendarViewModel(
                     }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
+                    _calendarUiState.update { it.copy(uiState = EnumUi.NOTHING) }
                 }
             }
         }
@@ -128,5 +142,21 @@ class CalendarViewModel(
                     nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()
                 )
             } ?: emptyList()
+    }
+
+    /**
+     * Obtiene un estudiante por su ID.
+     *
+     * @param item El modelo de tarjeta personalizada del estudiante a obtener.
+     * @return El objeto [StudentDomainPar], o null si no se encuentra.
+     */
+    fun getStudent(item: CustomCard): StudentDomainPar? = _dataStudentState.value.studentList?.find { it.studentId == item.id }
+
+    fun rangeDates() = preference.getRangeDatesPartial()
+
+    fun setRangeDate(date: LocalDate) {
+        _calendarUiState.update {
+            it.copy(date = date.toString())
+        }
     }
 }

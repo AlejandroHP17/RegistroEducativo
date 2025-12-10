@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
+import com.mx.liftechnology.registroeducativo.main.util.extractQueryParam
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
 import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
@@ -43,15 +44,33 @@ fun WotyByFormativeFieldScreen(
 
     val uiState by wotyByFormativeFieldViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by wotyByFormativeFieldViewModel.dataState.collectAsStateWithLifecycle()
-    val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
 
     LaunchedEffect(Unit) {
+        val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
+        var date = backStackEntry.arguments?.getString("date")
+        
+        // Si date no está en arguments, intentar parsearlo desde savedStateHandle
+        // Esto puede ser necesario si la ruta no coincide exactamente
+        if (date == null) {
+            val savedStateHandle = backStackEntry.savedStateHandle
+            val routeFromSavedState = savedStateHandle.get<String>("full_route")
+            
+            // Si tenemos la ruta completa guardada, parsear los query parameters
+            routeFromSavedState?.let { route ->
+                if (route.contains("?")) {
+                    date = extractQueryParam(route, "date")
+                }
+            }
+        }
+        
         val formativeField: FormativeFieldDomainPar? = if (formativeFieldJson.isNullOrEmpty()) {
             null
         } else {
             Gson().fromJson(formativeFieldJson, FormativeFieldDomainPar::class.java)
         }
+        
         wotyByFormativeFieldViewModel.updateFormativeField(formativeField)
+        wotyByFormativeFieldViewModel.updateDate(date)
         wotyByFormativeFieldViewModel.getListWotyFormativeField()
     }
 

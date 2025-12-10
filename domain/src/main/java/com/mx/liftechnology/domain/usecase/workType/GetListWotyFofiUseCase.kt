@@ -28,13 +28,13 @@ class GetListWotyFofiUseCase(
      * Ejecuta el proceso de obtención de la lista de tipos de trabajo y campos formativos.
      * Obtiene el ID del ciclo escolar desde las preferencias y recupera la lista asociada.
      *
-     * @return Un [com.mx.liftechnology.core.util.models.ModelResult] que contiene los datos de tipos de trabajo y campos formativos
-     * ([com.mx.liftechnology.domain.model.formativeFields.WotyFofiDomain]) en caso de éxito, o un estado de error específico en caso de fallo.
+     * @return Un [ModelResult] que contiene los datos de tipos de trabajo y campos formativos
+     * ([WotyFofiDomain]) en caso de éxito, o un estado de error específico en caso de fallo.
      *
      * Posibles errores:
-     * - [com.mx.liftechnology.core.util.models.LocalModelError.USER_INCOMPLETE_DATA] si no hay un ciclo escolar seleccionado en las preferencias
-     * - [com.mx.liftechnology.core.util.models.ModelError] de red si hay problemas de conexión
-     * - [com.mx.liftechnology.core.util.models.ModelError] si no se encuentran datos para el ciclo escolar
+     * - [LocalModelError.USER_INCOMPLETE_DATA] si no hay un ciclo escolar seleccionado en las preferencias
+     * - [ModelError] de red si hay problemas de conexión
+     * - [ModelError] si no se encuentran datos para el ciclo escolar
      *
      * @example
      * ```
@@ -48,7 +48,7 @@ class GetListWotyFofiUseCase(
      * }
      * ```
      */
-    suspend operator fun invoke() : ModelResult<WotyFofiDomain, ModelError> {
+    suspend operator fun invoke(): ModelResult<WotyFofiDomain, ModelError> {
         val schoolCycleId =
             preference.getIdCycleSchool() ?: return ErrorResult(
                 LocalModelError.USER_INCOMPLETE_DATA

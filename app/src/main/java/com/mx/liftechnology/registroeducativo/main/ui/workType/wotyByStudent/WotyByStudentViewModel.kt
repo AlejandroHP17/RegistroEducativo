@@ -57,9 +57,17 @@ class WotyByStudentViewModel (
         _uiState.update { it.copy(student =  student) }
     }
 
-    fun getListWotyFofi(){
+    /**
+     * Actualiza la fecha seleccionada.
+     *
+     * @param date La fecha seleccionada.
+     */
+    fun updateDate(date: String?){
+        _dataState.update { it.copy(date = date) }
+    }
+
+    fun getListWotyFofi() {
         viewModelScope.launch {
-            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
                 getListWotyFofiUseCase.invoke()
             }
@@ -123,7 +131,8 @@ class WotyByStudentViewModel (
                 getListEvaluationsStudentUseCase.invoke(
                     formativeFieldId = idTitle,
                     workTypeId = workTypeId,
-                    studentId = _uiState.value.student?.studentId
+                    studentId = _uiState.value.student?.studentId,
+                    workDate = _dataState.value.date
                 )
             }
 

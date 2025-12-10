@@ -69,12 +69,7 @@ fun DateRangePickerDialog(
         yearRange = year - 2 .. year + 2,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneOffset.UTC)
-                    .toLocalDate()
-
-                logInfo(candidate.toString(), "pelki")
-                logInfo(rangeDate.toString(), "pelki")
+                val candidate = getCandidate(utcTimeMillis)
 
                 val aux = rangeDate?.let { it2 ->
                     if(it2.size > 1 && index > 0){
@@ -91,9 +86,7 @@ fun DateRangePickerDialog(
         yearRange = year - 2 .. year + 2,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
+                val candidate = getCandidate(utcTimeMillis)
                 val aux = rangeDate?.let { it2 ->
                     if(it2.size > 1 && it2.size == index){
                         it2[index+1]?.first?.let { candidate < it }?: true
@@ -106,18 +99,14 @@ fun DateRangePickerDialog(
     )
 
     datePickerStateStart.selectedDateMillis?.let { millis ->
-        val localDate: LocalDate = Instant.ofEpochMilli(millis)
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate()
+        val localDate: LocalDate = getCandidate(millis)
         startDate = localDate
         colorStart = colorApprove
         isEnable = colorEnd == colorApprove
     }
 
     datePickerStateEnd.selectedDateMillis?.let { millis ->
-        val localDate: LocalDate = Instant.ofEpochMilli(millis)
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate()
+        val localDate: LocalDate = getCandidate(millis)
         endDate = localDate
         colorEnd = colorApprove
         isEnable = colorStart == colorApprove
@@ -191,9 +180,7 @@ fun DateSimplePickerDialog(
     val datePickerState = rememberDatePickerState(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneOffset.UTC)
-                    .toLocalDate()
+                val candidate = getCandidate(utcTimeMillis)
 
                 val split = dialogState?.rangeDate?.split("/")
                 return split?.let {
@@ -210,9 +197,7 @@ fun DateSimplePickerDialog(
     }
 
     datePickerState.selectedDateMillis?.let { millis ->
-        val localDate: LocalDate = Instant.ofEpochMilli(millis)
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate()
+        val localDate: LocalDate = getCandidate(millis)
         date = localDate
         isEnable = true
     }
@@ -257,15 +242,10 @@ fun DatePickerScreen(
     onDateSelected: (date: LocalDate) -> Unit,
 ) {
 
-    var date by remember{ mutableStateOf<LocalDate?>(null) }
-    var isEnable by remember { mutableStateOf(false) }
-
     val datePickerState = rememberDatePickerState(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                val candidate = Instant.ofEpochMilli(utcTimeMillis)
-                    .atZone(ZoneOffset.UTC)
-                    .toLocalDate()
+                val candidate = getCandidate(utcTimeMillis)
 
                 val split = dialogState?.rangeDate?.split("/")
                 return split?.let {
@@ -282,13 +262,9 @@ fun DatePickerScreen(
     }
 
     datePickerState.selectedDateMillis?.let { millis ->
-        val localDate: LocalDate = Instant.ofEpochMilli(millis)
-            .atZone(ZoneOffset.UTC)
-            .toLocalDate()
-        date = localDate
-        isEnable = true
+        val localDate: LocalDate = getCandidate(millis)
+        onDateSelected(localDate)
     }
-
 
     DatePicker(
         state = datePickerState,
@@ -304,8 +280,6 @@ fun DatePickerScreen(
             .background(colorTransparent)
             .padding(8.dp)
     )
-
-
 }
 
 /**
@@ -323,3 +297,8 @@ fun LocalDate.toMillis(): Long {
 fun String.toLocalDate(): LocalDate {
     return LocalDate.parse(this, DateTimeFormatter.ISO_LOCAL_DATE)
 }
+
+private fun getCandidate(utcTimeMillis: Long)=
+    Instant.ofEpochMilli(utcTimeMillis)
+        .atZone(ZoneOffset.UTC)
+        .toLocalDate()

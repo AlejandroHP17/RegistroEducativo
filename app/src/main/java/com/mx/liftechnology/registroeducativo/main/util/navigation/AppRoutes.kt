@@ -46,8 +46,8 @@ object AppRoutes {
         const val REGISTER_PARTIAL = "registerPartial"
         
         // Rutas de asignaciones
-        const val WOTYFOFI_STUDENT = "woty?student={student}"
-        const val ASSIGNMENT_FORMATIVE_FIELD = "woty?formativeField={formativeField}"
+        const val WOTY_STUDENT = "woty?student={student}&date={date}"
+        const val WOTY_FORMATIVE_FIELD = "woty?formativeField={formativeField}&date={date}"
         const val REGISTER_ASSIGNMENT = "registerassignment?formativeField={formativeField}"
         
         // Ruta de control de APIs
@@ -78,22 +78,26 @@ object AppRoutes {
          * Crea la ruta para la pantalla de asignación de estudiante, pasando un objeto [StudentDomain] como parámetro.
          *
          * @param student El objeto estudiante a pasar.
-         * @return La ruta completa con el estudiante serializado en formato JSON.
+         * @param date La fecha seleccionada (opcional).
+         * @return La ruta completa con el estudiante serializado en formato JSON y la fecha si está presente.
          */
-        fun wotyStudent(student: StudentDomainPar?): String {
+        fun wotyStudent(student: StudentDomainPar?, date: String? = null): String {
             val studentJson = student?.let { Uri.encode(Gson().toJson(it)) } ?: ""
-            return "woty?student=$studentJson"
+            val dateParam = date?.let { "&date=${Uri.encode(it)}" } ?: ""
+            return "woty?student=$studentJson$dateParam"
         }
 
         /**
          * Crea la ruta para la pantalla de asignación de materia, pasando un objeto [FormativeFieldDomainPar] como parámetro.
          *
          * @param formativeField El objeto materia a pasar.
-         * @return La ruta completa con la materia serializada en formato JSON.
+         * @param date La fecha seleccionada (opcional).
+         * @return La ruta completa con la materia serializada en formato JSON y la fecha si está presente.
          */
-        fun wotyFormativeField(formativeField: FormativeFieldDomainPar?): String {
+        fun wotyFormativeField(formativeField: FormativeFieldDomainPar?, date: String? = null): String {
             val formativeFieldJson = formativeField?.let { Uri.encode(Gson().toJson(it)) } ?: ""
-            return "woty?formativeField=$formativeFieldJson"
+            val dateParam = date?.let { "&date=${Uri.encode(it)}" } ?: ""
+            return "woty?formativeField=$formativeFieldJson$dateParam"
         }
 
         /**

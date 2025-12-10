@@ -34,6 +34,7 @@ data class WotyUiState(
  */
 data class WotyUiData(
     val dataCard: List<ModelComplexCard>? = null,
+    val date : String? = null
 )
 
 /**

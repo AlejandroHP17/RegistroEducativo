@@ -3,9 +3,6 @@ package com.mx.liftechnology.data.repositoryImpl.formativeField
 import com.mx.liftechnology.core.model.ResponseBasic
 import com.mx.liftechnology.core.model.ResponseGeneric
 import com.mx.liftechnology.core.network.api.FormativeFieldApi
-import com.mx.liftechnology.core.network.api.RequestEvaluations
-import com.mx.liftechnology.core.network.api.RequestRegisterFormativeField
-import com.mx.liftechnology.core.network.api.RequestWorkType
 import com.mx.liftechnology.core.network.api.ResponseFormativeFieldBulk
 import com.mx.liftechnology.core.network.api.ResponseFormativeFields
 import com.mx.liftechnology.core.network.api.ResponseGetListFormativeField
@@ -23,7 +20,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import retrofit2.HttpException
 import retrofit2.Response
 import java.net.ConnectException
 
@@ -139,10 +135,10 @@ class FormativeFieldRepositoryImplTest {
         )
         val apiResponse = Response.success(responseGeneric)
 
-        coEvery { formativeFieldApi.getListWotyFofi(any()) } returns apiResponse
+        coEvery { formativeFieldApi.getListWotyFofi(any(), date) } returns apiResponse
 
         // When
-        val result = formativeFieldRepository.getListWotyFofi(schoolCycleId = 1)
+        val result = formativeFieldRepository.getListWotyFofi(schoolCycleId = 1, date = date)
 
         // Then
         assertTrue(result is SuccessResult)

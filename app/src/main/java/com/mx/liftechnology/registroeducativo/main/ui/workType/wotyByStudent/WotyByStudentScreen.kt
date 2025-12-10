@@ -11,6 +11,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import android.net.Uri
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
@@ -21,6 +22,7 @@ import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallback
 import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
+import com.mx.liftechnology.registroeducativo.main.util.extractQueryParam
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
@@ -43,15 +45,30 @@ fun WotyByStudentScreen(
 
     val uiState by wotyByStudentViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by wotyByStudentViewModel.dataState.collectAsStateWithLifecycle()
-    val studentJson = backStackEntry.arguments?.getString("student")
 
     LaunchedEffect(Unit) {
-        val student: StudentDomain? = if (studentJson.isNullOrEmpty()) {
-            null
-        } else {
-            Gson().fromJson(studentJson, StudentDomain::class.java)
+        // Obtener parámetros desde arguments (definidos en la ruta)
+        var studentJson = backStackEntry.arguments?.getString("student")
+        var date = backStackEntry.arguments?.getString("date")
+        
+        // Si date no está en arguments, intentar parsearlo desde savedStateHandle
+        // Esto puede ser necesario si la ruta no coincide exactamente
+        if (date == null) {
+            val savedStateHandle = backStackEntry.savedStateHandle
+            val routeFromSavedState = savedStateHandle.get<String>("full_route")
+            
+            // Si tenemos la ruta completa guardada, parsear los query parameters
+            routeFromSavedState?.let { route ->
+                if (route.contains("?")) {
+                    date = extractQueryParam(route, "date")
+                }
+            }
         }
+        
+        val student: StudentDomain? = getStudent(studentJson)
+        
         wotyByStudentViewModel.updateStudent(student)
+        wotyByStudentViewModel.updateDate(date)
         wotyByStudentViewModel.getListWotyFofi()
     }
 
@@ -98,5 +115,13 @@ private fun WotyByStudentPreview(){
             ),
             onAction = { },
         )
+    }
+}
+
+private fun getStudent(studentJson: String?): StudentDomain? {
+   return if (studentJson.isNullOrEmpty()) {
+        null
+    } else {
+        Gson().fromJson(studentJson, StudentDomain::class.java)
     }
 }

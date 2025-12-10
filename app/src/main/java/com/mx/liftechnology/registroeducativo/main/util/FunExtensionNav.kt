@@ -1,5 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.util
 
+import android.net.Uri
+import android.os.Bundle
 import androidx.navigation.NavHostController
 
 /**
@@ -37,13 +39,55 @@ fun NavHostController.navigateWithState(route: String) {
  * - `restoreState = true`: Restaura el estado guardado de la pantalla si ya existe
  *
  * **Nota:** Esta función es similar a [navigateWithState], pero está diseñada para rutas
- * que incluyen parámetros en la URL.
+ * que incluyen parámetros en la URL. La ruta completa se pasa directamente a navigate(),
+ * y los query parameters adicionales deben ser parseados manualmente en la pantalla de destino.
  *
- * @param route La ruta de destino con parámetros a la que navegar.
+ * **Importante:** Si la ruta contiene query parameters adicionales que no están definidos
+ * en la ruta del composable, estos deben ser parseados manualmente usando [extractQueryParam]
+ * desde la ruta completa. La ruta completa se guarda temporalmente para permitir el parseo.
+ *
+ * @param route La ruta de destino con parámetros a la que navegar (puede incluir query parameters).
  */
-fun NavHostController.navigateWithParams(route: String ) {
+fun NavHostController.navigateWithParams(route: String) {
+    // Guardar la ruta completa temporalmente para parseo posterior
+    // Esto se hace a través de un listener que se ejecuta después de la navegación
+    val listener = object : androidx.navigation.NavController.OnDestinationChangedListener {
+        override fun onDestinationChanged(
+            controller: androidx.navigation.NavController,
+            destination: androidx.navigation.NavDestination,
+            arguments: Bundle?
+        ) {
+            // Guardar la ruta completa en savedStateHandle del destino actual
+            try {
+                val currentEntry = controller.currentBackStackEntry
+                currentEntry?.savedStateHandle?.set("full_route", route)
+            } catch (e: Exception) {
+                // Si falla, continuar sin guardar
+            }
+            controller.removeOnDestinationChangedListener(this)
+        }
+    }
+    this.addOnDestinationChangedListener(listener)
+    
     this.navigate(route) {
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+/**
+ * Extrae un query parameter de una ruta completa.
+ *
+ * @param route La ruta completa con query parameters.
+ * @param paramName El nombre del parámetro a extraer.
+ * @return El valor del parámetro o null si no existe.
+ */
+fun extractQueryParam(route: String, paramName: String): String? {
+    return if (route.contains("?")) {
+        val queryString = route.substringAfter("?")
+        val uri = Uri.parse("app://?$queryString")
+        uri.getQueryParameter(paramName)
+    } else {
+        null
     }
 }

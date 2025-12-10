@@ -65,6 +65,15 @@ class WotyByFormativeFieldViewModel (
         }
     }
 
+    /**
+     * Actualiza la fecha seleccionada.
+     *
+     * @param date La fecha seleccionada.
+     */
+    fun updateDate(date: String?) {
+        _dataState.update { it.copy(date = date) }
+    }
+
     fun getListWotyFormativeField(){
         viewModelScope.launch {
             val result = withContext(dispatcherProvider.io) {
@@ -121,13 +130,12 @@ class WotyByFormativeFieldViewModel (
                 }
             )
         }
-        getListEvaluationsStudents(subItem.idSubTitle, subItem.nameSubTitle, subItem.date, parentItem.idTitle)
+        getListEvaluationsStudents(subItem.idSubTitle, subItem.nameSubTitle, parentItem.idTitle)
     }
 
     private fun getListEvaluationsStudents(
         idSubTitle: Int?,
         workName: String?,
-        workDate: String?,
         idTitle: Int?
     ) {
         viewModelScope.launch {
@@ -136,7 +144,7 @@ class WotyByFormativeFieldViewModel (
                 getListByFieldTypeStudentUseCase.invoke(
                     workTypeId = idTitle,
                     workName = workName,
-                    workDate = workDate
+                    workDate = _dataState.value.date
                 )
             }
 
