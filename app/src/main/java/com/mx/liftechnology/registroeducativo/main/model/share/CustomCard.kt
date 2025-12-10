@@ -10,7 +10,7 @@ package com.mx.liftechnology.registroeducativo.main.model.share
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelCustomCard(
+data class CustomCard(
     val id: Int,
     val numberList: String?,
     val nameCard: String?,

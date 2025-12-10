@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 /**
@@ -33,8 +33,19 @@ data class RegisterStudentUiInputs(
 
     )
 
+/**
+ * Representa el estado de la UI para la pantalla de registro de estudiantes.
+ *
+ * @property uiState El estado general de la UI (cargando, éxito, error, etc.).
+ * @property isNew Indica si se está registrando un nuevo estudiante (`true`) o editando uno existente (`false`).
+ * @property controlToast El estado para la visualización de mensajes toast.
+ * @property buttonColor El color del botón de reconocimiento de voz (cambia según el estado de escucha).
+ *
+ * @author Pelkidev
+ * @version 1.0.0
+ */
 data class RegisterStudentUiState(
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val isNew: Boolean = true,
     val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
     val buttonColor: Color = colorSuccess

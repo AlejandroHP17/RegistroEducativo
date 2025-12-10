@@ -7,7 +7,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.GenericMapper.toModelCustomSpinner
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 
 
@@ -27,7 +27,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
  */
 data class RegisterFormativeFieldUiState(
     val showControl: Boolean = false,
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val read: Boolean = false,
     val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 

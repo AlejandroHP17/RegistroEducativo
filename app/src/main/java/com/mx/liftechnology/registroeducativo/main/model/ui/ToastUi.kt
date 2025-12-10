@@ -12,5 +12,5 @@ package com.mx.liftechnology.registroeducativo.main.model.ui
 data class ToastUiState(
     val messageToast: Int,
     val showToast: Boolean,
-    val typeToast: ModelStateTypeToastUI = ModelStateTypeToastUI.SUCCESS
+    val typeToast: TypeToastUi = TypeToastUi.SUCCESS
 )

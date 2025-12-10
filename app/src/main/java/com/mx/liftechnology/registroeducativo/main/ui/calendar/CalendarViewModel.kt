@@ -7,12 +7,12 @@ import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPa
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.toFormativeFieldDomainList
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,7 +58,7 @@ class CalendarViewModel(
      */
     fun getFormativeFields() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -68,14 +68,14 @@ class CalendarViewModel(
             when(result) {
                 is SuccessResult -> {
                     val listFormativeField = result.data?.toFormativeFieldDomainList()
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataState.update { it.copy(
                         formativeFieldsList = listFormativeField,
                         formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
                     ) }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataState.update { it.copy(formativeFieldsList = emptyList()) }
                 }
             }
@@ -87,7 +87,7 @@ class CalendarViewModel(
      */
     fun getListStudent() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -97,7 +97,7 @@ class CalendarViewModel(
             when(result) {
                 is SuccessResult -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                        it.copy(uiState = EnumUi.NOTHING)
                     }
                     val listStudent = result.data.toStudentDomainList()
                     _dataState2.update {
@@ -108,13 +108,13 @@ class CalendarViewModel(
                     }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                 }
             }
         }
     }
 
-    private fun List<StudentDomainPar>?.convertModelCustomCard2(): List<ModelCustomCard> {
+    private fun List<StudentDomainPar>?.convertModelCustomCard2(): List<CustomCard> {
         return this?.sortedWith(
             compareBy(
                 { it.lastName ?: "" },
@@ -122,7 +122,7 @@ class CalendarViewModel(
                 { it.name ?: "" }
             ))
             ?.mapIndexed { index, student ->
-                ModelCustomCard(
+                CustomCard(
                     id = student.studentId ?: 0,
                     numberList = (index + 1).toString(),
                     nameCard = "${student.lastName} ${student.secondLastName} ${student.name}".trim()

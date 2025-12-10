@@ -4,7 +4,7 @@ import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import java.time.LocalDate
 
@@ -18,7 +18,7 @@ import java.time.LocalDate
  * @version 1.0.0
  */
 data class RegisterPartialUiState(
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val isAvailable: Boolean = true,
     val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )

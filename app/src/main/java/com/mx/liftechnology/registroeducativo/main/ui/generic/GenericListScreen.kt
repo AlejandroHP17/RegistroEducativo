@@ -16,7 +16,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomCard
@@ -41,7 +41,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 fun GenericListScreen(
     title: String,
     textButton: String,
-    items: List<ModelCustomCard>,
+    items: List<CustomCard>,
     onReturnClick: () -> Unit,
     callbacks: SpinnerUiCallbacks,
     onAction: () -> Unit,
@@ -154,7 +154,7 @@ private fun GenericHeaderList(
  */
 @Composable
 fun BodyListGeneric(
-    items: List<ModelCustomCard>,
+    items: List<CustomCard>,
     callbacks: SpinnerUiCallbacks,
 ) {
     LazyColumn(

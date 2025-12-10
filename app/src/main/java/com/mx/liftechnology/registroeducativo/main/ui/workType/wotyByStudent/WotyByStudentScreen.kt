@@ -16,9 +16,9 @@ import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
@@ -66,14 +66,14 @@ fun WotyByStudentScreen(
             description = stringResource(R.string.assignment_student_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = { wotyByStudentViewModel.updateExpandedTitle(it) },
                 onExpandedSubTitle = {subItem, parentItem -> wotyByStudentViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
             onAction = { navController.navigate(AppRoutes.Main.registerWoty(uiState.formativeFields))},
         )
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 
@@ -89,9 +89,9 @@ private fun WotyByStudentPreview(){
         GenericJobsScreen(
             title = "Desconocido",
             description = stringResource(R.string.assignment_student_description),
-            dataState = WotyFofiUiData(),
+            dataState = WotyUiData(),
             onReturnClick = {},
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = {  },
                 onExpandedSubTitle = { _, _ ->
                 }

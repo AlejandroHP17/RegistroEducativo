@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.model.student
 
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 
 /**
  * Representa el estado de la UI para la pantalla de lista de estudiantes.
@@ -14,7 +14,7 @@ import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
  * @version 1.0.0
  */
 data class ListStudentUiState(
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
@@ -28,5 +28,5 @@ data class ListStudentUiState(
  */
 data class ListStudentUiData(
     val studentList: List<StudentDomainPar>? = null,
-    val studentListUI: List<ModelCustomCard> = emptyList()
+    val studentListUI: List<CustomCard> = emptyList()
 )

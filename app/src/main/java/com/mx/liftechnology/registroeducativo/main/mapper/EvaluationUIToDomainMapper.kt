@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
 import com.mx.liftechnology.domain.model.evaluation.CardDomain
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCardStudent
 
 /**
  * Mapper para convertir modelos de UI de evaluaciones a modelos del dominio.
@@ -19,7 +19,7 @@ object EvaluationUIToDomainMapper {
      * @param students La lista de estudiantes de la UI a convertir.
      * @return Una lista de CardDomain con los datos validados.
      */
-    fun List<ModelCustomCardStudent>.toModelCard(): List<CardDomain> {
+    fun List<CustomCardStudent>.toModelCard(): List<CardDomain> {
         return this.mapNotNull { student ->
             val studentId = student.id.toIntOrNull()
             val grade = student.score.valueText.toDoubleOrNull()

@@ -3,15 +3,14 @@ package com.mx.liftechnology.registroeducativo.main.ui.student.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.models.SuccessResult
-import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
 import com.mx.liftechnology.domain.usecase.student.DeleteStudentUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListStudentUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.StudentMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiState
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,7 +51,7 @@ class ListStudentViewModel(
      */
     fun getListStudent() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -63,7 +62,7 @@ class ListStudentViewModel(
                 is SuccessResult -> {
                     val listFormativeField = result.data.toStudentDomainList()
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                        it.copy(uiState = EnumUi.NOTHING)
                     }
                     _dataState.update {
                         it.copy(
@@ -73,7 +72,7 @@ class ListStudentViewModel(
                     }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataState.update { it.copy(studentList = emptyList()) }
                 }
             }
@@ -86,16 +85,16 @@ class ListStudentViewModel(
      * @param item El modelo de tarjeta personalizada del estudiante a obtener.
      * @return El objeto [StudentDomainPar], o null si no se encuentra.
      */
-    fun getStudent(item: ModelCustomCard): StudentDomainPar? = _dataState.value.studentList?.find { it.studentId == item.id }
+    fun getStudent(item: CustomCard): StudentDomainPar? = _dataState.value.studentList?.find { it.studentId == item.id }
 
     /**
      * Elimina un estudiante de la lista.
      *
      * @param card El modelo de tarjeta personalizada del estudiante a eliminar.
      */
-    fun deleteStudent(card: ModelCustomCard) {
+    fun deleteStudent(card: CustomCard) {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -107,7 +106,7 @@ class ListStudentViewModel(
                     getListStudent()
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                 }
             }
         }

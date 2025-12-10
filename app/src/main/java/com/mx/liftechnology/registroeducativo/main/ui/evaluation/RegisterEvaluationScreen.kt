@@ -28,11 +28,11 @@ import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiData
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiState
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -183,7 +183,7 @@ fun RegisterEvaluationScreen(
             onDateSelected = { registerEvaluationViewModel.onDateChanged(it.toString()) }
         )
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 /**
@@ -213,7 +213,7 @@ private fun HeaderRegisterAssignment(
 @Composable
 fun BodyRegisterAssignment(
     dataState: RegisterEvaluationUiData,
-    dialogState: ModelCustomCalendar,
+    dialogState: CustomCalendar,
     onNameJobChanged: (ModelStateOutFieldText) -> Unit,
     showDialog: () -> Unit,
 ) {
@@ -341,7 +341,7 @@ private fun RegisterEvaluationPreview(){
             }) {
             BodyRegisterAssignment(
                 dataState = RegisterEvaluationUiData(),
-                dialogState = ModelCustomCalendar(),
+                dialogState = CustomCalendar(),
                 onNameJobChanged = {  },
                 showDialog = { }
             )

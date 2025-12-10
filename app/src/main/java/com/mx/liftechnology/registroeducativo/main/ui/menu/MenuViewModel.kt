@@ -15,8 +15,8 @@ import com.mx.liftechnology.domain.usecase.menu.UpdateGroupMenuUseCase
 import com.mx.liftechnology.domain.usecase.menu.UpdatePartialMenuUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiData
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiDialog
@@ -75,7 +75,7 @@ class MenuViewModel(
      */
     fun getGroup() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -93,7 +93,7 @@ class MenuViewModel(
                     getListPartialCompose()
                     showGetControlRegister()
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                        it.copy(uiState = EnumUi.NOTHING)
                     }
                 }
 
@@ -106,12 +106,12 @@ class MenuViewModel(
 
                     _uiState.update {
                         it.copy(
-                            uiState = ModelStateUIEnum.ERROR,
+                            uiState = EnumUi.ERROR,
                             controlToast = messageRes?.let { msg ->
                                 ToastUiState(
                                     messageToast = msg,
                                     showToast = true,
-                                    typeToast = ModelStateTypeToastUI.ERROR
+                                    typeToast = TypeToastUi.ERROR
                                 )
                             } ?: it.controlToast.copy(showToast = false)
                         )
@@ -177,7 +177,7 @@ class MenuViewModel(
                 }
             }
             is ErrorResult -> {
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.ERROR) }
+                _uiState.update { it.copy(uiState = EnumUi.ERROR) }
             }
         }
     }
@@ -195,7 +195,7 @@ class MenuViewModel(
             when (result) {
                 is SuccessResult -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                        it.copy(uiState = EnumUi.NOTHING)
                     }
                     _dataState.update {
                         it.copy(controlItems = result.data)
@@ -204,7 +204,7 @@ class MenuViewModel(
 
                 is ErrorResult -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }
@@ -222,7 +222,7 @@ class MenuViewModel(
                 _uiState.update {
                     it.copy(
                         showControl = true,
-                        uiState = ModelStateUIEnum.NOTHING
+                        uiState = EnumUi.NOTHING
                     )
                 }
                 _dataState.update {
@@ -233,7 +233,7 @@ class MenuViewModel(
             is ErrorResult -> {
                 _uiState.update {
                     it.copy(
-                        uiState = ModelStateUIEnum.ERROR,
+                        uiState = EnumUi.ERROR,
                         showControl = false
                     )
                 }

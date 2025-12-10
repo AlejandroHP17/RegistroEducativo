@@ -1,6 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.model.ui
 
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 
 /**
  * Representa los callbacks para las interacciones con un spinner o una lista de tarjetas.
@@ -12,7 +12,7 @@ import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
  * @version 1.0.0
  */
 data class SpinnerUiCallbacks(
-    val onItemClick: (ModelCustomCard) -> Unit,
-    val onEdit: (ModelCustomCard) -> Unit,
-    val onDelete: (ModelCustomCard) -> Unit
+    val onItemClick: (CustomCard) -> Unit,
+    val onEdit: (CustomCard) -> Unit,
+    val onDelete: (CustomCard) -> Unit
 )

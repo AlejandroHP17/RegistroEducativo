@@ -13,7 +13,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelCustomCalendar (
+data class CustomCalendar (
     val rangeYears : Pair<Int, Int>? = null,
     val rangeDate : String? = null,
     val date : ModelStateOutFieldText = "".stringToModelStateOutFieldText()

@@ -6,7 +6,7 @@ import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
 
 /**
@@ -19,7 +19,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
  * @version 1.0.0
  */
 data class RegisterSchoolUiState(
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
     val buttonColor: Color = colorSuccess
 )
@@ -29,7 +29,6 @@ data class RegisterSchoolUiState(
  *
  * @property schoolName El nombre de la escuela.
  * @property shiftName El turno de la escuela.
- * @property type El tipo de ciclo escolar.
  * @property spinner El modelo para los spinners.
  * @property read Indica si los campos son de solo lectura.
  * @author Pelkidev

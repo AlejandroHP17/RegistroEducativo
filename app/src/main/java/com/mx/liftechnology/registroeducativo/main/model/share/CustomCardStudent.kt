@@ -12,7 +12,7 @@ import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
  * @author Pelkidev
  * @version 1.0.0
  */
-data class ModelCustomCardStudent(
+data class CustomCardStudent(
     val id: String,
     val numberList: String,
     val studentName: String,

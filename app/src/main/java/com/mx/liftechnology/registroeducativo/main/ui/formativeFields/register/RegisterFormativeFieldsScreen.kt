@@ -22,7 +22,7 @@ import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.RegisterFormativeFieldUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -59,7 +59,7 @@ fun RegisterFormativeFieldScreen(
         registerFormativeFieldsViewModel.getListWorkType()
     }
     LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+        if (uiState.uiState == EnumUi.SUCCESS) navController.popBackStack()
     }
 
     LaunchedEffect (uiState.controlToast) {
@@ -119,7 +119,7 @@ fun RegisterFormativeFieldScreen(
             ActionRegisterFormativeField { registerFormativeFieldsViewModel.validateFieldsCompose() }
         }
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 /**

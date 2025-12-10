@@ -4,7 +4,7 @@ import com.mx.liftechnology.domain.model.schoolCycle.PrincipalMenuDomain
 import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 
 /**
  * Representa el estado de la UI de la pantalla de menú.
@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
  */
 data class MenuUiState(
     val showControl: Boolean = false,
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val controlToast : ToastUiState = ToastUiState(R.string.app_name,false),
 )
 

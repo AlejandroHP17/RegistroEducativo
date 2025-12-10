@@ -47,9 +47,9 @@ import com.mx.liftechnology.domain.model.schoolCycle.DatePeriodDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAzulLink
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorFail
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
@@ -73,7 +73,7 @@ import java.time.ZoneId
 fun CustomCardView() {
     Column {
         CustomCard(
-            item = ModelCustomCard(
+            item = CustomCard(
                 id = 1,
                 numberList = "1",
                 nameCard = "Curp",
@@ -93,7 +93,7 @@ fun CustomCardView() {
                 isExpandedTitle = true,
                 list = null
             ),
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = {},
                 onExpandedSubTitle = {subItem, parentItem ->  },
             )
@@ -155,7 +155,7 @@ fun CustomCardView() {
  */
 @Composable
 fun CustomCard(
-    item: ModelCustomCard,
+    item: CustomCard,
     callbacks: SpinnerUiCallbacks
 ) {
 
@@ -254,7 +254,7 @@ fun CustomCard(
 @Composable
 fun ComplexCard(
     item: ModelComplexCard?,
-    complexCallbacks: WotyFofiUiCallbacks,
+    complexCallbacks: WotyUiCallbacks,
 ) {
 
     Card(

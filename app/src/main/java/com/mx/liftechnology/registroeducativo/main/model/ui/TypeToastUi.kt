@@ -6,7 +6,7 @@ package com.mx.liftechnology.registroeducativo.main.model.ui
  * @author Pelkidev
  * @version 1.0.0
  */
-enum class ModelStateTypeToastUI {
+enum class TypeToastUi {
     /** Tipo para mensajes de éxito. */
     SUCCESS,
     /** Tipo para mensajes de error. */

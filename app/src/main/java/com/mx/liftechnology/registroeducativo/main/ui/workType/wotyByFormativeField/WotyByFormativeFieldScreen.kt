@@ -16,9 +16,9 @@ import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
@@ -67,14 +67,14 @@ fun WotyByFormativeFieldScreen(
             description = stringResource(R.string.assignment_formative_field_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = { wotyByFormativeFieldViewModel.updateExpandedTitle(it) },
                 onExpandedSubTitle = {subItem, parentItem -> wotyByFormativeFieldViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
             onAction = { navController.navigate(AppRoutes.Main.registerWoty(uiState.formativeFields))},
         )
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 
@@ -90,9 +90,9 @@ private fun WotyByFormativeFieldsPreview(){
         GenericJobsScreen(
             title = "Desconocido",
             description = stringResource(R.string.assignment_student_description),
-            dataState = WotyFofiUiData(),
+            dataState = WotyUiData(),
             onReturnClick = {},
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = {  },
                 onExpandedSubTitle = { subItem, parentItem ->
                 }

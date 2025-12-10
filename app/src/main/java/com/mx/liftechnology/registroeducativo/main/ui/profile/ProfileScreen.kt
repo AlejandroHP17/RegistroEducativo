@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
@@ -51,7 +51,7 @@ fun ProfileScreen(
             val control = ToastUiState(
                 messageToast = R.string.toast_informative_close_session,
                 showToast = true,
-                typeToast = ModelStateTypeToastUI.INFORMATIVE
+                typeToast = TypeToastUi.INFORMATIVE
             )
             sharedViewModel.modifyShowToast(control)
             profileViewModel.closeSession()

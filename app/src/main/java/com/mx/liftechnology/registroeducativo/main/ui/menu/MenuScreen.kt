@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiData
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiDialog
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
@@ -72,7 +72,7 @@ fun MenuScreen(
     }
 
     LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.UNAUTHORIZED) {
+        if (uiState.uiState == EnumUi.UNAUTHORIZED) {
             sharedViewModel.modifyShowToast(uiState.controlToast)
             menuViewModel.modifyShowToast(false)
             onCloseSession()
@@ -98,7 +98,7 @@ fun MenuScreen(
         )
     }
 
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 
     if (showDialog) {
         AlertDialogMenu(

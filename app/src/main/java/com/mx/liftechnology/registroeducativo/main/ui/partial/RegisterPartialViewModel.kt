@@ -11,8 +11,8 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.partial.RegisterPartialUiData
@@ -126,7 +126,7 @@ class RegisterPartialViewModel(
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // El Use Case combina validación + operación
             val result = withContext(dispatcherProvider.io) {
@@ -151,11 +151,11 @@ class RegisterPartialViewModel(
                 when (val operationResult = validationResult.operationResult) {
                     is SuccessResult -> {
                         _uiState.update { it.copy(
-                            uiState = ModelStateUIEnum.SUCCESS,
+                            uiState = EnumUi.SUCCESS,
                             controlToast = ToastUiState(
                                 messageToast = R.string.toast_success_register_partial,
                                 showToast = true,
-                                typeToast = ModelStateTypeToastUI.SUCCESS
+                                typeToast = TypeToastUi.SUCCESS
                             )
                         ) }
                         
@@ -170,12 +170,12 @@ class RegisterPartialViewModel(
 
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
+                                uiState = EnumUi.ERROR,
                                 controlToast = messageRes?.let { msg ->
                                     ToastUiState(
                                         messageToast = msg,
                                         showToast = true,
-                                        typeToast = ModelStateTypeToastUI.ERROR
+                                        typeToast = TypeToastUi.ERROR
                                     )
                                 } ?: it.controlToast.copy(showToast = false)
                             )
@@ -185,7 +185,7 @@ class RegisterPartialViewModel(
                 }
             } else {
                 
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
             }
         }
     }
@@ -216,7 +216,7 @@ class RegisterPartialViewModel(
                 }
                 is ErrorResult -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }

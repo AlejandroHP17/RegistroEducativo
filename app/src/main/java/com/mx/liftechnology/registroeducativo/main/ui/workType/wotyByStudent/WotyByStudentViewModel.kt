@@ -10,9 +10,9 @@ import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.t
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubSubComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,13 +40,13 @@ class WotyByStudentViewModel (
     private val getListEvaluationsStudentUseCase: GetListEvaluationsStudentUseCase
 
     ): ViewModel() {
-    private val _uiState = MutableStateFlow(WotyFofiUiState())
+    private val _uiState = MutableStateFlow(WotyUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<WotyFofiUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<WotyUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(WotyFofiUiData())
+    private val _dataState = MutableStateFlow(WotyUiData())
     /** El estado de datos de la pantalla. */
-    val dataState: StateFlow<WotyFofiUiData> = _dataState.asStateFlow()
+    val dataState: StateFlow<WotyUiData> = _dataState.asStateFlow()
 
     /**
      * Actualiza el estudiante actual.
@@ -72,7 +72,7 @@ class WotyByStudentViewModel (
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }
@@ -155,7 +155,7 @@ class WotyByStudentViewModel (
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }

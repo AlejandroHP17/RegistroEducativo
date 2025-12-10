@@ -13,8 +13,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComplexCard
@@ -40,9 +40,9 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 fun GenericJobsScreen(
     title: String,
     description: String,
-    dataState: WotyFofiUiData,
+    dataState: WotyUiData,
     onReturnClick: () -> Unit,
-    complexCallbacks: WotyFofiUiCallbacks,
+    complexCallbacks: WotyUiCallbacks,
     onAction: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -53,7 +53,7 @@ fun GenericJobsScreen(
         )
         BodyAssignment(
             dataState =  dataState,
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
                 onExpandedSubTitle = { subItem, parentItem -> complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
             )
@@ -93,8 +93,8 @@ private fun GenericHeaderAssignment(
  */
 @Composable
 private fun BodyAssignment(
-    dataState: WotyFofiUiData,
-    complexCallbacks: WotyFofiUiCallbacks
+    dataState: WotyUiData,
+    complexCallbacks: WotyUiCallbacks
 ){
     LazyColumn(
         modifier = Modifier.wrapContentHeight(),
@@ -106,7 +106,7 @@ private fun BodyAssignment(
         ) { _, item: ModelComplexCard ->
             ComplexCard(
                 item = item,
-                complexCallbacks = WotyFofiUiCallbacks(
+                complexCallbacks = WotyUiCallbacks(
                     onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
                     onExpandedSubTitle = {subItem, parentItem ->   complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
                 )
@@ -138,9 +138,9 @@ private fun GenericJobsScreenPreview(){
     GenericJobsScreen(
         title = "Alejandro",
         description = "Test de prueba",
-        dataState = WotyFofiUiData(),
+        dataState = WotyUiData(),
         onReturnClick = {},
-        complexCallbacks = WotyFofiUiCallbacks(
+        complexCallbacks = WotyUiCallbacks(
             onExpandedTitle = {},
             onExpandedSubTitle = {subItem, parentItem ->  }
         ),

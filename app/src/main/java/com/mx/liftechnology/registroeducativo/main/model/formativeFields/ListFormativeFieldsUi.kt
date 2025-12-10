@@ -2,8 +2,8 @@ package com.mx.liftechnology.registroeducativo.main.model.formativeFields
 
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 
 /**
  * Representa el estado de la UI para la pantalla de lista de materias.
@@ -14,7 +14,7 @@ import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
  * @version 1.0.0
  */
 data class ListFormativeFieldsUiState(
-    val uiState: ModelStateUIEnum = ModelStateUIEnum.NOTHING,
+    val uiState: EnumUi = EnumUi.NOTHING,
     val controlToast: ToastUiState = ToastUiState(R.string.app_name, false),
 )
 
@@ -28,5 +28,5 @@ data class ListFormativeFieldsUiState(
  */
 data class ListFormativeFieldsUiData(
     val formativeFieldsList: List<FormativeFieldDomainPar>? = null,
-    val formativeFieldsListUI: List<ModelCustomCard> = emptyList()
+    val formativeFieldsListUI: List<CustomCard> = emptyList()
 )

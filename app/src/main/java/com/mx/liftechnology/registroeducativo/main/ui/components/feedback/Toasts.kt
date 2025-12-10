@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorErrorToast
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorInformativeToast
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccessToast
@@ -40,7 +40,7 @@ fun ShowCustomAnimated(
     message: String,
     isVisible: Boolean,
     durationMillis: Long = 3000,
-    typeToast: ModelStateTypeToastUI = ModelStateTypeToastUI.SUCCESS,
+    typeToast: TypeToastUi = TypeToastUi.SUCCESS,
     onDismiss: () -> Unit,
 ) {
     LaunchedEffect(isVisible) {
@@ -71,10 +71,10 @@ fun ShowCustomAnimated(
                 modifier = Modifier
                     .background(
                         when (typeToast) {
-                            ModelStateTypeToastUI.SUCCESS -> colorSuccessToast
-                            ModelStateTypeToastUI.ERROR -> colorErrorToast
-                            ModelStateTypeToastUI.WARNING -> colorWarningToast
-                            ModelStateTypeToastUI.INFORMATIVE -> colorInformativeToast
+                            TypeToastUi.SUCCESS -> colorSuccessToast
+                            TypeToastUi.ERROR -> colorErrorToast
+                            TypeToastUi.WARNING -> colorWarningToast
+                            TypeToastUi.INFORMATIVE -> colorInformativeToast
                         },
                         RoundedCornerShape(8.dp)
                     )

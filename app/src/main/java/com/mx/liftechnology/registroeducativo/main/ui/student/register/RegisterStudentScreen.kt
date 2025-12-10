@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.domain.model.student.StudentDomain
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.student.RegisterStudentUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.student.RegisterStudentUiInputs
@@ -131,7 +131,7 @@ fun RegisterStudentScreen(
         )
     }
 
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 
 }
 

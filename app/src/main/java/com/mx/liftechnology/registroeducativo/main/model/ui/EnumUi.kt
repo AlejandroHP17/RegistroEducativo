@@ -6,7 +6,7 @@ package com.mx.liftechnology.registroeducativo.main.model.ui
  * @author Pelkidev
  * @version 1.0.0
  */
-enum class ModelStateUIEnum {
+enum class EnumUi {
     /** Estado de carga. */
     LOADING,
     /** Estado de éxito. */
