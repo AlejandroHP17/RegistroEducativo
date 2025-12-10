@@ -91,7 +91,7 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to registration if they are valid.
+     * Valida los campos de entrada y, si son válidos, procede con el registro de usuario.
      * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFieldsCompose() {

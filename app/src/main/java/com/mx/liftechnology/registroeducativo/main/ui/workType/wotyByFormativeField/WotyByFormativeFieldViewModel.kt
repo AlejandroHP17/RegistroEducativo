@@ -23,7 +23,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel para la pantalla de asignación de materias.
+ * ViewModel para la pantalla de asignaciones por campo formativo (materia).
+ * 
+ * Gestiona el estado de la UI y la obtención de evaluaciones agrupadas por tipo de trabajo
+ * y estudiantes para un campo formativo específico.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListWorkEvaluationFormativeFieldUseCase El caso de uso para obtener las evaluaciones de trabajo por campo formativo.
+ * @property getListByFieldTypeStudentUseCase El caso de uso para obtener la lista de estudiantes por tipo de campo formativo.
+ * @property saveFormativeFieldIdSelectedUseCase El caso de uso para guardar el ID del campo formativo seleccionado.
  *
  * @author Pelkidev
  * @version 1.0.0

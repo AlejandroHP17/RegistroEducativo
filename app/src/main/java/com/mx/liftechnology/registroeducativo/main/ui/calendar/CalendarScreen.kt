@@ -26,10 +26,13 @@ import com.mx.liftechnology.registroeducativo.main.ui.generic.BodyListGeneric
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Calendar screen.
+ * Pantalla de calendario.
+ * 
+ * Muestra un calendario interactivo y permite visualizar listas de campos formativos
+ * o estudiantes según la selección del usuario.
  *
- * @param navController The navigation controller.
- * @param calendarViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param calendarViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun CalendarScreen (

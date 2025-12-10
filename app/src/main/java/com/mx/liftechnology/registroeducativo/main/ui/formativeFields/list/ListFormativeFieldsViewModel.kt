@@ -21,7 +21,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the formativeField List screen.
+ * ViewModel para la pantalla de lista de campos formativos (materias).
+ * 
+ * Gestiona el estado de la UI, la obtención de la lista de campos formativos y la eliminación de campos formativos.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListFormativeFieldUseCase El caso de uso para obtener la lista de campos formativos.
+ * @property deleteFormativeFieldsUseCase El caso de uso para eliminar un campo formativo.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -37,11 +43,11 @@ class ListFormativeFieldsViewModel(
     val uiState: StateFlow<ListFormativeFieldsUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
-    /** The data state for the screen. */
+    /** El estado de los datos de la pantalla. */
     val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
     /**
-     * Gets the list of formativeFields.
+     * Obtiene la lista de campos formativos desde el servidor.
      */
     fun getFormativeFields() {
         viewModelScope.launch {
@@ -70,13 +76,18 @@ class ListFormativeFieldsViewModel(
     }
 
     /**
-     * Gets a formativeField by its ID.
+     * Obtiene un campo formativo por su ID.
      *
-     * @param item The custom card model of the formativeField to get.
-     * @return The [FormativeFieldDomainPar] object, or null if not found.
+     * @param item El modelo de tarjeta personalizada del campo formativo a obtener.
+     * @return El objeto [FormativeFieldDomainPar], o null si no se encuentra.
      */
     fun getFormativeFields(item: ModelCustomCard): FormativeFieldDomainPar? = _dataState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }
 
+    /**
+     * Elimina un campo formativo de la lista.
+     *
+     * @param card El modelo de tarjeta personalizada del campo formativo a eliminar.
+     */
     fun deleteFormativeField(card: ModelCustomCard) {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }

@@ -22,7 +22,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Student Assignment screen.
+ * ViewModel para la pantalla de asignaciones por estudiante.
+ * 
+ * Gestiona el estado de la UI y la obtención de evaluaciones agrupadas por campo formativo
+ * y tipo de trabajo para un estudiante específico.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListWotyFofiUseCase El caso de uso para obtener la lista de tipos de trabajo por campo formativo.
+ * @property getListEvaluationsStudentUseCase El caso de uso para obtener las evaluaciones de un estudiante.
  *
  * @author Pelkidev
  * @version 1.0.0

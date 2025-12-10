@@ -7,11 +7,11 @@ import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
 
 /**
- * Represents the state of the Menu screen's UI.
+ * Representa el estado de la UI de la pantalla de menú.
  *
- * @property showControl Indicates whether the control area should be shown.
- * @property uiState The current state of the UI (e.g., loading, error, success).
- * @property controlToast The state for displaying toast messages.
+ * @property showControl Indica si el área de control debe mostrarse.
+ * @property uiState El estado actual de la UI (por ejemplo, cargando, error, éxito).
+ * @property controlToast El estado para mostrar mensajes toast.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -22,10 +22,10 @@ data class MenuUiState(
 )
 
 /**
- * Represents the state for dialogs on the Menu screen.
+ * Representa el estado para los diálogos en la pantalla de menú.
  *
- * @property studentGroupItem The currently selected student group item.
- * @property studentGroupList The list of available student groups.
+ * @property studentGroupItem El ítem de grupo de estudiantes actualmente seleccionado.
+ * @property studentGroupList La lista de grupos de estudiantes disponibles.
  * @author Pelkidev
  * @version 1.0.0
  */
@@ -51,10 +51,10 @@ data class MenuUiDialog(
 )
 
 /**
- * Represents the data displayed on the Menu screen.
+ * Representa los datos mostrados en la pantalla de menú.
  *
- * @property evaluationItems The list of items for the evaluation area.
- * @property controlItems The list of items for the control area.
+ * @property evaluationItems La lista de ítems para el área de evaluación.
+ * @property controlItems La lista de ítems para el área de control.
  * @author Pelkidev
  * @version 1.0.0
  */

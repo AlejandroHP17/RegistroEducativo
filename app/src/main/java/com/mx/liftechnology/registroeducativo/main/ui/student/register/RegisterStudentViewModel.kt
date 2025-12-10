@@ -40,7 +40,16 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 /**
- * ViewModel for the Student Registration screen.
+ * ViewModel para la pantalla de registro y edición de estudiantes.
+ * 
+ * Gestiona el estado de la UI, la validación de campos y la comunicación con los casos de uso.
+ * Incluye funcionalidad de reconocimiento de voz para llenar automáticamente los campos del formulario.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property registerStudentWithValidationUseCase El caso de uso para registrar un estudiante con validación.
+ * @property editStudentWithValidationUseCase El caso de uso para editar un estudiante con validación.
+ * @property validateVoiceStudentUseCase El caso de uso para validar y procesar datos de voz.
+ * @property voiceRecognitionManager El manager para el reconocimiento de voz.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -259,9 +268,9 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Gets the arguments for the student.
+     * Obtiene y establece los argumentos del estudiante para edición.
      *
-     * @param student The student data.
+     * @param student Los datos del estudiante a editar.
      */
     fun getArguments(student: StudentDomain) {
         // Actualizaciones de estado simples no necesitan corrutinas
@@ -288,7 +297,8 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Toggles the voice recognition listening state.
+     * Alterna el estado de escucha del reconocimiento de voz.
+     * Inicia o detiene el reconocimiento de voz y actualiza el color del botón correspondiente.
      */
     fun change() {
         viewModelScope.launch {
@@ -325,9 +335,9 @@ class RegisterStudentViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         

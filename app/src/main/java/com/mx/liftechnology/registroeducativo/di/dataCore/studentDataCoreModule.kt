@@ -22,13 +22,18 @@ import retrofit2.Retrofit
  */
 val studentDataCoreModule = module {
     /**
-     * Proporciona una instancia de [StudentApi].
+     * Proporciona una instancia factory de [StudentApi].
+     * API de Retrofit para realizar llamadas al servicio de estudiantes.
      */
     factory { get<Retrofit>().create(StudentApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [StudentRepository].
-     * Agrupa todas las operaciones relacionadas con estudiantes: obtener, registrar, editar y eliminar.
+     * Repositorio que agrupa todas las operaciones relacionadas con estudiantes:
+     * - Obtener lista de estudiantes
+     * - Registrar estudiante
+     * - Editar estudiante
+     * - Eliminar estudiante
      */
     singleOf(::StudentRepositoryImpl) {
         bind<StudentRepository>()

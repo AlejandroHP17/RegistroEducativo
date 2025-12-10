@@ -25,10 +25,13 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * Pantalla de asignación de materia.
+ * Pantalla de asignaciones por campo formativo (materia).
+ * 
+ * Muestra las evaluaciones agrupadas por tipo de trabajo y estudiantes
+ * para un campo formativo específico.
  *
- * @param navController El controlador de navegación.
- * @param backStackEntry La entrada del back stack para esta pantalla.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param backStackEntry La entrada de la pila de retroceso para esta pantalla, contiene los datos del campo formativo.
  * @param wotyByFormativeFieldViewModel El ViewModel para esta pantalla.
  */
 @Composable

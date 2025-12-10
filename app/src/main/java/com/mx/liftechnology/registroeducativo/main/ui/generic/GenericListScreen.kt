@@ -25,14 +25,17 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.EmptySta
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
 /**
- * A generic screen for displaying a list of items.
+ * Pantalla genérica para mostrar una lista de ítems.
+ * 
+ * Componente reutilizable que proporciona una estructura común para pantallas
+ * que muestran listas de elementos con opciones de edición y eliminación.
  *
- * @param title The title of the screen.
- * @param textButton The text for the action button.
- * @param items The list of items to display.
- * @param onReturnClick A lambda to be invoked when the back button is clicked.
- * @param callbacks The callbacks for the list items.
- * @param onAction A lambda to be invoked when the action button is clicked.
+ * @param title El título de la pantalla.
+ * @param textButton El texto para el botón de acción.
+ * @param items La lista de ítems a mostrar.
+ * @param onReturnClick Lambda que se invoca cuando se hace clic en el botón de retroceso.
+ * @param callbacks Los callbacks para las interacciones con los ítems de la lista.
+ * @param onAction Lambda que se invoca cuando se hace clic en el botón de acción.
  */
 @Composable
 fun GenericListScreen(

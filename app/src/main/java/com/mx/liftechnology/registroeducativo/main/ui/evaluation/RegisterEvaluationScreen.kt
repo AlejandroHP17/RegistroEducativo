@@ -48,12 +48,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Assignment Registration screen.
+ * Pantalla de registro de evaluaciones (asignaciones).
+ * 
+ * Permite registrar evaluaciones para múltiples estudiantes de un campo formativo específico.
+ * Incluye selección de tipo de trabajo, fecha y calificaciones por estudiante.
  *
- * @param navController The navigation controller.
- * @param backStackEntry The back stack entry for this screen.
- * @param registerEvaluationViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param backStackEntry La entrada de la pila de retroceso para esta pantalla, contiene los datos del campo formativo.
+ * @param registerEvaluationViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
  */
 @Composable
 fun RegisterEvaluationScreen(

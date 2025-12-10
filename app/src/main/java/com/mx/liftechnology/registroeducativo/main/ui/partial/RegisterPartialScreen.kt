@@ -39,11 +39,14 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 /**
- * The Partial Registration screen.
+ * Pantalla de registro de parciales.
+ * 
+ * Permite registrar múltiples parciales con sus respectivos rangos de fechas.
+ * También permite visualizar los parciales existentes en modo de solo lectura.
  *
- * @param navController The navigation controller.
- * @param registerPartialViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param registerPartialViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
  */
 @Composable
 fun RegisterPartialScreen(

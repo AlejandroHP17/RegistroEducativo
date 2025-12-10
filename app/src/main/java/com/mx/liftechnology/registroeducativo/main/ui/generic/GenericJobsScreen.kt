@@ -23,14 +23,18 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSp
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
 /**
- * A generic screen for displaying jobs.
+ * Pantalla genérica para mostrar trabajos/asignaciones.
+ * 
+ * Componente reutilizable que proporciona una estructura común para pantallas
+ * que muestran trabajos y evaluaciones en una estructura jerárquica compleja
+ * (campos formativos > tipos de trabajo > evaluaciones).
  *
- * @param title The title of the screen.
- * @param description The description of the screen.
- * @param dataState The data state for the screen.
- * @param onReturnClick A lambda to be invoked when the back button is clicked.
- * @param complexCallbacks The callbacks for the complex card.
- * @param onAction A lambda to be invoked when the action button is clicked.
+ * @param title El título de la pantalla.
+ * @param description La descripción de la pantalla.
+ * @param dataState El estado de los datos para la pantalla.
+ * @param onReturnClick Lambda que se invoca cuando se hace clic en el botón de retroceso.
+ * @param complexCallbacks Los callbacks para las interacciones con las tarjetas complejas.
+ * @param onAction Lambda que se invoca cuando se hace clic en el botón de acción.
  */
 @Composable
 fun GenericJobsScreen(

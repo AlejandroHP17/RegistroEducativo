@@ -25,10 +25,13 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * Pantalla de asignación de estudiante.
+ * Pantalla de asignaciones por estudiante.
+ * 
+ * Muestra las evaluaciones agrupadas por campo formativo y tipo de trabajo
+ * para un estudiante específico.
  *
- * @param navController El controlador de navegación.
- * @param backStackEntry La entrada del back stack para esta pantalla.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param backStackEntry La entrada de la pila de retroceso para esta pantalla, contiene los datos del estudiante.
  * @param wotyByStudentViewModel El ViewModel para esta pantalla.
  */
 @Composable

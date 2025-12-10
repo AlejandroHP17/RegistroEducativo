@@ -30,7 +30,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the main schoolCycle screen.
+ * ViewModel para la pantalla principal de menú.
+ * 
+ * Gestiona el estado de la UI, la obtención de grupos, parciales y opciones del menú.
+ * Permite actualizar grupos y parciales seleccionados.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getGroupMenuUseCase El caso de uso para obtener los grupos del menú.
+ * @property updateGroupMenuUseCase El caso de uso para actualizar un grupo del menú.
+ * @property getControlMenuUseCase El caso de uso para obtener las opciones de control del menú.
+ * @property getControlRegisterUseCase El caso de uso para obtener las opciones de registro del menú.
+ * @property getListPartialMenuUseCase El caso de uso para obtener la lista de parciales del menú.
+ * @property savePartialMenuUseCase El caso de uso para guardar un parcial en el menú.
+ * @property updatePartialMenuUseCase El caso de uso para actualizar un parcial en el menú.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -47,19 +59,19 @@ class MenuViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuUiState())
-    /** The UI state for the screen. */
+    /** El estado de la UI para la pantalla. */
     val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
 
     private val _dialogState = MutableStateFlow(MenuUiDialog())
-    /** The state for dialogs. */
+    /** El estado para los diálogos. */
     val dialogState: StateFlow<MenuUiDialog> = _dialogState.asStateFlow()
 
     private val _dataState = MutableStateFlow(MenuUiData())
-    /** The data state for the screen. */
+    /** El estado de los datos para la pantalla. */
     val dataState: StateFlow<MenuUiData> = _dataState.asStateFlow()
 
     /**
-     * Gets all the options for the schoolCycle.
+     * Obtiene todas las opciones para el ciclo escolar (grupos, parciales, etc.).
      */
     fun getGroup() {
         viewModelScope.launch {
@@ -110,9 +122,9 @@ class MenuViewModel(
     }
 
     /**
-     * Updates the selected group.
+     * Actualiza el grupo seleccionado.
      *
-     * @param nameItem The selected group.
+     * @param nameItem El grupo seleccionado.
      */
     fun updateGroup(nameItem: DialogStudentGroupDomain) {
         viewModelScope.launch {
@@ -171,7 +183,7 @@ class MenuViewModel(
     }
 
     /**
-     * Gets the control schoolCycle items.
+     * Obtiene los ítems de control del ciclo escolar.
      */
     fun getControlMenu() {
         viewModelScope.launch {
@@ -230,9 +242,9 @@ class MenuViewModel(
     }
 
     /**
-     * Updates the selected partial.
+     * Actualiza el parcial seleccionado.
      *
-     * @param partialItem The selected partial.
+     * @param partialItem El parcial seleccionado.
      */
     fun updatePartial(partialItem: DialogGroupPartialDomain?) {
         viewModelScope.launch {
@@ -254,9 +266,9 @@ class MenuViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         

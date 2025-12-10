@@ -16,13 +16,16 @@ import retrofit2.Retrofit
  */
 val partialDataCoreModule = module {
     /**
-     * Proporciona una instancia de [PartialApi].
+     * Proporciona una instancia factory de [PartialApi].
+     * API de Retrofit para realizar llamadas al servicio de parciales.
      */
     factory { get<Retrofit>().create(PartialApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [PartialRepository].
-     * Agrupa todas las operaciones relacionadas con parciales: obtener lista y registrar lista.
+     * Repositorio que agrupa todas las operaciones relacionadas con parciales:
+     * - Obtener lista de parciales
+     * - Registrar lista de parciales
      */
     singleOf(::PartialRepositoryImpl) {
         bind<PartialRepository>()

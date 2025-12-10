@@ -109,14 +109,14 @@ object AppRoutes {
     }
 
     /**
-     * Ruta para la pantalla de splash.
+     * Rutas relacionadas con la pantalla de inicio (splash).
      */
     object Splash {
         const val SPLASH = "splash"
     }
 
     /**
-     * Ruta para la pantalla de splash.
+     * Rutas relacionadas con el flujo de administración/control.
      */
     object Control {
         const val MENU = "menuAdmin"

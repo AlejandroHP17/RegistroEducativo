@@ -37,11 +37,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The formativeField Registration screen.
+ * Pantalla de registro de campos formativos (materias).
+ * 
+ * Permite registrar un nuevo campo formativo con múltiples métodos de trabajo
+ * y sus respectivos porcentajes.
  *
- * @param navController The navigation controller.
- * @param sharedViewModel The shared ViewModel.
- * @param registerFormativeFieldsViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param registerFormativeFieldsViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun RegisterFormativeFieldScreen(

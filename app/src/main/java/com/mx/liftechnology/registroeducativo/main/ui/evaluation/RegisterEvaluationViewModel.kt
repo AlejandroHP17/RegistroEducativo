@@ -40,7 +40,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel para la pantalla de registro de asignaciones.
+ * ViewModel para la pantalla de registro de evaluaciones (asignaciones).
+ * 
+ * Gestiona el estado de la UI, la validación de campos y la comunicación con los casos de uso.
+ * Permite registrar evaluaciones para múltiples estudiantes de un campo formativo específico.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListStudentUseCase El caso de uso para obtener la lista de estudiantes.
+ * @property saveFormativeFieldIdSelectedUseCase El caso de uso para guardar el ID del campo formativo seleccionado.
+ * @property getWorkTypeByFormativeFieldUseCase El caso de uso para obtener los tipos de trabajo por campo formativo.
+ * @property getDatesActivePartialUseCase El caso de uso para obtener las fechas del parcial activo.
+ * @property registerEvaluationWithValidationUseCase El caso de uso para registrar una evaluación con validación.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -171,7 +181,7 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Gets the list of students.
+     * Obtiene la lista de estudiantes desde el servidor.
      */
     fun getListStudent() {
         viewModelScope.launch {
@@ -312,9 +322,9 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         

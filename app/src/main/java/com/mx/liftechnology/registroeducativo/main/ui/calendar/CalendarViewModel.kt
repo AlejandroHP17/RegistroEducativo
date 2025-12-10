@@ -23,7 +23,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Calendar screen.
+ * ViewModel para la pantalla de calendario.
+ * 
+ * Gestiona el estado de la UI y la obtención de listas de campos formativos y estudiantes
+ * para mostrar en el calendario.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListFormativeFieldUseCase El caso de uso para obtener la lista de campos formativos.
+ * @property getListStudentUseCase El caso de uso para obtener la lista de estudiantes.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -35,19 +42,19 @@ class CalendarViewModel(
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuUiState())
-    /** The UI state for the screen. */
+    /** El estado de la UI para la pantalla. */
     val uiState: StateFlow<MenuUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
-    /** The data state for formativeField. */
+    /** El estado de los datos para campos formativos. */
     val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
     private val _dataState2 = MutableStateFlow(ListStudentUiData())
-    /** The data state for students. */
+    /** El estado de los datos para estudiantes. */
     val dataState2: StateFlow<ListStudentUiData> = _dataState2.asStateFlow()
 
     /**
-     * Gets the list of formativeFields.
+     * Obtiene la lista de campos formativos desde el servidor.
      */
     fun getFormativeFields() {
         viewModelScope.launch {
@@ -76,7 +83,7 @@ class CalendarViewModel(
     }
 
     /**
-     * Gets the list of students.
+     * Obtiene la lista de estudiantes desde el servidor.
      */
     fun getListStudent() {
         viewModelScope.launch {

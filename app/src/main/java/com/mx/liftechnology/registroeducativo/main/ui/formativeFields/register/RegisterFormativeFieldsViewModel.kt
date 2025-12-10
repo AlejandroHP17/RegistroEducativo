@@ -26,7 +26,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel para la pantalla de registro de materias.
+ * ViewModel para la pantalla de registro de campos formativos (materias).
+ * 
+ * Gestiona el estado de la UI, la validación de campos y la comunicación con los casos de uso.
+ * Permite registrar un campo formativo con múltiples métodos de trabajo y sus porcentajes.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property registerFormativeFieldsWithValidationUseCase El caso de uso para registrar un campo formativo con validación.
+ * @property getListWorkTypeUseCase El caso de uso para obtener la lista de tipos de trabajo.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -188,7 +195,7 @@ class RegisterFormativeFieldsViewModel(
     }
 
     /**
-     * Gets the list of workType types.
+     * Obtiene la lista de tipos de trabajo disponibles.
      */
     fun getListWorkType() {
         viewModelScope.launch {
@@ -221,9 +228,9 @@ class RegisterFormativeFieldsViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         

@@ -22,7 +22,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Student List screen.
+ * ViewModel para la pantalla de lista de estudiantes.
+ * 
+ * Gestiona el estado de la UI, la obtención de la lista de estudiantes y la eliminación de estudiantes.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListStudentUseCase El caso de uso para obtener la lista de estudiantes.
+ * @property deleteStudentUseCase El caso de uso para eliminar un estudiante.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -38,11 +44,11 @@ class ListStudentViewModel(
     val uiState: StateFlow<ListStudentUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ListStudentUiData())
-    /** The data state for the screen. */
+    /** El estado de los datos de la pantalla. */
     val dataState: StateFlow<ListStudentUiData> = _dataState.asStateFlow()
 
     /**
-     * Gets the list of students.
+     * Obtiene la lista de estudiantes desde el servidor.
      */
     fun getListStudent() {
         viewModelScope.launch {
@@ -75,13 +81,18 @@ class ListStudentViewModel(
     }
 
     /**
-     * Gets a student by its ID.
+     * Obtiene un estudiante por su ID.
      *
-     * @param item The custom card model of the student to get.
-     * @return The [StudentDomain] object, or null if not found.
+     * @param item El modelo de tarjeta personalizada del estudiante a obtener.
+     * @return El objeto [StudentDomainPar], o null si no se encuentra.
      */
     fun getStudent(item: ModelCustomCard): StudentDomainPar? = _dataState.value.studentList?.find { it.studentId == item.id }
 
+    /**
+     * Elimina un estudiante de la lista.
+     *
+     * @param card El modelo de tarjeta personalizada del estudiante a eliminar.
+     */
     fun deleteStudent(card: ModelCustomCard) {
         viewModelScope.launch {
             _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }

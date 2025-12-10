@@ -41,12 +41,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Student Registration screen.
+ * Pantalla de registro y edición de estudiantes.
+ * 
+ * Permite registrar un nuevo estudiante o editar uno existente. Incluye funcionalidad
+ * de reconocimiento de voz para llenar automáticamente los campos del formulario.
  *
- * @param navController The navigation controller.
- * @param backStackEntry The back stack entry for this screen.
- * @param sharedViewModel The shared ViewModel.
- * @param registerStudentViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param backStackEntry La entrada de la pila de retroceso para esta pantalla, contiene los datos del estudiante si se está editando.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param registerStudentViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun RegisterStudentScreen(

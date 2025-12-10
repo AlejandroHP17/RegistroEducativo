@@ -37,13 +37,16 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The main schoolCycle screen of the application.
+ * Pantalla principal de menú de la aplicación.
+ * 
+ * Muestra las opciones principales del menú, permite seleccionar grupos y parciales,
+ * y proporciona acceso a las diferentes funcionalidades de la aplicación.
  *
- * @param reload Whether to reload the data.
- * @param navController The navigation controller.
- * @param menuViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
- * @param onCloseSession A lambda to be invoked when the session is closed.
+ * @param reload Indica si se deben recargar los datos.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param menuViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param onCloseSession Lambda que se invoca cuando se cierra la sesión.
  */
 @Composable
 fun MenuScreen(
