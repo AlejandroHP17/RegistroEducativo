@@ -30,6 +30,11 @@ import com.mx.liftechnology.domain.model.schoolCycle.DialogStudentGroupDomain
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.share.CustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.DialogGroupItem
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.EvaluationPercentItem
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.EvaluationStudentItem
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.GridItem
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.RegisterPartialListItem
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
 import java.time.LocalDate
 
@@ -200,8 +205,8 @@ fun EvaluationPercentList(
                 listWorkMethods = listWorkMethods,
                 name = item.name,
                 percent = item.percent,
-                onNameChange = {onNameChange(Pair(it, index)) },
-                onPercentChange = {onPercentChange(Pair(it, index))}
+                onNameChange = { onNameChange(Pair(it, index)) },
+                onPercentChange = { onPercentChange(Pair(it, index)) }
             )
         }
     }
@@ -225,7 +230,7 @@ fun EvaluationStudentList(
             EvaluationStudentItem(
                 nameStudent = item.studentName.stringToModelStateOutFieldText(),
                 score = item.score,
-                onScoreChange =  {onScoreChange(Pair(item.id, it))},
+                onScoreChange = { onScoreChange(Pair(item.id, it)) },
             )
         }
     }
@@ -251,7 +256,7 @@ fun RegisterPartialList(
                 date = item,
                 isActive = isActive,
                 rangeDate = rangeDate,
-                onDateChange = {onDateChange(Pair(it, index)) },
+                onDateChange = { onDateChange(Pair(it, index)) },
             )
         }
     }

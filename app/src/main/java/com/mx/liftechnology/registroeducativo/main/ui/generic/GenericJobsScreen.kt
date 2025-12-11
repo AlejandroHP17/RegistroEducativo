@@ -17,7 +17,7 @@ import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
 import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComplexCard
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.ComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction

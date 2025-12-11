@@ -1,10 +1,6 @@
 package com.mx.liftechnology.registroeducativo.main.ui.components.calendars
 
-import com.mx.liftechnology.core.util.extension.logInfo
 import android.icu.util.Calendar
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -20,22 +16,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
+import com.mx.liftechnology.core.util.extension.logInfo
 import com.mx.liftechnology.registroeducativo.main.model.share.CustomCalendar
+import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonsCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorApprove
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorDisabled
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorSuccess
-import com.mx.liftechnology.registroeducativo.main.ui.theme.colorTransparent
-import com.mx.liftechnology.registroeducativo.main.ui.theme.colorWhite
-import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonsCalendar
-import java.time.Instant
+import com.mx.liftechnology.registroeducativo.main.util.getCandidate
+import com.mx.liftechnology.registroeducativo.main.util.toLocalDate
+import com.mx.liftechnology.registroeducativo.main.util.toMillis
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 /**
  * Diálogo para seleccionar un rango de fechas.
@@ -229,76 +220,3 @@ fun DateSimplePickerDialog(
         }
     }
 }
-
-/**
- * A screen that displays a date picker.
- *
- * @param dialogState The state of the dialog.
- * @param onDateSelected A lambda to be invoked when a date is selected.
- */
-@Composable
-fun DatePickerScreen(
-    dialogState: CustomCalendar?,
-    onDateSelected: (date: LocalDate) -> Unit,
-) {
-
-    val datePickerState = rememberDatePickerState(
-        selectableDates = object : SelectableDates {
-            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                val candidate = getCandidate(utcTimeMillis)
-
-                val split = dialogState?.rangeDate?.split("/")
-                return split?.let {
-                    val start = it[0].toLocalDate()
-                    val end = it[1].toLocalDate()
-                    candidate in start..end
-                } ?: true
-            }
-        }
-    )
-
-    LaunchedEffect(Unit) {
-        datePickerState.displayMode = DisplayMode.Input
-    }
-
-    datePickerState.selectedDateMillis?.let { millis ->
-        val localDate: LocalDate = getCandidate(millis)
-        onDateSelected(localDate)
-    }
-
-    DatePicker(
-        state = datePickerState,
-        colors = DatePickerDefaults.colors(
-            containerColor = colorWhite,
-            headlineContentColor = colorPrincipalText,
-            weekdayContentColor = colorPrincipalText,
-            selectedDayContainerColor = colorPrincipalText,
-            selectedDayContentColor = colorWhite,
-        ),
-        modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(colorTransparent)
-            .padding(8.dp)
-    )
-}
-
-/**
- * Converts a [LocalDate] to milliseconds.
- */
-fun LocalDate.toMillis(): Long {
-    return this.atStartOfDay(ZoneId.systemDefault())
-        .toInstant()
-        .toEpochMilli()
-}
-
-/**
- * Converts a string to a [LocalDate].
- */
-fun String.toLocalDate(): LocalDate {
-    return LocalDate.parse(this, DateTimeFormatter.ISO_LOCAL_DATE)
-}
-
-private fun getCandidate(utcTimeMillis: Long)=
-    Instant.ofEpochMilli(utcTimeMillis)
-        .atZone(ZoneOffset.UTC)
-        .toLocalDate()

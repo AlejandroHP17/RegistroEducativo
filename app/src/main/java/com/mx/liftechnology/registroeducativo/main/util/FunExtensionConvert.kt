@@ -2,6 +2,11 @@ package com.mx.liftechnology.registroeducativo.main.util
 
 import com.mx.liftechnology.domain.model.schoolCycle.CCTPeriodCatalogDomain
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 /**
  * Extensiones de funciones para conversión y transformación de datos relacionados con ciclos escolares.
@@ -42,3 +47,24 @@ fun List<CCTPeriodCatalogDomain>.getPeriodsByType(typeName: String): List<ModelC
             )
         }
 }
+
+/**
+ * Converts a [LocalDate] to milliseconds.
+ */
+fun LocalDate.toMillis(): Long {
+    return this.atStartOfDay(ZoneId.systemDefault())
+        .toInstant()
+        .toEpochMilli()
+}
+
+/**
+ * Converts a string to a [LocalDate].
+ */
+fun String.toLocalDate(): LocalDate {
+    return LocalDate.parse(this, DateTimeFormatter.ISO_LOCAL_DATE)
+}
+
+fun getCandidate(utcTimeMillis: Long): LocalDate =
+    Instant.ofEpochMilli(utcTimeMillis)
+        .atZone(ZoneOffset.UTC)
+        .toLocalDate()

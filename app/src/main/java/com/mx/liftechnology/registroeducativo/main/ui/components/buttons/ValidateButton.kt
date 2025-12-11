@@ -19,7 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +48,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.components.layout.backgrou
  */
 @Preview(showBackground = true)
 @Composable
-fun TestButton(){
+fun ValidateButtonPreview(){
     Column (
         modifier = Modifier.background(background())
     ){
@@ -58,9 +57,7 @@ fun TestButton(){
             selectedIndex = 0,
             onOptionSelected = { it }
         )
-        ButtonReturn({})
-        ButtonAction(colorAction, "Pulsame",{}, true)
-        ButtonActionShort(colorSuccess, "Pulsame"){}
+
         ButtonPair(colorAction, colorAction, "Pulsame", {}, {})
         ButtonsCalendar(colorDisabled, colorApprove, colorSuccess,true, {}, {})
     }
@@ -175,104 +172,6 @@ fun ButtonsCalendar(
             }
         )
         {Text("Confirmar")}
-    }
-}
-
-/**
- * A back button component.
- *
- * @param onReturnClick A lambda to be invoked when the back button is clicked.
- */
-@Composable
-fun ButtonReturn(
-    onReturnClick: () -> Unit,
-){
-    IconButton (
-        onClick = onReturnClick,
-        modifier = Modifier
-            .size(dimensionResource(id = R.dimen.touch_google))
-
-    ){
-        Icon(
-            painter = painterResource(id = R.drawable.ic_return),
-            contentDescription = "Return",
-            tint = colorPrincipalText,
-            modifier = Modifier.size(32.dp),
-        )
-    }
-}
-
-/**
- * An action button component.
- *
- * @param containerColor The color of the button's container.
- * @param text The text to display on the button.
- * @param onActionClick A lambda to be invoked when the button is clicked.
- * @param isAvailable Whether the button is enabled.
- */
-@Composable
-fun ButtonAction(
-    containerColor:Color,
-    text: String,
-    onActionClick: () -> Unit,
-    isAvailable: Boolean = true,
-) {
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Transparent))
-    {
-        Button(
-            onClick = { onActionClick() },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(20),
-            border = BorderStroke(1.dp, colorPrincipalText),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = colorPrincipalText,
-                containerColor = containerColor,
-                disabledContentColor = colorPrincipalText,
-                disabledContainerColor = colorDisable
-            ),
-            enabled = isAvailable
-        ) {
-            Text(text)
-        }
-    }
-}
-
-/**
- * A short action button component.
- *
- * @param containerColor The color of the button's container.
- * @param text The text to display on the button.
- * @param onActionClick A lambda to be invoked when the button is clicked.
- */
-@Composable
-fun ButtonActionShort(
-    containerColor:Color,
-    text: String,
-    onActionClick: () -> Unit) {
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Transparent))
-    {
-        Button(
-            onClick = { onActionClick() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp),
-            shape = RoundedCornerShape(20),
-            border = BorderStroke(1.dp, colorPrincipalText),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = colorPrincipalText,
-                containerColor = containerColor,
-                disabledContentColor = colorPrincipalText,
-                disabledContainerColor = colorError
-            )
-        ) {
-            Text(text)
-        }
     }
 }
 

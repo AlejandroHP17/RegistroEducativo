@@ -17,9 +17,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.CustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.EmptyState
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
