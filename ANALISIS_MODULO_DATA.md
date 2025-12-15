@@ -17,6 +17,7 @@ El módulo `data` es responsable de la gestión de datos y la comunicación con 
 - **Interfaces de repositorio**: ✅ Correctamente ubicadas en domain
 - **Utilidades**: ✅ Completas con soporte para respuestas con y sin wrapper
 - **Testing**: ✅ **COMPLETO** - Tests implementados para todos los componentes
+- **Métricas de testing**: 19 archivos de test en `data` (8 mappers, 9 repositorios, 2 utilidades) con >200 casos de prueba unitarios
 
 ---
 

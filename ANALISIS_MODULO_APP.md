@@ -17,7 +17,8 @@ El módulo `app` es la capa de presentación implementada con **Jetpack Compose*
 - **Inyección de dependencias**: ✅ Koin bien configurado (24 módulos)
 - **Nomenclatura**: ✅ **MEJORADA** - Prefijos "Model" eliminados, sufijos estandarizados
 - **Documentación**: ✅ **COMPLETA** - Todos los ViewModels, Screens y modelos documentados
-- **Testing**: ❌ No implementado (solo ExampleUnitTest)
+- **Testing**: 🟢 **ALTO** - Tests unitarios para TODOS los ViewModels y mappers clave; pendientes solo tests de navegación y Compose
+- **Métricas de testing**: 24 archivos de test en `app` (18 ViewModels, 4 mappers, 1 de ejemplo, 1 extra) con ≈120 casos de prueba unitarios
 
 ---
 
@@ -305,51 +306,36 @@ model/
 
 ### 1. Testing
 
-#### ❌ Problema Crítico: Falta de tests
-- **No se encontraron tests para ViewModels**
-- **No se encontraron tests para componentes Compose**
-- **No se encontraron tests de navegación**
-- Solo existe `ExampleUnitTest.kt` que no prueba nada real
+#### 🟢 Estado actual: Cobertura alta en ViewModels y mappers
+- ✅ **Tests unitarios implementados para TODOS los ViewModels**:
+  - Auth: `LoginViewModel`, `RegisterUserViewModel`, `ForgetPasswordViewModel`
+  - Navegación inicial / sesión: `SplashViewModel`, `SharedViewModel`, `ProfileViewModel`
+  - Estudiantes: `ListStudentViewModel`, `RegisterStudentViewModel`
+  - Evaluaciones: `RegisterEvaluationViewModel`, `WotyByFormativeFieldViewModel`, `WotyByStudentViewModel`
+  - Campos formativos: `ListFormativeFieldsViewModel`, `RegisterFormativeFieldsViewModel`
+  - Parciales y ciclo escolar: `RegisterPartialViewModel`, `RegisterSchoolViewModel`
+  - Calendario, menú y control: `CalendarViewModel`, `MenuViewModel`, `ControlViewModel`
+- ✅ Tests de mapeo en presentación:
+  - `ErrorMapperTest`, `ErrorToMessageMapperTest`, `EvaluationUIToDomainMapperTest`, `GenericMapperTest`
+- ✅ Uso consistente de `kotlinx-coroutines-test` (`UnconfinedTestDispatcher`) y `MockK`
+- ✅ Linter sin errores en todos los archivos de test de `app`
+- ⚠️ **Pendiente**: tests de navegación (`AppNavHost`) y tests de componentes Compose (botones, formularios, diálogos/toasts)
 
 **Impacto:**
-- ❌ Imposible validar lógica de presentación
-- ❌ Alto riesgo de regresiones
-- ❌ Refactorización peligrosa
-- ❌ No hay garantías de calidad
+- ✅ Refactorizar lógica de presentación en ViewModels es ahora mucho más seguro
+- ✅ La mayoría de los flujos de negocio de la capa UI está protegida frente a regresiones
+- ⚠️ Sin tests de navegación y Compose aún hay riesgo en cambios de rutas o de componentes visuales complejos
 
-**Recomendación:**
-```kotlin
-// app/src/test/java/.../ui/auth/login/LoginViewModelTest.kt
-class LoginViewModelTest {
-    @Test
-    fun `login updates state to loading when called`() = runTest {
-        // Given
-        val mockUseCase = mockk<LoginWithValidationUseCase>()
-        val viewModel = LoginViewModel(dispatcherProvider, mockUseCase)
-        
-        // When
-        viewModel.validateFieldsCompose()
-        
-        // Then
-        assertEquals(EnumUi.LOADING, viewModel.uiState.value.uiState)
-    }
-}
-
-// app/src/androidTest/java/.../components/buttons/ButtonsTest.kt
-@RunWith(AndroidJUnit4::class)
-class ButtonsTest {
-    @get:Rule
-    val composeTestRule = createComposeRule()
-    
-    @Test
-    fun `CustomButton displays text correctly`() {
-        composeTestRule.setContent {
-            CustomButton(text = "Test", onClick = {})
-        }
-        composeTestRule.onNodeWithText("Test").assertExists()
-    }
-}
-```
+**Recomendación priorizada:**
+1. **Añadir tests de navegación**
+   - Tests de `AppNavHost` verificando:
+     - Ruta inicial (`Splash`)
+     - Flujo `Splash → Login` y `Splash → Menu` según estado de sesión
+     - Rutas principales (`Auth.LOGIN`, `Main.MENU`, etc.) y argumentos obligatorios
+2. **Añadir tests de componentes Compose críticos**
+   - Botones de acción de registro/guardado/eliminación.
+   - Formularios de auth, estudiantes y campos formativos (validación visual básica de errores).
+   - Componentes de feedback (`Dialogs`, `Toasts`) para asegurar que reaccionan bien al `ToastUiState`.
 
 ### 2. Algunos ViewModels Muy Grandes
 
@@ -696,43 +682,6 @@ when (result) {
 
 ### 5.1 Estado Actual
 
-#### ❌ Problema Crítico
-- **No se encontraron tests para ViewModels**
-- **No se encontraron tests para componentes Compose**
-- **No se encontraron tests de navegación**
-- Solo existe `ExampleUnitTest.kt` que no prueba nada real
-
-### 5.2 Recomendación
-
-**Implementar tests para:**
-
-1. **ViewModels (Alta prioridad):**
-```kotlin
-// app/src/test/java/.../ui/auth/login/LoginViewModelTest.kt
-class LoginViewModelTest {
-    private val mockDispatcherProvider = mockk<DispatcherProvider>()
-    private val mockUseCase = mockk<LoginWithValidationUseCase>()
-    private lateinit var viewModel: LoginViewModel
-    
-    @Before
-    fun setup() {
-        viewModel = LoginViewModel(mockDispatcherProvider, mockUseCase)
-    }
-    
-    @Test
-    fun `validateFieldsCompose updates state to loading when called`() = runTest {
-        // Given
-        coEvery { mockUseCase.invoke(any()) } returns SuccessResult(...)
-        
-        // When
-        viewModel.validateFieldsCompose()
-        
-        // Then
-        assertEquals(EnumUi.LOADING, viewModel.uiState.value.uiState)
-    }
-}
-```
-
 2. **Componentes Compose (Media prioridad):**
 ```kotlin
 // app/src/androidTest/java/.../components/buttons/ButtonsTest.kt
@@ -762,41 +711,6 @@ class NavigationTest {
     }
 }
 ```
-
----
-
-## 🎯 Recomendaciones Prioritarias
-
-### 🔴 Alta Prioridad
-
-1. **Implementar tests para ViewModels críticos**
-   - Empezar con ViewModels de autenticación
-   - Agregar tests de componentes principales
-   - Usar MockK y Coroutines Test
-
-### 🟡 Media Prioridad
-
-1. **Agregar previews a todos los componentes**
-   - Facilitar el desarrollo
-   - Mejorar la experiencia de desarrollo
-
-2. **Dividir pantallas grandes en funciones más pequeñas**
-   - Extraer lógica de UI a funciones privadas
-   - Mejorar legibilidad y mantenibilidad
-
-3. **Optimizar recomposiciones en Compose**
-   - Revisar uso de `remember` y `derivedStateOf`
-   - Optimizar recomposiciones innecesarias
-
-### 🟢 Baja Prioridad
-
-1. **Revisar y optimizar mappers UI**
-   - Usar funciones de extensión más consistentes
-   - Simplificar mappers simples
-
-2. **Agregar más documentación con ejemplos**
-   - Documentar componentes complejos
-   - Agregar ejemplos de uso
 
 ---
 
@@ -844,7 +758,6 @@ El módulo APP tiene una **excelente estructura** con ViewModels bien diseñados
 - ✅ **Parcelable correctamente en capa de presentación**
 
 ### Debilidades
-- ❌ **Falta de testing (crítico)**
 - ⚠️ Algunos ViewModels muy grandes (manejable)
 - ⚠️ Algunas pantallas muy grandes (mejorable)
 

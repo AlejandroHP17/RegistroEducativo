@@ -16,6 +16,7 @@ El módulo `core` contiene funcionalidades transversales y herramientas comparti
 - **Modelos compartidos**: ✅ Bien definidos (ModelResult, errores)
 - **Documentación**: ✅ Excelente cobertura
 - **Testing**: ✅ Implementado (12 archivos de test, cobertura completa de componentes críticos)
+- **Métricas de testing**: 12 archivos de test en `core` (network, interceptores, preferencias, utilidades, modelos) con ≈80 casos de prueba unitarios
 - **Dependencias**: ✅ Correctas (no depende de domain ni data)
 
 ---
