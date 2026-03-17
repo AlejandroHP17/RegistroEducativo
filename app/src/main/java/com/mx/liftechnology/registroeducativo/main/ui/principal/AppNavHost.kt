@@ -116,7 +116,7 @@ fun AppNavHost(
             composable(AppRoutes.Auth.FORGET_PASSWORD){ ForgetPasswordScreen(navigationController) }
 
             // Flujo Admin
-            composable(AppRoutes.Control.MENU){ ControlScreen(navigationController) }
+            composable(AppRoutes.Control.MENU){ ControlScreen() }
 
 
             // Flujo Principal
@@ -137,7 +137,7 @@ fun AppNavHost(
             composable(AppRoutes.Main.LIST_STUDENT){ ListStudentScreen(navigationController) }
             composable(AppRoutes.Main.LIST_FORMATIVE_FIELDS){ ListFormativeFieldsScreen(navigationController) }
             composable(AppRoutes.Main.CALENDAR){ CalendarScreen(navigationController) }
-            composable(AppRoutes.Main.API_CONTROL){ ControlScreen(navigationController) }
+            composable(AppRoutes.Main.API_CONTROL){ ControlScreen() }
 
             composable(AppRoutes.Main.REGISTER_SCHOOL){ RegisterSchoolScreen(
                 navController = navigationController,

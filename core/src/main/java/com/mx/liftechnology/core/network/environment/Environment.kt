@@ -109,6 +109,9 @@ object Environment {
     val API_VERSION: String
         get() = BuildConfig.API_VERSION
 
+    /** Endpoints para el flujo de control. */
+    const val END_POINT_CONTROL = "control/access-codes" // ControlScreen
+
     /** Endpoints para el flujo de login. */
     const val END_POINT_LOGIN = "auth/login" //LoginScreen
     const val END_POINT_GET_DATA= "auth/me" //LoginScreen

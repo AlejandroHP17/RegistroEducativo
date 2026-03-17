@@ -30,25 +30,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
+import com.mx.liftechnology.registroeducativo.main.model.control.ApiControlUiState
+import com.mx.liftechnology.registroeducativo.main.model.control.ApiServiceButton
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorPrincipalText
 import org.koin.androidx.compose.koinViewModel
-
-/**
- * Datos de los botones de servicios disponibles.
- */
-data class ApiServiceButton(
-    val title: String,
-    val description: String,
-    val parameterHint: String,
-    val onClick: () -> Unit
-)
 
 /**
  * Pantalla de control de APIs.
  * Permite consumir servicios y visualizar el JSON de respuesta.
  *
- * @param navController El controlador de navegación.
  * @param viewModel El ViewModel para esta pantalla.
  *
  * @author Pelkidev
@@ -56,7 +46,6 @@ data class ApiServiceButton(
  */
 @Composable
 fun ControlScreen(
-    navController: NavHostController,
     viewModel: ControlViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -76,27 +65,6 @@ fun ControlScreen(
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // Campo de texto para parámetros
-        OutlinedTextField(
-            value = uiState.parameterText,
-            onValueChange = { viewModel.updateParameterText(it) },
-            label = { Text("Parámetros (opcional)") },
-            placeholder = { Text("Ej: 1 o 1,2,3,4,5") },
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = colorPrincipalText,
-                unfocusedTextColor = colorPrincipalText
-            )
-        )
-
-        ApiServiceButton(
-            title = "Crear Codigo de registro",
-            description = "Nuevo codigo para registro",
-            parameterHint = "No requiere parámetros",
-            onClick = { viewModel.callNewCode() }
-        )
-
         // Lista de botones de servicios
         Text(
             text = "Servicios disponibles:",
@@ -107,6 +75,12 @@ fun ControlScreen(
         )
 
         val services = listOf(
+            ApiServiceButton(
+                title = "Crear Codigo de registro",
+                description = "Nuevo codigo para registro",
+                parameterHint = "No requiere parámetros",
+                onClick = { viewModel.callNewCode() }
+            ),
             ApiServiceButton(
                 title = "Obtener Datos de Usuario",
                 description = "getUserData()",
@@ -182,6 +156,11 @@ fun ControlScreen(
                 )
             }
         }
+
+        OptionalParameters(
+            uiState = uiState,
+            viewModel = viewModel
+        )
 
         // Área de respuesta JSON
         Column(
@@ -284,5 +263,40 @@ private fun ServiceButton(
                 color = Color.White.copy(alpha = 0.6f)
             )
         }
+    }
+}
+
+@Composable
+private fun OptionalParameters(
+    uiState: ApiControlUiState,
+    viewModel: ControlViewModel
+) {
+    Column() {
+        // Campo de texto para parámetros
+        OutlinedTextField(
+            value = uiState.parameterText,
+            onValueChange = { viewModel.updateParameterText(it) },
+            label = { Text("Parámetros (opcional)") },
+            placeholder = { Text("Ej: 1 o 1,2,3,4,5") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = colorPrincipalText,
+                unfocusedTextColor = colorPrincipalText
+            )
+        )
+        // Campo de texto para parámetros
+        OutlinedTextField(
+            value = uiState.parameterText,
+            onValueChange = { viewModel.updateParameterText(it) },
+            label = { Text("Parámetros (opcional)") },
+            placeholder = { Text("Ej: 1 o 1,2,3,4,5") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = colorPrincipalText,
+                unfocusedTextColor = colorPrincipalText
+            )
+        )
     }
 }

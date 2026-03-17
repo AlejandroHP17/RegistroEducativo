@@ -34,6 +34,7 @@ import com.mx.liftechnology.registroeducativo.di.schoolCycleModule
 import com.mx.liftechnology.registroeducativo.di.shareDomainModule
 import com.mx.liftechnology.registroeducativo.di.workTypeModule
 import com.mx.liftechnology.registroeducativo.di.controlModule
+import com.mx.liftechnology.registroeducativo.di.dataCore.controlDataCoreModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import timber.log.Timber
@@ -130,6 +131,7 @@ class MyApp : Application() {
             androidContext(this@MyApp)
             modules(
                 authDataCoreModule,
+                controlDataCoreModule,
                 evaluationDataCoreModule,
                 formativeFieldDataCoreModule,
                 partialDataCoreModule,
