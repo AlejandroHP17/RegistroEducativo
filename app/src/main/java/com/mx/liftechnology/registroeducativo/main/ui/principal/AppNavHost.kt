@@ -37,8 +37,8 @@ import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.list.ListF
 import com.mx.liftechnology.registroeducativo.main.ui.formativeFields.register.RegisterFormativeFieldScreen
 import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByFormativeField.WotyByFormativeFieldScreen
 import com.mx.liftechnology.registroeducativo.main.ui.profile.ProfileScreen
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu.MenuScreen
-import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial.RegisterPartialScreen
+import com.mx.liftechnology.registroeducativo.main.ui.menu.MenuScreen
+import com.mx.liftechnology.registroeducativo.main.ui.partial.RegisterPartialScreen
 import com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.school.RegisterSchoolScreen
 import com.mx.liftechnology.registroeducativo.main.ui.splash.SplashScreen
 import com.mx.liftechnology.registroeducativo.main.ui.student.list.ListStudentScreen
@@ -46,6 +46,7 @@ import com.mx.liftechnology.registroeducativo.main.ui.student.register.RegisterS
 import com.mx.liftechnology.registroeducativo.main.ui.workType.wotyByStudent.WotyByStudentScreen
 import com.mx.liftechnology.registroeducativo.main.ui.control.ControlScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
+
 
 /**
  * Host de navegación principal de la aplicación.
@@ -115,7 +116,7 @@ fun AppNavHost(
             composable(AppRoutes.Auth.FORGET_PASSWORD){ ForgetPasswordScreen(navigationController) }
 
             // Flujo Admin
-            composable(AppRoutes.Control.MENU){ ControlScreen(navigationController) }
+            composable(AppRoutes.Control.MENU){ ControlScreen() }
 
 
             // Flujo Principal
@@ -136,7 +137,7 @@ fun AppNavHost(
             composable(AppRoutes.Main.LIST_STUDENT){ ListStudentScreen(navigationController) }
             composable(AppRoutes.Main.LIST_FORMATIVE_FIELDS){ ListFormativeFieldsScreen(navigationController) }
             composable(AppRoutes.Main.CALENDAR){ CalendarScreen(navigationController) }
-            composable(AppRoutes.Main.API_CONTROL){ ControlScreen(navigationController) }
+            composable(AppRoutes.Main.API_CONTROL){ ControlScreen() }
 
             composable(AppRoutes.Main.REGISTER_SCHOOL){ RegisterSchoolScreen(
                 navController = navigationController,
@@ -169,12 +170,19 @@ fun AppNavHost(
                 )
             }
 
+            // Ruta para woty con student y date (ambos opcionales)
             composable(
-                route = AppRoutes.Main.WOTYFOFI_STUDENT,
-                arguments = listOf(navArgument("student") {
-                    nullable = true
-                    defaultValue = ""
-                })
+                route = AppRoutes.Main.WOTY_STUDENT,
+                arguments = listOf(
+                    navArgument("student") {
+                        nullable = true
+                        defaultValue = ""
+                    },
+                    navArgument("date") {
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
             ) { backStackEntry ->
                 WotyByStudentScreen(
                     navController = navigationController,
@@ -182,18 +190,27 @@ fun AppNavHost(
                 )
             }
 
+            // Ruta para woty con formativeField y date (ambos opcionales)
             composable(
-                route = AppRoutes.Main.ASSIGNMENT_FORMATIVE_FIELD,
-                arguments = listOf(navArgument("formativeField") {
-                    nullable = true
-                    defaultValue = ""
-                })
+                route = AppRoutes.Main.WOTY_FORMATIVE_FIELD,
+                arguments = listOf(
+                    navArgument("formativeField") {
+                        nullable = true
+                        defaultValue = ""
+                    },
+                    navArgument("date") {
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
             ) { backStackEntry ->
                 WotyByFormativeFieldScreen(
                     navController = navigationController,
                     backStackEntry = backStackEntry
                 )
             }
+            
+
 
             composable(
                 route = AppRoutes.Main.REGISTER_ASSIGNMENT,

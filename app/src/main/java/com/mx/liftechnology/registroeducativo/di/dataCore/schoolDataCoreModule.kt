@@ -22,13 +22,15 @@ import retrofit2.Retrofit
  */
 val schoolDataCoreModule = module {
     /**
-     * Proporciona una instancia de [SchoolApi].
+     * Proporciona una instancia factory de [SchoolApi].
+     * API de Retrofit para realizar llamadas al servicio de escuelas.
      */
     factory { get<Retrofit>().create(SchoolApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [SchoolRepository].
-     * Agrupa todas las operaciones relacionadas con escuelas: obtener CCT.
+     * Repositorio que agrupa todas las operaciones relacionadas con escuelas:
+     * - Obtener CCT (Clave de Centro de Trabajo)
      */
     singleOf(::SchoolRepositoryImpl) {
         bind<SchoolRepository>()

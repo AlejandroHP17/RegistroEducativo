@@ -3,7 +3,6 @@ package com.mx.liftechnology.domain.repository.evaluation
 import com.mx.liftechnology.core.network.api.RequestListGrades
 import com.mx.liftechnology.core.util.models.ModelResult
 import com.mx.liftechnology.core.util.models.NetworkModelError
-import com.mx.liftechnology.domain.model.evaluation.WorkTypeByFormativeFieldDomain
 import com.mx.liftechnology.domain.model.evaluation.WorkTypeEvaluationDomain
 import com.mx.liftechnology.domain.model.evaluation.WorkTypeFormativeFieldDomain
 import com.mx.liftechnology.domain.model.formativeFields.ByFieldTypeStudentDomain
@@ -45,7 +44,7 @@ interface EvaluationRepository {
      * @param formativeFieldId El ID del campo formativo.
      * @return Un [ModelResult] que indica el resultado de la operación.
      */
-    suspend fun getListWorkTypeStudent(formativeFieldId: Int): ModelResult<WorkTypeFormativeFieldDomain, NetworkModelError>
+    suspend fun getListWorkTypeFormativeField(formativeFieldId: Int): ModelResult<WorkTypeFormativeFieldDomain, NetworkModelError>
 
     /**
      * Obtiene la lista de evaluaciones de un estudiante.

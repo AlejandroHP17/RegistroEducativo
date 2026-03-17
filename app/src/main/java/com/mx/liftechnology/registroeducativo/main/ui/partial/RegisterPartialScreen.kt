@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial
+package com.mx.liftechnology.registroeducativo.main.ui.partial
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.partial.RegisterPartialUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -39,11 +39,14 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 /**
- * The Partial Registration screen.
+ * Pantalla de registro de parciales.
+ * 
+ * Permite registrar múltiples parciales con sus respectivos rangos de fechas.
+ * También permite visualizar los parciales existentes en modo de solo lectura.
  *
- * @param navController The navigation controller.
- * @param registerPartialViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param registerPartialViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
  */
 @Composable
 fun RegisterPartialScreen(
@@ -139,7 +142,7 @@ fun RegisterPartialScreen(
         )
     }
 
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 /**
@@ -206,13 +209,12 @@ private fun BodyRegisterPartial(
 @Composable
 private fun ColumnRegisterPartial(
     uiData: RegisterPartialUiData,
-    onDateChange: (
-        Pair<Pair<LocalDate?, LocalDate?>, Int>,
-    ) -> Unit,
+    onDateChange: (Pair<Pair<LocalDate, LocalDate>, Int>) -> Unit,
 ) {
     RegisterPartialList(
         items = uiData.listCalendar!!,
         isActive = !uiData.read,
+        rangeDate = uiData.rangeDate,
         onDateChange = { onDateChange(it) })
 }
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mx.liftechnology.core.util.session.SessionManager
 import com.mx.liftechnology.registroeducativo.main.model.event.ShareUiState
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -67,7 +67,7 @@ class SharedViewModel(
      */
     fun showToast(
         messageToast: Int,
-        typeToast: ModelStateTypeToastUI = ModelStateTypeToastUI.SUCCESS
+        typeToast: TypeToastUi = TypeToastUi.SUCCESS
     ) {
         _uiState.update {
             it.copy(

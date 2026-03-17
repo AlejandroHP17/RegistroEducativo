@@ -25,14 +25,16 @@ val schoolCycleDataCoreModule = module {
     single<MenuLocalRepository> { MenuLocalRepositoryImpl(androidContext()) }
 
     /**
-     * Proporciona una instancia de [SchoolCycleApi].
+     * Proporciona una instancia factory de [SchoolCycleApi].
+     * API de Retrofit para realizar llamadas al servicio de ciclos escolares.
      */
     factory { get<Retrofit>().create(SchoolCycleApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [SchoolCycleRepository].
-     * Agrupa todas las operaciones relacionadas con ciclos escolares: obtener lista de ciclos escolares
-     * y registrar ciclo escolar.
+     * Repositorio que agrupa todas las operaciones relacionadas con ciclos escolares:
+     * - Obtener lista de ciclos escolares
+     * - Registrar ciclo escolar
      */
     singleOf(::SchoolCycleRepositoryImpl) {
         bind<SchoolCycleRepository>()

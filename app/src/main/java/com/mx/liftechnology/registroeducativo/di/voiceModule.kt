@@ -5,14 +5,20 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 /**
- * Koin module for voice recognition dependencies.
+ * Módulo de Koin para dependencias relacionadas con el reconocimiento de voz.
+ * 
+ * Este módulo proporciona las instancias necesarias para:
+ * - Gestión del reconocimiento de voz del dispositivo
+ * - Conversión de voz a texto
+ * - Validación de entrada por voz
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 val voiceModule = module {
     /**
-     * Provides a singleton instance of [VoiceRecognitionManager].
+     * Proporciona una instancia singleton de [VoiceRecognitionManager].
+     * Manager para gestionar el reconocimiento de voz del dispositivo.
      */
     single { VoiceRecognitionManager(androidContext()) }
 }

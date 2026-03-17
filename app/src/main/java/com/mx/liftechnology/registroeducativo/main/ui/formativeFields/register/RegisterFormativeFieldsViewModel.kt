@@ -14,8 +14,8 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.RegisterFormativeFieldUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel para la pantalla de registro de materias.
+ * ViewModel para la pantalla de registro de campos formativos (materias).
+ * 
+ * Gestiona el estado de la UI, la validación de campos y la comunicación con los casos de uso.
+ * Permite registrar un campo formativo con múltiples métodos de trabajo y sus porcentajes.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property registerFormativeFieldsWithValidationUseCase El caso de uso para registrar un campo formativo con validación.
+ * @property getListWorkTypeUseCase El caso de uso para obtener la lista de tipos de trabajo.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -123,7 +130,7 @@ class RegisterFormativeFieldsViewModel(
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // El Use Case combina validación + operación
             val result = withContext(dispatcherProvider.io) {
@@ -150,11 +157,11 @@ class RegisterFormativeFieldsViewModel(
                 when (val operationResult = validationResult.operationResult) {
                     is SuccessResult -> {
                         _uiState.update { it.copy(
-                            uiState = ModelStateUIEnum.SUCCESS,
+                            uiState = EnumUi.SUCCESS,
                             controlToast = ToastUiState(
                                 messageToast = R.string.toast_success_register_formative_field,
                                 showToast = true,
-                                typeToast = ModelStateTypeToastUI.SUCCESS
+                                typeToast = TypeToastUi.SUCCESS
                             )
                         ) }
                     }
@@ -167,12 +174,12 @@ class RegisterFormativeFieldsViewModel(
 
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
+                                uiState = EnumUi.ERROR,
                                 controlToast = messageRes?.let { msg ->
                                     ToastUiState(
                                         messageToast = msg,
                                         showToast = true,
-                                        typeToast = ModelStateTypeToastUI.ERROR
+                                        typeToast = TypeToastUi.ERROR
                                     )
                                 } ?: it.controlToast.copy(showToast = false)
                             )
@@ -182,13 +189,13 @@ class RegisterFormativeFieldsViewModel(
                 }
             } else {
                 
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
             }
         }
     }
 
     /**
-     * Gets the list of workType types.
+     * Obtiene la lista de tipos de trabajo disponibles.
      */
     fun getListWorkType() {
         viewModelScope.launch {
@@ -221,9 +228,9 @@ class RegisterFormativeFieldsViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         

@@ -13,7 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldEmail
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
@@ -25,10 +25,12 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The "Forget Password" screen.
+ * Pantalla de recuperación de contraseña.
+ * 
+ * Permite al usuario solicitar la recuperación de su contraseña ingresando su correo electrónico.
  *
- * @param navController The navigation controller.
- * @param forgetPasswordViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param forgetPasswordViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun ForgetPasswordScreen(
@@ -52,13 +54,13 @@ fun ForgetPasswordScreen(
         Spacer(modifier = Modifier.weight(1f))
         FooterForgetPasswordScreen { forgetPasswordViewModel.validateFieldsCompose() }
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 /**
- * The header of the "Forget Password" screen.
+ * Encabezado de la pantalla de recuperación de contraseña.
  *
- * @param navigate A lambda to be invoked when the back button is clicked.
+ * @param navigate Lambda que se invoca cuando se hace clic en el botón de retroceso.
  */
 @Composable
 fun HeaderForgetPasswordScreen(
@@ -72,11 +74,11 @@ fun HeaderForgetPasswordScreen(
 }
 
 /**
- * The body of the "Forget Password" screen.
+ * Cuerpo de la pantalla de recuperación de contraseña.
  *
- * @param emailState The state of the email input field.
- * @param onEmailChanged A lambda to be invoked when the email input changes.
- * @param getRules The rules for forgetting a password.
+ * @param emailState El estado del campo de entrada de correo electrónico.
+ * @param onEmailChanged Lambda que se invoca cuando cambia el campo de correo electrónico.
+ * @param getRules Las reglas para recuperar la contraseña.
  */
 @Composable
 fun BodyForgetPasswordScreen(
@@ -97,9 +99,9 @@ fun BodyForgetPasswordScreen(
 }
 
 /**
- * The footer of the "Forget Password" screen.
+ * Pie de página de la pantalla de recuperación de contraseña.
  *
- * @param validateFieldsCompose A lambda to be invoked when the action button is clicked.
+ * @param validateFieldsCompose Lambda que se invoca cuando se hace clic en el botón de acción.
  */
 @Composable
 fun FooterForgetPasswordScreen(

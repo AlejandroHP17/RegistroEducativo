@@ -19,14 +19,14 @@ import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.t
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.EvaluationUIToDomainMapper.toModelCard
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiData
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiState
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCardStudent
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCardStudent
 import com.mx.liftechnology.registroeducativo.main.model.student.toStudentDomainList
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,7 +40,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel para la pantalla de registro de asignaciones.
+ * ViewModel para la pantalla de registro de evaluaciones (asignaciones).
+ * 
+ * Gestiona el estado de la UI, la validación de campos y la comunicación con los casos de uso.
+ * Permite registrar evaluaciones para múltiples estudiantes de un campo formativo específico.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListStudentUseCase El caso de uso para obtener la lista de estudiantes.
+ * @property saveFormativeFieldIdSelectedUseCase El caso de uso para guardar el ID del campo formativo seleccionado.
+ * @property getWorkTypeByFormativeFieldUseCase El caso de uso para obtener los tipos de trabajo por campo formativo.
+ * @property getDatesActivePartialUseCase El caso de uso para obtener las fechas del parcial activo.
+ * @property registerEvaluationWithValidationUseCase El caso de uso para registrar una evaluación con validación.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -62,9 +72,9 @@ class RegisterEvaluationViewModel(
     /** El estado de datos de la pantalla. */
     val dataState: StateFlow<RegisterEvaluationUiData> = _dataState.asStateFlow()
 
-    private val _dialogState = MutableStateFlow(ModelCustomCalendar())
+    private val _dialogState = MutableStateFlow(CustomCalendar())
     /** El estado del diálogo de selección de fecha. */
-    val dialogState: StateFlow<ModelCustomCalendar> = _dialogState.asStateFlow()
+    val dialogState: StateFlow<CustomCalendar> = _dialogState.asStateFlow()
 
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     /** Eventos de UI que deben ser manejados una sola vez (navegación, etc.) */
@@ -106,7 +116,7 @@ class RegisterEvaluationViewModel(
 
                 else -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }
@@ -171,11 +181,11 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Gets the list of students.
+     * Obtiene la lista de estudiantes desde el servidor.
      */
     fun getListStudent() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -192,17 +202,17 @@ class RegisterEvaluationViewModel(
                         )
                     }
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.NOTHING)
+                        it.copy(uiState = EnumUi.NOTHING)
                     }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                 }
             }
         }
     }
 
-    private fun List<StudentDomainPar>?.convertModelCustomCard(): List<ModelCustomCardStudent> {
+    private fun List<StudentDomainPar>?.convertModelCustomCard(): List<CustomCardStudent> {
         return this?.sortedWith(
             compareBy(
                 { it.lastName ?: "" },
@@ -210,7 +220,7 @@ class RegisterEvaluationViewModel(
                 { it.name ?: "" }
             ))
             ?.mapIndexed { index, student ->
-                ModelCustomCardStudent(
+                CustomCardStudent(
                     id = student.studentId.toString(),
                     numberList = (index + 1).toString(),
                     studentName = "${student.lastName} ${student.secondLastName} ${student.name}".trim(),
@@ -225,7 +235,7 @@ class RegisterEvaluationViewModel(
      */
     fun validateFields() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // El Use Case combina validación + operación
             val validationResult = withContext(dispatcherProvider.io) {
@@ -255,11 +265,11 @@ class RegisterEvaluationViewModel(
                     is SuccessResult -> {
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.SUCCESS,
+                                uiState = EnumUi.SUCCESS,
                                 controlToast = ToastUiState(
                                     messageToast = R.string.toast_success_register_assignment,
                                     showToast = true,
-                                    typeToast = ModelStateTypeToastUI.SUCCESS
+                                    typeToast = TypeToastUi.SUCCESS
                                 )
                             )
                         }
@@ -276,12 +286,12 @@ class RegisterEvaluationViewModel(
 
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
+                                uiState = EnumUi.ERROR,
                                 controlToast = messageRes?.let { msg ->
                                     ToastUiState(
                                         messageToast = msg,
                                         showToast = true,
-                                        typeToast = ModelStateTypeToastUI.ERROR
+                                        typeToast = TypeToastUi.ERROR
                                     )
                                 } ?: it.controlToast.copy(showToast = false)
                             )
@@ -291,7 +301,7 @@ class RegisterEvaluationViewModel(
                 }
             } else {
                 
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
             }
         }
     }
@@ -312,9 +322,9 @@ class RegisterEvaluationViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         

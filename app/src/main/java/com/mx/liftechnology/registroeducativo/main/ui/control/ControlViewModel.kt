@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.mx.liftechnology.core.util.models.ErrorResult
 import com.mx.liftechnology.core.util.models.SuccessResult
 import com.mx.liftechnology.domain.repository.auth.AuthRepository
+import com.mx.liftechnology.domain.repository.control.ControlRepository
 import com.mx.liftechnology.domain.repository.evaluation.EvaluationRepository
 import com.mx.liftechnology.domain.repository.formativeFields.FormativeFieldRepository
 import com.mx.liftechnology.domain.repository.partial.PartialRepository
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import com.mx.liftechnology.registroeducativo.main.model.control.ApiControlUiState
 
 /**
  * ViewModel para la pantalla de control de APIs.
@@ -38,7 +40,8 @@ class ControlViewModel(
     private val partialRepository: PartialRepository,
     private val schoolRepository: SchoolRepository,
     private val schoolCycleRepository: SchoolCycleRepository,
-    private val workTypeRepository: WorkTypeRepository
+    private val workTypeRepository: WorkTypeRepository,
+    private val controlRepository: ControlRepository
 ) : ViewModel() {
 
     private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
@@ -68,7 +71,11 @@ class ControlViewModel(
             _uiState.update { it.copy(isLoading = true, error = null, responseJson = "") }
             
             val result = withContext(dispatcherProvider.io) {
-                authRepository.getData()
+                controlRepository.newCode(
+                    code = _uiState.value.parameterText,
+                    accessLevelId = 2,
+                    description = "Test"
+                )
             }
             
             handleResponse(result, "getUserData")
@@ -308,13 +315,3 @@ class ControlViewModel(
         }
     }
 }
-
-/**
- * Estado de la UI para la pantalla de control de APIs.
- */
-data class ApiControlUiState(
-    val parameterText: String = "",
-    val responseJson: String = "",
-    val isLoading: Boolean = false,
-    val error: String? = null
-)

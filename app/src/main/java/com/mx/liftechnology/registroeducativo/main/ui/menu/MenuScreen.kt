@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.menu
+package com.mx.liftechnology.registroeducativo.main.ui.menu
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiData
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiDialog
 import com.mx.liftechnology.registroeducativo.main.model.menu.MenuUiState
@@ -37,13 +37,16 @@ import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The main schoolCycle screen of the application.
+ * Pantalla principal de menú de la aplicación.
+ * 
+ * Muestra las opciones principales del menú, permite seleccionar grupos y parciales,
+ * y proporciona acceso a las diferentes funcionalidades de la aplicación.
  *
- * @param reload Whether to reload the data.
- * @param navController The navigation controller.
- * @param menuViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
- * @param onCloseSession A lambda to be invoked when the session is closed.
+ * @param reload Indica si se deben recargar los datos.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param menuViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param onCloseSession Lambda que se invoca cuando se cierra la sesión.
  */
 @Composable
 fun MenuScreen(
@@ -69,7 +72,7 @@ fun MenuScreen(
     }
 
     LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.UNAUTHORIZED) {
+        if (uiState.uiState == EnumUi.UNAUTHORIZED) {
             sharedViewModel.modifyShowToast(uiState.controlToast)
             menuViewModel.modifyShowToast(false)
             onCloseSession()
@@ -95,7 +98,7 @@ fun MenuScreen(
         )
     }
 
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 
     if (showDialog) {
         AlertDialogMenu(

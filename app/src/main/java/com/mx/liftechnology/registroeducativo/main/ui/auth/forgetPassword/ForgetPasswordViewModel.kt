@@ -14,9 +14,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel for the "Forget Password" screen.
+ * ViewModel para la pantalla de recuperación de contraseña.
+ * 
+ * Gestiona el estado de la UI y la validación del campo de email para recuperar la contraseña.
  *
- * @property validateFieldsUseCase The use case for validating input fields.
+ * @property validateFieldsUseCase El caso de uso para validar los campos de entrada.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -55,10 +57,10 @@ class ForgetPasswordViewModel(
     }
 
     /**
-     * Gets the rules for forgetting a password.
+     * Obtiene las reglas para recuperar la contraseña.
      *
-     * @param context The application context.
-     * @return A string containing the formatted rules.
+     * @param context El contexto de la aplicación.
+     * @return Un string que contiene las reglas formateadas.
      */
     fun getRules(context: Context): String {
         val listRules = context.resources?.getStringArray(R.array.rules_forget_pass)

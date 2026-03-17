@@ -10,8 +10,8 @@ import com.mx.liftechnology.domain.usecase.auth.RegisterUserWithValidationUseCas
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.auth.RegisterUserUiInputs
@@ -91,12 +91,12 @@ class RegisterUserViewModel(
     }
 
     /**
-     * Validates the input fields and proceeds to registration if they are valid.
+     * Valida los campos de entrada y, si son válidos, procede con el registro de usuario.
      * La lógica de validación + operación está encapsulada en el Use Case.
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // El Use Case combina validación + operación
             val validationResult = withContext(dispatcherProvider.io) {
@@ -124,11 +124,11 @@ class RegisterUserViewModel(
                     is SuccessResult -> {
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.SUCCESS,
+                                uiState = EnumUi.SUCCESS,
                                 controlToast = ToastUiState(
                                     messageToast = R.string.toast_success_register_user,
                                     showToast = true,
-                                    typeToast = ModelStateTypeToastUI.SUCCESS
+                                    typeToast = TypeToastUi.SUCCESS
                                 )
                             )
                         }
@@ -145,12 +145,12 @@ class RegisterUserViewModel(
 
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
+                                uiState = EnumUi.ERROR,
                                 controlToast = messageRes?.let { msg ->
                                     ToastUiState(
                                         messageToast = msg,
                                         showToast = true,
-                                        typeToast = ModelStateTypeToastUI.ERROR
+                                        typeToast = TypeToastUi.ERROR
                                     )
                                 } ?: it.controlToast.copy(showToast = false)
                             )
@@ -160,7 +160,7 @@ class RegisterUserViewModel(
                 }
             } else {
                 
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
             }
         }
     }

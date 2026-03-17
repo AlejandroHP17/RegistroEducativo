@@ -54,7 +54,8 @@ class LoginUseCase(
         val locationResult = locationHelper.getCurrentLocation()
         val (latitude, longitude) = when (locationResult) {
             is LocationResult.Success -> {
-                locationResult.location.latitude to locationResult.location.longitude
+                19.4596 to -99.1112
+                //locationResult.location.latitude to locationResult.location.longitude
             }
             is LocationResult.Error -> {
                 // Si no se puede obtener la ubicación, usar valores por defecto

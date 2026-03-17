@@ -21,8 +21,8 @@ import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.SchoolCycleMapper.toUi
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.schoolCycle.RegisterSchoolUiInputs
@@ -185,7 +185,7 @@ class RegisterSchoolViewModel(
     fun onCctChanged(cct: ModelStateOutFieldText) {
         if (cct.valueText.length == 10) {
             _uiState.update {
-                it.copy(uiState = ModelStateUIEnum.LOADING)
+                it.copy(uiState = EnumUi.LOADING)
             }
             _inputState.update {
                 it.copy(cct = cct)
@@ -223,7 +223,7 @@ class RegisterSchoolViewModel(
         when (state) {
             is SuccessResult -> {
                 _uiState.update {
-                    it.copy(uiState = ModelStateUIEnum.NOTHING)
+                    it.copy(uiState = EnumUi.NOTHING)
                 }
                 _uiSemiAutomaticData.update {
                     it.copy(
@@ -240,7 +240,7 @@ class RegisterSchoolViewModel(
             else -> {
                 _uiState.update {
                     it.copy(
-                        uiState = ModelStateUIEnum.NOTHING,
+                        uiState = EnumUi.NOTHING,
                     )
                 }
                 _uiSemiAutomaticData.update {
@@ -274,7 +274,7 @@ class RegisterSchoolViewModel(
      */
     fun validateFields() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Calcular el period antes de llamar al Use Case
             val period = _uiSemiAutomaticData.value.periodCatalog.toSelectPeriod(
@@ -315,11 +315,11 @@ class RegisterSchoolViewModel(
                     is SuccessResult -> {
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.SUCCESS,
+                                uiState = EnumUi.SUCCESS,
                                 controlToast = ToastUiState(
                                     messageToast = R.string.toast_success_register_school,
                                     showToast = true,
-                                    typeToast = ModelStateTypeToastUI.SUCCESS
+                                    typeToast = TypeToastUi.SUCCESS
                                 )
                             )
                         }
@@ -336,12 +336,12 @@ class RegisterSchoolViewModel(
 
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
+                                uiState = EnumUi.ERROR,
                                 controlToast = messageRes?.let { msg ->
                                     ToastUiState(
                                         messageToast = msg,
                                         showToast = true,
-                                        typeToast = ModelStateTypeToastUI.ERROR
+                                        typeToast = TypeToastUi.ERROR
                                     )
                                 } ?: it.controlToast.copy(showToast = false)
                             )
@@ -351,7 +351,7 @@ class RegisterSchoolViewModel(
                 }
             } else {
                 
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
             }
         }
     }

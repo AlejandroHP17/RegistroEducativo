@@ -1,4 +1,4 @@
-package com.mx.liftechnology.registroeducativo.main.ui.schoolCycle.partial
+package com.mx.liftechnology.registroeducativo.main.ui.partial
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +11,8 @@ import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorMapper
 import com.mx.liftechnology.registroeducativo.main.mapper.ErrorToMessageMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.partial.RegisterPartialUiData
@@ -30,7 +30,14 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 /**
- * ViewModel for the Partial Registration screen.
+ * ViewModel para la pantalla de registro de parciales.
+ * 
+ * Gestiona el estado de la UI, la validación de campos y la comunicación con los casos de uso.
+ * Permite registrar múltiples parciales con sus respectivos rangos de fechas.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property registerPartialWithValidationUseCase El caso de uso para registrar parciales con validación.
+ * @property getListPartialUseCase El caso de uso para obtener la lista de parciales existentes.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -59,7 +66,6 @@ class RegisterPartialViewModel(
      * @param partial El nuevo número de parciales.
      */
     fun onPartialChanged(partial: String) {
-        // Actualizaciones de estado simples no necesitan corrutinas
         if (partial.toIntOrNull() != null && partial.toInt() > 0) {
             val list = MutableList(partial.toInt()) { index ->
                 DatePeriodDomain(
@@ -68,11 +74,15 @@ class RegisterPartialViewModel(
                     partialCycleGroup = 0
                 )
             }
+            val listDate = MutableList(partial.toInt()){ _ ->
+                null
+            }
 
             _uiData.update {
                 it.copy(
                     numberPartials = partial.stringToModelStateOutFieldText(),
-                    listCalendar = list
+                    listCalendar = list,
+                    rangeDate = listDate
                 )
             }
         }
@@ -83,19 +93,27 @@ class RegisterPartialViewModel(
      *
      * @param data Un par que contiene el rango de fechas y el índice del elemento que cambió.
      */
-    fun onDateChange(data: Pair<Pair<LocalDate?, LocalDate?>, Int>) {
-        // Actualizaciones de estado simples no necesitan corrutinas
+    fun onDateChange(data: Pair<Pair<LocalDate, LocalDate>, Int>) {
+        val startDate = data.first.first
+        val endDate = data.first.second
         _uiData.update { currentState ->
             currentState.copy(
                 listCalendar = currentState.listCalendar?.mapIndexed { index, date ->
                     if (index == data.second) {
-                        val startDate = data.first.first?.toString() ?: ""
-                        val endDate = data.first.second?.toString() ?: ""
+
                         date.copy(
                             date = "$startDate / $endDate".stringToModelStateOutFieldText()
                         )
                     } else {
                         date
+                    }
+                },
+                rangeDate =  currentState.rangeDate?.mapIndexed { index, pair ->
+                    if (index == data.second) {
+                        Pair(startDate,endDate)
+                    }
+                    else{
+                        pair
                     }
                 }
             )
@@ -108,7 +126,7 @@ class RegisterPartialViewModel(
      */
     fun validateFieldsCompose() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
             
             // El Use Case combina validación + operación
             val result = withContext(dispatcherProvider.io) {
@@ -133,11 +151,11 @@ class RegisterPartialViewModel(
                 when (val operationResult = validationResult.operationResult) {
                     is SuccessResult -> {
                         _uiState.update { it.copy(
-                            uiState = ModelStateUIEnum.SUCCESS,
+                            uiState = EnumUi.SUCCESS,
                             controlToast = ToastUiState(
                                 messageToast = R.string.toast_success_register_partial,
                                 showToast = true,
-                                typeToast = ModelStateTypeToastUI.SUCCESS
+                                typeToast = TypeToastUi.SUCCESS
                             )
                         ) }
                         
@@ -152,12 +170,12 @@ class RegisterPartialViewModel(
 
                         _uiState.update {
                             it.copy(
-                                uiState = ModelStateUIEnum.ERROR,
+                                uiState = EnumUi.ERROR,
                                 controlToast = messageRes?.let { msg ->
                                     ToastUiState(
                                         messageToast = msg,
                                         showToast = true,
-                                        typeToast = ModelStateTypeToastUI.ERROR
+                                        typeToast = TypeToastUi.ERROR
                                     )
                                 } ?: it.controlToast.copy(showToast = false)
                             )
@@ -167,13 +185,13 @@ class RegisterPartialViewModel(
                 }
             } else {
                 
-                _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
             }
         }
     }
 
     /**
-     * Gets list of partials.
+     * Obtiene la lista de parciales desde el servidor.
      */
     fun getListPartialCompose(){
         viewModelScope.launch {
@@ -198,7 +216,7 @@ class RegisterPartialViewModel(
                 }
                 is ErrorResult -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }
@@ -206,9 +224,9 @@ class RegisterPartialViewModel(
     }
 
     /**
-     * Modifies the visibility of the toast message.
+     * Modifica la visibilidad del mensaje toast.
      *
-     * @param show True to show the toast, false to hide it.
+     * @param show `true` para mostrar el toast, `false` para ocultarlo.
      */
     fun modifyShowToast(show: Boolean) {
         _uiState.update {

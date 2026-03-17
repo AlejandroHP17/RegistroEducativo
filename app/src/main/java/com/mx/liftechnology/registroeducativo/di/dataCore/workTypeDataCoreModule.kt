@@ -17,15 +17,17 @@ import retrofit2.Retrofit
 val workTypeDataCoreModule = module {
 
     /**
-     * Proporciona una instancia de [WorkTypeApi].
+     * Proporciona una instancia factory de [WorkTypeApi].
+     * API de Retrofit para realizar llamadas al servicio de tipos de trabajo.
      * Necesaria para operaciones de campos formativos que requieren tipos de trabajo.
      */
     factory { get<Retrofit>().create(WorkTypeApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [WorkTypeRepository].
-     * Agrupa todas las operaciones relacionadas con tipos de trabajo: obtener tipos de trabajo por campo formativo
-     * y obtener lista de tipos de trabajo.
+     * Repositorio que agrupa todas las operaciones relacionadas con tipos de trabajo:
+     * - Obtener tipos de trabajo por campo formativo
+     * - Obtener lista de tipos de trabajo
      */
     singleOf(::WorkTypeRepositoryImpl) {
         bind<WorkTypeRepository>()

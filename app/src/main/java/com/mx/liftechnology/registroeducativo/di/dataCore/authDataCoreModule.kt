@@ -13,8 +13,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
-
-
 /**
  * Módulo de Koin para dependencias de datos relacionadas con autenticación.
  *
@@ -24,13 +22,17 @@ import retrofit2.Retrofit
 val authDataCoreModule = module {
 
     /**
-     * Proporciona una instancia de [AuthApi].
+     * Proporciona una instancia factory de [AuthApi].
+     * API de Retrofit para realizar llamadas al servicio de autenticación.
      */
     factory { get<Retrofit>().create(AuthApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [AuthRepository].
-     * Agrupa todas las operaciones de autenticación: login, registro y obtención de datos de usuario.
+     * Repositorio que agrupa todas las operaciones de autenticación:
+     * - Login de usuario
+     * - Registro de usuario
+     * - Obtención de datos de usuario autenticado
      */
     singleOf(::AuthRepositoryImpl) {
         bind<AuthRepository>()

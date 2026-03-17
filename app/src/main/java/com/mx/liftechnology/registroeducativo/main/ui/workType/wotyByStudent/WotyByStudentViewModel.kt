@@ -10,9 +10,9 @@ import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper.t
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubComplexCard
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelSubSubComplexCard
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiState
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiState
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the Student Assignment screen.
+ * ViewModel para la pantalla de asignaciones por estudiante.
+ * 
+ * Gestiona el estado de la UI y la obtención de evaluaciones agrupadas por campo formativo
+ * y tipo de trabajo para un estudiante específico.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListWotyFofiUseCase El caso de uso para obtener la lista de tipos de trabajo por campo formativo.
+ * @property getListEvaluationsStudentUseCase El caso de uso para obtener las evaluaciones de un estudiante.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -33,13 +40,13 @@ class WotyByStudentViewModel (
     private val getListEvaluationsStudentUseCase: GetListEvaluationsStudentUseCase
 
     ): ViewModel() {
-    private val _uiState = MutableStateFlow(WotyFofiUiState())
+    private val _uiState = MutableStateFlow(WotyUiState())
     /** El estado de la UI que contiene eventos de la pantalla como carga, éxito o error. */
-    val uiState: StateFlow<WotyFofiUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<WotyUiState> = _uiState.asStateFlow()
 
-    private val _dataState = MutableStateFlow(WotyFofiUiData())
+    private val _dataState = MutableStateFlow(WotyUiData())
     /** El estado de datos de la pantalla. */
-    val dataState: StateFlow<WotyFofiUiData> = _dataState.asStateFlow()
+    val dataState: StateFlow<WotyUiData> = _dataState.asStateFlow()
 
     /**
      * Actualiza el estudiante actual.
@@ -50,9 +57,17 @@ class WotyByStudentViewModel (
         _uiState.update { it.copy(student =  student) }
     }
 
-    fun getListWotyFofi(){
+    /**
+     * Actualiza la fecha seleccionada.
+     *
+     * @param date La fecha seleccionada.
+     */
+    fun updateDate(date: String?){
+        _dataState.update { it.copy(date = date) }
+    }
+
+    fun getListWotyFofi() {
         viewModelScope.launch {
-            // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
                 getListWotyFofiUseCase.invoke()
             }
@@ -65,7 +80,7 @@ class WotyByStudentViewModel (
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }
@@ -116,7 +131,8 @@ class WotyByStudentViewModel (
                 getListEvaluationsStudentUseCase.invoke(
                     formativeFieldId = idTitle,
                     workTypeId = workTypeId,
-                    studentId = _uiState.value.student?.studentId
+                    studentId = _uiState.value.student?.studentId,
+                    workDate = _dataState.value.date
                 )
             }
 
@@ -148,7 +164,7 @@ class WotyByStudentViewModel (
                 }
                 else -> {
                     _uiState.update {
-                        it.copy(uiState = ModelStateUIEnum.ERROR)
+                        it.copy(uiState = EnumUi.ERROR)
                     }
                 }
             }

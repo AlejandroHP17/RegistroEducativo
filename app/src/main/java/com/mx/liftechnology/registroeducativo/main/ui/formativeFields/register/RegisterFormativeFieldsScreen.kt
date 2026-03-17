@@ -22,7 +22,7 @@ import com.mx.liftechnology.domain.model.formativeFields.WorkTypeDomain
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.RegisterFormativeFieldUiState
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -37,11 +37,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The formativeField Registration screen.
+ * Pantalla de registro de campos formativos (materias).
+ * 
+ * Permite registrar un nuevo campo formativo con múltiples métodos de trabajo
+ * y sus respectivos porcentajes.
  *
- * @param navController The navigation controller.
- * @param sharedViewModel The shared ViewModel.
- * @param registerFormativeFieldsViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param registerFormativeFieldsViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun RegisterFormativeFieldScreen(
@@ -56,7 +59,7 @@ fun RegisterFormativeFieldScreen(
         registerFormativeFieldsViewModel.getListWorkType()
     }
     LaunchedEffect(uiState.uiState) {
-        if (uiState.uiState == ModelStateUIEnum.SUCCESS) navController.popBackStack()
+        if (uiState.uiState == EnumUi.SUCCESS) navController.popBackStack()
     }
 
     LaunchedEffect (uiState.controlToast) {
@@ -116,7 +119,7 @@ fun RegisterFormativeFieldScreen(
             ActionRegisterFormativeField { registerFormativeFieldsViewModel.validateFieldsCompose() }
         }
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 /**

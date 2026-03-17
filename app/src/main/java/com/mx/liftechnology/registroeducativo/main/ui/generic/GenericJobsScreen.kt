@@ -13,32 +13,36 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.model.share.ModelComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
-import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComplexCard
+import com.mx.liftechnology.registroeducativo.main.ui.components.cards.ComplexCard
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 
 /**
- * A generic screen for displaying jobs.
+ * Pantalla genérica para mostrar trabajos/asignaciones.
+ * 
+ * Componente reutilizable que proporciona una estructura común para pantallas
+ * que muestran trabajos y evaluaciones en una estructura jerárquica compleja
+ * (campos formativos > tipos de trabajo > evaluaciones).
  *
- * @param title The title of the screen.
- * @param description The description of the screen.
- * @param dataState The data state for the screen.
- * @param onReturnClick A lambda to be invoked when the back button is clicked.
- * @param complexCallbacks The callbacks for the complex card.
- * @param onAction A lambda to be invoked when the action button is clicked.
+ * @param title El título de la pantalla.
+ * @param description La descripción de la pantalla.
+ * @param dataState El estado de los datos para la pantalla.
+ * @param onReturnClick Lambda que se invoca cuando se hace clic en el botón de retroceso.
+ * @param complexCallbacks Los callbacks para las interacciones con las tarjetas complejas.
+ * @param onAction Lambda que se invoca cuando se hace clic en el botón de acción.
  */
 @Composable
 fun GenericJobsScreen(
     title: String,
     description: String,
-    dataState: WotyFofiUiData,
+    dataState: WotyUiData,
     onReturnClick: () -> Unit,
-    complexCallbacks: WotyFofiUiCallbacks,
+    complexCallbacks: WotyUiCallbacks,
     onAction: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -49,7 +53,7 @@ fun GenericJobsScreen(
         )
         BodyAssignment(
             dataState =  dataState,
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
                 onExpandedSubTitle = { subItem, parentItem -> complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
             )
@@ -89,8 +93,8 @@ private fun GenericHeaderAssignment(
  */
 @Composable
 private fun BodyAssignment(
-    dataState: WotyFofiUiData,
-    complexCallbacks: WotyFofiUiCallbacks
+    dataState: WotyUiData,
+    complexCallbacks: WotyUiCallbacks
 ){
     LazyColumn(
         modifier = Modifier.wrapContentHeight(),
@@ -102,7 +106,7 @@ private fun BodyAssignment(
         ) { _, item: ModelComplexCard ->
             ComplexCard(
                 item = item,
-                complexCallbacks = WotyFofiUiCallbacks(
+                complexCallbacks = WotyUiCallbacks(
                     onExpandedTitle = { complexCallbacks.onExpandedTitle(it) },
                     onExpandedSubTitle = {subItem, parentItem ->   complexCallbacks.onExpandedSubTitle(subItem, parentItem) },
                 )
@@ -134,9 +138,9 @@ private fun GenericJobsScreenPreview(){
     GenericJobsScreen(
         title = "Alejandro",
         description = "Test de prueba",
-        dataState = WotyFofiUiData(),
+        dataState = WotyUiData(),
         onReturnClick = {},
-        complexCallbacks = WotyFofiUiCallbacks(
+        complexCallbacks = WotyUiCallbacks(
             onExpandedTitle = {},
             onExpandedSubTitle = {subItem, parentItem ->  }
         ),

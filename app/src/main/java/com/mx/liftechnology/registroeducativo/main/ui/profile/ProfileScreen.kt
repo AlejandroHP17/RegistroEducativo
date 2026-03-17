@@ -11,7 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.ToastUiState
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateTypeToastUI
+import com.mx.liftechnology.registroeducativo.main.model.ui.TypeToastUi
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBack
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
@@ -20,12 +20,14 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Profile screen.
+ * Pantalla de perfil de usuario.
+ * 
+ * Muestra la información del perfil del usuario y permite cerrar sesión.
  *
- * @param navController The navigation controller.
- * @param profileViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
- * @param onCloseSession A lambda to be invoked when the session is closed.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param profileViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
+ * @param onCloseSession Lambda que se invoca cuando se cierra la sesión.
  */
 @Composable
 fun ProfileScreen(
@@ -49,7 +51,7 @@ fun ProfileScreen(
             val control = ToastUiState(
                 messageToast = R.string.toast_informative_close_session,
                 showToast = true,
-                typeToast = ModelStateTypeToastUI.INFORMATIVE
+                typeToast = TypeToastUi.INFORMATIVE
             )
             sharedViewModel.modifyShowToast(control)
             profileViewModel.closeSession()
@@ -59,9 +61,9 @@ fun ProfileScreen(
 }
 
 /**
- * The header of the Profile screen.
+ * Encabezado de la pantalla de perfil.
  *
- * @param navController The navigation controller.
+ * @param navController El controlador de navegación.
  */
 @Composable
 fun HeaderProfile(navController: NavHostController){
@@ -72,9 +74,9 @@ fun HeaderProfile(navController: NavHostController){
 }
 
 /**
- * The action button of the Profile screen.
+ * Botón de acción de la pantalla de perfil.
  *
- * @param closeSessionCompose A lambda to be invoked when the action button is clicked.
+ * @param closeSessionCompose Lambda que se invoca cuando se hace clic en el botón de acción.
  */
 @Composable
 private fun ActionProfile(

@@ -1,7 +1,7 @@
 package com.mx.liftechnology.registroeducativo.main.mapper
 
 import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 
 /**
  * Mapper para convertir modelos del dominio de estudiantes a modelos de UI.
@@ -20,7 +20,7 @@ object StudentMapper {
      * @param students La lista de estudiantes del dominio a convertir.
      * @return Una lista de ModelCustomCard ordenada y formateada para mostrar en la UI.
      */
-    fun mapStudentListToCustomCard(students: List<StudentDomainPar>?): List<ModelCustomCard> {
+    fun mapStudentListToCustomCard(students: List<StudentDomainPar>?, isVisibleMenu: Boolean): List<CustomCard> {
         if (students == null) return emptyList()
         
         return students
@@ -49,10 +49,11 @@ object StudentMapper {
                     append(student.name?.takeIf { it.isNotBlank() } ?: "")
                 }.trim()
                 
-                ModelCustomCard(
+                CustomCard(
                     id = student.studentId ?: 0,
                     numberList = (index + 1).toString(),
-                    nameCard = if (fullName.isNotBlank()) fullName else "Estudiante sin nombre"
+                    nameCard = if (fullName.isNotBlank()) fullName else "Estudiante sin nombre",
+                    isVisibleMenu = isVisibleMenu
                 )
             }
     }

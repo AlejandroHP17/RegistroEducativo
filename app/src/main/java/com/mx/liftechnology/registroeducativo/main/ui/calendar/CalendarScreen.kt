@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -17,19 +17,25 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.domain.util.extension.stringToModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.ComponentHeaderBackWithout
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.CustomSpace
 import com.mx.liftechnology.registroeducativo.main.ui.components.calendars.DatePickerScreen
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.SegmentedControl
 import com.mx.liftechnology.registroeducativo.main.ui.generic.BodyListGeneric
+import com.mx.liftechnology.registroeducativo.main.util.navigateWithParams
+import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
+import java.time.LocalDate
 
 /**
- * The Calendar screen.
+ * Pantalla de calendario.
+ * 
+ * Muestra un calendario interactivo y permite visualizar listas de campos formativos
+ * o estudiantes según la selección del usuario.
  *
- * @param navController The navigation controller.
- * @param calendarViewModel The ViewModel for this screen.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param calendarViewModel El ViewModel para esta pantalla.
  */
 @Composable
 fun CalendarScreen (
@@ -37,15 +43,15 @@ fun CalendarScreen (
     calendarViewModel: CalendarViewModel = koinViewModel()
 ){
 
-    val uiState by calendarViewModel.uiState.collectAsStateWithLifecycle()
-    val dataState by calendarViewModel.dataState.collectAsStateWithLifecycle()
-    val dataState2 by calendarViewModel.dataState2.collectAsStateWithLifecycle()
+    val calendarUiState by calendarViewModel.calendarUiState.collectAsStateWithLifecycle()
+    val dataFormativeFieldState by calendarViewModel.dataFormativeFieldState.collectAsStateWithLifecycle()
+    val dataStudentState by calendarViewModel.dataStudentState.collectAsStateWithLifecycle()
 
-    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedIndex by remember { mutableIntStateOf(0) }
 
 
     LaunchedEffect (Unit){
-      //  calendarViewModel.getSubject()
+        calendarViewModel.getFormativeFields()
         calendarViewModel.getListStudent()
     }
 
@@ -58,7 +64,10 @@ fun CalendarScreen (
             navigate =  {navController.popBackStack()}
         )
 
-        BodyCalendarScreen()
+        BodyCalendarScreen(
+            range = calendarViewModel.rangeDates(),
+            onDateSelected = {calendarViewModel.setRangeDate(it) }
+        )
         CustomSpace(dimensionResource(id = R.dimen.margin_divided))
         BodySelectScreen(
             selectedIndex = selectedIndex,
@@ -67,18 +76,32 @@ fun CalendarScreen (
         CustomSpace(dimensionResource(id = R.dimen.margin_divided))
         if(selectedIndex == 0){
             BodyListGeneric(
-                items = dataState.formativeFieldsListUI,
+                items = dataFormativeFieldState.formativeFieldsListUI,
                 callbacks = SpinnerUiCallbacks(
-                    onItemClick = {},
+                    onItemClick = {
+                        navController.navigateWithParams(
+                            AppRoutes.Main.wotyFormativeField(
+                                calendarViewModel.getFormativeField(it),
+                                calendarUiState.date
+                            )
+                        )
+                    },
                     onEdit = {},
                     onDelete = { }
                 )
             )
         }else{
             BodyListGeneric(
-                items = dataState2.studentListUI,
+                items = dataStudentState.studentListUI,
                 callbacks = SpinnerUiCallbacks(
-                    onItemClick = {},
+                    onItemClick = {
+                        navController.navigateWithParams(
+                            AppRoutes.Main.wotyStudent(
+                                calendarViewModel.getStudent(it),
+                                calendarUiState.date
+                            )
+                        )
+                    },
                     onEdit = {},
                     onDelete = { }
                 )
@@ -107,17 +130,20 @@ fun HeaderCalendarScreen(
  */
 @Composable
 fun BodyCalendarScreen(
+    range : String?,
+    onDateSelected: (date: LocalDate) -> Unit
 ){
-    val calendar = ModelCustomCalendar(
+    val calendar = CustomCalendar(
         rangeYears = null,
-        rangeDate  = null,
+        rangeDate  = range,
         date = "".stringToModelStateOutFieldText()
     )
 
-
     DatePickerScreen(
         dialogState = calendar,
-        onDateSelected = {}
+        onDateSelected = {
+            onDateSelected(it)
+        }
     )
 }
 

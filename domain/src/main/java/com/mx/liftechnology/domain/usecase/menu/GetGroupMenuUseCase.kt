@@ -31,7 +31,7 @@ class GetGroupMenuUseCase(
      * @return Un [ModelResult] que contiene la información del grupo o un error.
      */
     suspend operator fun invoke(): ModelResult<InfoStudentGroupDomain, ModelError> {
-        val userId = preference.getIdUserLevel()
+        val userId = preference.getIdUser()
             ?: return ErrorResult(LocalModelError.USER_INCOMPLETE_DATA)
         
         val result = schoolCycleRepository.getCycleSchool(userId)

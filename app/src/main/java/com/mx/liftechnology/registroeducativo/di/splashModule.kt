@@ -5,14 +5,20 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
- * Koin module for splash screen dependencies.
+ * Módulo de Koin para dependencias relacionadas con la pantalla de inicio (splash).
+ * 
+ * Este módulo proporciona las instancias necesarias para:
+ * - Gestión del estado de la pantalla de inicio
+ * - Verificación de sesión de usuario
+ * - Navegación inicial de la aplicación
  *
  * @author Pelkidev
  * @version 1.0.0
  */
 val splashModule = module {
     /**
-     * Provides an instance of [SplashViewModel].
+     * Proporciona una instancia de [SplashViewModel].
+     * ViewModel para la pantalla de inicio de la aplicación.
      */
     viewModelOf(::SplashViewModel)
 }

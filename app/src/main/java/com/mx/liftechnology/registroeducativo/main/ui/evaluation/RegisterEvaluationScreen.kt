@@ -28,11 +28,11 @@ import com.mx.liftechnology.domain.model.generic.ModelCustomSpinner
 import com.mx.liftechnology.domain.model.generic.ModelRegex.COMPLEX_TEXT
 import com.mx.liftechnology.domain.model.generic.ModelStateOutFieldText
 import com.mx.liftechnology.registroeducativo.R
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.event.UiEvent
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiData
 import com.mx.liftechnology.registroeducativo.main.model.evaluation.RegisterEvaluationUiState
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCalendar
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldCalendar
 import com.mx.liftechnology.registroeducativo.main.ui.components.form.TextFieldGeneric
 import com.mx.liftechnology.registroeducativo.main.ui.components.buttons.ButtonAction
@@ -48,12 +48,15 @@ import com.mx.liftechnology.registroeducativo.main.ui.theme.colorAction
 import org.koin.androidx.compose.koinViewModel
 
 /**
- * The Assignment Registration screen.
+ * Pantalla de registro de evaluaciones (asignaciones).
+ * 
+ * Permite registrar evaluaciones para múltiples estudiantes de un campo formativo específico.
+ * Incluye selección de tipo de trabajo, fecha y calificaciones por estudiante.
  *
- * @param navController The navigation controller.
- * @param backStackEntry The back stack entry for this screen.
- * @param registerEvaluationViewModel The ViewModel for this screen.
- * @param sharedViewModel The shared ViewModel.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param backStackEntry La entrada de la pila de retroceso para esta pantalla, contiene los datos del campo formativo.
+ * @param registerEvaluationViewModel El ViewModel para esta pantalla.
+ * @param sharedViewModel El ViewModel compartido para la comunicación entre pantallas (ej: mostrar toasts).
  */
 @Composable
 fun RegisterEvaluationScreen(
@@ -180,7 +183,7 @@ fun RegisterEvaluationScreen(
             onDateSelected = { registerEvaluationViewModel.onDateChanged(it.toString()) }
         )
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 /**
@@ -210,7 +213,7 @@ private fun HeaderRegisterAssignment(
 @Composable
 fun BodyRegisterAssignment(
     dataState: RegisterEvaluationUiData,
-    dialogState: ModelCustomCalendar,
+    dialogState: CustomCalendar,
     onNameJobChanged: (ModelStateOutFieldText) -> Unit,
     showDialog: () -> Unit,
 ) {
@@ -338,7 +341,7 @@ private fun RegisterEvaluationPreview(){
             }) {
             BodyRegisterAssignment(
                 dataState = RegisterEvaluationUiData(),
-                dialogState = ModelCustomCalendar(),
+                dialogState = CustomCalendar(),
                 onNameJobChanged = {  },
                 showDialog = { }
             )

@@ -11,7 +11,7 @@ import androidx.navigation.NavHostController
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.student.ListStudentUiData
 import com.mx.liftechnology.registroeducativo.main.model.student.StudentDomainPar
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.ui.SpinnerUiCallbacks
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericEmptyScreen
@@ -62,7 +62,8 @@ fun ListStudentScreen(
                 onItemClick = {
                     navController.navigateWithParams(
                         AppRoutes.Main.wotyStudent(
-                            listStudentViewModel.getStudent(it)
+                            listStudentViewModel.getStudent(it),
+                            null
                         )
                     )
                 },
@@ -84,7 +85,7 @@ fun ListStudentScreen(
             }
         )
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 @Preview(showBackground = true)

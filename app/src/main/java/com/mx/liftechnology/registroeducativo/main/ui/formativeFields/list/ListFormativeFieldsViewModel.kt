@@ -7,11 +7,11 @@ import com.mx.liftechnology.registroeducativo.main.model.formativeFields.Formati
 import com.mx.liftechnology.domain.usecase.formativeField.DeleteFormativeFieldsUseCase
 import com.mx.liftechnology.domain.usecase.share.GetListFormativeFieldUseCase
 import com.mx.liftechnology.registroeducativo.main.mapper.FormativeFieldMapper
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiData
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.ListFormativeFieldsUiState
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.toFormativeFieldDomainList
-import com.mx.liftechnology.registroeducativo.main.model.share.ModelCustomCard
+import com.mx.liftechnology.registroeducativo.main.model.share.CustomCard
 import com.mx.liftechnology.registroeducativo.main.util.DispatcherProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for the formativeField List screen.
+ * ViewModel para la pantalla de lista de campos formativos (materias).
+ * 
+ * Gestiona el estado de la UI, la obtención de la lista de campos formativos y la eliminación de campos formativos.
+ *
+ * @property dispatcherProvider El proveedor de dispatchers para controlar los hilos de ejecución.
+ * @property getListFormativeFieldUseCase El caso de uso para obtener la lista de campos formativos.
+ * @property deleteFormativeFieldsUseCase El caso de uso para eliminar un campo formativo.
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -37,15 +43,15 @@ class ListFormativeFieldsViewModel(
     val uiState: StateFlow<ListFormativeFieldsUiState> = _uiState.asStateFlow()
 
     private val _dataState = MutableStateFlow(ListFormativeFieldsUiData())
-    /** The data state for the screen. */
+    /** El estado de los datos de la pantalla. */
     val dataState: StateFlow<ListFormativeFieldsUiData> = _dataState.asStateFlow()
 
     /**
-     * Gets the list of formativeFields.
+     * Obtiene la lista de campos formativos desde el servidor.
      */
     fun getFormativeFields() {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -55,14 +61,14 @@ class ListFormativeFieldsViewModel(
             when(result) {
                 is SuccessResult -> {
                     val listFormativeField = result.data?.toFormativeFieldDomainList()
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataState.update { it.copy(
                         formativeFieldsList = listFormativeField,
-                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField),
+                        formativeFieldsListUI = FormativeFieldMapper.mapFormativeFieldListToCustomCard(listFormativeField, true),
                     ) }
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                     _dataState.update { it.copy(formativeFieldsList = emptyList()) }
                 }
             }
@@ -70,16 +76,21 @@ class ListFormativeFieldsViewModel(
     }
 
     /**
-     * Gets a formativeField by its ID.
+     * Obtiene un campo formativo por su ID.
      *
-     * @param item The custom card model of the formativeField to get.
-     * @return The [FormativeFieldDomainPar] object, or null if not found.
+     * @param item El modelo de tarjeta personalizada del campo formativo a obtener.
+     * @return El objeto [FormativeFieldDomainPar], o null si no se encuentra.
      */
-    fun getFormativeFields(item: ModelCustomCard): FormativeFieldDomainPar? = _dataState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }
+    fun getFormativeFields(item: CustomCard): FormativeFieldDomainPar? = _dataState.value.formativeFieldsList?.find { it.formativeFieldId == item.id }
 
-    fun deleteFormativeField(card: ModelCustomCard) {
+    /**
+     * Elimina un campo formativo de la lista.
+     *
+     * @param card El modelo de tarjeta personalizada del campo formativo a eliminar.
+     */
+    fun deleteFormativeField(card: CustomCard) {
         viewModelScope.launch {
-            _uiState.update { it.copy(uiState = ModelStateUIEnum.LOADING) }
+            _uiState.update { it.copy(uiState = EnumUi.LOADING) }
 
             // Las operaciones de red deben ejecutarse en el dispatcher de I/O
             val result = withContext(dispatcherProvider.io) {
@@ -91,7 +102,7 @@ class ListFormativeFieldsViewModel(
                     getFormativeFields()
                 }
                 else -> {
-                    _uiState.update { it.copy(uiState = ModelStateUIEnum.NOTHING) }
+                    _uiState.update { it.copy(uiState = EnumUi.NOTHING) }
                 }
             }
         }

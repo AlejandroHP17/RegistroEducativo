@@ -16,19 +16,23 @@ import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.mx.liftechnology.registroeducativo.R
 import com.mx.liftechnology.registroeducativo.main.model.formativeFields.FormativeFieldDomainPar
-import com.mx.liftechnology.registroeducativo.main.model.ui.ModelStateUIEnum
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiCallbacks
-import com.mx.liftechnology.registroeducativo.main.model.workType.WotyFofiUiData
+import com.mx.liftechnology.registroeducativo.main.model.ui.EnumUi
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiCallbacks
+import com.mx.liftechnology.registroeducativo.main.model.workType.WotyUiData
 import com.mx.liftechnology.registroeducativo.main.ui.components.layout.LoadingAnimation
 import com.mx.liftechnology.registroeducativo.main.ui.generic.GenericJobsScreen
 import com.mx.liftechnology.registroeducativo.main.util.navigation.AppRoutes
 import org.koin.androidx.compose.koinViewModel
+import com.mx.liftechnology.core.util.extension.logInfo
 
 /**
- * Pantalla de asignación de materia.
+ * Pantalla de asignaciones por campo formativo (materia).
+ * 
+ * Muestra las evaluaciones agrupadas por tipo de trabajo y estudiantes
+ * para un campo formativo específico.
  *
- * @param navController El controlador de navegación.
- * @param backStackEntry La entrada del back stack para esta pantalla.
+ * @param navController El controlador de navegación para gestionar los desplazamientos.
+ * @param backStackEntry La entrada de la pila de retroceso para esta pantalla, contiene los datos del campo formativo.
  * @param wotyByFormativeFieldViewModel El ViewModel para esta pantalla.
  */
 @Composable
@@ -41,15 +45,34 @@ fun WotyByFormativeFieldScreen(
     val uiState by wotyByFormativeFieldViewModel.uiState.collectAsStateWithLifecycle()
     val dataState by wotyByFormativeFieldViewModel.dataState.collectAsStateWithLifecycle()
     val formativeFieldJson = backStackEntry.arguments?.getString("formativeField")
+    val date = backStackEntry.arguments?.getString("date")
+
+
 
     LaunchedEffect(Unit) {
+        // Si date no está en arguments, intentar parsearlo desde savedStateHandle
+        // Esto puede ser necesario si la ruta no coincide exactamente
+        /*if (date == null) {
+            val savedStateHandle = backStackEntry.savedStateHandle
+            val routeFromSavedState = savedStateHandle.get<String>("full_route")
+            
+            // Si tenemos la ruta completa guardada, parsear los query parameters
+            routeFromSavedState?.let { route ->
+                if (route.contains("?")) {
+                    date = extractQueryParam(route, "date")
+                }
+            }
+        }*/
+        
         val formativeField: FormativeFieldDomainPar? = if (formativeFieldJson.isNullOrEmpty()) {
             null
         } else {
             Gson().fromJson(formativeFieldJson, FormativeFieldDomainPar::class.java)
         }
+        
         wotyByFormativeFieldViewModel.updateFormativeField(formativeField)
-        wotyByFormativeFieldViewModel.getListWotyFofi()
+        wotyByFormativeFieldViewModel.updateDate(date)
+        wotyByFormativeFieldViewModel.getListWotyFormativeField(formativeField)
     }
 
 
@@ -58,20 +81,19 @@ fun WotyByFormativeFieldScreen(
             .fillMaxSize()
             .padding(horizontal = dimensionResource(id = R.dimen.margin_outer))
     ) {
-
         GenericJobsScreen(
             title = uiState.formativeFields?.name ?: "Desconocido",
             description = stringResource(R.string.assignment_formative_field_description),
             dataState = dataState,
             onReturnClick = {navController.popBackStack()},
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = { wotyByFormativeFieldViewModel.updateExpandedTitle(it) },
                 onExpandedSubTitle = {subItem, parentItem -> wotyByFormativeFieldViewModel.updateExpandedSubTitle(subItem, parentItem ) },
             ),
             onAction = { navController.navigate(AppRoutes.Main.registerWoty(uiState.formativeFields))},
         )
     }
-    LoadingAnimation(uiState.uiState == ModelStateUIEnum.LOADING)
+    LoadingAnimation(uiState.uiState == EnumUi.LOADING)
 }
 
 
@@ -87,9 +109,9 @@ private fun WotyByFormativeFieldsPreview(){
         GenericJobsScreen(
             title = "Desconocido",
             description = stringResource(R.string.assignment_student_description),
-            dataState = WotyFofiUiData(),
+            dataState = WotyUiData(),
             onReturnClick = {},
-            complexCallbacks = WotyFofiUiCallbacks(
+            complexCallbacks = WotyUiCallbacks(
                 onExpandedTitle = {  },
                 onExpandedSubTitle = { subItem, parentItem ->
                 }

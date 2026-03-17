@@ -22,14 +22,18 @@ import retrofit2.Retrofit
  */
 val formativeFieldDataCoreModule = module {
     /**
-     * Proporciona una instancia de [FormativeFieldApi].
+     * Proporciona una instancia factory de [FormativeFieldApi].
+     * API de Retrofit para realizar llamadas al servicio de campos formativos.
      */
     factory { get<Retrofit>().create(FormativeFieldApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [FormativeFieldRepository].
-     * Agrupa todas las operaciones relacionadas con campos formativos: obtener lista, registrar, eliminar
-     * y obtener lista WotyFofi.
+     * Repositorio que agrupa todas las operaciones relacionadas con campos formativos:
+     * - Obtener lista de campos formativos
+     * - Registrar campos formativos
+     * - Eliminar campos formativos
+     * - Obtener lista WotyFofi (tipos de trabajo por campo formativo)
      */
     singleOf(::FormativeFieldRepositoryImpl) {
         bind<FormativeFieldRepository>()

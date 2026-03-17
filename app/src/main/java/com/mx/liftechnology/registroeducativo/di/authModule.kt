@@ -13,13 +13,12 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
- * Módulo de Koin para las dependencias relacionadas con la funcionalidad de auth.
- * Este módulo se encarga de proveer las instancias necesarias para la pantalla de recuperación de contraseña,
- * como el [ForgetPasswordViewModel].
- * Este módulo se encarga de proveer las instancias necesarias para la pantalla de iniciar sesion,
- * como el [LoginViewModel].
- * Este módulo se encarga de proveer las instancias necesarias para la pantalla registro de usuario,
- * como el [RegisterUserViewModel].
+ * Módulo de Koin para las dependencias relacionadas con la funcionalidad de autenticación.
+ * 
+ * Este módulo proporciona las instancias necesarias para:
+ * - Pantalla de recuperación de contraseña: [ForgetPasswordViewModel]
+ * - Pantalla de inicio de sesión: [LoginViewModel] y casos de uso relacionados
+ * - Pantalla de registro de usuario: [RegisterUserViewModel] y casos de uso relacionados
  *
  * @author Pelkidev
  * @version 1.0.0
@@ -27,35 +26,50 @@ import org.koin.dsl.module
 val authModule = module{
 
     /**
-     * Provee una instancia de [ForgetPasswordViewModel].
+     * Proporciona una instancia de [ForgetPasswordViewModel].
+     * ViewModel para la pantalla de recuperación de contraseña.
      */
     viewModelOf(::ForgetPasswordViewModel)
 
-
     /**
      * Proporciona una instancia singleton de [LoginUseCase].
-     * Proporciona una instancia singleton de [GetDataUserUseCase].
-     * Proporciona una instancia singleton de [LoginWithValidationUseCase].
+     * Caso de uso para realizar el proceso de inicio de sesión.
      */
     singleOf(::LoginUseCase)
+    
+    /**
+     * Proporciona una instancia singleton de [GetDataUserUseCase].
+     * Caso de uso para obtener los datos del usuario autenticado.
+     */
     singleOf(::GetDataUserUseCase)
+    
+    /**
+     * Proporciona una instancia singleton de [LoginWithValidationUseCase].
+     * Caso de uso para realizar el inicio de sesión con validación de campos.
+     */
     singleOf(::LoginWithValidationUseCase)
 
     /**
      * Proporciona una instancia de [LoginViewModel].
+     * ViewModel para la pantalla de inicio de sesión.
      */
     viewModelOf(::LoginViewModel)
 
-
     /**
      * Proporciona una instancia singleton de [RegisterUserUseCase].
-     * Proporciona una instancia singleton de [RegisterUserWithValidationUseCase].
+     * Caso de uso para registrar un nuevo usuario.
      */
     singleOf(::RegisterUserUseCase)
+    
+    /**
+     * Proporciona una instancia singleton de [RegisterUserWithValidationUseCase].
+     * Caso de uso para registrar un nuevo usuario con validación de campos.
+     */
     singleOf(::RegisterUserWithValidationUseCase)
 
     /**
      * Proporciona una instancia de [RegisterUserViewModel].
+     * ViewModel para la pantalla de registro de usuario.
      */
     viewModelOf(::RegisterUserViewModel)
 }

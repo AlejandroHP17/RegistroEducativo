@@ -60,9 +60,9 @@ class EvaluationRepositoryImpl(
     /**
      * {@inheritDoc}
      */
-    override suspend fun getListWorkTypeStudent(formativeFieldId: Int): ModelResult<WorkTypeFormativeFieldDomain, NetworkModelError> {
+    override suspend fun getListWorkTypeFormativeField(formativeFieldId: Int): ModelResult<WorkTypeFormativeFieldDomain, NetworkModelError> {
         return safeApiCall(
-            apiCall = { evaluationApi.getListWorkTypeStudent(formativeFieldId) },
+            apiCall = { evaluationApi.getListWorkTypeFormativeField(formativeFieldId) },
             mapper = { it.toWorkTypeFormativeFieldDomain() }
         )
     }

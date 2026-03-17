@@ -23,15 +23,18 @@ import retrofit2.Retrofit
 val evaluationDataCoreModule = module {
 
     /**
-     * Proporciona una instancia de [EvaluationApi].
+     * Proporciona una instancia factory de [EvaluationApi].
+     * API de Retrofit para realizar llamadas al servicio de evaluaciones.
      */
     factory { get<Retrofit>().create(EvaluationApi::class.java) }
 
     /**
      * Proporciona una instancia singleton de [EvaluationRepository].
-     * Agrupa todas las operaciones relacionadas con evaluaciones: registrar evaluaciones,
-     * obtener lista de tipos de trabajo por campo formativo, obtener evaluaciones de estudiantes
-     * y obtener estudiantes por tipo de campo formativo.
+     * Repositorio que agrupa todas las operaciones relacionadas con evaluaciones:
+     * - Registrar evaluaciones
+     * - Obtener lista de tipos de trabajo por campo formativo
+     * - Obtener evaluaciones de estudiantes
+     * - Obtener estudiantes por tipo de campo formativo
      */
     singleOf(::EvaluationRepositoryImpl) {
         bind<EvaluationRepository>()
