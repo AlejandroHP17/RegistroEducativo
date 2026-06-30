@@ -8,7 +8,7 @@
 
 **Registro Educativo** es una aplicación de Android diseñada para facilitar la gestión académica de los profesores. Permite llevar un registro detallado de alumnos, materias, calificaciones y asistencia, todo desde la comodidad de un dispositivo móvil.
 
-> Proyecto de portafolio · [Alejandro Hernández](https://github.com/AlejandroHP17) · [LinkedIn](https://linkedin.com/in/alejandro-hernandez-pelcastre)
+> Proyecto de portafolio · [Alejandro Hernández](https://github.com/AlejandroHP17) · [LinkedIn](https://www.linkedin.com/in/alejandro-hern%C3%A1ndez-pelcastre/)
 
 ## 📋 Tabla de Contenidos
 
