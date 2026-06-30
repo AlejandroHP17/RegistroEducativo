@@ -1,6 +1,14 @@
 # Registro Educativo
 
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4)](https://developer.android.com/jetpack/compose)
+[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20%2B%20MVVM-1a567a)]()
+[![Retrofit](https://img.shields.io/badge/Retrofit-3.0-3E8E41)](https://square.github.io/retrofit/)
+[![Koin](https://img.shields.io/badge/Koin-4.1-6C63FF)](https://insert-koin.io/)
+
 **Registro Educativo** es una aplicación de Android diseñada para facilitar la gestión académica de los profesores. Permite llevar un registro detallado de alumnos, materias, calificaciones y asistencia, todo desde la comodidad de un dispositivo móvil.
+
+> Proyecto de portafolio · [Alejandro Hernández](https://github.com/AlejandroHP17) · [LinkedIn](https://linkedin.com/in/alejandro-hernandez-pelcastre)
 
 ## 📋 Tabla de Contenidos
 
